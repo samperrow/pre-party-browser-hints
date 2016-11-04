@@ -8,7 +8,7 @@ Stable tag: 4.4.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Take advantage of the latest W3C browser implementations of dns-prefetch, prerender, preconnect, prefetch, and preload to improve page load time.
+Take advantage of the latest W3C resource hints for browsers to improve page load time.
 
 == Description ==
 
