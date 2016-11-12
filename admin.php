@@ -2,12 +2,12 @@
 /**
  * Plugin Name: Pre * Party Resource Hints
  * Plugin URI: https://grakkitseo.com/
- * Description: Take advantage of the latest W3C browser implementations of dns-prefetch, prerender, preconnect, prefetch, and preload to improve page load time.
- * Version: 1.0.1
+ * Description: Take advantage of the latest W3C browser implementations of DNS-prefetch, prerender, preconnect, prefetch, and preload to improve page load time.
+ * Version: 1.0.2
  * Author: Sam Perrow
  * Author URI: https://grakkitseo.com/
  * License: GPL2
- * last edited November 4, 2016
+ * last edited November 11, 2016
  *
  * Copyright 2016  Sam Perrow  (email : info@grakkitseo.com)
  *

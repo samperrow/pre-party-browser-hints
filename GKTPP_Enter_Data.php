@@ -1,8 +1,8 @@
 <?php
 
-class GKTPP_Enter_Data {
+class GKTPP_Enter_Data extends GKTPP_Table {
 
-     public static function add_url_hint() {
+     protected static function add_url_hint() {
 
           if ( ! is_admin() )
                exit();
@@ -46,7 +46,7 @@ class GKTPP_Enter_Data {
 		<?php
 	}
 
-	private static function show_pp_radio_options() {
+	protected static function show_pp_radio_options() {
 		$hint_type = '';
 		?>
 		<tr>
@@ -120,7 +120,7 @@ class GKTPP_Enter_Data {
 		<?php
 	}
 
-	private static function show_posts_and_pages_dropdown() {
+	protected static function show_posts_and_pages_dropdown() {
 		$all_pages_and_posts = '';
 		?>
 		<tr>
@@ -187,7 +187,7 @@ class GKTPP_Enter_Data {
 		<?php
 	}
 
-     public static function get_preconnect_status() {
+     protected static function get_preconnect_status() {
           if ( ! is_admin() )
                exit;
 
@@ -223,4 +223,13 @@ class GKTPP_Enter_Data {
                <?php
           }
      }
+
+     protected static function show_url_tip() {
+          ?>
+          <p><?php _e('Tip: test your website on <a href="https://www.webpagetest.org">WebPageTest.org</a> to know which resource hints and URLs to insert.', 'gktpp'); ?></p>
+          <?php
+
+     }
+
+
 }

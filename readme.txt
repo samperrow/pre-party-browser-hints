@@ -8,20 +8,26 @@ Stable tag: 4.4.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Take advantage of the latest W3C resource hints for browsers to improve page load time.
+Take advantage of the latest W3C browser implementations of DNS-prefetch, prerender, preconnect, prefetch, and preload to improve page load time.
 
 == Description ==
 
-This plugin allows users to easily embed resource hints from domain names and URL's from external sources on selected pages to improve page load time. DNS prefetch, prerender, preconnect, prefetch, and preload are all supported.
+This plugin allows users to easily embed resource hints from domain names and URL's from external sources on selected pages to improve page load time. DNS prefetch, prerender, preconnect, prefetch, and preload are all supported. By default, preconnect hints will automatically be enabled for all pages and posts.
 
 == Installation ==
 
-1. Upload the entire `pre-party` folder to the `/wp-content/plugins/` directory.
+1. Upload the entire `pre-party-browser-hints` folder to the `/wp-content/plugins/` directory.
 2. Activate the plugin through the 'Plugins' menu in WordPress.
 
 == Frequently Asked Questions ==
 
 FAQ
+
+How can I tell which URL's to enter?
+Go to https://www.webpagetest.org, enter your website's URL, and click on the "waterfall" chart that appears.
+a) For all resources that are loaded from external websites or domain names, I recommend inserting a preconnect link for that domain name (Preconnect does more than DNS Prefetch).
+b) If you have a very popular link on your site that you are confident a user would navigate towards, I recommend inserting a link for that URL with the "prerender" option set.
+c) Prefetch and preload work similarly, which allows single resources to be loaded before they are requested by the user. Use this for loading images, videos, JavaScript files, etc, on different pages.
 
 DNS Prefetch:
 
@@ -45,6 +51,11 @@ Preload:
 
 Insert an absolute URL for a CSS, JavaScript, image, etc, that is hosted on an external domain, select the option "Preload", and select the page/post you would like to use the hint on.
 
+== Screenshots ==
+
+1. screenshot-1.jpg
+2. screenshot-2.jpg
+3. screenshot-3.jpg
 
 
 
@@ -58,8 +69,14 @@ Insert an absolute URL for a CSS, JavaScript, image, etc, that is hosted on an e
 
 == Changelog ==
 
-1. Most recent update: November 4, 2016.
-2. Version 1.0.1
+1. Most recent update: November 11, 2016.
+2. Version 1.0.2
+
+Nov 11: 1) added plugin icon and banner image. 2) added tip info
+
+Nov 6: 1) updated screenshot image on wp plugin page.
+
+Nov 6: 1) a) added screenshot images on plugin page. b) removed 'console.log' in the front end JS file.
 
 Nov 4: 1) Fixed some images that were not loading properly.
 
