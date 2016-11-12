@@ -30,7 +30,7 @@ function gktppFindExtDomains() {
 				a.push(arr[i]);
 		return a;
 	}
-	
+
      function findScriptSources() {
           var scripts = combineAndVerifySources(document.getElementsByTagName("script"));
           var styles = combineAndVerifySources(document.getElementsByTagName("link"));
@@ -40,7 +40,6 @@ function gktppFindExtDomains() {
 
      var sendAjax = function() {
           var domains = findScriptSources();
-		  console.log( domains );
 
      	var data2 = {
                action: 'gktpp_post_domain_names',
