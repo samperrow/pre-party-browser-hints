@@ -6,11 +6,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class GKTPP_Send_Entered_Hints {
 
+	private $str = '';
+
 	public function __construct() {
-		add_action( 'wp_head', array( $this, 'gktpp_print_hint_info_selected_pages' ), 1, 0 );
+		add_action( 'wp_head', array( $this, 'send_resource_hints' ), 1, 0 );
 	}
 
-	public function gktpp_print_hint_info_selected_pages() {
+	public function send_resource_hints() {
 
 		global $wpdb;
 		$table = $wpdb->prefix . 'gktpp_table';
@@ -22,43 +24,49 @@ class GKTPP_Send_Entered_Hints {
 			return;
 		}
 
-		foreach ( $result as $key => $value ) {
+		if ( get_option( 'gktpp_header_option' ) === 'Send in head' ) {
 
-			if ( ( 'Enabled' === $result[ $key ]['status'] ) ) {
+			foreach ( $result as $key => $value ) {
+				if ( ( 'Enabled' === $result[ $key ]['status'] ) ) {
 
-				$hint_url = $result[ $key ]['url'];
-				$hint_type = strtolower( $result[ $key ]['hint_type'] );
-				$current_id = get_the_ID();
+					$hint_url = $result[ $key ]['url'];
+					$hint_type = strtolower( $result[ $key ]['hint_type'] );
 
-				$requested_page_ids = json_decode( sanitize_text_field( $result[ $key ]['pageOrPostID'] ) );
-				$compared_array = array_intersect( $requested_page_ids, self::gktpp_get_page_post_ids() );	// compare $requestedPageIDs array with $pagePostIdArray array and return all matching values into a new array
-
-				foreach ( $compared_array as $key ) {
-					if ( ( $current_id ) && ( $key == $current_id ) ) {
-
-						if ( ! preg_match( '/(http|https)/i', $hint_url ) ) {	// if the supplied URL does not have HTTP or HTTPS given, add a '//' to not confuse the browser
-							$hint_url = '//' . $hint_url;
-						}
-
-						$crossorigin = ( ( 'preconnect' === $hint_type ) && ( 'fonts.googleapis.com' === $hint_url ) ) ? ' crossorigin' : '';
-
-						printf( '<link rel="%1$s" href="%2$s"%3$s>', $hint_type, $hint_url, $crossorigin );
+					// if the supplied URL does not have HTTP or HTTPS given, add a '//' to not confuse the browser
+					if ( ! preg_match( '/(http|https)/i', $hint_url ) ) {
+						$hint_url = '//' . $hint_url;
 					}
+
+					$crossorigin = ( ( 'preconnect' === $hint_type ) && ( 'https://fonts.googleapis.com' === $hint_url ) ) ? ' crossorigin' : '';
+
+					printf( "<link href='$hint_url' rel='$hint_type'$crossorigin>", $hint_type, $hint_url, $crossorigin );
+
 				}
 			}
+		} else {
+			$lt = '<';
+			$gt = '>';
+
+			foreach ( $result as $key => $value ) {
+				if ( ( 'Enabled' === $result[ $key ]['status'] ) ) {
+
+					$hint_url = $result[ $key ]['url'];
+					$hint_type = strtolower( $result[ $key ]['hint_type'] );
+
+					if ( ! preg_match( '/(http|https)/i', $hint_url ) ) {
+						$hint_url = '//' . $hint_url;
+					}
+
+					$this->str .=  $lt . $hint_url . $gt . ';' . ' rel="' . $hint_type . '",';
+				}
+			}
+			return rtrim( $this->str, ',');
 		}
+
+
 	}
-
-	public function gktpp_get_page_post_ids() {
-		$pages_and_posts = array_merge( get_pages(), get_posts() );
-		$page_post_id_array = array();
-
-		foreach ( $pages_and_posts as $key => $value ) {
-			$page_post_id_array[] = $value->ID;
-		}
-		return $page_post_id_array;
-	}
-
 }
-
-$asdf = new GKTPP_Send_Entered_Hints();
+$send_hints = new GKTPP_Send_Entered_Hints();
+if ( get_option( 'gktpp_header_option' ) === 'HTTP Header' ) {
+	header('Link:' . $send_hints->send_resource_hints() );
+}

@@ -13,30 +13,28 @@ class GKTPP_Enter_Data extends GKTPP_Table {
 
 			<thead>
                     <tr>
-					<th colspan="5"><h1 style="text-align: center;"><?php esc_html_e( 'Add New Resource Hint', 'gktpp' ); ?></h1></th>
+					<th colspan="5"><h2 style="text-align: center;"><?php esc_html_e( 'Add New Resource Hint', 'gktpp' ); ?></h2></th>
 				</tr>
 			</thead>
 
 			<tbody>
 
 				<tr>
-					<td colspan="1">URL:</td>
+					<td style="text-align: right;" colspan="1"><?php esc_html_e( 'URL:', 'gktpp' ); ?></td>
 					<td colspan="4">
 						<label for="url">
-							<input placeholder="<?php esc_attr_e( 'Enter valid URL...', 'gktpp' ); ?>" id="gktpp-url-input" class="widefat" name="url" />
+							<input placeholder="<?php esc_attr_e( 'Enter valid domain or URL...', 'gktpp' ); ?>" id="gktpp-url-input" class="widefat" name="url" />
 						</label>
 					</td>
 				</tr>
 
 				<?php self::show_pp_radio_options(); ?>
 
-				<?php self::show_posts_and_pages_dropdown(); ?>
-
 			</tbody>
 
 			<tfoot>
                     <tr>
-					<th colspan="5" style="text-align: center;">
+					<th colspan="5" style="text-align: center; padding: 20px 0;">
 						<input type="submit" name="gktpp-settings-submit" class="button button-primary" value="<?php esc_attr_e( 'Insert Resource Hint', 'gktpp' ); ?>" />
 					</th>
 				</tr>
@@ -120,73 +118,6 @@ class GKTPP_Enter_Data extends GKTPP_Table {
 		<?php
 	}
 
-	protected static function show_posts_and_pages_dropdown() {
-		$all_pages_and_posts = '';
-		?>
-		<tr>
-			<td colspan="5">
-				<label for="allPagesAndPosts">
-					<?php esc_html_e( 'Insert into all pages and posts?', 'gktpp' ); ?>
-					<input id="allPagesPostsCheck" name="allPagesAndPosts" type="checkbox" />
-				</label>
-			</td>
-		</tr>
-
-		<tr>
-			<td colspan="2">
-				<dl class="dropdown" style="margin-left: 50px;">
-					<dt class="gktppDropdown"><?php esc_html_e( 'Select Page', 'gktpp' ); ?></dt>
-					<dd>
-						<div class="multiSelect">
-							<ul>
-								<li><input type="checkbox" class="gktppCheckAll" name="allPages"><?php esc_html_e( 'All Pages', 'gktpp' ); ?></li>
-								<?php
-								$pages = get_pages();
-
-								foreach ( $pages as $page ) {
-									$option = '<li>';
-									$option .= '<input name="gktpp_pages[]" class="gktppVisibleCBs" type="checkbox" value="' . esc_attr( $page->ID ) . '">';
-									$option .= '<input name="gktpp_post_titles[]" class="gktppHiddenCB" type="checkbox" value="' . esc_attr( $page->post_title ) . '">';
-									$option .= esc_html( $page->post_title );
-									$option .= '</li>';
-									echo $option;
-								}
-								?>
-						 	</ul>
-						</div>
-					</dd>
-				</dl>
-			</td>
-
-			<td colspan="3">
-				<dl class="dropdown" style="float: right; margin-right: 50px;">
-					<dt class="gktppDropdown"><?php esc_html_e( 'Select Post', 'gktpp' ); ?></dt>
-					<dd>
-						<div class="multiSelect">
-							<ul>
-								<li><input type="checkbox" class="gktppCheckAll" name="allPosts"><?php esc_html_e( 'All Posts', 'gktpp' ); ?></li>
-								<?php
-									$posts = get_posts();
-
-								foreach ( $posts as $post ) {
-									$option = '<li>';
-									$option .= '<input name="gktpp_pages[]" class="gktppVisibleCBs" type="checkbox" value="' . $post->ID . '">';
-									$option .= '<input name="gktpp_post_titles[]" class="gktppHiddenCB" type="checkbox" value="' . $post->post_title . '">';
-									$option .= esc_html( $post->post_title );
-									$option .= '</li>';
-									echo $option;
-								}
-								?>
-						 	</ul>
-						</div>
-					</dd>
-				</dl>
-			</td>
-		</tr>
-
-		<?php
-	}
-
      protected static function get_preconnect_status() {
           if ( ! is_admin() )
                exit;
@@ -195,27 +126,103 @@ class GKTPP_Enter_Data extends GKTPP_Table {
           if ( ('admin.php' === $pagenow) && ( $_GET['page'] === 'gktpp-plugin-settings' ) ) {
 
                add_option( 'gktpp_preconnect_status', 'Yes', '', 'yes' );
-               if ( isset( $_POST['gktpp-set-preconnect'] ) ) {
+               if ( isset( $_POST['gktpp-save-preconnect'] ) ) {
                     update_option( 'gktpp_preconnect_status', $_POST['gktpp-preconnect-option'], 'no' );
                }
+
+               add_option( 'gktpp_reset_preconnect', 'notset', '', 'yes' );
+               if ( isset( $_POST['gktpp-reset-preconnect'] ) ) {
+                    update_option( 'gktpp_reset_preconnect', 'notset', 'yes' );
+               }
           ?>
-               <form method="post" action='<?php admin_url( "admin.php?page=gktpp-plugin-settings&_wpnonce=" );?>'>
+               <form style="margin: 50px 0;" method="post" action='<?php admin_url( "admin.php?page=gktpp-plugin-settings&_wpnonce=" );?>'>
                     <?php $preconnect_status = get_option( 'gktpp_preconnect_status' ); ?>
 
-                    <table id="gktpp-prec-option" class="gktpp-input-table fixed widefat striped" style="margin-top: 100px;">
-                         <thead></thead>
-                         <tbody>
+                    <table id="gktpp-prec-option" class="gktpp-input-table fixed widefat striped">
+                         <thead>
                               <tr>
-                                   <td style=""><span class="gktpp-help-tip-hint"></span>Automatically Configure Preconnect Hints?
-                                        <p id="gktpp-prec-tip" class='gktpp-help-tip-box' style="margin-top: -105px;"><span><?php esc_html_e( 'JavaScript, CSS, and images loaded from external domains will automatically be preconnected. To update a page, just save that page in the admin panel.', 'gktpp' ); ?></span>
+                                   <td style='width: 100%;'>
+                                        <h3 class="gktpp-help-tip-hint" style="text-align: center;"><?php esc_html_e( 'Automatically Set Preconnect Hints?', 'gktpp' ); ?></h3>
+                                        <p id="gktpp-prec-tip" class='gktpp-help-tip-box'>
+                                             <span><?php esc_html_e( 'JavaScript, CSS, and images loaded from external domains will automatically be preconnected. To update a page, just save that page in the admin panel.', 'gktpp' ); ?></span>
                                         </p>
-                                        <select name="gktpp-preconnect-option">
-                                             <option value="<?php echo esc_attr( 'Yes', 'gktpp' ); ?>" <?php if ( 'Yes' === $preconnect_status ) echo 'selected="selected"'; ?>>Yes</option>
-                                             <option value="<?php echo esc_attr( 'No', 'gktpp' ); ?>" <?php if ( 'No' === $preconnect_status ) echo 'selected="selected"'; ?>>No</option>
-                                        </select>
-                                        <input type="submit" name="gktpp-set-preconnect" class="button-secondary" value="<?php esc_attr_e( 'Save', 'gktpp' ); ?>" />
                                    </td>
                               </tr>
+                         </thead>
+                         <tbody>
+                              <tr>
+                                   <td style="text-align: center;">
+                                        <select name="gktpp-preconnect-option">
+                                             <option value="<?php echo esc_attr( 'Yes', 'gktpp' ); ?>" <?php if ( 'Yes' === $preconnect_status ) echo 'selected="selected"'; ?>><?php esc_html_e( 'Yes', 'gktpp' ); ?></option>
+                                             <option value="<?php echo esc_attr( 'No', 'gktpp' ); ?>" <?php if ( 'No' === $preconnect_status ) echo 'selected="selected"'; ?>><?php esc_html_e( 'No', 'gktpp' ); ?></option>
+                                        </select>
+
+                                   </td>
+                              </tr>
+
+                              <tr>
+                                   <td>
+                                        <input style="margin: 0 25px;" type="submit" name="gktpp-save-preconnect" class="button-primary" value="<?php esc_attr_e( 'Save', 'gktpp' ); ?>" />
+
+                                        <input type="submit" name="gktpp-reset-preconnect" class="button-secondary" value="<?php esc_attr_e( 'Reset Links', 'gktpp' ); ?>" />
+                                   </td>
+
+
+                              </tr>
+                         </tbody>
+                         <tfoot></tfoot>
+                    </table>
+               </form>
+               <?php
+               }
+          }
+
+
+     protected static function send_as_header_or_head() {
+          if ( ! is_admin() )
+               exit;
+
+          global $pagenow;
+          if ( ('admin.php' === $pagenow) && ( $_GET['page'] === 'gktpp-plugin-settings' ) ) {
+
+               add_option( 'gktpp_header_option', 'HTTP Header', '', 'yes' );
+               if ( isset( $_POST['gktpp-save-header-option'] ) ) {
+                    update_option( 'gktpp_header_option', $_POST['gktpp-header-option'], 'no' );
+               }
+          ?>
+               <form style="margin: 50px 0;" method="post" action='<?php admin_url( "admin.php?page=gktpp-plugin-settings&_wpnonce=" );?>'>
+
+                    <?php $header_option = get_option( 'gktpp_header_option' ); ?>
+
+                    <table class="gktpp-input-table fixed widefat striped">
+                         <thead>
+                              <tr>
+                                   <td style='width: 100%;'>
+                                        <h3 class="gktpp-help-tip-hint" style="text-align: center;"><?php esc_html_e( 'Send Resource Links in the Header or head?', 'gktpp' ); ?></h3>
+                                        <p id="" class='gktpp-help-tip-box'>
+                                             <span><?php esc_html_e( '', 'gktpp' ); ?></span>
+                                        </p>
+                                   </td>
+                              </tr>
+                         </thead>
+                         <tbody>
+                              <tr>
+                                   <td style="text-align: center;">
+
+                                        <select name="gktpp-header-option">
+                                             <option value="<?php echo esc_attr( 'HTTP Header', 'gktpp' ); ?>"<?php if ( 'HTTP Header' === $header_option ) echo 'selected="selected"'; ?>><?php esc_html_e( 'HTTP Header', 'gktpp' ); ?></option>
+                                             <option value="<?php echo esc_attr( 'Send in head', 'gktpp' ); ?>"<?php if ( 'Send in head' === $header_option ) echo 'selected="selected"'; ?>><?php esc_html_e( 'Send in head', 'gktpp' ); ?></option>
+                                        </select>
+
+                                   </td>
+                              </tr>
+
+                              <tr>
+                                   <td>
+                                        <input style="margin: 0 25px;" type="submit" name="gktpp-save-header-option" class="button-primary" value="<?php esc_attr_e( 'Save', 'gktpp' ); ?>" />
+                                   </td>
+                              </tr>
+
                          </tbody>
                          <tfoot></tfoot>
                     </table>
@@ -223,13 +230,4 @@ class GKTPP_Enter_Data extends GKTPP_Table {
                <?php
           }
      }
-
-     protected static function show_url_tip() {
-          ?>
-          <p><?php _e('Tip: test your website on <a href="https://www.webpagetest.org">WebPageTest.org</a> to know which resource hints and URLs to insert.', 'gktpp'); ?></p>
-          <?php
-
-     }
-
-
 }

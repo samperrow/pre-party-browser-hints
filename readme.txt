@@ -3,7 +3,7 @@ Contributors: Sam Perrow
 Donate link: https://www.paypal.com/us/cgi-bin/webscr?cmd=_flow&SESSION=PMdwpV-0mzP8aloKEF8VGrQ6uiNwwXP7vzkFyjm_p9X7NqGMgkF1lYzxN7G&dispatch=5885d80a13c0db1f8e263663d3faee8dcce3e160f5b9538489e17951d2c62172
 Tags: W3C, DNS prefetch, prerender, preconnect, prefetch, preload, web perf, performance, speed, resource hints
 Requires at least: 4.0
-Tested up to: 4.6.1
+Tested up to: 4.8
 Stable tag: 4.4.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -54,14 +54,12 @@ Insert an absolute URL for a CSS, JavaScript, image, etc, that is hosted on an e
 == Screenshots ==
 
 1. screenshot-1.jpg
-2. screenshot-2.jpg
-3. screenshot-3.jpg
 
 
 
 
 1. [Support Forum](https://wordpress.org/support/plugin/pre-party-browser-hints)
-2. Send me an email at info@grakkitseo.com
+2. Send me an email at sam.perrow399@gmail.com
 
 
 
@@ -69,8 +67,14 @@ Insert an absolute URL for a CSS, JavaScript, image, etc, that is hosted on an e
 
 == Changelog ==
 
-1. Most recent update: November 11, 2016.
-2. Version 1.0.2
+1. Most recent update: June 11, 2017.
+2. Version 1.0.6
+
+June 11: 1) tested compat with wp 4.8
+
+Mar 27: 1) changed db table schema which caused problems for sites with lots of posts.
+
+Dec 9: 1) Ensured compatibility with WP v 4.7
 
 Nov 11: 1) added plugin icon and banner image. 2) added tip info
 

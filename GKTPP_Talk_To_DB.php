@@ -14,11 +14,10 @@ class GKTPP_Talk_To_DB {
 
 		$sql = "CREATE TABLE IF NOT EXISTS $table (
               id mediumint(9) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-              url TEXT NOT NULL,
+              url text NOT NULL,
               hint_type VARCHAR(55) NOT NULL,
               status VARCHAR(55) NOT NULL DEFAULT 'Enabled',
-              pageOrPostTitle VARCHAR(55) NOT NULL,
-              pageOrPostID VARCHAR(55) NOT NULL,
+		    ajax_domain TINYINT(1) NOT NULL DEFAULT 0,
               UNIQUE KEY id (`id`)
 	    ) $charset_collate";
 
@@ -29,18 +28,14 @@ class GKTPP_Talk_To_DB {
 	    dbDelta( $sql, true );
 	}
 
-
 	public static function insert_data_to_db() {
 	    global $wpdb;
 
 		$table = $wpdb->prefix . 'gktpp_table';
 		$url = isset( $_POST['url'] ) ? self::validate_DNS_prefetch_url() : '';
 		$hint_type = isset( $_POST['hint_type'] ) ? stripslashes( $_POST['hint_type'] ) : '';
-		$pageOrPostTitle = isset( $_POST['gktpp_post_titles'] ) ? GKTPP_Table::find_pagePost_Names() : '';
-		$pageOrPostID = isset( $_POST['gktpp_pages'] ) ? GKTPP_Table::collect_page_url_IDs() : '';
 
-	     $sql = $wpdb->prepare( "INSERT INTO %1s ( url, hint_type, pageOrPostTitle, pageOrPostID ) VALUES ( '%s', '%s', '%s', '%s' )", $table, $url, $hint_type, $pageOrPostTitle, $pageOrPostID );
-
+	     $sql = $wpdb->prepare( "INSERT INTO %1s ( url, hint_type ) VALUES ( '%s', '%s' )", $table, $url, $hint_type );
 		$wpdb->query( $sql );
      }
 
@@ -98,23 +93,22 @@ class GKTPP_Talk_To_DB {
 
 	}
 
-	public static function create_ajax_table() {
-	     global $wpdb;
-
-	     $table = $wpdb->prefix . 'gktpp_ajax_domains';
-	     $charset_collate = $wpdb->get_charset_collate();
-
-	     $sql = "CREATE TABLE IF NOT EXISTS $table (
-			id MEDIUMINT(9) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-			pageOrPostID SMALLINT(4) NOT NULL,
-			domain TEXT NOT NULL,
-			UNIQUE KEY id (`id`)
-	     ) $charset_collate";
-
-		if ( ! function_exists( 'dbDelta' ) ) {
-			require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
-		}
-
-	     dbDelta( $sql, true );
-	}
+	// public static function create_ajax_table() {
+	//      global $wpdb;
+	//
+	//      $table = $wpdb->prefix . 'gktpp_ajax_domains';
+	//      $charset_collate = $wpdb->get_charset_collate();
+	//
+	//      $sql = "CREATE TABLE IF NOT EXISTS $table (
+	// 		id MEDIUMINT(9) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	// 		domain TEXT NOT NULL,
+	// 		UNIQUE KEY id (`id`)
+	//      ) $charset_collate";
+	//
+	// 	if ( ! function_exists( 'dbDelta' ) ) {
+	// 		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+	// 	}
+	//
+	//      dbDelta( $sql, true );
+	// }
 }

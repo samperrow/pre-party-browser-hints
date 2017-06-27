@@ -1,15 +1,15 @@
 <?php
 /**
  * Plugin Name: Pre * Party Resource Hints
- * Plugin URI: https://grakkitseo.com/
- * Description: Take advantage of the latest W3C browser implementations of DNS-prefetch, prerender, preconnect, prefetch, and preload to improve page load time.
- * Version: 1.0.2
+ * Plugin URI: https://www.linkedin.com/in/sam-perrow-53782b10b?trk=hp-identity-name
+ * Description: Take advantage of W3C browser resource hints to improve page load time, automatically and manually.
+ * Version: 1.0.6
  * Author: Sam Perrow
- * Author URI: https://grakkitseo.com/
+ * Author URI: https://www.linkedin.com/in/sam-perrow-53782b10b?trk=hp-identity-name
  * License: GPL2
- * last edited November 11, 2016
+ * last edited June 11, 2017
  *
- * Copyright 2016  Sam Perrow  (email : info@grakkitseo.com)
+ * Copyright 2016  Sam Perrow  (email : sam.perrow399@gmail.com)
  *
  *    This program is free software; you can redistribute it and/or modify
  *    it under the terms of the GNU General Public License as published by
@@ -45,13 +45,12 @@ require_once GKT_PREP_PLUGIN_DIR . '/class-GKTPP_Ajax.php';
 add_action( 'admin_menu', 'gktpp_reg_admin_stuff' );
 
 function gktpp_reg_admin_stuff() {
+	wp_register_script( 'gktpp_admin_js', plugin_dir_url( __FILE__ ) . 'js/admin.js' );
 	wp_register_style( 'gktpp-styles-css', plugin_dir_url( __FILE__ ) . 'css/styles.css' );
-	wp_register_script( 'gktpp-admin-js', plugin_dir_url( __FILE__ ) . 'js/admin.js', array( 'jquery' ), '1.0', true );
 
+	wp_enqueue_script( 'gktpp_admin_js' );
 	wp_enqueue_style( 'gktpp-styles-css' );
-	wp_enqueue_script( 'gktpp-admin-js' );
 }
 
-
 register_activation_hook( __FILE__, array( 'GKTPP_Talk_To_DB', 'install_db_table' ) );
-register_activation_hook( __FILE__, array( 'GKTPP_Talk_To_DB', 'create_ajax_table' ) );
+// register_activation_hook( __FILE__, array( 'GKTPP_Talk_To_DB', 'create_ajax_table' ) );

@@ -30,7 +30,7 @@ class GKTPP_Options {
 		if ( isset( $_POST['gktpp-settings-submit'] ) ) {
 			check_admin_referer( 'gkt_preP-settings-page' );
 
-			if ( ( '' !== $_POST['url'] ) && ( isset( $_POST['hint_type'] ) ) && ( isset( $_POST['gktpp_post_titles'] ) ) ) {
+			if ( ( '' !== $_POST['url'] ) && ( isset( $_POST['hint_type'] ) ) ) {
 				GKTPP_Talk_To_DB::insert_data_to_db();
 				$url_parameters = isset( $_GET['tab'] ) ? 'updated=true&tab=' . $_GET['tab'] : 'updated=true';
 				wp_safe_redirect( admin_url( 'admin.php?page=gktpp-plugin-settings&' . $url_parameters ) );

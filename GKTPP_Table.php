@@ -57,7 +57,7 @@ class GKTPP_Table extends GKTPP_WP_List_Table {
 	          'someURL'   		=> __( 'URL', 'gktpp' ),
 	          'hint_type' 		=> __( 'Hint Type', 'gktpp' ),
 			'status'    		=> __( 'Status', 'gktpp' ),
-			'pageOrPostTitle'   => __( 'Page/Post Title', 'gktpp' ),
+			// 'pageOrPostTitle'   => __( 'Page/Post Title', 'gktpp' ),
 			'author'    		=> __( 'Author', 'gktpp' ),
 	     );
 
@@ -119,9 +119,6 @@ class GKTPP_Table extends GKTPP_WP_List_Table {
 
 			case 'status':
 				return $item['status'];
-
-			case 'pageOrPostTitle':
-				return $item['pageOrPostTitle'];
 
 			case 'author':
 				return wp_get_current_user()->display_name;
@@ -188,6 +185,12 @@ class GKTPP_Table extends GKTPP_WP_List_Table {
 		</form>
 		<?php
 		GKTPP_Enter_Data::get_preconnect_status();
+
+		GKTPP_Enter_Data::send_as_header_or_head();
+
+		 $text = sprintf( __( 'Tip: test your website on <a href="%s">WebPageTest.org</a> to know which resource hints and URLs to insert.' ), __( 'https://www.webpagetest.org' ) );
+		 echo $text;
+
 	}
 
 	public function get_bulk_actions() {
@@ -240,29 +243,10 @@ class GKTPP_Table extends GKTPP_WP_List_Table {
 		return json_encode( $page_id_array );
 	}
 
-	public static function find_pagePost_Names() {
-		if ( isset( $_POST['allPagesAndPosts'] ) ) {
-			return 'All Pages and Posts';
-		} elseif ( isset( $_POST['allPages'] ) ) {
-			return 'All Pages';
-		} elseif ( isset( $_POST['allPosts'] ) ) {
-			return 'All Posts';
-		}
-
-		$page_and_post_title_string = '';
-		foreach ( $_POST['gktpp_post_titles'] as $key => $value ) {
-			$page_and_post_title_string .= $value . ', ';
-		}
-
-		$strlen = strlen( $page_and_post_title_string ) - 2;
-
-		return stripslashes( substr( $page_and_post_title_string, 0, $strlen ) );		// remove the last comma and whitespace
-	}
-
 	private function insert_url_fail() {
 		?>
 		<div class="inline notice notice-error is-dismissible">
-			<p><?php esc_html_e( 'Please enter a valid URL, resource hint type, and page location.', 'gktpp' ); ?></p>
+			<p><?php esc_html_e( 'Please enter a valid URL and resource hint type.', 'gktpp' ); ?></p>
 		</div>
 		<?php
 	}
