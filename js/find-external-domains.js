@@ -40,7 +40,6 @@ function gktppFindExtDomains() {
           var images = combineAndVerifySources(document.getElementsByTagName("img"));
           return uniqueDomains(scripts.concat( images, styles ) );
      }
-     console.log('hi')
 
      var sendAjax = function() {
           var domains = findScriptSources();
