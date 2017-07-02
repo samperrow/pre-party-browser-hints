@@ -49,6 +49,13 @@ function gktppFindExtDomains() {
                data : domains,
           };
           jQuery.post(ajax_object.ajax_url, data2 );
+
+          // var xhr = new XMLHttpRequest();
+          // xhr.open("POST", ajax_object.ajax_url, true);
+          // xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+          // xhr.send(data2);
+          console.log( data2.data );
+
      }();
 }
-setTimeout( gktppFindExtDomains, 7500);
+setTimeout( gktppFindExtDomains, 5000);

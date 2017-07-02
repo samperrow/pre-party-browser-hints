@@ -34,9 +34,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 define( 'GKT_PREP_PLUGIN', __FILE__ );
 define( 'GKT_PREP_PLUGIN_DIR', untrailingslashit( dirname( GKT_PREP_PLUGIN ) ) );
 
-require_once GKT_PREP_PLUGIN_DIR . '/options.php';
 require_once GKT_PREP_PLUGIN_DIR . '/GKTPP_Talk_To_DB.php';
 require_once GKT_PREP_PLUGIN_DIR . '/GKTPP_Table.php';
+require_once GKT_PREP_PLUGIN_DIR . '/options.php';
 require_once GKT_PREP_PLUGIN_DIR . '/GKTPP_Enter_Data.php';
 require_once GKT_PREP_PLUGIN_DIR . '/class-GKTPP_Send_Entered_Hints.php';
 require_once GKT_PREP_PLUGIN_DIR . '/class-GKTPP_Ajax.php';
@@ -52,5 +52,41 @@ function gktpp_reg_admin_stuff() {
 	wp_enqueue_style( 'gktpp-styles-css' );
 }
 
-register_activation_hook( __FILE__, array( 'GKTPP_Talk_To_DB', 'install_db_table' ) );
-// register_activation_hook( __FILE__, array( 'GKTPP_Talk_To_DB', 'create_ajax_table' ) );
+
+
+
+function install_db_table2() {
+    global $wpdb;
+
+	$table1 = $wpdb->prefix . 'gktpp_table';
+	$charset_collate = $wpdb->get_charset_collate();
+
+	$sql = "CREATE TABLE IF NOT EXISTS $table1 (
+	    id INT(9) NOT NULL AUTO_INCREMENT,
+	    url VARCHAR(75) DEFAULT '' NOT NULL,
+	    hint_type VARCHAR(55) DEFAULT '' NOT NULL,
+	    status VARCHAR(55) DEFAULT 'Enabled' NOT NULL,
+	    ajax_domain TINYINT(1) DEFAULT 0 NOT NULL,
+	    PRIMARY KEY  (id)
+    ) $charset_collate";
+
+    if ( ! function_exists( 'dbDelta' ) ) {
+	    require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+    }
+
+    dbDelta( $sql, true );
+}
+register_activation_hook( __FILE__, 'install_db_table2' );
+
+
+
+
+
+
+
+
+// function tl_save_error() {
+//     update_option( 'plugin_error',  ob_get_contents() );
+// }
+// add_action( 'activated_plugin', 'tl_save_error' );
+// echo get_option( 'plugin_error' );

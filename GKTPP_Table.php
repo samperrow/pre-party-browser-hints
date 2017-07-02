@@ -57,7 +57,6 @@ class GKTPP_Table extends GKTPP_WP_List_Table {
 	          'someURL'   		=> __( 'URL', 'gktpp' ),
 	          'hint_type' 		=> __( 'Hint Type', 'gktpp' ),
 			'status'    		=> __( 'Status', 'gktpp' ),
-			// 'pageOrPostTitle'   => __( 'Page/Post Title', 'gktpp' ),
 			'author'    		=> __( 'Author', 'gktpp' ),
 	     );
 
@@ -184,12 +183,12 @@ class GKTPP_Table extends GKTPP_WP_List_Table {
 			?>
 		</form>
 		<?php
-		GKTPP_Enter_Data::get_preconnect_status();
-
-		GKTPP_Enter_Data::send_as_header_or_head();
+		// GKTPP_Enter_Data::get_preconnect_status();
+		GKTPP_Enter_Data::show_info();
+		// GKTPP_Enter_Data::send_as_header_or_head();
 
 		 $text = sprintf( __( 'Tip: test your website on <a href="%s">WebPageTest.org</a> to know which resource hints and URLs to insert.' ), __( 'https://www.webpagetest.org' ) );
-		 echo $text;
+		//  echo $text;
 
 	}
 

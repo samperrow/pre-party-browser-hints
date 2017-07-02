@@ -8,7 +8,9 @@ function gktpp_uninstall_plugin() {
      global $wpdb;
 
      delete_option( 'gktpp_preconnect_status' );
-     // delete_user_meta( get_current_user_id(), 'gktpp_page_count' );
+     delete_option( 'gktpp_reset_preconnect' );
+     delete_option( 'gktpp_send_in_header' );
+     delete_user_meta( get_current_user_id(), 'gktpp_screen_options' );
 
      $table1 = $wpdb->prefix . 'gktpp_table';
 

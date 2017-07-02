@@ -14,6 +14,8 @@ jQuery(document).ready(function($) {
           }
 
      });
+
+
 });
 
 // open help tip on hover

@@ -7,21 +7,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 class GKTPP_Ajax {
 
 	public function check_or_send_ajax() {
-		// global $wpdb;
-		// $table = $wpdb->prefix . 'gktpp_table';
-		// $sql = $wpdb->prepare( 'SELECT url FROM %1s', array( $table ) );
-		// $sql_check_if_id_set = $wpdb->get_col( $sql, 0 );
 
-		if ( get_option( 'gktpp_preconnect_status' ) === 'Yes' ) {
-
-			if ( get_option( 'gktpp_reset_preconnect' ) === 'notset' ) {
-				add_action( 'wp_footer', array( $this, 'gktpp_add_domain_js' ) );
-				add_action( 'wp_ajax_gktpp_post_domain_names', array( $this, 'gktpp_post_domain_names' ) );
-				add_action( 'wp_ajax_nopriv_gktpp_post_domain_names', array( $this, 'gktpp_post_domain_names' ) );
-
-			} else {
-				add_action( 'wp_head', array( $this, 'send_preconnect_hints' ), 1, 0 );
-			}
+		if ( ( get_option( 'gktpp_preconnect_status' ) === 'Yes' ) && ( get_option( 'gktpp_reset_preconnect' ) === 'notset') ) {
+			add_action( 'wp_footer', array( $this, 'gktpp_add_domain_js' ) );
+			add_action( 'wp_ajax_gktpp_post_domain_names', array( $this, 'gktpp_post_domain_names' ) );
+			add_action( 'wp_ajax_nopriv_gktpp_post_domain_names', array( $this, 'gktpp_post_domain_names' ) );
 		}
 	}
 
@@ -58,32 +48,6 @@ class GKTPP_Ajax {
 			exit();
 		}
 	}
-
-	public function send_preconnect_hints() {
-		global $wpdb;
-		$table = $wpdb->prefix . 'gktpp_table';
-		$sql = $wpdb->prepare( 'SELECT url FROM %1s', $table );
-		$row = $wpdb->get_row( $sql, ARRAY_N, 0 );
-		$domains = json_decode( $row[0] );
-
-		// continue only if the sql row is empty and the ajax call was successful
-		if ( ! empty( $sql ) && is_array( $domains ) ) {
-			foreach ( $domains as $key ) {
-				$crossorigin = ( 'fonts.googleapis.com' === $key ) ? ' crossorigin' : '';
-				echo sprintf( '<link rel="preconnect" href="%1$s"%2$s>', $key, $crossorigin );
-			}
-		}
-	}
-
-	// public function update_ajax_info_on_post_save( $post_id ) {
-	// 	if ( wp_is_post_revision( $post_id ) || ( empty( $post_id ) ) )
-	// 		return;
-	// 	global $wpdb;
-	// 	$table = $wpdb->prefix . 'gktpp_ajax_domains';
-	// 	$sql = $wpdb->prepare( 'DELETE FROM %1s', array( $table ) );
-	// 	$delete_row = $wpdb->query( $sql );
-	// }
-
 }
 
 $check_preconnect = new GKTPP_Ajax();

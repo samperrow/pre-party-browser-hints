@@ -50,11 +50,7 @@ class GKTPP_Options {
 	public function admin_tabs( $current = 'insert-urls' ) {
 		$tabs = array(
 			'insert-urls' => 'Insert URLs',
-			'dnsprefetch' => 'DNS Prefetch',
-			'prefetch'    => 'Prefetch',
-			'prerender'   => 'Prerender',
-			'preconnect'  => 'Preconnect',
-			'preload'     => 'Preload',
+			'info' => 'Information',
 			);
 
 		echo '<h2 class="nav-tab-wrapper">';
@@ -84,24 +80,18 @@ class GKTPP_Options {
 							$callPrepareItems->prepare_items();
 						break;
 
-						case 'dnsprefetch':
+						case 'info':
+							self::resource_hint_nav();
 							self::show_dnsprefetch_info();
-						break;
-
-						case 'prefetch':
 							self::show_prefetch_info();
-						break;
-
-						case 'prerender':
 							self::show_prerender_info();
-						break;
-
-						case 'preconnect':
 							self::show_preconnect_info();
+							self::show_preload_info();
 						break;
 
-						case 'preload':
-							self::show_preload_info();
+						default:
+							$callPrepareItems = new GKTPP_Table();
+							$callPrepareItems->prepare_items();
 						break;
 					}
 				}
@@ -132,8 +122,20 @@ class GKTPP_Options {
 		<?php
 	}
 
+	private function resource_hint_nav() {
+		?>
+		<p><a href="<?php echo '/wp-admin/admin.php?page=gktpp-plugin-settings&tab=info#gktpp-dns-prefetch' ?>">DNS Prefetch</a></p>
+		<p><a href="http://localhost/wp-admin/admin.php?page=gktpp-plugin-settings&tab=info#gktpp-prefetch">Prefetch</a></p>
+		<p><a href="http://localhost/wp-admin/admin.php?page=gktpp-plugin-settings&tab=info#gktpp-prerender">Prerender</a></p>
+		<p><a href="http://localhost/wp-admin/admin.php?page=gktpp-plugin-settings&tab=info#gktpp-preconnect">Preconnect</a></p>
+		<p><a href="http://localhost/wp-admin/admin.php?page=gktpp-plugin-settings&tab=info#gktpp-preload">Preload</a></p>
+
+		<?php
+	}
+
 	private function show_dnsprefetch_info() {
 		?>
+		<span id="gktpp-dns-prefetch" style="display: block; height: 30px;"></span>
 		<h2>DNS Prefetch</h2>
 		<p>DNS Prefetching allows browsers to proactively perform domain name resolution on resources hosted on <b>external domain names</b> which are requested by a website.</p>
 
@@ -166,11 +168,13 @@ class GKTPP_Options {
 			<li><a href="https://developers.google.com/speed/pagespeed/service/PreResolveDns">Google: PreResolve DNS</a></li>
 			<li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Controlling_DNS_prefetching">Firefox: Controlling DNS prefetching</a></li>
 		</ul>
+		<hr>
 		<?php
 	}
 
 	private function show_prefetch_info() {
 		?>
+		<span id="gktpp-prefetch" style="display: block; height: 30px;"></span>
 		<h2>Prefetch</h2>
 
 		<p>Prefetching allows <b>individual resources</b> (such as images, web fonts, CSS, JS files) to be loaded by the browser <b>before they are initiated</b> by the web page, by taking advantage of browser idle time.</p>
@@ -192,11 +196,13 @@ class GKTPP_Options {
 			<li><a href="https://en.wikipedia.org/wiki/Link_prefetching">Wikipedia</a></li>
 			<li><a href="https://www.w3.org/TR/resource-hints/#dfn-prefetch">W3C Resource Hints: Prefetch</a></li>
 		</ul>
+		<hr>
 		<?php
 	}
 
 	private function show_prerender_info() {
 		?>
+		<span id="gktpp-prerender" style="display: block; height: 30px;"></span>
 		<h2>Prerender</h2>
 
 		<p>Prerendering allows <b>entire web pages</b> to be loaded by the browser before any request is made by the user.</p>
@@ -230,11 +236,13 @@ class GKTPP_Options {
 			<li><a href="https://www.w3.org/TR/resource-hints/#dfn-prerender">W3C: Prerender</a></li>
 			<li><a href=""></a></li>
 		</ul>
+		<hr>
 		<?php
 	}
 
 	private function show_preconnect_info() {
 		?>
+		<span id="gktpp-preconnect" style="display: block; height: 30px;"></span>
 		<h2>Preconnect</h2>
 
 		<p>Preconnecting allows the browser to establish a connection to an external domain before the request has been made.</p>
@@ -268,11 +276,13 @@ class GKTPP_Options {
 			<li><a href="https://www.igvita.com/2015/08/17/eliminating-roundtrips-with-preconnect/">Eliminating Roundtrips with Preconnect, by Ilya Grigorik</a></li>
 			<li><a href=""></a></li>
 		</ul>
+		<hr>
 		<?php
 	}
 
 	private function show_preload_info() {
 		?>
+		<span id="gktpp-preload" style="display: block; height: 30px;"></span>
 		<h2>Preload</h2>
 
 		<p>Preloading <b>fetches one resource</b> proactively.
@@ -293,12 +303,10 @@ class GKTPP_Options {
 		<ul>
 			<li><a href="https://www.w3.org/TR/preload/">W3C: Preload</a></li>
 		</ul>
+		<hr>
 		<?php
 	}
 }
 
 if ( is_admin() )
 	$settings_page = new GKTPP_Options();
-
-
-?>
