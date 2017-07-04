@@ -3,7 +3,7 @@
  * Plugin Name: Pre * Party Resource Hints
  * Plugin URI: https://www.linkedin.com/in/sam-perrow-53782b10b?trk=hp-identity-name
  * Description: Take advantage of W3C browser resource hints to improve page load time, automatically and manually.
- * Version: 1.0.7
+ * Version: 1.1
  * Author: Sam Perrow
  * Author URI: https://www.linkedin.com/in/sam-perrow-53782b10b?trk=hp-identity-name
  * License: GPL2
@@ -48,13 +48,15 @@ function gktpp_reg_admin_stuff() {
 	global $pagenow;
 
 	if ( isset( $_GET['page'] ) ) {
-		wp_register_script( 'gktpp_admin_js', plugin_dir_url( __FILE__ ) . 'js/admin.js' );
-		wp_register_style( 'gktpp-styles-css', plugin_dir_url( __FILE__ ) . 'css/styles.css' );
 
-		wp_enqueue_script( 'gktpp_admin_js' );
-		wp_enqueue_style( 'gktpp-styles-css' );
+		if ( $_GET['page'] === 'gktpp-plugin-settings' ) {
+			wp_register_script( 'gktpp_admin_js', plugin_dir_url( __FILE__ ) . 'js/admin.js', null, 1.1, false );
+			wp_register_style( 'gktpp-styles-css', plugin_dir_url( __FILE__ ) . 'css/styles.css', null, 1.1, 'all' );
+
+			wp_enqueue_script( 'gktpp_admin_js' );
+			wp_enqueue_style( 'gktpp-styles-css' );
+		}
 	}
-
 }
 
 register_activation_hook( __FILE__, 'gktpp_install_db_table2' );
@@ -65,9 +67,9 @@ function gktpp_install_db_table2() {
 	$table2 = $wpdb->prefix . 'gktpp_ajax_domains';			// backwards compat
 	$charset_collate = $wpdb->get_charset_collate();
 
-	$wpdb->query( $wpdb->prepare( "DROP TABLE IF EXISTS %s, %s", $table1, $table2 ) );
-
-	$sql = "CREATE TABLE IF NOT EXISTS $table1 (
+	$sql3 = "DROP TABLE IF EXISTS $table1;
+	 	DROP TABLE IF EXISTS $table2;
+		CREATE TABLE IF NOT EXISTS $table1 (
 	    id INT(9) NOT NULL AUTO_INCREMENT,
 	    url VARCHAR(75) DEFAULT '' NOT NULL,
 	    hint_type VARCHAR(55) DEFAULT '' NOT NULL,
@@ -80,7 +82,7 @@ function gktpp_install_db_table2() {
 	    require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
     }
 
-    dbDelta( $sql, true );
+    dbDelta( $sql3, true );
 }
 
 
