@@ -13,7 +13,6 @@ class GKTPP_Send_Entered_Hints {
 	}
 
 	public function send_resource_hints() {
-
 		global $wpdb;
 		$table = $wpdb->prefix . 'gktpp_table';
 		$sql = $wpdb->prepare( 'SELECT * FROM %1s', $table );
@@ -24,15 +23,18 @@ class GKTPP_Send_Entered_Hints {
 		}
 
 		if ( get_option( 'gktpp_send_in_header' ) === 'Send in head' ) {
+			$crossorigin = '';
 
 			foreach ( $result as $key => $value ) {
 				if ( ( 'Enabled' === $result[ $key ]['status'] ) ) {
 					$hint_url = $result[ $key ]['url'];
 					$hint_type = strtolower( $result[ $key ]['hint_type'] );
+
 					// if the supplied URL does not have HTTP or HTTPS given, add a '//' to not confuse the browser
 					if ( ! preg_match( '/(http|https)/i', $hint_url ) ) {
 						$hint_url = '//' . $hint_url;
 					}
+					
 					$crossorigin = ( ( 'preconnect' === $hint_type ) && ( 'https://fonts.googleapis.com' === $hint_url ) ) ? ' crossorigin' : '';
 					printf( "<link href='$hint_url' rel='$hint_type'$crossorigin>", $hint_type, $hint_url, $crossorigin );
 				}

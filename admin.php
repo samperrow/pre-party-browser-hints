@@ -41,25 +41,31 @@ require_once GKT_PREP_PLUGIN_DIR . '/GKTPP_Enter_Data.php';
 require_once GKT_PREP_PLUGIN_DIR . '/class-GKTPP_Send_Entered_Hints.php';
 require_once GKT_PREP_PLUGIN_DIR . '/class-GKTPP_Ajax.php';
 
-// register and call the CSS and JS we need for the dropboxes
+// register and call the CSS and JS we need only on the needed page
 add_action( 'admin_menu', 'gktpp_reg_admin_stuff' );
 
 function gktpp_reg_admin_stuff() {
-	wp_register_script( 'gktpp_admin_js', plugin_dir_url( __FILE__ ) . 'js/admin.js' );
-	wp_register_style( 'gktpp-styles-css', plugin_dir_url( __FILE__ ) . 'css/styles.css' );
+	global $pagenow;
 
-	wp_enqueue_script( 'gktpp_admin_js' );
-	wp_enqueue_style( 'gktpp-styles-css' );
+	if ( isset( $_GET['page'] ) && $_GET['page'] === 'gktpp-plugin-settings' ) {
+		wp_register_script( 'gktpp_admin_js', plugin_dir_url( __FILE__ ) . 'js/admin.js' );
+		wp_register_style( 'gktpp-styles-css', plugin_dir_url( __FILE__ ) . 'css/styles.css' );
+
+		wp_enqueue_script( 'gktpp_admin_js' );
+		wp_enqueue_style( 'gktpp-styles-css' );
+	}
+
 }
 
-
-
-
-function install_db_table2() {
-    global $wpdb;
+register_activation_hook( __FILE__, 'gktpp_install_db_table2' );
+function gktpp_install_db_table2() {
+     global $wpdb;
 
 	$table1 = $wpdb->prefix . 'gktpp_table';
+	$table2 = $wpdb->prefix . 'gktpp_ajax_domains';			// backwards compat
 	$charset_collate = $wpdb->get_charset_collate();
+
+	$wpdb->query( $wpdb->prepare( "DROP TABLE IF EXISTS %s, %s", $table1, $table2 ) );
 
 	$sql = "CREATE TABLE IF NOT EXISTS $table1 (
 	    id INT(9) NOT NULL AUTO_INCREMENT,
@@ -76,17 +82,10 @@ function install_db_table2() {
 
     dbDelta( $sql, true );
 }
-register_activation_hook( __FILE__, 'install_db_table2' );
 
 
-
-
-
-
-
-
-// function tl_save_error() {
-//     update_option( 'plugin_error',  ob_get_contents() );
-// }
-// add_action( 'activated_plugin', 'tl_save_error' );
-// echo get_option( 'plugin_error' );
+function tl_save_error() {
+    update_option( 'plugin_error',  ob_get_contents() );
+}
+add_action( 'activated_plugin', 'tl_save_error' );
+echo get_option( 'plugin_error' );

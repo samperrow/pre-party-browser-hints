@@ -183,12 +183,10 @@ class GKTPP_Table extends GKTPP_WP_List_Table {
 			?>
 		</form>
 		<?php
-		// GKTPP_Enter_Data::get_preconnect_status();
 		GKTPP_Enter_Data::show_info();
-		// GKTPP_Enter_Data::send_as_header_or_head();
 
 		 $text = sprintf( __( 'Tip: test your website on <a href="%s">WebPageTest.org</a> to know which resource hints and URLs to insert.' ), __( 'https://www.webpagetest.org' ) );
-		//  echo $text;
+		 echo $text;
 
 	}
 

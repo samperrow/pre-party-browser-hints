@@ -4,8 +4,17 @@
      margin: 0 auto 30px;
 }
 
-div.gktpp-table.info {
-     padding: 5px 0 25px;
+#gktpp-collapse-btn {
+     padding: 0 0 15px;
+     margin: 1em 0 0;
+}
+
+#gktpp-collapse-btn  button span:before {
+     margin-top: -15px;
+}
+
+#gktpp-collapse-box.hide {
+     display: none;
 }
 
 form.gktpp-form {
@@ -13,16 +22,19 @@ form.gktpp-form {
      padding: 20px 0;
 }
 
-span.toggle-indicator:before {
+span#gktpp-toggle-indicator:before {
      content: "\f142";
      display: inline-block;
      font: 400 20px/1 dashicons;
      speak: none;
      -webkit-font-smoothing: antialiased;
      -moz-osx-font-smoothing: grayscale;
-     text-decoration: none!important;
+     text-decoration: none !important;
 }
 
+span#gktpp-toggle-indicator.active:before {
+     transform: rotate(180deg);
+}
 
 
 table.gktpp-table tbody tr {
@@ -33,9 +45,6 @@ table.gktpp-table tbody tr td {
      text-align: center;
      vertical-align: middle;
 }
-
-
-
 
 .gktpp-admin-pic {
      display: block;
@@ -59,16 +68,29 @@ table.someurls thead tr th {
      max-width: 10% !important;
 }
 
-/*#gktpp-enter-data {
-     width: 750px;
-}*/
-
 .warning {
      background-color: rgba(255,179,179,0.15);
      border: 1px solid #ff9a9a;
 }
 
-.gktpp-help-tip-hint:after {
+.gktpp-hint {
+     text-align: center;
+     display: inline;
+}
+
+button.gktpp-help-tip-hint {
+     background: inherit;
+     border: none;
+     padding: 0;
+}
+
+button.gktpp-help-tip-hint p {
+     max-width: 250px;
+     margin-left: -5px;
+}
+
+button.gktpp-help-tip-hint.before:before,
+button.gktpp-help-tip-hint.after:after {
      position: relative;
      top: 0;
      left: 0;
@@ -86,43 +108,29 @@ table.someurls thead tr th {
      color: #555;
 }
 
-#gktpp-prec-tip {
-     margin-top: -105px;
-     margin-right: 0;
-
-}
-
-#gktpp-prec-tip span:before {
-     border: transparent;
+button.gktpp-help-tip-hint:hover p {
+     display: block;
 }
 
 .gktpp-help-tip-box {
      position: absolute;
      display: none;
-     max-width: 350px;
-     max-height: 150px;
-     margin-left: -58px;
      background-color: #444;
-     z-index: 100;
      border-radius: 4px;
+     -webkit-border-radius: 4px;
+     color: #fff !important;
+     padding: 10px;
+     z-index: 100;
 }
 
-.gktpp-help-tip-box span:before {
-     display: block;
+.gktpp-help-tip-box::before {
      position: absolute;
+     left: 5px;
+     top: -13px;
+     content: " ";
      border-color: transparent transparent #444 transparent;
      border-style: solid;
-     border-width: 6px;
-     content: "";
-     height: 0;
+     border-width: 7px;
      width: 0;
-     left: 1px;
-     top: -10px;
-     z-index: 200;
-}
-
-.gktpp-help-tip-box span {
-     display: block;
-     color: #fff;
-     padding: 8px;
+     height: 0;
 }
