@@ -47,7 +47,7 @@ add_action( 'admin_menu', 'gktpp_reg_admin_stuff' );
 function gktpp_reg_admin_stuff() {
 	global $pagenow;
 
-	if ( isset( $_GET['page'] ) && $_GET['page'] === 'gktpp-plugin-settings' ) {
+	if ( isset( $_GET['page'] ) ) {
 		wp_register_script( 'gktpp_admin_js', plugin_dir_url( __FILE__ ) . 'js/admin.js' );
 		wp_register_style( 'gktpp-styles-css', plugin_dir_url( __FILE__ ) . 'css/styles.css' );
 
