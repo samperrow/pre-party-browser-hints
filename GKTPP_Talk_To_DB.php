@@ -7,6 +7,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 class GKTPP_Talk_To_DB {
 
 	public static function insert_data_to_db() {
+		if ( ! is_admin() ) {
+			exit;
+		}
 	    global $wpdb;
 
 		$table = $wpdb->prefix . 'gktpp_table';

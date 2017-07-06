@@ -67,8 +67,17 @@ Insert an absolute URL for a CSS, JavaScript, image, etc, that is hosted on an e
 
 == Changelog ==
 
-1. Most recent update: June 11, 2017.
-2. Version 1.0.6
+1. Most recent update: July 6, 2017.
+2. Version 1.2
+
+July 6: 1) added ability to choose to add links to the Header or <head>;
+        2) cleaned up UI;
+        3) fixed bugs on find-external-domains.js/ improved functionality;
+        4) removed option to select which pages/posts the links went to- this added bugs and increased unnecessary bugs;
+        5) condensed the info tab links into one;
+        6) modified schema for gktpp_table; and removed the other table;
+        7) improved security;
+
 
 June 11: 1) tested compat with wp 4.8
 

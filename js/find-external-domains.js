@@ -14,7 +14,7 @@ function gktppFindExtDomains() {
 
      function findDomain( url ) {
           var lastSlash = getProtocolAndDomain(url, "/", 3);
-          return url.slice(0, lastSlash );
+          return encodeURI(url.slice(0, lastSlash ));
      }
 
      function combineAndVerifySources( elem ) {
@@ -57,12 +57,6 @@ function gktppFindExtDomains() {
                data : domains,
           };
           jQuery.post(ajax_object.ajax_url, data2 );
-
-          // var xhr = new XMLHttpRequest();
-          // xhr.open("POST", ajax_object.ajax_url, true);
-          // xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
-          // xhr.send(data2);
-          console.log( data2.data );
 
      }();
 }

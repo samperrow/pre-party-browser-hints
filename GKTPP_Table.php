@@ -143,6 +143,9 @@ class GKTPP_Table extends GKTPP_WP_List_Table {
 	}
 
 	public function prepare_items() {
+		if ( ! is_admin() ) {
+			exit;
+		}
 		?>
 		<form method="post" action="<?php admin_url( 'admin.php?page=gktpp-plugin-settings' );?>" style="margin-top: 20px;">
 			<?php
