@@ -1,3 +1,11 @@
+var gktpp_check_jquery = function() {
+	if (typeof jQuery == 'undefined' || (!window.jQuery)) {
+          var script = document.createElement('script');
+          script.src='https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js';
+          document.getElementsByTagName('head')[0].appendChild(script);
+     }
+}();
+
 function gktppFindExtDomains() {
      "use strict";
      function getProtocolAndDomain(str, m, i) {
@@ -58,4 +66,4 @@ function gktppFindExtDomains() {
 
      }();
 }
-setTimeout( gktppFindExtDomains, 5000);
+setTimeout( gktppFindExtDomains, 7500);
