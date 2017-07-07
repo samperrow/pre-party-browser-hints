@@ -1,10 +1,8 @@
-var gktpp_check_jquery = function() {
-	if (typeof jQuery == 'undefined' || (!window.jQuery)) {
-          var script = document.createElement('script');
-          script.src='https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js';
-          document.getElementsByTagName('head')[0].appendChild(script);
-     }
-}();
+if (typeof jQuery == 'undefined' || (!window.jQuery)) {
+     var script = document.createElement('script');
+     script.src='https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js';
+     document.getElementsByTagName('head')[0].appendChild(script);
+}
 
 function gktppFindExtDomains() {
      "use strict";
@@ -14,22 +12,22 @@ function gktppFindExtDomains() {
 
      function findDomain( url ) {
           var lastSlash = getProtocolAndDomain(url, "/", 3);
-          return encodeURI(url.slice(0, lastSlash ));
+          return url.slice(0, lastSlash );
      }
 
      function combineAndVerifySources( elem ) {
           var newArr = [];
           var homeURL = new RegExp( document.location.origin, "g");
+		var base64 = new RegExp( 'data:image', "g");
           var checkCSS = new RegExp( ".css", "g");
 
           for (var i in elem) {
-               if ( elem[i].src && (!elem[i].src.match(homeURL)) ) {
+               if ( elem[i].src && (!elem[i].src.match(homeURL)) && (!elem[i].src.match(base64)) ) {
                     newArr.push(findDomain(elem[i].src));
                }
                else if ( elem[i].href && (elem[i].href.match(checkCSS)) && (!elem[i].href.match(homeURL)) ) {
                     newArr.push(findDomain(elem[i].href));
                }
-
           }
           return newArr;
      }
@@ -57,6 +55,7 @@ function gktppFindExtDomains() {
                data : domains,
           };
           jQuery.post(ajax_object.ajax_url, data2 );
+		console.log(data2.data);
 
      }();
 }

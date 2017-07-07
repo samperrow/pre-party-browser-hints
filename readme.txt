@@ -67,7 +67,7 @@ Insert an absolute URL for a CSS, JavaScript, image, etc, that is hosted on an e
 
 == Changelog ==
 
-1. Most recent update: July 6, 2017.
+1. Most recent update: July 7, 2017.
 2. Version 1.2
 
 July 6: 1) added ability to choose to add links to the Header or <head>;

@@ -7,7 +7,7 @@
  * Author: Sam Perrow
  * Author URI: https://www.linkedin.com/in/sam-perrow-53782b10b?trk=hp-identity-name
  * License: GPL2
- * last edited July 6, 2017
+ * last edited July 7, 2017
  *
  * Copyright 2017  Sam Perrow  (email : sam.perrow399@gmail.com)
  *
@@ -59,19 +59,22 @@ function gktpp_reg_admin_stuff() {
 	}
 }
 
-register_activation_hook( __FILE__, 'gktpp_install_db_table2' );
-function gktpp_install_db_table2() {
+register_activation_hook( __FILE__, 'gktpp_install_db_table' );
+function gktpp_install_db_table() {
+	if ( ! is_admin() ) {
+		exit;
+	}
      global $wpdb;
 
 	$table1 = $wpdb->prefix . 'gktpp_table';
 	$table2 = $wpdb->prefix . 'gktpp_ajax_domains';			// backwards compat
 	$charset_collate = $wpdb->get_charset_collate();
 
-	$sql3 = "DROP TABLE IF EXISTS $table1;
+	$sql = "DROP TABLE IF EXISTS $table1;
 	 	DROP TABLE IF EXISTS $table2;
 		CREATE TABLE IF NOT EXISTS $table1 (
 	    id INT(9) NOT NULL AUTO_INCREMENT,
-	    url VARCHAR(75) DEFAULT '' NOT NULL,
+	    url VARCHAR(150) DEFAULT '' NOT NULL,
 	    hint_type VARCHAR(55) DEFAULT '' NOT NULL,
 	    status VARCHAR(55) DEFAULT 'Enabled' NOT NULL,
 	    ajax_domain TINYINT(1) DEFAULT 0 NOT NULL,
@@ -82,7 +85,7 @@ function gktpp_install_db_table2() {
 	    require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
     }
 
-    dbDelta( $sql3, true );
+    dbDelta( $sql, true );
 }
 
 
