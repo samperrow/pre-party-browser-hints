@@ -202,8 +202,8 @@ class GKTPP_Enter_Data extends GKTPP_Table {
 
                     <div class="gktpp-collapse-box">
                          <form class="gktpp-form contact" method="post" action="">
-                              <textarea value="<?php echo esc_textarea( $_POST['gktpp_text'] ); ?>" placeholder="<?php esc_html_e( 'Help make this plugin better!' ); ?>" type="text" name="gktpp_text"></textarea>
-                              <input value="" class="gktpp-email" placeholder="<?php esc_attr_e( 'Email address:' ); ?>" name="gktpp_email"  />
+                              <textarea placeholder="<?php esc_html_e( 'Help make this plugin better!' ); ?>" type="text" name="gktpp_text"></textarea>
+                              <input class="gktpp-email" placeholder="<?php esc_attr_e( 'Email address:' ); ?>" name="gktpp_email"  />
                               <input type="hidden" name="submitted" value="1">
                               <input name="gktpp_send_email" type="submit" class="button-primary" value="<?php esc_attr_e( 'Submit', 'gktpp' ); ?>" />
                          </form>
