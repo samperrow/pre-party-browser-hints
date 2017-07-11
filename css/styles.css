@@ -4,25 +4,48 @@
      margin: 0 auto 30px;
 }
 
-#gktpp-collapse-btn {
-     padding: 0 0 15px;
-     margin: 1em 0 0;
+.gktpp-collapse-btn:hover {
+     cursor: pointer;
 }
 
-#gktpp-collapse-btn  button span:before {
-     margin-top: -15px;
-}
-
-#gktpp-collapse-box.hide {
+div.gktpp-collapse-box.hide {
      display: none;
 }
 
 form.gktpp-form {
      text-align: center;
-     padding: 20px 0;
+     padding: 0 0 20px;
 }
 
-span#gktpp-toggle-indicator:before {
+form.gktpp-form.contact {
+     display: flex;
+     flex-flow: column nowrap;
+     align-items: center;
+     justify-content: space-between;
+     min-height: 200px;
+}
+
+form.gktpp-form.contact textarea,
+form.gktpp-form.contact input {
+     display: flex;
+}
+
+form.gktpp-form.contact textarea {
+     width: 350px;
+     height: 100px;
+}
+
+form.gktpp-form.contact input.gktpp-email {
+     width: 300px;
+     height: 35px;
+}
+
+button.handlediv {
+     margin-top: -7px !important;
+     margin-right: 7px !important;
+}
+
+span.gktpp-toggle-indicator:before {
      content: "\f142";
      display: inline-block;
      font: 400 20px/1 dashicons;
@@ -32,10 +55,9 @@ span#gktpp-toggle-indicator:before {
      text-decoration: none !important;
 }
 
-span#gktpp-toggle-indicator.active:before {
+span.gktpp-toggle-indicator.active:before {
      transform: rotate(180deg);
 }
-
 
 table.gktpp-table tbody tr {
      padding: 10px 0;
@@ -68,11 +90,7 @@ table.someurls thead tr th {
      max-width: 10% !important;
 }
 
-.warning {
-     background-color: rgba(255,179,179,0.15);
-     border: 1px solid #ff9a9a;
-}
-
+/* Hover hints */
 .gktpp-hint {
      text-align: center;
      display: inline;

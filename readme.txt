@@ -12,7 +12,7 @@ Take advantage of the latest W3C browser implementations of DNS-prefetch, preren
 
 == Description ==
 
-This plugin allows users to easily embed resource hints from domain names and URL's from external sources on selected pages to improve page load time. DNS prefetch, prerender, preconnect, prefetch, and preload are all supported. By default, preconnect hints will automatically be enabled for all pages and posts.
+This plugin allows users to easily embed resource hints from domain names and URL's from external sources to improve page load time. DNS prefetch, prerender, preconnect, prefetch, and preload are all supported. By default, preconnect hints will automatically be enabled for all pages and posts.
 
 == Installation ==
 
@@ -23,37 +23,43 @@ This plugin allows users to easily embed resource hints from domain names and UR
 
 FAQ
 
-How can I tell which URL's to enter?
+How can I determine which URL's to enter?
 Go to https://www.webpagetest.org, enter your website's URL, and click on the "waterfall" chart that appears.
-a) For all resources that are loaded from external websites or domain names, I recommend inserting a preconnect link for that domain name (Preconnect does more than DNS Prefetch).
+a) For all resources that are loaded from external websites or domain names, I recommend inserting a preconnect link for that domain name (Preconnect is more powerful than DNS Prefetch).
 b) If you have a very popular link on your site that you are confident a user would navigate towards, I recommend inserting a link for that URL with the "prerender" option set.
-c) Prefetch and preload work similarly, which allows single resources to be loaded before they are requested by the user. Use this for loading images, videos, JavaScript files, etc, on different pages.
+c) Prefetch and preload work similarly, which allows single resources to be loaded before they are requested by the user. Use this for loading images, videos, JavaScript files, etc.
 
 DNS Prefetch:
 
-For all HTTP requests loaded from external sources on a page web, add the domain name of each on the "Insert URLs" tab, select the option for "DNS Prefetch", and select the page/post you would like to use the hint on.
+For all HTTP requests loaded from external sources on a page web, add the domain name of each in the "Add New Resource Hint" form, select the option for "DNS Prefetch".
 
 Prefetch:
 
-Insert an absolute URL for a CSS, JavaScript, image, etc, that is hosted on an external domain, select the option "Prefetch", and select the page/post you would like to use the hint on.
+Insert an absolute URL for a CSS, JavaScript, image, etc, that is hosted on an external domain, and select the option "Prefetch".
 
 Prerender:
 
-Insert a valid domain name that is a visitor to your website is likely to visit, select the option "Prerender", and select the page/post you would like to use the hint on. The domain you entered will now be loaded by the browser after all requests have been loaded on the page.
+Insert a valid domain name that a visitor to your website is likely to visit, and select the option "Prerender". The domain you entered will now be loaded by the browser after all requests have been loaded on the page.
 
 Preconnect:
 
 If you would like to have preconnect links automatically set, they will automatically do so when you visit the plugin screen. If you would like these removed, just select the option to have these disabled at the bottom of the main plugin screen.
-Insert a valid domain name which you are requesting resources from on a particular page, select the "Preconnect" radio button, and the page/post you would like to use this resource hint.
+Insert a valid domain name which you are requesting resources from, then select the "Preconnect" radio button.
 
 
 Preload:
 
-Insert an absolute URL for a CSS, JavaScript, image, etc, that is hosted on an external domain, select the option "Preload", and select the page/post you would like to use the hint on.
+Insert an absolute URL for a CSS, JavaScript, image, etc, that is hosted on an external domain, select the option "Preload".
 
 == Screenshots ==
 
-1. screenshot-1.jpg
+1. screenshot-1.png
+
+2. screenshot-2.png
+
+3. screenshot-3.png
+
+4. screenshot-4.png
 
 
 
@@ -68,7 +74,7 @@ Insert an absolute URL for a CSS, JavaScript, image, etc, that is hosted on an e
 == Changelog ==
 
 1. Most recent update: July 7, 2017.
-2. Version 1.2
+2. Version 1.2.3
 
 July 6: 1) added ability to choose to add links to the Header or <head>;
         2) cleaned up UI;

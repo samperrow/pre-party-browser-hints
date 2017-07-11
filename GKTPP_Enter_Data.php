@@ -128,13 +128,14 @@ class GKTPP_Enter_Data extends GKTPP_Table {
                ?>
                <div class="gktpp-table info postbox">
 
-                    <h2 id="gktpp-collapse-btn" class="hndle ui-sortable-handle" style="text-align: center;">
+                    <h2 class="gktpp-collapse-btn" class="hndle ui-sortable-handle" style="text-align: center;">
                          <span>Settings</span>
                          <button type="button" class="handlediv" aria-expanded="false">
-                              <span id="gktpp-toggle-indicator" aria-hidden="true"></span>
+                              <span class="gktpp-toggle-indicator" aria-hidden="true"></span>
                          </button>
                     </h2>
-                    <div id="gktpp-collapse-box" class="">
+
+                    <div class="gktpp-collapse-box">
 
                          <form class="gktpp-form" method="post" action='<?php admin_url( "admin.php?page=gktpp-plugin-settings&_wpnonce=" );?>'>
                               <?php $preconnect_status = get_option( 'gktpp_preconnect_status' ); ?>
@@ -175,11 +176,52 @@ class GKTPP_Enter_Data extends GKTPP_Table {
                               </select>
                               <input style="margin: 0 25px;" type="submit" name="gktpp-save-header-option" class="button-primary" value="<?php esc_attr_e( 'Save', 'gktpp' ); ?>" />
                          </form>
-                         
+
                     </div>
 
                </div>
                <?php
+          }
+     }
+
+     protected static function contact_author() {
+          if ( ! is_admin() )
+               exit;
+
+          global $pagenow;
+          if ( ('admin.php' === $pagenow) && ( $_GET['page'] === 'gktpp-plugin-settings' ) ); { ?>
+
+               <div class="gktpp-table info postbox">
+
+                    <h2 class="gktpp-collapse-btn" class="hndle ui-sortable-handle" style="text-align: center;">
+                         <span><?php esc_html_e( 'Request New Feature or Report a Bug:' ); ?></span>
+                         <button type="button" class="handlediv" aria-expanded="false">
+                              <span class="gktpp-toggle-indicator" aria-hidden="true" class=""></span>
+                         </button>
+                    </h2>
+
+                    <div class="gktpp-collapse-box">
+                         <form class="gktpp-form contact" method="post" action="">
+                              <textarea value="<?php echo esc_textarea( $_POST['gktpp_text'] ); ?>" placeholder="<?php esc_html_e( 'Help make this plugin better!' ); ?>" type="text" name="gktpp_text"></textarea>
+                              <input value="" class="gktpp-email" placeholder="<?php esc_attr_e( 'Email address:' ); ?>" name="gktpp_email"  />
+                              <input type="hidden" name="submitted" value="1">
+                              <input name="gktpp_send_email" type="submit" class="button-primary" value="<?php esc_attr_e( 'Submit', 'gktpp' ); ?>" />
+                         </form>
+                    </div>
+               </div>
+
+               <?php
+
+               if ( isset( $_POST['submitted'] ) ) {
+
+                    if ( empty ( $_POST['gktpp_text'] ) || empty( $_POST['gktpp_email'] ) ) {
+                         echo "<script>alert('Please enter a valid message and email address.');</script>";
+                    }
+
+                    elseif ( isset( $_POST['gktpp_send_email'] ) && isset( $_POST['gktpp_email'] ) ) {
+                         wp_mail( 'sam.perrow399@gmail.com', 'Pre Party User Message', 'From: ' . strip_tags($_POST['gktpp_email']) . ' Message: ' . strip_tags( $_POST['gktpp_text'] ) );
+                    }
+               }
           }
      }
 }

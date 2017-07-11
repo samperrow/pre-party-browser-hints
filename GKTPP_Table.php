@@ -147,7 +147,7 @@ class GKTPP_Table extends GKTPP_WP_List_Table {
 			exit;
 		}
 		?>
-		<form method="post" action="<?php admin_url( 'admin.php?page=gktpp-plugin-settings' );?>" style="margin-top: 20px;">
+		<form method="post" action="<?php admin_url( 'admin.php?page=gktpp-plugin-settings&_wpnonce=' );?>" style="margin-top: 20px;">
 			<?php
 			if ( isset( $_GET['updated'] ) ) {
 				$this->update_success();
@@ -187,6 +187,8 @@ class GKTPP_Table extends GKTPP_WP_List_Table {
 		</form>
 		<?php
 		GKTPP_Enter_Data::show_info();
+
+		GKTPP_Enter_Data::contact_author();
 
 		 $text = sprintf( __( 'Tip: test your website on <a href="%s">WebPageTest.org</a> to know which resource hints and URLs to insert.' ), __( 'https://www.webpagetest.org' ) );
 		 echo $text;
@@ -228,19 +230,6 @@ class GKTPP_Table extends GKTPP_WP_List_Table {
 				GKTPP_Options::url_updated( $this->current_action() );
 			}
 		}
-	}
-
-	public static function collect_page_url_IDs() {
-		if ( ! isset( $_POST['gktpp_pages'] ) ) {
-			return;
-		}
-
-		$page_id_array = array();
-		foreach ( $_POST['gktpp_pages'] as $key ) {
-			$page_id_array[] = $key;
-		}
-
-		return json_encode( $page_id_array );
 	}
 
 	private function insert_url_fail() {
