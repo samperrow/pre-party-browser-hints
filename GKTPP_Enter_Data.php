@@ -154,7 +154,7 @@ class GKTPP_Enter_Data extends GKTPP_Table {
                                         <option value="<?php echo esc_attr( 'Yes', 'gktpp' ); ?>" <?php if ( 'Yes' === $preconnect_status ) echo 'selected="selected"'; ?>><?php esc_html_e( 'Yes', 'gktpp' ); ?></option>
                                         <option value="<?php echo esc_attr( 'No', 'gktpp' ); ?>" <?php if ( 'No' === $preconnect_status ) echo 'selected="selected"'; ?>><?php esc_html_e( 'No', 'gktpp' ); ?></option>
                                    </select>
-                                   <input style="margin: 0 25px;" type="submit" name="gktpp-save-preconnect" class="button-primary" value="<?php esc_attr_e( 'Save', 'gktpp' ); ?>" />
+                                   <input style="margin: 0 25px;" type="submit" name="gktpp-save-preconnect" class="button button-primary" value="<?php esc_attr_e( 'Save', 'gktpp' ); ?>" />
                                    <input type="submit" name="gktpp-reset-preconnect" class="button-secondary" value="<?php esc_attr_e( 'Reset Links', 'gktpp' ); ?>" />
                               </div>
                          </form>
@@ -174,7 +174,7 @@ class GKTPP_Enter_Data extends GKTPP_Table {
                                    <option value="<?php echo esc_attr( 'HTTP Header', 'gktpp' ); ?>"<?php if ( 'HTTP Header' === $header_option ) echo 'selected="selected"'; ?>><?php esc_html_e( 'HTTP Header', 'gktpp' ); ?></option>
                                    <option value="<?php echo esc_attr( 'Send in head', 'gktpp' ); ?>"<?php if ( 'Send in head' === $header_option ) echo 'selected="selected"'; ?>><?php esc_html_e( 'Send in <head>', 'gktpp' ); ?></option>
                               </select>
-                              <input style="margin: 0 25px;" type="submit" name="gktpp-save-header-option" class="button-primary" value="<?php esc_attr_e( 'Save', 'gktpp' ); ?>" />
+                              <input style="margin: 0 25px;" type="submit" name="gktpp-save-header-option" class="button button-primary" value="<?php esc_attr_e( 'Save', 'gktpp' ); ?>" />
                          </form>
 
                     </div>
@@ -205,7 +205,7 @@ class GKTPP_Enter_Data extends GKTPP_Table {
                               <textarea placeholder="<?php esc_html_e( 'Help make this plugin better!' ); ?>" type="text" name="gktpp_text"></textarea>
                               <input class="gktpp-email" placeholder="<?php esc_attr_e( 'Email address:' ); ?>" name="gktpp_email"  />
                               <input type="hidden" name="submitted" value="1">
-                              <input name="gktpp_send_email" type="submit" class="button-primary" value="<?php esc_attr_e( 'Submit', 'gktpp' ); ?>" />
+                              <input name="gktpp_send_email" type="submit" class="button button-primary" value="<?php esc_attr_e( 'Submit', 'gktpp' ); ?>" />
                          </form>
                     </div>
                </div>

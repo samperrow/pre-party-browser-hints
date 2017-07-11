@@ -18,16 +18,16 @@ form.gktpp-form {
 }
 
 form.gktpp-form.contact {
-     display: flex;
-     flex-flow: column nowrap;
-     align-items: center;
-     justify-content: space-between;
+     display: block;
+     margin: 0 auto;
      min-height: 200px;
 }
 
 form.gktpp-form.contact textarea,
 form.gktpp-form.contact input {
-     display: flex;
+     display: block;
+     margin: 10px auto;
+     border: 1px solid #ccc;
 }
 
 form.gktpp-form.contact textarea {
