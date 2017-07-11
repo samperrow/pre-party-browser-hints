@@ -1,4 +1,4 @@
-=== Pre * Party Resource Hints ===
+=== Pre* Party Resource Hints ===
 Contributors: Sam Perrow
 Donate link: https://www.paypal.com/us/cgi-bin/webscr?cmd=_flow&SESSION=PMdwpV-0mzP8aloKEF8VGrQ6uiNwwXP7vzkFyjm_p9X7NqGMgkF1lYzxN7G&dispatch=5885d80a13c0db1f8e263663d3faee8dcce3e160f5b9538489e17951d2c62172
 Tags: W3C, DNS prefetch, prerender, preconnect, prefetch, preload, web perf, performance, speed, resource hints
@@ -73,8 +73,12 @@ Insert an absolute URL for a CSS, JavaScript, image, etc, that is hosted on an e
 
 == Changelog ==
 
-1. Most recent update: July 7, 2017.
-2. Version 1.2.3
+1. Most recent update: July 11, 2017.
+2. Version 1.2.4
+
+July 11: 1) added a form on plugin admin screen to contact author about feature requests or bug reporting;
+         2) fixed minor issue with the preconnect JS script not firing;
+         3) fixed minor UI issues/CSS;
 
 July 6: 1) added ability to choose to add links to the Header or <head>;
         2) cleaned up UI;
