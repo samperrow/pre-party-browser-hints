@@ -27,17 +27,18 @@ form.gktpp-form.contact textarea,
 form.gktpp-form.contact input {
      display: block;
      margin: 10px auto;
-     border: 1px solid #ccc;
 }
 
 form.gktpp-form.contact textarea {
      width: 350px;
      height: 100px;
+     border: 1px solid #ccc;
 }
 
 form.gktpp-form.contact input.gktpp-email {
      width: 300px;
      height: 35px;
+     border: 1px solid #ccc;
 }
 
 button.handlediv {
