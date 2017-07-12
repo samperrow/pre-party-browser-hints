@@ -111,17 +111,15 @@ class GKTPP_Enter_Data extends GKTPP_Table {
           global $pagenow;
           if ( ('admin.php' === $pagenow) && ( $_GET['page'] === 'gktpp-plugin-settings' ) ) {
 
-               add_option( 'gktpp_preconnect_status', 'Yes', '', 'yes' );
                if ( isset( $_POST['gktpp-preconnect-status'] ) ) {
                     update_option( 'gktpp_preconnect_status', $_POST['gktpp-preconnect-status'], 'no' );
                }
 
-               add_option( 'gktpp_reset_preconnect', 'notset', '', 'yes' );
                if ( isset( $_POST['gktpp-reset-preconnect'] ) ) {
                     update_option( 'gktpp_reset_preconnect', 'notset', 'yes' );
+                    update_option( 'gktpp_preconnect_status', 'Yes', 'yes' );
                }
 
-               add_option( 'gktpp_send_in_header', 'HTTP Header', '', 'yes' );
                if ( isset( $_POST['gktpp-save-header-option'] ) ) {
                     update_option( 'gktpp_send_in_header', $_POST['gktpp-send-in-header'], 'no' );
                }
@@ -189,7 +187,7 @@ class GKTPP_Enter_Data extends GKTPP_Table {
                exit;
 
           global $pagenow;
-          if ( ('admin.php' === $pagenow) && ( $_GET['page'] === 'gktpp-plugin-settings' ) ); { ?>
+          if ( ('admin.php' === $pagenow) && ( $_GET['page'] === 'gktpp-plugin-settings' ) );{ ?>
 
                <div class="gktpp-table info postbox">
 
@@ -202,10 +200,11 @@ class GKTPP_Enter_Data extends GKTPP_Table {
 
                     <div class="gktpp-collapse-box">
                          <form class="gktpp-form contact" method="post" action="">
-                              <textarea placeholder="<?php esc_html_e( 'Help make this plugin better!' ); ?>" type="text" name="gktpp_text"></textarea>
-                              <input class="gktpp-email input" placeholder="<?php esc_attr_e( 'Email address:' ); ?>" name="gktpp_email"  />
+                              <textarea value="" placeholder="<?php esc_attr_e( 'Help make this plugin better!' ); ?>" type="text" name="gktpp_text"></textarea>
+                              <input onkeyup="emailValidate(event)" id="gktpp-email" class="gktpp-email input" placeholder="<?php esc_attr_e( 'Email address:' ); ?>" name="gktpp_email"  />
                               <input type="hidden" name="submitted" value="1">
-                              <input name="gktpp_send_email" type="submit" class="button button-primary" value="<?php esc_attr_e( 'Submit', 'gktpp' ); ?>" />
+                              <input id="gktpp-submit" onclick="emailValidate(event)" name="gktpp_send_email" type="submit" class="button button-primary" value="<?php esc_attr_e( 'Submit', 'gktpp' ); ?>" />
+                              <p id="gktpp-error-message"><?php esc_html_e( 'Please enter a valid email address.' ); ?></p>
                          </form>
                     </div>
                </div>
@@ -218,7 +217,7 @@ class GKTPP_Enter_Data extends GKTPP_Table {
                          echo "<script>alert('Please enter a valid message and email address.');</script>";
                     }
 
-                    elseif ( isset( $_POST['gktpp_send_email'] ) && isset( $_POST['gktpp_email'] ) ) {
+                    if ( isset( $_POST['gktpp_send_email'] ) && isset( $_POST['gktpp_email'] ) ) {
                          wp_mail( 'sam.perrow399@gmail.com', 'Pre Party User Message', 'From: ' . strip_tags($_POST['gktpp_email']) . ' Message: ' . strip_tags( $_POST['gktpp_text'] ) );
                     }
                }

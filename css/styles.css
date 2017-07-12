@@ -1,3 +1,7 @@
+p#gktpp-error-message {
+     display: none;
+}
+
 .gktpp-table {
      width: 95%;
      max-width: 750px;

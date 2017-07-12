@@ -66,12 +66,14 @@ function gktpp_install_db_table() {
 	}
      global $wpdb;
 
+	update_option( 'gktpp_preconnect_status', 'Yes', '', 'yes' );
+	update_option( 'gktpp_reset_preconnect', 'notset', '', 'yes' );
+	update_option( 'gktpp_send_in_header', 'HTTP Header', '', 'yes' );
+
 	$table1 = $wpdb->prefix . 'gktpp_table';
-	$table2 = $wpdb->prefix . 'gktpp_ajax_domains';			// backwards compat
 	$charset_collate = $wpdb->get_charset_collate();
 
-	$sql = "DROP TABLE IF EXISTS $table2;
-		CREATE TABLE IF NOT EXISTS $table1 (
+	$sql = "CREATE TABLE IF NOT EXISTS $table1 (
 	    id INT(9) NOT NULL AUTO_INCREMENT,
 	    url VARCHAR(150) DEFAULT '' NOT NULL,
 	    hint_type VARCHAR(55) DEFAULT '' NOT NULL,
@@ -86,3 +88,4 @@ function gktpp_install_db_table() {
 
     dbDelta( $sql, true );
 }
+?>

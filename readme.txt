@@ -83,7 +83,7 @@ July 11: 1) added a form on plugin admin screen to contact author about feature 
 July 6: 1) added ability to choose to add links to the Header or <head>;
         2) cleaned up UI;
         3) fixed bugs on find-external-domains.js/ improved functionality;
-        4) removed option to select which pages/posts the links went to- this added bugs and increased unnecessary bugs;
+        4) removed option to select which pages/posts the links went to- this was unwanted feature and removing it improved performance
         5) condensed the info tab links into one;
         6) modified schema for gktpp_table; and removed the other table;
         7) improved security;
