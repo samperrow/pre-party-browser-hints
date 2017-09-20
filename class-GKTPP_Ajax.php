@@ -32,11 +32,24 @@ class GKTPP_Ajax {
 			$domains = isset( $_POST['data'] ) ? wp_unslash( $_POST['data'] ) : '';
 
 			if ( is_array( $domains ) ) {
-				$sql1 = $wpdb->prepare( "DELETE FROM %1s WHERE ajax_domain = %d", array( $table, 1 ) );
+
+				$sql1 = $wpdb->delete( $table, array( 'ajax_domain' => 1 ), array( '%s' ) );
 				$wpdb->query( $sql1 );
 
 				foreach ( $domains as $domain ) {
-					$sql = $wpdb->prepare( "INSERT INTO %1s (url, hint_type, ajax_domain) VALUES ( %s, %s, %d )", array( $table, $domain, 'Preconnect', 1 ) );
+
+					$sql = $wpdb->insert( $table,
+									  array(
+										  'url' => $url,
+										  'hint_type' => $hint_type ),
+								  	  array( '%s', '%s' ) );
+
+					$sql = $wpdb->insert( $table, array(
+											'url' => $domain,
+											'hint_type' => 'Preconnect',
+											'ajax_domain' => 0 ),
+											array(
+												'%s', '%s', '%d' ) );
 					$wpdb->query( $sql );
 				}
 			}

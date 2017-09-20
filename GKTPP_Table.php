@@ -36,17 +36,40 @@ class GKTPP_Table extends GKTPP_WP_List_Table {
 
 		$table = $wpdb->prefix . 'gktpp_table';
 
+		// $sql = $wpdb->get_results(
+		// 	"
+		// 	SELECT ID, post_title
+		// 	FROM $wpdb->posts
+		// 	WHERE post_status = 'draft'
+		// 		AND post_author = 5
+		// 	"
+		// );
+
+		// $sql = $wpdb->get_results( "SELECT * FROM $table" );
+
+
 		$sql = "SELECT * FROM $table";
 
 		if ( ! empty( $_REQUEST['orderby'] ) ) {
 			$sql .= ' ORDER BY ' . esc_sql( $_REQUEST['orderby'] );
 			$sql .= ! empty( $_REQUEST['order'] ) ? ' ' . esc_sql( $_REQUEST['order'] ) : ' ASC';
+
+
+			// $result = $wpdb->get_results( $sql, ARRAY_A );
 	     }
 
-		$sql .= " LIMIT $per_page";
-	     $sql .= ' OFFSET ' . ( $page_number - 1 ) * $per_page;
 
-		$result = $wpdb->get_results( $sql, 'ARRAY_A' );
+		if ( !empty( $sql ) ) {
+
+			$sql .= " LIMIT $per_page";
+			$sql .= ' OFFSET ' . ( $page_number - 1 ) * $per_page;
+			$result = $wpdb->get_results( $sql, ARRAY_A );
+		}
+		// else {
+		// 	$result = '';
+		// }
+
+
 
 	     return $result;
 	}

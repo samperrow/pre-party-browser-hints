@@ -6,8 +6,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class GKTPP_Options {
 
-	public $resource_obj;
-
 	public function __construct() {
 		add_action( 'admin_menu', array( $this, 'settings_page_init' ) );
 		add_filter( 'set-screen-option', array( $this, 'apply_wp_screen_options' ), 1, 3 );

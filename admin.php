@@ -3,11 +3,11 @@
  * Plugin Name: Pre* Party Resource Hints
  * Plugin URI: https://www.linkedin.com/in/sam-perrow-53782b10b?trk=hp-identity-name
  * Description: Take advantage of W3C browser resource hints to improve page load time, automatically and manually.
- * Version: 1.2.4
+ * Version: 1.3.2
  * Author: Sam Perrow
  * Author URI: https://www.linkedin.com/in/sam-perrow-53782b10b?trk=hp-identity-name
  * License: GPL2
- * last edited July 11, 2017
+ * last edited Sept 20, 2017
  *
  * Copyright 2017  Sam Perrow  (email : sam.perrow399@gmail.com)
  *
@@ -70,10 +70,10 @@ function gktpp_install_db_table() {
 	update_option( 'gktpp_reset_preconnect', 'notset', '', 'yes' );
 	update_option( 'gktpp_send_in_header', 'HTTP Header', '', 'yes' );
 
-	$table1 = $wpdb->prefix . 'gktpp_table';
+	$table = $wpdb->prefix . 'gktpp_table';
 	$charset_collate = $wpdb->get_charset_collate();
 
-	$sql = "CREATE TABLE IF NOT EXISTS $table1 (
+	$sql = "CREATE TABLE IF NOT EXISTS $table (
 	    id INT(9) NOT NULL AUTO_INCREMENT,
 	    url VARCHAR(150) DEFAULT '' NOT NULL,
 	    hint_type VARCHAR(55) DEFAULT '' NOT NULL,

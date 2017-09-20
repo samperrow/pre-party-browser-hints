@@ -7,16 +7,22 @@ if ( ! defined( 'ABSPATH' ) ) {
 class GKTPP_Talk_To_DB {
 
 	public static function insert_data_to_db() {
+
 		if ( ! is_admin() ) {
 			exit;
 		}
+
 	    global $wpdb;
 
 		$table = $wpdb->prefix . 'gktpp_table';
 		$url = isset( $_POST['url'] ) ? self::validate_DNS_prefetch_url() : '';
 		$hint_type = isset( $_POST['hint_type'] ) ? stripslashes( $_POST['hint_type'] ) : '';
 
-	     $sql = $wpdb->prepare( "INSERT INTO %1s ( url, hint_type ) VALUES ( '%s', '%s' )", $table, $url, $hint_type );
+		$sql = $wpdb->insert( $table,
+						  array(
+							  'url' => $url,
+							  'hint_type' => $hint_type ),
+					  	  array( '%s', '%s' ) );
 		$wpdb->query( $sql );
      }
 

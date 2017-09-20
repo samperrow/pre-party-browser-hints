@@ -6,7 +6,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class GKTPP_Send_Entered_Hints {
 
-	private $str = '';
+	private $header_str = '';
+	private $head_str = '';
 
 	public function __construct() {
 		add_action( 'wp_head', array( $this, 'send_resource_hints' ), 1, 0 );
@@ -15,51 +16,45 @@ class GKTPP_Send_Entered_Hints {
 	public function send_resource_hints() {
 		global $wpdb;
 		$table = $wpdb->prefix . 'gktpp_table';
-		$sql = $wpdb->prepare( 'SELECT * FROM %1s', $table );
-		$result = $wpdb->get_results( $sql, ARRAY_A, 0 );
+
+		$result = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM $table WHERE status = %s", 'Enabled'), OBJECT );
 
 		if ( count( $result ) < 1 || ( ! is_array( $result ) ) ) {
 			return;
 		}
 
-		if ( get_option( 'gktpp_send_in_header' ) === 'Send in head' ) {
-			$crossorigin = '';
+		$crossorigin = '';
+		$lt = '<';
+		$gt = '>';
 
-			foreach ( $result as $key => $value ) {
-				if ( ( 'Enabled' === $result[ $key ]['status'] ) ) {
-					$hint_url = $result[ $key ]['url'];
-					$hint_type = strtolower( $result[ $key ]['hint_type'] );
+		foreach ( $result as $key => $value ) {
 
-					// if the supplied URL does not have HTTP or HTTPS given, add a '//' to not confuse the browser
-					if ( ! preg_match( '/(http|https)/i', $hint_url ) ) {
-						$hint_url = '//' . $hint_url;
-					}
-					
-					$crossorigin = ( ( 'preconnect' === $hint_type ) && ( 'https://fonts.googleapis.com' === $hint_url ) ) ? ' crossorigin' : '';
-					printf( "<link href='$hint_url' rel='$hint_type'$crossorigin>", $hint_type, $hint_url, $crossorigin );
-				}
+			$hint_url = $value->url;
+			$hint_type = strtolower( $value->hint_type );
+
+			// if the supplied URL does not have HTTP or HTTPS given, add a '//' to not confuse the browser
+			if ( ! preg_match( '/(http|https)/i', $hint_url ) ) {
+				$hint_url = '//' . $hint_url;
 			}
 
-		} else {
-
-			$lt = '<';
-			$gt = '>';
-			foreach ( $result as $key => $value ) {
-				if ( ( 'Enabled' === $result[ $key ]['status'] ) ) {
-					$hint_url = $result[ $key ]['url'];
-					$hint_type = strtolower( $result[ $key ]['hint_type'] );
-					if ( ! preg_match( '/(http|https)/i', $hint_url ) ) {
-						$hint_url = '//' . $hint_url;
-					}
-					$this->str .=  $lt . $hint_url . $gt . ';' . ' rel="' . $hint_type . '",';
-				}
-			}
-			return rtrim( $this->str, ',');
+			$crossorigin = ( ( 'preconnect' === $hint_type ) && ( 'https://fonts.googleapis.com' === $hint_url || 'https://fonts.gstatic.com' === $hint_url ) ) ? ' crossorigin' : '';
+			$this->header_str .=  $lt . $hint_url . $gt . ';' . ' rel="' . $hint_type . '"' . $crossorigin . ',';
+			$this->head_str .= $lt . 'link href="' . $hint_url . '" rel="' . $hint_type . '"' . $crossorigin . $gt;
 		}
+
+		return get_option( 'gktpp_send_in_header' ) === 'HTTP Header' ? $this->header_str : $this->head_str;
 	}
 }
-$send_hints = new GKTPP_Send_Entered_Hints();
+
+function gktpp_send_hints() {
+	$send_hints = new GKTPP_Send_Entered_Hints();
+	return $send_hints->send_resource_hints();
+}
 
 if ( get_option( 'gktpp_send_in_header' ) === 'HTTP Header' ) {
-	header('Link:' . $send_hints->send_resource_hints() );
+	header( 'Link:' . gktpp_send_hints() );
+} else {
+	add_action( 'wp_head', function() {
+		printf( gktpp_send_hints() );
+	}, 1, 0 );
 }
