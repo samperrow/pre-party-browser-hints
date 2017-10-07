@@ -7,7 +7,7 @@
  * Author: Sam Perrow
  * Author URI: https://www.linkedin.com/in/sam-perrow-53782b10b?trk=hp-identity-name
  * License: GPL2
- * last edited Oct 3, 2017
+ * last edited Oct 7, 2017
  *
  * Copyright 2017  Sam Perrow  (email : sam.perrow399@gmail.com)
  *
@@ -77,7 +77,7 @@ function gktpp_install_db_table() {
 	    url VARCHAR(150) DEFAULT '' NOT NULL,
 	    hint_type VARCHAR(55) DEFAULT '' NOT NULL,
 	    status VARCHAR(55) DEFAULT 'Enabled' NOT NULL,
-	    ajax_domain TINYINT(2) DEFAULT 0 NOT NULL,
+	    ajax_domain TINYINT(1) DEFAULT 0 NOT NULL,
 	    PRIMARY KEY  (id)
     ) $charset_collate;";
 
