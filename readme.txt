@@ -1,8 +1,8 @@
 === Pre* Party Resource Hints ===
 Contributors: Sam Perrow
-Donate link: https://www.paypal.com/us/cgi-bin/webscr?cmd=_flow&SESSION=PMdwpV-0mzP8aloKEF8VGrQ6uiNwwXP7vzkFyjm_p9X7NqGMgkF1lYzxN7G&dispatch=5885d80a13c0db1f8e263663d3faee8dcce3e160f5b9538489e17951d2c62172
+Donate link: https://www.paypal.me/samperrow
 Tags: W3C, DNS prefetch, prerender, preconnect, prefetch, preload, web perf, performance, speed, resource hints
-Requires at least: 4.0
+Requires at least: 4.4
 Tested up to: 4.8.1
 Stable tag: 4.4.2
 License: GPLv2 or later
@@ -25,7 +25,7 @@ FAQ
 
 How can I determine which URL's to enter?
 Go to https://www.webpagetest.org, enter your website's URL, and click on the "waterfall" chart that appears.
-a) For all resources that are loaded from external websites or domain names, I recommend inserting a preconnect link for that domain name (Preconnect is more powerful than DNS Prefetch, as it takes care of the initial connection and SSL negotiation).
+a) For all resources that are loaded from external websites or domain names, I recommend inserting a preconnect link for that domain name (Preconnect is more powerful than DNS Prefetch, as it takes care of the DNS lookup, initial connection, and SSL negotiation).
 b) If you have a very popular link on your site that you are confident a user would navigate towards, I recommend inserting a link for that URL with the "prerender" option set.
 c) Prefetch and preload work similarly, which allows single resources to be loaded before they are requested by the user. Use this for loading images, videos, JavaScript files, etc.
 
@@ -36,15 +36,20 @@ Prefetch:
 Insert an absolute URL for a CSS, JavaScript, image, etc, that is hosted on an external domain, and select the option "Prefetch".
 
 Prerender:
-Insert a valid domain name that a visitor to your website is likely to visit, and select the option "Prerender". The domain you entered will now be loaded by the browser after all requests have been loaded on the page.
+Insert a valid URL that a visitor to your website is likely to visit, and select the option "Prerender". The URL you entered will now be loaded by the browser after all requests have been loaded on the page.
 
 Preconnect:
-If you would like to have preconnect links automatically set, they will automatically do so when you visit the plugin screen. If you would like these removed, just select the option to have these disabled at the bottom of the main plugin screen.
-Insert a valid domain name which you are requesting resources from, then select the "Preconnect" radio button.
+For all HTTP requests loaded from external sources on a page web, add the domain name of each in the "Add New Resource Hint" form, select the option for "Preconnect". Preconnect is more powerful than DNS Prefetch, because it resolves three connections instead of one.
 
+If you would like to have preconnect links automatically set, by default the . If you would like these removed, just select the option to have these disabled at the bottom of the main plugin screen.
+
+How are the preconnect hints automatically set?
+By default, after installing this plugin and loading a page from your website, a JavaScript file will be loaded which searches for the domain names from resources loaded from external domains. These domains are sent via Ajax to your website's MySQL database, which are then used as resource hints for subsequent page loads.
 
 Preload:
 Insert an absolute URL for a CSS, JavaScript, image, etc, and select the option "Preload".
+
+
 
 == Screenshots ==
 
@@ -60,6 +65,7 @@ Insert an absolute URL for a CSS, JavaScript, image, etc, and select the option 
 
 
 1. [Support Forum](https://wordpress.org/support/plugin/pre-party-browser-hints)
+
 2. Send me an email at sam.perrow399@gmail.com
 
 
@@ -68,8 +74,15 @@ Insert an absolute URL for a CSS, JavaScript, image, etc, and select the option 
 
 == Changelog ==
 
-1. Most recent update: Sept 20, 2017.
-2. Version 1.3.2
+1. Most recent update: Oct 7, 2017.
+2. Version 1.3.3
+
+Oct 7, 2017:
+1) Improved code, changed some variable names
+2) renamed class names to be consistent with WP coding standards.
+3) added option to remove auto generated WP resource hints.
+4) segmented each <form> to have its own method.
+5) updated HTTP Header string to make it compatible with the most recent Chrome version and incorporate the 'as' attribute.
 
 Sept 20:
 1) fixed bugs due to WP 4.8.2 changes.

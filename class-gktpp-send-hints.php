@@ -4,7 +4,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class GKTPP_Send_Entered_Hints {
+class GKTPP_Send_Hints {
 
 	private $header_str = '';
 	private $head_str = '';
@@ -24,22 +24,39 @@ class GKTPP_Send_Entered_Hints {
 		}
 
 		$crossorigin = '';
+
 		$lt = '<';
 		$gt = '>';
+		$quote = '"';
 
 		foreach ( $result as $key => $value ) {
 
 			$hint_url = $value->url;
 			$hint_type = strtolower( $value->hint_type );
+			$as_value = '';
 
 			// if the supplied URL does not have HTTP or HTTPS given, add a '//' to not confuse the browser
 			if ( ! preg_match( '/(http|https)/i', $hint_url ) ) {
 				$hint_url = '//' . $hint_url;
 			}
 
+			if ( 'preload' === $hint_type ) {
+
+				if ( ! empty( strrpos( $hint_url, '.js', -3 ) ) ) {
+					$as_value = ' as="script"';
+				} elseif ( ! empty( strrpos( $hint_url, '.css', -4 ) ) ) {
+					$as_value = ' as="style"';
+				} elseif ( ! empty( strrpos( $hint_url, '.mp4', -4 ) ) ) {
+					$as_value = ' as="video" type="video/mp4"';
+				} elseif ( ! empty( strrpos( $hint_url, '.mp4', -4 ) === '.jpg' || strrpos( $hint_url, '.mp4', -4 ) === '.png' ) ) {
+					$as_value = ' as="image" type="image/jpeg"';
+				}
+
+			}
+
 			$crossorigin = ( ( 'preconnect' === $hint_type ) && ( 'https://fonts.googleapis.com' === $hint_url || 'https://fonts.gstatic.com' === $hint_url ) ) ? ' crossorigin' : '';
-			$this->header_str .=  $lt . $hint_url . $gt . ';' . ' rel="' . $hint_type . '"' . $crossorigin . ',';
-			$this->head_str .= $lt . 'link href="' . $hint_url . '" rel="' . $hint_type . '"' . $crossorigin . $gt;
+			$this->header_str .=  $lt . $hint_url . $gt . ';' . ' rel=' . $hint_type . ';' . $crossorigin . ';' . $as_value . ',';
+			$this->head_str .= $lt . 'link rel="' . $hint_type . '"' . ' href="' . $hint_url . '"' . $crossorigin . $as_value . $gt;
 		}
 
 		return get_option( 'gktpp_send_in_header' ) === 'HTTP Header' ? $this->header_str : $this->head_str;
@@ -47,7 +64,7 @@ class GKTPP_Send_Entered_Hints {
 }
 
 function gktpp_send_hints() {
-	$send_hints = new GKTPP_Send_Entered_Hints();
+	$send_hints = new GKTPP_Send_Hints();
 	return $send_hints->send_resource_hints();
 }
 

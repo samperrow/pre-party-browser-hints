@@ -29,7 +29,7 @@ class GKTPP_Options {
 			check_admin_referer( 'gkt_preP-settings-page' );
 
 			if ( ( '' !== $_POST['url'] ) && ( isset( $_POST['hint_type'] ) ) ) {
-				GKTPP_Talk_To_DB::insert_data_to_db();
+				GKTPP_Insert_To_DB::insert_data_to_db();
 				$url_parameters = isset( $_GET['tab'] ) ? 'updated=true&tab=' . $_GET['tab'] : 'updated=true';
 				wp_safe_redirect( admin_url( 'admin.php?page=gktpp-plugin-settings&' . $url_parameters ) );
 				exit();
@@ -296,7 +296,7 @@ class GKTPP_Options {
 
 		<p><?php echo __( 'More information:' ); ?></p>
 		<ul>
-			<li><a href="https://www.w3.org/TR/preload/"><?php echo __( 'W3C: Preload' ); ?></a></li>
+			<li><a href="https://w3c.github.io/preload/"><?php echo __( 'W3C: Preload' ); ?></a></li>
 		</ul>
 		<hr>
 		<?php
