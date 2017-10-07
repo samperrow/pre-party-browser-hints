@@ -54,8 +54,11 @@ function gktppFindExtDomains() {
                action: 'gktpp_post_domain_names',
                data : domains,
           };
-          jQuery.post(ajax_object.ajax_url, data2 );
-		console.log(data2.data);
+
+          if ( data2.data.length > 0 ) {
+               jQuery.post(ajax_object.ajax_url, data2 );
+     		console.log(data2.data);
+          }
 
      }();
 }

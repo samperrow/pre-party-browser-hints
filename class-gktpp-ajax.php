@@ -33,24 +33,18 @@ class GKTPP_Ajax {
 
 			if ( is_array( $domains ) ) {
 
-				$sql1 = $wpdb->delete( $table, array( 'ajax_domain' => 1 ), array( '%s' ) );
-				$wpdb->query( $sql1 );
+				$remove_prev_hints = $wpdb->delete( $table, array( 'ajax_domain' => 1 ), array( '%s' ) );
+				$wpdb->query( $remove_prev_hints );
 
 				foreach ( $domains as $domain ) {
 
-					$sql = $wpdb->insert( $table,
-									  array(
-										  'url' => $url,
-										  'hint_type' => $hint_type ),
-								  	  array( '%s', '%s' ) );
-
-					$sql = $wpdb->insert( $table, array(
+					$add_new_hints = $wpdb->insert( $table, array(
 											'url' => $domain,
 											'hint_type' => 'Preconnect',
 											'ajax_domain' => 0 ),
 											array(
 												'%s', '%s', '%d' ) );
-					$wpdb->query( $sql );
+					$wpdb->query( $add_new_hints );
 				}
 			}
 

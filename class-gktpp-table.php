@@ -5,7 +5,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 if ( ! class_exists( 'GKTPP_WP_List_Table' ) ) {
-	require_once GKT_PREP_PLUGIN_DIR . '/GKTPP_WP_List_Table.php';
+	require_once GKT_PREP_PLUGIN_DIR . '/class-gktpp-wp-list-table.php';
 }
 
 class GKTPP_Table extends GKTPP_WP_List_Table {
@@ -36,40 +36,19 @@ class GKTPP_Table extends GKTPP_WP_List_Table {
 
 		$table = $wpdb->prefix . 'gktpp_table';
 
-		// $sql = $wpdb->get_results(
-		// 	"
-		// 	SELECT ID, post_title
-		// 	FROM $wpdb->posts
-		// 	WHERE post_status = 'draft'
-		// 		AND post_author = 5
-		// 	"
-		// );
-
-		// $sql = $wpdb->get_results( "SELECT * FROM $table" );
-
-
 		$sql = "SELECT * FROM $table";
 
 		if ( ! empty( $_REQUEST['orderby'] ) ) {
 			$sql .= ' ORDER BY ' . esc_sql( $_REQUEST['orderby'] );
 			$sql .= ! empty( $_REQUEST['order'] ) ? ' ' . esc_sql( $_REQUEST['order'] ) : ' ASC';
-
-
-			// $result = $wpdb->get_results( $sql, ARRAY_A );
 	     }
 
 
 		if ( !empty( $sql ) ) {
-
 			$sql .= " LIMIT $per_page";
 			$sql .= ' OFFSET ' . ( $page_number - 1 ) * $per_page;
 			$result = $wpdb->get_results( $sql, ARRAY_A );
 		}
-		// else {
-		// 	$result = '';
-		// }
-
-
 
 	     return $result;
 	}
@@ -169,52 +148,59 @@ class GKTPP_Table extends GKTPP_WP_List_Table {
 		if ( ! is_admin() ) {
 			exit;
 		}
-		?>
-		<form method="post" action="<?php admin_url( 'admin.php?page=gktpp-plugin-settings&_wpnonce=' );?>" style="margin-top: 20px;">
+
+		global $pagenow;
+		if ( ('admin.php' === $pagenow) && ( $_GET['page'] === 'gktpp-plugin-settings' ) );{ ?>
+
+
+			<form method="post" action="<?php admin_url( 'admin.php?page=gktpp-plugin-settings&_wpnonce=' );?>" style="margin-top: 20px;">
+				<?php
+				if ( isset( $_GET['updated'] ) ) {
+					$this->update_success();
+				}
+
+				if ( isset( $_POST['gktpp-settings-submit'] ) && ! ( isset( $_GET['updated'] ) ) ) {
+					 $this->insert_url_fail();
+				 }
+
+				$this->_column_headers = $this->get_column_info();
+				$this->process_bulk_action();
+
+				$user = get_current_user_id();
+				$screen = get_current_screen();
+				$option = $screen->get_option( 'per_page', 'option' );
+
+				$per_page = get_user_meta( $user, $option, true );
+
+				if ( '' === $per_page ) {
+					settype( $per_page, 'int' );
+					$per_page = 10;
+				}
+
+			     $current_page = $this->get_pagenum();
+			     $total_items  = self::url_count();
+
+				$this->set_pagination_args( array(
+					'total_items' => $total_items,
+					'per_page'    => $per_page,
+				) );
+
+				$this->items = self::create_table( $per_page, $current_page );
+
+				$this->display();
+				GKTPP_Enter_Data::add_url_hint();
+				?>
+			</form>
+
 			<?php
-			if ( isset( $_GET['updated'] ) ) {
-				$this->update_success();
-			}
 
-			if ( isset( $_POST['gktpp-settings-submit'] ) && ! ( isset( $_GET['updated'] ) ) ) {
-				 $this->insert_url_fail();
-			 }
+			GKTPP_Enter_Data::show_info();
 
-			$this->_column_headers = $this->get_column_info();
-			$this->process_bulk_action();
+			GKTPP_Enter_Data::contact_author();
 
-			$user = get_current_user_id();
-			$screen = get_current_screen();
-			$option = $screen->get_option( 'per_page', 'option' );
-
-			$per_page = get_user_meta( $user, $option, true );
-
-			if ( '' === $per_page ) {
-				settype( $per_page, 'int' );
-				$per_page = 10;
-			}
-
-		     $current_page = $this->get_pagenum();
-		     $total_items  = self::url_count();
-
-			$this->set_pagination_args( array(
-				'total_items' => $total_items,
-				'per_page'    => $per_page,
-			) );
-
-			$this->items = self::create_table( $per_page, $current_page );
-
-			$this->display();
-			GKTPP_Enter_Data::add_url_hint();
-			?>
-		</form>
-		<?php
-		GKTPP_Enter_Data::show_info();
-
-		GKTPP_Enter_Data::contact_author();
-
-		 $text = sprintf( __( 'Tip: test your website on <a href="%s">WebPageTest.org</a> to know which resource hints and URLs to insert.' ), __( 'https://www.webpagetest.org' ) );
-		 echo $text;
+			 $text = sprintf( __( 'Tip: test your website on <a href="%s">WebPageTest.org</a> to know which resource hints and URLs to insert.' ), __( 'https://www.webpagetest.org' ) );
+			 echo $text;
+		 }
 
 	}
 
