@@ -41,21 +41,22 @@ class GKTPP_Send_Hints {
 			}
 
 			if ( 'preload' === $hint_type ) {
+				$file_type = strrchr( $hint_url, '.' );
 
-				if ( ! empty( strrpos( $hint_url, '.js', -3 ) ) ) {
+				if ( $file_type === '.js' ) {
 					$as_value = ' as="script"';
-				} elseif ( ! empty( strrpos( $hint_url, '.css', -4 ) ) ) {
+				} elseif ( $file_type === '.css' ) {
 					$as_value = ' as="style"';
-				} elseif ( ! empty( strrpos( $hint_url, '.mp4', -4 ) ) ) {
-					$as_value = ' as="video" type="video/mp4"';
-				} elseif ( ! empty( strrpos( $hint_url, '.mp4', -4 ) === '.jpg' || strrpos( $hint_url, '.mp4', -4 ) === '.png' ) ) {
-					$as_value = ' as="image" type="image/jpeg"';
+				} elseif ( $file_type === '.mp4' ) {
+					$as_value = ' as="video"';
+				} elseif ( $file_type === '.jpg' || $file_type === '.png' ) {
+					$as_value = ' as="image"';
 				}
 
 			}
 
-			$crossorigin = ( ( 'preconnect' === $hint_type ) && ( 'https://fonts.googleapis.com' === $hint_url || 'https://fonts.gstatic.com' === $hint_url ) ) ? ' crossorigin' : '';
-			$this->header_str .=  $lt . $hint_url . $gt . ';' . ' rel=' . $hint_type . ';' . $crossorigin . ';' . $as_value . ',';
+			$crossorigin = ( ( 'preconnect' === $hint_type ) && ( 'https://fonts.googleapis.com' === $hint_url || 'https://fonts.gstatic.com' === $hint_url ) ) ? ' crossorigin;' : '';
+			$this->header_str .=  $lt . $hint_url . $gt . ';' . ' rel=' . $hint_type . ';' . $crossorigin . $as_value . ', ';
 			$this->head_str .= $lt . 'link rel="' . $hint_type . '"' . ' href="' . $hint_url . '"' . $crossorigin . $as_value . $gt;
 		}
 

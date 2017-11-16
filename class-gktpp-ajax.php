@@ -41,7 +41,7 @@ class GKTPP_Ajax {
 					$add_new_hints = $wpdb->insert( $table, array(
 											'url' => $domain,
 											'hint_type' => 'Preconnect',
-											'ajax_domain' => 0 ),
+											'ajax_domain' => 1 ),
 											array(
 												'%s', '%s', '%d' ) );
 					$wpdb->query( $add_new_hints );

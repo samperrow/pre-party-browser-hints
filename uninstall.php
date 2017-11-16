@@ -13,9 +13,8 @@ function gktpp_uninstall_plugin() {
      delete_user_meta( get_current_user_id(), 'gktpp_screen_options' );
 
      $table = $wpdb->prefix . 'gktpp_table';
+     $sql = "DROP TABLE IF EXISTS $table";
 
-     $sql = $wpdb->prepare( "DROP TABLE IF EXISTS $table" );
-
-     $wpdb->query( $sql );
+     $wpdb->query( $wpdb->prepare( $sql, null ) );
 }
 gktpp_uninstall_plugin();

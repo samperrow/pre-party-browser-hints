@@ -18,12 +18,9 @@ class GKTPP_Insert_To_DB {
 		$hint_type = isset( $_POST['hint_type'] ) ? stripslashes( $_POST['hint_type'] ) : '';
 		$url = isset( $_POST['url'] ) ? self::validate_domain( $_POST['url'], $hint_type ) : '';
 
-		$sql = $wpdb->insert( $table,
-						  array(
-							  'url' => $url,
-							  'hint_type' => $hint_type ),
-					  	  array( '%s', '%s' ) );
-		$wpdb->query( $sql );
+		$sql = "INSERT INTO $table ( id, url, hint_type, status, ajax_domain ) VALUES ( null, %s, %s, 'Enabled', 0 )";
+
+		$wpdb->query( $wpdb->prepare( $sql, array( $url, $hint_type ) ) );
      }
 
 	private static function validate_domain( $url, $hint_type ) {

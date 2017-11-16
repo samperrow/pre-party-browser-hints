@@ -3,11 +3,11 @@
  * Plugin Name: Pre* Party Resource Hints
  * Plugin URI: https://www.linkedin.com/in/sam-perrow-53782b10b?trk=hp-identity-name
  * Description: Take advantage of W3C browser resource hints to improve page load time, automatically and manually.
- * Version: 1.3.3
+ * Version: 1.4.1
  * Author: Sam Perrow
  * Author URI: https://www.linkedin.com/in/sam-perrow-53782b10b?trk=hp-identity-name
  * License: GPL2
- * last edited Oct 7, 2017
+ * last edited Nov 16, 2017
  *
  * Copyright 2017  Sam Perrow  (email : sam.perrow399@gmail.com)
  *

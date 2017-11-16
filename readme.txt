@@ -3,7 +3,7 @@ Contributors: Sam Perrow
 Donate link: https://www.paypal.me/samperrow
 Tags: W3C, DNS prefetch, prerender, preconnect, prefetch, preload, web perf, performance, speed, resource hints
 Requires at least: 4.4
-Tested up to: 4.8.1
+Tested up to: 4.9
 Stable tag: 4.4.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -74,8 +74,16 @@ Insert an absolute URL for a CSS, JavaScript, image, etc, and select the option 
 
 == Changelog ==
 
-1. Most recent update: Oct 7, 2017.
-2. Version 1.3.3
+1. Most recent update: Nov 16, 2017.
+2. Version 1.4.1
+
+Nov 14, 2017:
+1) Tested compatibility with WP 4.9
+2) Fixed some issues with the resource hint output for the HTTP Header option
+3) Fixed bug that threw an error when inserting hints
+4) fixed bug that prevented plugin from being deleted properly
+5) Changed how the "as" attribute was being set for preload hints.
+
 
 Oct 7, 2017:
 1) Improved code, changed some variable names
