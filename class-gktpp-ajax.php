@@ -7,8 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 class GKTPP_Ajax {
 
 	public function check_or_send_ajax() {
-
-		if ( ( get_option( 'gktpp_preconnect_status' ) === 'Yes' ) && ( get_option( 'gktpp_reset_preconnect' ) === 'notset') ) {
+		if ( ( get_option( 'gktpp_preconnect_status' ) === 'Yes' ) && ( get_option( 'gktpp_reset_preconnect' ) === 'notset' ) ) {
 			add_action( 'wp_footer', array( $this, 'gktpp_add_domain_js' ) );
 			add_action( 'wp_ajax_gktpp_post_domain_names', array( $this, 'gktpp_post_domain_names' ) );
 			add_action( 'wp_ajax_nopriv_gktpp_post_domain_names', array( $this, 'gktpp_post_domain_names' ) );

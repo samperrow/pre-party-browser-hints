@@ -74,8 +74,11 @@ Insert an absolute URL for a CSS, JavaScript, image, etc, and select the option 
 
 == Changelog ==
 
-1. Most recent update: Nov 16, 2017.
-2. Version 1.4.1
+1. Most recent update: Nov 17, 2017.
+2. Version 1.4.2
+
+Nov 17, 2017:
+1) fixed bug preventing resource hints from appearing in the WP admin HTTP header
 
 Nov 14, 2017:
 1) Tested compatibility with WP 4.9

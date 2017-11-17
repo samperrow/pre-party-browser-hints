@@ -69,7 +69,7 @@ function gktpp_send_hints() {
 	return $send_hints->send_resource_hints();
 }
 
-if ( get_option( 'gktpp_send_in_header' ) === 'HTTP Header' ) {
+if ( get_option( 'gktpp_send_in_header' ) === 'HTTP Header' && ! is_admin() ) {
 	header( 'Link:' . gktpp_send_hints() );
 } else {
 	add_action( 'wp_head', function() {
