@@ -74,8 +74,11 @@ Insert an absolute URL for a CSS, JavaScript, image, etc, and select the option 
 
 == Changelog ==
 
-1. Most recent update: Nov 17, 2017.
-2. Version 1.4.2
+1. Most recent update: Dec 22, 2017.
+2. Version 1.4.3
+
+Dec 22, 2017:
+1) fixed small issue with setting the 'crossorigin' attribute.
 
 Nov 17, 2017:
 1) fixed bug preventing resource hints from appearing in the WP admin HTTP header

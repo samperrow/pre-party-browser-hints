@@ -23,7 +23,7 @@ class GKTPP_Send_Hints {
 			return;
 		}
 
-		$crossorigin = '';
+
 
 		$lt = '<';
 		$gt = '>';
@@ -31,9 +31,9 @@ class GKTPP_Send_Hints {
 
 		foreach ( $result as $key => $value ) {
 
-			$hint_url = $value->url;
-			$hint_type = strtolower( $value->hint_type );
-			$as_value = '';
+			$hint_url = esc_url( $value->url );
+			$hint_type = sanitize_text_field( strtolower( $value->hint_type ) );
+			$as_value = $header_crossorigin = $head_crossorigin = '';
 
 			// if the supplied URL does not have HTTP or HTTPS given, add a '//' to not confuse the browser
 			if ( ! preg_match( '/(http|https)/i', $hint_url ) ) {
@@ -55,9 +55,13 @@ class GKTPP_Send_Hints {
 
 			}
 
-			$crossorigin = ( ( 'preconnect' === $hint_type ) && ( 'https://fonts.googleapis.com' === $hint_url || 'https://fonts.gstatic.com' === $hint_url ) ) ? ' crossorigin;' : '';
-			$this->header_str .=  $lt . $hint_url . $gt . ';' . ' rel=' . $hint_type . ';' . $crossorigin . $as_value . ', ';
-			$this->head_str .= $lt . 'link rel="' . $hint_type . '"' . ' href="' . $hint_url . '"' . $crossorigin . $as_value . $gt;
+			if ( ( 'preconnect' === $hint_type ) && ( ( stristr( $hint_url, 'fonts.googleapis.com' ) === 'fonts.googleapis.com' ) || ( stristr( $hint_url, 'fonts.gstatic.com' ) === 'fonts.gstatic.com' ) ) ) {
+				$header_crossorigin = ' crossorigin;';
+				$head_crossorigin = ' crossorigin';
+			}
+
+			$this->header_str .=  $lt . $hint_url . $gt . ';' . ' rel=' . $hint_type . ';' . $header_crossorigin . $as_value . ', ';
+			$this->head_str .= $lt . 'link rel="' . $hint_type . '"' . ' href="' . $hint_url . '"' . $head_crossorigin . $as_value . $gt;
 		}
 
 		return get_option( 'gktpp_send_in_header' ) === 'HTTP Header' ? $this->header_str : $this->head_str;
