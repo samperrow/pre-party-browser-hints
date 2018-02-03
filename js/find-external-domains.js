@@ -16,8 +16,8 @@ function gktppFindExtDomains() {
      }
 
      function combineAndVerifySources( elem ) {
-          var newArr = [];
-          var homeURL = new RegExp( document.location.origin, "g");
+        var newArr = [];
+        var homeURL = new RegExp( document.location.origin, "g");
 		var base64 = new RegExp( 'data:image', "g");
           var checkCSS = new RegExp( ".css", "g");
 
@@ -55,11 +55,11 @@ function gktppFindExtDomains() {
                data : domains,
           };
 
-          if ( data2.data.length > 0 ) {
-               jQuery.post(ajax_object.ajax_url, data2 );
-     		console.log(data2.data);
-          }
+        if ( data2.data.length > 0 ) {
+            jQuery.post(ajax_object.ajax_url, data2 );
+            console.log(data2.data);
+        }
 
      }();
 }
-setTimeout( gktppFindExtDomains, 7500);
+setTimeout( gktppFindExtDomains, 5000);
