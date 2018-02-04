@@ -74,12 +74,12 @@ Insert an absolute URL for a CSS, JavaScript, image, etc, and select the option 
 
 == Changelog ==
 
-1. Most recent update: Feb 3, 2018.
+1. Most recent update: Feb 4, 2018.
 2. Version 1.5.0
 
-Feb 3, 2018:
-1) used the is_admin() method to determine if the plugin's PHP files should be loaded on back end or front end to optimize performance. Now, 4 PHP files are loaded on the WP back end, and only 2 are loaded on the front end. Doing this allowed code execution to be reduced from ~6 milliseconds to ~1 millisecond!
-2) Cleaned up some code fragments to reduce amount of code.
+Feb 4, 2018:
+1) Optimize performance by forcing the PHP files that are needed only on the FE to be loaded only on the FE and same for BE PHP files. Doing this allowed code execution to be reduced from ~6 milliseconds to ~1 millisecond!
+2) Cleaned up some code to reduce amount of code.
 3) Tested compatibility with WP 4.9.2
 
 Dec 22, 2017:

@@ -7,7 +7,7 @@
  * Author: Sam Perrow
  * Author URI: https://www.linkedin.com/in/sam-perrow-53782b10b?trk=hp-identity-name
  * License: GPL2
- * last edited Feb 3, 2018
+ * last edited Feb 4, 2018
  *
  * Copyright 2017  Sam Perrow  (email : sam.perrow399@gmail.com)
  *
@@ -42,8 +42,10 @@ if ( is_admin() ) {
 	require_once GKT_PREP_PLUGIN_DIR . '/class-gktpp-enter-data.php';
 } else {
 	require_once GKT_PREP_PLUGIN_DIR . '/class-gktpp-send-hints.php';
-	require_once GKT_PREP_PLUGIN_DIR . '/class-gktpp-ajax.php';
 }
+
+// this needs to be loaded front end and back end bc Ajax needs to be able to communicate between the two.
+require_once GKT_PREP_PLUGIN_DIR . '/class-gktpp-ajax.php';
 
 // load only the files needed for the WP admin back end, and load the front end files on the front end!
 if ( is_admin() ) {
