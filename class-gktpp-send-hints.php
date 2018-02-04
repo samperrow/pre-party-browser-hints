@@ -23,8 +23,6 @@ class GKTPP_Send_Hints {
 			return;
 		}
 
-
-
 		$lt = '<';
 		$gt = '>';
 		$quote = '"';
@@ -37,7 +35,7 @@ class GKTPP_Send_Hints {
 
 			// if the supplied URL does not have HTTP or HTTPS given, add a '//' to not confuse the browser
 			if ( ! preg_match( '/(http|https)/i', $hint_url ) ) {
-				$hint_url = '//' . $hint_url;
+				$hint_url .= '//';
 			}
 
 			if ( 'preload' === $hint_type ) {
@@ -73,10 +71,7 @@ function gktpp_send_hints() {
 	return $send_hints->send_resource_hints();
 }
 
-if ( get_option( 'gktpp_send_in_header' ) === 'HTTP Header' && ! is_admin() ) {
-	header( 'Link:' . gktpp_send_hints() );
-} else {
-	add_action( 'wp_head', function() {
-		printf( gktpp_send_hints() );
-	}, 1, 0 );
-}
+get_option( 'gktpp_send_in_header' ) === 'HTTP Header' && ! is_admin() 
+	? header( 'Link:' . gktpp_send_hints() ) 
+	: add_action( 'wp_head', function() { printf( gktpp_send_hints() ); }, 1, 0 );
+

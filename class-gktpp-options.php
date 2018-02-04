@@ -67,7 +67,6 @@ class GKTPP_Options {
 		?>
 		<div class="wrap">
 			<h2><?php esc_html_e( 'Pre* Party Plugin Settings', 'gktpp' ); ?></h2>
-
 			<form method="post" action="<?php admin_url( 'admin.php?page=gktpp-plugin-settings' ); ?>">
 				<?php ( isset( $_GET['tab'] ) ) ? $this -> admin_tabs( $_GET['tab'] ) : $this -> admin_tabs( 'insert-urls' ); ?>
 			</form>
