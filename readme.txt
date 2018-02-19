@@ -3,12 +3,12 @@ Contributors: Sam Perrow
 Donate link: https://www.paypal.me/samperrow
 Tags: W3C, DNS prefetch, prerender, preconnect, prefetch, preload, web perf, performance, speed, resource hints
 Requires at least: 4.4
-Tested up to: 4.9
+Tested up to: 4.9.4
 Stable tag: 4.4.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Take advantage of the browser resource hints DNS-prefetch, prerender, preconnect, prefetch, and preload to improve page load time.
+Take advantage of browser resource hints and plug-and-play features to improve page load time.
 
 == Description ==
 
@@ -74,8 +74,17 @@ Insert an absolute URL for a CSS, JavaScript, image, etc, and select the option 
 
 == Changelog ==
 
-1. Most recent update: Dec 22, 2017.
-2. Version 1.4.3
+1. Most recent update: Feb 19, 2018.
+2. Version 1.5.1
+
+Feb 19, 2018:
+1) Added ability for multisite install's to create a plugin table for each site upon creation.
+2) Added ability for multisite install's to delete the plugin table(s) for each site upon deletion.
+
+Feb 4, 2018:
+1) Optimize performance by forcing the PHP files that are needed only on the FE to be loaded only on the FE and same for BE PHP files. Doing this allowed code execution to be reduced from ~6 milliseconds to ~1 millisecond!
+2) Cleaned up some code to reduce amount of code.
+3) Tested compatibility with WP 4.9.2
 
 Dec 22, 2017:
 1) fixed small issue with setting the 'crossorigin' attribute.
