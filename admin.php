@@ -39,22 +39,31 @@ if ( is_admin() ) {
 	require_once GKT_PREP_PLUGIN_DIR . '/class-gktpp-table.php';
 	require_once GKT_PREP_PLUGIN_DIR . '/class-gktpp-options.php';
 	require_once GKT_PREP_PLUGIN_DIR . '/class-gktpp-enter-data.php';
-
-	add_action( 'admin_menu', 'gktpp_register_admin_files' );
-	register_activation_hook( __FILE__, 'gktpp_install_db_table' );
-	add_action( 'wpmu_new_blog', 'gktpp_install_db_table' );
-	add_action( 'delete_blog', 'gktpp_remove_ms_db_table' );	
-	add_filter( 'plugin_action_links_' . plugin_basename(__FILE__), 'gktpp_set_admin_links' );
 } else {
 	require_once GKT_PREP_PLUGIN_DIR . '/class-gktpp-send-hints.php';
-
-	add_action( 'wp_head', 'gktpp_disable_wp_hints', 1, 0 );
 }
 
 // this needs to be loaded front end and back end bc Ajax needs to be able to communicate between the two.
 require_once GKT_PREP_PLUGIN_DIR . '/class-gktpp-ajax.php';
 
+// do these things when plugin in activated.
+register_activation_hook( __FILE__, 'gktpp_install_db_table' );
+add_filter( 'plugin_action_links_' . plugin_basename(__FILE__), 'gktpp_set_admin_links' );
+
+
 // register and call the CSS and JS we need only on the needed page
+add_action( 'admin_menu', 'gktpp_register_admin_files' );
+
+
+// multisite install/delete db table
+add_action( 'wpmu_new_blog', 'gktpp_install_db_table' );
+add_action( 'delete_blog', 'gktpp_remove_ms_db_table' );
+
+
+// implement option to disable automatically generated resource hints
+add_action( 'wp_head', 'gktpp_disable_wp_hints', 1, 0 );
+
+
 function gktpp_register_admin_files() {
 	global $pagenow;
 
@@ -124,10 +133,10 @@ function gktpp_remove_ms_db_table( $blog_id ) {
 
 
 function gktpp_set_admin_links( $links ) {
-   $gktpp_links = array(
-	   '<a href="https://github.com/sarcastasaur/pre-party-browser-hints">View on GitHub</a>',
-	   '<a href="https://www.paypal.me/samperrow">Donate</a>' );
-   return array_merge( $links, $gktpp_links );
+	$gktpp_links = array(
+		'<a href="https://github.com/sarcastasaur/pre-party-browser-hints">View on GitHub</a>',
+		'<a href="https://www.paypal.me/samperrow">Donate</a>' );
+	return array_merge( $links, $gktpp_links );
 }
 
 function gktpp_disable_wp_hints() {

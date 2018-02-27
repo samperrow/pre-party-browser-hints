@@ -32,8 +32,7 @@ class GKTPP_Ajax {
 
 			if ( is_array( $domains ) ) {
 
-				$remove_prev_hints = $wpdb->delete( $table, array( 'ajax_domain' => 1 ), array( '%s' ) );
-				$wpdb->query( $remove_prev_hints );
+				$wpdb->delete( $table, array( 'ajax_domain' => 1 ) );
 
 				foreach ( $domains as $domain ) {
 
