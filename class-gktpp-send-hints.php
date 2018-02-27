@@ -71,7 +71,8 @@ function gktpp_send_hints() {
 	return $send_hints->send_resource_hints();
 }
 
-get_option( 'gktpp_send_in_header' ) === 'HTTP Header' && ! is_admin() 
+
+get_option( 'gktpp_send_in_header' ) === 'HTTP Header'
 	? header( 'Link:' . gktpp_send_hints() ) 
 	: add_action( 'wp_head', function() { printf( gktpp_send_hints() ); }, 1, 0 );
 

@@ -3,12 +3,12 @@ Contributors: Sam Perrow
 Donate link: https://www.paypal.me/samperrow
 Tags: W3C, DNS prefetch, prerender, preconnect, prefetch, preload, web perf, performance, speed, resource hints
 Requires at least: 4.4
-Tested up to: 4.9.2
+Tested up to: 4.9.4
 Stable tag: 4.4.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Take advantage of the browser resource hints DNS-prefetch, prerender, preconnect, prefetch, and preload to improve page load time.
+Take advantage of browser resource hints and plug-and-play features to improve page load time.
 
 == Description ==
 
@@ -73,6 +73,17 @@ Insert an absolute URL for a CSS, JavaScript, image, etc, and select the option 
 
 
 == Changelog ==
+
+1. Most recent update: Feb 26, 2018.
+2. Version 1.5.2
+
+Feb 26, 2018:
+1) modified call order of admin.php functions
+2) fixed SQL bug that occurred while deleting previous ajax hints
+
+Feb 19, 2018:
+1) Added ability for multisite install's to create a plugin table for each site upon creation.
+2) Added ability for multisite install's to delete the plugin table(s) for each site upon deletion.
 
 1. Most recent update: Feb 4, 2018.
 2. Version 1.5.0
