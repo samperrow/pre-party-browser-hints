@@ -74,8 +74,12 @@ Insert an absolute URL for a CSS, JavaScript, image, etc, and select the option 
 
 == Changelog ==
 
-1. Most recent update: Feb 19, 2018.
-2. Version 1.5.1
+1. Most recent update: Feb 26, 2018.
+2. Version 1.5.2
+
+Feb 26, 2018:
+1) modified call order of admin.php functions
+2) fixed SQL bug that occurred while deleting previous ajax hints
 
 Feb 19, 2018:
 1) Added ability for multisite install's to create a plugin table for each site upon creation.
