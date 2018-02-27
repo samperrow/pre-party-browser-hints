@@ -85,6 +85,9 @@ Feb 19, 2018:
 1) Added ability for multisite install's to create a plugin table for each site upon creation.
 2) Added ability for multisite install's to delete the plugin table(s) for each site upon deletion.
 
+1. Most recent update: Feb 4, 2018.
+2. Version 1.5.0
+
 Feb 4, 2018:
 1) Optimize performance by forcing the PHP files that are needed only on the FE to be loaded only on the FE and same for BE PHP files. Doing this allowed code execution to be reduced from ~6 milliseconds to ~1 millisecond!
 2) Cleaned up some code to reduce amount of code.

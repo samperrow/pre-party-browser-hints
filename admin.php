@@ -34,6 +34,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 define( 'GKT_PREP_PLUGIN', __FILE__ );
 define( 'GKT_PREP_PLUGIN_DIR', untrailingslashit( dirname( GKT_PREP_PLUGIN ) ) );
 
+
+// only load the PHP files that are needed on the WP admin back end, otherwise load the PHP files needed for the front end to optimize code execution time.
 if ( is_admin() ) {
 	require_once GKT_PREP_PLUGIN_DIR . '/class-gktpp-insert-to-db.php';
 	require_once GKT_PREP_PLUGIN_DIR . '/class-gktpp-table.php';
@@ -45,6 +47,7 @@ if ( is_admin() ) {
 
 // this needs to be loaded front end and back end bc Ajax needs to be able to communicate between the two.
 require_once GKT_PREP_PLUGIN_DIR . '/class-gktpp-ajax.php';
+
 
 // do these things when plugin in activated.
 register_activation_hook( __FILE__, 'gktpp_install_db_table' );
@@ -64,6 +67,19 @@ add_action( 'delete_blog', 'gktpp_remove_ms_db_table' );
 add_action( 'wp_head', 'gktpp_disable_wp_hints', 1, 0 );
 
 
+
+// load only the files needed for the WP admin back end, and load the front end files on the front end!
+if ( is_admin() ) {
+	add_action( 'admin_menu', 'gktpp_register_admin_files' );
+	register_activation_hook( __FILE__, 'gktpp_install_db_table' );
+	add_filter( 'plugin_action_links_' . plugin_basename(__FILE__), 'gktpp_set_admin_links' );
+} else {
+	add_action( 'wp_head', 'gktpp_disable_wp_hints', 1, 0 );
+}
+
+
+
+// register and call the CSS and JS we need only on the needed page
 function gktpp_register_admin_files() {
 	global $pagenow;
 
@@ -76,7 +92,13 @@ function gktpp_register_admin_files() {
 	}
 }
 
+
+
 function gktpp_install_db_table() {
+	if ( ! is_admin() ) {
+		exit;
+	}
+
     global $wpdb;
 
 	update_option( 'gktpp_preconnect_status', 'Yes', '', 'yes' );
@@ -121,6 +143,8 @@ function gktpp_install_db_table() {
 
 }
 
+
+
 function gktpp_remove_ms_db_table( $blog_id ) {
 	global $wpdb;
 
@@ -132,12 +156,24 @@ function gktpp_remove_ms_db_table( $blog_id ) {
 }
 
 
+
 function gktpp_set_admin_links( $links ) {
 	$gktpp_links = array(
 		'<a href="https://github.com/sarcastasaur/pre-party-browser-hints">View on GitHub</a>',
 		'<a href="https://www.paypal.me/samperrow">Donate</a>' );
 	return array_merge( $links, $gktpp_links );
 }
+
+
+
+function gktpp_set_admin_links( $links ) {
+   $gktpp_links = array(
+	   '<a href="https://github.com/sarcastasaur/pre-party-browser-hints">View on GitHub</a>',
+	   '<a href="https://www.paypal.me/samperrow">Donate</a>' );
+   return array_merge( $links, $gktpp_links );
+}
+
+
 
 function gktpp_disable_wp_hints() {
 	$option = get_option( 'gktpp_disable_wp_hints' );
