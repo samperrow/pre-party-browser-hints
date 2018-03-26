@@ -29,7 +29,9 @@ class GKTPP_Options {
 			check_admin_referer( 'gkt_preP-settings-page' );
 
 			if ( ( '' !== $_POST['url'] ) && ( isset( $_POST['hint_type'] ) ) ) {
-				GKTPP_Insert_To_DB::insert_data_to_db();
+				$send_hints = new GKTPP_Insert_To_DB;
+				$send_hints->insert_data_to_db();
+
 				$url_parameters = isset( $_GET['tab'] ) ? 'updated=true&tab=' . $_GET['tab'] : 'updated=true';
 				wp_safe_redirect( admin_url( 'admin.php?page=gktpp-plugin-settings&' . $url_parameters ) );
 				exit();
@@ -48,7 +50,7 @@ class GKTPP_Options {
 	public function admin_tabs( $current = 'insert-urls' ) {
 		$tabs = array(
 			'insert-urls' => 'Insert URLs',
-			'info' => 'Information',
+			'info' => 'Information'
 			);
 
 		echo '<h2 class="nav-tab-wrapper">';
@@ -279,9 +281,9 @@ class GKTPP_Options {
 		<span id="gktpp-preload" style="display: block; height: 30px;"></span>
 		<h2><?php echo __( 'Preload' ); ?></h2>
 
-		<p><?php echo __( 'Preloading <b>fetches one resource</b> proactively.' ); ?></p>
+		<p><?php echo __( 'Preload <b>fetches one resource</b> proactively.' ); ?></p>
 
-		<p><?php echo __( 'This works in a similar manner as prefetching, however the preload hint is <b>mandatory, high priority, used for current navigation, and non-render blocking</b>. Whereas prefetching resources is optional (to the browser), low priority, and used to load resources a visitor is likely to require in the future.' ); ?></p>
+		<p><?php echo __( 'This works in a similar manner to prefetching, however the preload hint is <b>mandatory, high priority, used for current navigation, and non-render blocking</b>. Whereas prefetching resources is optional (to the browser), low priority, and used to load resources a visitor is likely to require in the future.' ); ?></p>
 
 		<p><?php echo __( 'Let\'s see what the waterfall chart looks like after the following resource hints are placed into the top of a web page:' ); ?></p>
 
@@ -293,13 +295,17 @@ class GKTPP_Options {
 
 		<img class="gktpp-admin-pic" width="1046" height="597" src="<?php echo plugins_url( '/pre-party-browser-hints/images/jsbin-preload.jpg' ); ?>">
 
+		<h1><?php echo __( 'Caution!' ); ?></h1>
+		<p><?php echo __( 'Although the resources above may have been preloaded correctly, <b>they cannot be used on the web page yet</b>. In order to utilize preloaded resources, <b>you must reference them within your web page</b>. For example, if a CSS file were preloaded, you would include a link element with an href set to the CSS file that has been preloaded. Same goes for JS files, and all others.' ); ?></p>
 		<p><?php echo __( 'More information:' ); ?></p>
 		<ul>
 			<li><a href="https://w3c.github.io/preload/"><?php echo __( 'W3C: Preload' ); ?></a></li>
+			<li><a href="https://developers.google.com/web/updates/2016/03/link-rel-preload"><?php echo __( 'Prioritizing Your Resources with link rel=\'preload\'' ); ?></a></li>
 		</ul>
 		<hr>
 		<?php
 	}
+
 }
 
 if ( is_admin() )

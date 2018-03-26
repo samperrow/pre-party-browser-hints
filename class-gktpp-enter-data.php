@@ -104,133 +104,99 @@ class GKTPP_Enter_Data extends GKTPP_Table {
 		<?php
 	}
 
-     protected static function show_info() { ?>
-          <div class="gktpp-table info postbox">
+    protected static function show_info() { ?>
+        <div class="gktpp-table info postbox">
 
-               <h2 class="gktpp-collapse-btn" class="hndle ui-sortable-handle" style="text-align: center;">
-                    <span><?php esc_html_e( 'Settings', 'gktpp' ); ?></span>
-                    <button type="button" class="handlediv" aria-expanded="false">
-                         <span class="gktpp-toggle-indicator" aria-hidden="true"></span>
-                    </button>
-               </h2>
+            <h2 class="gktpp-collapse-btn" class="hndle ui-sortable-handle" style="text-align: center;">
+                <span><?php esc_html_e( 'Settings', 'gktpp' ); ?></span>
+                <button type="button" class="handlediv" aria-expanded="false">
+                        <span class="gktpp-toggle-indicator" aria-hidden="true"></span>
+                </button>
+            </h2>
 
-               <div class="gktpp-collapse-box">
+            <div class="gktpp-collapse-box">
+                <?php self::user_options(); ?>
+            </div>
 
-                    <?php
-                         self::preconnect_options();
+        </div>
+        <?php
+    }
 
-                         self::header_option();
+    private static function user_options() {
+        global $wpdb;
 
-                         self::disable_wp_hints();
-                     ?>
-               </div>
+        if ( isset( $_POST['gktpp-reset-preconnect'] ) ) {
+            update_option( 'gktpp_reset_preconnect', 'notset', 'yes' );
+            update_option( 'gktpp_preconnect_status', 'Yes', 'yes' );
+        }
 
-          </div>
-          <?php
-     }
+        if ( isset( $_POST['gktpp-save-user-options'] ) ) {
+            update_option( 'gktpp_reset_preconnect', 'notset', 'yes' );
+            update_option( 'gktpp_preconnect_status', $_POST['gktpp-preconnect-status'], 'yes' );
+            update_option( 'gktpp_disable_wp_hints', $_POST['gktpp-disable-wp-hints-option'], 'no' );
+            update_option( 'gktpp_send_in_header', $_POST['gktpp-send-in-header'], 'yes' );
+        } 
+        
+        $preconnect_status = get_option( 'gktpp_preconnect_status' );
+        $header_option = get_option( 'gktpp_send_in_header' );
+        $disable_hints = get_option( 'gktpp_disable_wp_hints' ); 
 
-     private static function preconnect_options() {
+        ?>
 
-          if ( isset( $_POST['gktpp-preconnect-status'] ) ) {
-               update_option( 'gktpp_preconnect_status', $_POST['gktpp-preconnect-status'], 'no' );
-          }
+       <form class="gktpp-form" method="post" action='<?php admin_url( "admin.php?page=gktpp-plugin-settings&_wpnonce=" );?>'>
 
-          if ( isset( $_POST['gktpp-reset-preconnect'] ) ) {
-               update_option( 'gktpp_reset_preconnect', 'notset', 'yes' );
-               update_option( 'gktpp_preconnect_status', 'Yes', 'yes' );
-          }
+            <div class="gktpp-div">
+                <h2 class="gktpp-hint"><?php esc_html_e( 'Automatically Set Preconnect Hints?', 'gktpp' ); ?></h2>
+                <button class="gktpp-help-tip-hint after">
+                    <p class='gktpp-help-tip-box'><?php esc_html_e( 'JavaScript, CSS, and images loaded from external domains will preconnect automatically.', 'gktpp' ); ?></p>
+                </button>
+            
+            <br />
+            <br />
 
-          ?>
-          <form class="gktpp-form" method="post" action='<?php admin_url( "admin.php?page=gktpp-plugin-settings&_wpnonce=" );?>'>
-               <?php $preconnect_status = get_option( 'gktpp_preconnect_status' ); ?>
-               <div>
-                    <h2 class="gktpp-hint"><?php esc_html_e( 'Automatically Set Preconnect Hints?', 'gktpp' ); ?></h2>
-                    <button class="gktpp-help-tip-hint after">
-                         <p class='gktpp-help-tip-box'><?php esc_html_e( 'JavaScript, CSS, and images loaded from external domains will preconnect automatically.', 'gktpp' ); ?></p>
-                    </button>
-               </div>
+                <select name="gktpp-preconnect-status">
+                    <option value="<?php echo esc_attr( 'Yes', 'gktpp' ); ?>" <?php if ( 'Yes' === $preconnect_status ) echo 'selected="selected"'; ?>><?php esc_html_e( 'Yes', 'gktpp' ); ?></option>
+                    <option value="<?php echo esc_attr( 'No', 'gktpp' ); ?>" <?php if ( 'No' === $preconnect_status ) echo 'selected="selected"'; ?>><?php esc_html_e( 'No', 'gktpp' ); ?></option>
+                </select>
+                <input type="submit" name="gktpp-reset-preconnect" class="button-secondary" value="<?php esc_attr_e( 'Reset Links', 'gktpp' ); ?>" />
+            </div>
 
-               <br />
-               <br />
-
-               <div>
-                    <select name="gktpp-preconnect-status">
-                         <option value="<?php echo esc_attr( 'Yes', 'gktpp' ); ?>" <?php if ( 'Yes' === $preconnect_status ) echo 'selected="selected"'; ?>><?php esc_html_e( 'Yes', 'gktpp' ); ?></option>
-                         <option value="<?php echo esc_attr( 'No', 'gktpp' ); ?>" <?php if ( 'No' === $preconnect_status ) echo 'selected="selected"'; ?>><?php esc_html_e( 'No', 'gktpp' ); ?></option>
-                    </select>
-                    <input style="margin: 0 25px;" type="submit" name="gktpp-save-preconnect" class="button button-primary" value="<?php esc_attr_e( 'Save', 'gktpp' ); ?>" />
-                    <input type="submit" name="gktpp-reset-preconnect" class="button-secondary" value="<?php esc_attr_e( 'Reset Links', 'gktpp' ); ?>" />
-               </div>
-          </form>
-
-          <br />
-
-          <?php
-
-     }
-
-     private static function header_option() {
-
-          if ( isset( $_POST['gktpp-save-header-option'] ) ) {
-               update_option( 'gktpp_send_in_header', $_POST['gktpp-send-in-header'], 'no' );
-          }
-
-          ?>
-
-          <form class="gktpp-form" method="post" action='<?php admin_url( "admin.php?page=gktpp-plugin-settings&_wpnonce=" );?>'>
-          <?php $header_option = get_option( 'gktpp_send_in_header' ); ?>
-
-               <h2 class="gktpp-hint"><?php esc_html_e( 'Send Resource Hints in the Header or <head>?', 'gktpp' ); ?></h2>
-               <button class="gktpp-help-tip-hint after">
+            <div class="gktpp-div">
+                <h2 class="gktpp-hint"><?php esc_html_e( 'Send Resource Hints in the Header or <head>?', 'gktpp' ); ?></h2>
+                <button class="gktpp-help-tip-hint after">
                     <p class='gktpp-help-tip-box'><?php esc_html_e( 'Embedding hints in the header allows the browser more time to process the hints, while loading in the <head> allows them to be more visible. Header is recommended.', 'gktpp' ); ?></p>
-               </button>
+                </button>
 
-               <br />
-               <br />
+                <br />
+                <br />
 
-               <select name="gktpp-send-in-header">
+                <select name="gktpp-send-in-header">
                     <option value="<?php echo esc_attr( 'HTTP Header', 'gktpp' ); ?>"<?php if ( 'HTTP Header' === $header_option ) echo 'selected="selected"'; ?>><?php esc_html_e( 'HTTP Header', 'gktpp' ); ?></option>
                     <option value="<?php echo esc_attr( 'Send in head', 'gktpp' ); ?>"<?php if ( 'Send in head' === $header_option ) echo 'selected="selected"'; ?>><?php esc_html_e( 'Send in <head>', 'gktpp' ); ?></option>
-               </select>
-               <input style="margin: 0 25px;" type="submit" name="gktpp-save-header-option" class="button button-primary" value="<?php esc_attr_e( 'Save', 'gktpp' ); ?>" />
-          </form>
+                </select>
+            </div>
 
-          <br />
-
-          <?php
-     }
-
-     protected static function disable_wp_hints() {
-
-          if ( isset( $_POST['gktpp-save-wp-hints-option'] ) ) {
-               update_option( 'gktpp_disable_wp_hints', $_POST['gktpp-disable-wp-hints-option'], 'no' );
-          }
-
-          ?>
-
-          <form class="gktpp-form" method="post" action='<?php admin_url( "admin.php?page=gktpp-plugin-settings&_wpnonce=" );?>'>
-          <?php $disable_hints = get_option( 'gktpp_disable_wp_hints' ); ?>
-
-               <h2 class="gktpp-hint"><?php esc_html_e( 'Disable Auto-Generated WordPress Resource Hints?', 'gktpp' ); ?></h2>
-               <button class="gktpp-help-tip-hint after">
+            <div class="gktpp-div">
+                <h2 class="gktpp-hint"><?php esc_html_e( 'Disable Auto-Generated WordPress Resource Hints?', 'gktpp' ); ?></h2>
+                <button class="gktpp-help-tip-hint after">
                     <p class='gktpp-help-tip-box'><?php esc_html_e( 'This option will remove three resource hints automatically generated by WordPress, as of 4.8.2.', 'gktpp' ); ?></p>
-               </button>
+                </button>
 
-               <br />
-               <br />
+                <br />
+                <br />
 
-               <select name="gktpp-disable-wp-hints-option">
+                <select name="gktpp-disable-wp-hints-option">
                     <option value="<?php echo esc_attr( 'Yes', 'gktpp' ); ?>"<?php if ( 'Yes' === $disable_hints ) echo 'selected="selected"'; ?>><?php esc_html_e( 'Yes', 'gktpp' ); ?></option>
                     <option value="<?php echo esc_attr( 'No', 'gktpp' ); ?>"<?php if ( 'No' === $disable_hints ) echo 'selected="selected"'; ?>><?php esc_html_e( 'No', 'gktpp' ); ?></option>
-               </select>
-               <input style="margin: 0 25px;" type="submit" name="gktpp-save-wp-hints-option" class="button button-primary" value="<?php esc_attr_e( 'Save', 'gktpp' ); ?>" />
-          </form>
+                </select>
+            </div>
 
-          <br />
+                <input style="margin: 0 25px;" type="submit" name="gktpp-save-user-options" class="button button-primary" value="<?php esc_attr_e( 'Save Options', 'gktpp' ); ?>" />
+        
+        </form>
 
-          <?php
-     }
 
+    <?php }
 
      protected static function contact_author() { ?>
           <div class="gktpp-table info postbox">
@@ -262,7 +228,7 @@ class GKTPP_Enter_Data extends GKTPP_Table {
                }
 
                if ( isset( $_POST['gktpp_send_email'] ) && isset( $_POST['gktpp_email'] ) ) {
-                    wp_mail( 'sam.perrow399@gmail.com', 'Pre Party User Message', 'From: ' . strip_tags($_POST['gktpp_email']) . ' Message: ' . strip_tags( $_POST['gktpp_text'] ) );
+                    wp_mail( 'sam.perrow399@gmail.com', 'Pre Party User Message', 'From: ' . strip_tags($_POST['gktpp_email']) . ' Message: <br /><br />' . strip_tags( $_POST['gktpp_text'] ) );
                }
           }
      }

@@ -3,12 +3,12 @@ Contributors: Sam Perrow
 Donate link: https://www.paypal.me/samperrow
 Tags: W3C, DNS prefetch, prerender, preconnect, prefetch, preload, web perf, performance, speed, resource hints
 Requires at least: 4.4
-Tested up to: 4.9.2
+Tested up to: 4.9.4
 Stable tag: 4.4.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Take advantage of the browser resource hints DNS-prefetch, prerender, preconnect, prefetch, and preload to improve page load time.
+Take advantage of browser resource hints and plug-and-play features to improve page load time.
 
 == Description ==
 
@@ -41,10 +41,10 @@ Insert a valid URL that a visitor to your website is likely to visit, and select
 Preconnect:
 For all HTTP requests loaded from external sources on a page web, add the domain name of each in the "Add New Resource Hint" form, select the option for "Preconnect". Preconnect is more powerful than DNS Prefetch, because it resolves three connections instead of one.
 
-If you would like to have preconnect links automatically set, by default the . If you would like these removed, just select the option to have these disabled at the bottom of the main plugin screen.
+If you would like to have preconnect links automatically set, simply install this plugin and allow it do it the magic for you. If you would like this option disabled, just select the option to have these disabled near the bottom of the main plugin screen.
 
 How are the preconnect hints automatically set?
-By default, after installing this plugin and loading a page from your website, a JavaScript file will be loaded which searches for the domain names from resources loaded from external domains. These domains are sent via Ajax to your website's MySQL database, which are then used as resource hints for subsequent page loads.
+By default, after installing this plugin and loading a page from your website, a JavaScript file will be loaded which searches for the domain names from resources loaded from external domains. These domains are sent via Ajax to your website's MySQL database, which are then used as resource hints for subsequent page loads. If you would like to re-set these links, just click the 'Reset Links' button on the plugin screen.
 
 Preload:
 Insert an absolute URL for a CSS, JavaScript, image, etc, and select the option "Preload".
@@ -74,8 +74,26 @@ Insert an absolute URL for a CSS, JavaScript, image, etc, and select the option 
 
 == Changelog ==
 
-1. Most recent update: Feb 4, 2018.
-2. Version 1.5.0
+1. Most recent update: March 27, 2018.
+2. Version 1.5.3
+
+March 27, 2018:
+1) improved automatic discovery of external domains by using the Resource Timing API.
+2) cleaned up UI by consolidating form elements and save buttons into one.
+3) improved ability for preload hints 'as' attribute to be determined when user inputs data.
+4) improved sanitization and overall URL entry process.
+5) cleaned up the code which governs how hints are delivered from the db to the browser.
+6) 'crossorigin' attribute is now determined on the back end, or from the JS ajax script.
+7) added more detailed information to the Preload information section.
+8) modified db table schema- added 3 columns: 'as_attr', 'type_attr', and 'crossorigin' for those respective attributes which browsers are getting more particular about.
+
+Feb 26, 2018:
+1) modified call order of admin.php functions
+2) fixed SQL bug that occurred while deleting previous ajax hints
+
+Feb 19, 2018:
+1) Added ability for multisite install's to create a plugin table for each site upon creation.
+2) Added ability for multisite install's to delete the plugin table(s) for each site upon deletion.
 
 Feb 4, 2018:
 1) Optimize performance by forcing the PHP files that are needed only on the FE to be loaded only on the FE and same for BE PHP files. Doing this allowed code execution to be reduced from ~6 milliseconds to ~1 millisecond!

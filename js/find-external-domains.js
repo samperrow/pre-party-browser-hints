@@ -4,62 +4,47 @@ if (typeof jQuery == 'undefined' || (!window.jQuery)) {
     document.getElementsByTagName('head')[0].appendChild(script);
 }
 
-function gktppFindExtDomains() {
-    "use strict";
-    function getProtocolAndDomain(str, m, i) {
-        return str.split(m, i).join(m).length;
-    }
+var resourceArr = [];
 
-    function findDomain( url ) {
-        var lastSlash = getProtocolAndDomain(url, "/", 3);
-        return url.slice(0, lastSlash );
-    }
-
-    function combineAndVerifySources( elem ) {
-        var newArr = [];
-        var homeURL = new RegExp( document.location.origin, "g");
-        var base64 = new RegExp( 'data:image', "g");
-        var checkCSS = new RegExp( ".css", "g");
-
-        for (var i in elem) {
-            if ( elem[i].src && (!elem[i].src.match(homeURL)) && (!elem[i].src.match(base64)) ) {
-                newArr.push(findDomain(elem[i].src));
-            }
-            else if ( elem[i].href && (elem[i].href.match(checkCSS)) && (!elem[i].href.match(homeURL)) ) {
-                newArr.push(findDomain(elem[i].href));
-            }
-        }
-        return newArr;
-    }
-
-   function uniqueDomains(arr) {
-       var a = [];
-       for (var i=0, l=arr.length; i<l; i++)
-           if (a.indexOf(arr[i]) === -1 && arr[i] !== '')
-               a.push(arr[i]);
-       return a;
-   }
-
-    function findScriptSources() {
-        var scripts = combineAndVerifySources(document.getElementsByTagName("script"));
-        var styles = combineAndVerifySources(document.getElementsByTagName("link"));
-        var images = combineAndVerifySources(document.getElementsByTagName("img"));
-        return uniqueDomains(scripts.concat( images, styles ) );
-    }
-
-    var sendAjax = function() {
-        var domains = findScriptSources();
-
-        var dataObj = {
-            action: 'gktpp_post_domain_names',
-            data : domains,
-        };
-
-        if ( dataObj.data.length > 0 ) {
-            jQuery.post(ajax_object.ajax_url, dataObj );
-            console.log(dataObj.data);
-        }
-
-    }();
+function sanitizeURL(url) {
+    return url.replace(/[\[\]\{\}\<\>\'\"\\(\)\*\+\\^\$\|]/g, '');
 }
-setTimeout( gktppFindExtDomains, 6000);
+
+function findResourceSources() {
+    var resources = window.performance.getEntriesByType('resource');
+    resourceArr = [];
+    var hostDomainName = document.location.origin;
+
+    for (var i = 0; i < resources.length; i++ ) {
+        var newStr = resources[i].name.split('/');
+        var protocolAndDomain = newStr[0] + '//' + newStr[2];           
+
+        if ( protocolAndDomain !== hostDomainName && resourceArr.indexOf(protocolAndDomain) === -1 ) {
+            resourceArr.push( sanitizeURL(protocolAndDomain ) );
+        }
+    }
+    return resourceArr;
+}
+
+function determineCrossorigin( domains ) {
+    var crossoriginArr = [];
+    for (var i = 0; i < domains.length; i++) {
+        crossoriginArr.push( domains[i].match(/fonts.googleapis.com|fonts.gstatic.com/) ? 'crossorigin' : null );
+    }
+    return crossoriginArr;
+}
+
+function sendAjax() {
+    var dataObj = {
+        action: 'post_domain_names',
+        data: findResourceSources(),
+        crossorigin: determineCrossorigin(resourceArr)
+    };
+
+    if ( dataObj.data.length > 0 ) {
+        jQuery.post(ajax_object.ajax_url, dataObj);
+        console.log(dataObj.data);
+    }
+}
+
+setTimeout( sendAjax, 1000);
