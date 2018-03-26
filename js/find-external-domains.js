@@ -47,4 +47,4 @@ function sendAjax() {
     }
 }
 
-setTimeout( sendAjax, 1000);
+setTimeout( sendAjax, 6000);
