@@ -6,12 +6,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class GKTPP_Insert_To_DB {
 
-	private $as_attr = '';
-	private $type_attr = '';
-	private $crossorigin = '';
-	private $url = '';
-	private $header_str = '';
-	private $head_str = '';
+	public $as_attr = '';
+	public $type_attr = '';
+	public $crossorigin = '';
+	public $url = '';
+	public $header_str = '';
+	public $head_str = '';
 
 	public function insert_data_to_db() {
 		if ( ! is_admin() ) {
@@ -33,13 +33,12 @@ class GKTPP_Insert_To_DB {
 	}
 
 	private static function santize_url( $url ) {
-		return esc_url( preg_replace('/[^A-z0-9\.\/\-:\s]/', '', $url) );
+		return esc_url( preg_replace('/[^A-z0-9?=\.\/\-:\s]/', '', $url) );
 	}
 
-	private function create_str( $url, $hint_type, $as_attr, $type_attr, $crossorigin ) {
+	public function create_str( $url, $hint_type, $as_attr, $type_attr, $crossorigin ) {
 		$hint_type = strtolower( $hint_type );
 		$header_as_attr = $header_type_attr = $head_as_attr = $head_type_attr = '';
-
 
 		if ( strlen($as_attr) > 0 ) {
 			$header_as_attr = " as=$as_attr;";
@@ -55,14 +54,18 @@ class GKTPP_Insert_To_DB {
 			$crossorigin = " $crossorigin";
 		}
 
-		$this->head_str = "<link rel='$hint_type' href='$url'$head_as_attr$head_type_attr$crossorigin>";
+		$this->head_str = "<link href='$url' rel='$hint_type'$head_as_attr$head_type_attr$crossorigin>";
 
 		$header = "<$url>; rel=$hint_type;$header_as_attr$head_type_attr$crossorigin";
 		return $this->header_str = substr( $header, 0, strrpos( $header, ';') ) . ',';
 	}
 
-	private function get_preload_attrs( $url ) {
-		$file_type = strrchr( $url, '.' );
+	public function get_attributes( $url ) {
+		$basename = pathinfo( $url )['basename'];
+
+		$file_type = strlen( strpbrk( $basename, '?' ) ) > 0
+			? strrchr( explode( '?', $basename )[0], '.' ) 
+			: strrchr( $basename, '.' );
 
 		switch ( $file_type ) {
 			case '.js':
@@ -110,25 +113,25 @@ class GKTPP_Insert_To_DB {
 				$this->as_attr = 'embed';
 				break;
 			default:
-				$this->as_attr = 'fetch';
+				$this->as_attr = '';
 		}
+
+		$this->check_for_crossorigin( $url );
+		return $this->as_attr;
 	}
 
 	private function check_for_crossorigin( $url ) {
-		if ( preg_match( '/(fonts.googleapis.com|fonts.gstatic.com)/i', $url ) ) {
-			$this->crossorigin = 'crossorigin';
-		}
+		return $this->crossorigin = preg_match( '/(fonts.googleapis.com|fonts.gstatic.com)/i', $url ) ? 'crossorigin' : '';
 	}
 
 	private function configure_hint_attrs( $url, $hint_type ) {
 
-		$this->check_for_crossorigin( $url );
+		$this->get_attributes( $url );
 
 		if ( $hint_type === 'DNS-Prefetch' || $hint_type === 'Preconnect' ) {
 			return $this->filter_for_domain_name( $url );
-		} elseif ( $hint_type === 'Preload' ) {
-			$this->get_preload_attrs( $url );
 		}
+		
 		return $this->url = $url;
 	}
 

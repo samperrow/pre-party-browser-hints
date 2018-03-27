@@ -26,23 +26,39 @@ class GKTPP_Ajax {
 		if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
 			global $wpdb;
 	     	$table = $wpdb->prefix . 'gktpp_table';
-			$domains = isset( $_POST['data'] ) ? wp_unslash( $_POST['data'] ) : '';
-			$crossorigins = isset( $_POST['crossorigin'] ) ? wp_unslash( $_POST['crossorigin'] ) : '';
+			$urls = isset( $_POST['urls'] ) ? wp_unslash( $_POST['urls'] ) : '';
 
-			if ( is_array( $domains ) ) {
+			if ( is_array( $urls ) ) {
 
 				$wpdb->delete( $table, array( 'ajax_domain' => 1 ), array( '%s' ) );
 
-				foreach ( $domains as $key => $domain ) {
+				foreach ( $urls as $key => $url ) {
+
+					$gktpp_insert_to_db = new GKTPP_Insert_To_DB();
+					$gktpp_insert_to_db->get_attributes( $url );
+					
+
+					$as_attr = $gktpp_insert_to_db->as_attr;
+					$type_attr = $gktpp_insert_to_db->type_attr;
+					$crossorigin = $gktpp_insert_to_db->crossorigin;
+
+					$gktpp_insert_to_db->create_str( $url, 'Preconnect', $as_attr, $type_attr, $crossorigin );
+
+					$header_string = $gktpp_insert_to_db->header_str;
+					$head_string = $gktpp_insert_to_db->head_str;
 
 					$wpdb->insert( $table, array(
-											'url' => $domain,
+											'url' => $url,
 											'hint_type' => 'Preconnect',
 											'ajax_domain' => 1,
-											'crossorigin' => $crossorigins[$key] ),
+											'as_attr' => $as_attr,
+											'type_attr' => $type_attr,
+											'crossorigin' => $crossorigin,
+											'header_string' => $header_string,
+											'head_string' => $head_string ),
 
 											array(
-												'%s', '%s', '%d', '%s' ) );
+												'%s', '%s', '%d', '%s', '%s', '%s', '%s', '%s', '%s' ) );
 
 				}
 			}
