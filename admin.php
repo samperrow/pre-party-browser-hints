@@ -111,7 +111,7 @@ function gktpp_install_db_table() {
 	
 	foreach ( $siteTableNames as $siteTableName ) {
 
-		$sql = "CREATE TABLE IF NOT EXISTS $siteTableName (
+		$sql = "CREATE TABLE $siteTableName (
 			id INT(9) NOT NULL AUTO_INCREMENT,
 			url VARCHAR(255) DEFAULT '' NOT NULL,
 			hint_type VARCHAR(55) DEFAULT '' NOT NULL,
@@ -120,6 +120,8 @@ function gktpp_install_db_table() {
 			type_attr VARCHAR(55) DEFAULT '',
 			crossorigin VARCHAR(55) DEFAULT '',
 			ajax_domain TINYINT(1) DEFAULT 0 NOT NULL,
+			header_string VARCHAR(255) DEFAULT '' NOT NULL,
+			head_string VARCHAR(255) DEFAULT '' NOT NULL,
 			PRIMARY KEY  (id)
 		) $charset_collate;";
 

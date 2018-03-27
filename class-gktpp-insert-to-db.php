@@ -10,6 +10,8 @@ class GKTPP_Insert_To_DB {
 	private $type_attr = '';
 	private $crossorigin = '';
 	private $url = '';
+	private $header_str = '';
+	private $head_str = '';
 
 	public function insert_data_to_db() {
 		if ( ! is_admin() ) {
@@ -19,16 +21,44 @@ class GKTPP_Insert_To_DB {
 		$table = $wpdb->prefix . 'gktpp_table';
 		$hint_type = isset( $_POST['hint_type'] ) ? stripslashes( $_POST['hint_type'] ) : '';
 		isset( $_POST['url'] ) ? $this->configure_hint_attrs( self::santize_url( $_POST['url'] ), $hint_type ) : '';
-		
 
-		$sql = "INSERT INTO $table ( id, url, hint_type, status, as_attr, type_attr, crossorigin, ajax_domain ) 
-				VALUES ( null, %s, %s, 'Enabled', %s, %s, %s, 0 )";
+		$this->create_str( $this->url, $hint_type, $this->as_attr, $this->type_attr, $this->crossorigin );
 
-		$wpdb->query( $wpdb->prepare( $sql, array( $this->url, $hint_type, $this->as_attr, $this->type_attr, $this->crossorigin ) ) );
+		$sql = "INSERT INTO $table ( id, url, hint_type, status, as_attr, type_attr, crossorigin, ajax_domain, header_string, head_string ) 
+				VALUES ( null, %s, %s, 'Enabled', %s, %s, %s, %d, %s, %s )";
+
+		$wpdb->query( 
+			$wpdb->prepare( $sql, 
+			array( $this->url, $hint_type, $this->as_attr, $this->type_attr, $this->crossorigin, 0, $this->header_str, $this->head_str) ) );
 	}
 
 	private static function santize_url( $url ) {
 		return esc_url( preg_replace('/[^A-z0-9\.\/\-:\s]/', '', $url) );
+	}
+
+	private function create_str( $url, $hint_type, $as_attr, $type_attr, $crossorigin ) {
+		$hint_type = strtolower( $hint_type );
+		$header_as_attr = $header_type_attr = $head_as_attr = $head_type_attr = '';
+
+
+		if ( strlen($as_attr) > 0 ) {
+			$header_as_attr = " as=$as_attr;";
+			$head_as_attr = " as='$as_attr'";
+		}
+
+		if ( strlen($type_attr) > 0 ) {
+			$header_type_attr = " type=$type_attr;";
+			$head_type_attr = " type='$type_attr'";
+		}
+
+		if ( strlen($crossorigin) > 0 ) {
+			$crossorigin = " $crossorigin";
+		}
+
+		$this->head_str = "<link rel='$hint_type' href='$url'$head_as_attr$head_type_attr$crossorigin>";
+
+		$header = "<$url>; rel=$hint_type;$header_as_attr$head_type_attr$crossorigin";
+		return $this->header_str = substr( $header, 0, strrpos( $header, ';') ) . ',';
 	}
 
 	private function get_preload_attrs( $url ) {
