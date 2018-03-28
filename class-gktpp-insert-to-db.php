@@ -14,9 +14,11 @@ class GKTPP_Insert_To_DB {
 	public $head_str = '';
 
 	public function insert_data_to_db() {
+		
 		if ( ! is_admin() ) {
 			exit;
 		}
+
 		global $wpdb;
 		$table = $wpdb->prefix . 'gktpp_table';
 		$hint_type = isset( $_POST['hint_type'] ) ? stripslashes( $_POST['hint_type'] ) : '';

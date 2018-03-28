@@ -42,3 +42,5 @@ get_option( 'gktpp_send_in_header' ) === 'HTTP Header'
 	? header( 'Link:' . gktpp_send_hints() ) 
 	: add_action( 'wp_head', function() { printf( gktpp_send_hints() ); }, 1, 0 );
 
+$time2 = (microtime(true) - $time1) * 1000;
+echo '<h1>' . $time2 . '</h1>';

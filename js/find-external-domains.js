@@ -30,7 +30,7 @@ function findResourceSources() {
 
 function sendAjax() {
     findResourceSources();
-
+    
     if ( dataObj.urls.length > 0 ) {
         jQuery.post(ajax_object.ajax_url, dataObj);
         console.log(dataObj);
