@@ -85,7 +85,8 @@ March 27, 2018:
 5) cleaned up the code which governs how hints are delivered from the db to the browser.
 6) 'crossorigin' attribute is now determined on the back end, or from the JS ajax script.
 7) added more detailed information to the Preload information section.
-8) modified db table schema- added 3 columns: 'as_attr', 'type_attr', and 'crossorigin' for those respective attributes which browsers are getting more particular about.
+8) modified db table schema- added 5 columns: 'as_attr', 'type_attr', 'crossorigin', 'header_string', and 'head_string' for those respective attributes which browsers are getting more particular about. The last two columns are helpful for storing the specified links in the db, and delivering them very quickly to the browser.
+9) the improvements above have been able to bring total PHP execution time on the front end down to around 0.2-0.5 milliseconds. Essentially I am shifting more of the calculations/computations to the back end when the user inputs data rather than the front end.
 
 Feb 26, 2018:
 1) modified call order of admin.php functions
