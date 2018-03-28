@@ -38,7 +38,7 @@ class GKTPP_Insert_To_DB {
 
 	public function create_str( $url, $hint_type, $as_attr, $type_attr, $crossorigin ) {
 		$hint_type = strtolower( $hint_type );
-		$header_as_attr = $header_type_attr = $head_as_attr = $head_type_attr = '';
+		$header_as_attr = $header_type_attr = $head_as_attr = $head_type_attr = $header_crossorigin = $head_crossorigin = '';
 
 		if ( strlen($as_attr) > 0 ) {
 			$header_as_attr = " as=$as_attr;";
@@ -51,12 +51,13 @@ class GKTPP_Insert_To_DB {
 		}
 
 		if ( strlen($crossorigin) > 0 ) {
-			$crossorigin = " $crossorigin";
+			$header_crossorigin = " $crossorigin;";
+			$head_crossorigin = " $crossorigin";
 		}
 
-		$this->head_str = "<link href='$url' rel='$hint_type'$head_as_attr$head_type_attr$crossorigin>";
+		$this->head_str = "<link href='$url' rel='$hint_type'$head_as_attr$head_type_attr$head_crossorigin>";
 
-		$header = "<$url>; rel=$hint_type;$header_as_attr$head_type_attr$crossorigin";
+		$header = "<$url>; rel=$hint_type;$header_as_attr$head_type_attr$header_crossorigin";
 		return $this->header_str = substr( $header, 0, strrpos( $header, ';') ) . ',';
 	}
 
