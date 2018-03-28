@@ -120,7 +120,7 @@ class GKTPP_Insert_To_DB {
 		return $this->as_attr;
 	}
 
-	private function check_for_crossorigin( $url ) {
+	public function check_for_crossorigin( $url ) {
 		return $this->crossorigin = preg_match( '/(fonts.googleapis.com|fonts.gstatic.com)/i', $url ) ? 'crossorigin' : '';
 	}
 
@@ -131,7 +131,7 @@ class GKTPP_Insert_To_DB {
 		if ( $hint_type === 'DNS-Prefetch' || $hint_type === 'Preconnect' ) {
 			return $this->filter_for_domain_name( $url );
 		}
-		
+
 		return $this->url = $url;
 	}
 

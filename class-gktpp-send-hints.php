@@ -25,24 +25,7 @@ class GKTPP_Send_Hints {
 
 		foreach ( $links as $key => $value ) {
 
-			// $hint_url = esc_url( $value->url );
-			// $hint_type = sanitize_text_field( strtolower($value->hint_type) );
-			// $as_attr = $value->as_attr;
-			// $as_attr = !empty( $value->as_attr ) ? "as=$value->as_attr," : ',';
-
-			// $crossorigin = $value->crossorigin;
-			// $header_crossorigin = '';
-
-			// if ( !empty( $crossorigin ) ) {
-			// 	$header_crossorigin = ' ' . $crossorigin . ';';
-			// 	$crossorigin = ' ' . $crossorigin;
-			// }
-
-
-
 			$this->resourceHintElemStr .= ( $destination === 'HTTP Header' )
-				// ? "<$hint_url>; rel=$hint_type; $header_crossorigin $as_attr "
-				// : "<link rel='$hint_type' href='$hint_url' as='$as_attr'$crossorigin>";
 				? $value->header_string
 				: $value->head_string;
 		}
