@@ -27,14 +27,11 @@ function findResourceSources() {
     }
 }
 
-
-function sendAjax() {
+setTimeout( function() {
     findResourceSources();
     
     if ( dataObj.urls.length > 0 ) {
         jQuery.post(ajax_object.ajax_url, dataObj);
-        console.log(dataObj);
+        console.log(dataObj.urls);
     }
-}
-
-setTimeout( sendAjax, 1000);
+}, 6000);

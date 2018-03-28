@@ -37,7 +37,6 @@ class GKTPP_Ajax {
 					$gktpp_insert_to_db = new GKTPP_Insert_To_DB();
 					$gktpp_insert_to_db->get_attributes( $url );
 					$gktpp_insert_to_db->check_for_crossorigin( $url );
-					
 
 					$as_attr = $gktpp_insert_to_db->as_attr;
 					$type_attr = $gktpp_insert_to_db->type_attr;

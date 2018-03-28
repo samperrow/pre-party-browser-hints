@@ -31,8 +31,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$time1 = microtime(true);
-
 define( 'GKT_PREP_PLUGIN', __FILE__ );
 define( 'GKT_PREP_PLUGIN_DIR', untrailingslashit( dirname( GKT_PREP_PLUGIN ) ) );
 

@@ -24,7 +24,6 @@ class GKTPP_Send_Hints {
 		$destination = get_option( 'gktpp_send_in_header' );
 
 		foreach ( $links as $key => $value ) {
-
 			$this->resourceHintElemStr .= ( $destination === 'HTTP Header' )
 				? $value->header_string
 				: $value->head_string;
@@ -41,6 +40,3 @@ function gktpp_send_hints() {
 get_option( 'gktpp_send_in_header' ) === 'HTTP Header'
 	? header( 'Link:' . gktpp_send_hints() ) 
 	: add_action( 'wp_head', function() { printf( gktpp_send_hints() ); }, 1, 0 );
-
-$time2 = (microtime(true) - $time1) * 1000;
-echo '<h1>' . $time2 . '</h1>';
