@@ -28,6 +28,7 @@ class GKTPP_Send_Hints {
 				? $value->header_string
 				: $value->head_string;
 		}
+					
 		return $this->resourceHintElemStr;
 	}
 }

@@ -74,7 +74,7 @@ Insert an absolute URL for a CSS, JavaScript, image, etc, and select the option 
 
 == Changelog ==
 
-1. Most recent update: March 27, 2018.
+1. Most recent update: March 29, 2018.
 2. Version 1.5.3
 
 March 27, 2018:
@@ -83,10 +83,10 @@ March 27, 2018:
 3) improved ability for preload hints 'as' attribute to be determined when user inputs data.
 4) improved sanitization and overall URL entry process.
 5) cleaned up the code which governs how hints are delivered from the db to the browser.
-6) 'crossorigin' attribute is now determined on the back end, or from the JS ajax script.
+6) 'crossorigin' attribute is now determined on the back end.
 7) added more detailed information to the Preload information section.
 8) modified db table schema- added 5 columns: 'as_attr', 'type_attr', 'crossorigin', 'header_string', and 'head_string' for those respective attributes which browsers are getting more particular about. The last two columns are helpful for storing the specified links in the db, and delivering them very quickly to the browser.
-9) the improvements above have been able to bring total PHP execution time on the front end down to around 0.2-0.5 milliseconds. Essentially I am shifting more of the calculations/computations to the back end when the user inputs data rather than the front end.
+9) the improvements above have been able to bring total PHP execution time on the front end down to around 0.07-0.1 milliseconds (that's 0.00007 seconds). Essentially I am shifting more of the calculations/computations to the back end when the user inputs data rather than the front end.
 
 Feb 26, 2018:
 1) modified call order of admin.php functions

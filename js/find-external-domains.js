@@ -19,8 +19,8 @@ function findResourceSources() {
 
     for (var i = 0; i < resources.length; i++ ) {
         var newStr = resources[i].name.split('/');
-        var protocolAndDomain = newStr[0] + '//' + newStr[2];           
-
+        var protocolAndDomain = newStr[0] + '//' + newStr[2];
+        
         if ( protocolAndDomain !== hostDomainName && dataObj.urls.indexOf(protocolAndDomain) === -1 ) {
             dataObj.urls.push( sanitizeURL(protocolAndDomain ) );
         }
