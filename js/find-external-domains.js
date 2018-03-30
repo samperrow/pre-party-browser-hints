@@ -34,4 +34,4 @@ setTimeout( function() {
         jQuery.post(ajax_object.ajax_url, dataObj);
         console.log(dataObj.urls);
     }
-}, 6000);
+}, 1000);
