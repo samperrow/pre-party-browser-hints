@@ -6,8 +6,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class GKTPP_Send_Hints {
 
-	private $resourceHintElemStr = '';
-
 	public function __construct() {
 		add_action( 'wp_head', array( $this, 'send_resource_hints' ), 1, 0 );
 	}
@@ -22,18 +20,19 @@ class GKTPP_Send_Hints {
 		}
 		
 		$destination = get_option( 'gktpp_send_in_header' );
+		$resourceHintStr = '';
 
 		foreach ( $links as $key => $value ) {
-			$this->resourceHintElemStr .= ( $destination === 'HTTP Header' )
+			$resourceHintStr .= ( $destination === 'HTTP Header' )
 				? $value->header_string
 				: $value->head_string;
 		}
 
 		if ( $destination === 'HTTP Header' ) {
-			$this->resourceHintElemStr = preg_replace('/,,/', ',', $this->resourceHintElemStr );
+			$resourceHintStr = preg_replace('/,,/', ',', $resourceHintStr );
 		}
 					
-		return $this->resourceHintElemStr = preg_replace('/,,/', ',', $this->resourceHintElemStr );
+		return $resourceHintStr;
 	}
 }
 
@@ -46,4 +45,6 @@ get_option( 'gktpp_send_in_header' ) === 'HTTP Header'
 	? header( 'Link:' . gktpp_send_hints() ) 
 	: add_action( 'wp_head', function() { printf( gktpp_send_hints() ); }, 1, 0 );
 
-echo phpversion();
+echo phpversion() . '<br/>';
+
+echo preg_replace('/,,/', ',', '<https://fonts.googleapis.com>; rel=preconnect; crossorigin,<https://www.google-analytics.com>; rel=preconnect,<https://fonts.gstatic.com>; rel=preconnect; crossorigin,,' );
