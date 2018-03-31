@@ -5,7 +5,7 @@ if (typeof jQuery == 'undefined' || (!window.jQuery)) {
 }
 
 var gktppDataObj = {
-    action: 'post_domain_names',
+    action: 'gktpp_post_domain_names',
     urls: []
 };
 
@@ -27,11 +27,16 @@ function findResourceSources() {
     }
 }
 
-setTimeout( function() {
-    findResourceSources();
-    
-    if ( gktppDataObj.urls.length > 0 ) {
-        jQuery.post(ajax_object.ajax_url, gktppDataObj);
-        console.log(gktppDataObj.urls);
-    }
-}, 1000);
+var scripts = document.getElementsByTagName('script');
+var lastScript = scripts[scripts.length-1].src;
+
+if ( lastScript.match(/find-external-domains.js/) ) {
+    setTimeout( function() {
+        findResourceSources();
+        
+        if ( gktppDataObj.urls.length > 0 ) {
+            // jQuery.post(ajax_object.ajax_url, gktppDataObj);
+            console.log(gktppDataObj.urls);
+        }
+    }, 1000);
+}

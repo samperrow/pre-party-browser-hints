@@ -39,16 +39,7 @@ if ( is_admin() ) {
 	require_once GKT_PREP_PLUGIN_DIR . '/class-gktpp-table.php';
 	require_once GKT_PREP_PLUGIN_DIR . '/class-gktpp-options.php';
 	require_once GKT_PREP_PLUGIN_DIR . '/class-gktpp-enter-data.php';
-
-	
-
-
-
-
 } else {
-
-
-
 	require_once GKT_PREP_PLUGIN_DIR . '/class-gktpp-send-hints.php';
 }
 

@@ -8,8 +8,8 @@ class GKTPP_Ajax {
 
 	public function __construct() {
 		add_action( 'wp_head', array( $this, 'add_domain_js' ), 1, 0 );
-		add_action( 'wp_ajax_post_domain_names', array( $this, 'post_domain_names' ) );
-		add_action( 'wp_ajax_nopriv_post_domain_names', array( $this, 'post_domain_names' ) );
+		add_action( 'wp_ajax_gktpp_post_domain_names', array( $this, 'gktpp_post_domain_names' ) );
+		add_action( 'wp_ajax_nopriv_gktpp_post_domain_names', array( $this, 'gktpp_post_domain_names' ) );
 	}
 
 	public function add_domain_js() {
@@ -21,7 +21,7 @@ class GKTPP_Ajax {
 		) );
 	}
 
-	public function post_domain_names() {
+	public function gktpp_post_domain_names() {
 
 		if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
 			global $wpdb;

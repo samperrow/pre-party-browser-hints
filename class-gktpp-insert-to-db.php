@@ -61,11 +61,10 @@ class GKTPP_Insert_To_DB {
 
 		$header = "<$url>; rel=$hint_type;$header_as_attr$head_type_attr$header_crossorigin";
 
-		if ( strrpos( $header, ';') === (strlen( $header) - 1) ) {
+		if ( strrpos( $header, ';') === (strlen( $header) - 1) ) {		// replace the last semi-colon and replace it with a comma.
 			$header = substr( $header, 0, strrpos( $header, ';') ) . ',';
 		}
 
-		// $this->header_str = substr( $header, 0, strrpos( $header, ';') . ',' );
 		return $this->header_str = $header;
 	}
 
