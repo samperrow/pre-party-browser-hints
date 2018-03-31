@@ -28,8 +28,12 @@ class GKTPP_Send_Hints {
 				? $value->header_string
 				: $value->head_string;
 		}
+
+		if ( $destination === 'HTTP Header' ) {
+			$this->resourceHintElemStr = preg_replace('/,,/', ',', $this->resourceHintElemStr );
+		}
 					
-		return preg_replace('/,,/', ',', $this->resourceHintElemStr );
+		return $this->resourceHintElemStr = preg_replace('/,,/', ',', $this->resourceHintElemStr );
 	}
 }
 
@@ -41,3 +45,5 @@ function gktpp_send_hints() {
 get_option( 'gktpp_send_in_header' ) === 'HTTP Header'
 	? header( 'Link:' . gktpp_send_hints() ) 
 	: add_action( 'wp_head', function() { printf( gktpp_send_hints() ); }, 1, 0 );
+
+echo phpversion();
