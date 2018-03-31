@@ -40,5 +40,5 @@ if ( lastScript.match(/find-external-domains.js/) ) {
             jQuery.post(ajax_object.ajax_url, gktppDataObj);
             console.log(gktppDataObj.urls);
         }
-    }, 1000);
+    }, 6000);
 }

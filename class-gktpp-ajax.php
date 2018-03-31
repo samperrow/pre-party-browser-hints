@@ -7,13 +7,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 class GKTPP_Ajax {
 
 	public function __construct() {
-		add_action( 'wp_head', array( $this, 'add_domain_js' ), 1, 0 );
+		add_action( 'wp_footer', array( $this, 'add_domain_js' ), 1, 0 );
 		add_action( 'wp_ajax_gktpp_post_domain_names', array( $this, 'gktpp_post_domain_names' ) );
 		add_action( 'wp_ajax_nopriv_gktpp_post_domain_names', array( $this, 'gktpp_post_domain_names' ) );
 	}
 
 	public function add_domain_js() {
-		wp_register_script( 'gktpp-find-domain-names', plugins_url( '/pre-party-browser-hints/js/find-external-domains.js' ), null, '1.5.3', false );
+		wp_register_script( 'gktpp-find-domain-names', plugins_url( '/pre-party-browser-hints/js/find-external-domains.js' ), null, '1.5.3', true );
 		wp_enqueue_script( 'gktpp-find-domain-names' );
 
 		wp_localize_script('gktpp-find-domain-names', 'ajax_object', array(

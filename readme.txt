@@ -21,13 +21,17 @@ This plugin allows users to easily embed resource hints from domain names and UR
 
 == Frequently Asked Questions ==
 
-FAQ
-
 How can I determine which URL's to enter?
 Go to https://www.webpagetest.org, enter your website's URL, and click on the "waterfall" chart that appears.
 a) For all resources that are loaded from external websites or domain names, I recommend inserting a preconnect link for that domain name (Preconnect is more powerful than DNS Prefetch, as it takes care of the DNS lookup, initial connection, and SSL negotiation).
 b) If you have a very popular link on your site that you are confident a user would navigate towards, I recommend inserting a link for that URL with the "prerender" option set.
 c) Prefetch and preload work similarly, which allows single resources to be loaded before they are requested by the user. Use this for loading images, videos, JavaScript files, etc.
+
+How does the plugin automatically add preconnect hints?
+After installing the plugin (or clicking the 'Reset Links' button), a JavaScript file will be sent to your website which captures the resources loaded from external domains and sends them via Ajax to your database. This script fires 6 seconds after the website has been loaded, to allow for all resources to be completely loaded.
+
+Many websites have cache plugins that can interfere with this functionality. I have configured the JavaScript file to only function when it is in its original folder (not been merged/combined). This is to prevent it from triggering after every page load. To get this funtionality working properly, ensure that this file (/wp-content/plugins/pre-party-browser-hints/js/find-external-domains.js) is not effected by any cache plugins.
+
 
 DNS Prefetch:
 For all HTTP requests loaded from external sources on a page web, add the domain name of each in the "Add New Resource Hint" form, select the option for "DNS Prefetch".
@@ -43,12 +47,10 @@ For all HTTP requests loaded from external sources on a page web, add the domain
 
 If you would like to have preconnect links automatically set, simply install this plugin and allow it do it the magic for you. If you would like this option disabled, just select the option to have these disabled near the bottom of the main plugin screen.
 
-How are the preconnect hints automatically set?
-By default, after installing this plugin and loading a page from your website, a JavaScript file will be loaded which searches for the domain names from resources loaded from external domains. These domains are sent via Ajax to your website's MySQL database, which are then used as resource hints for subsequent page loads. If you would like to re-set these links, just click the 'Reset Links' button on the plugin screen.
-
 Preload:
 Insert an absolute URL for a CSS, JavaScript, image, etc, and select the option "Preload".
 
+To activate the preloaded resource, you must call that file in HTML as you would any file. For example, if you preload 'jquery.js', you must insert a script tag with a src attribute set to 'jquery.js'. Otherwise the preloaded link will be saved in the browser, but not activated in the DOM.
 
 
 == Screenshots ==
@@ -69,15 +71,16 @@ Insert an absolute URL for a CSS, JavaScript, image, etc, and select the option 
 2. Send me an email at sam.perrow399@gmail.com
 
 
-
+== Arbitrary section ==
+Special thanks to Marcus and Paul of [Agent Design](https://www.agentdesign.co.uk) and [Grant](https://grantdb.ca/) for taking the time to test out new features for this plugin and reporting the bugs they've found to me. This saved me from lots of unhappy emails!  
 
 
 == Changelog ==
 
-1. Most recent update: March 29, 2018.
+1. Most recent update: March 31, 2018.
 2. Version 1.5.3
 
-March 27, 2018:
+March 31, 2018:
 1) improved automatic discovery of external domains by using the Resource Timing API.
 2) cleaned up UI by consolidating form elements and save buttons into one.
 3) improved ability for preload hints 'as' attribute to be determined when user inputs data.
