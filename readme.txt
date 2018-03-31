@@ -1,10 +1,11 @@
 === Pre* Party Resource Hints ===
-Contributors: Sam Perrow
+Contributors: samperrow
 Donate link: https://www.paypal.me/samperrow
 Tags: W3C, DNS prefetch, prerender, preconnect, prefetch, preload, web perf, performance, speed, resource hints
 Requires at least: 4.4
 Tested up to: 4.9.4
-Stable tag: 4.4.2
+Stable tag: 1.5.3
+Requires PHP: 5.3.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -63,16 +64,9 @@ To activate the preloaded resource, you must call that file in HTML as you would
 
 4. screenshot-4.png
 
-
-
-
 1. [Support Forum](https://wordpress.org/support/plugin/pre-party-browser-hints)
 
 2. Send me an email at sam.perrow399@gmail.com
-
-
-== Arbitrary section ==
-Special thanks to Marcus and Paul of [Agent Design](https://www.agentdesign.co.uk) and [Grant](https://grantdb.ca/) for taking the time to test out new features for this plugin and reporting the bugs they've found to me. This saved me from lots of unhappy emails!  
 
 
 == Changelog ==
@@ -146,7 +140,6 @@ July 6:
    6) modified schema for gktpp_table; and removed the other table;
    7) improved security;
 
-
 June 11:
 1) tested compat with wp 4.8
 
@@ -168,3 +161,12 @@ Nov 4:
 
 Nov 3:
 1) initial commit.
+
+== Upgrade Notice ==
+
+= 1.5.3 =
+Much improved and simplified functionality. See Changelog section.
+
+
+== Special Thanks ==
+Special thanks to Marcus and Paul of [Agent Design](https://www.agentdesign.co.uk) and [Grant](https://grantdb.ca/) for taking the time to test out new features for this plugin and reporting the bugs they've found to me. This saved me from lots of unhappy emails!  
