@@ -60,7 +60,13 @@ class GKTPP_Insert_To_DB {
 		$this->head_str = "<link href='$url' rel='$hint_type'$head_as_attr$head_type_attr$head_crossorigin>";
 
 		$header = "<$url>; rel=$hint_type;$header_as_attr$head_type_attr$header_crossorigin";
-		return $this->header_str = substr( $header, 0, strrpos( $header, ';') . ',' );
+
+		if ( strrpos( $header, ';') === (strlen( $header) - 1) ) {
+			$header = substr( $header, 0, strrpos( $header, ';') ) . ',';
+		}
+
+		// $this->header_str = substr( $header, 0, strrpos( $header, ';') . ',' );
+		return $this->header_str = $header;
 	}
 
 	public function get_attributes( $url ) {
