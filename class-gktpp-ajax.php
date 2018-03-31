@@ -6,16 +6,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class GKTPP_Ajax {
 
-	public function check_or_send_ajax() {
-		if ( ( get_option( 'gktpp_preconnect_status' ) === 'Yes' ) && ( get_option( 'gktpp_reset_preconnect' ) === 'notset' ) ) {
-			add_action( 'wp_footer', array( $this, 'gktpp_add_domain_js' ) );
-			add_action( 'wp_ajax_gktpp_post_domain_names', array( $this, 'gktpp_post_domain_names' ) );
-			add_action( 'wp_ajax_nopriv_gktpp_post_domain_names', array( $this, 'gktpp_post_domain_names' ) );
-		}
+	public function __construct() {
+		add_action( 'wp_footer', array( $this, 'add_domain_js' ), 1, 0 );
+		add_action( 'wp_ajax_gktpp_post_domain_names', array( $this, 'gktpp_post_domain_names' ) );
+		add_action( 'wp_ajax_nopriv_gktpp_post_domain_names', array( $this, 'gktpp_post_domain_names' ) );
 	}
 
-	public function gktpp_add_domain_js() {
-		wp_register_script( 'gktpp-find-domain-names', plugins_url( '/pre-party-browser-hints/js/find-external-domains.js' ), null, null, true );
+	public function add_domain_js() {
+		wp_register_script( 'gktpp-find-domain-names', plugins_url( '/pre-party-browser-hints/js/find-external-domains.js' ), null, '1.5.3', true );
 		wp_enqueue_script( 'gktpp-find-domain-names' );
 
 		wp_localize_script('gktpp-find-domain-names', 'ajax_object', array(
@@ -28,25 +26,42 @@ class GKTPP_Ajax {
 		if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
 			global $wpdb;
 	     	$table = $wpdb->prefix . 'gktpp_table';
-			$domains = isset( $_POST['data'] ) ? wp_unslash( $_POST['data'] ) : '';
+			$urls = isset( $_POST['urls'] ) ? wp_unslash( $_POST['urls'] ) : '';
 
-			if ( is_array( $domains ) ) {
+			if ( is_array( $urls ) ) {
 
-				$remove_prev_hints = $wpdb->delete( $table, array( 'ajax_domain' => 1 ), array( '%s' ) );
-				$wpdb->query( $remove_prev_hints );
+				$wpdb->delete( $table, array( 'ajax_domain' => 1 ), array( '%s' ) );
 
-				foreach ( $domains as $domain ) {
+				foreach ( $urls as $key => $url ) {
 
-					$add_new_hints = $wpdb->insert( $table, array(
-											'url' => $domain,
+					$gktpp_insert_to_db = new GKTPP_Insert_To_DB();
+					$gktpp_insert_to_db->get_attributes( $url );
+					$gktpp_insert_to_db->check_for_crossorigin( $url );
+
+					$as_attr = $gktpp_insert_to_db->as_attr;
+					$type_attr = $gktpp_insert_to_db->type_attr;
+					$crossorigin = $gktpp_insert_to_db->crossorigin;
+
+					$gktpp_insert_to_db->create_str( $url, 'Preconnect', $as_attr, $type_attr, $crossorigin );
+
+					$header_string = $gktpp_insert_to_db->header_str;
+					$head_string = $gktpp_insert_to_db->head_str;
+
+					$wpdb->insert( $table, array(
+											'url' => $url,
 											'hint_type' => 'Preconnect',
-											'ajax_domain' => 1 ),
+											'ajax_domain' => 1,
+											'as_attr' => $as_attr,
+											'type_attr' => $type_attr,
+											'crossorigin' => $crossorigin,
+											'header_string' => $header_string,
+											'head_string' => $head_string ),
+
 											array(
-												'%s', '%s', '%d' ) );
-					$wpdb->query( $add_new_hints );
+												'%s', '%s', '%d', '%s', '%s', '%s', '%s', '%s', '%s' ) );
+
 				}
 			}
-
 			update_option( 'gktpp_reset_preconnect', 'set', 'yes' );
 			wp_die();
 		} else {
@@ -56,5 +71,4 @@ class GKTPP_Ajax {
 	}
 }
 
-$check_preconnect = new GKTPP_Ajax();
-$check_preconnect->check_or_send_ajax();
+new GKTPP_Ajax();
