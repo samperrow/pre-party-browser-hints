@@ -30,13 +30,15 @@ function findResourceSources() {
 var scripts = document.getElementsByTagName('script');
 var lastScript = scripts[scripts.length-1].src;
 
+
+// if this js code gets cached in another file, prevent it from firing every page load because that can be really annoying.
 if ( lastScript.match(/find-external-domains.js/) ) {
     setTimeout( function() {
         findResourceSources();
         
         if ( gktppDataObj.urls.length > 0 ) {
-            // jQuery.post(ajax_object.ajax_url, gktppDataObj);
+            jQuery.post(ajax_object.ajax_url, gktppDataObj);
             console.log(gktppDataObj.urls);
         }
-    }, 1000);
+    }, 6000);
 }
