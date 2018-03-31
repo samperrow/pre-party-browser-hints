@@ -4,7 +4,7 @@ if (typeof jQuery == 'undefined' || (!window.jQuery)) {
     document.getElementsByTagName('head')[0].appendChild(script);
 }
 
-var dataObj = {
+var gktppDataObj = {
     action: 'post_domain_names',
     urls: []
 };
@@ -21,8 +21,8 @@ function findResourceSources() {
         var newStr = resources[i].name.split('/');
         var protocolAndDomain = newStr[0] + '//' + newStr[2];
         
-        if ( protocolAndDomain !== hostDomainName && dataObj.urls.indexOf(protocolAndDomain) === -1 ) {
-            dataObj.urls.push( sanitizeURL(protocolAndDomain ) );
+        if ( protocolAndDomain !== hostDomainName && gktppDataObj.urls.indexOf(protocolAndDomain) === -1 ) {
+            gktppDataObj.urls.push( sanitizeURL(protocolAndDomain ) );
         }
     }
 }
@@ -30,8 +30,8 @@ function findResourceSources() {
 setTimeout( function() {
     findResourceSources();
     
-    if ( dataObj.urls.length > 0 ) {
-        jQuery.post(ajax_object.ajax_url, dataObj);
-        console.log(dataObj.urls);
+    if ( gktppDataObj.urls.length > 0 ) {
+        jQuery.post(ajax_object.ajax_url, gktppDataObj);
+        console.log(gktppDataObj.urls);
     }
 }, 1000);
