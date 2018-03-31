@@ -29,7 +29,7 @@ class GKTPP_Send_Hints {
 				: $value->head_string;
 		}
 					
-		return $this->resourceHintElemStr;
+		return preg_replace('/,,/', ',', $this->resourceHintElemStr );
 	}
 }
 
