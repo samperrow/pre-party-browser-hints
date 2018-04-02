@@ -71,8 +71,15 @@ To activate the preloaded resource, you must call that file in HTML as you would
 
 == Changelog ==
 
-1. Most recent update: March 31, 2018.
-2. Version 1.5.3
+1. Most recent update: April 2, 2018.
+2. Version 1.5.3.1
+3. This new version updates the database table schema used, so users must delete their existing hints and re-add them in order for them this plugin to work properly. Sorry for the inconvienence, but these changes are needed to improve functionality.
+
+April 2, 2018:
+1) removed unneccessary call on admin side for creating table.
+2) fixed some bugs relating to how URL's are inserted and how the crossorigin attribute is created.
+3) fixed bug in creating the header string.
+4) fixed bug relating to how user options were saved on admin side.
 
 March 31, 2018:
 1) improved automatic discovery of external domains by using the Resource Timing API.
@@ -164,8 +171,8 @@ Nov 3:
 
 == Upgrade Notice ==
 
-= 1.5.3 =
-Much improved and simplified functionality. See Changelog section.
+= 1.5.3.1 =
+Much improved and simplified functionality. Fixed some bugs with 1.5.3. See Changelog section.
 
 
 == Special Thanks ==

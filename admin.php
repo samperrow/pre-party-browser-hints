@@ -3,11 +3,11 @@
  * Plugin Name: Pre* Party Resource Hints
  * Plugin URI: https://wordpress.org/plugins/pre-party-browser-hints/
  * Description: Take advantage of the browser resource hints DNS-Prefetch, Prerender, Preconnect, Prefetch, and Preload to improve page load time.
- * Version: 1.5.3
+ * Version: 1.5.3.1
  * Author: Sam Perrow
  * Author URI: https://www.linkedin.com/in/sam-perrow
  * License: GPL2
- * last edited March 31, 2018
+ * last edited April 2, 2018
  *
  * Copyright 2018  Sam Perrow  (email : sam.perrow399@gmail.com)
  *
@@ -51,7 +51,6 @@ if ( ( get_option( 'gktpp_preconnect_status' ) === 'Yes' ) && ( get_option( 'gkt
 
 // do these things when plugin in activated or upgraded.
 register_activation_hook( __FILE__, 'gktpp_install_db_table' );
-add_action( 'admin_init', 'gktpp_install_db_table' );
 add_filter( 'plugin_action_links_' . plugin_basename(__FILE__), 'gktpp_set_admin_links' );
 
 
