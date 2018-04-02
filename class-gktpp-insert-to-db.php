@@ -59,7 +59,7 @@ class GKTPP_Insert_To_DB {
 
 		$this->head_str = "<link href='$url' rel='$hint_type'$head_as_attr$head_type_attr$head_crossorigin>";
 
-		$header = "<$url>; rel=$hint_type;$header_as_attr$head_type_attr$header_crossorigin";
+		$header = "<$url>; rel=$hint_type;$header_as_attr$header_type_attr$header_crossorigin";
 
 		if ( strrpos( $header, ';') === (strlen( $header) - 1) ) {		// replace the last semi-colon and replace it with a comma.
 			$header = substr( $header, 0, strrpos( $header, ';') ) . ',';
@@ -124,7 +124,10 @@ class GKTPP_Insert_To_DB {
 				$this->as_attr = '';
 		}
 
-		$this->check_for_crossorigin( $url );
+		if ( strlen($this->crossorigin) === 0) {
+			$this->check_for_crossorigin( $url );
+		}
+
 		return $this->as_attr;
 	}
 

@@ -131,7 +131,6 @@ class GKTPP_Enter_Data extends GKTPP_Table {
         }
 
         if ( isset( $_POST['gktpp-save-user-options'] ) ) {
-            update_option( 'gktpp_reset_preconnect', 'notset', 'yes' );
             update_option( 'gktpp_preconnect_status', $_POST['gktpp-preconnect-status'], 'yes' );
             update_option( 'gktpp_disable_wp_hints', $_POST['gktpp-disable-wp-hints-option'], 'no' );
             update_option( 'gktpp_send_in_header', $_POST['gktpp-send-in-header'], 'yes' );
