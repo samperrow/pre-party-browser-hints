@@ -1081,7 +1081,6 @@ class GKTPP_WP_List_Table {
 
 			if ( 'cb' === $column_key )
 				$class[] = 'check-column';
-			// if ( 'someURL' === $column_key )
 
 			elseif ( in_array( $column_key, array( 'posts', 'comments', 'links' ) ) )
 				$class[] = 'num';

@@ -35,10 +35,7 @@ var lastScript = scripts[scripts.length-1].src;
 if ( lastScript.match(/find-external-domains.js/) ) {
     setTimeout( function() {
         findResourceSources();
-        
-        if ( gktppDataObj.urls.length > 0 ) {
-            jQuery.post(ajax_object.ajax_url, gktppDataObj);
-            console.log(gktppDataObj.urls);
-        }
+        jQuery.post(ajax_object.ajax_url, gktppDataObj);
+        console.log(gktppDataObj.urls);
     }, 6000);
 }

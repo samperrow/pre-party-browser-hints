@@ -87,11 +87,11 @@ div.gktpp-code-block {
     max-width: 95%;
 }
 
-table.someurls #someURL {
+table.urls th#url {
     width: 50%;
 }
 
-table.someurls thead tr th {
+table.urls thead tr th {
     max-width: 10% !important;
 }
 

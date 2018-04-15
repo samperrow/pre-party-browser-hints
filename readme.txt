@@ -4,7 +4,7 @@ Donate link: https://www.paypal.me/samperrow
 Tags: W3C, DNS prefetch, prerender, preconnect, prefetch, preload, web perf, performance, speed, resource hints
 Requires at least: 4.4
 Tested up to: 4.9.4
-Stable tag: 1.5.3.1
+Stable tag: 1.5.3.2
 Requires PHP: 5.3.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -13,7 +13,13 @@ Take advantage of browser resource hints and plug-and-play features to improve p
 
 == Description ==
 
-This plugin allows users to easily embed resource hints from domain names and URL's from external sources to improve page load time. DNS prefetch, prerender, preconnect, prefetch, and preload are all supported. By default, preconnect hints will automatically be enabled for all pages and posts. You have the choice to include these hints in the HTTP header or the website's <head>.
+This plugin allows users to automatically and easily embed resource hints to improve page load time. 
+
+DNS prefetch, prerender, preconnect, prefetch, and preload are all supported. 
+
+After installation, preconnect hints will automatically be created the next time your website is visited.
+
+You have the choice to include these resource hints in the HTTP header or the website's <head>.
 
 == Installation ==
 
@@ -29,10 +35,9 @@ b) If you have a very popular link on your site that you are confident a user wo
 c) Prefetch and preload work similarly, which allows single resources to be loaded before they are requested by the user. Use this for loading images, videos, JavaScript files, etc.
 
 How does the plugin automatically add preconnect hints?
-After installing the plugin (or clicking the 'Reset Links' button), a JavaScript file will be sent to your website which captures the resources loaded from external domains and sends them via Ajax to your database. This script fires 6 seconds after the website has been loaded, to allow for all resources to be completely loaded.
+After installing the plugin (or clicking the 'Reset Links' button), a JavaScript file will be sent to your website which captures the resources loaded from external domains and sends them via Ajax to your database six seconds after the page has been loaded. This script fires 6 seconds after the website has been loaded, to allow for all resources to be completely loaded.
 
 Many websites have cache plugins that can interfere with this functionality. I have configured the JavaScript file to only function when it is in its original folder (not been merged/combined). This is to prevent it from triggering after every page load. To get this funtionality working properly, ensure that this file (/wp-content/plugins/pre-party-browser-hints/js/find-external-domains.js) is not effected by any cache plugins.
-
 
 DNS Prefetch:
 For all HTTP requests loaded from external sources on a page web, add the domain name of each in the "Add New Resource Hint" form, select the option for "DNS Prefetch".
@@ -71,9 +76,15 @@ To activate the preloaded resource, you must call that file in HTML as you would
 
 == Changelog ==
 
-1. Most recent update: April 2, 2018.
-2. Version 1.5.3.1
+1. Most recent update: April 14, 2018.
+2. Version 1.5.3.2
 3. This new version updates the database table schema used, so users must delete their existing hints and re-add them in order for them this plugin to work properly. Sorry for the inconvienence, but these changes are needed to improve functionality.
+
+April 14, 2018:
+1) Fixed some UI issues on admin page (URL input field not taking up max space, jQuery sometimes not loading).
+2) removed check to see if JS preconnect hint array had items before sending it to db (if it was empty, this caused the script to keep firing over and over).
+3) changed some text in description.
+4) cleaned up old variable's on class-gktpp-table.php file.
 
 April 2, 2018:
 1) removed unneccessary call on admin side for creating table.

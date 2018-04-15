@@ -7,7 +7,7 @@
  * Author: Sam Perrow
  * Author URI: https://www.linkedin.com/in/sam-perrow
  * License: GPL2
- * last edited April 2, 2018
+ * last edited April 14, 2018
  *
  * Copyright 2018  Sam Perrow  (email : sam.perrow399@gmail.com)
  *
@@ -154,5 +154,5 @@ function gktpp_disable_wp_hints() {
 		remove_action('wp_head', 'wp_resource_hints', 2);
 	}
 }
-//
+
 ?>
