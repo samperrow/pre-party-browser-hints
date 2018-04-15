@@ -21,7 +21,7 @@ class GKTPP_Enter_Data extends GKTPP_Table {
 
 				<tr>
 					<td style="text-align: right;" colspan="1"><?php esc_html_e( 'URL:', 'gktpp' ); ?></td>
-					<td colspan="4">
+					<td style="width: 100%;" colspan="4">
 						<label for="url">
 							<input placeholder="<?php esc_attr_e( 'Enter valid domain or URL...', 'gktpp' ); ?>" class="widefat" name="url" />
 						</label>
