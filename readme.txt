@@ -76,9 +76,15 @@ To activate the preloaded resource, you must call that file in HTML as you would
 
 == Changelog ==
 
-1. Most recent update: April 2, 2018.
-2. Version 1.5.3.1
+1. Most recent update: April 14, 2018.
+2. Version 1.5.3.2
 3. This new version updates the database table schema used, so users must delete their existing hints and re-add them in order for them this plugin to work properly. Sorry for the inconvienence, but these changes are needed to improve functionality.
+
+April 14, 2018:
+1) Fixed some UI issues on admin page (URL input field not taking up max space, jQuery sometimes not loading).
+2) removed check to see if JS preconnect hint array had items before sending it to db (if it was empty, this caused the script to keep firing over and over).
+3) changed some text in description.
+4) cleaned up old variable's on class-gktpp-table.php file.
 
 April 2, 2018:
 1) removed unneccessary call on admin side for creating table.

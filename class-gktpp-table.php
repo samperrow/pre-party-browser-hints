@@ -14,8 +14,8 @@ class GKTPP_Table extends GKTPP_WP_List_Table {
 
 	public function __construct() {
 		parent::__construct( array(
-			'singular' => 'someURL',
-			'plural'   => 'someURLs',
+			'singular' => 'url',
+			'plural'   => 'urls',
 			'ajax'     => false,
 		) );
 	}
@@ -55,11 +55,11 @@ class GKTPP_Table extends GKTPP_WP_List_Table {
 
 	public function get_columns() {
 	     $columns = array(
-	          'cb'  	  		=> '<input type="checkbox" />',
-	          'someURL'   		=> __( 'URL', 'gktpp' ),
-	          'hint_type' 		=> __( 'Hint Type', 'gktpp' ),
-			'status'    		=> __( 'Status', 'gktpp' ),
-			'author'    		=> __( 'Author', 'gktpp' ),
+			'cb'			=> '<input type="checkbox" />',
+	        'url'			=> __( 'URL', 'gktpp' ),
+			'hint_type'		=> __( 'Hint Type', 'gktpp' ),
+			'status'		=> __( 'Status', 'gktpp' ),
+			'author'		=> __( 'Author', 'gktpp' ),
 	     );
 
 	     return $columns;
@@ -112,7 +112,7 @@ class GKTPP_Table extends GKTPP_WP_List_Table {
 	public function column_default( $item, $column_name ) {
 
 		switch ( $column_name ) {
-			case 'someURL':
+			case 'url':
 				return $item['url'];
 
 			case 'hint_type':
@@ -131,14 +131,14 @@ class GKTPP_Table extends GKTPP_WP_List_Table {
 	}
 
 	public function column_cb( $id ) {
-		return sprintf( '<input type="checkbox" name="someURL[]" value="%1$s" />', $id['id'] );
+		return sprintf( '<input type="checkbox" name="url[]" value="%1$s" />', $id['id'] );
 	}
 
 	public function get_sortable_columns() {
 		$sortable_columns = array(
-			'url'       => array( 'url', true ),
-			'hint_type' => array( 'hint_type', false ),
-			'status'    => array( 'status', false ),
+			'url'			=> array( 'url', true ),
+			'hint_type' 	=> array( 'hint_type', false ),
+			'status'    	=> array( 'status', false ),
 		);
 
 		return $sortable_columns;
@@ -215,11 +215,11 @@ class GKTPP_Table extends GKTPP_WP_List_Table {
 	}
 
 	private function process_bulk_action() {
-		if ( ! isset( $_POST['someURL'] ) )
+		if ( ! isset( $_POST['url'] ) )
 			return;
 
 		global $wpdb;
-		$url_ids = filter_input( INPUT_POST, 'someURL', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY );
+		$url_ids = filter_input( INPUT_POST, 'url', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY );
 
 		if ( ( in_array( $this->current_action(), array( 'deleted', 'enabled', 'disabled' ) ) ) && ( is_array( $url_ids ) ) && ( ! empty( $url_ids )) ) {
 
