@@ -131,7 +131,7 @@ class GKTPP_Table extends GKTPP_WP_List_Table {
 	}
 
 	public function column_cb( $id ) {
-		return sprintf( '<input type="checkbox" name="url[]" value="%1$s" />', $id['id'] );
+		return sprintf( '<input type="checkbox" name="urlValue[]" value="%1$s" />', $id['id'] );
 	}
 
 	public function get_sortable_columns() {
@@ -210,34 +210,27 @@ class GKTPP_Table extends GKTPP_WP_List_Table {
 			'enabled'  => __( 'Enable', 'gktpp' ),
 			'disabled' => __( 'Disable', 'gktpp' ),
 		);
-
 		return $actions;
 	}
 
 	private function process_bulk_action() {
-		if ( ! isset( $_POST['url'] ) )
+		if ( ! isset( $_POST['urlValue'] ) )
 			return;
 
 		global $wpdb;
-		$url_ids = filter_input( INPUT_POST, 'url', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY );
+		$urls = filter_input( INPUT_POST, 'urlValue', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY );
 
-		if ( ( in_array( $this->current_action(), array( 'deleted', 'enabled', 'disabled' ) ) ) && ( is_array( $url_ids ) ) && ( ! empty( $url_ids )) ) {
+		if ( ( in_array( $this->current_action(), array( 'deleted', 'enabled', 'disabled' ) ) ) && ( is_array( $urls ) ) ) {
 
-			foreach ( $url_ids as $value ) {
-				settype( $value, 'int' );
+			foreach ( $urls as $url ) {
+				settype( $url, 'int' );
 
 				( ( $this->current_action() === 'enabled' ) || ( 'disabled' === $this->current_action() ) )
-					? self::check_status( $value )
-					: self::delete_url( $value );
+					? self::check_status( $url )
+					: self::delete_url( $url );
 			}
 
-			if ( 'enabled' === $this->current_action() ) {
-				GKTPP_Options::url_updated( $this->current_action() );
-			} elseif ( 'disabled' === $this->current_action() ) {
-				GKTPP_Options::url_updated( $this->current_action() );
-			} elseif ( 'deleted' === $this->current_action() ) {
-				GKTPP_Options::url_updated( $this->current_action() );
-			}
+			GKTPP_Options::url_updated( $this->current_action() );
 		}
 	}
 
