@@ -1,6 +1,6 @@
 if (typeof jQuery == 'undefined' || (!window.jQuery)) {
     var script = document.createElement('script');
-    script.src = document.location.origin + '/wp-includes/js/jquery/jquery.js';
+    script.src = document.location.href + '/wp-includes/js/jquery/jquery.js';
     document.getElementsByTagName('head')[0].appendChild(script);
 }
 
