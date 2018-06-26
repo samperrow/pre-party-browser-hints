@@ -3,8 +3,8 @@ Contributors: samperrow
 Donate link: https://www.paypal.me/samperrow
 Tags: W3C, DNS prefetch, prerender, preconnect, prefetch, preload, web perf, performance, speed, resource hints
 Requires at least: 4.4
-Tested up to: 4.9.4
-Stable tag: 1.5.3.3
+Tested up to: 4.9.6
+Stable tag: 1.5.3.4
 Requires PHP: 5.3.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -76,15 +76,18 @@ To activate the preloaded resource, you must call that file in HTML as you would
 
 == Changelog ==
 
-1. Most recent update: April 27, 2018.
-2. Version 1.5.3.3
+1. Most recent update: June 25, 2018.
+2. Version 1.5.3.4
 3. This version fixes two bugs- one preventing users from deleting resource hints, the other was an error some users could see upon plugin installation.
+
+June 25, 2018:
+1) updated a change in my GitHub username onto file paths that display HTML links on the info tab.
+2) 
+
 
 April 27, 2018:
 1) fixed bug preventing users from deleting or updating resource hint statuses.
 2) fixed bug some users could notice upon installation/reactivation in the admin.php file. 
-
-
 
 April 14, 2018:
 1) Fixed some UI issues on admin page (URL input field not taking up max space, jQuery sometimes not loading).
@@ -192,5 +195,3 @@ Nov 3:
 Much improved and simplified functionality. Fixed some bugs with 1.5.3. See Changelog section.
 
 
-== Special Thanks ==
-Special thanks to Marcus and Paul of [Agent Design](https://www.agentdesign.co.uk) and [Grant](https://grantdb.ca/) for taking the time to test out new features for this plugin and reporting the bugs they've found to me. This saved me from lots of unhappy emails!  
