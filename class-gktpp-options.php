@@ -148,7 +148,7 @@ class GKTPP_Options {
 		<p><?php echo __( 'As you can see, the typical way DNS lookups occur is when each resource is requested by the browser. By inserting the below DNS prefetch hints at the top of the page, the browser will know to perform the DNS resolution before it is asked:' ); ?></p>
 
 		<div class="gktpp-code-block">
-			<script src="https://gist.github.com/sarcastasaur/9b71fa3be44258a9af670f799effaad6.js"></script>
+			<script src="https://gist.github.com/samperrow/9b71fa3be44258a9af670f799effaad6.js"></script>
 		</div>
 
 		<p><?php echo __( 'The waterfall chart below clearly shows when the DNS resolution is made <a href="https://output.jsbin.com/keninux/2">after taking advantage of DNS prefetching:' ); ?></a></p>
@@ -212,7 +212,7 @@ class GKTPP_Options {
 		<p><?php echo __( '<a href="https://output.jsbin.com/fenamaq">This demo website</a> has the URL "https://www.youtube.com" prerender hint enabled as below:' ); ?><p>
 
 		<div class="gktpp-code-block">
-			<script src="https://gist.github.com/sarcastasaur/0b4161665b29262099f5fce295660708.js"></script>
+			<script src="https://gist.github.com/samperrow/0b4161665b29262099f5fce295660708.js"></script>
 		</div>
 
 		<p><?php echo __( 'The waterfall chart of the website is below:' ); ?></p>
@@ -255,7 +255,7 @@ class GKTPP_Options {
 		<p><?php echo __( 'Let\'s add the corresponding preconnect hints in the top of the web page and see what happens:' ); ?></p>
 
 		<div class="gktpp-code-block">
-			<script src="https://gist.github.com/sarcastasaur/3329b4d00bd708015ad8b84a6d8fba9d.js"></script>
+			<script src="https://gist.github.com/samperrow/3329b4d00bd708015ad8b84a6d8fba9d.js"></script>
 		</div>
 
 		<h3 style="text-align: center;"><?php echo __( 'HTTPS Socket Negotiation With Preconnect Enabled:' ); ?></h3>
@@ -288,7 +288,7 @@ class GKTPP_Options {
 		<p><?php echo __( 'Let\'s see what the waterfall chart looks like after the following resource hints are placed into the top of a web page:' ); ?></p>
 
 		<div class="gktpp-code-block">
-			<script src="https://gist.github.com/sarcastasaur/5683b903e195225ebb9e6379c80eba8c.js"></script>
+			<script src="https://gist.github.com/samperrow/5683b903e195225ebb9e6379c80eba8c.js"></script>
 		</div>
 
 		<p><?php echo __( 'The waterfall chart below, courtesy of <a href="https://www.webpagetest.org">webpagetest.org</a>, shows when preloading resources are loaded by the browser:' ); ?></p>
