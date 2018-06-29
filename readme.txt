@@ -11,6 +11,10 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 Take advantage of browser resource hints and plug-and-play features to improve page load time.
 
+== Installation Video ==
+
+[youtube https://www.youtube.com/watch?v=Aha9E3AXvJQ]
+
 == Description ==
 
 This plugin allows users to automatically and easily embed resource hints to improve page load time. 
@@ -76,13 +80,13 @@ To activate the preloaded resource, you must call that file in HTML as you would
 
 == Changelog ==
 
-1. Most recent update: June 25, 2018.
+1. Most recent update: June 29, 2018.
 2. Version 1.5.3.4
-3. This version fixes two bugs- one preventing users from deleting resource hints, the other was an error some users could see upon plugin installation.
+3. This version fixes broken GitHub URL's which were displayed on the 'info' tab.
 
-June 25, 2018:
+June 29, 2018:
 1) updated a change in my GitHub username onto file paths that display HTML links on the info tab.
-2) 
+2) Created a plugin installation video and put it on the readme
 
 
 April 27, 2018:
