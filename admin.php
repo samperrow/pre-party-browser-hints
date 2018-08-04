@@ -62,8 +62,8 @@ function gktpp_register_admin_files() {
 	global $pagenow;
 
 	if ( isset( $_GET['page'] ) && $_GET['page'] === 'gktpp-plugin-settings' ) {
-		wp_register_script( 'gktpp_admin_js', plugin_dir_url( __FILE__ ) . 'js/admin.js', array('jquery'), '1.5.3.2', false );
-		wp_register_style( 'gktpp_styles_css', plugin_dir_url( __FILE__ ) . 'css/styles.css', null, '1.5.3.2', 'all' );
+		wp_register_script( 'gktpp_admin_js', plugin_dir_url( __FILE__ ) . 'js/admin.js', array('jquery'), '1.5.3.2', true );
+		wp_register_style( 'gktpp_styles_css', plugin_dir_url( __FILE__ ) . 'css/styles.css', null, '1.5.3.3', 'all' );
 
 		wp_enqueue_script( 'gktpp_admin_js' );
 		wp_enqueue_style( 'gktpp_styles_css' );

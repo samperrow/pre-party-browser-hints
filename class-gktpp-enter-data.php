@@ -160,6 +160,7 @@ class GKTPP_Enter_Data extends GKTPP_Table {
                 <input type="submit" name="gktpp-reset-preconnect" class="button-secondary" value="<?php esc_attr_e( 'Reset Links', 'gktpp' ); ?>" />
             </div>
 
+
             <div class="gktpp-div">
                 <h2 class="gktpp-hint"><?php esc_html_e( 'Send Resource Hints in the Header or <head>?', 'gktpp' ); ?></h2>
                 <button class="gktpp-help-tip-hint after">
@@ -169,11 +170,22 @@ class GKTPP_Enter_Data extends GKTPP_Table {
                 <br />
                 <br />
 
-                <select name="gktpp-send-in-header">
+                <select id="gktppHintLocation" name="gktpp-send-in-header">
                     <option value="<?php echo esc_attr( 'HTTP Header', 'gktpp' ); ?>"<?php if ( 'HTTP Header' === $header_option ) echo 'selected="selected"'; ?>><?php esc_html_e( 'HTTP Header', 'gktpp' ); ?></option>
                     <option value="<?php echo esc_attr( 'Send in head', 'gktpp' ); ?>"<?php if ( 'Send in head' === $header_option ) echo 'selected="selected"'; ?>><?php esc_html_e( 'Send in <head>', 'gktpp' ); ?></option>
                 </select>
+
+                <?php 
+                    $active_cache_plugin = self::get_cache_info();
+
+                    if (strlen($active_cache_plugin) > 0) {
+                        echo "<span id='gktppCachePlugins'>$active_cache_plugin</span>";
+                        echo "<p id='gktppBox'></p>";
+                    }
+
+                ?>
             </div>
+
 
             <div class="gktpp-div">
                 <h2 class="gktpp-hint"><?php esc_html_e( 'Disable Auto-Generated WordPress Resource Hints?', 'gktpp' ); ?></h2>
@@ -196,6 +208,27 @@ class GKTPP_Enter_Data extends GKTPP_Table {
 
 
     <?php }
+
+    private static function get_cache_info() {
+
+        $cache_plugins = array(
+            'cache-control/cache-control.php' =>        'Cache Control',
+            'cache-enabler/cache-enabler.php' =>        'Cache Enabler',
+            'comet-cache/comet-cache.php' =>            'Comet Cache',
+            'hyper-cache/plugin.php' =>                 'Hyper Cache',
+            'litespeed-cache/litespeed-cache.php' =>    'LiteSpeed Cache',
+            'redis-cache/redis-cache.php' =>            'Redis Cache',
+            'w3-total-cache/w3-total-cache.php' =>      'W3 Total Cache',
+            'wp-fastest-cache/wpFastestCache.php' =>    'WP Fastest Cache',
+            'wp-super-cache/wp-cache.php' =>            'WP Super Cache',
+        );
+
+        foreach ($cache_plugins as $cache_plugin => $key) {
+            if (is_plugin_active($cache_plugin)) {
+                return $key;
+            }
+        }
+    }
 
      protected static function contact_author() { ?>
           <div class="gktpp-table info postbox">
@@ -227,8 +260,10 @@ class GKTPP_Enter_Data extends GKTPP_Table {
                }
 
                if ( isset( $_POST['gktpp_send_email'] ) && isset( $_POST['gktpp_email'] ) ) {
-                    wp_mail( 'sam.perrow399@gmail.com', 'Pre Party User Message', 'From: ' . strip_tags($_POST['gktpp_email']) . ' Message: <br /><br />' . strip_tags( $_POST['gktpp_text'] ) );
+                    $debug_info = 'URL: ' . home_url() . 'PHP Version: ' . phpversion() . 'WP Version: ' . bloginfo('version');
+                    wp_mail( 'sam.perrow399@gmail.com', 'Pre Party User Message', 'From: ' . strip_tags($_POST['gktpp_email']) . $debug_info . ' Message: ' . strip_tags( $_POST['gktpp_text'] ) );
                }
           }
      }
 }
+
