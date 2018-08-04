@@ -81,7 +81,7 @@ To activate the preloaded resource, you must call that file in HTML as you would
 == Changelog ==
 
 1. Most recent update: June 29, 2018.
-2. Version 1.5.3.4
+2. Version 1.5.3.5
 3. This version fixes broken GitHub URL's which were displayed on the 'info' tab.
 
 June 29, 2018:

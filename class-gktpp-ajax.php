@@ -15,10 +15,6 @@ class GKTPP_Ajax {
 	public function add_domain_js() {
 		wp_register_script( 'gktpp-find-domain-names', plugins_url( '/pre-party-browser-hints/js/find-external-domains.js' ), null, '1.5.3.2', true );
 		wp_enqueue_script( 'gktpp-find-domain-names' );
-
-		wp_localize_script('gktpp-find-domain-names', 'ajax_object', array(
-			'ajax_url' => admin_url( 'admin-ajax.php' ),
-		) );
 	}
 
 	public function gktpp_post_domain_names() {
@@ -26,7 +22,8 @@ class GKTPP_Ajax {
 		if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
 			global $wpdb;
 	     	$table = $wpdb->prefix . 'gktpp_table';
-			$urls = isset( $_POST['urls'] ) ? wp_unslash( $_POST['urls'] ) : '';
+			$urls = isset( $_POST['urls'] ) ? json_decode( wp_unslash( $_POST['urls'] ) ) : '';
+
 
 			if ( is_array( $urls ) ) {
 

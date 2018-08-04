@@ -3,7 +3,7 @@
  * Plugin Name: Pre* Party Resource Hints
  * Plugin URI: https://wordpress.org/plugins/pre-party-browser-hints/
  * Description: Take advantage of the browser resource hints DNS-Prefetch, Prerender, Preconnect, Prefetch, and Preload to improve page load time.
- * Version: 1.5.3.4
+ * Version: 1.5.3.5
  * Author: Sam Perrow
  * Author URI: https://www.linkedin.com/in/sam-perrow
  * License: GPL2
@@ -34,13 +34,18 @@ if ( ! defined( 'ABSPATH' ) ) {
 define( 'GKT_PREP_PLUGIN', __FILE__ );
 define( 'GKT_PREP_PLUGIN_DIR', untrailingslashit( dirname( GKT_PREP_PLUGIN ) ) );
 
-if ( is_admin() ) {
-	require_once GKT_PREP_PLUGIN_DIR . '/class-gktpp-insert-to-db.php';
-	require_once GKT_PREP_PLUGIN_DIR . '/class-gktpp-table.php';
-	require_once GKT_PREP_PLUGIN_DIR . '/class-gktpp-options.php';
-	require_once GKT_PREP_PLUGIN_DIR . '/class-gktpp-enter-data.php';
-} else {
-	require_once GKT_PREP_PLUGIN_DIR . '/class-gktpp-send-hints.php';
+
+add_action( 'init', 'gktppInitialize' );
+
+function gktppInitialize() {
+	if ( is_admin() ) {
+		require_once GKT_PREP_PLUGIN_DIR . '/class-gktpp-insert-to-db.php';
+		require_once GKT_PREP_PLUGIN_DIR . '/class-gktpp-table.php';
+		require_once GKT_PREP_PLUGIN_DIR . '/class-gktpp-options.php';
+		require_once GKT_PREP_PLUGIN_DIR . '/class-gktpp-enter-data.php';
+	} else {
+		require_once GKT_PREP_PLUGIN_DIR . '/class-gktpp-send-hints.php';
+	}
 }
 
 
@@ -49,23 +54,9 @@ if ( ( get_option( 'gktpp_preconnect_status' ) === 'Yes' ) && ( get_option( 'gkt
 	require_once GKT_PREP_PLUGIN_DIR . '/class-gktpp-ajax.php';
 }
 
-// do these things when plugin in activated or upgraded.
-register_activation_hook( __FILE__, 'gktpp_install_db_table' );
-add_filter( 'plugin_action_links_' . plugin_basename(__FILE__), 'gktpp_set_admin_links' );
-
 
 // register and call the CSS and JS we need only on the needed page
 add_action( 'admin_menu', 'gktpp_register_admin_files' );
-
-
-// multisite install/delete db table
-add_action( 'wpmu_new_blog', 'gktpp_install_db_table' );
-add_action( 'delete_blog', 'gktpp_remove_ms_db_table' );
-
-
-// implement option to disable automatically generated resource hints
-add_action( 'wp_head', 'gktpp_disable_wp_hints', 1, 0 );
-
 
 function gktpp_register_admin_files() {
 	global $pagenow;
@@ -78,6 +69,11 @@ function gktpp_register_admin_files() {
 		wp_enqueue_style( 'gktpp_styles_css' );
 	}
 }
+
+
+// multisite install/delete db table
+register_activation_hook( __FILE__, 'gktpp_install_db_table' );
+add_action( 'wpmu_new_blog', 'gktpp_install_db_table' );
 
 function gktpp_install_db_table() {
 	global $wpdb;
@@ -129,6 +125,9 @@ function gktpp_install_db_table() {
 
 }
 
+
+add_action( 'delete_blog', 'gktpp_remove_ms_db_table' );
+
 function gktpp_remove_ms_db_table( $blog_id ) {
 	global $wpdb;
 
@@ -140,12 +139,18 @@ function gktpp_remove_ms_db_table( $blog_id ) {
 }
 
 
+add_filter( 'plugin_action_links_' . plugin_basename(__FILE__), 'gktpp_set_admin_links' );
+
 function gktpp_set_admin_links( $links ) {
 	$gktpp_links = array(
 		'<a href="https://github.com/sarcastasaur/pre-party-browser-hints">View on GitHub</a>',
 		'<a href="https://www.paypal.me/samperrow">Donate</a>' );
 	return array_merge( $links, $gktpp_links );
 }
+
+
+// implement option to disable automatically generated resource hints
+add_action( 'wp_head', 'gktpp_disable_wp_hints', 1, 0 );
 
 function gktpp_disable_wp_hints() {
 	$option = get_option( 'gktpp_disable_wp_hints' );
