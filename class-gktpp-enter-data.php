@@ -261,8 +261,8 @@ class GKTPP_Enter_Data extends GKTPP_Table {
                }
 
                if ( isset( $_POST['gktpp_send_email'] ) && isset( $_POST['gktpp_email'] ) ) {
-                    $debug_info = "\nURL: " . home_url() . "\nPHP Version: " . phpversion() . "\nWP Version: " . bloginfo('version');
-                    wp_mail( 'sam.perrow399@gmail.com', 'Pre Party User Message', 'From: ' . strip_tags($_POST['gktpp_email']) . "\nMessage: " . strip_tags( $_POST['gktpp_text']. $debug_info) );
+                    $debug_info = "\nURL: " . home_url() . "\nPHP Version: " . phpversion() . "\nWP Version: " . get_bloginfo('version');
+                    wp_mail( 'sam.perrow399@gmail.com', 'Pre Party User Message', 'From: ' . strip_tags($_POST['gktpp_email']) . $debug_info . "\nMessage: " . strip_tags( $_POST['gktpp_text'] ) );
                }
           }
      }
