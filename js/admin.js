@@ -33,9 +33,9 @@ function gktPPshowCacheWarning() {
 
     if (location.value === 'HTTP Header' && plugins) {
         warning.style.display = 'block';
-        warning.innerHTML = 'The plugin ' + plugins.innerHTML + ' caches HTTP headers, <br/> so I recommend that you load resource hints in your websites\'s &lt;head&gt;, and then refresh your cache!';
+        warning.innerHTML = 'The plugin ' + plugins.innerHTML + ' caches HTTP headers, <br/> so I recommend that you load resource hints in your websites\'s &lt;head&gt; instead, and then refresh your cache!';
     }
-    
+
     location.addEventListener('change', gktPPshowCacheWarning);
 }
 

@@ -3,7 +3,7 @@ Contributors: samperrow
 Donate link: https://www.paypal.me/samperrow
 Tags: W3C, DNS prefetch, prerender, preconnect, prefetch, preload, web perf, performance, speed, resource hints
 Requires at least: 4.4
-Tested up to: 4.9.6
+Tested up to: 4.9.8
 Stable tag: 1.5.3.4
 Requires PHP: 5.3.0
 License: GPLv2 or later
@@ -80,7 +80,7 @@ To activate the preloaded resource, you must call that file in HTML as you would
 
 == Changelog ==
 
-1. Most recent update: June 29, 2018.
+1. Most recent update: August 9, 2018.
 2. Version 1.5.3.5
 3. This version fixes broken GitHub URL's which were displayed on the 'info' tab.
 

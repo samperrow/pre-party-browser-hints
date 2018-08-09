@@ -220,12 +220,14 @@ class GKTPP_Enter_Data extends GKTPP_Table {
             'redis-cache/redis-cache.php' =>            'Redis Cache',
             'w3-total-cache/w3-total-cache.php' =>      'W3 Total Cache',
             'wp-fastest-cache/wpFastestCache.php' =>    'WP Fastest Cache',
+            'wp-rocket/wp-rocket.php' =>                'WP Rocket',
             'wp-super-cache/wp-cache.php' =>            'WP Super Cache',
+            'pre-party-browser-hints/admin.php' =>      'Pre party browser hints',
         );
 
-        foreach ($cache_plugins as $cache_plugin => $key) {
+        foreach ($cache_plugins as $cache_plugin => $name) {
             if (is_plugin_active($cache_plugin)) {
-                return $key;
+                return $name;
             }
         }
     }
