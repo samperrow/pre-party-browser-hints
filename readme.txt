@@ -4,7 +4,7 @@ Donate link: https://www.paypal.me/samperrow
 Tags: W3C, DNS prefetch, prerender, preconnect, prefetch, preload, web perf, performance, speed, resource hints
 Requires at least: 4.4
 Tested up to: 4.9.8
-Stable tag: 1.5.3.4
+Stable tag: 1.5.4.0
 Requires PHP: 5.3.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -82,7 +82,7 @@ To activate the preloaded resource, you must call that file in HTML as you would
 
 1. Most recent update: August 9, 2018.
 2. Version 1.5.4.0
-3. Many small, but significant improvements over the previous version.
+3. Several small, but significant improvements over the previous version.
 
 August 9, 2018:
 1) Added a warning indicator on the admin page to let users know that they should not load hints in the HTTP header if they have a cache plugin active, and to notify them to refresh their cache.
