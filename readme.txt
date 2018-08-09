@@ -81,8 +81,13 @@ To activate the preloaded resource, you must call that file in HTML as you would
 == Changelog ==
 
 1. Most recent update: August 9, 2018.
-2. Version 1.5.3.5
-3. This version fixes broken GitHub URL's which were displayed on the 'info' tab.
+2. Version 1.5.4.0
+3. Many small, but significant improvements over the previous version.
+
+August 9, 2018:
+1) Added a warning indicator on the admin page to let users know that they should not load hints in the HTTP header if they have a cache plugin active, and to notify them to refresh their cache.
+2) Removed the need for jQuery to be loaded dynamically in the "find-external-domains.js" script, and optimized the code. 100% vanilla JS now!
+3) In the "Request New Feature or Report a Bug" feature, I added some info that gets sent to me to better diagnose potential plugin problems (WP version, PHP version, URL).
 
 June 29, 2018:
 1) updated a change in my GitHub username onto file paths that display HTML links on the info tab.

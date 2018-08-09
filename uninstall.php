@@ -34,7 +34,3 @@ function gktpp_uninstall_plugin() {
 
 }
 gktpp_uninstall_plugin();
-
-
-
-

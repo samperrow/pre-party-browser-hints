@@ -222,7 +222,6 @@ class GKTPP_Enter_Data extends GKTPP_Table {
             'wp-fastest-cache/wpFastestCache.php' =>    'WP Fastest Cache',
             'wp-rocket/wp-rocket.php' =>                'WP Rocket',
             'wp-super-cache/wp-cache.php' =>            'WP Super Cache',
-            'pre-party-browser-hints/admin.php' =>      'Pre party browser hints',
         );
 
         foreach ($cache_plugins as $cache_plugin => $name) {
@@ -262,7 +261,7 @@ class GKTPP_Enter_Data extends GKTPP_Table {
                }
 
                if ( isset( $_POST['gktpp_send_email'] ) && isset( $_POST['gktpp_email'] ) ) {
-                    $debug_info = 'URL: ' . home_url() . 'PHP Version: ' . phpversion() . 'WP Version: ' . bloginfo('version');
+                    $debug_info = "\nURL: " . home_url() . "\nPHP Version: " . phpversion() . "\nWP Version: " . bloginfo('version');
                     wp_mail( 'sam.perrow399@gmail.com', 'Pre Party User Message', 'From: ' . strip_tags($_POST['gktpp_email']) . $debug_info . ' Message: ' . strip_tags( $_POST['gktpp_text'] ) );
                }
           }
