@@ -3,8 +3,8 @@ Contributors: samperrow
 Donate link: https://www.paypal.me/samperrow
 Tags: W3C, DNS prefetch, prerender, preconnect, prefetch, preload, web perf, performance, speed, resource hints
 Requires at least: 4.4
-Tested up to: 4.9.6
-Stable tag: 1.5.3.4
+Tested up to: 4.9.8
+Stable tag: 1.5.4.0
 Requires PHP: 5.3.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -80,9 +80,14 @@ To activate the preloaded resource, you must call that file in HTML as you would
 
 == Changelog ==
 
-1. Most recent update: June 29, 2018.
-2. Version 1.5.3.5
-3. This version fixes broken GitHub URL's which were displayed on the 'info' tab.
+1. Most recent update: August 9, 2018.
+2. Version 1.5.4.0
+3. Several small, but significant improvements over the previous version.
+
+August 9, 2018:
+1) Added a warning indicator on the admin page to let users know that they should not load hints in the HTTP header if they have a cache plugin active, and to notify them to refresh their cache.
+2) Removed the need for jQuery to be loaded dynamically in the "find-external-domains.js" script, and optimized the code. 100% vanilla JS now!
+3) In the "Request New Feature or Report a Bug" feature, I added some info that gets sent to me to better diagnose potential plugin problems (WP version, PHP version, URL).
 
 June 29, 2018:
 1) updated a change in my GitHub username onto file paths that display HTML links on the info tab.

@@ -31,7 +31,6 @@ class GKTPP_Options {
 			if ( ( '' !== $_POST['url'] ) && ( isset( $_POST['hint_type'] ) ) ) {
 				$send_hints = new GKTPP_Insert_To_DB;
 				$send_hints->insert_data_to_db();
-				// GKTPP_Talk_To_DB::insert_data_to_db();
 				$url_parameters = isset( $_GET['tab'] ) ? 'updated=true&tab=' . $_GET['tab'] : 'updated=true';
 				wp_safe_redirect( admin_url( 'admin.php?page=gktpp-plugin-settings&' . $url_parameters ) );
 				exit();
