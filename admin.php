@@ -143,7 +143,7 @@ add_filter( 'plugin_action_links_' . plugin_basename(__FILE__), 'gktpp_set_admin
 
 function gktpp_set_admin_links( $links ) {
 	$gktpp_links = array(
-		'<a href="https://github.com/sarcastasaur/pre-party-browser-hints">View on GitHub</a>',
+		'<a href="https://github.com/samperrow/pre-party-browser-hints">View on GitHub</a>',
 		'<a href="https://www.paypal.me/samperrow">Donate</a>' );
 	return array_merge( $links, $gktpp_links );
 }
