@@ -3,8 +3,8 @@ Contributors: samperrow
 Donate link: https://www.paypal.me/samperrow
 Tags: W3C, DNS prefetch, prerender, preconnect, prefetch, preload, web perf, performance, speed, resource hints
 Requires at least: 4.4
-Tested up to: 4.9.8
-Stable tag: 1.5.4.0
+Tested up to: 5.1
+Stable tag: 1.5.4.1
 Requires PHP: 5.3.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -39,7 +39,7 @@ b) If you have a very popular link on your site that you are confident a user wo
 c) Prefetch and preload work similarly, which allows single resources to be loaded before they are requested by the user. Use this for loading images, videos, JavaScript files, etc.
 
 How does the plugin automatically add preconnect hints?
-After installing the plugin (or clicking the 'Reset Links' button), a JavaScript file will be sent to your website which captures the resources loaded from external domains and sends them via Ajax to your database six seconds after the page has been loaded. This script fires 6 seconds after the website has been loaded, to allow for all resources to be completely loaded.
+After installing the plugin (or clicking the 'Reset Links' button), a JavaScript file will be loaded on your website (after a page is loaded) which captures the resources loaded from external domains and sends them via Ajax to your database six seconds after the page has been loaded. This script fires 6 seconds after the website has been loaded, to allow for all resources to be completely loaded.
 
 Many websites have cache plugins that can interfere with this functionality. I have configured the JavaScript file to only function when it is in its original folder (not been merged/combined). This is to prevent it from triggering after every page load. To get this funtionality working properly, ensure that this file (/wp-content/plugins/pre-party-browser-hints/js/find-external-domains.js) is not effected by any cache plugins.
 
@@ -80,9 +80,15 @@ To activate the preloaded resource, you must call that file in HTML as you would
 
 == Changelog ==
 
-1. Most recent update: August 9, 2018.
-2. Version 1.5.4.0
+1. Most recent update: October 19, 2018.
+2. Version 1.5.4.1
 3. Several small, but significant improvements over the previous version.
+
+October 19, 2018:
+1) Tested compatibility with the latest WP available, version 5.1.
+2) Tested up to PHP 7.3.0.
+3) Updated github URL.
+
 
 August 9, 2018:
 1) Added a warning indicator on the admin page to let users know that they should not load hints in the HTTP header if they have a cache plugin active, and to notify them to refresh their cache.
