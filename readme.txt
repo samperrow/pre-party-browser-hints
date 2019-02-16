@@ -4,7 +4,7 @@ Donate link: https://www.paypal.me/samperrow
 Tags: W3C, DNS prefetch, prerender, preconnect, prefetch, preload, web perf, performance, speed, resource hints
 Requires at least: 4.4
 Tested up to: 5.1
-Stable tag: 1.5.4.1
+Stable tag: 1.5.5
 Requires PHP: 5.3.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -80,15 +80,19 @@ To activate the preloaded resource, you must call that file in HTML as you would
 
 == Changelog ==
 
-1. Most recent update: October 19, 2018.
-2. Version 1.5.4.1
-3. Several small, but significant improvements over the previous version.
+1. Most recent update: February 16, 2019.
+2. Version 1.5.5
+3. Ensured compatibility with WP 5.1, and removed unneccessary file.
+
+February 16, 2019:
+1) Ensured compatibility with WP 5.1
+2) Removed legacy file
+3) Made minor syntax changes.
 
 October 19, 2018:
-1) Tested compatibility with the latest WP available, version 5.1.
+1) Tested compatibility with WP 5.0
 2) Tested up to PHP 7.3.0.
 3) Updated github URL.
-
 
 August 9, 2018:
 1) Added a warning indicator on the admin page to let users know that they should not load hints in the HTTP header if they have a cache plugin active, and to notify them to refresh their cache.
@@ -153,7 +157,6 @@ Nov 14, 2017:
 4) fixed bug that prevented plugin from being deleted properly
 5) Changed how the "as" attribute was being set for preload hints.
 
-
 Oct 7, 2017:
 1) Improved code, changed some variable names
 2) renamed class names to be consistent with WP coding standards.
@@ -161,52 +164,50 @@ Oct 7, 2017:
 4) segmented each <form> to have its own method.
 5) updated HTTP Header string to make it compatible with the most recent Chrome version and incorporate the 'as' attribute.
 
-Sept 20:
+Sept 20, 2017:
 1) fixed bugs due to WP 4.8.2 changes.
 
-Sept 13:
+Sept 13, 2017:
 1) improved code on class-GKTPP_Send_Entered_Hints.php
 2) added two more screenshots of the before and after effects of implementing this plugin.
 
-July 13:
+July 13, 2017:
 1) added a form on plugin admin screen to contact author about feature requests or bug reporting;
-    2) fixed minor issue with the preconnect JS script not firing;
-    3) fixed minor UI issues/CSS;
+2) fixed minor issue with the preconnect JS script not firing;
+3) fixed minor UI issues/CSS;
 
-July 6:
+July 6, 2017:
 1) added ability to choose to add links to the Header or <head>;
-   2) cleaned up UI;
-   3) fixed bugs on find-external-domains.js/ improved functionality;
-   4) removed option to select which pages/posts the links went to- this was unwanted feature and removing it improved performance
-   5) condensed the info tab links into one;
-   6) modified schema for gktpp_table; and removed the other table;
-   7) improved security;
+2) cleaned up UI;
+3) fixed bugs on find-external-domains.js/ improved functionality;
+4) removed option to select which pages/posts the links went to- this was unwanted feature and removing it improved performance
+5) condensed the info tab links into one;
+6) modified schema for gktpp_table; and removed the other table;
+7) improved security;
 
-June 11:
+June 11, 2017:
 1) tested compat with wp 4.8
 
-Mar 27:
+Mar 27, 2017:
 1) changed db table schema which caused problems for sites with lots of posts.
 
-Dec 9:
+Dec 9, 2016:
 1) Ensured compatibility with WP v 4.7
 
-Nov 11:
+Nov 11, 2016:
 1) added plugin icon and banner image. 2) added tip info
 
-Nov 6:
+Nov 6, 2016:
 1) updated screenshot image on wp plugin page.
 2) a) added screenshot images on plugin page. b) removed 'console.log' in the front end JS file.
 
-Nov 4:
+Nov 4, 2016:
 1) Fixed some images that were not loading properly.
 
-Nov 3:
+Nov 3, 2016:
 1) initial commit.
 
 == Upgrade Notice ==
 
-= 1.5.3.1 =
-Much improved and simplified functionality. Fixed some bugs with 1.5.3. See Changelog section.
-
-
+= 1.5.5 =
+Ensured compatibility with WP 5.1, minor syntax updates. See Changelog section.

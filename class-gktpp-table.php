@@ -59,7 +59,7 @@ class GKTPP_Table extends GKTPP_WP_List_Table {
 	        'url'			=> __( 'URL', 'gktpp' ),
 			'hint_type'		=> __( 'Hint Type', 'gktpp' ),
 			'status'		=> __( 'Status', 'gktpp' ),
-			'author'		=> __( 'Author', 'gktpp' ),
+			'author'		=> __( 'Author', 'gktpp' )
 	     );
 
 	     return $columns;
@@ -114,16 +114,12 @@ class GKTPP_Table extends GKTPP_WP_List_Table {
 		switch ( $column_name ) {
 			case 'url':
 				return $item['url'];
-
 			case 'hint_type':
 				return $item['hint_type'];
-
 			case 'status':
-				return $item['status'];
-
+                return $item['status'];
 			case 'author':
 				return wp_get_current_user()->display_name;
-
 			default:
 				return esc_html_e( 'Error', 'gktpp' );
 		}
@@ -138,7 +134,7 @@ class GKTPP_Table extends GKTPP_WP_List_Table {
 		$sortable_columns = array(
 			'url'			=> array( 'url', true ),
 			'hint_type' 	=> array( 'hint_type', false ),
-			'status'    	=> array( 'status', false ),
+			'status'    	=> array( 'status', false )
 		);
 
 		return $sortable_columns;
@@ -198,8 +194,8 @@ class GKTPP_Table extends GKTPP_WP_List_Table {
 
 			GKTPP_Enter_Data::contact_author();
 
-			 $text = sprintf( __( 'Tip: test your website on <a href="%s">WebPageTest.org</a> to know which resource hints and URLs to insert.' ), __( 'https://www.webpagetest.org' ) );
-			 echo $text;
+            $text = sprintf( __( 'Tip: test your website on <a href="%s">WebPageTest.org</a> to know which resource hints and URLs to insert.' ), __( 'https://www.webpagetest.org' ) );
+            echo $text;
 		 }
 
 	}
@@ -208,7 +204,7 @@ class GKTPP_Table extends GKTPP_WP_List_Table {
 		$actions = array(
 			'deleted'  => __( 'Delete', 'gktpp' ),
 			'enabled'  => __( 'Enable', 'gktpp' ),
-			'disabled' => __( 'Disable', 'gktpp' ),
+			'disabled' => __( 'Disable', 'gktpp' )
 		);
 		return $actions;
 	}
