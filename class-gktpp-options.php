@@ -40,11 +40,7 @@ class GKTPP_Options {
 	}
 
 	public function apply_wp_screen_options( $status, $option, $value ) {
-		if ( 'gktpp_screen_options' === $option ) {
-			return $value;
-		}
-
-		return $status;
+        return ( 'gktpp_screen_options' === $option ) ? $value : $status;
 	}
 
 	public function admin_tabs( $current = 'insert-urls' ) {
@@ -120,14 +116,15 @@ class GKTPP_Options {
 		</div>
 	<?php }
 
-	private function resource_hint_nav() { ?>
-		<p><a href="<?php echo esc_html( '/wp-admin/admin.php?page=gktpp-plugin-settings&tab=info#gktpp-dns-prefetch'); ?>">DNS Prefetch</a></p>
-		<p><a href="<?php echo esc_html( '/wp-admin/admin.php?page=gktpp-plugin-settings&tab=info#gktpp-prefetch' ); ?>">Prefetch</a></p>
-		<p><a href="<?php echo esc_html( '/wp-admin/admin.php?page=gktpp-plugin-settings&tab=info#gktpp-prerender' ); ?>">Prerender</a></p>
-		<p><a href="<?php echo esc_html( '/wp-admin/admin.php?page=gktpp-plugin-settings&tab=info#gktpp-preconnect' ); ?>">Preconnect</a></p>
-		<p><a href="<?php echo esc_html( '/wp-admin/admin.php?page=gktpp-plugin-settings&tab=info#gktpp-preload' ); ?>">Preload</a></p>
-
-	<?php }
+	private function resource_hint_nav() {
+        $link = '/wp-admin/admin.php?page=gktpp-plugin-settings&tab=info#gktpp-'; ?>
+        <p><a href="<?php echo esc_html( $link . 'dns-prefetch'); ?>">DNS Prefetch</a></p>
+        <p><a href="<?php echo esc_html( $link . 'prefetch' ); ?>">Prefetch</a></p>
+        <p><a href="<?php echo esc_html( $link . 'prerender' ); ?>">Prerender</a></p>
+        <p><a href="<?php echo esc_html( $link . 'preconnect' ); ?>">Preconnect</a></p>
+        <p><a href="<?php echo esc_html( $link . 'preload' ); ?>">Preload</a></p>
+        <?php 
+    }
 
 	private function show_dnsprefetch_info() {
 		?>

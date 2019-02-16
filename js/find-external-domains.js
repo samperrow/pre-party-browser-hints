@@ -1,5 +1,6 @@
 var gktppFindExternalDomains = function() {
     var scripts = document.getElementsByTagName('script');
+    var host = document.location.origin;
     var urls = [];
     
     function sanitizeURL(url) {
@@ -8,7 +9,6 @@ var gktppFindExternalDomains = function() {
     
     function findResourceSources() {
         var resources = window.performance.getEntriesByType('resource');
-        var host = document.location.origin;
     
         for (var i = 0; i < resources.length; i++ ) {
             var newStr = resources[i].name.split('/');
@@ -26,7 +26,7 @@ var gktppFindExternalDomains = function() {
             findResourceSources();
             console.log(urls);
             var xhr = new XMLHttpRequest();
-                xhr.open('POST', document.location.origin + '/wp-admin/admin-ajax.php', true);
+                xhr.open('POST', host + '/wp-admin/admin-ajax.php', true);
                 xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
                 xhr.send('action=gktpp_post_domain_names&urls=' + JSON.stringify(urls));
         }, 6000);
