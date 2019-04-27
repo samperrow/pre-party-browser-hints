@@ -92,6 +92,7 @@ class GKTPP_Insert_To_DB {
 			case '.jpeg':
 			case '.png':
 			case '.svg':
+			case '.webp':
 				$this->as_attr = 'image';
 				break;
 			case '.vtt':
