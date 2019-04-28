@@ -31,9 +31,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'GKT_PREP_PLUGIN', __FILE__ );
+define( 'GKTPP_PLUGIN', __FILE__ );
 define( 'GKTPP_VERSION', '1.5.6' );
-define( 'GKT_PREP_PLUGIN_DIR', untrailingslashit( dirname( GKT_PREP_PLUGIN ) ) );
+define( 'GKTPP_PLUGIN_DIR', untrailingslashit( dirname( GKTPP_PLUGIN ) ) );
 
 function gktpp_check_pp_admin() {
     global $pagenow;
@@ -45,23 +45,22 @@ add_action( 'init', 'gktppInitialize' );
 
 function gktppInitialize() {
 	if ( is_admin() ) {
-        require_once GKT_PREP_PLUGIN_DIR . '/class-gktpp-options.php';
+        require_once GKTPP_PLUGIN_DIR . '/class-gktpp-options.php';
 
         if (gktpp_check_pp_admin()) {
-            require_once GKT_PREP_PLUGIN_DIR . '/class-gktpp-info.php';
-            require_once GKT_PREP_PLUGIN_DIR . '/class-gktpp-table.php';
-            require_once GKT_PREP_PLUGIN_DIR . '/class-gktpp-options.php';
-            require_once GKT_PREP_PLUGIN_DIR . '/class-gktpp-enter-data.php';
+            require_once GKTPP_PLUGIN_DIR . '/class-gktpp-info.php';
+            require_once GKTPP_PLUGIN_DIR . '/class-gktpp-table.php';
+            require_once GKTPP_PLUGIN_DIR . '/class-gktpp-enter-data.php';
         }
 
 	} else {
-		require_once GKT_PREP_PLUGIN_DIR . '/class-gktpp-send-hints.php';
+		require_once GKTPP_PLUGIN_DIR . '/class-gktpp-send-hints.php';
     }
-    require_once GKT_PREP_PLUGIN_DIR . '/class-gktpp-insert-to-db.php';
+    require_once GKTPP_PLUGIN_DIR . '/class-gktpp-insert-to-db.php';
 
     // this needs to be loaded front end and back end bc Ajax needs to be able to communicate between the two.
     if ( ( get_option( 'gktpp_preconnect_status' ) === 'Yes' ) && ( get_option( 'gktpp_reset_preconnect' ) === 'notset' ) ) {
-        require_once GKT_PREP_PLUGIN_DIR . '/class-gktpp-ajax.php';
+        require_once GKTPP_PLUGIN_DIR . '/class-gktpp-ajax.php';
     }
 
 }

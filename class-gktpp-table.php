@@ -5,7 +5,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 if ( ! class_exists( 'GKTPP_WP_List_Table' ) ) {
-	require_once GKT_PREP_PLUGIN_DIR . '/class-gktpp-wp-list-table.php';
+	require_once GKTPP_PLUGIN_DIR . '/class-gktpp-wp-list-table.php';
 }
 
 class GKTPP_Table extends GKTPP_WP_List_Table {
