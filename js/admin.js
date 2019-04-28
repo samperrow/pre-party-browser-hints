@@ -39,4 +39,7 @@ function gktPPshowCacheWarning() {
     location.addEventListener('change', gktPPshowCacheWarning);
 }
 
-gktPPshowCacheWarning();
+if (!/tab=info/i.test(document.location.href)) {
+    gktPPshowCacheWarning();
+
+}

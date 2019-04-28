@@ -3,11 +3,11 @@
  * Plugin Name: Pre* Party Resource Hints
  * Plugin URI: https://wordpress.org/plugins/pre-party-browser-hints/
  * Description: Take advantage of the browser resource hints DNS-Prefetch, Prerender, Preconnect, Prefetch, and Preload to improve page load time.
- * Version: 1.5.5
+ * Version: 1.5.6
  * Author: Sam Perrow
  * Author URI: https://www.linkedin.com/in/sam-perrow
  * License: GPL2
- * last edited February 16, 2019
+ * last edited April 28, 2019
  *
  * Copyright 2016  Sam Perrow  (email : sam.perrow399@gmail.com)
  *
@@ -32,26 +32,38 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 define( 'GKT_PREP_PLUGIN', __FILE__ );
+define( 'GKTPP_VERSION', '1.5.6' );
 define( 'GKT_PREP_PLUGIN_DIR', untrailingslashit( dirname( GKT_PREP_PLUGIN ) ) );
+
+function gktpp_check_pp_admin() {
+    global $pagenow;
+    return ( is_admin() && isset( $_GET['page'] ) && $_GET['page'] === 'gktpp-plugin-settings' ) ? true : false;
+}
 
 
 add_action( 'init', 'gktppInitialize' );
 
 function gktppInitialize() {
 	if ( is_admin() ) {
-		require_once GKT_PREP_PLUGIN_DIR . '/class-gktpp-insert-to-db.php';
-		require_once GKT_PREP_PLUGIN_DIR . '/class-gktpp-table.php';
-		require_once GKT_PREP_PLUGIN_DIR . '/class-gktpp-options.php';
-		require_once GKT_PREP_PLUGIN_DIR . '/class-gktpp-enter-data.php';
+        require_once GKT_PREP_PLUGIN_DIR . '/class-gktpp-options.php';
+
+        if (gktpp_check_pp_admin()) {
+            require_once GKT_PREP_PLUGIN_DIR . '/class-gktpp-info.php';
+            require_once GKT_PREP_PLUGIN_DIR . '/class-gktpp-table.php';
+            require_once GKT_PREP_PLUGIN_DIR . '/class-gktpp-options.php';
+            require_once GKT_PREP_PLUGIN_DIR . '/class-gktpp-enter-data.php';
+        }
+
 	} else {
 		require_once GKT_PREP_PLUGIN_DIR . '/class-gktpp-send-hints.php';
-	}
-}
+    }
+    require_once GKT_PREP_PLUGIN_DIR . '/class-gktpp-insert-to-db.php';
 
+    // this needs to be loaded front end and back end bc Ajax needs to be able to communicate between the two.
+    if ( ( get_option( 'gktpp_preconnect_status' ) === 'Yes' ) && ( get_option( 'gktpp_reset_preconnect' ) === 'notset' ) ) {
+        require_once GKT_PREP_PLUGIN_DIR . '/class-gktpp-ajax.php';
+    }
 
-// this needs to be loaded front end and back end bc Ajax needs to be able to communicate between the two.
-if ( ( get_option( 'gktpp_preconnect_status' ) === 'Yes' ) && ( get_option( 'gktpp_reset_preconnect' ) === 'notset' ) ) {
-	require_once GKT_PREP_PLUGIN_DIR . '/class-gktpp-ajax.php';
 }
 
 
@@ -61,9 +73,9 @@ add_action( 'admin_menu', 'gktpp_register_admin_files' );
 function gktpp_register_admin_files() {
 	global $pagenow;
 
-	if ( isset( $_GET['page'] ) && $_GET['page'] === 'gktpp-plugin-settings' ) {
-		wp_register_script( 'gktpp_admin_js', plugin_dir_url( __FILE__ ) . 'js/admin.js', array('jquery'), '1.5.3.2', true );
-		wp_register_style( 'gktpp_styles_css', plugin_dir_url( __FILE__ ) . 'css/styles.css', null, '1.5.3.3', 'all' );
+	if ( gktpp_check_pp_admin() ) {
+		wp_register_script( 'gktpp_admin_js', plugin_dir_url( __FILE__ ) . 'js/admin.js', array('jquery'), GKTPP_VERSION, true );
+		wp_register_style( 'gktpp_styles_css', plugin_dir_url( __FILE__ ) . 'css/styles.css', null, GKTPP_VERSION, 'all' );
 
 		wp_enqueue_script( 'gktpp_admin_js' );
 		wp_enqueue_style( 'gktpp_styles_css' );
