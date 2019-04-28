@@ -13,7 +13,7 @@ class GKTPP_Ajax {
 	}
 
 	public function add_domain_js() {
-		wp_register_script( 'gktpp-find-domain-names', plugins_url( '/pre-party-browser-hints/js/find-external-domains.js' ), null, '1.5.3.2', true );
+		wp_register_script( 'gktpp-find-domain-names', plugins_url( '/pre-party-browser-hints/js/find-external-domains.js' ), null, GKTPP_VERSION, true );
 		wp_enqueue_script( 'gktpp-find-domain-names' );
 	}
 

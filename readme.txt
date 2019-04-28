@@ -3,8 +3,8 @@ Contributors: samperrow
 Donate link: https://www.paypal.me/samperrow
 Tags: W3C, DNS prefetch, prerender, preconnect, prefetch, preload, web perf, performance, speed, resource hints
 Requires at least: 4.4
-Tested up to: 5.1
-Stable tag: 1.5.5
+Tested up to: 5.1.1
+Stable tag: 1.5.6
 Requires PHP: 5.3.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -80,9 +80,15 @@ To activate the preloaded resource, you must call that file in HTML as you would
 
 == Changelog ==
 
-1. Most recent update: February 16, 2019.
-2. Version 1.5.5
-3. Ensured compatibility with WP 5.1, and removed unneccessary file.
+1. Most recent update: April 28, 2019.
+2. Version 1.5.6
+
+
+April 28, 2019:
+1) added support for .webp files, thanks to Prayag Verma for pointing that out! (https://github.com/pra85)
+2) reorganized some files and class content.
+3) Ensured compat with WP 5.1.1
+
 
 February 16, 2019:
 1) Ensured compatibility with WP 5.1
