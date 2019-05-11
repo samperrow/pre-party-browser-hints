@@ -84,14 +84,12 @@ To activate the preloaded resource, you must call that file in HTML as you would
 2. Version 1.5.7
 
 May 11 2019:
-1)
-
+1) ensuring compat for WP 5.2.1
 
 April 28, 2019:
 1) added support for .webp files, thanks to Prayag Verma for pointing that out! (https://github.com/pra85)
 2) reorganized some files and class content.
 3) Ensured compat with WP 5.1.1
-
 
 February 16, 2019:
 1) Ensured compatibility with WP 5.1
