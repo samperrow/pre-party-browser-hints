@@ -11,6 +11,7 @@ class GKTPP_Send_Hints {
 	}
 
 	public function send_resource_hints() {
+		if (function_exists( 'is_amp_endpoint' ) && is_amp_endpoint()) { return;}
 		global $wpdb;
 		$table = $wpdb->prefix . 'gktpp_table';
 		$links = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM $table WHERE status = %s", 'Enabled'), OBJECT );
