@@ -35,7 +35,7 @@ class GKTPP_Insert_To_DB {
 	}
 
 	private static function santize_url( $url ) {
-		return esc_url( preg_replace('/[^A-z0-9?=\.\/\-:\s]/', '', $url) );
+		return esc_url( preg_replace('/[^A-z0-9&%?=\.\/\-:\s]/', '', $url) );
 	}
 
 	public function create_str( $url, $hint_type, $as_attr, $type_attr, $crossorigin ) {
