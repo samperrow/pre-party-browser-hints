@@ -32,23 +32,19 @@ class PPRH_Create_Hints {
 		$urls = $data->url;
 
 		foreach ( $urls as $url ) {
-			$this->create_hint( $url, $data->hint_type, $data->post_id );
+			$this->create_hint( $url, $data->hint_type );
 		}
 
-		if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
-			$this->update_options();
-		}
 		$this->complete();
 	}
 
-	private function create_hint( $url, $hint_type, $post_id ) {
+	private function create_hint( $url, $hint_type ) {
 		$this->set_hint_type( $hint_type );
 		$this->set_url( $url );
 		$this->get_file_type();
 		$this->set_crossorigin();
 		$this->set_as_attr();
 		$this->set_type_attr();
-		$this->set_post_id( $post_id );
 	}
 
 	private function set_hint_type( $hint_type ) {
@@ -126,16 +122,6 @@ class PPRH_Create_Hints {
 		$this->type_attr = ( isset( $_POST['type_attr'] ) && ! empty( $_POST['type_attr'] ) ) ? $_POST['type_attr'] : $this->get_file_type_mime( $mimes );
 	}
 
-	private function set_post_id( $post_id ) {
-		if ( ! is_null( $post_id ) ) {
-			$this->post_id = PPRH_Misc::pprh_strip_non_alphanums( $post_id );
-		} elseif ( isset( $_POST['UseOnHomePostsOnly'] ) ) {            // if home page is set to display recent posts.
-			$this->post_id = '0';
-		} else {                                                        // global hint.
-			$this->post_id = 'global';
-		}
-	}
-
 	private function get_file_type_mime( $file_types ) {
 
 		foreach ( $file_types as $key => $val ) {
@@ -147,60 +133,8 @@ class PPRH_Create_Hints {
 	}
 
 	private function complete() {
-
-		// if dup hint is being added, should halt the addition and throw warning msg.
-		$this->check_for_duplicate_post_hint();
-
-		if ( $this->results['globalHintExists'] ) {
-			if ( 'global' === $this->post_id ) {
-				$this->remove_duplicate_hints();
-			} else {
-				return;
-			}
-		}
-
 		$this->insert_hints();
 		return $this->results;
-	}
-
-
-
-	private function check_for_duplicate_post_hint() {
-		global $wpdb;
-		$table = $wpdb->prefix . 'pprh_table';
-
-		if ( 'global' === $this->post_id ) {
-			$sql = $wpdb->prepare( "SELECT COUNT(*) FROM $table WHERE hint_type = %s AND url = %s", $this->hint_type, $this->url );
-		} else {
-			$sql = $wpdb->prepare(
-				"SELECT COUNT(*) FROM $table WHERE hint_type = %s AND url = %s AND (post_id = %s OR post_id = %s)",
-				$this->hint_type,
-				$this->url,
-				$this->post_id,
-				'global'
-			);
-		}
-
-		$count = (int) $wpdb->get_var( $sql );
-
-		$this->results['globalHintExists'] = ( $count > 0 ) ? true : false;
-	}
-
-	private function remove_duplicate_hints() {
-		global $wpdb;
-		$table = $wpdb->prefix . 'pprh_table';
-
-		// if a global hint is being created, previous identical hints for posts can be deleted.
-		$wpdb->delete(
-			$table,
-			array(
-				'url'       => $this->url,
-				'hint_type' => $this->hint_type,
-			),
-			array( '%s', '%s' )
-		);
-		$this->results['removedDupHint'] = 'true';
-		// return $this->results;
 	}
 
 	private function insert_hints() {
@@ -219,7 +153,6 @@ class PPRH_Create_Hints {
 				'as_attr'     => $this->as_attr,
 				'type_attr'   => $this->type_attr,
 				'crossorigin' => $this->crossorigin,
-				'post_id'     => $this->post_id,
 				'created_by'  => $current_user,
 			),
 			array( '%s', '%s', '%d', '%s', '%s', '%s', '%s', '%s', '%s', '%s' )
@@ -228,20 +161,4 @@ class PPRH_Create_Hints {
 		$this->results['action'] = 'added';
 		$this->results['result'] = ( $wpdb->result ) ? 'success' : 'failure';
 	}
-
-
-	private function update_options() {
-
-		if ( 'true' === get_option( 'pprh_reset_global_preconnects' ) ) {
-			update_option( 'pprh_reset_global_preconnects', 'false' );
-		}
-
-		if ( '0' === $this->post_id ) {
-			update_option( 'pprh_reset_home_preconnect', 'false' );
-		} else {
-			update_post_meta( $this->post_id, 'pprh_reset_preconnects', 'false' );
-		}
-
-	}
-
 }

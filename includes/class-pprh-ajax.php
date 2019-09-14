@@ -12,7 +12,6 @@ class PPRH_Ajax {
 
 	public $global_prec_opt     = '';
 	public $reset_home_prec_opt = '';
-	public $post_id             = '';
 
 	public function __construct() {
 		$this->global_prec_opt     = get_option( $this->reset_global_prec_str );
@@ -33,14 +32,12 @@ class PPRH_Ajax {
 
 
 	public function initialize() {
-		$this->post_id = $this->get_post_id();
-		$option        = $this->get_option_val();
+		$option        = get_option( 'pprh_autoload_preconnects' );
 
-		if ( 'true' === $option && ! is_null( $this->post_id ) ) {
+		if ( 'true' === $option ) {
 			$ajax_nonce = wp_create_nonce( 'pprh_ajax_nonce' );
 
 			$data_to_retrieve = array(
-				'post_id'   => $this->post_id,
 				'url'       => array(),
 				'hint_type' => 'preconnect',
 				'nonce'     => $ajax_nonce,
@@ -50,18 +47,6 @@ class PPRH_Ajax {
 			wp_localize_script( 'pprh-find-domain-names', 'hint_data', $data_to_retrieve );
 			wp_enqueue_script( 'pprh-find-domain-names' );
 		}
-	}
-
-	public function get_post_id() {
-		global $wp_query;
-		return ( is_page() || is_single() ) ? (string) $wp_query->queried_object_id : ( is_home() ? '0' : null );
-	}
-
-	public function get_option_val() {
-		$reset_post_preconnect = ( '0' !== $this->post_id )
-			? get_post_meta( $this->post_id, $this->reset_prec_meta, true )
-			: $this->reset_home_prec_opt;
-		return ( 'true' === $this->global_prec_opt || preg_match( '/(true|^$)/', $reset_post_preconnect ) ) ? 'true' : ( is_home() ? $this->reset_home_prec_opt : 'false' );
 	}
 
 	public function pprh_post_domain_names() {

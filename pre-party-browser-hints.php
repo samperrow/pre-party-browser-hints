@@ -33,11 +33,6 @@ function pprh_check_page() {
 		if ( 'pprh-plugin-settings' === $page ) {
 			return 'pprhAdmin';
 		}
-	} elseif ( 'post.php' === $pagenow && isset( $_GET['action'] ) ) {
-		$page = sanitize_text_field( wp_unslash( $_GET['action'] ) );
-		if ( 'edit' === $page ) {
-			return 'pprhPostEdit';
-		}
 	}
 
 }
@@ -85,7 +80,7 @@ final class PPRH_Init {
 			'manage_options',
 			'pprh-plugin-settings',
 			array( $this, 'show_tabs' ),
-			plugins_url( PPRH_PLUGIN_FILENAME . '/admin/images/lightning.png' )
+			plugins_url( PPRH_PLUGIN_FILENAME . '/images/lightning.png' )
 		);
 
 		add_action( "load-{$settings_page}", array( $this, 'screen_option' ) );
@@ -95,10 +90,10 @@ final class PPRH_Init {
 
 	public function create_constants() {
 		if ( ! defined( 'PPRH_VERSION' ) ) {
-			define( 'PPRH_VERSION', '2.0.0' );
+			define( 'PPRH_VERSION', '1.6.0' );
 		}
 		if ( ! defined( 'PPRH_PLUGIN_FILENAME' ) ) {
-			define( 'PPRH_PLUGIN_FILENAME', '/pprh-2.0' );
+			define( 'PPRH_PLUGIN_FILENAME', '/pre-party-browser-hints' );
 		}
 		if ( ! defined( 'PPRH_PLUGIN_DIR' ) ) {
 			define( 'PPRH_PLUGIN_DIR', untrailingslashit( dirname( __FILE__ ) ) . '/includes' );
@@ -137,10 +132,10 @@ final class PPRH_Init {
 	// Register and call the CSS and JS we need only on the needed page.
 	public function register_admin_files( $hook ) {
 
-		wp_register_script( 'pprh_admin_js', plugin_dir_url( __FILE__ ) . 'admin/js/admin.js', null, PPRH_VERSION, true );
-		wp_register_style( 'pprh_styles_css', plugin_dir_url( __FILE__ ) . 'admin/css/styles.css', null, PPRH_VERSION, 'all' );
+		wp_register_script( 'pprh_admin_js', plugin_dir_url( __FILE__ ) . 'js/admin.js', null, PPRH_VERSION, true );
+		wp_register_style( 'pprh_styles_css', plugin_dir_url( __FILE__ ) . 'css/styles.css', null, PPRH_VERSION, 'all' );
 
-		if ( preg_match( '/toplevel_page_pprh-plugin-settings|post.php/i', $hook ) ) {
+		if ( preg_match( '/toplevel_page_pprh-plugin-settings/i', $hook ) ) {
 			wp_enqueue_script( 'pprh_admin_js' );
 			wp_enqueue_style( 'pprh_styles_css' );
 		}
@@ -172,8 +167,6 @@ final class PPRH_Init {
 		delete_option( 'gktpp_disable_wp_hints' );
 
 		add_option( 'pprh_autoload_preconnects', 'true', '', 'yes' );
-		add_option( 'pprh_reset_home_preconnect', 'false', '', 'yes' );
-		add_option( 'pprh_reset_global_preconnects', 'false', '', 'yes' );
 		add_option( 'pprh_allow_unauth', 'true', '', 'yes' );
 
 		$table           = $wpdb->prefix . 'pprh_table';
@@ -215,7 +208,6 @@ final class PPRH_Init {
 				type_attr VARCHAR(55) DEFAULT '',
 				crossorigin VARCHAR(55) DEFAULT '',
 				ajax_domain TINYINT(1) DEFAULT 0 NOT NULL,
-				post_id VARCHAR(55) DEFAULT '0' NOT NULL,
 				created_by VARCHAR(55) DEFAULT '' NOT NULL,
 				PRIMARY KEY  (id)
 			) $charset_collate;";

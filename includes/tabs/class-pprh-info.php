@@ -9,7 +9,7 @@ class PPRH_Hint_Info {
 	public $image_path = '';
 
 	public function __construct() {
-		$this->image_path = plugins_url( PPRH_PLUGIN_FILENAME . '/admin' );
+		$this->image_path = plugins_url( PPRH_PLUGIN_FILENAME );
 		$this->resource_hint_nav();
 	}
 

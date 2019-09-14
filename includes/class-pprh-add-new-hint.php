@@ -37,10 +37,6 @@ class PPRH_Add_New_Hint {
 					$this->enter_url();
 					$this->show_pp_radio_options();
 					$this->set_attrs();
-
-					if ( 'pprhAdmin' === PPRH_CHECK_PAGE ) {
-						$this->control_home_page_options();
-					}
 					?>
 
 				</tbody>
@@ -189,23 +185,6 @@ class PPRH_Add_New_Hint {
 			</td>
 
 		</tr>
-		<?php
-	}
-
-
-	public function control_home_page_options() {
-		?>
-
-		<tr style="text-align: center;">
-			<td colspan="5">
-				<span class="pprh-help-tip-hint">
-					<span><?php esc_html_e( 'If checked, this resource hint will only be used on the home page, which is set to display recent posts.', 'pprh' ); ?></span>
-				</span>
-				<span><?php esc_html_e( 'Use this resource hint only on the home page?' ); ?></span>
-				<input name="UseOnHomePostsOnly" type="checkbox" value="HomePostHints"/>
-			</td>
-		</tr>
-
 		<?php
 	}
 }

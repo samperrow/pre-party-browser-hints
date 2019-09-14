@@ -39,20 +39,6 @@ class PPRH_Display_Hints extends PPRH_WP_List_Table {
 
 
 	public function column_default( $item, $column_name ) {
-		global $wpdb;
-		$post_id = $item['post_id'];
-
-		if ( '0' === $post_id ) {
-			$link = 'Home';
-		} elseif ( 'global' === $post_id ) {
-			$link = 'global';
-		} else {
-			$table       = $wpdb->prefix . 'posts';
-			$post_result = $wpdb->get_row( $wpdb->prepare( "SELECT post_title FROM $table WHERE ID = %s", $post_id ) );
-			$post_title  = ( ! empty( $post_result ) ) ? PPRH_Misc::shorten_url( $post_result->post_title ) : '-';
-			$link        = ( ! empty( $post_result ) ) ? sprintf( '<a href="/wp-admin/post.php?post=%s&action=edit">%s</a>', $item['post_id'], $post_title ) : 'Error: Post Deleted';
-		}
-
 		switch ( $column_name ) {
 			case 'url':
 				return $item['url'];
@@ -66,8 +52,6 @@ class PPRH_Display_Hints extends PPRH_WP_List_Table {
 				return ( $item['crossorigin'] ) ? $item['crossorigin'] : '-';
 			case 'status':
 				return $item['status'];
-			case 'post_id':
-				return $link;
 			case 'created_by':
 				return $item['created_by'];
 			default:
@@ -75,19 +59,8 @@ class PPRH_Display_Hints extends PPRH_WP_List_Table {
 		}
 	}
 
-	public function global_hint_alert() {
-		?>
-		<span class="pprh-help-tip-hint">
-			<span><?php esc_html_e( 'This is a global resource hint, and is used on all pages and posts. To update this hint, do so from the PP page', 'pprh' ); ?></span>
-		</span>
-		<?php
-	}
-
-
 	public function column_cb( $item ) {
-		return ( 'pprhPostEdit' === PPRH_CHECK_PAGE && 'global' === $item['post_id'] )
-			? $this->global_hint_alert()
-			: sprintf( '<input type="checkbox" name="urlValue[]" value="%1$s"/>', $item['id'] );
+		return sprintf( '<input type="checkbox" name="urlValue[]" value="%1$s"/>', $item['id'] );
 	}
 
 	public function get_columns() {
@@ -100,7 +73,6 @@ class PPRH_Display_Hints extends PPRH_WP_List_Table {
 			'crossorigin' => __( 'Crossorigin', 'pprh' ),
 			'status'      => __( 'Status', 'pprh' ),
 			'created_by'  => __( 'Created By', 'pprh' ),
-			'post_id'     => __( 'Post Name', 'pprh' ),
 		);
 	}
 
@@ -113,7 +85,6 @@ class PPRH_Display_Hints extends PPRH_WP_List_Table {
 			'crossorigin' => array( 'crossorigin', false ),
 			'status'      => array( 'status', false ),
 			'created_by'  => array( 'created_by', false ),
-			'post_id'     => array( 'post_id', false ),
 		);
 	}
 
@@ -190,17 +161,9 @@ class PPRH_Display_Hints extends PPRH_WP_List_Table {
 
 		$sql = "SELECT * FROM $this->table";
 
-		if ( 'pprhPostEdit' === PPRH_CHECK_PAGE ) {
-			global $post;
-			$post_ID = $post->ID;
-			$sql    .= $wpdb->prepare( ' WHERE post_id = %s OR post_id = %s', $post_ID, 'global' );
-		}
-
 		if ( ! empty( $_REQUEST['orderby'] ) ) {
 			$sql .= ' ORDER BY ' . esc_sql( $_REQUEST['orderby'] );
 			$sql .= ! empty( $_REQUEST['order'] ) ? ' ' . esc_sql( $_REQUEST['order'] ) : ' ASC';
-		} else {
-			$sql .= ' ORDER BY post_id DESC';
 		}
 
 		$this->data = $wpdb->get_results( $sql, ARRAY_A );

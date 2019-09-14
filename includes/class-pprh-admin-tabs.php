@@ -18,7 +18,7 @@ class PPRH_Admin_Tabs {
 		}
 
 		echo '<div class="wrap pprh-wrap">';
-		echo '<h2>Pre* Party Plugin Settings</h2>';
+		echo '<h2>Pre* Party Resourcer Hints</h2>';
 		$this->show_admin_tabs();
 		$this->display_admin_content();
 		echo '</div>';
@@ -31,8 +31,6 @@ class PPRH_Admin_Tabs {
 		$tabs = array(
 			'insert-hints' => 'Insert Hints',
 			'settings'     => 'Settings',
-			'updates'      => 'Pre* Party 2.0.0 Updates',
-			'license'      => 'License',
 			'info'         => 'Resource Hint Information',
 		);
 

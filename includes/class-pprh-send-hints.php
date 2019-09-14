@@ -16,10 +16,9 @@ class PPRH_Send_Hints {
 	public function get_resource_hints() {
 		global $wpdb;
 
-		$post_ID = ( is_home() ) ? '0' : (string) get_queried_object_id();
 		$table   = $wpdb->prefix . 'pprh_table';
 		$this->hints   = $wpdb->get_results(
-			$wpdb->prepare( "SELECT url, hint_type, as_attr, type_attr, crossorigin FROM $table WHERE post_id = %s OR post_id = %s AND status = %s", $post_ID, 'global', 'enabled' )
+			$wpdb->prepare( "SELECT url, hint_type, as_attr, type_attr, crossorigin FROM $table WHERE status = %s", 'enabled' )
 		);
 
 	}
