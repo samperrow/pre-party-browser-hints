@@ -139,10 +139,22 @@ class PPRH_Create_Hints {
 
 	private function insert_hints() {
 		global $wpdb;
-		$table = $wpdb->prefix . 'pprh_table';
+		$table        = $wpdb->prefix . 'pprh_table';
 		$current_user = wp_get_current_user()->display_name;
 
-		$this->autoset = ( defined( 'DOING_AJAX' ) && DOING_AJAX ) ? 1 : 0;
+		if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
+			$this->autoset = 1;
+			$wpdb->delete(
+				$table,
+				array(
+					'ajax_domain' => 1,
+					'hint_type'   => 'preconnect',
+				),
+				array( '%d', '%s' )
+			);
+		} else {
+			$this->autoset = 0;
+		}
 
 		$wpdb->insert(
 			$table,

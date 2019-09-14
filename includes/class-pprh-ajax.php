@@ -32,9 +32,10 @@ class PPRH_Ajax {
 
 
 	public function initialize() {
-		$option        = get_option( 'pprh_autoload_preconnects' );
+		$autoload_preconnects = get_option( 'pprh_autoload_preconnects' );
+		$preconnects_set      = get_option( 'pprh_preconnects_set' );
 
-		if ( 'true' === $option ) {
+		if ( 'true' === $autoload_preconnects && 'false' === $preconnects_set ) {
 			$ajax_nonce = wp_create_nonce( 'pprh_ajax_nonce' );
 
 			$data_to_retrieve = array(
@@ -43,7 +44,7 @@ class PPRH_Ajax {
 				'nonce'     => $ajax_nonce,
 			);
 
-			wp_register_script( 'pprh-find-domain-names', plugins_url( PPRH_PLUGIN_FILENAME . '/admin/js/find-external-domains.js' ), null, PPRH_VERSION, true );
+			wp_register_script( 'pprh-find-domain-names', plugins_url( PPRH_PLUGIN_FILENAME . '/js/find-external-domains.js' ), null, PPRH_VERSION, true );
 			wp_localize_script( 'pprh-find-domain-names', 'hint_data', $data_to_retrieve );
 			wp_enqueue_script( 'pprh-find-domain-names' );
 		}
@@ -56,6 +57,7 @@ class PPRH_Ajax {
 			include_once PPRH_PLUGIN_DIR . '/class-pprh-misc.php';
 			include_once PPRH_PLUGIN_DIR . '/class-pprh-create-hints.php';
 			new PPRH_Create_Hints( 'pprh_ajax_nonce', 'nonce' );
+			update_option( 'pprh_preconnects_set', 'true' );
 			wp_die();
 		} else {
 			exit();

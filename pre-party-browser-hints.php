@@ -168,6 +168,7 @@ final class PPRH_Init {
 
 		add_option( 'pprh_autoload_preconnects', 'true', '', 'yes' );
 		add_option( 'pprh_allow_unauth', 'true', '', 'yes' );
+		add_option( 'pprh_preconnects_set', 'false', '', 'yes' );
 
 		$table           = $wpdb->prefix . 'pprh_table';
 		$charset_collate = $wpdb->get_charset_collate();

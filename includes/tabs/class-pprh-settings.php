@@ -16,7 +16,6 @@ class PPRH_Settings {
 				<form method="post">
 					<?php
 						$this->save_user_options();
-						$this->preconnects_html();
 						$this->settings_html();
 					?>
 				</form>
@@ -25,25 +24,9 @@ class PPRH_Settings {
 	}
 
 	public function save_user_options() {
-		global $wpdb;
-		$table = $wpdb->prefix . 'postmeta';
 
-		if ( isset( $_POST['pprh_reset_global_preconnects'] ) && check_admin_referer( 'pprh_save_admin_options', 'pprh_admin_options_nonce' ) ) {
-			update_option( 'pprh_reset_global_preconnects', 'true' );
-		}
-
-		if ( isset( $_POST['pprh_reset_post_preconnects'] ) ) {
-			$wpdb->query(
-				$wpdb->prepare(
-					"UPDATE $table SET meta_value = %s WHERE meta_key = %s",
-					'true',
-					'pprh_reset_preconnects'
-				)
-			);
-		}
-
-		if ( isset( $_POST['pprh_reset_home_preconnect'] ) ) {
-			update_option( 'pprh_reset_home_preconnect', 'true' );
+		if ( isset( $_POST['pprh_preconnects_set'] ) ) {
+			update_option( 'pprh_preconnects_set', 'false' );
 		}
 
 		if ( isset( $_POST['pprh_save_user_options'] ) && check_admin_referer( 'pprh_save_admin_options', 'pprh_admin_options_nonce' ) ) {
@@ -63,13 +46,8 @@ class PPRH_Settings {
 			<tbody>
 
 				<?php
-				$this->reset_globals();
 
-				if ( get_option( 'show_on_front' ) === 'posts' ) {
-					$this->reset_home_preconnects();
-				}
 
-				$this->reset_post_page_preconnects();
 				?>
 			</tbody>
 		</table>
@@ -78,70 +56,6 @@ class PPRH_Settings {
 	}
 
 
-	public function reset_globals() {
-		?>
-		<tr>
-			<th>
-				<?php esc_html_e( 'Reset Global Preconnect Links?', 'pprh' ); ?>
-			</th>
-
-			<td>
-				<span class="pprh-help-tip-hint">
-					<span><?php esc_html_e( 'This will reset all of the automatically generated global preconnect hints, which are used on all posts and pages.', 'pprh' ); ?></span>
-				</span>
-			</td>
-
-			<td>
-				<input type="submit" name="pprh_reset_global_preconnects" id="pprhResetGlobalPreconnects" class="button-secondary" value="Reset"/>
-			</td>
-		</tr>
-
-		<?php
-	}
-
-	public function reset_home_preconnects() {
-		?>
-		<tr>
-			<th>
-				<?php esc_html_e( 'Reset Home Preconnect Links?', 'pprh' ); ?>
-				<!-- <p><i><?php // esc_html_e( 'This option only applies when the home page is set to display recent posts.', 'pprh' ); ?></i></p> -->
-			</th>
-
-			<td>
-				<span class="pprh-help-tip-hint">
-					<span><?php esc_html_e( 'This will reset automatically created preconnect hints on the home page.', 'pprh' ); ?></span>
-				</span>
-			</td>
-
-			<td>
-				<input type="submit" name="pprh_reset_home_preconnect" id="pprhHomeReset" class="button-secondary" value="Reset"/>
-			</td>
-		</tr>
-
-		<?php
-	}
-
-
-	public function reset_post_page_preconnects() {
-		?>
-		<tr>
-			<th>
-				<?php esc_html_e( 'Reset All Post/Page Preconnect Links?', 'pprh' ); ?>
-			</th>
-
-			<td>
-				<span class="pprh-help-tip-hint">
-					<span><?php esc_html_e( 'This will reset all of the automatically generated preconnect hints, which are unique to each posts or page.', 'pprh' ); ?></span>
-				</span>
-			</td>
-
-			<td>
-				<input type="submit" name="pprh_reset_post_preconnects" id="pprhResetPostPreconnects" class="button-secondary" value="Reset"/>
-			</td>
-		</tr>
-
-		<?php
-	}
 
 	public function settings_html() {
 
@@ -153,9 +67,10 @@ class PPRH_Settings {
 			<tbody>
 
 			<?php
-			$this->auto_set_globals();
+			$this->auto_set_hints();
 			$this->disable_auto_wp_hints();
 			$this->allow_unauth();
+			$this->reset_preconnects();
 			?>
 			</tbody>
 
@@ -173,7 +88,7 @@ class PPRH_Settings {
 		<?php
 	}
 
-	public function auto_set_globals() {
+	public function auto_set_hints() {
 		?>
 		<tr>
 			<th>
@@ -253,8 +168,28 @@ class PPRH_Settings {
 				</select>
 			</td>
 		</tr>
+		<?php
+	}
 
-	<?php
+	public function reset_preconnects() {
+		?>
+		<tr>
+			<th>
+				<?php esc_html_e( 'Reset automatically created preconnect Links?', 'pprh' ); ?>
+			</th>
+
+			<td>
+				<span class="pprh-help-tip-hint">
+					<span><?php esc_html_e( 'This will reset automatically created preconnect hints.', 'pprh' ); ?></span>
+				</span>
+			</td>
+
+			<td>
+				<input type="submit" name="pprh_preconnects_set" id="pprhPreconnectReset" class="button-secondary" value="Reset"/>
+			</td>
+		</tr>
+
+		<?php
 	}
 
 	public function get_option_status( $option_name, $val ) {
