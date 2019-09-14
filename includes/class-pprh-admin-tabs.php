@@ -18,7 +18,7 @@ class PPRH_Admin_Tabs {
 		}
 
 		echo '<div class="wrap pprh-wrap">';
-		echo '<h2>Pre* Party Resourcer Hints</h2>';
+		echo '<h2>Pre* Party Resource Hints</h2>';
 		$this->show_admin_tabs();
 		$this->display_admin_content();
 		echo '</div>';
