@@ -1,36 +1,45 @@
 <?php
-
+// If uninstall not called from WordPress, then exit.
 if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
-    die();
+	die;
 }
 
-function gktpp_uninstall_plugin() {
-    global $wpdb;
 
-    delete_option( 'gktpp_preconnect_status' );
-    delete_option( 'gktpp_reset_preconnect' );
-    delete_option( 'gktpp_send_in_header' );
-    delete_user_meta( get_current_user_id(), 'gktpp_screen_options' );
+pprh_uninstall_plugin();
 
-    $table = $wpdb->prefix . 'gktpp_table';
-    $sites = [ $table ];
+function pprh_uninstall_plugin() {
+	global $wpdb;
 
-    if ( is_multisite() ) {
-        $blogTable = $wpdb->base_prefix . 'blogs';
-        $data = $wpdb->get_results("SELECT blog_id FROM $blogTable WHERE blog_id != 1;");
+	delete_option( 'pprh_autoload_preconnects' );
+	delete_option( 'pprh_reset_home_preconnect' );
+	delete_option( 'pprh_reset_global_preconnects' );
+	delete_option( 'pprh_disable_wp_hints' );
+	delete_option( 'pprh_allow_unauth' );
 
-        if ($data) {
-            foreach ($data as $object) {
-                $sitePpTable = $wpdb->base_prefix . $object->blog_id . '_gktpp_table';
-                array_push( $sites, $sitePpTable );
-            }
-        }
-    } 
-   
-    foreach ( $sites as $site ) {
-        $sql = "DROP TABLE IF EXISTS $site";
-        $wpdb->query( $sql, null );
-    }
+	$pprh_table      = $wpdb->prefix . 'pprh_table';
+	$post_meta_table = $wpdb->prefix . 'postmeta';
+	$pprh_tables     = array( $pprh_table );
+
+	$wpdb->query(
+		$wpdb->prepare( "DELETE FROM $post_meta_table WHERE meta_key = %s", 'pprh_reset_preconnects' )
+	);
+
+	if ( is_multisite() ) {
+		$blog_table = $wpdb->base_prefix . 'blogs';
+		$data = $wpdb->get_results(
+			$wpdb->prepare( "SELECT blog_id FROM $blog_table WHERE blog_id != %d", 1 )
+		);
+
+		if ( $data ) {
+			foreach ( $data as $object ) {
+				$multisite_table = $wpdb->base_prefix . $object->blog_id . '_pprh_table';
+				array_push( $pprh_tables, $multisite_table );
+			}
+		}
+	}
+
+	foreach ( $pprh_tables as $pprh_table ) {
+		$wpdb->query( "DROP TABLE IF EXISTS $pprh_table" );
+	}
 
 }
-gktpp_uninstall_plugin();
