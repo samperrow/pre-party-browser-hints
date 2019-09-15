@@ -158,12 +158,22 @@ final class PPRH_Init {
 
 	public function update_plugin_versions( $new_table, $old_table ) {
 		global $wpdb;
-		// $table = $wpdb->prefix . 'pprh_table';
 
 		$wpdb->query( "RENAME TABLE $old_table TO $new_table" );
-
 		$wpdb->query( "ALTER TABLE $new_table ADD created_by varchar(55), DROP COLUMN header_string, DROP COLUMN head_string" );
 
+		$this->update_option( 'gktpp_reset_preconnect', 'pprh_preconnects_set', 'notset' );
+		$this->update_option( 'gktpp_disable_wp_hints', 'pprh_disable_wp_hints', 'Yes' );
+		$this->update_option( 'gktpp_preconnect_status', 'pprh_autoload_preconnects', 'Yes' );
+
+		delete_option( 'gktpp_send_in_header' );
+		add_option( 'pprh_allow_unauth', 'true', '', 'yes' );
+	}
+
+	public function update_option( $old_option_name, $new_option_name, $prev_value ) {
+		$new_value = ( $prev_value === get_option( $old_option_name ) ) ? 'true' : 'false';
+		add_option( $new_option_name, $new_value, '', 'yes' );
+		delete_option( $old_option_name );
 	}
 
 	// Multisite install/delete db table.
@@ -177,15 +187,12 @@ final class PPRH_Init {
 		);
 
 		// user is upgrading to new version.
-		if ( ! empty( $query ) ) {
+		if ( 1 === $query ) {
 			return $this->update_plugin_versions( $new_table, $old_table );
 		}
 
 		// remove previous version's outdated options.
-		delete_option( 'gktpp_preconnect_status' );
-		delete_option( 'gktpp_reset_preconnect' );
-		delete_option( 'gktpp_send_in_header' );
-		delete_option( 'gktpp_disable_wp_hints' );
+
 
 		add_option( 'pprh_autoload_preconnects', 'true', '', 'yes' );
 		add_option( 'pprh_allow_unauth', 'true', '', 'yes' );
