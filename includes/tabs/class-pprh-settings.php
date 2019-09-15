@@ -120,7 +120,7 @@ class PPRH_Settings {
 		?>
 		<tr>
 			<th>
-				<?php esc_html_e( 'Disable Automatically Generated WordPress Resource Hints?', 'pprh' ); ?>
+				<?php esc_html_e( 'Disable automatically generated WordPress resource hints?', 'pprh' ); ?>
 			</th>
 
 			<td>

@@ -67,17 +67,17 @@ To activate the preloaded resource, you must call that file in HTML as you would
 
 1. Insert new resource hints
 
-2. Settings
+2. Plugin settings
 
-2. screenshot-2.png
+3. Detailed information about all five resource hints
 
-3. screenshot-3.png
+4. Before plugin installation
 
-4. screenshot-4.png
+5. After preconnect hints created for externally hosted resources
 
-1. [Support Forum](https://wordpress.org/support/plugin/pre-party-browser-hints)
+6. HTTPS socket negotiation
 
-2. Send me an email at sam.perrow399@gmail.com
+7. Default HTTPS socket negotation time period
 
 
 == Changelog ==
@@ -90,7 +90,7 @@ September 15, 2019:
 2) The option to add hints in the HTTP header has been removed. This is necessary because that feature will not be compatible with future versions of the plugin.
 3) Moved all plugin settings to the "Settings" tab for easier navigation.
 4) Added ability for users to set the crossorigin, as, and type attributes for hints.
-5) Transformed "Contact" box into a pop up modal
+5) Transformed "Contact" box into a pop up modal.
 
 February 16, 2019:
 1) Ensured compatibility with WP 5.1
