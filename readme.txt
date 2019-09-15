@@ -3,8 +3,8 @@ Contributors: samperrow
 Donate link: https://www.paypal.me/samperrow
 Tags: W3C, DNS prefetch, prerender, preconnect, prefetch, preload, web perf, performance, speed, resource hints
 Requires at least: 4.4
-Tested up to: 5.2.1
-Stable tag: 1.5.8
+Tested up to: 5.1
+Stable tag: 1.5.5
 Requires PHP: 5.3.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -80,20 +80,9 @@ To activate the preloaded resource, you must call that file in HTML as you would
 
 == Changelog ==
 
-1. Most recent update: July 20, 2019.
-2. Version 1.5.8
-
-July 20, 2019:
-1) fixed URL validation issue to allow "&" and "%" chars
-2) ensured compatibility with PHP version 7.3.3 and WP 5.2.2
-
-May 11 2019:
-1) ensuring compat for WP 5.2.1
-
-April 28, 2019:
-1) added support for .webp files, thanks to Prayag Verma for pointing that out! (https://github.com/pra85)
-2) reorganized some files and class content.
-3) Ensured compat with WP 5.1.1
+1. Most recent update: February 16, 2019.
+2. Version 1.5.5
+3. Ensured compatibility with WP 5.1, and removed unneccessary file.
 
 February 16, 2019:
 1) Ensured compatibility with WP 5.1
@@ -123,7 +112,7 @@ April 14, 2018:
 1) Fixed some UI issues on admin page (URL input field not taking up max space, jQuery sometimes not loading).
 2) removed check to see if JS preconnect hint array had items before sending it to db (if it was empty, this caused the script to keep firing over and over).
 3) changed some text in description.
-4) cleaned up old variable's on class-gktpp-table.php file.
+4) cleaned up old variable's on class-PPRH-display-items.php file.
 
 April 2, 2018:
 1) removed unneccessary call on admin side for creating table.
@@ -179,7 +168,7 @@ Sept 20, 2017:
 1) fixed bugs due to WP 4.8.2 changes.
 
 Sept 13, 2017:
-1) improved code on class-GKTPP_Send_Entered_Hints.php
+1) improved code on class-PPRH_Send_Entered_Hints.php
 2) added two more screenshots of the before and after effects of implementing this plugin.
 
 July 13, 2017:
@@ -193,7 +182,7 @@ July 6, 2017:
 3) fixed bugs on find-external-domains.js/ improved functionality;
 4) removed option to select which pages/posts the links went to- this was unwanted feature and removing it improved performance
 5) condensed the info tab links into one;
-6) modified schema for gktpp_table; and removed the other table;
+6) modified schema for PPRH_table; and removed the other table;
 7) improved security;
 
 June 11, 2017:
