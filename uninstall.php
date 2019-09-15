@@ -11,10 +11,9 @@ function pprh_uninstall_plugin() {
 	global $wpdb;
 
 	delete_option( 'pprh_autoload_preconnects' );
-	delete_option( 'pprh_reset_home_preconnect' );
-	delete_option( 'pprh_reset_global_preconnects' );
 	delete_option( 'pprh_disable_wp_hints' );
 	delete_option( 'pprh_allow_unauth' );
+	delete_option( 'pprh_preconnects_set' );
 
 	$pprh_table      = $wpdb->prefix . 'pprh_table';
 	$post_meta_table = $wpdb->prefix . 'postmeta';
