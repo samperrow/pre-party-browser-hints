@@ -30,12 +30,13 @@ class PPRH_Create_Hints {
 
 	private function init( $data ) {
 		$urls = $data->url;
+		$this->remove_prev_ajax_hints();
 
 		foreach ( $urls as $url ) {
 			$this->create_hint( $url, $data->hint_type );
+			$this->insert_hints();
 		}
 
-		$this->complete();
 	}
 
 	private function create_hint( $url, $hint_type ) {
@@ -132,18 +133,11 @@ class PPRH_Create_Hints {
 		return '';
 	}
 
-	private function complete() {
-		$this->insert_hints();
-		return $this->results;
-	}
-
-	private function insert_hints() {
+	private function remove_prev_ajax_hints() {
 		global $wpdb;
-		$table        = $wpdb->prefix . 'pprh_table';
-		$current_user = wp_get_current_user()->display_name;
+		$table = $wpdb->prefix . 'pprh_table';
 
 		if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
-			$this->autoset = 1;
 			$wpdb->delete(
 				$table,
 				array(
@@ -152,9 +146,14 @@ class PPRH_Create_Hints {
 				),
 				array( '%d', '%s' )
 			);
-		} else {
-			$this->autoset = 0;
 		}
+	}
+
+	private function insert_hints() {
+		global $wpdb;
+		$table         = $wpdb->prefix . 'pprh_table';
+		$current_user  = wp_get_current_user()->display_name;
+		$this->autoset = ( defined( 'DOING_AJAX' ) && DOING_AJAX ) ? 1 : 0;
 
 		$wpdb->insert(
 			$table,

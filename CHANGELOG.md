@@ -1,7 +1,7 @@
 == Changelog ==
 
 1. Most recent update: September 15, 2019.
-2. Version 1.6.0
+2. Version 1.6.2
 
 September 15, 2019:
 1) Dramatically reconfigured plugin. Version 1.6.0 is basically a complete rewrite of all code used. It is more organized, concise, efficient, easy to understand, simple, and user friendly than previously.

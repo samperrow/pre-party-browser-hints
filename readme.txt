@@ -4,7 +4,7 @@ Donate link: https://www.paypal.me/samperrow
 Tags: W3C, DNS prefetch, prerender, preconnect, prefetch, preload, web perf, performance, speed, resource hints
 Requires at least: 4.4
 Tested up to: 5.2.3
-Stable tag: 1.6.0
+Stable tag: 1.6.2
 Requires PHP: 5.3.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -83,7 +83,7 @@ To activate the preloaded resource, you must call that file in HTML as you would
 == Changelog ==
 
 1. Most recent update: September 15, 2019.
-2. Version 1.6.0
+2. Version 1.6.2
 
 September 15, 2019:
 1) Dramatically reconfigured plugin. Version 1.6.0 is basically a complete rewrite of all code used. It is more organized, concise, efficient, easy to understand, simple, and user friendly than previously.
