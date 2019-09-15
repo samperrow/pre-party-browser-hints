@@ -135,7 +135,7 @@ final class PPRH_Init {
 		wp_register_script( 'pprh_admin_js', plugin_dir_url( __FILE__ ) . 'js/admin.js', null, PPRH_VERSION, true );
 		wp_register_style( 'pprh_styles_css', plugin_dir_url( __FILE__ ) . 'css/styles.css', null, PPRH_VERSION, 'all' );
 
-		if ( preg_match( '/toplevel_page_pprh-plugin-settings/i', $hook ) ) {
+		if ( 'toplevel_page_pprh-plugin-settings' === $hook ) {
 			wp_enqueue_script( 'pprh_admin_js' );
 			wp_enqueue_style( 'pprh_styles_css' );
 		}
@@ -156,9 +156,30 @@ final class PPRH_Init {
 		}
 	}
 
+	public function update_plugin_versions( $new_table, $old_table ) {
+		global $wpdb;
+		// $table = $wpdb->prefix . 'pprh_table';
+
+		$wpdb->query( "RENAME TABLE $old_table TO $new_table" );
+
+		$wpdb->query( "ALTER TABLE $new_table ADD created_by varchar(55), DROP COLUMN header_string, DROP COLUMN head_string" );
+
+	}
+
 	// Multisite install/delete db table.
 	public function install_db_table() {
 		global $wpdb;
+		$new_table = $wpdb->prefix . 'pprh_table';
+		$old_table = $wpdb->prefix . 'gktpp_table';
+
+		$query = $wpdb->query(
+			$wpdb->prepare( 'SHOW TABLES LIKE %s', $old_table )
+		);
+
+		// user is upgrading to new version.
+		if ( ! empty( $query ) ) {
+			return $this->update_plugin_versions( $new_table, $old_table );
+		}
 
 		// remove previous version's outdated options.
 		delete_option( 'gktpp_preconnect_status' );
@@ -170,14 +191,13 @@ final class PPRH_Init {
 		add_option( 'pprh_allow_unauth', 'true', '', 'yes' );
 		add_option( 'pprh_preconnects_set', 'false', '', 'yes' );
 
-		$table           = $wpdb->prefix . 'pprh_table';
 		$charset_collate = $wpdb->get_charset_collate();
 
 		if ( ! function_exists( 'dbDelta' ) ) {
 			include_once ABSPATH . 'wp-admin/includes/upgrade.php';
 		}
 
-		$pprh_tables = array( $table );
+		$pprh_tables = array( $new_table );
 
 		if ( is_multisite() ) {
 			$blog_table = $wpdb->base_prefix . 'blogs';
