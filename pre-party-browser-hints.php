@@ -191,7 +191,6 @@ final class PPRH_Init {
 			return $this->update_plugin_versions( $new_table, $old_table );
 		}
 
-
 		add_option( 'pprh_autoload_preconnects', 'true', '', 'yes' );
 		add_option( 'pprh_allow_unauth', 'true', '', 'yes' );
 		add_option( 'pprh_preconnects_set', 'false', '', 'yes' );
