@@ -3,8 +3,8 @@ Contributors: samperrow
 Donate link: https://www.paypal.me/samperrow
 Tags: W3C, DNS prefetch, prerender, preconnect, prefetch, preload, web perf, performance, speed, resource hints
 Requires at least: 4.4
-Tested up to: 5.1
-Stable tag: 1.5.5
+Tested up to: 5.2.3
+Stable tag: 1.6.0
 Requires PHP: 5.3.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -23,7 +23,7 @@ DNS prefetch, prerender, preconnect, prefetch, and preload are all supported.
 
 After installation, preconnect hints will automatically be created the next time your website is visited.
 
-You have the choice to include these resource hints in the HTTP header or the website's <head>.
+Resource hints will be added in your website's <head>. (The option to insert them in the HTTP header has been removed, in order for this plugin to be compatible with future changes I have planned.)
 
 == Installation ==
 
@@ -65,24 +65,32 @@ To activate the preloaded resource, you must call that file in HTML as you would
 
 == Screenshots ==
 
-1. screenshot-1.png
+1. Insert new resource hints
 
-2. screenshot-2.png
+2. Plugin settings
 
-3. screenshot-3.png
+3. Detailed information about all five resource hints
 
-4. screenshot-4.png
+4. Before plugin installation
 
-1. [Support Forum](https://wordpress.org/support/plugin/pre-party-browser-hints)
+5. After preconnect hints created for externally hosted resources
 
-2. Send me an email at sam.perrow399@gmail.com
+6. HTTPS socket negotiation
+
+7. Default HTTPS socket negotation time period
 
 
 == Changelog ==
 
-1. Most recent update: February 16, 2019.
-2. Version 1.5.5
-3. Ensured compatibility with WP 5.1, and removed unneccessary file.
+1. Most recent update: September 15, 2019.
+2. Version 1.6.0
+
+September 15, 2019:
+1) Dramatically reconfigured plugin. Version 1.6.0 is basically a complete rewrite of all code used. It is more organized, concise, efficient, easy to understand, simple, and user friendly than previously.
+2) The option to add hints in the HTTP header has been removed. This is necessary because that feature will not be compatible with future versions of the plugin.
+3) Moved all plugin settings to the "Settings" tab for easier navigation.
+4) Added ability for users to set the crossorigin, as, and type attributes for hints.
+5) Transformed "Contact" box into a pop up modal.
 
 February 16, 2019:
 1) Ensured compatibility with WP 5.1
