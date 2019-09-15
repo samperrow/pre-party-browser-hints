@@ -75,7 +75,7 @@ To activate the preloaded resource, you must call that file in HTML as you would
 
 5. After preconnect hints created for externally hosted resources
 
-6. HTTPS socket negotiation
+6. HTTPS socket negotiation with preconnect hints enabled
 
 7. Default HTTPS socket negotation time period
 
