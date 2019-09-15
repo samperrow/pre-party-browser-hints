@@ -92,12 +92,12 @@ class PPRH_Settings {
 		?>
 		<tr>
 			<th>
-				<?php esc_html_e( 'Automatically Set Preconnect Hints?', 'pprh' ); ?>
+				<?php esc_html_e( 'Automatically set preconnect hints?', 'pprh' ); ?>
 			</th>
 
 			<td>
 				<span class="pprh-help-tip-hint">
-					<span><?php esc_html_e( 'JavaScript, CSS, and images loaded from external domains will preconnect automatically.', 'pprh' ); ?></span>
+					<span><?php esc_html_e( 'Preconnect hints from JavaScript, CSS, and image resources loaded from external domains will be created with Ajax and preconnect automatically.', 'pprh' ); ?></span>
 				</span>
 			</td>
 
@@ -148,12 +148,12 @@ class PPRH_Settings {
 		?>
 		<tr>
 			<th>
-				<?php esc_html_e( 'Allow unauthenticated users to auto-set post/page preconnect hints?', 'pprh' ); ?>
+				<?php esc_html_e( 'Allow unauthenticated users to automatically set preconnect hints via Ajax?', 'pprh' ); ?>
 			</th>
 
 			<td>
 				<span class="pprh-help-tip-hint">
-					<span><?php esc_html_e( 'Automatically set preconnect hints used on posts/pages are initially set once by the first user to access that page.', 'pprh' ); ?></span>
+					<span><?php esc_html_e( 'Automatically set preconnect hints are initially set once by the first user to access that page.', 'pprh' ); ?></span>
 				</span>
 			</td>
 
@@ -175,7 +175,7 @@ class PPRH_Settings {
 		?>
 		<tr>
 			<th>
-				<?php esc_html_e( 'Reset automatically created preconnect Links?', 'pprh' ); ?>
+				<?php esc_html_e( 'Reset automatically created preconnect links?', 'pprh' ); ?>
 			</th>
 
 			<td>

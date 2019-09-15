@@ -13,7 +13,6 @@
  * Text Domain:       pprh
  * Domain Path:       /languages
  *
- * last edited July 27, 2019
  * Copyright 2016  Sam Perrow  (email : sam.perrow399@gmail.com)
  *
 */
