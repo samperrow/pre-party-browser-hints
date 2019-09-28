@@ -162,9 +162,11 @@ final class PPRH_Init {
 		global $wpdb;
 
 		$wpdb->query( "RENAME TABLE $old_table TO $new_table" );
-		$wpdb->query( "ALTER TABLE $new_table ADD created_by varchar(55), DROP COLUMN header_string, DROP COLUMN head_string" );
+		$wpdb->query( "ALTER TABLE $new_table ADD created_by varchar(55)" );
+		$wpdb->query( "ALTER TABLE $new_table DROP COLUMN header_string" );
+		$wpdb->query( "ALTER TABLE $new_table DROP COLUMN head_string" );
 
-		$this->update_option( 'gktpp_reset_preconnect', 'pprh_preconnects_set', 'set' );
+		$this->update_option( 'gktpp_reset_preconnect', 'pprh_preconnects_set', 'false' );
 		$this->update_option( 'gktpp_disable_wp_hints', 'pprh_disable_wp_hints', 'Yes' );
 		$this->update_option( 'gktpp_preconnect_status', 'pprh_autoload_preconnects', 'Yes' );
 
