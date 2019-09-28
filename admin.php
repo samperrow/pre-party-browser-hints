@@ -177,6 +177,7 @@ final class PPRH_Init {
 	// Multisite install/delete db table.
 	public function install_db_table() {
 		global $wpdb;
+
 		$new_table = $wpdb->prefix . 'pprh_table';
 		$old_table = $wpdb->prefix . 'gktpp_table';
 
@@ -199,7 +200,7 @@ final class PPRH_Init {
 			include_once ABSPATH . 'wp-admin/includes/upgrade.php';
 		}
 
-		$pprh_tables = array( $new_table );
+		$pprh_tables = array( $table );
 
 		if ( is_multisite() ) {
 			$blog_table = $wpdb->base_prefix . 'blogs';
