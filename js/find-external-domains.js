@@ -29,7 +29,7 @@
 			console.log(hint_data.url);
 			var json = JSON.stringify(hint_data);
 			xhr.send('action=pprh_post_domain_names&hint_data=' + json + '&nonce=' + hint_data.nonce );
-		}, 500);
+		}, 7000);
     }
 
 })();

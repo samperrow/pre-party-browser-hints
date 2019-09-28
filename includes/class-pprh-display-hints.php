@@ -215,8 +215,4 @@ class PPRH_Display_Hints extends PPRH_WP_List_Table {
 
 	// }
 
-
-
-
-
 }
