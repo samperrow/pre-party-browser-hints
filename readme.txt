@@ -87,6 +87,7 @@ To activate the preloaded resource, you must call that file in HTML as you would
 
 September 28, 2019:
 1) Fixed bug with preconnect-ajax hints.
+2) fixed issue with upgrading db table from v 1.5.8
 
 September 15, 2019:
 1) Dramatically reconfigured plugin. Version 1.6.0 is basically a complete rewrite of all code used. It is more organized, concise, efficient, easy to understand, simple, and user friendly than previously.
