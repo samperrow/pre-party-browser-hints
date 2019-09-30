@@ -6,17 +6,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class PPRH_Ajax {
 
-	public $reset_global_prec_str     = 'pprh_reset_global_preconnects';
-	public $reset_home_preconnect_str = 'pprh_reset_home_preconnect';
-	public $reset_prec_meta           = 'pprh_reset_preconnects';
-
-	public $global_prec_opt     = '';
-	public $reset_home_prec_opt = '';
+	public $reset_prec_meta           = 'pprh_preconnects_set';
 
 	public function __construct() {
-		$this->global_prec_opt     = get_option( $this->reset_global_prec_str );
-		$this->reset_home_prec_opt = get_option( $this->reset_home_preconnect_str );
-
 		if ( 'true' === get_option( 'pprh_allow_unauth' ) ) {
 			$this->load();
 			add_action( 'wp_ajax_nopriv_pprh_post_domain_names', array( $this, 'pprh_post_domain_names' ) );
@@ -51,7 +43,6 @@ class PPRH_Ajax {
 	}
 
 	public function pprh_post_domain_names() {
-
 		if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
 			check_ajax_referer( 'pprh_ajax_nonce', 'nonce' );
 			include_once PPRH_PLUGIN_DIR . '/class-pprh-misc.php';
