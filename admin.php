@@ -189,6 +189,18 @@ final class PPRH_Init {
 			return $this->upgrade_db( $new_table, $old_table );
 		}
 
+		$new_table = $wpdb->prefix . 'pprh_table';
+		$old_table = $wpdb->prefix . 'gktpp_table';
+
+		$prev_table_exists = $wpdb->query(
+			$wpdb->prepare( 'SHOW TABLES LIKE %s', $old_table )
+		);
+
+		// user is upgrading to new version.
+		if ( 1 === $prev_table_exists ) {
+			return $this->upgrade_db( $new_table, $old_table );
+		}
+
 		add_option( 'pprh_autoload_preconnects', 'true', '', 'yes' );
 		add_option( 'pprh_allow_unauth', 'true', '', 'yes' );
 		add_option( 'pprh_preconnects_set', 'false', '', 'yes' );
@@ -199,7 +211,7 @@ final class PPRH_Init {
 			include_once ABSPATH . 'wp-admin/includes/upgrade.php';
 		}
 
-		$pprh_tables = array( $new_table );
+		$pprh_tables = array( $table );
 
 		if ( is_multisite() ) {
 			$blog_table = $wpdb->base_prefix . 'blogs';
