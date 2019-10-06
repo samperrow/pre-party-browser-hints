@@ -1,7 +1,14 @@
 == Changelog ==
 
-1. Most recent update: September 15, 2019.
-2. Version 1.6.2
+1. Most recent update: October 5, 2019.
+2. Version 1.6.41
+
+October 5, 2019:
+1) Entered URL's will no longer be converted to lower case. This is because some sites have case-sensitive URI's.
+
+September 28, 2019:
+1) Fixed bug with preconnect-ajax hints.
+2) fixed issue with upgrading db table from v 1.5.8
 
 September 15, 2019:
 1) Dramatically reconfigured plugin. Version 1.6.0 is basically a complete rewrite of all code used. It is more organized, concise, efficient, easy to understand, simple, and user friendly than previously.

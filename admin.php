@@ -3,7 +3,7 @@
  * Plugin Name:       Pre* Party Resource Hints
  * Plugin URI:        https://wordpress.org/plugins/pre-party-browser-hints/
  * Description:       Take advantage of the browser resource hints DNS-Prefetch, Prerender, Preconnect, Prefetch, and Preload to improve page load time.
- * Version:           1.6.4
+ * Version:           1.6.41
  * Requires at least: 4.4
  * Requires PHP:      5.3
  * Author:            Sam Perrow
@@ -177,6 +177,17 @@ final class PPRH_Init {
 	// Multisite install/delete db table.
 	public function install_db_table() {
 		global $wpdb;
+		$new_table = $wpdb->prefix . 'pprh_table';
+		$old_table = $wpdb->prefix . 'gktpp_table';
+
+		$prev_table_exists = $wpdb->query(
+			$wpdb->prepare( 'SHOW TABLES LIKE %s', $old_table )
+		);
+
+		// user is upgrading to new version.
+		if ( 1 === $prev_table_exists ) {
+			return $this->upgrade_db( $new_table, $old_table );
+		}
 
 		$new_table = $wpdb->prefix . 'pprh_table';
 		$old_table = $wpdb->prefix . 'gktpp_table';
