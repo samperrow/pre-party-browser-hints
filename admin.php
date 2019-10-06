@@ -3,7 +3,7 @@
  * Plugin Name:       Pre* Party Resource Hints
  * Plugin URI:        https://wordpress.org/plugins/pre-party-browser-hints/
  * Description:       Take advantage of the browser resource hints DNS-Prefetch, Prerender, Preconnect, Prefetch, and Preload to improve page load time.
- * Version:           1.6.2
+ * Version:           1.6.41
  * Requires at least: 4.4
  * Requires PHP:      5.3
  * Author:            Sam Perrow
@@ -52,7 +52,6 @@ final class PPRH_Init {
 	public function initialize() {
 
 		$this->create_constants();
-		$this->check_for_update();
 
 		if ( is_admin() ) {
 			add_action( 'admin_menu', array( $this, 'load_admin_page' ) );
@@ -86,7 +85,7 @@ final class PPRH_Init {
 
 	public function create_constants() {
 		if ( ! defined( 'PPRH_VERSION' ) ) {
-			define( 'PPRH_VERSION', '1.6.0' );
+			define( 'PPRH_VERSION', '1.6.4' );
 		}
 		if ( ! defined( 'PPRH_PLUGIN_FILENAME' ) ) {
 			define( 'PPRH_PLUGIN_FILENAME', '/pre-party-browser-hints' );
@@ -152,38 +151,43 @@ final class PPRH_Init {
 		}
 	}
 
-	public function check_for_update() {
-		global $wpdb;
-		$new_table = $wpdb->prefix . 'pprh_table';
-		$old_table = $wpdb->prefix . 'gktpp_table';
-
-		$query = $wpdb->query(
-			$wpdb->prepare( 'SHOW TABLES LIKE %s', $old_table )
-		);
-
-		// user is upgrading to new version.
-		if ( 1 === $query ) {
-			$wpdb->query( "RENAME TABLE $old_table TO $new_table" );
-			$wpdb->query( "ALTER TABLE $new_table ADD created_by varchar(55), DROP COLUMN header_string, DROP COLUMN head_string" );
-
-			$this->update_option( 'gktpp_reset_preconnect', 'pprh_preconnects_set', 'set' );
-			$this->update_option( 'gktpp_disable_wp_hints', 'pprh_disable_wp_hints', 'Yes' );
-			$this->update_option( 'gktpp_preconnect_status', 'pprh_autoload_preconnects', 'Yes' );
-
-			delete_option( 'gktpp_send_in_header' );
-			add_option( 'pprh_allow_unauth', 'true', '', 'yes' );
-		}
-	}
-
 	public function update_option( $old_option_name, $new_option_name, $prev_value ) {
 		$new_value = ( $prev_value === get_option( $old_option_name ) ) ? 'true' : 'false';
 		add_option( $new_option_name, $new_value, '', 'yes' );
 		delete_option( $old_option_name );
 	}
 
+	// Upgrade db table from version 1.5.8.
+	public function upgrade_db( $new_table, $old_table ) {
+		global $wpdb;
+
+		$wpdb->query( "RENAME TABLE $old_table TO $new_table" );
+		$wpdb->query( "ALTER TABLE $new_table ADD created_by varchar(55)" );
+		$wpdb->query( "ALTER TABLE $new_table DROP COLUMN header_string" );
+		$wpdb->query( "ALTER TABLE $new_table DROP COLUMN head_string" );
+
+		$this->update_option( 'gktpp_reset_preconnect', 'pprh_preconnects_set', 'false' );
+		$this->update_option( 'gktpp_disable_wp_hints', 'pprh_disable_wp_hints', 'Yes' );
+		$this->update_option( 'gktpp_preconnect_status', 'pprh_autoload_preconnects', 'Yes' );
+
+		delete_option( 'gktpp_send_in_header' );
+		add_option( 'pprh_allow_unauth', 'true', '', 'yes' );
+	}
+
 	// Multisite install/delete db table.
 	public function install_db_table() {
 		global $wpdb;
+		$new_table = $wpdb->prefix . 'pprh_table';
+		$old_table = $wpdb->prefix . 'gktpp_table';
+
+		$prev_table_exists = $wpdb->query(
+			$wpdb->prepare( 'SHOW TABLES LIKE %s', $old_table )
+		);
+
+		// user is upgrading to new version.
+		if ( 1 === $prev_table_exists ) {
+			return $this->upgrade_db( $new_table, $old_table );
+		}
 
 		add_option( 'pprh_autoload_preconnects', 'true', '', 'yes' );
 		add_option( 'pprh_allow_unauth', 'true', '', 'yes' );

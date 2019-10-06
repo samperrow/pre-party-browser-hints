@@ -53,7 +53,7 @@ class PPRH_Create_Hints {
 	}
 
 	private function set_url( $url ) {
-		$this->url = strtolower( filter_var( str_replace( ' ', '', $url ), FILTER_SANITIZE_URL ) );
+		$this->url = filter_var( str_replace( ' ', '', $url ), FILTER_SANITIZE_URL );
 
 		if ( preg_match( '/(dns-prefetch|preconnect)/', $this->hint_type ) ) {
 			$this->parse_for_domain_name();
