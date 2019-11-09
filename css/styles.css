@@ -69,7 +69,7 @@ span.pprh-help-tip-hint:before {
     line-height: 1;
     margin: 0;
     text-indent: 0;
-    content: "";
+    content: "\f223";
     cursor: help;
 	color: #555;
 	vertical-align: middle;
