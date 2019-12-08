@@ -15,13 +15,8 @@ function pprh_uninstall_plugin() {
     delete_option( 'pprh_disable_wp_hints' );
     delete_option( 'pprh_html_head' );
 
-	$pprh_table      = $wpdb->prefix . 'pprh_table';
-//	$post_meta_table = $wpdb->prefix . 'postmeta';
-	$pprh_tables     = array( $pprh_table );
-
-//	$wpdb->query(
-//		$wpdb->prepare( "DELETE FROM $post_meta_table WHERE meta_key = %s", 'pprh_reset_preconnects' )
-//	);
+	$pprh_table  = $wpdb->prefix . 'pprh_table';
+	$pprh_tables = array( $pprh_table );
 
 	if ( is_multisite() ) {
 		$blog_table = $wpdb->base_prefix . 'blogs';
