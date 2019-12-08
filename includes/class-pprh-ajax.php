@@ -37,7 +37,7 @@ class PPRH_Ajax {
 			);
 
 			wp_register_script( 'pprh-find-domain-names', plugins_url( PPRH_PLUGIN_FILENAME . '/js/find-external-domains.js' ), null, PPRH_VERSION, true );
-			wp_localize_script( 'pprh-find-domain-names', 'hint_data', $data_to_retrieve );
+			wp_localize_script( 'pprh-find-domain-names', 'pprh_data', $data_to_retrieve );
 			wp_enqueue_script( 'pprh-find-domain-names' );
 		}
 	}

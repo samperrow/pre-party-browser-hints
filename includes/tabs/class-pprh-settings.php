@@ -33,29 +33,9 @@ class PPRH_Settings {
 			update_option( 'pprh_autoload_preconnects', wp_unslash( $_POST['pprh_preconnect_status'] ) );
 			update_option( 'pprh_disable_wp_hints', wp_unslash( $_POST['pprh_disable_wp_hints_option'] ) );
 			update_option( 'pprh_allow_unauth', wp_unslash( $_POST['pprh_pprh_allow_unauth_option'] ) );
+			update_option( 'pprh_html_head', wp_unslash( $_POST['pprh_html_head'] ) );
 		}
 	}
-
-	public function preconnects_html() {
-
-		// wp_nonce_field( 'pprh_save_admin_options', 'pprh_admin_options_nonce' );
-		?>
-		<h2><?php esc_html_e( 'Auto Preconnect Options', 'pprh' ); ?></h2>
-
-		<table class="pprh-settings-table">
-			<tbody>
-
-				<?php
-
-
-				?>
-			</tbody>
-		</table>
-
-		<?php
-	}
-
-
 
 	public function settings_html() {
 
@@ -71,6 +51,7 @@ class PPRH_Settings {
 			$this->disable_auto_wp_hints();
 			$this->allow_unauth();
 			$this->reset_preconnects();
+			$this->set_hint_destination();
 			?>
 			</tbody>
 
@@ -191,6 +172,34 @@ class PPRH_Settings {
 
 		<?php
 	}
+
+    public function set_hint_destination() {
+        ?>
+        <tr>
+            <th>
+                <?php esc_html_e( 'Send resource hints in HTML head or HTTP header?', 'pprh' ); ?>
+            </th>
+
+            <td>
+				<span class="pprh-help-tip-hint">
+					<span><?php esc_html_e( 'Send hints', 'pprh' ); ?></span>
+				</span>
+            </td>
+
+            <td>
+                <select name="pprh_html_head">
+                    <option value="true" <?php $this->get_option_status( 'pprh_html_head', 'true' ); ?>>
+                        <?php esc_html_e( 'HTML <head>', 'pprh' ); ?>
+                    </option>
+                    <option value="false" <?php $this->get_option_status( 'pprh_html_head', 'false' ); ?>>
+                        <?php esc_html_e( 'HTTP Header', 'pprh' ); ?>
+                    </option>
+                </select>
+            </td>
+        </tr>
+
+        <?php
+    }
 
 	public function get_option_status( $option_name, $val ) {
 		echo esc_html( ( get_option( $option_name ) === $val ? 'selected=selected' : '' ) );

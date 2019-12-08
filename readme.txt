@@ -4,8 +4,8 @@ Donate link: https://www.paypal.me/samperrow
 Tags: W3C, DNS prefetch, prerender, preconnect, prefetch, preload, web perf, performance, speed, resource hints
 Requires at least: 4.4
 Tested up to: 5.3.0
-Stable tag: 1.6.42
-Requires PHP: 5.3.0
+Stable tag: 1.6.43
+Requires PHP: 5.6.30
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -82,8 +82,12 @@ To activate the preloaded resource, you must call that file in HTML as you would
 
 == Changelog ==
 
-1. Most recent update: November 4, 2019.
-2. Version 1.6.42
+1. Most recent update: December 8, 2019.
+2. Version 1.6.43
+
+December 8, 2019:
+1) Re-added option to allow resource hints to be sent in the HTTP header.
+2)
 
 November 4, 2019:
 1) Ensured compatibility with WP 5.3
