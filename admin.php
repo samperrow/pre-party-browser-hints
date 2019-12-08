@@ -193,8 +193,9 @@ final class PPRH_Init {
 		add_option( 'pprh_allow_unauth', 'true', '', 'yes' );
 		add_option( 'pprh_preconnects_set', 'false', '', 'yes' );
 		add_option( 'pprh_disable_wp_hints', 'true', '', 'yes' );
+        add_option( 'pprh_html_head', 'true', '', 'yes' );
 
-		$charset_collate = $wpdb->get_charset_collate();
+        $charset_collate = $wpdb->get_charset_collate();
 
 		if ( ! function_exists( 'dbDelta' ) ) {
 			include_once ABSPATH . 'wp-admin/includes/upgrade.php';

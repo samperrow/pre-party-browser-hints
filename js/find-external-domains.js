@@ -23,11 +23,11 @@
     if (/find-external-domains.js/i.test(scripts[scripts.length - 1].src)) {
         setTimeout(function() {
             findResourceSources();
-            var json = JSON.stringify(hint_data);
+            var json = JSON.stringify(pprh_data);
             var xhr = new XMLHttpRequest();
             xhr.open('POST', host + '/wp-admin/admin-ajax.php', true);
             xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
-			xhr.send('action=pprh_post_domain_names&hint_data=' + json + '&nonce=' + hint_data.nonce );
+			xhr.send('action=pprh_post_domain_names&hint_data=' + json + '&nonce=' + pprh_data.nonce );
 		}, 7000);
     }
 

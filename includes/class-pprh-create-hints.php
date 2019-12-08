@@ -22,7 +22,7 @@ class PPRH_Create_Hints {
 			} else {
 				check_admin_referer( $nonce_action, $nonce_name );
 			}
-			$data = json_decode( wp_unslash( $_POST['hint_data'] ) );
+			$data = json_decode( wp_unslash( $_POST['hint_data'] ), false );
 			$this->init( $data );
 		}
 	}
@@ -85,7 +85,7 @@ class PPRH_Create_Hints {
 	}
 
 	private function set_crossorigin() {
-		$this->crossorigin = ( isset( $_POST['crossorigin'] ) ) ? $_POST['crossorigin'] : ( preg_match( '/fonts.(googleapis|gstatic).com/i', $this->url ) || preg_match( '/(.woff|.woff2|.ttf|.eot)/', $this->file_type ) ) ? ' crossorigin' : '';
+		$this->crossorigin = ( isset( $_POST['crossorigin'] ) ) ? $_POST['crossorigin'] : ( preg_match( '/fonts.(googleapis|gstatic).com/i', $this->url ) || preg_match( '/(.woff|.woff2|.ttf|.eot)/', $this->file_type ) ) ? 'crossorigin' : '';
 	}
 
 	private function set_as_attr() {
