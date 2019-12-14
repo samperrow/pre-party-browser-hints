@@ -37,7 +37,7 @@ class PPRH_Send_Hints {
             $attrs = '';
             $attrs .= $this->add_html_attr( 'as', $val->as_attr );
             $attrs .= $this->add_html_attr( 'type', $val->type_attr );
-            $attrs .= $this->add_html_attr( 'crossorigin', $val->crossorigin );
+            $attrs .= $this->add_html_attr( 'crossorigin', trim($val->crossorigin) );
             echo sprintf('<link href="%s" rel="%s"%s>', $val->url, $val->hint_type, $attrs);
         }
     }
@@ -49,7 +49,7 @@ class PPRH_Send_Hints {
             $attrs = '';
             $attrs .= $this->add_header_attr( 'as', $val->as_attr );
             $attrs .= $this->add_header_attr( 'type', $val->type_attr );
-            $attrs .= $this->add_header_attr( 'crossorigin', $val->crossorigin );
+            $attrs .= $this->add_header_attr( 'crossorigin', trim($val->crossorigin) );
             $str = sprintf('<%s>; rel=%s;%s', $val->url, $val->hint_type, $attrs );
             $str = rtrim( $str, ';' );
             $output .= $str . ', ';
