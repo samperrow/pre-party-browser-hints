@@ -224,7 +224,7 @@ final class PPRH_Init {
 
 		foreach ( $pprh_tables as $pprh_table ) {
 
-			$sql = "CREATE TABLE IF NOT EXISTS $pprh_table (
+			$sql = "CREATE TABLE $pprh_table (
 				id INT(9) NOT NULL AUTO_INCREMENT,
 				url VARCHAR(255) DEFAULT '' NOT NULL,
 				hint_type VARCHAR(55) DEFAULT '' NOT NULL,

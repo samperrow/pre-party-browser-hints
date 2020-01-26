@@ -3,7 +3,7 @@ Contributors: samperrow
 Donate link: https://www.paypal.me/samperrow
 Tags: W3C, DNS prefetch, prerender, preconnect, prefetch, preload, web perf, performance, speed, resource hints
 Requires at least: 4.4
-Tested up to: 5.3.0
+Tested up to: 5.3.2
 Stable tag: 1.6.45
 Requires PHP: 5.6.30
 License: GPLv2 or later
