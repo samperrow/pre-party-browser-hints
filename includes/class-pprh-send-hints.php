@@ -26,9 +26,9 @@ class PPRH_Send_Hints {
             return;
         }
 
-        ('true' === $opt)
-            ? add_action('wp_head', array($this, 'send_to_html_head'), 1, 0)
-            : add_action('send_headers', array($this, 'send_in_http_header'), 1, 0);
+        ('false' === $opt && ! headers_sent() )
+            ? add_action('send_headers', array($this, 'send_in_http_header'), 1, 0)
+            : add_action('wp_head', array($this, 'send_to_html_head'), 1, 0);
     }
 
     // need to sanitize by removing anything other than link elems.

@@ -174,6 +174,8 @@ class PPRH_Settings {
 	}
 
     public function set_hint_destination() {
+        $active_cache_plugin = $this->get_cache_info();
+
         ?>
         <tr>
             <th>
@@ -187,7 +189,7 @@ class PPRH_Settings {
             </td>
 
             <td>
-                <select name="pprh_html_head">
+                <select id="pprhHintLocation" name="pprh_html_head">
                     <option value="true" <?php $this->get_option_status( 'pprh_html_head', 'true' ); ?>>
                         <?php esc_html_e( 'HTML <head>', 'pprh' ); ?>
                     </option>
@@ -195,6 +197,13 @@ class PPRH_Settings {
                         <?php esc_html_e( 'HTTP Header', 'pprh' ); ?>
                     </option>
                 </select>
+
+                <?php
+                    if (strlen($active_cache_plugin) > 0) {
+                        echo "<span id='pprhCachePlugins'>$active_cache_plugin</span>";
+                        echo "<p id='pprhBox'></p>";
+                    }
+                ?>
             </td>
         </tr>
 
@@ -204,6 +213,28 @@ class PPRH_Settings {
 	public function get_option_status( $option_name, $val ) {
 		echo esc_html( ( get_option( $option_name ) === $val ? 'selected=selected' : '' ) );
 	}
+
+    private function get_cache_info() {
+
+        $cache_plugins = array(
+            'cache-control/cache-control.php' =>        'Cache Control',
+            'cache-enabler/cache-enabler.php' =>        'Cache Enabler',
+            'comet-cache/comet-cache.php' =>            'Comet Cache',
+            'hyper-cache/plugin.php' =>                 'Hyper Cache',
+            'litespeed-cache/litespeed-cache.php' =>    'LiteSpeed Cache',
+            'redis-cache/redis-cache.php' =>            'Redis Cache',
+            'w3-total-cache/w3-total-cache.php' =>      'W3 Total Cache',
+            'wp-fastest-cache/wpFastestCache.php' =>    'WP Fastest Cache',
+            'wp-rocket/wp-rocket.php' =>                'WP Rocket',
+            'wp-super-cache/wp-cache.php' =>            'WP Super Cache',
+        );
+
+        foreach ($cache_plugins as $cache_plugin => $name) {
+            if (is_plugin_active($cache_plugin)) {
+                return $name;
+            }
+        }
+    }
 
 }
 
