@@ -127,18 +127,27 @@ div.pprh-code-block {
 	max-width: 95%;
 }
 
-
-
-/* table#pprh-post-table input {
-	display: none;
-} */
-
-
 div.row-actions span input {
 	display: none;
 }
 
-
 #pprhContactAuthor {
 	text-align: center;
+}
+
+span#pprhCachePlugins {
+    display: none;
+}
+
+p#pprhBox {
+    display: none;
+    margin: 20px auto;
+    background-color: #ff8080;
+    border: 1px solid #ff4d4d;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    max-width: 400px;
+    padding: 8px 25px;
+    transition: 0.3s;
+    -webkit-transition: 0.3s;
 }
