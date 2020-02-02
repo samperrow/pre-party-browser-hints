@@ -82,8 +82,12 @@ To activate the preloaded resource, you must call that file in HTML as you would
 
 == Changelog ==
 
-1. Most recent update: December 8, 2019.
-2. Version 1.6.43
+1. Most recent update: February 2, 2020.
+2. Version 1.6.45
+
+February 2, 2020:
+1) added warning when a cache plugin is active and users choose HTTP header option to let them know to clear cache.
+2) Ensured compat w/ WP 5.3.2
 
 December 8, 2019:
 1) Re-added option to allow resource hints to be sent in the HTTP header.
