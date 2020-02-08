@@ -1,60 +1,70 @@
 div.pprh-wrap h2 {
-	font-size: 23px;
+    font-size: 25px;
 }
+
+div.pprh-wrap p {
+    font-size: 16px;
+}
+
+div.pprh-wrap ul li {
+    list-style-type: disc;
+    font-size: 16px;
+}
+
 
 
 div.pprh-container {
-	max-width: 765px;
-	margin: 25px auto;
+    max-width: 765px;
+    margin: 25px auto;
 }
 
 div.pprh-container .widefat {
-	border-spacing: 2px;
+    border-spacing: 2px;
 }
 
 div.pprh-container h2 {
-	font-size: 23px !important;
-	font-weight: 600 !important;
-	text-align: center;
+    font-size: 23px !important;
+    font-weight: 600 !important;
+    text-align: center;
 }
 
 /* settings page table */
 table.pprh-settings-table {
-	font-size: 14px;
-	text-align: left;
+    font-size: 14px;
+    text-align: left;
 }
 
 table.pprh-settings-table td {
-	margin-bottom: 9px;
+    margin-bottom: 9px;
     padding: 15px 10px;
     line-height: 1.3;
     vertical-align: middle;
 }
 
 table.pprh-settings-table tfoot {
-	text-align: center;
+    text-align: center;
 }
 
 th#url {
-	width: 30%;
+    width: 30%;
 }
 
 table#pprh-enter-data tbody tr {
-	text-align: center;
+    text-align: center;
 }
 
 table#pprh-enter-data tbody tr td {
-	vertical-align: middle;
-	padding: 10px 0;
+    vertical-align: middle;
+    padding: 10px 0;
 }
 
 /* Hover hints */
 span.pprh-help-tip-hint {
-	position: relative;
+    position: relative;
     background: inherit;
     border: none;
-	padding: 0;
-	text-align: center;
+    padding: 0;
+    text-align: center;
 }
 
 span.pprh-help-tip-hint:before {
@@ -71,39 +81,39 @@ span.pprh-help-tip-hint:before {
     text-indent: 0;
     content: "\f223";
     cursor: help;
-	color: #555;
-	vertical-align: middle;
+    color: #555;
+    vertical-align: middle;
 }
 
 span.pprh-help-tip-hint:hover > span {
-	visibility: visible;
-	opacity: 1;
-	transition: 0.3s;
-	-webkit-transition: 0.3s;
+    visibility: visible;
+    opacity: 1;
+    transition: 0.3s;
+    -webkit-transition: 0.3s;
 }
 
 span.pprh-help-tip-hint > span {
-	top: 18px;
-	width: 250px;
-	margin-left: -148px;
-	font-size: 13px;
+    top: 18px;
+    width: 250px;
+    margin-left: -148px;
+    font-size: 13px;
     line-height: 1.5em;
     position: absolute;
-	visibility: hidden;
-	opacity: 0;
+    visibility: hidden;
+    opacity: 0;
     background-color: #444;
     border-radius: 4px;
     -webkit-border-radius: 4px;
     padding: 10px;
-	z-index: 10000;
-	color: #fff !important;
+    z-index: 10000;
+    color: #fff !important;
 }
 
 span.pprh-help-tip-hint > span::before {
     position: absolute;
     left: 50%;
-	top: -13px;
-	margin-left: -4px;
+    top: -13px;
+    margin-left: -4px;
     content: " ";
     border-color: transparent transparent #444 transparent;
     border-style: solid;
@@ -124,15 +134,15 @@ span.pprh-help-tip-hint > span::before {
 div.pprh-code-block {
     margin: 0 auto;
     width: 650px;
-	max-width: 95%;
+    max-width: 95%;
 }
 
 div.row-actions span input {
-	display: none;
+    display: none;
 }
 
 #pprhContactAuthor {
-	text-align: center;
+    text-align: center;
 }
 
 span#pprhCachePlugins {
@@ -151,3 +161,4 @@ p#pprhBox {
     transition: 0.3s;
     -webkit-transition: 0.3s;
 }
+

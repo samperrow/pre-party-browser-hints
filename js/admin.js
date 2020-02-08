@@ -7,6 +7,9 @@ jQuery(document).ready(function($) {
     if (/admin.php\?page=pprh-plugin-settings&tab=settings/ig.test(currentURL)) {
 		verifyPreconnectResets();
 		location.addEventListener('change', showCacheWarning);
+	} else if (/admin.php\?page=pprh-plugin-settings&tab=pro/ig.test(currentURL)) {
+		openModal();
+
 	}
 
 	function showCacheWarning() {
@@ -93,5 +96,47 @@ jQuery(document).ready(function($) {
 		var precReset = document.getElementById('pprhPreconnectReset');
 		showConfirmMsg(precReset, 'Are you sure you want to reset automatically created preconnect hints?');
 	}
-		
+
+	function openModal() {
+		var ele = document.getElementById('pprh-checkout');
+
+		ele.addEventListener('click', function(e) {
+			var top = ((screen.height - 800) / 2) - 40;
+			var left = (screen.width - 600) / 2;
+
+			window.open('https://sphacks.io/checkout', '_blank', 'height=800, width=600, top=' + top + ',left=' + left );
+		});
+	}
+
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
