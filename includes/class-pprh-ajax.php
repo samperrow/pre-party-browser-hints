@@ -6,7 +6,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class PPRH_Ajax {
 
-	public $reset_prec_meta           = 'pprh_preconnects_set';
+	public $reset_prec_meta = 'pprh_preconnects_set';
 
 	public function __construct() {
 		if ( 'true' === get_option( 'pprh_allow_unauth' ) ) {
