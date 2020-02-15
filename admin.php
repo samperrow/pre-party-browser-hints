@@ -58,7 +58,7 @@ final class PPRH_Init {
 		} else {
 			$this->pprh_disable_wp_hints();
 			include_once PPRH_PLUGIN_DIR . '/class-pprh-send-hints.php';
-			new PPRH_Send_Hints();
+			// new PPRH_Send_Hints();
 		}
 
 		// this needs to be loaded front end and back end bc Ajax needs to be able to communicate between the two.

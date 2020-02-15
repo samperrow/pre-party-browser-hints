@@ -11,15 +11,15 @@ jQuery(document).ready(function($) {
 		checkoutEvtListener();
 	}
 
-	function showCacheWarning() {
-		var plugins = document.getElementById('pprhCachePlugins');
-		var warning = document.getElementById('pprhBox');
+	// function showCacheWarning() {
+	// 	var plugins = document.getElementById('pprhCachePlugins');
+	// 	var warning = document.getElementById('pprhBox');
 
-		if (plugins && plugins.innerHTML.length > 0) {
-			warning.innerHTML = 'The plugin ' + plugins.innerHTML + ' caches HTTP headers, <br/> it is advised that you load resource hints in your websites\'s HTML &lt;head&gt; instead, and then refresh your cache!';
-			warning.style.display = (location.value === 'false') ? 'block' : 'none';
-		}
-	}
+	// 	if (plugins && plugins.innerHTML.length > 0) {
+	// 		warning.innerHTML = 'The plugin ' + plugins.innerHTML + ' caches HTTP headers, <br/> it is advised that you load resource hints in your websites\'s HTML &lt;head&gt; instead, and then refresh your cache!';
+	// 		warning.style.display = (location.value === 'false') ? 'block' : 'none';
+	// 	}
+	// }
 
 
 	function updateElem(elem, obj) {
