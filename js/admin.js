@@ -2,25 +2,12 @@ jQuery(document).ready(function($) {
 
     var currentURL = document.location.href;
 	var URLElem = document.getElementById('pprhURL');
-	var location = document.getElementById('pprhHintLocation');
 
     if (/admin.php\?page=pprh-plugin-settings&tab=settings/ig.test(currentURL)) {
 		verifyPreconnectResets();
-		location.addEventListener('change', showCacheWarning);
 	} else if (/admin.php\?page=pprh-plugin-settings&tab=pro/ig.test(currentURL)) {
 		checkoutEvtListener();
 	}
-
-	// function showCacheWarning() {
-	// 	var plugins = document.getElementById('pprhCachePlugins');
-	// 	var warning = document.getElementById('pprhBox');
-
-	// 	if (plugins && plugins.innerHTML.length > 0) {
-	// 		warning.innerHTML = 'The plugin ' + plugins.innerHTML + ' caches HTTP headers, <br/> it is advised that you load resource hints in your websites\'s HTML &lt;head&gt; instead, and then refresh your cache!';
-	// 		warning.style.display = (location.value === 'false') ? 'block' : 'none';
-	// 	}
-	// }
-
 
 	function updateElem(elem, obj) {
 		return elem.val(JSON.stringify(obj));
