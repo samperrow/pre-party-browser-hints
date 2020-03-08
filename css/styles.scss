@@ -7,6 +7,16 @@ div.pprh-wrap {
     &.text-center {
         text-align: center
     }
+
+    div.pprh-upgrade {
+        p, ul {
+            font-size: 16px;
+        }
+
+        ul {
+            list-style: disc;
+        }
+    }
 }
 
 div#pprhNotice {
