@@ -46,8 +46,15 @@ final class PPRH_Init {
 		register_activation_hook( __FILE__, array( $this, 'install_db_table' ) );
 		add_action( 'wpmu_new_blog', array( $this, 'install_db_table' ) );
 		add_filter( 'set-screen-option', array( $this, 'apply_wp_screen_options' ), 10, 3 );
+<<<<<<< Updated upstream
 		add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( $this, 'set_admin_links' ) );
 	}
+=======
+		register_activation_hook( __FILE__, array( $this, 'activate_plugin' ) );
+		add_action( 'wpmu_new_blog', array( $this, 'activate_plugin' ) );
+		add_action( 'delete_post', array( $this, 'delete_post_hints' ) );
+    }
+>>>>>>> Stashed changes
 
 	public function initialize() {
 
@@ -104,9 +111,15 @@ final class PPRH_Init {
 		include_once PPRH_PLUGIN_DIR . '/class-pprh-display-hints.php';
 	}
 
+<<<<<<< Updated upstream
 	public function show_tabs() {
 		include_once PPRH_PLUGIN_DIR . '/class-pprh-admin-tabs.php';
 		new PPRH_Admin_Tabs();
+=======
+		if ( 'pprhAdmin' === PPRH_CHECK_PAGE ) {
+			include_once PPRH_PLUGIN_DIR . '/class-pprh-admin-tabs.php';
+		}
+>>>>>>> Stashed changes
 	}
 
 	public function apply_wp_screen_options( $status, $option, $value ) {
@@ -144,6 +157,7 @@ final class PPRH_Init {
 		return array_merge( $links, $pprh_links );
 	}
 
+<<<<<<< Updated upstream
 	// Implement option to disable automatically generated resource hints.
 	public function pprh_disable_wp_hints() {
 		if ( 'true' === get_option( 'pprh_disable_wp_hints' ) ) {
@@ -165,6 +179,17 @@ final class PPRH_Init {
 		$wpdb->query( "ALTER TABLE $new_table ADD created_by varchar(55)" );
 		$wpdb->query( "ALTER TABLE $new_table DROP COLUMN header_string" );
 		$wpdb->query( "ALTER TABLE $new_table DROP COLUMN head_string" );
+=======
+	public function activate_plugin() {
+		$this->create_constants();
+		$this->set_options();
+		$this->setup_tables();
+	}
+
+	public function set_options() {
+        include_once PPRH_PLUGIN_DIR . '/class-pprh-utils.php';
+        $default_modal_pages = Utils::get_default_modal_post_types();
+>>>>>>> Stashed changes
 
 		$this->update_option( 'gktpp_reset_preconnect', 'pprh_preconnects_set', 'false' );
 		$this->update_option( 'gktpp_disable_wp_hints', 'pprh_disable_wp_hints', 'Yes' );
@@ -172,6 +197,15 @@ final class PPRH_Init {
 
 		delete_option( 'gktpp_send_in_header' );
 		add_option( 'pprh_allow_unauth', 'true', '', 'yes' );
+<<<<<<< Updated upstream
+=======
+		add_option( 'pprh_disable_wp_hints', 'true', '', 'yes' );
+		add_option( 'pprh_html_head', 'true', '', 'yes' );
+		add_option( 'pprh_post_modal_types', $default_modal_pages, '', 'yes' );
+
+		add_option( 'pprh_license_key', '', '', 'yes' );
+		add_option( 'pprh_license_status', '', '', 'yes' );
+>>>>>>> Stashed changes
 	}
 
 	// Multisite install/delete db table.
@@ -221,9 +255,35 @@ final class PPRH_Init {
 				}
 			}
 		}
+<<<<<<< Updated upstream
+=======
+		return $ms_tables;
+	}
+
+
+	private function table_sql( $table_name ) {
+		global $wpdb;
+		$charset = $wpdb->get_charset_collate();
+
+		$sql = "CREATE TABLE $table_name (
+			id INT(9) NOT NULL AUTO_INCREMENT,
+			url VARCHAR(255) DEFAULT '' NOT NULL,
+			hint_type VARCHAR(55) DEFAULT '' NOT NULL,
+			status VARCHAR(55) DEFAULT 'enabled' NOT NULL,
+			as_attr VARCHAR(55) DEFAULT '',
+			type_attr VARCHAR(55) DEFAULT '',
+			crossorigin VARCHAR(55) DEFAULT '',
+			created_by VARCHAR(55) DEFAULT '' NOT NULL,
+			PRIMARY KEY  (id)
+		) $charset;";
+
+		dbDelta( $sql, true );
+	}
+>>>>>>> Stashed changes
 
 		foreach ( $pprh_tables as $pprh_table ) {
 
+<<<<<<< Updated upstream
 			$sql = "CREATE TABLE $pprh_table (
 				id INT(9) NOT NULL AUTO_INCREMENT,
 				url VARCHAR(255) DEFAULT '' NOT NULL,
@@ -241,5 +301,7 @@ final class PPRH_Init {
 		}
 
 	}
+=======
+>>>>>>> Stashed changes
 
 }

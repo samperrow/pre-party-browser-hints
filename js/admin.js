@@ -5,8 +5,11 @@ jQuery(document).ready(function($) {
 
     if (/admin.php\?page=pprh-plugin-settings&tab=settings/ig.test(currentURL)) {
 		verifyPreconnectResets();
+<<<<<<< Updated upstream
 	} else if (/admin.php\?page=pprh-plugin-settings&tab=pro/ig.test(currentURL)) {
 		checkoutEvtListener();
+=======
+>>>>>>> Stashed changes
 	}
 
 	function updateElem(elem, obj) {
@@ -15,14 +18,6 @@ jQuery(document).ready(function($) {
 
     function getHintType() {
 		return document.querySelector('input[name="hint_type"]:checked');
-	}
-
-	function getPostID() {
-		var postID = new URL(currentURL).searchParams.get("post");
-		if ( ! postID ) {
-			postID = 'global';
-		}
-		return postID;
 	}
 
 	verifyNewHint();
@@ -44,7 +39,6 @@ jQuery(document).ready(function($) {
 			} else {
 				insertObj.url = [ URLElem.value ];
 				insertObj.hint_type = hintType.value;
-				insertObj.post_id = getPostID();
 				insertObj.crossorigin = (document.getElementById('pprhCrossorigin').checked) ? 'crossorigin' : '';
 				insertObj.as_attr = document.getElementById('pprhAsAttr').value;
 				insertObj.type_attr = document.getElementById('pprhTypeAttr').value;

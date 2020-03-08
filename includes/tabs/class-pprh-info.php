@@ -1,15 +1,17 @@
 <?php
 
+namespace PPRH;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class PPRH_Hint_Info {
+class Hint_Info {
 
 	public $image_path = '';
 
 	public function __construct() {
-		$this->image_path = plugins_url( PPRH_PLUGIN_FILENAME );
+		$this->image_path = plugins_url( PPRH_PLUGIN_FILENAME . '' );
 		$this->resource_hint_nav();
 	}
 
@@ -217,5 +219,5 @@ class PPRH_Hint_Info {
 }
 
 if ( is_admin() ) {
-	new PPRH_Hint_Info();
+	new Hint_Info();
 }

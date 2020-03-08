@@ -1,6 +1,6 @@
 <?php
 /**
- * Administration API: PPRH_WP_List_Table class
+ * Administration API: WP_List_Table class
  *
  * @package WordPress
  * @subpackage List_Table
@@ -13,7 +13,14 @@
  * @since 3.1.0
  * @access private
  */
-class PPRH_WP_List_Table {
+
+namespace PPRH;
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
+class WP_List_Table {
 
 	/**
 	 * The current list of items.
@@ -251,19 +258,19 @@ class PPRH_WP_List_Table {
 	 * @abstract
 	 */
 	public function ajax_user_can() {
-		die( 'function PPRH_WP_List_Table::ajax_user_can() must be over-ridden in a sub-class.' );
+		die( 'function WP_List_Table::ajax_user_can() must be over-ridden in a sub-class.' );
 	}
 
 	/**
 	 * Prepares the list of items for displaying.
 	 *
-	 * @uses PPRH_WP_List_Table::set_pagination_args()
+	 * @uses WP_List_Table::set_pagination_args()
 	 *
 	 * @since 3.1.0
 	 * @abstract
 	 */
 	public function prepare_items() {
-		die( 'function PPRH_WP_List_Table::prepare_items() must be over-ridden in a sub-class.' );
+		die( 'function WP_List_Table::prepare_items() must be over-ridden in a sub-class.' );
 	}
 
 	/**
@@ -906,7 +913,7 @@ class PPRH_WP_List_Table {
 	 * @return array
 	 */
 	public function get_columns() {
-		die( 'function PPRH_WP_List_Table::get_columns() must be over-ridden in a sub-class.' );
+		die( 'function WP_List_Table::get_columns() must be over-ridden in a sub-class.' );
 	}
 
 	/**
@@ -955,7 +962,7 @@ class PPRH_WP_List_Table {
 	}
 
 	/**
-	 * Public wrapper for PPRH_WP_List_Table::get_default_primary_column_name().
+	 * Public wrapper for WP_List_Table::get_default_primary_column_name().
 	 *
 	 * @since 4.4.0
 	 *
@@ -979,7 +986,7 @@ class PPRH_WP_List_Table {
 		// If the primary column doesn't exist fall back to the
 		// first non-checkbox column.
 		if ( ! isset( $columns[ $default ] ) ) {
-			$default = PPRH_WP_List_Table::get_default_primary_column_name();
+			$default = WP_List_Table::get_default_primary_column_name();
 		}
 
 		/**
@@ -1189,7 +1196,7 @@ class PPRH_WP_List_Table {
 	}
 
 	/**
-	 * Get a list of CSS classes for the PPRH_WP_List_Table table tag.
+	 * Get a list of CSS classes for the WP_List_Table table tag.
 	 *
 	 * @since 3.1.0
 	 *

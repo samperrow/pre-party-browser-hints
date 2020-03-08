@@ -1,6 +1,12 @@
 <?php
 
-class PPRH_Add_New_Hint {
+namespace PPRH;
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
+class Add_New_Hint {
 
 	public function __construct() {
 		$this->create_new_hint_table();
@@ -14,14 +20,8 @@ class PPRH_Add_New_Hint {
 		?>
 
 		<div class="pprh-container">
-
-		<?php
-		if ( 'pprhAdmin' === PPRH_CHECK_PAGE ) {
-			echo '<form id="pprh-new-hint" method="post" action="' . admin_url( 'admin.php?page=pprh-plugin-settings' ) . '">';
-			wp_nonce_field( 'pprh_nonce_action', 'pprh_nonce_val' );
-		}
-		?>
-			<table id="pprh-enter-data" class="fixed widefat striped">
+            <form id="pprh-new-hint" method="post" action="">
+                <table id="pprh-enter-data" class="fixed widefat striped">
 
 				<thead>
 					<tr>
@@ -50,13 +50,9 @@ class PPRH_Add_New_Hint {
 				</tfoot>
 
 			</table>
-			<input size="50" type="hidden" name="hint_data" id="pprhInsertedHints" value=""/>
+                <input size="50" type="hidden" name="pprh_data" id="pprhInsertedHints" value=""/>
 
-			<?php
-			if ( 'pprhAdmin' === PPRH_CHECK_PAGE ) {
-				echo '</form>';
-			}
-			?>
+            </form>
 		</div>
 
 		<?php
@@ -187,8 +183,4 @@ class PPRH_Add_New_Hint {
 		</tr>
 		<?php
 	}
-}
-
-if ( is_admin() ) {
-	new PPRH_Add_New_Hint();
 }

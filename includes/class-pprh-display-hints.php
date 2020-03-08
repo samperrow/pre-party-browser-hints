@@ -1,5 +1,7 @@
 <?php
 
+namespace PPRH;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -8,7 +10,7 @@ if ( ! class_exists( 'PPRH_WP_List_Table' ) ) {
 	require_once PPRH_PLUGIN_DIR . '/class-pprh-wp-list-table.php';
 }
 
-class PPRH_Display_Hints extends PPRH_WP_List_Table {
+class Display_Hints extends WP_List_Table {
 
 	public $_column_headers;
 	public $hints_per_page;
