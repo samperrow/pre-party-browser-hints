@@ -1,10 +1,12 @@
 <?php
 
+namespace PPRH;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class PPRH_Ajax {
+class Ajax {
 
 	public $reset_prec_meta = 'pprh_preconnects_set';
 
@@ -44,10 +46,11 @@ class PPRH_Ajax {
 
 	public function pprh_post_domain_names() {
 		if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
+		    define( 'CREATING_HINT', true );
 			check_ajax_referer( 'pprh_ajax_nonce', 'nonce' );
-			include_once PPRH_PLUGIN_DIR . '/class-pprh-misc.php';
+			include_once PPRH_PLUGIN_DIR . '/class-pprh-utils.php';
 			include_once PPRH_PLUGIN_DIR . '/class-pprh-create-hints.php';
-			new PPRH_Create_Hints( 'pprh_ajax_nonce', 'nonce' );
+			new Create_Hints();
 			update_option( 'pprh_preconnects_set', 'true' );
 			wp_die();
 		} else {

@@ -11,48 +11,28 @@ class Send_Hints {
 	public $hints = array();
 
 	public function __construct() {
-<<<<<<< Updated upstream
 		add_action( 'wp_loaded', array( $this, 'get_resource_hints' ) );
-=======
-        add_action( 'wp_loaded', array( $this, 'get_resource_hints' ) );
->>>>>>> Stashed changes
 	}
 
-	public function get_resource_hints() {
-		global $wpdb;
-<<<<<<< Updated upstream
-		global $post;
-		$opt = get_option( 'pprh_html_head' );
+    public function get_resource_hints () {
+        global $wpdb;
+        $opt = get_option('pprh_html_head');
 
-		// need a failover in case no post ID exists.
-		$post_ID = ( ! empty( $post->ID ) ) ? (string) $post->ID : '0';
-		$this->hints = $wpdb->get_results(
-			$wpdb->prepare( 'SELECT url, hint_type, as_attr, type_attr, crossorigin FROM ' . PPRH_DB_TABLE . ' WHERE post_id = %s OR post_id = %s AND status = %s', $post_ID, 'global', 'enabled' )
-		);
-
-		( 'true' === $opt )
-			? add_action( 'wp_head', array( $this, 'send_to_html_head' ), 1, 0 )
-			: add_action( 'send_headers', array( $this, 'send_in_http_header' ), 1, 0 );
-	}
-
-=======
-		$table = PPRH_DB_TABLE;
-        $opt = get_option( 'pprh_html_head' );
-//        $request_url = Utils::clean_url_path( esc_url( $_SERVER[ 'REQUEST_URI' ] ) );
-
+        $table = $wpdb->prefix . 'pprh_table';
         $this->hints = $wpdb->get_results(
-            $wpdb->prepare( "SELECT url, hint_type, as_attr, type_attr, crossorigin FROM $table WHERE status = %s",'enabled' )
+            $wpdb->prepare("SELECT url, hint_type, as_attr, type_attr, crossorigin FROM $table WHERE status = %s", 'enabled')
         );
 
-        if ( count( $this->hints ) > 0 ) {
-            ( 'true' === $opt )
-                ? add_action( 'wp_head', array( $this, 'send_to_html_head' ), 1, 0 )
-                : add_action( 'send_headers', array( $this, 'send_in_http_header' ), 1, 0 );
+        if ( ( ! is_array( $this->hints ) ) || count( $this->hints ) < 1 ) {
+            return;
         }
-	}
+
+        ('false' === $opt && ! headers_sent() )
+            ? add_action('send_headers', array($this, 'send_in_http_header'), 1, 0)
+            : add_action('wp_head', array($this, 'send_to_html_head'), 1, 0);
+    }
 
 
->>>>>>> Stashed changes
 	public function send_to_html_head() {
 		foreach ( $this->hints as $key => $val ) {
 			$attrs = '';

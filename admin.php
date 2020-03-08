@@ -17,28 +17,19 @@
  *
 */
 
+namespace PPRH;
+
 // prevent direct file access.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'COMET_CACHE_ALLOWED', false );
-
-function pprh_check_page() {
-	global $pagenow;
-
-	if ( 'admin.php' === $pagenow && isset( $_GET['page'] ) ) {
-		$page = sanitize_text_field( wp_unslash( $_GET['page'] ) );
-		if ( 'pprh-plugin-settings' === $page ) {
-			return 'pprhAdmin';
-		}
-	}
-}
 
 
-new PPRH_Init();
 
-final class PPRH_Init {
+new Init();
+
+final class Init {
 
 	public function __construct() {
 		add_action( 'init', array( $this, 'initialize' ) );
@@ -46,15 +37,10 @@ final class PPRH_Init {
 		register_activation_hook( __FILE__, array( $this, 'install_db_table' ) );
 		add_action( 'wpmu_new_blog', array( $this, 'install_db_table' ) );
 		add_filter( 'set-screen-option', array( $this, 'apply_wp_screen_options' ), 10, 3 );
-<<<<<<< Updated upstream
 		add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( $this, 'set_admin_links' ) );
+        register_activation_hook( __FILE__, array( $this, 'activate_plugin' ) );
+        add_action( 'wpmu_new_blog', array( $this, 'activate_plugin' ) );
 	}
-=======
-		register_activation_hook( __FILE__, array( $this, 'activate_plugin' ) );
-		add_action( 'wpmu_new_blog', array( $this, 'activate_plugin' ) );
-		add_action( 'delete_post', array( $this, 'delete_post_hints' ) );
-    }
->>>>>>> Stashed changes
 
 	public function initialize() {
 
@@ -71,7 +57,7 @@ final class PPRH_Init {
 		// this needs to be loaded front end and back end bc Ajax needs to be able to communicate between the two.
 		if ( 'true' === get_option( 'pprh_autoload_preconnects' ) ) {
 			include_once PPRH_PLUGIN_DIR . '/class-pprh-ajax.php';
-			new PPRH_Ajax();
+			new Ajax();
 		}
 	}
 
@@ -91,6 +77,8 @@ final class PPRH_Init {
 	}
 
 	public function create_constants() {
+	    global $wpdb;
+	    $prefix = $wpdb->prefix . 'pprh_table';
 		if ( ! defined( 'PPRH_VERSION' ) ) {
 			define( 'PPRH_VERSION', '1.6.45' );
 		}
@@ -101,25 +89,26 @@ final class PPRH_Init {
 			define( 'PPRH_PLUGIN_DIR', untrailingslashit( dirname( __FILE__ ) ) . '/includes' );
 		}
 		if ( ! defined( 'PPRH_CHECK_PAGE' ) ) {
-			define( 'PPRH_CHECK_PAGE', pprh_check_page() );
+			define( 'PPRH_CHECK_PAGE', $this->check_page() );
 		}
+        if ( ! defined( 'PPRH_DB_TABLE' ) ) {
+            define( 'PPRH_DB_TABLE', $prefix );
+        }
 	}
 
 	public function load_admin_files() {
-		include_once PPRH_PLUGIN_DIR . '/class-pprh-misc.php';
+		include_once PPRH_PLUGIN_DIR . '/class-pprh-utils.php';
 		include_once PPRH_PLUGIN_DIR . '/class-pprh-create-hints.php';
 		include_once PPRH_PLUGIN_DIR . '/class-pprh-display-hints.php';
 	}
 
-<<<<<<< Updated upstream
 	public function show_tabs() {
 		include_once PPRH_PLUGIN_DIR . '/class-pprh-admin-tabs.php';
-		new PPRH_Admin_Tabs();
-=======
+//		new Admin_Tabs();
+
 		if ( 'pprhAdmin' === PPRH_CHECK_PAGE ) {
 			include_once PPRH_PLUGIN_DIR . '/class-pprh-admin-tabs.php';
 		}
->>>>>>> Stashed changes
 	}
 
 	public function apply_wp_screen_options( $status, $option, $value ) {
@@ -157,7 +146,6 @@ final class PPRH_Init {
 		return array_merge( $links, $pprh_links );
 	}
 
-<<<<<<< Updated upstream
 	// Implement option to disable automatically generated resource hints.
 	public function pprh_disable_wp_hints() {
 		if ( 'true' === get_option( 'pprh_disable_wp_hints' ) ) {
@@ -173,13 +161,14 @@ final class PPRH_Init {
 
 	// Upgrade db table from version 1.5.8.
 	public function upgrade_db( $new_table, $old_table ) {
-		global $wpdb;
+        global $wpdb;
 
-		$wpdb->query( "RENAME TABLE $old_table TO $new_table" );
-		$wpdb->query( "ALTER TABLE $new_table ADD created_by varchar(55)" );
-		$wpdb->query( "ALTER TABLE $new_table DROP COLUMN header_string" );
-		$wpdb->query( "ALTER TABLE $new_table DROP COLUMN head_string" );
-=======
+        $wpdb->query("RENAME TABLE $old_table TO $new_table");
+        $wpdb->query("ALTER TABLE $new_table ADD created_by varchar(55)");
+        $wpdb->query("ALTER TABLE $new_table DROP COLUMN header_string");
+        $wpdb->query("ALTER TABLE $new_table DROP COLUMN head_string");
+    }
+
 	public function activate_plugin() {
 		$this->create_constants();
 		$this->set_options();
@@ -189,7 +178,6 @@ final class PPRH_Init {
 	public function set_options() {
         include_once PPRH_PLUGIN_DIR . '/class-pprh-utils.php';
         $default_modal_pages = Utils::get_default_modal_post_types();
->>>>>>> Stashed changes
 
 		$this->update_option( 'gktpp_reset_preconnect', 'pprh_preconnects_set', 'false' );
 		$this->update_option( 'gktpp_disable_wp_hints', 'pprh_disable_wp_hints', 'Yes' );
@@ -197,15 +185,13 @@ final class PPRH_Init {
 
 		delete_option( 'gktpp_send_in_header' );
 		add_option( 'pprh_allow_unauth', 'true', '', 'yes' );
-<<<<<<< Updated upstream
-=======
+
 		add_option( 'pprh_disable_wp_hints', 'true', '', 'yes' );
 		add_option( 'pprh_html_head', 'true', '', 'yes' );
 		add_option( 'pprh_post_modal_types', $default_modal_pages, '', 'yes' );
 
 		add_option( 'pprh_license_key', '', '', 'yes' );
 		add_option( 'pprh_license_status', '', '', 'yes' );
->>>>>>> Stashed changes
 	}
 
 	// Multisite install/delete db table.
@@ -255,8 +241,7 @@ final class PPRH_Init {
 				}
 			}
 		}
-<<<<<<< Updated upstream
-=======
+
 		return $ms_tables;
 	}
 
@@ -265,25 +250,8 @@ final class PPRH_Init {
 		global $wpdb;
 		$charset = $wpdb->get_charset_collate();
 
-		$sql = "CREATE TABLE $table_name (
-			id INT(9) NOT NULL AUTO_INCREMENT,
-			url VARCHAR(255) DEFAULT '' NOT NULL,
-			hint_type VARCHAR(55) DEFAULT '' NOT NULL,
-			status VARCHAR(55) DEFAULT 'enabled' NOT NULL,
-			as_attr VARCHAR(55) DEFAULT '',
-			type_attr VARCHAR(55) DEFAULT '',
-			crossorigin VARCHAR(55) DEFAULT '',
-			created_by VARCHAR(55) DEFAULT '' NOT NULL,
-			PRIMARY KEY  (id)
-		) $charset;";
-
-		dbDelta( $sql, true );
-	}
->>>>>>> Stashed changes
-
 		foreach ( $pprh_tables as $pprh_table ) {
 
-<<<<<<< Updated upstream
 			$sql = "CREATE TABLE $pprh_table (
 				id INT(9) NOT NULL AUTO_INCREMENT,
 				url VARCHAR(255) DEFAULT '' NOT NULL,
@@ -301,7 +269,16 @@ final class PPRH_Init {
 		}
 
 	}
-=======
->>>>>>> Stashed changes
+
+    public function check_page() {
+        global $pagenow;
+
+        if ( 'admin.php' === $pagenow && isset( $_GET['page'] ) ) {
+            $page = sanitize_text_field( wp_unslash( $_GET['page'] ) );
+            if ( 'pprh-plugin-settings' === $page ) {
+                return 'pprhAdmin';
+            }
+        }
+    }
 
 }

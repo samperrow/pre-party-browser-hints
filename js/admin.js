@@ -5,11 +5,9 @@ jQuery(document).ready(function($) {
 
     if (/admin.php\?page=pprh-plugin-settings&tab=settings/ig.test(currentURL)) {
 		verifyPreconnectResets();
-<<<<<<< Updated upstream
 	} else if (/admin.php\?page=pprh-plugin-settings&tab=pro/ig.test(currentURL)) {
 		checkoutEvtListener();
-=======
->>>>>>> Stashed changes
+
 	}
 
 	function updateElem(elem, obj) {

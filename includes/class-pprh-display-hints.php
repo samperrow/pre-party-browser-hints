@@ -6,7 +6,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-if ( ! class_exists( 'PPRH_WP_List_Table' ) ) {
+if ( ! class_exists( 'PPRH\WP_List_Table' ) ) {
 	require_once PPRH_PLUGIN_DIR . '/class-pprh-wp-list-table.php';
 }
 
@@ -33,7 +33,7 @@ class Display_Hints extends WP_List_Table {
 
 		// for bulk updates.
 		if ( ! empty( $results ) ) {
-			PPRH_Misc::pprh_show_update_result( $results );
+			Utils::pprh_show_update_result( $results );
 		}
 
 		$this->display();
@@ -190,31 +190,8 @@ class Display_Hints extends WP_List_Table {
 		}
 	}
 
-
 	public function no_items() {
 		esc_html_e( 'Enter a URL or domain name..', 'pprh' );
 	}
-
-
-	// possible to implement this in the future...
-	// public function column_url( $item ) {
-
-	// 	$page = 'pprh-plugin-settings';
-
-	// 	$actions = array(
-	// 		'edit'    => sprintf( '<a href="?page=%s&action=%s&hint=%s" class="pprh-edit-hint">Edit</a>', $page, 'edit', $item['id'] ),
-	// 		'delete'  => sprintf( '<a href="?page=%s&action=%s&hint=%s">Delete</a>', $page, 'delete', $item['id'] ),
-	// 		// 'test'    => '<fieldset class="inline-edit-col-right inline-edit-book"><div class="inline-edit-col"><input type="text" value="' . $item['url'] . '"></div></fieldset>',
-	// 	);
-
-	// 	// Return the title contents.
-	// 	return sprintf(
-	// 		'%1$s <span style="color:silver">(id:%2$s)</span>%3$s',
-	// 		$item['url'],
-	// 		$item['id'],
-	// 		$this->row_actions( $actions )
-	// 	);
-
-	// }
 
 }

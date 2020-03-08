@@ -9,25 +9,23 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Add_New_Hint {
 
 	public function __construct() {
-		$this->create_new_hint_table();
-	}
+        $this->create_new_hint_table();
+    }
 
 	public function create_new_hint_table() {
-
 		if ( ! is_admin() ) {
 			exit();
 		}
 		?>
 
 		<div class="pprh-container">
-            <form id="pprh-new-hint" method="post" action="">
+            <form id="pprh-new-hint" method="post" action="<?php echo admin_url('admin.php?page=pprh-plugin-settings'); ?>">
+                <?php wp_nonce_field( 'pprh_nonce_action', 'pprh_nonce_val' ); ?>
                 <table id="pprh-enter-data" class="fixed widefat striped">
 
 				<thead>
 					<tr>
-						<th colspan="5" style="text-align: center; font-size: 23px; font-weight: 600; padding: 15px 0;">
-							<?php esc_html_e( 'Add New Resource Hint', 'pprh' ); ?>
-						</th>
+						<th colspan="5" style="text-align: center; font-size: 23px; font-weight: 600; padding: 15px 0;"><?php esc_html_e( 'Add New Resource Hint', 'pprh' ); ?></th>
 					</tr>
 				</thead>
 
@@ -50,7 +48,7 @@ class Add_New_Hint {
 				</tfoot>
 
 			</table>
-                <input size="50" type="hidden" name="pprh_data" id="pprhInsertedHints" value=""/>
+                <input type="hidden" name="pprh_data" id="pprhInsertedHints" value=""/>
 
             </form>
 		</div>

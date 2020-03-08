@@ -27,15 +27,16 @@ class Create_Hints {
 
 	private $data = array();
 
-	public function __construct( $data ) {
+	public function __construct() {
 		if ( isset( $_POST['pprh_data'] ) ) {
 
 			if ( ! defined( 'CREATING_HINT' ) || ! CREATING_HINT ) {
 				exit();
 			}
 
-			$this->init( $data );
-			$this->results['action'] = 'create';
+            $data = json_decode(stripslashes($_POST['pprh_data']));
+            $this->init( $data );
+			$this->results['action'] = 'created';
 		}
 	}
 
@@ -55,12 +56,12 @@ class Create_Hints {
 	}
 
 	private function create_hint( $url ) {
+        $this->new_hint['url'] = $this->set_url( $url );
         $this->new_hint['hint_type'] = $this->set_hint_type();
         $this->new_hint['file_type'] = $this->set_file_type();
         $this->new_hint['crossorigin'] = $this->set_crossorigin();
         $this->new_hint['as_attr'] = $this->set_as_attr();
         $this->new_hint['type_attr'] = $this->set_type_attr();
-        $this->new_hint['post_url'] = $this->set_post_url();
     }
 
 	private function set_hint_type() {
@@ -139,6 +140,24 @@ class Create_Hints {
 		}
 		return '';
 	}
+
+    private function check_for_duplicate_post_hint() {
+        global $wpdb;
+        $table = PPRH_DB_TABLE;
+        $hint_type = $this->new_hint['hint_type'];
+        $url = $this->new_hint['url'];
+
+        $prev_hints = $wpdb->get_results(
+            $wpdb->prepare( "SELECT url, hint_type FROM $table WHERE hint_type = %s AND url = %s", $hint_type, $url )
+        );
+
+        foreach ( $prev_hints as $key => $val ) {
+            $this->results['msg'] .= 'An identical resource hint already exists!';
+            $this->results['result'] = 'warning';
+            return false;
+        }
+        return true;
+    }
 
 	private function insert_hint() {
 		global $wpdb;

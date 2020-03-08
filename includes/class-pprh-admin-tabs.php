@@ -18,24 +18,26 @@ class Admin_Tabs {
 		if ( ! is_admin() ) {
 			exit;
 		}
+        $tab = $this->get_tab();
 
 		echo '<div class="wrap pprh-wrap">';
 		echo '<h2>Pre* Party Plugin Settings</h2>';
-		Utils::pprh_notice();
-		$this->show_admin_tabs();
-		$this->display_admin_content();
+        $this->save_data($tab);
+        if ( ! empty( $this->results ) ) {
+            Utils::pprh_show_update_result( $this->results );
+        }
+        $this->show_admin_tabs($tab);
+
+        include_once PPRH_PLUGIN_DIR . "/tabs/class-pprh-$tab.php";
+        $this->show_footer();
 		echo '</div>';
 	}
 
-	public function show_admin_tabs() {
-
-		$current_tab = $this->get_tab();
+	public function show_admin_tabs($current_tab) {
 
 		$tabs = array(
 			'insert-hints' => 'Insert Hints',
 			'settings'     => 'Settings',
-			'updates'      => 'Pre* Party Pro Updates',
-			'license'      => 'License',
 			'info'         => 'Resource Hint Information',
             'pro'          => 'Upgrade to Pro',
 		);
@@ -52,18 +54,23 @@ class Admin_Tabs {
 		return ( isset( $_GET['tab'] ) ) ? $_GET['tab'] : 'insert-hints';
 	}
 
-	public function display_admin_content() {
-		$tab = $this->get_tab();
-		include_once PPRH_PLUGIN_DIR . "/tabs/class-pprh-$tab.php";
-		$this->show_footer();
-	}
-
 	public function show_footer() {
 		self::contact_author();
 		echo '<br/>';
 		echo sprintf( 'Tip: test your website on %sWebPageTest.org%s to know which resource hints and URLs to insert.', '<a href="https://www.webpagetest.org">', '</a>' );
-		echo '</div>';
 	}
+
+    public function save_data( $tab ) {
+        if ( 'insert-hints' !== $tab || defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE) {
+            return;
+        }
+
+        if ( isset( $_POST['pprh_data'] ) && check_admin_referer( 'pprh_nonce_action', 'pprh_nonce_val' ) ) {
+            define( 'CREATING_HINT', true );
+            $url_params    = new Create_Hints();
+            $this->results = $url_params->results;
+        }
+    }
 
 	public static function contact_author() {
 		add_thickbox();
@@ -82,18 +89,18 @@ class Admin_Tabs {
                     <label for="pprhEmailText"><?php wp_nonce_field( 'pprh_email_nonce_action', 'pprh_email_nonce_nonce' ); ?></label><textarea name="pprh_text" id="pprhEmailText" style="height: 100px;" class="widefat" placeholder="<?php esc_attr_e( 'Help make this plugin better!' ); ?>"></textarea>
                     <label for="pprhEmailAddress"></label><input name="pprh_email" id="pprhEmailAddress" style="margin: 10px 0;" class="input widefat" placeholder="<?php esc_attr_e( 'Email address:' ); ?>"/>
 					<br/>
-<!--					<input type="hidden" name="pprh_submitted" value="1">-->
 					<input name="pprh_send_email" id="pprhSubmit" type="submit" class="button button-primary" value="<?php esc_attr_e( 'Submit', 'pprh' ); ?>" />
 				</form>
 
 			</div>
+        </div>
 
-			<?php
+        <?php
 
-			if (isset( $_POST['pprh_send_email']) && check_admin_referer('pprh_email_nonce_action', 'pprh_email_nonce_nonce')) {
-                $debug_info = "\nURL: " . home_url() . "\nPHP Version: " . PHP_VERSION . "\nWP Version: " . get_bloginfo( 'version' );
-                wp_mail( 'sam.perrow399@gmail.com', 'Pre Party User Message', 'From: ' . sanitize_email( wp_unslash( $_POST['pprh_email'] ) ) . $debug_info . "\nMessage: " . sanitize_text_field( wp_unslash( $_POST['pprh_text'] ) ) );
-			}
+        if (isset( $_POST['pprh_send_email']) && check_admin_referer('pprh_email_nonce_action', 'pprh_email_nonce_nonce')) {
+            $debug_info = "\nURL: " . home_url() . "\nPHP Version: " . PHP_VERSION . "\nWP Version: " . get_bloginfo( 'version' );
+            wp_mail( 'sam.perrow399@gmail.com', 'Pre Party User Message', 'From: ' . sanitize_email( wp_unslash( $_POST['pprh_email'] ) ) . $debug_info . "\nMessage: " . sanitize_text_field( wp_unslash( $_POST['pprh_text'] ) ) );
+        }
 	}
 
 }
