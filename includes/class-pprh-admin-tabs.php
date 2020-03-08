@@ -23,10 +23,12 @@ class Admin_Tabs {
 		echo '<div class="wrap pprh-wrap">';
 		echo '<h2>Pre* Party Plugin Settings</h2>';
         $this->save_data($tab);
+
+        $this->show_admin_tabs($tab);
+
         if ( ! empty( $this->results ) ) {
             Utils::pprh_show_update_result( $this->results );
         }
-        $this->show_admin_tabs($tab);
 
         include_once PPRH_PLUGIN_DIR . "/tabs/class-pprh-$tab.php";
         $this->show_footer();

@@ -3,7 +3,7 @@
  * Plugin Name:       Pre* Party Resource Hints
  * Plugin URI:        https://wordpress.org/plugins/pre-party-browser-hints/
  * Description:       Take advantage of the browser resource hints DNS-Prefetch, Prerender, Preconnect, Prefetch, and Preload to improve page load time.
- * Version:           1.6.45
+ * Version:           1.7.0
  * Requires at least: 4.4
  * Requires PHP:      5.3
  * Author:            Sam Perrow
@@ -24,9 +24,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-
-
-
 new Init();
 
 final class Init {
@@ -34,7 +31,7 @@ final class Init {
 	public function __construct() {
 		add_action( 'init', array( $this, 'initialize' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'register_admin_files' ) );
-		register_activation_hook( __FILE__, array( $this, 'install_db_table' ) );
+//		register_activation_hook( __FILE__, array( $this, 'install_db_table' ) );
 		add_action( 'wpmu_new_blog', array( $this, 'install_db_table' ) );
 		add_filter( 'set-screen-option', array( $this, 'apply_wp_screen_options' ), 10, 3 );
 		add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( $this, 'set_admin_links' ) );
@@ -104,7 +101,6 @@ final class Init {
 
 	public function show_tabs() {
 		include_once PPRH_PLUGIN_DIR . '/class-pprh-admin-tabs.php';
-//		new Admin_Tabs();
 
 		if ( 'pprhAdmin' === PPRH_CHECK_PAGE ) {
 			include_once PPRH_PLUGIN_DIR . '/class-pprh-admin-tabs.php';
@@ -176,109 +172,113 @@ final class Init {
 	}
 
 	public function set_options() {
-        include_once PPRH_PLUGIN_DIR . '/class-pprh-utils.php';
-        $default_modal_pages = Utils::get_default_modal_post_types();
-
-		$this->update_option( 'gktpp_reset_preconnect', 'pprh_preconnects_set', 'false' );
-		$this->update_option( 'gktpp_disable_wp_hints', 'pprh_disable_wp_hints', 'Yes' );
-		$this->update_option( 'gktpp_preconnect_status', 'pprh_autoload_preconnects', 'Yes' );
-
-		delete_option( 'gktpp_send_in_header' );
+        add_option( 'pprh_autoload_preconnects', 'true', '', 'yes' );
 		add_option( 'pprh_allow_unauth', 'true', '', 'yes' );
-
 		add_option( 'pprh_disable_wp_hints', 'true', '', 'yes' );
 		add_option( 'pprh_html_head', 'true', '', 'yes' );
-		add_option( 'pprh_post_modal_types', $default_modal_pages, '', 'yes' );
-
-		add_option( 'pprh_license_key', '', '', 'yes' );
-		add_option( 'pprh_license_status', '', '', 'yes' );
 	}
 
 	// Multisite install/delete db table.
-	public function install_db_table() {
-		global $wpdb;
-		$new_table = $wpdb->prefix . 'pprh_table';
-		$old_table = $wpdb->prefix . 'gktpp_table';
+//	public function install_db_table() {
+//		global $wpdb;
+//		$new_table = $wpdb->prefix . 'pprh_table';
+//		$old_table = $wpdb->prefix . 'gktpp_table';
+//
+//		$prev_table_exists = $wpdb->query(
+//			$wpdb->prepare( 'SHOW TABLES LIKE %s', $old_table )
+//		);
+//
+//		// user is upgrading to new version.
+//		if ( 1 === $prev_table_exists ) {
+//			return $this->upgrade_db( $new_table, $old_table );
+//		}
+//
+//		add_option( 'pprh_autoload_preconnects', 'true', '', 'yes' );
+//		add_option( 'pprh_allow_unauth', 'true', '', 'yes' );
+//		add_option( 'pprh_preconnects_set', 'false', '', 'yes' );
+//		add_option( 'pprh_disable_wp_hints', 'true', '', 'yes' );
+//        add_option( 'pprh_html_head', 'true', '', 'yes' );
+//
+//        $charset_collate = $wpdb->get_charset_collate();
+//
+//		if ( ! function_exists( 'dbDelta' ) ) {
+//			include_once ABSPATH . 'wp-admin/includes/upgrade.php';
+//		}
+//
+//		$pprh_tables = array( $new_table );
+//
+//		if ( is_multisite() ) {
+//			$blog_table = $wpdb->base_prefix . 'blogs';
+//
+//			$data = $wpdb->get_results(
+//				$wpdb->prepare(
+//					'SELECT blog_id FROM %s WHERE blog_id != %d',
+//					$blog_table,
+//					1
+//				)
+//			);
+//
+//			if ( ! empty( $data ) ) {
+//				foreach ( $data as $object ) {
+//					$site_pp_table = $wpdb->base_prefix . $object->blog_id . '_pprh_table';
+//					array_push( $pprh_tables, $site_pp_table );
+//				}
+//			}
+//		}
+//
+//		return $ms_tables;
+//	}
 
-		$prev_table_exists = $wpdb->query(
-			$wpdb->prepare( 'SHOW TABLES LIKE %s', $old_table )
-		);
+    // Multisite install/delete db table.
+    public function setup_tables() {
+        global $wpdb;
 
-		// user is upgrading to new version.
-		if ( 1 === $prev_table_exists ) {
-			return $this->upgrade_db( $new_table, $old_table );
-		}
+        if ( ! function_exists( 'dbDelta' ) ) {
+            include_once ABSPATH . 'wp-admin/includes/upgrade.php';
+        }
 
-		add_option( 'pprh_autoload_preconnects', 'true', '', 'yes' );
-		add_option( 'pprh_allow_unauth', 'true', '', 'yes' );
-		add_option( 'pprh_preconnects_set', 'false', '', 'yes' );
-		add_option( 'pprh_disable_wp_hints', 'true', '', 'yes' );
-        add_option( 'pprh_html_head', 'true', '', 'yes' );
+        $pprh_tables = array( PPRH_DB_TABLE );
 
-        $charset_collate = $wpdb->get_charset_collate();
+        if ( is_multisite() ) {
+            $pprh_tables[] = $this->get_multisite_tables();
+        }
 
-		if ( ! function_exists( 'dbDelta' ) ) {
-			include_once ABSPATH . 'wp-admin/includes/upgrade.php';
-		}
-
-		$pprh_tables = array( $new_table );
-
-		if ( is_multisite() ) {
-			$blog_table = $wpdb->base_prefix . 'blogs';
-
-			$data = $wpdb->get_results(
-				$wpdb->prepare(
-					'SELECT blog_id FROM %s WHERE blog_id != %d',
-					$blog_table,
-					1
-				)
-			);
-
-			if ( ! empty( $data ) ) {
-				foreach ( $data as $object ) {
-					$site_pp_table = $wpdb->base_prefix . $object->blog_id . '_pprh_table';
-					array_push( $pprh_tables, $site_pp_table );
-				}
-			}
-		}
-
-		return $ms_tables;
-	}
+        foreach ( $pprh_tables as $pprh_table ) {
+            $this->table_sql( $pprh_table );
+        }
+    }
 
 
 	private function table_sql( $table_name ) {
 		global $wpdb;
 		$charset = $wpdb->get_charset_collate();
 
-		foreach ( $pprh_tables as $pprh_table ) {
+        $sql = "CREATE TABLE $table_name (
+            id INT(9) NOT NULL AUTO_INCREMENT,
+            url VARCHAR(255) DEFAULT '' NOT NULL,
+            hint_type VARCHAR(55) DEFAULT '' NOT NULL,
+            status VARCHAR(55) DEFAULT 'enabled' NOT NULL,
+            as_attr VARCHAR(55) DEFAULT '',
+            type_attr VARCHAR(55) DEFAULT '',
+            crossorigin VARCHAR(55) DEFAULT '',
+            created_by VARCHAR(55) DEFAULT '' NOT NULL,
+            PRIMARY KEY  (id)
+        ) $charset;";
 
-			$sql = "CREATE TABLE $pprh_table (
-				id INT(9) NOT NULL AUTO_INCREMENT,
-				url VARCHAR(255) DEFAULT '' NOT NULL,
-				hint_type VARCHAR(55) DEFAULT '' NOT NULL,
-				status VARCHAR(55) DEFAULT 'enabled' NOT NULL,
-				as_attr VARCHAR(55) DEFAULT '',
-				type_attr VARCHAR(55) DEFAULT '',
-				crossorigin VARCHAR(55) DEFAULT '',
-				ajax_domain TINYINT(1) DEFAULT 0 NOT NULL,
-				created_by VARCHAR(55) DEFAULT '' NOT NULL,
-				PRIMARY KEY  (id)
-			) $charset_collate;";
-
-			dbDelta( $sql, true );
-		}
-
+        dbDelta( $sql, true );
 	}
 
     public function check_page() {
         global $pagenow;
+        $page = '';
 
         if ( 'admin.php' === $pagenow && isset( $_GET['page'] ) ) {
             $page = sanitize_text_field( wp_unslash( $_GET['page'] ) );
             if ( 'pprh-plugin-settings' === $page ) {
-                return 'pprhAdmin';
+                $page = 'pprhAdmin';
             }
         }
+        return $page;
     }
 
 }
