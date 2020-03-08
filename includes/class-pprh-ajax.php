@@ -1,12 +1,10 @@
 <?php
 
-namespace PPRH;
-
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class Ajax {
+class PPRH_Ajax {
 
 	public $reset_prec_meta           = 'pprh_preconnects_set';
 

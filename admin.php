@@ -3,132 +3,110 @@
  * Plugin Name:       Pre* Party Resource Hints
  * Plugin URI:        https://wordpress.org/plugins/pre-party-browser-hints/
  * Description:       Take advantage of the browser resource hints DNS-Prefetch, Prerender, Preconnect, Prefetch, and Preload to improve page load time.
- * Version:           1.7.0
+ * Version:           1.6.45
  * Requires at least: 4.4
  * Requires PHP:      5.3
  * Author:            Sam Perrow
  * Author URI:        https://www.linkedin.com/in/sam-perrow
  * License:           GPL3
  * License URI:       https://www.gnu.org/licenses/gpl-3.0.html
- * Text Domain:       pre-party-browser-hints
+ * Text Domain:       pprh
  * Domain Path:       /languages
- *
- * @package asfdfsad
- * last edited February 9, 2020
  *
  * Copyright 2016  Sam Perrow  (email : sam.perrow399@gmail.com)
  *
 */
-
-namespace PPRH;
 
 // prevent direct file access.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-new Init();
+define( 'COMET_CACHE_ALLOWED', false );
 
-final class Init {
+function pprh_check_page() {
+	global $pagenow;
+
+	if ( 'admin.php' === $pagenow && isset( $_GET['page'] ) ) {
+		$page = sanitize_text_field( wp_unslash( $_GET['page'] ) );
+		if ( 'pprh-plugin-settings' === $page ) {
+			return 'pprhAdmin';
+		}
+	}
+}
+
+
+new PPRH_Init();
+
+final class PPRH_Init {
 
 	public function __construct() {
 		add_action( 'init', array( $this, 'initialize' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'register_admin_files' ) );
+		register_activation_hook( __FILE__, array( $this, 'install_db_table' ) );
+		add_action( 'wpmu_new_blog', array( $this, 'install_db_table' ) );
 		add_filter( 'set-screen-option', array( $this, 'apply_wp_screen_options' ), 10, 3 );
-		register_activation_hook( __FILE__, array( $this, 'activate_plugin' ) );
-		add_action( 'wpmu_new_blog', array( $this, 'activate_plugin' ) );
-		add_action( 'delete_post', array( $this, 'delete_post_hints' ) );
-        add_action( 'admin_footer', array( $this, 'check_permlink_change' ) );
-    }
+		add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( $this, 'set_admin_links' ) );
+	}
 
 	public function initialize() {
-		$this->create_constants();
 
-		include_once PPRH_PLUGIN_DIR . '/class-pprh-utils.php';
-		include_once PPRH_PLUGIN_DIR . '/class-pprh-updater.php';
+		$this->create_constants();
 
 		if ( is_admin() ) {
 			add_action( 'admin_menu', array( $this, 'load_admin_page' ) );
-            add_action( 'save_post', array( $this, 'pprh_update_url' ) );
-            include_once PPRH_PLUGIN_DIR . '/class-pprh-ajax-ops.php';
 		} else {
 			$this->pprh_disable_wp_hints();
 			include_once PPRH_PLUGIN_DIR . '/class-pprh-send-hints.php';
+			new PPRH_Send_Hints();
 		}
 
 		// this needs to be loaded front end and back end bc Ajax needs to be able to communicate between the two.
 		if ( 'true' === get_option( 'pprh_autoload_preconnects' ) ) {
 			include_once PPRH_PLUGIN_DIR . '/class-pprh-ajax.php';
-			new Ajax();
+			new PPRH_Ajax();
 		}
 	}
 
-	public function check_permlink_change() {
-	    $wp_perm_links = get_option( 'permalink_structure' );
-	    $pprh_perm_links = get_option( 'pprh_permalink_copy' );
-
-	    if ( $wp_perm_links !== $pprh_perm_links ) {
-	        $this->update_perm_links();
-	        update_option( 'pprh_permalink_copy', $wp_perm_links );
-        }
-    }
-
-    private function update_perm_links() {
-        global $wpdb;
-        $table = PPRH_DB_TABLE;
-
-        $post_hints = $wpdb->get_results(
-            $wpdb->prepare( "SELECT id, post_id FROM $table WHERE post_id != %s", 'global' )
-        );
-
-        foreach( $post_hints as $post_hint ) {
-            $post_id = (int) $post_hint->post_id;
-            $hint_id = (int) $post_hint->id;
-            $post_url = Utils::get_url_query_from_post_id( $post_id );
-            $wpdb->query(
-                $wpdb->prepare("UPDATE $table SET post_url = %s WHERE id = %d", $post_url, $hint_id )
-            );
-        }
-    }
-
-
 	public function load_admin_page() {
+
 		$settings_page = add_menu_page(
 			'Pre* Party Settings',
 			'Pre* Party',
 			'manage_options',
 			'pprh-plugin-settings',
-			array( $this, 'load_files' ),
+			array( $this, 'show_tabs' ),
 			plugins_url( PPRH_PLUGIN_FILENAME . '/images/lightning.png' )
 		);
 
 		add_action( "load-{$settings_page}", array( $this, 'screen_option' ) );
-		add_action( 'load-post.php', array( $this, 'load_files' ) );
+		add_action( "load-{$settings_page}", array( $this, 'load_admin_files' ) );
 	}
 
 	public function create_constants() {
-		if ( ! defined( 'PPRH\TABLE' ) ) {
-			global $wpdb;
-			$table = $wpdb->prefix . 'pprh_table';
-			define( 'PPRH_DB_TABLE', $table );
-			define( 'PPRH_VERSION', '2.0.0' );
-			define( 'PPRH_PLUGIN_FILENAME', '/pprh-pro' );
-			define( 'PPRH_PLUGIN_DIR', untrailingslashit( __DIR__ ) . '/includes' );
-			define( 'PPRH_CHECK_PAGE', $this->check_page() );
-			define( 'PPRH_CHECKOUT_LINK', 'https://sphacks.io/checkout' );
+		if ( ! defined( 'PPRH_VERSION' ) ) {
+			define( 'PPRH_VERSION', '1.6.45' );
+		}
+		if ( ! defined( 'PPRH_PLUGIN_FILENAME' ) ) {
+			define( 'PPRH_PLUGIN_FILENAME', '/pre-party-browser-hints' );
+		}
+		if ( ! defined( 'PPRH_PLUGIN_DIR' ) ) {
+			define( 'PPRH_PLUGIN_DIR', untrailingslashit( dirname( __FILE__ ) ) . '/includes' );
+		}
+		if ( ! defined( 'PPRH_CHECK_PAGE' ) ) {
+			define( 'PPRH_CHECK_PAGE', pprh_check_page() );
 		}
 	}
 
-	public function load_files() {
+	public function load_admin_files() {
+		include_once PPRH_PLUGIN_DIR . '/class-pprh-misc.php';
 		include_once PPRH_PLUGIN_DIR . '/class-pprh-create-hints.php';
 		include_once PPRH_PLUGIN_DIR . '/class-pprh-display-hints.php';
-		include_once PPRH_PLUGIN_DIR . '/class-pprh-add-new-hint.php';
+	}
 
-		if ( 'pprhAdmin' === PPRH_CHECK_PAGE ) {
-			include_once PPRH_PLUGIN_DIR . '/class-pprh-admin-tabs.php';
-		} elseif ( 'pprhPostEdit' === PPRH_CHECK_PAGE ) {
-			include_once PPRH_PLUGIN_DIR . '/class-pprh-posts.php';
-		}
+	public function show_tabs() {
+		include_once PPRH_PLUGIN_DIR . '/class-pprh-admin-tabs.php';
+		new PPRH_Admin_Tabs();
 	}
 
 	public function apply_wp_screen_options( $status, $option, $value ) {
@@ -136,188 +114,132 @@ final class Init {
 	}
 
 	public function screen_option() {
-		$args = array(
+		$option = 'per_page';
+		$args   = array(
 			'label'   => 'URLs',
 			'default' => 10,
 			'option'  => 'pprh_screen_options',
 		);
 
-		add_screen_option( 'per_page', $args );
-	}
-
-	public function check_page() {
-		global $pagenow;
-		$page = '';
-
-		if ( 'admin.php' === $pagenow && isset( $_GET['page'] ) ) {
-			$page = sanitize_text_field( wp_unslash( $_GET['page'] ) );
-			if ( 'pprh-plugin-settings' === $page ) {
-				$page = 'pprhAdmin';
-			}
-		} elseif ( 'post.php' === $pagenow && isset( $_GET['action'] ) ) {
-			$page = sanitize_text_field( wp_unslash( $_GET['action'] ) );
-			if ( 'edit' === $page ) {
-				$page = 'pprhPostEdit';
-			}
-		}
-		return $page;
+		add_screen_option( $option, $args );
 	}
 
 	// Register and call the CSS and JS we need only on the needed page.
 	public function register_admin_files( $hook ) {
-		$ajax_data = array(
-			'val' => wp_create_nonce( 'pprh_table_nonce' ),
-		);
 
-		$css_changed_time = filemtime( __DIR__ . '/css/styles.css' );
-		$js_changed_time = filemtime( __DIR__ . '/js/admin.js' );
+		wp_register_script( 'pprh_admin_js', plugin_dir_url( __FILE__ ) . 'js/admin.js', null, PPRH_VERSION, true );
+		wp_register_style( 'pprh_styles_css', plugin_dir_url( __FILE__ ) . 'css/styles.css', null, PPRH_VERSION, 'all' );
 
-		wp_register_script( 'pprh_admin_js', plugin_dir_url( __FILE__ ) . 'js/admin.js', null, '', true );
-		wp_localize_script( 'pprh_admin_js', 'pprh_nonce', $ajax_data );
-		wp_register_style( 'pprh_styles_css', plugin_dir_url( __FILE__ ) . '/css/styles.css', null, $css_changed_time, 'all' );
-
-		if ( preg_match( '/toplevel_page_pprh-plugin-settings|post.php/i', $hook ) ) {
+		if ( 'toplevel_page_pprh-plugin-settings' === $hook ) {
 			wp_enqueue_script( 'pprh_admin_js' );
 			wp_enqueue_style( 'pprh_styles_css' );
 		}
 	}
 
+	public function set_admin_links( $links ) {
+		$pprh_links = array(
+			'<a href="https://github.com/samperrow/pre-party-browser-hints">View on GitHub</a>',
+			'<a href="https://www.paypal.me/samperrow">Donate</a>',
+		);
+		return array_merge( $links, $pprh_links );
+	}
+
 	// Implement option to disable automatically generated resource hints.
 	public function pprh_disable_wp_hints() {
-		return ( 'true' === get_option( 'pprh_disable_wp_hints' ) ) ? remove_action( 'wp_head', 'wp_resource_hints', 2 ) : false;
-	}
-
-	public function activate_plugin() {
-		$this->create_constants();
-
-		// If upgrading from 1.7, set those hints' post id values to 'global'.
-		if ( get_option( 'pprh_autoload_preconnects' ) !== '' && empty( get_option( 'pprh_license_key' ) ) ) {
-			$this->set_previous_hints_to_global();
+		if ( 'true' === get_option( 'pprh_disable_wp_hints' ) ) {
+			return remove_action( 'wp_head', 'wp_resource_hints', 2 );
 		}
-
-		$this->set_options();
-		$this->setup_tables();
 	}
 
-	public function set_previous_hints_to_global() {
+	public function update_option( $old_option_name, $new_option_name, $prev_value ) {
+		$new_value = ( $prev_value === get_option( $old_option_name ) ) ? 'true' : 'false';
+		add_option( $new_option_name, $new_value, '', 'yes' );
+		delete_option( $old_option_name );
+	}
+
+	// Upgrade db table from version 1.5.8.
+	public function upgrade_db( $new_table, $old_table ) {
 		global $wpdb;
-		$table = PPRH_DB_TABLE;
-		$count = $wpdb->prepare( "SELECT COUNT(*) FROM $table" );
 
-		if ( $count > 0 ) {
-			$wpdb->query(
-				$wpdb->prepare( "UPDATE $table SET post_id = %s", 'global' )
-			);
-		}
-	}
+		$wpdb->query( "RENAME TABLE $old_table TO $new_table" );
+		$wpdb->query( "ALTER TABLE $new_table ADD created_by varchar(55)" );
+		$wpdb->query( "ALTER TABLE $new_table DROP COLUMN header_string" );
+		$wpdb->query( "ALTER TABLE $new_table DROP COLUMN head_string" );
 
-	public function set_options() {
-        include_once PPRH_PLUGIN_DIR . '/class-pprh-utils.php';
-        $perm_structure = get_option( 'permalink_structure' );
-        $default_modal_pages = Utils::get_default_modal_post_types();
+		$this->update_option( 'gktpp_reset_preconnect', 'pprh_preconnects_set', 'false' );
+		$this->update_option( 'gktpp_disable_wp_hints', 'pprh_disable_wp_hints', 'Yes' );
+		$this->update_option( 'gktpp_preconnect_status', 'pprh_autoload_preconnects', 'Yes' );
 
-		add_option( 'pprh_autoload_preconnects', 'true', '', 'yes' );
-		add_option( 'pprh_reset_home_preconnects', 'true', '', 'yes' );
-		add_option( 'pprh_reset_global_preconnects', 'true', '', 'yes' );
-
+		delete_option( 'gktpp_send_in_header' );
 		add_option( 'pprh_allow_unauth', 'true', '', 'yes' );
-		add_option( 'pprh_disable_wp_hints', 'true', '', 'yes' );
-		add_option( 'pprh_html_head', 'true', '', 'yes' );
-		add_option( 'pprh_post_modal_types', $default_modal_pages, '', 'yes' );
-        add_option( 'pprh_permalink_copy', $perm_structure, '', 'yes' );
-
-		add_option( 'pprh_license_key', '', '', 'yes' );
-		add_option( 'pprh_license_status', '', '', 'yes' );
 	}
 
 	// Multisite install/delete db table.
-	public function setup_tables() {
+	public function install_db_table() {
 		global $wpdb;
+		$new_table = $wpdb->prefix . 'pprh_table';
+		$old_table = $wpdb->prefix . 'gktpp_table';
+
+		$prev_table_exists = $wpdb->query(
+			$wpdb->prepare( 'SHOW TABLES LIKE %s', $old_table )
+		);
+
+		// user is upgrading to new version.
+		if ( 1 === $prev_table_exists ) {
+			return $this->upgrade_db( $new_table, $old_table );
+		}
+
+		add_option( 'pprh_autoload_preconnects', 'true', '', 'yes' );
+		add_option( 'pprh_allow_unauth', 'true', '', 'yes' );
+		add_option( 'pprh_preconnects_set', 'false', '', 'yes' );
+		add_option( 'pprh_disable_wp_hints', 'true', '', 'yes' );
+        add_option( 'pprh_html_head', 'true', '', 'yes' );
+
+        $charset_collate = $wpdb->get_charset_collate();
 
 		if ( ! function_exists( 'dbDelta' ) ) {
 			include_once ABSPATH . 'wp-admin/includes/upgrade.php';
 		}
 
-		$pprh_tables = array( PPRH_DB_TABLE );
+		$pprh_tables = array( $new_table );
 
 		if ( is_multisite() ) {
-			$pprh_tables[] = $this->get_multisite_tables();
+			$blog_table = $wpdb->base_prefix . 'blogs';
+
+			$data = $wpdb->get_results(
+				$wpdb->prepare(
+					'SELECT blog_id FROM %s WHERE blog_id != %d',
+					$blog_table,
+					1
+				)
+			);
+
+			if ( ! empty( $data ) ) {
+				foreach ( $data as $object ) {
+					$site_pp_table = $wpdb->base_prefix . $object->blog_id . '_pprh_table';
+					array_push( $pprh_tables, $site_pp_table );
+				}
+			}
 		}
 
 		foreach ( $pprh_tables as $pprh_table ) {
-			$this->table_sql( $pprh_table );
+
+			$sql = "CREATE TABLE $pprh_table (
+				id INT(9) NOT NULL AUTO_INCREMENT,
+				url VARCHAR(255) DEFAULT '' NOT NULL,
+				hint_type VARCHAR(55) DEFAULT '' NOT NULL,
+				status VARCHAR(55) DEFAULT 'enabled' NOT NULL,
+				as_attr VARCHAR(55) DEFAULT '',
+				type_attr VARCHAR(55) DEFAULT '',
+				crossorigin VARCHAR(55) DEFAULT '',
+				ajax_domain TINYINT(1) DEFAULT 0 NOT NULL,
+				created_by VARCHAR(55) DEFAULT '' NOT NULL,
+				PRIMARY KEY  (id)
+			) $charset_collate;";
+
+			dbDelta( $sql, true );
 		}
+
 	}
-
-	private function get_multisite_tables() {
-		$blog_table = $wpdb->base_prefix . 'blogs';
-		$ms_tables = array();
-
-		$data = $wpdb->get_results(
-			$wpdb->prepare( 'SELECT blog_id FROM %s WHERE blog_id != %d', $blog_table, 1 )
-		);
-
-		if ( ! empty( $data ) ) {
-			foreach ( $data as $object ) {
-				$site_pp_table = $wpdb->base_prefix . $object->blog_id . '_pprh_table';
-				$ms_tables[] = $site_pp_table;
-			}
-		}
-		return $ms_tables;
-	}
-
-
-	private function table_sql( $table_name ) {
-		global $wpdb;
-		$charset = $wpdb->get_charset_collate();
-
-		$sql = "CREATE TABLE $table_name (
-			id INT(9) NOT NULL AUTO_INCREMENT,
-			url VARCHAR(255) DEFAULT '' NOT NULL,
-			hint_type VARCHAR(55) DEFAULT '' NOT NULL,
-			status VARCHAR(55) DEFAULT 'enabled' NOT NULL,
-			as_attr VARCHAR(55) DEFAULT '',
-			type_attr VARCHAR(55) DEFAULT '',
-			crossorigin VARCHAR(55) DEFAULT '',
-			post_id VARCHAR(55) DEFAULT '0' NOT NULL,
-			created_by VARCHAR(55) DEFAULT '' NOT NULL,
-			post_url VARCHAR(255) DEFAULT '' NOT NULL,
-			PRIMARY KEY  (id)
-		) $charset;";
-
-		dbDelta( $sql, true );
-	}
-
-
-	// when a post is deleted, this will delete hints that have the same post ID which is being deleted.
-	public function delete_post_hints( $post_id ) {
-		global $wpdb;
-		$post_id_str = (string) $post_id;
-		$action = current_action();
-
-		if ( 'delete_post' === $action ) {
-			$wpdb->delete(
-				PPRH_DB_TABLE,
-				array(
-					'post_id' => $post_id_str,
-				),
-				array( '%s' )
-			);
-			delete_post_meta( $post_id, 'pprh_reset_post_preconnects' );
-		}
-	}
-
-    public function pprh_update_url( $post_id ) {
-	    if ( isset( $_POST['pprh_link_changed'] ) && 'true' === $_POST['pprh_link_changed'] ) {
-            global $wpdb;
-            $new_link = Utils::get_url_query_from_post_id( $post_id );
-
-            $wpdb->update(
-                PPRH_DB_TABLE,
-                array( 'post_url' => $new_link ),
-                array( 'post_id' => (string) $post_id )
-            );
-        }
-    }
 
 }
