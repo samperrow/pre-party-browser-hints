@@ -51,7 +51,7 @@ class Pro {
             <p><b>(create youtube video demonstrating 2.0)</b></p>
 
             <div style="text-align: center; margin-bottom: 50px;">
-                <span id="pprh-checkout" class="thickbox button button-primary">Start Using version 2.0 Now!</span>
+                <span id="pprh-checkout" class="thickbox button button-primary">Upgrade to Pre* Party Pro!</span>
             </div>
 
 
