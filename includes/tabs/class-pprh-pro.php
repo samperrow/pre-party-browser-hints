@@ -1,20 +1,15 @@
 <?php
 
+namespace PPRH;
+
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-class PPRH_Pro {
+class Pro {
 
     public function __construct() {
-
         $this->upgrade_to_pro();
-//        $user_data = $this->get_user_data();
-
-//        wp_register_script( 'pprh-checkout', plugins_url( PPRH_PLUGIN_FILENAME . '/js/proUpgrade.js' ),
-//            null, PPRH_VERSION, true );
-//        wp_localize_script( 'pprh-checkout', 'pprh_checkout_data', $user_data );
-//        wp_enqueue_script( 'pprh-checkout' );
     }
 
     function get_user_data() {
@@ -69,4 +64,4 @@ class PPRH_Pro {
 
 }
 
-new PPRH_Pro();
+new Pro();
