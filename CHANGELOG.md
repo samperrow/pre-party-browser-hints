@@ -1,21 +1,8 @@
 == Changelog ==
 
-1. Most recent update: October 5, 2019.
-2. Version 1.6.41
-
-October 5, 2019:
-1) Entered URL's will no longer be converted to lower case. This is because some sites have case-sensitive URI's.
-
-September 28, 2019:
-1) Fixed bug with preconnect-ajax hints.
-2) fixed issue with upgrading db table from v 1.5.8
-
-September 15, 2019:
-1) Dramatically reconfigured plugin. Version 1.6.0 is basically a complete rewrite of all code used. It is more organized, concise, efficient, easy to understand, simple, and user friendly than previously.
-2) The option to add hints in the HTTP header has been removed. This is necessary because that feature will not be compatible with future versions of the plugin.
-3) Moved all plugin settings to the "Settings" tab for easier navigation.
-4) Added ability for users to set the crossorigin, as, and type attributes for hints.
-5) Transformed "Contact" box into a pop up modal.
+1. Most recent update: February 16, 2019.
+2. Version 1.5.5
+3. Ensured compatibility with WP 5.1, and removed unneccessary file.
 
 February 16, 2019:
 1) Ensured compatibility with WP 5.1
