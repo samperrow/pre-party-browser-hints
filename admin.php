@@ -136,8 +136,7 @@ final class Init {
 
 	public function set_admin_links( $links ) {
 		$pprh_links = array(
-			'<a href="https://github.com/samperrow/pre-party-browser-hints">View on GitHub</a>',
-			'<a href="https://www.paypal.me/samperrow">Donate</a>',
+			'<a href="https://github.com/samperrow/pre-party-browser-hints">View on GitHub</a>'
 		);
 		return array_merge( $links, $pprh_links );
 	}

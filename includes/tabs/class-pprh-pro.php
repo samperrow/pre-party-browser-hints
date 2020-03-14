@@ -54,13 +54,10 @@ class Pro {
                 <span id="pprh-checkout" class="thickbox button button-primary">Upgrade to Pre* Party Pro!</span>
             </div>
 
-
         </div>
-
 
         <?php
     }
-
 
 }
 
