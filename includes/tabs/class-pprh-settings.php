@@ -14,7 +14,7 @@ class Settings {
 
     public function display_settings() {
         ?>
-        <div id="pprh-settings">
+        <div class="pprh-content">
             <form method="post">
                 <?php
                 $this->save_user_options();

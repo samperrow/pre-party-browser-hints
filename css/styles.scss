@@ -8,15 +8,18 @@ div.pprh-wrap {
         text-align: center
     }
 
-    div.pprh-upgrade {
-        p, ul {
-            font-size: 16px;
+    div.pprh-content {
+        min-height: 60vh;
+
+        &.hidden {
+            display: none !important;
         }
 
-        ul {
-            list-style: disc;
+        &.text-center {
+            text-align: center
         }
     }
+
 }
 
 div#pprhNotice {
@@ -172,7 +175,6 @@ span.pprh-help-tip-hint {
     }
 }
 
-
 .pprh-admin-pic {
     display: block;
     margin: 0 auto;
@@ -193,14 +195,4 @@ div.row-actions span input {
 
 #pprhContactAuthor {
     text-align: center
-}
-
-div.pprhAdminPage {
-    &.hidden {
-        display: none !important;
-    }
-
-    &.text-center {
-        text-align: center
-    }
 }

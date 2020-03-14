@@ -85,7 +85,7 @@ jQuery(document).ready(function($) {
 		var left = (screen.width - 600) / 2;
 		var url = 'https://sphacks.local/checkout';
 
-		window.open(url, '_blank', 'height=800, width=800, top=' + top + ',left=' + left );
+		window.open(url, '_blank', 'height=750, width=800, top=' + top + ',left=' + left );
 	}
 
 });

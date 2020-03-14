@@ -17,7 +17,7 @@ class Hint_Info {
 
 	public function resource_hint_nav() {
 		?>
-		<div>
+		<div class="pprh-content">
 			<h2><?php esc_html_e( 'Resource Hint Information', 'pprh' ); ?></h2>
 
 			<p><a href="<?php esc_attr_e( '#dns-prefetch' ); ?>">DNS Prefetch</a></p>

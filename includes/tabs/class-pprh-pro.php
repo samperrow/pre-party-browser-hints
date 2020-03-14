@@ -24,7 +24,7 @@ class Pro {
     public function upgrade_to_pro() {
         ?>
 
-        <div class="pprh-upgrade">
+        <div class="pprh-content upgrade">
 
             <h2>Enjoy Post-Specific Hints, Inline Hint Editing, and More</h2>
 
