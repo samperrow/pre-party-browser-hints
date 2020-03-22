@@ -8,8 +8,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class Utils {
 
-	// public function __construct() {
-	// }
+//	 public function __construct() {
+//	 }
 
 	public static function shorten_url( $str ) {
 		return esc_html( ( strlen( $str ) > 25 ) ? substr( $str, 0, 25 ) . '...' : $str );
@@ -43,16 +43,5 @@ class Utils {
 
         echo '<div style="margin: 10px 0;" class="inline notice notice-' . $notice['result'] . ' is-dismissible"><p>' . esc_html( $msg ) . '</p></div>';
     }
-
-	public static function pprh_notice() {
-		?>
-			<div id="pprhNotice" class="inline notice is-dismissible">
-				<p></p>
-				<button type="button" class="notice-dismiss">
-					<span class="screen-reader-text">Dismiss this notice.</span>
-				</button>
-			</div>
-		<?php
-	}
 
 }

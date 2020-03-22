@@ -77,7 +77,9 @@ jQuery(document).ready(function($) {
 
 	function checkoutEvtListener() {
 		var ele = document.getElementById('pprh-checkout');
-		ele.addEventListener('click', calcAndOpenCheckoutModal);
+		if (ele) {
+			ele.addEventListener('click', calcAndOpenCheckoutModal);
+		}
 	}
 
 	function calcAndOpenCheckoutModal() {
