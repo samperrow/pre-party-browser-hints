@@ -9,18 +9,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Pro {
 
     private $license_url;
-//    private $license_key;
     private $license_status;
     private $license_email;
     private $license_username;
 
     public function __construct() {
         $this->license_url      = 'https://sphacks.io';
-//        $this->license_key      = get_option( 'pprh_license_key' );
         $this->license_status   = get_option( 'pprh_license_status' );
         $this->license_email    = get_option( 'pprh_license_email' );
         $this->license_username = get_option( 'pprh_license_username' );
-
         $this->upgrade_to_pro();
     }
 
@@ -90,7 +87,7 @@ class Pro {
 
     public function prepare_license_action( $action ) {
         // TODO: clean this hint
-        $license_key = $_POST['pprh_lic_key'];
+        $license_key = Utils::clean_license($_POST['pprh_lic_key']);
         $data = array(
             'success' => false,
         );
@@ -130,9 +127,14 @@ class Pro {
         $msg = '';
 
         if ( $response['success'] ) {
-            $msg = 'The following message was returned from the server: ' . $response['message'] . '. You should now be receiving a popup containing a zip file containing the pro version (Please enable popups temporarily to receive this). Please use that zip file to install the plugin, once that is successful you may delete this free version. Please note that both versions use the same database table, so your resource hints will be preserved.';
-            $url = $response['zip_url'];
-            echo '<script>window.open("' . $url . '", "_blank");</script>';
+            $msg = 'The following message was returned from the server: ' . $response['message'];
+
+            if ( ! empty( $response['zip_url'] ) ) {
+                $msg .= '<br>You should now be receiving a popup containing a zip file containing the pro version (Please enable popups temporarily to receive this). Please use that zip file to install the plugin, once that is successful you may delete this free version. Please note that both versions use the same database table, so your resource hints will be preserved.';
+                $url = $response['zip_url'];
+                echo '<script>window.open("' . $url . '", "_blank");</script>';
+            }
+
             $this->update_options( $response );
         } else {
             $msg = 'The following message was returned from the server: ' . $response['message'];
@@ -142,7 +144,6 @@ class Pro {
 
 
     public function update_options( $data ) {
-
         update_option( 'pprh_license_key', $data['license_key'] );
         update_option( 'pprh_license_status', $data['status'] );
         update_option( 'pprh_license_email', $data['email'] );

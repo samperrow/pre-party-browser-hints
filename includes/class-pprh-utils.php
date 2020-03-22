@@ -23,6 +23,10 @@ class Utils {
 		return preg_replace( '/[^A-z\-]/', '', $text );
 	}
 
+    public static function clean_license($lic) {
+        return preg_replace( '/[^A-z0-9.]/', '', $lic );
+    }
+
     public static function pprh_show_update_result( $notice ) {
 
         $msg = ( 'success' === $notice['result'] )
