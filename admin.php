@@ -53,12 +53,12 @@ final class Init {
 
         if ( is_array( $upgrade_data ) ) {
 
-            if ( ! $pprh_upgrade_transient ) {
+//            if ( ! $pprh_upgrade_transient ) {
                 $resp = $this->call_api( $upgrade_data['api_endpoint'] );
-                set_transient( 'pprh_upgrade_info', $resp, 86400 );
-            } else {
-                $resp = get_transient( 'pprh_upgrade_info' );
-            }
+//                set_transient( 'pprh_upgrade_info', $resp, 86400 );
+//            } else {
+//                $resp = get_transient( 'pprh_upgrade_info' );
+//            }
 
             $transient->response[ $plugin_slug ] = (object) $resp;
 
