@@ -45,7 +45,7 @@ final class Init {
             return $transient;
         }
 
-        delete_transient( 'pprh_upgrade_info' ); //
+        delete_transient( 'pprh_upgrade_info' );
 
         $plugin_slug = 'pre-party-browser-hints/admin.php';
         $upgrade_data = get_transient( 'pprh_upgrade' );
@@ -65,6 +65,7 @@ final class Init {
             $new_version = $transient->response[ $plugin_slug ]->new_version;
 
             if ( version_compare( $new_version, PPRH_VERSION ) > 0 ) {
+                unset( $transient->no_update[ $plugin_slug ] );
                 return $transient;
             }
         }
