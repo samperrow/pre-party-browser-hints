@@ -45,7 +45,7 @@ final class Init {
             return $transient;
         }
 
-        delete_transient( 'pprh_upgrade_info' );
+        delete_transient( 'pprh_upgrade_info' ); //
 
         $plugin_slug = 'pre-party-browser-hints/admin.php';
         $upgrade_data = get_transient( 'pprh_upgrade' );
