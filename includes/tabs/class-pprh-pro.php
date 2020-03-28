@@ -19,6 +19,7 @@ class Pro {
         $this->license_email    = get_option( 'pprh_license_email' );
         $this->license_username = get_option( 'pprh_license_username' );
         $this->upgrade_to_pro();
+
     }
 
     function get_user_data() {
@@ -126,18 +127,11 @@ class Pro {
         $msg = '';
 
         if ( $response['success'] ) {
-            $msg = 'The following message was returned from the server: ' . $response['message'];
+            $msg = 'The following message was returned from the server: ' . esc_html_e( $response['message'] );
 
-            if ( ! empty( $response['zip_url'] ) ) {
-                $msg .= '<br>You should now be receiving a popup containing a zip file containing the pro version (Please enable popups temporarily to receive this). Please use that zip file to install the plugin, once that is successful you may delete this free version. Please note that both versions use the same database table, so your resource hints will be preserved.';
-                $url = $response['zip_url'];
-                // echo '<script>window.open("' . $url . '", "_blank");</script>';
-
-                if ( ! empty( $response( 'download' ) ) ) {
-                     add_filter( 'pre_set_site_transient_update_plugins', array( $this, 'check_for_update' ) );
-
-                }
-
+            if ( ! empty( $response['transient']['api_endpoint'] ) ) {
+                $msg .= '<br>You should now be receiving a plugin update containing the pro version. ';
+                set_site_transient( 'pprh_upgrade', $response['transient'], 86400 );
             }
 
             $this->update_options( $response );
@@ -153,34 +147,6 @@ class Pro {
         update_option( 'pprh_license_status', $data['status'] );
         update_option( 'pprh_license_email', $data['email'] );
     }
-
-
-
-    public function check_for_update( $transient ) {
-        if ( empty( $transient->checked ) ) {
-            return $transient;
-        }
-
-//        $update = $this->call_api();
-
-//        if ( null !== $update ) {
-            $plugin_slug = plugin_basename( $this->plugin_file );
-
-            $transient->response[ $plugin_slug ] = (object) array(
-                'new_version'   => '2.0.0',
-                'slug'          => 'pprh',
-                'package'       => 'https://sphacks.io/wp-content/pprh/pprh-pro/zip'
-            );
-
-            $new_version = $transient->response[ $plugin_slug ]->new_version;
-            $current_version = $this->plugin_version;
-
-            if ( version_compare( $new_version, $current_version ) > 0 ) {
-                return $transient;
-            }
-//        }
-    }
-
 
 }
 
