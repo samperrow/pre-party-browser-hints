@@ -131,7 +131,7 @@ class Pro {
 
             if ( ! empty( $response['transient']['api_endpoint'] ) ) {
                 $msg .= '<br>You should now be receiving a plugin update containing the pro version. ';
-                set_site_transient( 'pprh_upgrade', $response['transient'], 86400 );
+                set_transient( 'pprh_upgrade', $response['transient'], 86400 );
             }
 
             $this->update_options( $response );

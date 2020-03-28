@@ -45,11 +45,18 @@ final class Init {
             return $transient;
         }
 
-        $upgrade_data = get_site_transient( 'pprh_upgrade' );
+        $plugin_slug = 'pre-party-browser-hints/admin.php';
+        $upgrade_data = get_transient( 'pprh_upgrade' );
+        $pprh_upgrade_transient = get_transient( 'pprh_upgrade_info' );
 
-        if ( null !== $upgrade_data ) {
-            $resp = $this->call_api( $upgrade_data['api_endpoint'] );
-            $plugin_slug = plugin_basename( 'pre-party-browser-hints/admin.php' );
+        if ( is_array( $upgrade_data ) ) {
+
+            if ( ! $pprh_upgrade_transient ) {
+                $resp = $this->call_api( $upgrade_data['api_endpoint'] );
+                set_transient( 'pprh_upgrade_info', $resp, 86400 );
+            } else {
+                $resp = get_transient( 'pprh_upgrade_info' );
+            }
 
             $transient->response[ $plugin_slug ] = (object) $resp;
 
