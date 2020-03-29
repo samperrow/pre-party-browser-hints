@@ -119,7 +119,7 @@ final class Init {
 	    global $wpdb;
 	    $prefix = $wpdb->prefix . 'pprh_table';
 		if ( ! defined( 'PPRH_VERSION' ) ) {
-			define( 'PPRH_VERSION', '1.6.45' );
+			define( 'PPRH_VERSION', '1.7.0' );
 		}
 		if ( ! defined( 'PPRH_PLUGIN_FILENAME' ) ) {
 			define( 'PPRH_PLUGIN_FILENAME', '/pre-party-browser-hints' );
