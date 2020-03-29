@@ -19,8 +19,8 @@ class Admin_Tabs {
 			exit;
 		}
         $tab = $this->get_tab();
-
-		echo '<div class="wrap pprh-wrap">';
+		
+        echo '<div class="wrap pprh-wrap">';
 		echo '<h2>Pre* Party Plugin Settings</h2>';
         $this->save_data($tab);
 

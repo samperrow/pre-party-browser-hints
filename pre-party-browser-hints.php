@@ -35,55 +35,10 @@ final class Init {
 		add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( $this, 'set_admin_links' ) );
         register_activation_hook( __FILE__, array( $this, 'activate_plugin' ) );
         add_action( 'wpmu_new_blog', array( $this, 'activate_plugin' ) );
-        add_filter( 'pre_set_site_transient_update_plugins', array( $this, 'check_for_upgrade' ) );
-    }
-
-    public function check_for_upgrade( $transient ) {
-        if ( empty( $transient->checked ) ) {
-            return $transient;
-        }
-
-        $plugin_slug = 'pre-party-browser-hints/pre-party-browser-hints.php';
-        $upgrade_data = get_transient( 'pprh_upgrade' );
-        $pprh_upgrade_transient = get_transient( 'pprh_upgrade_info' );
-
-        if ( is_array( $upgrade_data ) ) {
-
-            if ( ! $pprh_upgrade_transient ) {
-                $resp = $this->call_api( $upgrade_data['api_endpoint'] );
-                set_transient( 'pprh_upgrade_info', $resp, 86400 );
-            } else {
-                $resp = get_transient( 'pprh_upgrade_info' );
-            }
-
-            $transient->response[ $plugin_slug ] = (object) $resp;
-            $new_version = $transient->response[ $plugin_slug ]->new_version;
-
-            if ( version_compare( $new_version, PPRH_VERSION ) > 0 ) {
-//                unset( $transient->no_update[ $plugin_slug ] );
-                return $transient;
-            }
-        }
-    }
-
-    private function call_api( $api_enpoint ) {
-
-        $response = wp_remote_get( $api_enpoint );
-        if ( is_wp_error( $response ) ) {
-            return false;
-        }
-
-        $response_body = wp_remote_retrieve_body( $response );
-        $result = json_decode( $response_body, true );
-
-        if ( null !== $result ) {
-            return $result;
-        }
     }
 
 	public function initialize() {
-
-		$this->create_constants();
+        $this->create_constants();
 
 		if ( is_admin() ) {
 			add_action( 'admin_menu', array( $this, 'load_admin_page' ) );
