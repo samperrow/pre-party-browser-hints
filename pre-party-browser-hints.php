@@ -31,12 +31,10 @@ final class Init {
 	public function __construct() {
 		add_action( 'init', array( $this, 'initialize' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'register_admin_files' ) );
-		add_action( 'wpmu_new_blog', array( $this, 'install_db_table' ) );
 		add_filter( 'set-screen-option', array( $this, 'apply_wp_screen_options' ), 10, 3 );
 		add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( $this, 'set_admin_links' ) );
         register_activation_hook( __FILE__, array( $this, 'activate_plugin' ) );
         add_action( 'wpmu_new_blog', array( $this, 'activate_plugin' ) );
-
         add_filter( 'pre_set_site_transient_update_plugins', array( $this, 'check_for_upgrade' ) );
     }
 
@@ -45,27 +43,24 @@ final class Init {
             return $transient;
         }
 
-        delete_transient( 'pprh_upgrade_info' );
-
         $plugin_slug = 'pre-party-browser-hints/admin.php';
         $upgrade_data = get_transient( 'pprh_upgrade' );
         $pprh_upgrade_transient = get_transient( 'pprh_upgrade_info' );
 
         if ( is_array( $upgrade_data ) ) {
 
-//            if ( ! $pprh_upgrade_transient ) {
+            if ( ! $pprh_upgrade_transient ) {
                 $resp = $this->call_api( $upgrade_data['api_endpoint'] );
-//                set_transient( 'pprh_upgrade_info', $resp, 86400 );
-//            } else {
-//                $resp = get_transient( 'pprh_upgrade_info' );
-//            }
+                set_transient( 'pprh_upgrade_info', $resp, 86400 );
+            } else {
+                $resp = get_transient( 'pprh_upgrade_info' );
+            }
 
             $transient->response[ $plugin_slug ] = (object) $resp;
-
             $new_version = $transient->response[ $plugin_slug ]->new_version;
 
             if ( version_compare( $new_version, PPRH_VERSION ) > 0 ) {
-                unset( $transient->no_update[ $plugin_slug ] );
+//                unset( $transient->no_update[ $plugin_slug ] );
                 return $transient;
             }
         }
@@ -204,7 +199,6 @@ final class Init {
 	// Upgrade db table from version 1.5.8.
 	public function upgrade_db( $new_table, $old_table ) {
         global $wpdb;
-
         $wpdb->query("RENAME TABLE $old_table TO $new_table");
         $wpdb->query("ALTER TABLE $new_table ADD created_by varchar(55)");
         $wpdb->query("ALTER TABLE $new_table DROP COLUMN header_string");
@@ -223,57 +217,6 @@ final class Init {
 		add_option( 'pprh_disable_wp_hints', 'true', '', 'yes' );
 		add_option( 'pprh_html_head', 'true', '', 'yes' );
 	}
-
-	// Multisite install/delete db table.
-//	public function install_db_table() {
-//		global $wpdb;
-//		$new_table = $wpdb->prefix . 'pprh_table';
-//		$old_table = $wpdb->prefix . 'gktpp_table';
-//
-//		$prev_table_exists = $wpdb->query(
-//			$wpdb->prepare( 'SHOW TABLES LIKE %s', $old_table )
-//		);
-//
-//		// user is upgrading to new version.
-//		if ( 1 === $prev_table_exists ) {
-//			return $this->upgrade_db( $new_table, $old_table );
-//		}
-//
-//		add_option( 'pprh_autoload_preconnects', 'true', '', 'yes' );
-//		add_option( 'pprh_allow_unauth', 'true', '', 'yes' );
-//		add_option( 'pprh_preconnects_set', 'false', '', 'yes' );
-//		add_option( 'pprh_disable_wp_hints', 'true', '', 'yes' );
-//        add_option( 'pprh_html_head', 'true', '', 'yes' );
-//
-//        $charset_collate = $wpdb->get_charset_collate();
-//
-//		if ( ! function_exists( 'dbDelta' ) ) {
-//			include_once ABSPATH . 'wp-admin/includes/upgrade.php';
-//		}
-//
-//		$pprh_tables = array( $new_table );
-//
-//		if ( is_multisite() ) {
-//			$blog_table = $wpdb->base_prefix . 'blogs';
-//
-//			$data = $wpdb->get_results(
-//				$wpdb->prepare(
-//					'SELECT blog_id FROM %s WHERE blog_id != %d',
-//					$blog_table,
-//					1
-//				)
-//			);
-//
-//			if ( ! empty( $data ) ) {
-//				foreach ( $data as $object ) {
-//					$site_pp_table = $wpdb->base_prefix . $object->blog_id . '_pprh_table';
-//					array_push( $pprh_tables, $site_pp_table );
-//				}
-//			}
-//		}
-//
-//		return $ms_tables;
-//	}
 
     // Multisite install/delete db table.
     public function setup_tables() {
