@@ -43,7 +43,7 @@ final class Init {
             return $transient;
         }
 
-        $plugin_slug = 'pre-party-browser-hints/admin.php';
+        $plugin_slug = 'pre-party-browser-hints/pre-party-browser-hints.php';
         $upgrade_data = get_transient( 'pprh_upgrade' );
         $pprh_upgrade_transient = get_transient( 'pprh_upgrade_info' );
 
