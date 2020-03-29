@@ -85,7 +85,7 @@ jQuery(document).ready(function($) {
 	function calcAndOpenCheckoutModal() {
 		var top = ((screen.height - 800) / 2) - 40;
 		var left = (screen.width - 600) / 2;
-		var url = 'https://sphacks.local/checkout';
+		var url = 'https://sphacks.io/checkout';
 
 		window.open(url, '_blank', 'height=750, width=800, top=' + top + ',left=' + left );
 	}
