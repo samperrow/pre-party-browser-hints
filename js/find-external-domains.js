@@ -1,19 +1,38 @@
 (function() {
+
     var scripts = document.getElementsByTagName('script');
     var host = document.location.origin;
+    var altDomain = getAltHostName.call(host);
+
+    function getAltHostName() {
+        var idx = this.indexOf("//");
+        return (this.indexOf("www.") > 0) ? this.replace(/www\./, "") : this.slice(0, idx+2) + "www." + this.slice(idx+2, this.length);
+    }
+
+    function isValidHintDomain(domain) {
+        return (domain !== host && pprh_data.url.indexOf(domain) === -1 && !/\.gravatar\.com/.test(domain) && domain !== altDomain);
+    }
 
     function sanitizeURL() {
         return this.replace(/[\[\]\{\}\<\>\'\"\\(\)\*\+\\^\$\|]/g, '');
+    }
+
+    function getDomain(url) {
+        if (typeof window.URL === "function") {
+            return new URL(url.name).origin;
+        } else {
+            var newStr = item.name.split('/');
+            return newStr[0] + '//' + newStr[2];
+        }
     }
 
     function findResourceSources() {
         var resources = window.performance.getEntriesByType('resource');
 
         resources.forEach(function(item) {
-            var newStr = item.name.split('/');
-            var domain = newStr[0] + '//' + newStr[2];
+            var domain = getDomain(item);
 
-            if (domain !== host && pprh_data.url.indexOf(domain) === -1 && ! /\.gravatar\.com/.test(domain) ) {
+            if (isValidHintDomain(domain)) {
                 pprh_data.url.push(sanitizeURL.call(domain));
             }
         });
@@ -27,7 +46,7 @@
             var xhr = new XMLHttpRequest();
             xhr.open('POST', host + '/wp-admin/admin-ajax.php', true);
             xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
-			xhr.send('action=pprh_post_domain_names&hint_data=' + json + '&nonce=' + pprh_data.nonce );
+			xhr.send('action=pprh_post_domain_names&pprh_data=' + json + '&nonce=' + pprh_data.nonce );
 		}, 7000);
     }
 

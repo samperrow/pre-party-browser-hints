@@ -1,20 +1,21 @@
 <?php
 
+namespace PPRH;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class PPRH_Send_Hints {
+class Send_Hints {
 
-    public $hints = array();
+	public $hints = array();
 
-    public function __construct () {
-        add_action('wp_loaded', array($this, 'get_resource_hints'));
-    }
+	public function __construct() {
+		add_action( 'wp_loaded', array( $this, 'get_resource_hints' ) );
+	}
 
     public function get_resource_hints () {
         global $wpdb;
-
         $opt = get_option('pprh_html_head');
 
         $table = $wpdb->prefix . 'pprh_table';
@@ -31,40 +32,42 @@ class PPRH_Send_Hints {
             : add_action('wp_head', array($this, 'send_to_html_head'), 1, 0);
     }
 
-    // need to sanitize by removing anything other than link elems.
-    public function send_to_html_head() {
-        foreach ($this->hints as $key => $val) {
-            $attrs = '';
-            $attrs .= $this->add_html_attr( 'as', $val->as_attr );
-            $attrs .= $this->add_html_attr( 'type', $val->type_attr );
-            $attrs .= $this->add_html_attr( 'crossorigin', trim($val->crossorigin) );
-            echo sprintf('<link href="%s" rel="%s"%s>', $val->url, $val->hint_type, $attrs);
-        }
-    }
 
-    public function send_in_http_header() {
-        $output = '';
+	public function send_to_html_head() {
+		foreach ( $this->hints as $key => $val ) {
+			$attrs = '';
+			$attrs .= $this->add_html_attr( 'as', $val->as_attr );
+			$attrs .= $this->add_html_attr( 'type', $val->type_attr );
+			$attrs .= $this->add_html_attr( 'crossorigin', trim( $val->crossorigin ) );
+			echo sprintf( '<link href="%s" rel="%s"%s>', $val->url, $val->hint_type, $attrs );
+		}
+	}
 
-        foreach ($this->hints as $key => $val) {
-            $attrs = '';
-            $attrs .= $this->add_header_attr( 'as', $val->as_attr );
-            $attrs .= $this->add_header_attr( 'type', $val->type_attr );
-            $attrs .= $this->add_header_attr( 'crossorigin', trim($val->crossorigin) );
-            $str = sprintf('<%s>; rel=%s;%s', $val->url, $val->hint_type, $attrs );
-            $str = rtrim( $str, ';' );
-            $output .= $str . ', ';
-        }
+	public function send_in_http_header() {
+		$output = '';
 
-        $header_str = 'Link: ' . rtrim( $output, ';' );
-        header( $header_str );
-    }
+		foreach ( $this->hints as $key => $val ) {
+			$attrs = '';
+			$attrs .= $this->add_header_attr( 'as', $val->as_attr );
+			$attrs .= $this->add_header_attr( 'type', $val->type_attr );
+			$attrs .= $this->add_header_attr( 'crossorigin', trim( $val->crossorigin ) );
+			$str = sprintf( '<%s>; rel=%s;%s', $val->url, $val->hint_type, $attrs );
+			$str = rtrim( $str, ';' );
+			$output .= $str . ', ';
+		}
 
-    private function add_header_attr( $name, $val ) {
-        return ( ! empty( $val ) ) ? " $name=$val" . ';' : '';
-    }
+		$header_str = 'Link: ' . rtrim( $output, ';' );
+		header( $header_str );
+	}
 
-    private function add_html_attr( $name, $val ) {
-        return ( ! empty( $val ) ) ? " $name=\"$val\"" : '';
-    }
+	private function add_header_attr( $name, $val ) {
+		return ( ! empty( $val ) ) ? " $name=$val" . ';' : '';
+	}
+
+	private function add_html_attr( $name, $val ) {
+		return ( ! empty( $val ) ) ? " $name=\"$val\"" : '';
+	}
 
 }
+
+new Send_Hints();

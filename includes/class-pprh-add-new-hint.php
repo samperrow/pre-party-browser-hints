@@ -1,33 +1,31 @@
 <?php
 
-class PPRH_Add_New_Hint {
+namespace PPRH;
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
+class Add_New_Hint {
 
 	public function __construct() {
-		$this->create_new_hint_table();
-	}
+        $this->create_new_hint_table();
+    }
 
 	public function create_new_hint_table() {
-
 		if ( ! is_admin() ) {
 			exit();
 		}
 		?>
 
 		<div class="pprh-container">
-
-		<?php
-		if ( 'pprhAdmin' === PPRH_CHECK_PAGE ) {
-			echo '<form id="pprh-new-hint" method="post" action="' . admin_url( 'admin.php?page=pprh-plugin-settings' ) . '">';
-			wp_nonce_field( 'pprh_nonce_action', 'pprh_nonce_val' );
-		}
-		?>
-			<table id="pprh-enter-data" class="fixed widefat striped">
+            <form id="pprh-new-hint" method="post" action="<?php echo admin_url('admin.php?page=pprh-plugin-settings'); ?>">
+                <?php wp_nonce_field( 'pprh_nonce_action', 'pprh_nonce_val' ); ?>
+                <table id="pprh-enter-data" class="fixed widefat striped">
 
 				<thead>
 					<tr>
-						<th colspan="5" style="text-align: center; font-size: 23px; font-weight: 600; padding: 15px 0;">
-							<?php esc_html_e( 'Add New Resource Hint', 'pprh' ); ?>
-						</th>
+						<th colspan="5" style="text-align: center; font-size: 23px; font-weight: 600; padding: 15px 0;"><?php esc_html_e( 'Add New Resource Hint', 'pprh' ); ?></th>
 					</tr>
 				</thead>
 
@@ -50,13 +48,9 @@ class PPRH_Add_New_Hint {
 				</tfoot>
 
 			</table>
-			<input size="50" type="hidden" name="hint_data" id="pprhInsertedHints" value=""/>
+                <input type="hidden" name="pprh_data" id="pprhInsertedHints" value=""/>
 
-			<?php
-			if ( 'pprhAdmin' === PPRH_CHECK_PAGE ) {
-				echo '</form>';
-			}
-			?>
+            </form>
 		</div>
 
 		<?php
@@ -187,8 +181,4 @@ class PPRH_Add_New_Hint {
 		</tr>
 		<?php
 	}
-}
-
-if ( is_admin() ) {
-	new PPRH_Add_New_Hint();
 }

@@ -9,9 +9,14 @@ pprh_uninstall_plugin();
 function pprh_uninstall_plugin() {
 	global $wpdb;
 
+//    $is_pro_installed = file_exists( WP_PLUGIN_DIR . '/pprh-pro/pprh-pro.php' );
+//
+//    if ( $is_pro_installed ) {
+//        return;
+//    }
+
 	delete_option( 'pprh_autoload_preconnects' );
     delete_option( 'pprh_allow_unauth' );
-    delete_option( 'pprh_preconnects_set' );
     delete_option( 'pprh_disable_wp_hints' );
     delete_option( 'pprh_html_head' );
 

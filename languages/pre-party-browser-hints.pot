@@ -1,0 +1,594 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"Project-Id-Version: Pre* Party Resource Hints\n"
+"POT-Creation-Date: 2020-03-29 22:34-0400\n"
+"PO-Revision-Date: 2020-03-29 22:33-0400\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.3\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-Flags-xgettext: --add-comments=translators:\n"
+"X-Poedit-WPHeader: pre-party-browser-hints.php\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
+"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.min.js\n"
+
+#: includes/class-pprh-add-new-hint.php:28
+msgid "Add New Resource Hint"
+msgstr ""
+
+#: includes/class-pprh-add-new-hint.php:45
+msgid "Insert Resource Hint"
+msgstr ""
+
+#: includes/class-pprh-add-new-hint.php:64
+msgid ""
+"Enter a domain name for dns-prefetch and preconnect hints, otherwise enter a "
+"full URL."
+msgstr ""
+
+#: includes/class-pprh-add-new-hint.php:66
+msgid "Domain or URL:"
+msgstr ""
+
+#: includes/class-pprh-add-new-hint.php:69
+msgid "Enter valid domain or URL here..."
+msgstr ""
+
+#: includes/class-pprh-add-new-hint.php:82
+msgid ""
+"Insert domain names from external URL's to perform DNS resolution early."
+msgstr ""
+
+#: includes/class-pprh-add-new-hint.php:84
+msgid "DNS-Prefetch"
+msgstr ""
+
+#: includes/class-pprh-add-new-hint.php:92
+msgid ""
+"Insert the full URL of a resource that is likely to be needed on a page "
+"later."
+msgstr ""
+
+#: includes/class-pprh-add-new-hint.php:94 includes/tabs/class-pprh-info.php:85
+msgid "Prefetch"
+msgstr ""
+
+#: includes/class-pprh-add-new-hint.php:102
+msgid ""
+"Insert the full URL of a page/post your visitors are likely to navigate "
+"towards."
+msgstr ""
+
+#: includes/class-pprh-add-new-hint.php:104
+#: includes/tabs/class-pprh-info.php:113
+msgid "Prerender"
+msgstr ""
+
+#: includes/class-pprh-add-new-hint.php:112
+msgid ""
+"Insert domain names from external URL's to perform DNS resolution, initial "
+"connection, and SSL negotiation ahead of time."
+msgstr ""
+
+#: includes/class-pprh-add-new-hint.php:114
+#: includes/tabs/class-pprh-info.php:153
+msgid "Preconnect"
+msgstr ""
+
+#: includes/class-pprh-add-new-hint.php:122
+msgid "Insert the full URL of a resource that is needed on a current page."
+msgstr ""
+
+#: includes/class-pprh-add-new-hint.php:124
+#: includes/tabs/class-pprh-info.php:192
+msgid "Preload"
+msgstr ""
+
+#: includes/class-pprh-add-new-hint.php:141
+msgid ""
+"For various reasons, font files (and others) need to be loaded with "
+"crossorigin. <a href=\"https://developer.mozilla.org/en-US/docs/Web/HTML/"
+"Preloading_content#Cross-origin_fetches\">Source: Mozilla</a>"
+msgstr ""
+
+#: includes/class-pprh-add-new-hint.php:143
+msgid "Crossorigin?"
+msgstr ""
+
+#: includes/class-pprh-add-new-hint.php:150
+msgid ""
+"Setting this attribute allows the browser to more accurately: <br/> 1) "
+"prioritize resource loading <br/>2) store in browser cache <br/>3) apply the "
+"correct headers. <a href='https://developer.mozilla.org/en-US/docs/Web/HTML/"
+"Preloading_content#The_basics'>Source: Mozilla</a>"
+msgstr ""
+
+#: includes/class-pprh-add-new-hint.php:153
+msgid "as "
+msgstr ""
+
+#: includes/class-pprh-add-new-hint.php:169
+msgid ""
+"&lt;link&gt; elements can accept a type attribute, which contains the MIME "
+"type of the resource the element points to. This is especially useful when "
+"preloading resources — the browser will use the type attribute value to work "
+"out if it supports that resource, and will only download it if so, ignoring "
+"it if not. <a href=\"https://developer.mozilla.org/en-US/docs/Web/HTML/"
+"Preloading_content#Including_a_MIME_type\">Source: Mozilla</a>. (This "
+"attribute will attempt to be added automatically.)"
+msgstr ""
+
+#: includes/class-pprh-add-new-hint.php:171
+msgid "type "
+msgstr ""
+
+#: includes/class-pprh-admin-tabs.php:87
+msgid "Request a New Feature or Report a Bug!"
+msgstr ""
+
+#: includes/class-pprh-admin-tabs.php:90
+msgid "Help make this plugin better!"
+msgstr ""
+
+#: includes/class-pprh-admin-tabs.php:91
+msgid "Email address:"
+msgstr ""
+
+#: includes/class-pprh-admin-tabs.php:93
+msgid "Submit"
+msgstr ""
+
+#: includes/class-pprh-display-hints.php:60
+msgid "Error"
+msgstr ""
+
+#: includes/class-pprh-display-hints.php:71
+msgid "URL"
+msgstr ""
+
+#: includes/class-pprh-display-hints.php:72
+msgid "Hint Type"
+msgstr ""
+
+#: includes/class-pprh-display-hints.php:73
+msgid "As Attr"
+msgstr ""
+
+#: includes/class-pprh-display-hints.php:74
+msgid "Type Attr"
+msgstr ""
+
+#: includes/class-pprh-display-hints.php:75
+msgid "Crossorigin"
+msgstr ""
+
+#: includes/class-pprh-display-hints.php:76
+msgid "Status"
+msgstr ""
+
+#: includes/class-pprh-display-hints.php:77
+msgid "Created By"
+msgstr ""
+
+#: includes/class-pprh-display-hints.php:95
+msgid "Delete"
+msgstr ""
+
+#: includes/class-pprh-display-hints.php:96
+msgid "Enable"
+msgstr ""
+
+#: includes/class-pprh-display-hints.php:97
+msgid "Disable"
+msgstr ""
+
+#: includes/class-pprh-display-hints.php:194
+msgid "Enter a URL or domain name.."
+msgstr ""
+
+#: includes/class-pprh-wp-list-table.php:176
+msgid "List View"
+msgstr ""
+
+#: includes/class-pprh-wp-list-table.php:177
+msgid "Excerpt View"
+msgstr ""
+
+#: includes/class-pprh-wp-list-table.php:342
+msgid "No items found."
+msgstr ""
+
+#: includes/class-pprh-wp-list-table.php:536
+#: includes/class-pprh-wp-list-table.php:1359
+msgid "Show more details"
+msgstr ""
+
+#: includes/class-pprh-wp-list-table.php:604
+msgid "Filter by date"
+msgstr ""
+
+#: includes/class-pprh-wp-list-table.php:606
+msgid "All dates"
+msgstr ""
+
+#. translators: 1: month name, 2: 4-digit year
+#: includes/class-pprh-wp-list-table.php:621
+#, php-format
+msgid "%1$s %2$d"
+msgstr ""
+
+#: includes/class-pprh-wp-list-table.php:672
+#, php-format
+msgid "%s comment"
+msgid_plural "%s comments"
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/class-pprh-wp-list-table.php:673
+#, php-format
+msgid "%s approved comment"
+msgid_plural "%s approved comments"
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/class-pprh-wp-list-table.php:674
+#, php-format
+msgid "%s pending comment"
+msgid_plural "%s pending comments"
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/class-pprh-wp-list-table.php:680
+#: includes/class-pprh-wp-list-table.php:702
+#: includes/class-pprh-wp-list-table.php:725
+msgid "No comments"
+msgstr ""
+
+#: includes/class-pprh-wp-list-table.php:702
+msgid "No approved comments"
+msgstr ""
+
+#: includes/class-pprh-wp-list-table.php:725
+msgid "No pending comments"
+msgstr ""
+
+#: includes/class-pprh-wp-list-table.php:801
+#: includes/class-pprh-wp-list-table.php:1384
+#, php-format
+msgid "%s item"
+msgid_plural "%s items"
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/class-pprh-wp-list-table.php:838
+msgid "First page"
+msgstr ""
+
+#: includes/class-pprh-wp-list-table.php:849
+msgid "Previous page"
+msgstr ""
+
+#: includes/class-pprh-wp-list-table.php:856
+#: includes/class-pprh-wp-list-table.php:860
+msgid "Current Page"
+msgstr ""
+
+#: includes/class-pprh-wp-list-table.php:866
+#, php-format
+msgctxt "paging"
+msgid "%1$s of %2$s"
+msgstr ""
+
+#: includes/class-pprh-wp-list-table.php:874
+msgid "Next page"
+msgstr ""
+
+#: includes/class-pprh-wp-list-table.php:885
+msgid "Last page"
+msgstr ""
+
+#: includes/class-pprh-wp-list-table.php:1107
+msgid "Select All"
+msgstr ""
+
+#: includes/tabs/class-pprh-info.php:21
+msgid "Resource Hint Information"
+msgstr ""
+
+#: includes/tabs/class-pprh-info.php:23
+msgid "#dns-prefetch"
+msgstr ""
+
+#: includes/tabs/class-pprh-info.php:24
+msgid "#prefetch"
+msgstr ""
+
+#: includes/tabs/class-pprh-info.php:25
+msgid "#prerender"
+msgstr ""
+
+#: includes/tabs/class-pprh-info.php:26
+msgid "#preconnect"
+msgstr ""
+
+#: includes/tabs/class-pprh-info.php:27
+msgid "#preload"
+msgstr ""
+
+#: includes/tabs/class-pprh-info.php:46
+msgid "DNS Prefetch"
+msgstr ""
+
+#: includes/tabs/class-pprh-info.php:59
+msgid ""
+"As you can see, the typical way DNS lookups occur is when each resource is "
+"requested by the browser. By inserting the below DNS prefetch hints at the "
+"top of the page, the browser will know to perform the DNS resolution before "
+"it is asked:"
+msgstr ""
+
+#: includes/tabs/class-pprh-info.php:71
+msgid ""
+"The DNS lookups occur before each resource is requested, preventing that "
+"step from slowing down resource delivery. This can improve the loading of "
+"each resource by hundreds of milliseconds or more, which can be particularly "
+"helpful for mobile users."
+msgstr ""
+
+#: includes/tabs/class-pprh-info.php:73 includes/tabs/class-pprh-info.php:99
+#: includes/tabs/class-pprh-info.php:139 includes/tabs/class-pprh-info.php:179
+#: includes/tabs/class-pprh-info.php:210
+msgid "More information:"
+msgstr ""
+
+#: includes/tabs/class-pprh-info.php:89
+msgid ""
+"Link prefetching utilizes browser idle time to download resources that the "
+"user might require in the immediate future. When idle, the browser begins "
+"silently downloading the specified documents and stores them in the browser "
+"cache. When that resource is requested, it can be served immediately, "
+"instead of downloading the entire resource from scratch. Prefetching will "
+"allow an entire resource to be loaded, instead of simply resolving the DNS "
+"as in DNS prefetching."
+msgstr ""
+
+#: includes/tabs/class-pprh-info.php:93
+msgid ""
+"For example, if you have a CSS, JavaScript, or Google font that will be "
+"requested by a page a user is likely to click on, prefetching this file "
+"allows the browser to download the file ahead of time, improving the future "
+"page load time."
+msgstr ""
+
+#: includes/tabs/class-pprh-info.php:95
+msgid ""
+"The waterfall chart below indicates when the browser loads a large image "
+"that has been prefetched:"
+msgstr ""
+
+#: includes/tabs/class-pprh-info.php:102
+msgid "Firefox: Link prefetching FAQ"
+msgstr ""
+
+#: includes/tabs/class-pprh-info.php:103
+msgid "Wikipedia"
+msgstr ""
+
+#: includes/tabs/class-pprh-info.php:104
+msgid "W3C Resource Hints: Prefetch"
+msgstr ""
+
+#: includes/tabs/class-pprh-info.php:121
+msgid ""
+"Since prerendering can be resource intentize, this should only be used if "
+"you are confident a particular page will be visited. Frequently this would "
+"be the most popular link visitors navigate towards, such as FAQ, "
+"information, or service pages."
+msgstr ""
+
+#: includes/tabs/class-pprh-info.php:129
+msgid "The waterfall chart of the website is below:"
+msgstr ""
+
+#: includes/tabs/class-pprh-info.php:133
+msgid ""
+"As you can see, after the given browser has finished loading the host URL's "
+"typical contents, the browser will begin loading the prerendered page in the "
+"background. So when a user clicks to navigate to YouTube, that website will "
+"be rendered instantly!"
+msgstr ""
+
+#: includes/tabs/class-pprh-info.php:142
+msgid "Steve Souders \"Prebrowsing\""
+msgstr ""
+
+#: includes/tabs/class-pprh-info.php:143
+msgid "W3C: Prerender"
+msgstr ""
+
+#: includes/tabs/class-pprh-info.php:155
+msgid ""
+"Preconnecting allows the browser to establish a connection to an external "
+"domain before the request has been made."
+msgstr ""
+
+#: includes/tabs/class-pprh-info.php:157
+msgid ""
+"Typically the three steps involved in establishing a connection (DNS lookup, "
+"initial connection, and SSL negotiation) must be carried out when the "
+"resource is requested by the browser. Preconnecting allows these steps to be "
+"made proactively. This is similar to DNS prefetching, however preconnecting "
+"allows the initial connection and SSL negotiation to be resolved as well, "
+"instead of just the DNS lookup as is the case with DNS prefetching."
+msgstr ""
+
+#: includes/tabs/class-pprh-info.php:159
+msgid ""
+"This example page </a> loads a Google Font, embedded YouTube iframe video, "
+"and a Google Analytics tracker in the typical manner, without taking "
+"advantage of the preconnect resource hint. A summary of the normal requests "
+"this demo website makes is shown in the chart below, courtesy of <a href="
+"\"https://www.webpagetest.org\">webpagetest.org</a>"
+msgstr ""
+
+#: includes/tabs/class-pprh-info.php:161
+msgid "Typical HTTPS Socket Negotiation Periods:"
+msgstr ""
+
+#: includes/tabs/class-pprh-info.php:165
+msgid ""
+"Let's add the corresponding preconnect hints in the top of the web page and "
+"see what happens:"
+msgstr ""
+
+#: includes/tabs/class-pprh-info.php:171
+msgid "HTTPS Socket Negotiation With Preconnect Enabled:"
+msgstr ""
+
+#: includes/tabs/class-pprh-info.php:174
+msgid ""
+"As you can see, the three steps required to load resources from external "
+"domains occurs much earlier in the page request, reducing the need for these "
+"to be loaded earlier. The \"crossorigin\" attribute must be used when "
+"preconnecting to fonts, if this is left out only a DNS prefetch will be "
+"performed."
+msgstr ""
+
+#: includes/tabs/class-pprh-info.php:176
+msgid ""
+"Basically, preconnecting is DNS-prefetching, but also takes care of the "
+"initial connection and SSL negotiation, whereas DNS prefetching solely "
+"handles the DNS lookup."
+msgstr ""
+
+#: includes/tabs/class-pprh-info.php:181
+msgid "W3C: Preconnect"
+msgstr ""
+
+#: includes/tabs/class-pprh-info.php:182
+msgid "Eliminating Roundtrips with Preconnect, by Ilya Grigorik"
+msgstr ""
+
+#: includes/tabs/class-pprh-info.php:198
+msgid ""
+"Let's see what the waterfall chart looks like after the following resource "
+"hints are placed into the top of a web page:"
+msgstr ""
+
+#: includes/tabs/class-pprh-info.php:208
+msgid "Caution!"
+msgstr ""
+
+#: includes/tabs/class-pprh-info.php:212
+msgid "W3C: Preload"
+msgstr ""
+
+#: includes/tabs/class-pprh-info.php:213
+msgid "Prioritizing Your Resources with link rel=\"preload\""
+msgstr ""
+
+#: includes/tabs/class-pprh-settings.php:44
+msgid "Settings"
+msgstr ""
+
+#: includes/tabs/class-pprh-settings.php:61
+msgid "Save Changes"
+msgstr ""
+
+#: includes/tabs/class-pprh-settings.php:75
+msgid "Automatically set preconnect hints?"
+msgstr ""
+
+#: includes/tabs/class-pprh-settings.php:79
+msgid ""
+"Preconnect hints from JavaScript, CSS, and image resources loaded from "
+"external domains will be created with Ajax and preconnect automatically."
+msgstr ""
+
+#: includes/tabs/class-pprh-settings.php:86
+#: includes/tabs/class-pprh-settings.php:112
+#: includes/tabs/class-pprh-settings.php:138
+msgid "Yes"
+msgstr ""
+
+#: includes/tabs/class-pprh-settings.php:89
+#: includes/tabs/class-pprh-settings.php:115
+#: includes/tabs/class-pprh-settings.php:141
+msgid "No"
+msgstr ""
+
+#: includes/tabs/class-pprh-settings.php:101
+msgid "Disable automatically generated WordPress resource hints?"
+msgstr ""
+
+#: includes/tabs/class-pprh-settings.php:105
+msgid ""
+"This option will remove three resource hints automatically generated by "
+"WordPress, as of 4.8.2."
+msgstr ""
+
+#: includes/tabs/class-pprh-settings.php:127
+msgid ""
+"Allow unauthenticated users to automatically set preconnect hints via Ajax?"
+msgstr ""
+
+#: includes/tabs/class-pprh-settings.php:131
+msgid ""
+"Automatically set preconnect hints are initially set once by the first user "
+"to access that page."
+msgstr ""
+
+#: includes/tabs/class-pprh-settings.php:152
+msgid "Reset automatically created preconnect links?"
+msgstr ""
+
+#: includes/tabs/class-pprh-settings.php:156
+msgid "This will reset automatically created preconnect hints."
+msgstr ""
+
+#: includes/tabs/class-pprh-settings.php:171
+msgid "Send resource hints in HTML head or HTTP header?"
+msgstr ""
+
+#: includes/tabs/class-pprh-settings.php:175
+msgid "Send hints"
+msgstr ""
+
+#: includes/tabs/class-pprh-settings.php:182
+msgid "HTML <head>"
+msgstr ""
+
+#: includes/tabs/class-pprh-settings.php:185
+msgid "HTTP Header"
+msgstr ""
+
+#. Plugin Name of the plugin/theme
+msgid "Pre* Party Resource Hints"
+msgstr ""
+
+#. Plugin URI of the plugin/theme
+msgid "https://wordpress.org/plugins/pre-party-browser-hints/"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid ""
+"Take advantage of the browser resource hints DNS-Prefetch, Prerender, "
+"Preconnect, Prefetch, and Preload to improve page load time."
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "Sam Perrow"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "https://www.linkedin.com/in/sam-perrow"
+msgstr ""
