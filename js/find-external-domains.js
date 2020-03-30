@@ -46,7 +46,6 @@
             var xhr = new XMLHttpRequest();
             xhr.open('POST', host + '/wp-admin/admin-ajax.php', true);
             xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
-			console.log( pprh_data );
 			xhr.send('action=pprh_post_domain_names&pprh_data=' + json + '&nonce=' + pprh_data.nonce );
 		}, 7000);
     }

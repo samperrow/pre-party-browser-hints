@@ -41,7 +41,6 @@ class Admin_Tabs {
 			'insert-hints' => 'Insert Hints',
 			'settings'     => 'Settings',
 			'info'         => 'Resource Hint Information',
-            'pro'          => 'Upgrade to Pro',
 		);
 
 		echo '<h2 class="nav-tab-wrapper">';
