@@ -3,7 +3,7 @@ Contributors: samperrow
 Donate link: https://www.paypal.me/samperrow
 Tags: W3C, DNS prefetch, prerender, preconnect, prefetch, preload, web perf, performance, speed, resource hints
 Requires at least: 4.4
-Tested up to: 5.3.2
+Tested up to: 5.4.0
 Stable tag: 1.6.5
 Requires PHP: 5.6.30
 License: GPLv2 or later
@@ -90,6 +90,8 @@ March 29, 2020:
 2) Improved how resource hints are sent via HTTP headers, so that caching plugins/systems have a much smaller impact.
 3) Fixed some potential auto-preconnect setting bugs that can arise if the 'www' and non-www versions of a site load
 content.
+4) Ensured compatibility with PHP 7.4.2, and down to 5.6.30.
+5) Ensured compatibility with WP 5.4.0
 
 February 2, 2020:
 1) added warning when a cache plugin is active and users choose HTTP header option to let them know to clear cache.
