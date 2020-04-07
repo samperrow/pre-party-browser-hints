@@ -163,6 +163,7 @@ final class Init {
 		add_option( 'pprh_allow_unauth', 'true', '', 'yes' );
 		add_option( 'pprh_disable_wp_hints', 'true', '', 'yes' );
 		add_option( 'pprh_html_head', 'true', '', 'yes' );
+		add_option( 'pprh_preconnects_set', 'false', '', 'yes' );
 	}
 
     // Multisite install/delete db table.
