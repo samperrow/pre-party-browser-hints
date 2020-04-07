@@ -8,19 +8,13 @@ pprh_uninstall_plugin();
 
 function pprh_uninstall_plugin() {
 	global $wpdb;
-
-//    $is_pro_installed = file_exists( WP_PLUGIN_DIR . '/pprh-pro/pprh-pro.php' );
-//
-//    if ( $is_pro_installed ) {
-//        return;
-//    }
+    $pprh_table  = $wpdb->prefix . 'pprh_table';
 
 	delete_option( 'pprh_autoload_preconnects' );
     delete_option( 'pprh_allow_unauth' );
     delete_option( 'pprh_disable_wp_hints' );
     delete_option( 'pprh_html_head' );
 
-	$pprh_table  = $wpdb->prefix . 'pprh_table';
 	$pprh_tables = array( $pprh_table );
 
 	if ( is_multisite() ) {
