@@ -3,7 +3,7 @@
  * Plugin Name:       Pre* Party Resource Hints
  * Plugin URI:        https://wordpress.org/plugins/pre-party-browser-hints/
  * Description:       Take advantage of the browser resource hints DNS-Prefetch, Prerender, Preconnect, Prefetch, and Preload to improve page load time.
- * Version:           1.6.5
+ * Version:           1.7.1
  * Requires at least: 4.4
  * Requires PHP:      5.6.30
  * Author:            Sam Perrow
@@ -61,12 +61,11 @@ final class Init {
 			'Pre* Party',
 			'manage_options',
 			'pprh-plugin-settings',
-			array( $this, 'show_tabs' ),
+            array( $this, 'load_admin_files' ),
 			plugins_url( PPRH_PLUGIN_FILENAME . '/images/lightning.png' )
 		);
 
 		add_action( "load-{$settings_page}", array( $this, 'screen_option' ) );
-		add_action( "load-{$settings_page}", array( $this, 'load_admin_files' ) );
 	}
 
 	public function create_constants() {
@@ -94,15 +93,8 @@ final class Init {
 		include_once PPRH_PLUGIN_DIR . '/class-pprh-utils.php';
 		include_once PPRH_PLUGIN_DIR . '/class-pprh-create-hints.php';
 		include_once PPRH_PLUGIN_DIR . '/class-pprh-display-hints.php';
-	}
-
-	public function show_tabs() {
-		include_once PPRH_PLUGIN_DIR . '/class-pprh-admin-tabs.php';
-
-		if ( 'pprhAdmin' === PPRH_CHECK_PAGE ) {
-			include_once PPRH_PLUGIN_DIR . '/class-pprh-admin-tabs.php';
-		}
-	}
+        include_once PPRH_PLUGIN_DIR . '/class-pprh-admin-tabs.php';
+    }
 
 	public function apply_wp_screen_options( $status, $option, $value ) {
 		return ( 'pprh_screen_options' === $option ) ? $value : $status;
@@ -171,31 +163,49 @@ final class Init {
 		add_option( 'pprh_allow_unauth', 'true', '', 'yes' );
 		add_option( 'pprh_disable_wp_hints', 'true', '', 'yes' );
 		add_option( 'pprh_html_head', 'true', '', 'yes' );
+		add_option( 'pprh_preconnects_set', 'false', '', 'yes' );
 	}
 
     // Multisite install/delete db table.
     public function setup_tables() {
-        global $wpdb;
+        $pprh_tables = array();
+
+        if ( is_multisite() ) {
+            $pprh_tables = $this->get_multisite_tables();
+        }
+
+        array_push( $pprh_tables, PPRH_DB_TABLE );
+
+        foreach ( $pprh_tables as $pprh_table ) {
+            $this->create_table( $pprh_table );
+        }
+    }
+
+    private function get_multisite_tables() {
+	    global $wpdb;
+        $blog_table = $wpdb->base_prefix . 'blogs';
+        $ms_table_names = array();
+
+        $ms_blog_ids = $wpdb->get_results(
+            $wpdb->prepare( "SELECT blog_id FROM $blog_table WHERE blog_id != %d", 1 )
+        );
+
+        if ( ! empty( $ms_blog_ids ) && count( $ms_blog_ids ) > 0 ) {
+            foreach ( $ms_blog_ids as $ms_blog_id ) {
+                $ms_table_name = $wpdb->base_prefix . $ms_blog_id->blog_id . '_pprh_table';
+                $ms_table_names[] = $ms_table_name;
+            }
+        }
+        return $ms_table_names;
+    }
+
+	private function create_table( $table_name ) {
+		global $wpdb;
+		$charset = $wpdb->get_charset_collate();
 
         if ( ! function_exists( 'dbDelta' ) ) {
             include_once ABSPATH . 'wp-admin/includes/upgrade.php';
         }
-
-        $pprh_tables = array( PPRH_DB_TABLE );
-
-        if ( is_multisite() ) {
-            $pprh_tables[] = $this->get_multisite_tables();
-        }
-
-        foreach ( $pprh_tables as $pprh_table ) {
-            $this->table_sql( $pprh_table );
-        }
-    }
-
-
-	private function table_sql( $table_name ) {
-		global $wpdb;
-		$charset = $wpdb->get_charset_collate();
 
         $sql = "CREATE TABLE $table_name (
             id INT(9) NOT NULL AUTO_INCREMENT,

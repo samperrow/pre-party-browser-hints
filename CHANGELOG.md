@@ -1,7 +1,32 @@
 == Changelog ==
 
-1. Most recent update: October 5, 2019.
-2. Version 1.6.41
+1. Most recent update: April 6, 2020.
+2. Version 1.7.1
+
+April 6, 2020:
+1) Fixed issue with multisite tables (thanks @radevwp for pointing that out)
+2) language support for Brazilian Portuguese.
+
+March 29, 2020:
+1) Reorganized file structure to become more standardized.
+2) Improved how resource hints are sent via HTTP headers, so that caching plugins/systems have a much smaller impact.
+3) Fixed some potential auto-preconnect setting bugs that can arise if the 'www' and non-www versions of a site load
+content.
+4) Ensured compatibility with PHP 7.4.2, and down to 5.6.30.
+5) Ensured compatibility with WP 5.4.0
+6) Added support for translations.
+
+February 2, 2020:
+1) added warning when a cache plugin is active and users choose HTTP header option to let them know to clear cache.
+2) Ensured compat w/ WP 5.3.2
+
+December 8, 2019:
+1) Re-added option to allow resource hints to be sent in the HTTP header.
+2) Small bug fixes
+
+November 4, 2019:
+1) Ensured compatibility with WP 5.3
+2) Removed debug console.log message on find-external-domains.js; other minor change to that file.
 
 October 5, 2019:
 1) Entered URL's will no longer be converted to lower case. This is because some sites have case-sensitive URI's.

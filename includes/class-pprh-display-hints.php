@@ -57,7 +57,7 @@ class Display_Hints extends WP_List_Table {
 			case 'created_by':
 				return $item['created_by'];
 			default:
-				return esc_html_e( 'Error', 'pprh' );
+				return esc_html_e( 'Error', 'pre-party-browser-hints' );
 		}
 	}
 
@@ -68,13 +68,13 @@ class Display_Hints extends WP_List_Table {
 	public function get_columns() {
 		return array(
 			'cb'          => '<input type="checkbox" />',
-			'url'         => __( 'URL', 'pprh' ),
-			'hint_type'   => __( 'Hint Type', 'pprh' ),
-			'as_attr'     => __( 'As Attr', 'pprh' ),
-			'type_attr'   => __( 'Type Attr', 'pprh' ),
-			'crossorigin' => __( 'Crossorigin', 'pprh' ),
-			'status'      => __( 'Status', 'pprh' ),
-			'created_by'  => __( 'Created By', 'pprh' ),
+			'url'         => __( 'URL', 'pre-party-browser-hints' ),
+			'hint_type'   => __( 'Hint Type', 'pre-party-browser-hints' ),
+			'as_attr'     => __( 'As Attr', 'pre-party-browser-hints' ),
+			'type_attr'   => __( 'Type Attr', 'pre-party-browser-hints' ),
+			'crossorigin' => __( 'Crossorigin', 'pre-party-browser-hints' ),
+			'status'      => __( 'Status', 'pre-party-browser-hints' ),
+			'created_by'  => __( 'Created By', 'pre-party-browser-hints' ),
 		);
 	}
 
@@ -92,9 +92,9 @@ class Display_Hints extends WP_List_Table {
 
 	public function get_bulk_actions() {
 		return array(
-			'deleted'  => __( 'Delete', 'pprh' ),
-			'enabled'  => __( 'Enable', 'pprh' ),
-			'disabled' => __( 'Disable', 'pprh' ),
+			'deleted'  => __( 'Delete', 'pre-party-browser-hints' ),
+			'enabled'  => __( 'Enable', 'pre-party-browser-hints' ),
+			'disabled' => __( 'Disable', 'pre-party-browser-hints' ),
 		);
 	}
 
@@ -191,7 +191,7 @@ class Display_Hints extends WP_List_Table {
 	}
 
 	public function no_items() {
-		esc_html_e( 'Enter a URL or domain name..', 'pprh' );
+		esc_html_e( 'Enter a URL or domain name..', 'pre-party-browser-hints' );
 	}
 
 }

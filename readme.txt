@@ -4,7 +4,7 @@ Donate link: https://www.paypal.me/samperrow
 Tags: W3C, DNS prefetch, prerender, preconnect, prefetch, preload, web perf, performance, speed, resource hints
 Requires at least: 4.4
 Tested up to: 5.4.0
-Stable tag: 1.6.5
+Stable tag: 1.7.1
 Requires PHP: 5.6.30
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -82,8 +82,12 @@ To activate the preloaded resource, you must call that file in HTML as you would
 
 == Changelog ==
 
-1. Most recent update: March 29, 2020.
-2. Version 1.6.5
+1. Most recent update: April 6, 2020.
+2. Version 1.7.1
+
+April 6, 2020:
+1) Fixed issue with multisite tables (thanks @radevwp for pointing that out)
+2) language support for Brazilian Portuguese.
 
 March 29, 2020:
 1) Reorganized file structure to become more standardized.
@@ -92,6 +96,7 @@ March 29, 2020:
 content.
 4) Ensured compatibility with PHP 7.4.2, and down to 5.6.30.
 5) Ensured compatibility with WP 5.4.0
+6) Added support for translations.
 
 February 2, 2020:
 1) added warning when a cache plugin is active and users choose HTTP header option to let them know to clear cache.

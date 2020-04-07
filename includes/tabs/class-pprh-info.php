@@ -18,7 +18,7 @@ class Hint_Info {
 	public function resource_hint_nav() {
 		?>
 		<div class="pprh-content">
-			<h2><?php esc_html_e( 'Resource Hint Information', 'pprh' ); ?></h2>
+			<h2><?php esc_html_e( 'Resource Hint Information', 'pre-party-browser-hints' ); ?></h2>
 
 			<p><a href="<?php esc_attr_e( '#dns-prefetch' ); ?>">DNS Prefetch</a></p>
 			<p><a href="<?php esc_attr_e( '#prefetch' ); ?>">Prefetch</a></p>
@@ -43,7 +43,7 @@ class Hint_Info {
 	public function show_dnsprefetch_info() {
 		?>
 		<span id="dns-prefetch" style="display: block; height: 30px;"></span>
-		<h2><?php esc_html_e( 'DNS Prefetch', 'pprh' ); ?></h2>
+		<h2><?php esc_html_e( 'DNS Prefetch', 'pre-party-browser-hints' ); ?></h2>
 		<p><?php echo sprintf( 'DNS Prefetching allows browsers to proactively perform domain name resolution on resources hosted on %s which are requested by a website.', '<b>external domain names</b>' ); ?></p>
 
 		<p><?php echo sprintf( 'In other words, when a website tells the browser to fetch a resource (CSS, JavaScript, images, etc) that is hosted on a different domain, time must be spent converting that domain name into its corresponding IP address. As the chart below shows, this step is normally done when the browser requests the resouce. Implementing DNS prefetching takes care of this step before the referenced resources are needed. This improves page load time by reducing latency, which is particularly noticeable on %s', '<b>mobile networks</b>' ); ?></p>
@@ -156,7 +156,7 @@ class Hint_Info {
 
 		<p><?php esc_html_e( 'Typically the three steps involved in establishing a connection (DNS lookup, initial connection, and SSL negotiation) must be carried out when the resource is requested by the browser. Preconnecting allows these steps to be made proactively. This is similar to DNS prefetching, however preconnecting allows the initial connection and SSL negotiation to be resolved as well, instead of just the DNS lookup as is the case with DNS prefetching.' ); ?></p>
 
-		<p><a href="https://output.jsbin.com/dudeger"><?php _e( 'This example page </a> loads a Google Font, embedded YouTube iframe video, and a Google Analytics tracker in the typical manner, without taking advantage of the preconnect resource hint. A summary of the normal requests this demo website makes is shown in the chart below, courtesy of <a href="https://www.webpagetest.org">webpagetest.org</a>', 'pprh' ); ?></p>
+		<p><a href="https://output.jsbin.com/dudeger"><?php _e( 'This example page </a> loads a Google Font, embedded YouTube iframe video, and a Google Analytics tracker in the typical manner, without taking advantage of the preconnect resource hint. A summary of the normal requests this demo website makes is shown in the chart below, courtesy of <a href="https://www.webpagetest.org">webpagetest.org</a>', 'pre-party-browser-hints' ); ?></p>
 
 		<h3 style="text-align: center;"><?php esc_html_e( 'Typical HTTPS Socket Negotiation Periods:' ); ?></h3>
 		<img alt="Waterfall diagram before preconnect hints enabled." class="pprh-admin-pic" width="1054" height="719" src="<?php $this->get_img_link( '/images/jsbin-no-preconnect.jpg' ); ?>"/>
