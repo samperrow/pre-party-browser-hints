@@ -1,4 +1,4 @@
-div.pprh-wrap {
+div#pprh-wrapper {
 
     h2 {
         font-size: 23px;
@@ -10,9 +10,10 @@ div.pprh-wrap {
 
     div.pprh-content {
         min-height: 60vh;
+        display: none;
 
-        &.hidden {
-            display: none !important;
+        &.active {
+            display: block;
         }
 
         &.text-center {
@@ -86,6 +87,10 @@ table#pprh-enter-data {
 
     &.widefat {
         border-spacing: 2px
+    }
+
+    input.pprh_url {
+        padding: 5px;
     }
 }
 

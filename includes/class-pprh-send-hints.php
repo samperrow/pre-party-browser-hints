@@ -8,30 +8,36 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class Send_Hints {
 
-	public $hints = array();
+	protected $hints = array();
+
+	protected $hint_location = '';
 
 	public function __construct() {
 		add_action( 'wp_loaded', array( $this, 'get_resource_hints' ) );
 	}
 
-    public function get_resource_hints () {
-        global $wpdb;
-        $opt = get_option('pprh_html_head');
+	public function get_resource_hints() {
+		$this->hint_location = get_option('pprh_html_head');
 
-        $table = $wpdb->prefix . 'pprh_table';
-        $this->hints = $wpdb->get_results(
-            $wpdb->prepare("SELECT url, hint_type, as_attr, type_attr, crossorigin FROM $table WHERE status = %s", 'enabled')
-        );
+		$this->hints = $this->get_hints();
 
-        if ( ( ! is_array( $this->hints ) ) || count( $this->hints ) < 1 ) {
-            return;
-        }
+		if ( ( ! is_array( $this->hints ) ) || count( $this->hints ) < 1 ) {
+			return;
+		}
 
-        ('false' === $opt && ! headers_sent() )
-            ? add_action('send_headers', array($this, 'send_in_http_header'), 1, 0)
-            : add_action('wp_head', array($this, 'send_to_html_head'), 1, 0);
-    }
+		( 'false' === $this->hint_location && ! headers_sent() )
+			? add_action('send_headers', array($this, 'send_in_http_header'), 1, 0)
+			: add_action('wp_head', array($this, 'send_to_html_head'), 1, 0);
+	}
 
+	public function get_hints() {
+		global $wpdb;
+		$table = PPRH_DB_TABLE;
+
+		return $wpdb->get_results(
+			$wpdb->prepare( "SELECT url, hint_type, as_attr, type_attr, crossorigin FROM $table WHERE status = %s", 'enabled' )
+		);
+	}
 
 	public function send_to_html_head() {
 		foreach ( $this->hints as $key => $val ) {
@@ -61,11 +67,21 @@ class Send_Hints {
 	}
 
 	private function add_header_attr( $name, $val ) {
-		return ( ! empty( $val ) ) ? " $name=$val" . ';' : '';
+		if ( ! empty( $val ) ) {
+			$attr = Utils::clean_hint_attr( $val );
+			return " $name=$attr;";
+		} else {
+			return '';
+		}
 	}
 
 	private function add_html_attr( $name, $val ) {
-		return ( ! empty( $val ) ) ? " $name=\"$val\"" : '';
+		if ( ! empty( $val ) ) {
+			$attr = Utils::clean_hint_attr( $val );
+			return " $name=\"$attr\"";
+		} else {
+			return '';
+		}
 	}
 
 }

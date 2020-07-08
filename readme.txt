@@ -3,8 +3,8 @@ Contributors: samperrow
 Donate link: https://www.paypal.me/samperrow
 Tags: W3C, DNS prefetch, prerender, preconnect, prefetch, preload, web perf, performance, speed, resource hints
 Requires at least: 4.4
-Tested up to: 5.4.0
-Stable tag: 1.7.1
+Tested up to: 5.4.2
+Stable tag: 1.7.2.2
 Requires PHP: 5.6.30
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -23,7 +23,7 @@ DNS prefetch, prerender, preconnect, prefetch, and preload are all supported.
 
 After installation, preconnect hints will automatically be created the next time your website is visited.
 
-Resource hints will be added in your website's <head>. (The option to insert them in the HTTP header has been removed, in order for this plugin to be compatible with future changes I have planned.)
+You have the choice to include these resource hints in the HTTP header or the website's <head>.
 
 == Installation ==
 
@@ -65,38 +65,39 @@ To activate the preloaded resource, you must call that file in HTML as you would
 
 == Screenshots ==
 
-1. Insert new resource hints
+1. screenshot-1.png
 
-2. Plugin settings
+2. screenshot-2.png
 
-3. Detailed information about all five resource hints
+3. screenshot-3.png
 
-4. Before plugin installation
+4. screenshot-4.png
 
-5. After preconnect hints created for externally hosted resources
+1. [Support Forum](https://wordpress.org/support/plugin/pre-party-browser-hints)
 
-6. HTTPS socket negotiation with preconnect hints enabled
-
-7. Default HTTPS socket negotation time period
+2. Send me an email at sam.perrow399@gmail.com
 
 
 == Changelog ==
 
-1. Most recent update: April 6, 2020.
-2. Version 1.7.1
+1. Most recent update: July 7, 2020.
+2. Version 1.7.2.2
 
-April 6, 2020:
-1) Fixed issue with multisite tables (thanks @radevwp for pointing that out)
-2) language support for Brazilian Portuguese.
+July 7, 2020:
+1) Replaced hardcoded "wp-admin" URL's with dynamic ones.
 
-March 29, 2020:
-1) Reorganized file structure to become more standardized.
-2) Improved how resource hints are sent via HTTP headers, so that caching plugins/systems have a much smaller impact.
-3) Fixed some potential auto-preconnect setting bugs that can arise if the 'www' and non-www versions of a site load
-content.
-4) Ensured compatibility with PHP 7.4.2, and down to 5.6.30.
-5) Ensured compatibility with WP 5.4.0
-6) Added support for translations.
+June 4, 2020:
+1) Fixed plugin compatibility issue.
+
+June 3, 2020:
+1) added ability to edit existing hints inline asynchronously.
+2) adding, updating, and deleting hints is now 100% ajax driven.
+3) navigating between tabs will toggle that content's display, instead of including each tab file.
+4) various other improvements to code to improve functionality.
+
+April 15, 2020:
+1) fixed URL encoding issue.
+2) plugin update issue.
 
 February 2, 2020:
 1) added warning when a cache plugin is active and users choose HTTP header option to let them know to clear cache.
@@ -146,7 +147,7 @@ June 29, 2018:
 
 April 27, 2018:
 1) fixed bug preventing users from deleting or updating resource hint statuses.
-2) fixed bug some users could notice upon installation/reactivation in the admin.php file. 
+2) fixed bug some users could notice upon installation/reactivation in the admin.php file.
 
 April 14, 2018:
 1) Fixed some UI issues on admin page (URL input field not taking up max space, jQuery sometimes not loading).

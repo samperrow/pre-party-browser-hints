@@ -6,8 +6,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-if ( ! class_exists( 'PPRH\WP_List_Table' ) ) {
-	require_once PPRH_PLUGIN_DIR . '/class-pprh-wp-list-table.php';
+if ( ! class_exists( WP_List_Table::class ) ) {
+	require_once PPRH_ABS_DIR . '/includes/class-pprh-wp-list-table.php';
 }
 
 class Display_Hints extends WP_List_Table {
@@ -19,7 +19,6 @@ class Display_Hints extends WP_List_Table {
 	public $items;
 
 	public function __construct() {
-
 		parent::__construct(
 			array(
 				'singular' => 'url',
@@ -29,16 +28,11 @@ class Display_Hints extends WP_List_Table {
 			)
 		);
 
-		$results = $this->prepare_items();
-
-		// for bulk updates.
-		if ( ! empty( $results ) ) {
-			Utils::pprh_show_update_result( $results );
+		if ( ! wp_doing_ajax() ) {
+			$this->prepare_items();
+			$this->display();
 		}
-
-		$this->display();
 	}
-
 
 	public function column_default( $item, $column_name ) {
 		switch ( $column_name ) {
@@ -47,34 +41,34 @@ class Display_Hints extends WP_List_Table {
 			case 'hint_type':
 				return $item['hint_type'];
 			case 'as_attr':
-				return ( $item['as_attr'] ) ? $item['as_attr'] : '-';
+				return $this->set_item( $item['as_attr'] );
 			case 'type_attr':
-				return ( $item['type_attr'] ) ? $item['type_attr'] : '-';
+				return $this->set_item( $item['type_attr'] );
 			case 'crossorigin':
-				return ( $item['crossorigin'] ) ? $item['crossorigin'] : '-';
+				return $this->set_item( $item['crossorigin'] );
 			case 'status':
 				return $item['status'];
 			case 'created_by':
 				return $item['created_by'];
 			default:
-				return esc_html_e( 'Error', 'pre-party-browser-hints' );
+				return esc_html_e( 'Error', 'pprh' );
 		}
 	}
 
-	public function column_cb( $item ) {
-		return sprintf( '<input type="checkbox" name="urlValue[]" value="%1$s"/>', $item['id'] );
-	}
+	private function set_item( $item ) {
+	    return ( ! empty( $item ) ) ? Utils::clean_hint_attr($item) : '-';
+    }
 
 	public function get_columns() {
 		return array(
 			'cb'          => '<input type="checkbox" />',
-			'url'         => __( 'URL', 'pre-party-browser-hints' ),
-			'hint_type'   => __( 'Hint Type', 'pre-party-browser-hints' ),
-			'as_attr'     => __( 'As Attr', 'pre-party-browser-hints' ),
-			'type_attr'   => __( 'Type Attr', 'pre-party-browser-hints' ),
-			'crossorigin' => __( 'Crossorigin', 'pre-party-browser-hints' ),
-			'status'      => __( 'Status', 'pre-party-browser-hints' ),
-			'created_by'  => __( 'Created By', 'pre-party-browser-hints' ),
+			'url'         => __( 'URL', 'pprh' ),
+			'hint_type'   => __( 'Hint Type', 'pprh' ),
+			'as_attr'     => __( 'As Attr', 'pprh' ),
+			'type_attr'   => __( 'Type Attr', 'pprh' ),
+			'crossorigin' => __( 'Crossorigin', 'pprh' ),
+			'status'      => __( 'Status', 'pprh' ),
+			'created_by'  => __( 'Created By', 'pprh' ),
 		);
 	}
 
@@ -92,23 +86,10 @@ class Display_Hints extends WP_List_Table {
 
 	public function get_bulk_actions() {
 		return array(
-			'deleted'  => __( 'Delete', 'pre-party-browser-hints' ),
-			'enabled'  => __( 'Enable', 'pre-party-browser-hints' ),
-			'disabled' => __( 'Disable', 'pre-party-browser-hints' ),
+			'delete'  => __( 'Delete', 'pprh' ),
+			'enable'  => __( 'Enable', 'pprh' ),
+			'disable' => __( 'Disable', 'pprh' ),
 		);
-	}
-
-	public function process_bulk_action() {
-		if ( isset( $_POST['urlValue'] ) ) {
-			check_admin_referer( 'pprh_display_hints_nonce_action', 'pprh_display_hints_nonce' );
-
-			$hint_ids = filter_input( INPUT_POST, 'urlValue', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY );
-			$action   = $this->current_action();
-
-			if ( is_array( $hint_ids ) ) {
-				return self::update_hints( $action, $hint_ids );
-			}
-		}
 	}
 
 	public function prepare_items() {
@@ -116,82 +97,87 @@ class Display_Hints extends WP_List_Table {
 			exit;
 		}
 
-		global $wpdb;
-		$this->table = $wpdb->prefix . 'pprh_table';
-
-		// $screen = get_current_screen();
-		// $option = $screen->get_option( 'per_page', 'option' );
-		$option = 'pprh_screen_options';
-
-		$columns  = $this->get_columns();
-		$hidden   = array();
-		$sortable = $this->get_sortable_columns();
-
+		$option                = 'pprh_screen_options';
+		$columns               = $this->get_columns();
+		$hidden                = array();
+		$sortable              = $this->get_sortable_columns();
 		$this->_column_headers = array( $columns, $hidden, $sortable );
-
-		$notice = $this->process_bulk_action();
-
-		$user = get_current_user_id();
-
-		$total_hints          = get_user_meta( $user, $option, true );
-		$this->hints_per_page = ( $total_hints ) ? $total_hints : 10;
-
+		$user                  = get_current_user_id();
+		$total_hints           = (int) get_user_meta( $user, $option, true );
+		$this->hints_per_page  = ( ! empty( $total_hints ) ) ? $total_hints : 10;
 		$this->load_data();
-
 		$current_page = $this->get_pagenum();
-		$total_items  = count( $this->data );
-
 		$data = array_slice( $this->data, ( ( $current_page - 1 ) * $this->hints_per_page ), $this->hints_per_page );
-
 		$this->items = $data;
+		$total_items = count( $this->data );
 
 		$this->set_pagination_args(
 			array(
 				'total_items' => $total_items,
 				'per_page'    => $this->hints_per_page,
 				'total_pages' => ceil( $total_items / $this->hints_per_page ),
+				'orderby'   => ! empty( $_REQUEST['orderby'] ) && '' !== $_REQUEST['orderby'] ? $_REQUEST['orderby'] : 'title',
+				'order'     => ! empty( $_REQUEST['order'] ) && '' !== $_REQUEST['order'] ? $_REQUEST['order'] : 'asc',
 			)
 		);
-
-		return $notice;
 	}
 
 	public function load_data() {
 		global $wpdb;
-		$per_page     = $this->hints_per_page;
-		$current_page = $this->get_pagenum();
-
-		$sql = "SELECT * FROM $this->table";
+		$table = PPRH_DB_TABLE;
+		$sql = "SELECT * FROM $table";
 
 		if ( ! empty( $_REQUEST['orderby'] ) ) {
 			$sql .= ' ORDER BY ' . esc_sql( $_REQUEST['orderby'] );
 			$sql .= ! empty( $_REQUEST['order'] ) ? ' ' . esc_sql( $_REQUEST['order'] ) : ' ASC';
+		} else {
+			$sql .= ' ORDER BY url DESC';
 		}
 
 		$this->data = $wpdb->get_results( $sql, ARRAY_A );
 		return $this->data;
 	}
 
-	public static function update_hints( $action, $hint_ids ) {
-		global $wpdb;
-		$table      = $wpdb->prefix . 'pprh_table';
-		$concat_ids = implode( ',', array_map( 'absint', $hint_ids ) );
-		$notice     = array();
-
-		$sql = ( 'deleted' === $action )
-			? "DELETE FROM $table WHERE id IN ($concat_ids)"
-			: $wpdb->prepare( "UPDATE $table SET status = %s WHERE id IN ($concat_ids)", $action );
-
-		if ( ! empty( $sql ) ) {
-			$wpdb->query( $sql );
-			$notice['action'] = $action;
-			$notice['result'] = ( $wpdb->last_query === $sql && true === $wpdb->result ) ? 'success' : 'failure';
-			return $notice;
-		}
+	public function no_items() {
+		esc_html_e( 'Enter a URL or domain name..', 'pprh' );
 	}
 
-	public function no_items() {
-		esc_html_e( 'Enter a URL or domain name..', 'pre-party-browser-hints' );
+	public function column_url( $item ) {
+		$actions = array(
+			'edit'    => sprintf( '<a id="pprh-edit-hint-%s" class="pprh-edit-hint">Edit</a>', $item['id'] ),
+			'delete'  => sprintf( '<a id="pprh-delete-hint-%s">Delete</a>', $item['id'] ),
+		);
+		return sprintf( '%1$s %2$s', $item['url'], $this->row_actions( $actions ) );
+	}
+
+	public function inline_edit_row( $item ) {
+		if ( ! class_exists( 'PPRH\New_Hint' ) ) {
+			require_once PPRH_ABS_DIR . '/includes/class-pprh-new-hint.php';
+		}
+
+		$json = json_encode( $item,true );
+		$item_id = $item['id'];
+
+		?>
+			<tr class="pprh-row edit <?php echo $item_id; ?>">
+				<td colspan="8">
+					<table id="pprh-edit-<?php echo $item_id; ?>">
+						<?php
+							$new_hint = new New_Hint();
+						    $new_hint->insert_table_body();
+						?>
+                        <tr>
+                            <td colspan="5">
+                                <button style="margin: 0 20px;" type="button" class="pprh-cancel button cancel">Cancel</button>
+                                <button style="margin: 0 20px;" type="button" class="pprh-update button button-primary save">Update</button>
+                            </td>
+                        </tr>
+					</table>
+				    <input type="hidden" class="pprh-hint-storage <?php echo $item_id; ?>" value='<?php echo $json; ?>'>
+				</td>
+		    </tr>
+
+		<?php
 	}
 
 }

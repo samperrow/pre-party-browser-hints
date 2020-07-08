@@ -3,200 +3,214 @@
 namespace PPRH;
 
 if ( ! defined( 'ABSPATH' ) ) {
-    exit;
+	exit;
 }
 
 class Settings {
 
-    public function __construct() {
-        $this->display_settings();
-    }
+	public function __construct() {
+		$this->display_settings();
+	}
 
-    public function display_settings() {
-        ?>
-        <div class="pprh-content">
-            <form method="post">
-                <?php
-                $this->save_user_options();
-                $this->settings_html();
-                ?>
-            </form>
-        </div>
-        <?php
-    }
+	public function display_settings() {
+		?>
+			<div id="pprh-settings" class="pprh-content">
+				<form method="post" action="<?php echo admin_url(); ?>admin.php?page=pprh-plugin-settings">
+					<?php
+					wp_nonce_field( 'pprh_save_admin_options', 'pprh_admin_options_nonce' );
+					$this->save_user_options();
+					$this->settings_html();
+					?>
+				</form>
+			</div>
+		<?php
+	}
 
-    public function save_user_options() {
-        if ( isset( $_POST['pprh_preconnects_set'] ) ) {
-            update_option( 'pprh_preconnects_set', 'false' );
-        }
+	public function save_user_options() {
+		global $wpdb;
 
-        if ( isset( $_POST['pprh_save_user_options'] ) && check_admin_referer( 'pprh_save_admin_options', 'pprh_admin_options_nonce' ) ) {
-            update_option( 'pprh_autoload_preconnects', wp_unslash( $_POST['pprh_preconnect_status'] ) );
-            update_option( 'pprh_disable_wp_hints', wp_unslash( $_POST['pprh_disable_wp_hints_option'] ) );
-            update_option( 'pprh_allow_unauth', wp_unslash( $_POST['pprh_pprh_allow_unauth_option'] ) );
-            update_option( 'pprh_html_head', wp_unslash( $_POST['pprh_html_head'] ) );
-        }
-    }
+		if ( isset( $_POST['save_options'] ) || isset( $_POST['pprh_preconnects_set'] ) ) {
 
-    public function settings_html() {
-        wp_nonce_field( 'pprh_save_admin_options', 'pprh_admin_options_nonce' );
-        ?>
-        <h2 style="margin-top: 30px;"><?php esc_html_e( 'Settings', 'pre-party-browser-hints' ); ?></h2>
+			if ( check_admin_referer( 'pprh_save_admin_options', 'pprh_admin_options_nonce' ) ) {
 
-        <table class="pprh-settings-table">
-            <tbody>
+				if ( isset( $_POST['save_options'] ) ) {
+					update_option( 'pprh_autoload_preconnects', wp_unslash( $_POST['autoload_preconnects'] ) );
+					update_option( 'pprh_disable_wp_hints', wp_unslash( $_POST['disable_wp_hints'] ) );
+					update_option( 'pprh_allow_unauth', wp_unslash( $_POST['allow_unauth'] ) );
+					update_option( 'pprh_html_head', wp_unslash( $_POST['html_head'] ) );
+				} elseif ( isset( $_POST['pprh_preconnects_set'] ) ) {
+					update_option( 'pprh_preconnects_set', 'false' );
+				}
+			}
+		}
+	}
 
-            <?php
-            $this->auto_set_hints();
-            $this->disable_auto_wp_hints();
-            $this->allow_unauth();
-            $this->reset_preconnects();
-            $this->set_hint_destination();
-            ?>
-            </tbody>
+	public function settings_html() {
 
-            <tfoot>
-            <tr>
-                <td colspan="3">
-                    <input type="submit" name="pprh_save_user_options" class="button button-primary" value="<?php esc_attr_e( 'Save Changes', 'pre-party-browser-hints' ); ?>" />
-                </td>
-            </tr>
+		?>
+		<h2 style="margin-top: 30px;"><?php esc_html_e( 'Settings', 'pprh' ); ?></h2>
 
-            </tfoot>
+		<table class="pprh-settings-table">
+			<tbody>
 
-        </table>
+			<?php
+			$this->auto_set_globals();
+			$this->disable_auto_wp_hints();
+			$this->allow_unauth();
+			$this->reset_preconnects();
+			$this->set_hint_destination();
+			?>
+			</tbody>
 
-        <?php
-    }
+			<tfoot>
+				<tr>
+					<td colspan="3">
+						<input type="submit" name="save_options" class="button button-primary" value="<?php esc_attr_e( 'Save Changes', 'pprh' ); ?>" />
+					</td>
+				</tr>
 
-    public function auto_set_hints() {
-        ?>
+			</tfoot>
+
+		</table>
+
+		<?php
+	}
+
+	public function auto_set_globals() {
+		?>
+		<tr>
+			<th><?php esc_html_e( 'Automatically set preconnect hints?', 'pprh' ); ?></th>
+
+			<td>
+				<span class="pprh-help-tip-hint">
+					<span><?php esc_html_e( 'JavaScript, CSS, and images loaded from external domains will preconnect automatically.', 'pprh' ); ?></span>
+				</span>
+			</td>
+
+			<td>
+				<label>
+					<select name="autoload_preconnects">
+						<option value="true" <?php $this->get_option_status( 'autoload_preconnects', 'true' ); ?>>
+							<?php esc_html_e( 'Yes', 'pprh' ); ?>
+						</option>
+						<option value="false" <?php $this->get_option_status( 'autoload_preconnects', 'false' ); ?>>
+							<?php esc_html_e( 'No', 'pprh' ); ?>
+						</option>
+					</select>
+				</label>
+			</td>
+		</tr>
+
+		<?php
+	}
+
+	public function disable_auto_wp_hints() {
+		?>
+		<tr>
+			<th><?php esc_html_e( 'Disable automatically generated WordPress resource hints?', 'pprh' ); ?></th>
+
+			<td>
+				<span class="pprh-help-tip-hint">
+					<span><?php esc_html_e( 'This option will remove three resource hints automatically generated by WordPress, as of 4.8.2.', 'pprh' ); ?></span>
+				</span>
+			</td>
+
+			<td>
+				<label>
+					<select name="disable_wp_hints">
+						<option value="true" <?php $this->get_option_status( 'disable_wp_hints', 'true' ); ?>>
+							<?php esc_html_e( 'Yes', 'pprh' ); ?>
+						</option>
+						<option value="false" <?php $this->get_option_status( 'disable_wp_hints', 'false' ); ?>>
+							<?php esc_html_e( 'No', 'pprh' ); ?>
+						</option>
+					</select>
+				</label>
+			</td>
+		</tr>
+
+		<?php
+	}
+
+	public function allow_unauth() {
+		?>
+		<tr>
+			<th><?php esc_html_e( 'Allow unauthenticated users to automatically set preconnect hints via Ajax?', 'pprh' ); ?></th>
+
+			<td>
+				<span class="pprh-help-tip-hint">
+					<span><?php esc_html_e( 'This plugin has a feature which allows preconnect hints to be automatically created asynchronously in the background with Ajax by the first user to visit a page (assuming the user has that option to be reset). There is an extremely remote possibility that if a visitor knew the hints would be set, they could choose to manually load many external scripts, which could trick the plugin script into accepting these as valid preconnect hints. But again this is a very remote possiblity and only a nuisance, not a vulnerability, due to the strict sanitization procedures in place.', 'pprh' ); ?></span>
+				</span>
+			</td>
+
+			<td>
+				<label>
+					<select name="allow_unauth">
+						<option value="true" <?php $this->get_option_status( 'allow_unauth', 'true' ); ?>>
+							<?php esc_html_e( 'Yes', 'pprh' ); ?>
+						</option>
+						<option value="false" <?php $this->get_option_status( 'allow_unauth', 'false' ); ?>>
+							<?php esc_html_e( 'No', 'pprh' ); ?>
+						</option>
+					</select>
+				</label>
+			</td>
+		</tr>
+
+	<?php
+	}
+
+	public function reset_preconnects() {
+		?>
         <tr>
-            <th><?php esc_html_e( 'Automatically set preconnect hints?', 'pre-party-browser-hints' ); ?></th>
+            <th><?php esc_html_e( 'Reset automatically created preconnect links?', 'pprh' ); ?></th>
 
             <td>
 				<span class="pprh-help-tip-hint">
-					<span><?php esc_html_e( 'Preconnect hints from JavaScript, CSS, and image resources loaded from external domains will be created with Ajax and preconnect automatically.', 'pre-party-browser-hints' ); ?></span>
+					<span><?php esc_html_e( 'This will reset automatically created preconnect hints.', 'pprh' ); ?></span>
 				</span>
             </td>
 
             <td>
-                <select name="pprh_preconnect_status">
-                    <option value="true" <?php $this->get_option_status( 'pprh_autoload_preconnects', 'true' ); ?>>
-                        <?php esc_html_e( 'Yes', 'pre-party-browser-hints' ); ?>
-                    </option>
-                    <option value="false" <?php $this->get_option_status( 'pprh_autoload_preconnects', 'false' ); ?>>
-                        <?php esc_html_e( 'No', 'pre-party-browser-hints' ); ?>
-                    </option>
-                </select>
+                <input type="submit" name="pprh_preconnects_set" id="pprhPreconnectReset" class="button-secondary" value="Reset">
             </td>
         </tr>
 
-        <?php
-    }
+		<?php
+	}
 
-    public function disable_auto_wp_hints() {
-        ?>
-        <tr>
-            <th><?php esc_html_e( 'Disable automatically generated WordPress resource hints?', 'pre-party-browser-hints' ); ?></th>
+	public function set_hint_destination() {
+		?>
+		<tr>
+			<th><?php esc_html_e( 'Send resource hints in HTML head or HTTP header?', 'pprh' ); ?></th>
 
-            <td>
+			<td>
 				<span class="pprh-help-tip-hint">
-					<span><?php esc_html_e( 'This option will remove three resource hints automatically generated by WordPress, as of 4.8.2.', 'pre-party-browser-hints' ); ?></span>
+					<span><?php esc_html_e( 'Send hints', 'pprh' ); ?></span>
 				</span>
-            </td>
+			</td>
 
-            <td>
-                <select name="pprh_disable_wp_hints_option">
-                    <option value="true" <?php $this->get_option_status( 'pprh_disable_wp_hints', 'true' ); ?>>
-                        <?php esc_html_e( 'Yes', 'pre-party-browser-hints' ); ?>
-                    </option>
-                    <option value="false" <?php $this->get_option_status( 'pprh_disable_wp_hints', 'false' ); ?>>
-                        <?php esc_html_e( 'No', 'pre-party-browser-hints' ); ?>
-                    </option>
-                </select>
-            </td>
-        </tr>
+			<td>
+				<select id="pprhHintLocation" name="html_head">
+					<option value="true" <?php $this->get_option_status( 'html_head', 'true' ); ?>>
+						<?php esc_html_e( 'HTML &lt;head&gt;', 'pprh' ); ?>
+					</option>
+					<option value="false" <?php $this->get_option_status( 'html_head', 'false' ); ?>>
+						<?php esc_html_e( 'HTTP Header', 'pprh' ); ?>
+					</option>
+				</select>
+			</td>
+		</tr>
 
-        <?php
-    }
+		<?php
+	}
 
-    public function allow_unauth() {
-        ?>
-        <tr>
-            <th><?php esc_html_e( 'Allow unauthenticated users to automatically set preconnect hints via Ajax?', 'pre-party-browser-hints' ); ?></th>
-
-            <td>
-				<span class="pprh-help-tip-hint">
-					<span><?php esc_html_e( 'Automatically set preconnect hints are initially set once by the first user to access that page.', 'pre-party-browser-hints' ); ?></span>
-				</span>
-            </td>
-
-            <td>
-                <select name="pprh_pprh_allow_unauth_option">
-                    <option value="true" <?php $this->get_option_status( 'pprh_allow_unauth', 'true' ); ?>>
-                        <?php esc_html_e( 'Yes', 'pre-party-browser-hints' ); ?>
-                    </option>
-                    <option value="false" <?php $this->get_option_status( 'pprh_allow_unauth', 'false' ); ?>>
-                        <?php esc_html_e( 'No', 'pre-party-browser-hints' ); ?>
-                    </option>
-                </select>
-            </td>
-        </tr>
-        <?php
-    }
-
-    public function reset_preconnects() {
-        ?>
-        <tr>
-            <th><?php esc_html_e( 'Reset automatically created preconnect links?', 'pre-party-browser-hints' ); ?></th>
-
-            <td>
-				<span class="pprh-help-tip-hint">
-					<span><?php esc_html_e( 'This will reset automatically created preconnect hints.', 'pre-party-browser-hints' ); ?></span>
-				</span>
-            </td>
-
-            <td>
-                <input type="submit" name="pprh_preconnects_set" id="pprhPreconnectReset" class="button-secondary" value="Reset"/>
-            </td>
-        </tr>
-
-        <?php
-    }
-
-    public function set_hint_destination() {
-        ?>
-        <tr>
-            <th><?php esc_html_e( 'Send resource hints in HTML head or HTTP header?', 'pre-party-browser-hints' ); ?></th>
-
-            <td>
-				<span class="pprh-help-tip-hint">
-					<span><?php esc_html_e( 'Send hints', 'pre-party-browser-hints' ); ?></span>
-				</span>
-            </td>
-
-            <td>
-                <select id="pprhHintLocation" name="pprh_html_head">
-                    <option value="true" <?php $this->get_option_status( 'pprh_html_head', 'true' ); ?>>
-                        <?php esc_html_e( 'HTML <head>', 'pre-party-browser-hints' ); ?>
-                    </option>
-                    <option value="false" <?php $this->get_option_status( 'pprh_html_head', 'false' ); ?>>
-                        <?php esc_html_e( 'HTTP Header', 'pre-party-browser-hints' ); ?>
-                    </option>
-                </select>
-            </td>
-        </tr>
-
-        <?php
-    }
-
-    public function get_option_status( $option_name, $val ) {
-        echo esc_html( ( get_option( $option_name ) === $val ? 'selected=selected' : '' ) );
-    }
+	public function get_option_status( $option, $val ) {
+		echo esc_html( ( get_option( 'pprh_' . $option ) === $val ? 'selected=selected' : '' ) );
+	}
 
 }
 
 if ( is_admin() ) {
-    new Settings();
+	new Settings();
 }

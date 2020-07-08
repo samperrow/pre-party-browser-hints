@@ -9,15 +9,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Insert_Hints {
 
 	public function __construct() {
-	    ?>
-		<div class="pprh-content" id="pprh-insert-hints">
-		    <form id="pprh-list-table" method="post" action="<?php echo admin_url('admin.php?page=pprh-plugin-settings'); ?>">
-        <?php
+		echo '<div id="pprh-insert-hints" class="pprh-content">';
+		echo '<form id="pprh-list-table" method="post" action="' . admin_url() . '">';
 		wp_nonce_field( 'pprh_display_hints_nonce_action', 'pprh_display_hints_nonce' );
 		new Display_Hints();
 		echo '</form>';
-		include_once PPRH_PLUGIN_DIR . '/class-pprh-add-new-hint.php';
-		$new_hint = new Add_New_Hint();
+		$new_hint = new New_Hint();
+		$new_hint->create_new_hint_table();
 		echo '</div>';
 	}
 

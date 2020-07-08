@@ -13,7 +13,6 @@
  * @since 3.1.0
  * @access private
  */
-
 namespace PPRH;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -153,7 +152,7 @@ class WP_List_Table {
 			)
 		);
 
-		$this->screen = convert_to_screen( $args['screen'] );
+		$this->screen = \convert_to_screen( $args['screen'] );
 
 		add_filter( "manage_{$this->screen->id}_columns", array( $this, 'get_columns' ), 0 );
 
@@ -188,7 +187,7 @@ class WP_List_Table {
 	 * @return mixed Property.
 	 */
 	public function __get( $name ) {
-		if ( in_array( $name, $this->compat_fields ) ) {
+		if (in_array($name, $this->compat_fields, true)) {
 			return $this->$name;
 		}
 	}
@@ -203,7 +202,7 @@ class WP_List_Table {
 	 * @return mixed Newly-set property.
 	 */
 	public function __set( $name, $value ) {
-		if ( in_array( $name, $this->compat_fields ) ) {
+		if (in_array($name, $this->compat_fields, true)) {
 			return $this->$name = $value;
 		}
 	}
@@ -217,7 +216,7 @@ class WP_List_Table {
 	 * @return bool Whether the property is set.
 	 */
 	public function __isset( $name ) {
-		if ( in_array( $name, $this->compat_fields ) ) {
+		if (in_array($name, $this->compat_fields, true)) {
 			return isset( $this->$name );
 		}
 	}
@@ -230,7 +229,7 @@ class WP_List_Table {
 	 * @param string $name Property to unset.
 	 */
 	public function __unset( $name ) {
-		if ( in_array( $name, $this->compat_fields ) ) {
+		if (in_array($name, $this->compat_fields, true)) {
 			unset( $this->$name );
 		}
 	}
@@ -245,7 +244,7 @@ class WP_List_Table {
 	 * @return mixed|bool Return value of the callback, false otherwise.
 	 */
 	public function __call( $name, $arguments ) {
-		if ( in_array( $name, $this->compat_methods ) ) {
+		if (in_array($name, $this->compat_methods, true)) {
 			return call_user_func_array( array( $this, $name ), $arguments );
 		}
 		return false;
@@ -258,13 +257,13 @@ class WP_List_Table {
 	 * @abstract
 	 */
 	public function ajax_user_can() {
-		die( 'function WP_List_Table::ajax_user_can() must be over-ridden in a sub-class.' );
+		die( 'function PPRH_WP_List_Table::ajax_user_can() must be over-ridden in a sub-class.' );
 	}
 
 	/**
 	 * Prepares the list of items for displaying.
 	 *
-	 * @uses WP_List_Table::set_pagination_args()
+	 * @uses PPRH_WP_List_Table::set_pagination_args()
 	 *
 	 * @since 3.1.0
 	 * @abstract
@@ -295,7 +294,7 @@ class WP_List_Table {
 		}
 
 		// Redirect if page number is invalid and headers are not already sent.
-		if ( ! headers_sent() && ! wp_doing_ajax() && $args['total_pages'] > 0 && $this->get_pagenum() > $args['total_pages'] ) {
+		if ( $args['total_pages'] > 0 && ! headers_sent() && ! wp_doing_ajax() && $this->get_pagenum() > $args['total_pages'] ) {
 			wp_redirect( add_query_arg( 'paged', $args['total_pages'] ) );
 			exit;
 		}
@@ -355,7 +354,7 @@ class WP_List_Table {
 			return;
 		}
 
-		$input_id = $input_id . '-search-input';
+		$input_id .= '-search-input';
 
 		if ( ! empty( $_REQUEST['orderby'] ) ) {
 			echo '<input type="hidden" name="orderby" value="' . esc_attr( $_REQUEST['orderby'] ) . '" />';
@@ -439,12 +438,9 @@ class WP_List_Table {
 	 * Display the bulk actions dropdown.
 	 *
 	 * @since 3.1.0
-	 *
-	 * @param string $which The location of the bulk actions: 'top' or 'bottom'.
-	 *                      This is designated as optional for backward compatibility.
 	 */
-	protected function bulk_actions( $which = '' ) {
-		if ( is_null( $this->_actions ) ) {
+	protected function bulk_actions() {
+		if ($this->_actions === null) {
 			$this->_actions = $this->get_bulk_actions();
 			/**
 			 * Filters the list table Bulk Actions drop-down.
@@ -470,7 +466,7 @@ class WP_List_Table {
 
 		?>
 		<label for="pprh-option-select" class="screen-reader-text">Select bulk action</label>
-		<select name="PPRHAction<?php echo $two; ?>" id="pprh-option-select<?php echo $two; ?>">
+        <label for="pprh-option-select<?php echo $two; ?>"></label><select class="pprhBulkAction" name="PPRHAction<?php echo $two; ?>" id="pprh-option-select<?php echo $two; ?>">
 		<option value="-1">Bulk Actions</option>
 
 		<?php
@@ -481,7 +477,7 @@ class WP_List_Table {
 		?>
 
 		</select>
-		<input type="submit" id="PPRHApply<?php echo $two; ?>" class="button action" value="Apply">
+		<input type="submit" id="PPRHApply<?php echo $two; ?>" class="pprhBulkAction button action" value="Apply">
 		<?php
 	}
 
@@ -497,11 +493,11 @@ class WP_List_Table {
 			return false;
 		}
 
-		if ( isset( $_REQUEST['PPRHAction'] ) && -1 != $_REQUEST['PPRHAction'] ) {
+		if ( isset( $_REQUEST['PPRHAction'] ) && -1 !== $_REQUEST['PPRHAction'] ) {
 			return $_REQUEST['PPRHAction'];
 		}
 
-		if ( isset( $_REQUEST['PPRHAction2'] ) && -1 != $_REQUEST['PPRHAction2'] ) {
+		if ( isset( $_REQUEST['PPRHAction2'] ) && -1 !== $_REQUEST['PPRHAction2'] ) {
 			return $_REQUEST['PPRHAction2'];
 		}
 
@@ -528,7 +524,7 @@ class WP_List_Table {
 		$out = '<div class="' . ( $always_visible ? 'row-actions visible' : 'row-actions' ) . '">';
 		foreach ( $actions as $action => $link ) {
 			++$i;
-			( $i == $action_count ) ? $sep = '' : $sep = ' | ';
+			( $i === $action_count ) ? $sep = '' : $sep = ' | ';
 			$out                          .= "<span class='$action'>$link$sep</span>";
 		}
 		$out .= '</div>';
@@ -595,7 +591,7 @@ class WP_List_Table {
 
 		$month_count = count( $months );
 
-		if ( ! $month_count || ( 1 == $month_count && 0 == $months[0]->month ) ) {
+		if ( ! $month_count || ( 1 === $month_count && 0 === $months[0]->month ) ) {
 			return;
 		}
 
@@ -606,7 +602,7 @@ class WP_List_Table {
 			<option <?php selected( $m, 0 ); ?> value="0"><?php _e( 'All dates' ); ?></option>
 		<?php
 		foreach ( $months as $arc_row ) {
-			if ( 0 == $arc_row->year ) {
+			if ( 0 === $arc_row->year ) {
 				continue;
 			}
 
@@ -772,7 +768,7 @@ class WP_List_Table {
 		 *
 		 * @param int $per_page Number of items to be displayed. Default 20.
 		 */
-		return (int) apply_filters( "{$option}", $per_page );
+		return (int) apply_filters( (string)($option), $per_page );
 	}
 
 	/**
@@ -803,8 +799,7 @@ class WP_List_Table {
 		$current              = $this->get_pagenum();
 		$removable_query_args = wp_removable_query_args();
 
-		$current_url = set_url_scheme( 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] );
-
+        $current_url = ( wp_doing_ajax() ) ? esc_url_raw( $_SERVER['HTTP_REFERER'] ) : menu_page_url( 'pprh-plugin-settings', false );
 		$current_url = remove_query_arg( $removable_query_args, $current_url );
 
 		$page_links = array();
@@ -814,18 +809,18 @@ class WP_List_Table {
 
 		$disable_first = $disable_last = $disable_prev = $disable_next = false;
 
-		if ( $current == 1 ) {
+		if ( $current === 1 ) {
 			$disable_first = true;
 			$disable_prev  = true;
 		}
-		if ( $current == 2 ) {
+		if ( $current === 2 ) {
 			$disable_first = true;
 		}
-		if ( $current == $total_pages ) {
+		if ( $current === $total_pages ) {
 			$disable_last = true;
 			$disable_next = true;
 		}
-		if ( $current == $total_pages - 1 ) {
+		if ( $current === $total_pages - 1 ) {
 			$disable_last = true;
 		}
 
@@ -857,7 +852,7 @@ class WP_List_Table {
 		} else {
 			$html_current_page = sprintf(
 				"%s<input class='current-page' id='current-page-selector' type='text' name='paged' value='%s' size='%d' aria-describedby='table-paging' /><span class='tablenav-paging-text'>",
-				'<label for="current-page-selector" class="screen-reader-text">' . __( 'Current Page' ) . '</label>',
+                '<label for="current-page-selector" class="screen-reader-text">' . __('Current Page') . '</label>',
 				$current,
 				strlen( $total_pages )
 			);
@@ -886,17 +881,18 @@ class WP_List_Table {
 				'&raquo;'
 			);
 		}
-
-		$pagination_links_class = 'pagination-links';
+		$noitems = ($total_items > $this->hints_per_page) ? '' : ' no-pages';
+		$pagination_links_class = "pagination-links $noitems";
 		if ( ! empty( $infinite_scroll ) ) {
 			$pagination_links_class .= ' hide-if-js';
 		}
-		$output .= "\n<span class='$pagination_links_class'>" . join( "\n", $page_links ) . '</span>';
+		$output .= "\n<span class='$pagination_links_class'>" . implode( "\n", $page_links ) . '</span>';
 
 		if ( $total_pages ) {
-			$page_class = $total_pages < 2 ? ' one-page' : '';
-		} else {
-			$page_class = ' no-pages';
+			$page_class = $total_pages < 1 ? ' one-page' : '';
+		} 
+		else {
+			$page_class = '';
 		}
 		$this->_pagination = "<div class='tablenav-pages{$page_class}'>$output</div>";
 
@@ -910,7 +906,6 @@ class WP_List_Table {
 	 * @since 3.1.0
 	 * @abstract
 	 *
-	 * @return array
 	 */
 	public function get_columns() {
 		die( 'function WP_List_Table::get_columns() must be over-ridden in a sub-class.' );
@@ -986,7 +981,7 @@ class WP_List_Table {
 		// If the primary column doesn't exist fall back to the
 		// first non-checkbox column.
 		if ( ! isset( $columns[ $default ] ) ) {
-			$default = WP_List_Table::get_default_primary_column_name();
+			$default = $this->get_default_primary_column_name();
 		}
 
 		/**
@@ -1112,7 +1107,7 @@ class WP_List_Table {
 		foreach ( $columns as $column_key => $column_display_name ) {
 			$class = array( 'manage-column', "column-$column_key" );
 
-			if ( in_array( $column_key, $hidden ) ) {
+			if (in_array($column_key, $hidden, true)) {
 				$class[] = 'hidden';
 			}
 
@@ -1147,7 +1142,7 @@ class WP_List_Table {
 			$id    = $with_id ? "id='$column_key'" : '';
 
 			if ( ! empty( $class ) ) {
-				$class = "class='" . join( ' ', $class ) . "'";
+				$class = "class='" . implode( ' ', $class ) . "'";
 			}
 
 			echo "<$tag $scope $id $class>$column_display_name</$tag>";
@@ -1163,11 +1158,13 @@ class WP_List_Table {
 		wp_nonce_field( 'ajax-custom-list-nonce', '_ajax_custom_list_nonce' );
 		$singular = $this->_args['singular'];
 
+		$this->on_post_page();
 		$this->display_tablenav( 'top' );
 
 		$this->screen->render_screen_reader_content( 'heading_list' );
 		?>
-<table style="border-spacing: 2px;" id="pprh-post-table" class="wp-list-table <?php echo implode( ' ', $this->get_table_classes() ); ?>">
+<table style="border-spacing: 2px;" class="wp-list-table pprh-post-table <?php echo implode( ' ', $this->get_table_classes() ); ?>">
+
 	<thead>
 	<tr>
 		<?php $this->print_column_headers(); ?>
@@ -1213,24 +1210,20 @@ class WP_List_Table {
 	 * @param string $which
 	 */
 	protected function display_tablenav( $which ) {
-		// if ( 'top' === $which ) {
-		// 	wp_nonce_field( 'bulk-' . $this->_args['plural'] );
-		// }
+		$class = ( ! $this->has_items() ) ? 'no-pages' : '';
 		?>
-	<div class="tablenav <?php echo esc_attr( $which ); ?>">
+		<div class="tablenav <?php echo esc_attr( $which ); ?>">
 
-		<?php if ( $this->has_items() ) : ?>
-		<div class="alignleft actions bulkactions">
-			<?php $this->bulk_actions( $which ); ?>
-		</div>
+			<div class="alignleft actions bulkactions <?php echo $class; ?>">
+				<?php $this->bulk_actions( $which ); ?>
+			</div>
 			<?php
-		endif;
-		$this->extra_tablenav( $which );
-		$this->pagination( $which );
-		?>
+				$this->extra_tablenav( $which );
+				$this->pagination( $which );
+			?>
 
-		<br class="clear" />
-	</div>
+			<br class="clear" />
+		</div>
 		<?php
 	}
 
@@ -1266,6 +1259,7 @@ class WP_List_Table {
 	public function display_rows() {
 		foreach ( $this->items as $item ) {
 			$this->single_row( $item );
+			$this->inline_edit_row( $item );
 		}
 	}
 
@@ -1277,7 +1271,8 @@ class WP_List_Table {
 	 * @param object $item The current item
 	 */
 	public function single_row( $item ) {
-		echo '<tr>';
+//		$global_on_posts = ( $this->on_post_page && 'global' === $item['post_id'] ) ? 'pprhGlobalPostPage' : '';
+		echo sprintf( '<tr class="pprh-row hint %s" id="pprh-hint-%s">', $item['id'], $item['id'] );
 		$this->single_row_columns( $item );
 		echo '</tr>';
 	}
@@ -1288,10 +1283,14 @@ class WP_List_Table {
 	 */
 	protected function column_default( $item, $column_name ) {}
 
-	/**
-	 * @param object $item
-	 */
-	protected function column_cb( $item ) {}
+    /**
+     * @param object $item
+     * @param $hide_cb
+     * @return string
+     */
+	protected function column_cb( $item ) {
+		return sprintf( '<input type="checkbox" name="urlValue[]" value="%1$s"/>', $item['id'] );
+	}
 
 	/**
 	 * Generates the columns for a single row of the table
@@ -1301,7 +1300,9 @@ class WP_List_Table {
 	 * @param object $item The current item
 	 */
 	protected function single_row_columns( $item ) {
-		list( $columns, $hidden, $sortable, $primary ) = $this->get_column_info();
+		list( $columns, $hidden, $primary ) = $this->get_column_info();
+
+//		$hide_cb = ( $this->on_post_page && 'global' === $item['post_id'] ) ? ' pprhGlobalHint' : '';
 
 		foreach ( $columns as $column_name => $column_display_name ) {
 			$classes = "$column_name column-$column_name";
@@ -1309,7 +1310,7 @@ class WP_List_Table {
 				$classes .= ' has-row-actions column-primary';
 			}
 
-			if ( in_array( $column_name, $hidden ) ) {
+			if (in_array($column_name, $hidden, true)) {
 				$classes .= ' hidden';
 			}
 
@@ -1320,52 +1321,46 @@ class WP_List_Table {
 			$attributes = "class='$classes' $data";
 
 			if ( 'cb' === $column_name ) {
-				echo '<th scope="row" class="check-column">';
+				echo "<th scope='row' class='check-column'>";
 				echo $this->column_cb( $item );
 				echo '</th>';
 			} elseif ( method_exists( $this, '_column_' . $column_name ) ) {
-				echo call_user_func(
-					array( $this, '_column_' . $column_name ),
-					$item,
-					$classes,
-					$data,
-					$primary
-				);
+				echo $this->{'_column_' . $column_name}($item, $classes, $data, $primary);
 			} elseif ( method_exists( $this, 'column_' . $column_name ) ) {
 				echo "<td $attributes>";
-				echo call_user_func( array( $this, 'column_' . $column_name ), $item );
-				echo $this->handle_row_actions( $item, $column_name, $primary );
+				echo $this->{'column_' . $column_name}($item);
+				echo $this->handle_row_actions( $column_name, $primary );
 				echo '</td>';
 			} else {
 				echo "<td $attributes>";
 				echo $this->column_default( $item, $column_name );
-				echo $this->handle_row_actions( $item, $column_name, $primary );
+				echo $this->handle_row_actions( $column_name, $primary );
 				echo '</td>';
 			}
 		}
 	}
 
-	/**
-	 * Generates and display row actions links for the list table.
-	 *
-	 * @since 4.3.0
-	 *
-	 * @param object $item        The item being acted upon.
-	 * @param string $column_name Current column name.
-	 * @param string $primary     Primary column name.
-	 * @return string The row actions HTML, or an empty string if the current column is the primary column.
-	 */
-	protected function handle_row_actions( $item, $column_name, $primary ) {
+    /**
+     * Generates and display row actions links for the list table.
+     *
+     * @param string $column_name Current column name.
+     * @param string $primary Primary column name.
+     * @return string The row actions HTML, or an empty string if the current column is the primary column.
+     * @since 4.3.0
+     *
+     */
+	protected function handle_row_actions( $column_name, $primary ) {
 		return $column_name === $primary ? '<button type="button" class="toggle-row"><span class="screen-reader-text">' . __( 'Show more details' ) . '</span></button>' : '';
 	}
 
-	/**
-	 * Handle an incoming ajax request (called from admin-ajax.php)
-	 *
-	 * @since 3.1.0
-	 */
-	public function ajax_response() {
-
+    /**
+     * Handle an incoming ajax request (called from admin-ajax.php)
+     *
+     * @param $results
+     * @since 3.1.0
+     */
+	public function ajax_response( $results ) {
+		check_ajax_referer( 'pprh_table_nonce', 'val' );
 		$this->prepare_items();
 
 		ob_start();
@@ -1377,7 +1372,24 @@ class WP_List_Table {
 
 		$rows = ob_get_clean();
 
+		ob_start();
+		$this->print_column_headers();
+		$headers = ob_get_clean();
+
+		ob_start();
+		$this->pagination( 'top' );
+		$this->display_tablenav( 'top' );
+
+		$pagination_top = ob_get_clean();
+
+		ob_start();
+		$this->pagination( 'bottom' );
+		$pagination_bottom = ob_get_clean();
+
 		$response = array( 'rows' => $rows );
+		$response['pagination']['top'] = $pagination_top;
+		$response['pagination']['bottom'] = $pagination_bottom;
+		$response['column_headers'] = $headers;
 
 		if ( isset( $this->_pagination_args['total_items'] ) ) {
 			$response['total_items_i18n'] = sprintf(
@@ -1390,9 +1402,10 @@ class WP_List_Table {
 			$response['total_pages_i18n'] = number_format_i18n( $this->_pagination_args['total_pages'] );
 		}
 
-		// $response['msg'] = $result;
 
-		die( wp_json_encode( $response ) );
+		$response['result'] = $results;
+
+		die( json_encode( $response, true ) );
 	}
 
 	/**
@@ -1407,6 +1420,6 @@ class WP_List_Table {
 			),
 		);
 
-		printf( "<script type='text/javascript'>list_args = %s;</script>\n", wp_json_encode( $args ) );
+		printf( "<script type='text/javascript'>list_args = %s;</script>\n", json_encode( $args, true ) );
 	}
 }
