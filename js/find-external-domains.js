@@ -10,7 +10,7 @@
     }
 
     function isValidHintDomain(domain) {
-        return (domain !== host && pprh_data.url.indexOf(domain) === -1 && !/\.gravatar\.com/.test(domain) && domain !== altDomain);
+        return (domain !== host && pprh_data.hints.indexOf(domain) === -1 && !/\.gravatar\.com/.test(domain) && domain !== altDomain);
     }
 
     function sanitizeURL() {
@@ -33,7 +33,7 @@
             var domain = getDomain(item);
 
             if (isValidHintDomain(domain)) {
-                pprh_data.url.push(sanitizeURL.call(domain));
+                pprh_data.hints.push(sanitizeURL.call(domain));
             }
         });
     }
@@ -44,6 +44,7 @@
             findResourceSources();
             var json = JSON.stringify(pprh_data);
             var xhr = new XMLHttpRequest();
+            // console.log(pprh_data);
             xhr.open('POST', host + '/wp-admin/admin-ajax.php', true);
             xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
 			xhr.send('action=pprh_post_domain_names&pprh_data=' + json + '&nonce=' + pprh_data.nonce );

@@ -12,94 +12,93 @@ class Create_Hints {
 		'action' => '',
 		'result' => '',
 		'msg'    => '',
+		'new_hints' => array(),
 	);
 
-	public $new_hint = array(
-		'url'         => '',
-		'hint_type'   => '',
-		'file_type'   => '',
-		'crossorigin' => '',
-		'as_attr'     => '',
-		'type_attr'   => '',
-	);
+	public $prev_hints = array();
 
-	private $prev_hints = array();
-
-	private $data = array();
-
-	public function __construct() {
-		if ( isset( $_POST['pprh_data'] ) ) {
-
-			if ( ! defined( 'CREATING_HINT' ) || ! CREATING_HINT ) {
-				exit();
-			}
-
-            $data = json_decode(stripslashes($_POST['pprh_data']));
-            $this->init( $data );
-			$this->results['action'] = 'created';
+	public function __construct( $data ) {
+		if ( ! defined( 'CREATING_HINT' ) || ! CREATING_HINT ) {
+			exit();
 		}
+
+		$this->prev_hints = (object) array();
+		$this->init( $data );
 	}
 
-	private function init( $data ) {
-		global $wpdb;
-		$urls = $data->url;
+	private function init( $hints ) {
 
-		foreach ( $urls as $url ) {
-			$this->data = $data;
-			$this->create_hint( $url );
-			if ( $this->check_for_duplicate_post_hint() ) {
-				$this->insert_hint();
+		foreach ( $hints as $hint ) {
+			$new_hint = (object) $this->create_hint( $hint );
+
+			if ( $this->check_for_duplicate_post_hint( $new_hint ) ) {
+				$this->insert_hint( $new_hint );
+				array_push( $this->results['new_hints'], $new_hint );
 			}
 		}
 
 		return $this->results;
 	}
 
-	private function create_hint( $url ) {
-        $this->new_hint['url'] = $this->set_url( $url );
-        $this->new_hint['hint_type'] = $this->set_hint_type();
-        $this->new_hint['file_type'] = $this->set_file_type();
-        $this->new_hint['crossorigin'] = $this->set_crossorigin();
-        $this->new_hint['as_attr'] = $this->set_as_attr();
-        $this->new_hint['type_attr'] = $this->set_type_attr();
-    }
-
-	private function set_hint_type() {
-		return Utils::clean_hint_type( $this->data->hint_type );
-	}
-
-	private function set_url( $url ) {
-		if ( preg_match( '/(dns-prefetch|preconnect)/', $this->new_hint['hint_type'] ) ) {
-            $url = $this->parse_for_domain_name( $url );
+	private function create_hint( $hint ) {
+		if ( empty( $hint->url ) || empty( $hint->hint_type ) ) {
+			return 'err';
 		}
 
-        return filter_var( str_replace( ' ', '', $url ), FILTER_SANITIZE_URL );
-    }
+		$hint_type = $this->set_hint_type( $hint->hint_type );
+		$url       = $this->set_url( $hint, $hint_type );
+		$file_type = $this->set_file_type( $url );
+
+		return array(
+			'hint_type'    => $hint_type,
+			'url'          => $url,
+			'file_type'    => $file_type,
+			'as_attr'      => $this->set_as_attr( $hint, $file_type ),
+			'type_attr'    => $this->set_type_attr( $hint, $file_type ),
+			'crossorigin'  => $this->set_crossorigin( $hint, $file_type ),
+			'auto_created' => ( isset( $hint->auto_created ) ? 1 : 0 ),
+		);
+	}
+
+	private function set_hint_type( $type ) {
+		return Utils::clean_hint_type( $type );
+	}
+
+	private function set_url( $hint, $type ) {
+		if ( preg_match( '/(dns-prefetch|preconnect)/', $type ) ) {
+			$url = $this->parse_for_domain_name( $hint->url );
+		} else {
+			$url = $hint->url;
+		}
+
+		return filter_var( str_replace( ' ', '', $url ), FILTER_SANITIZE_URL );
+	}
 
 	private function parse_for_domain_name( $url ) {
 		$parsed_url = wp_parse_url( $url );
 
 		if ( ! empty( $parsed_url['scheme'] ) ) {
-            $this->results['msg'] .= ' Only the domain name of the entered URL is needed for that hint type.';
-            $url = $parsed_url['scheme'] . '://' . $parsed_url['host'];
-		} elseif ( strpos( $this->new_hint['url'], '//' ) === 0 ) {
-            $url = '//' . $parsed_url['host'];
+			$this->results['msg'] .= ' Only the domain name of the entered URL is needed for that hint type.';
+			$url = $parsed_url['scheme'] . '://' . $parsed_url['host'];
+		} elseif ( strpos( $url, '//' ) === 0 ) {
+			$url = '//' . $parsed_url['host'];
 		} else {
-            $url = '//' . $parsed_url['path'];
+			$url = '//' . $parsed_url['path'];
 		}
 		return $url;
 	}
 
-	private function set_file_type() {
-		$basename = pathinfo( $this->new_hint['url'] )['basename'];
+	private function set_file_type( $url ) {
+		$basename = pathinfo( $url )['basename'];
 		return strpbrk( $basename, '?' ) !== '' ? strrchr( explode( '?', $basename )[0], '.' ) : strrchr( $basename, '.' );
 	}
 
-	private function set_crossorigin() {
-		return ( ! empty( $this->data->crossorigin ) || ( preg_match( '/fonts.(googleapis|gstatic).com/i', $this->new_hint['url'] ) || preg_match( '/(.woff|.woff2|.ttf|.eot)/', $this->new_hint['file_type'] ) ) ) ? 'crossorigin' : '';
+	private function set_crossorigin( $hint, $file_type ) {
+		return ( ! empty( $hint->crossorigin ) || ( preg_match( '/fonts.(googleapis|gstatic).com/i', $hint->url ) || preg_match( '/(.woff|.woff2|.ttf|.eot)/', $file_type ) ) ) ? 'crossorigin' : '';
 	}
 
-	private function set_as_attr() {
+	private function set_as_attr( $hint, $file_type ) {
+		$as_attr = ( ! empty( $hint->as_attr ) ) ? $hint->as_attr : '';
 		$media_types = array(
 			'.js'    => 'script',
 			'.css'   => 'style',
@@ -118,10 +117,11 @@ class Create_Hints {
 			'.webp'  => 'image',
 		);
 
-		return ( ! empty( $this->data->as_attr ) ) ? $this->data->as_attr : $this->set_file_type_mime( $media_types );
+		return ( ! empty( $as_attr ) ) ? Utils::clean_hint_attr( $as_attr ) : $this->set_file_type_mime( $media_types, $file_type );
 	}
 
-	private function set_type_attr() {
+	private function set_type_attr( $hint, $file_type ) {
+		$type_attr = ( ! empty( $hint->type_attr ) ) ? $hint->type_attr : '';
 		$mimes = array(
 			'.woff'  => 'font/woff',
 			'.woff2' => 'font/woff2',
@@ -129,50 +129,68 @@ class Create_Hints {
 			'.eot'   => 'font/eot',
 		);
 
-        return ( ! empty( $this->data->type_attr ) ) ? $this->data->type_attr : $this->set_file_type_mime( $mimes );
+		return ( ! empty( $type_attr ) ) ? Utils::clean_hint_attr( $type_attr ) : $this->set_file_type_mime( $mimes, $file_type );
 	}
 
-    private function set_file_type_mime( $file_types ) {
-		foreach ( $file_types as $key => $val ) {
-			if ( $key === $this->new_hint['file_type'] ) {
+	private function set_file_type_mime( $possible_types, $file_type ) {
+		foreach ( $possible_types as $key => $val ) {
+			if ( $key === $file_type ) {
 				return $val;
 			}
 		}
 		return '';
 	}
 
-    private function check_for_duplicate_post_hint() {
-        global $wpdb;
-        $table = PPRH_DB_TABLE;
-        $hint_type = $this->new_hint['hint_type'];
-        $url = $this->new_hint['url'];
+	private function check_for_duplicate_post_hint( $new_hint ) {
+		global $wpdb;
+		$table     = PPRH_DB_TABLE;
+		$hint_type = $new_hint->hint_type;
+		$url       = $new_hint->url;
 
-        $prev_hints = $wpdb->get_results(
-            $wpdb->prepare( "SELECT url, hint_type FROM $table WHERE hint_type = %s AND url = %s", $hint_type, $url )
-        );
+		$prev_hints = $wpdb->get_results(
+			$wpdb->prepare( "SELECT url, hint_type FROM $table WHERE hint_type = %s AND url = %s", $hint_type, $url )
+		);
 
-        foreach ( $prev_hints as $key => $val ) {
-            $this->results['msg'] .= 'An identical resource hint already exists!';
-            $this->results['result'] = 'warning';
-            return false;
-        }
-        return true;
-    }
+		if ( count( $prev_hints ) > 0 ) {
+			$this->results['msg'] .= 'An identical resource hint already exists!';
+			$this->results['result'] = 'warning';
+			return false;
+		} else {
+			return true;
+		}
+	}
 
-	private function insert_hint() {
+	private function remove_duplicate_hints( $new_hint ) {
+		global $wpdb;
+
+		// if a global hint is being created, previous identical hints for posts can be deleted.
+		$wpdb->delete(
+			PPRH_DB_TABLE,
+			array(
+				'url'       => $new_hint->url,
+				'hint_type' => $new_hint->hint_type,
+			),
+			array( '%s', '%s' )
+		);
+		$this->results['msg'] .= ' Identical resource hints used on posts/pages were removed.';
+	}
+
+	private function insert_hint( $new_hint ) {
 		global $wpdb;
 		$current_user = wp_get_current_user()->display_name;
+		$this->results['action'] = 'created';
 
 		$wpdb->insert(
 			PPRH_DB_TABLE,
 			array(
-				'url'         => $this->new_hint['url'],
-				'hint_type'   => $this->new_hint['hint_type'],
+				'url'         => $new_hint->url,
+				'hint_type'   => $new_hint->hint_type,
 				'status'      => 'enabled',
-				'as_attr'     => $this->new_hint['as_attr'],
-				'type_attr'   => $this->new_hint['type_attr'],
-				'crossorigin' => $this->new_hint['crossorigin'],
+				'as_attr'     => $new_hint->as_attr,
+				'type_attr'   => $new_hint->type_attr,
+				'crossorigin' => $new_hint->crossorigin,
 				'created_by'  => $current_user,
+				'auto_created' => $new_hint->auto_created,
 			),
 			array( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' )
 		);

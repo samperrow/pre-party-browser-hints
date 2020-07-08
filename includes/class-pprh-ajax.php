@@ -8,8 +8,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class Ajax {
 
-	public $reset_prec_meta = 'pprh_preconnects_set';
-
 	public function __construct() {
 		if ( 'true' === get_option( 'pprh_allow_unauth' ) ) {
 			$this->load();
@@ -24,37 +22,54 @@ class Ajax {
 		add_action( 'wp_ajax_pprh_post_domain_names', array( $this, 'pprh_post_domain_names' ) );
 	}
 
-
 	public function initialize() {
-		$autoload_preconnects = get_option( 'pprh_autoload_preconnects' );
-		$preconnects_set      = get_option( 'pprh_preconnects_set' );
+		$preconnects = array(
+			'hints' => array(),
+			'nonce' => wp_create_nonce( 'pprh_ajax_nonce' ),
+		);
 
-		if ( 'true' === $autoload_preconnects && 'false' === $preconnects_set ) {
-			$ajax_nonce = wp_create_nonce( 'pprh_ajax_nonce' );
+		wp_register_script( 'pprh-find-domain-names', PPRH_REL_DIR . '/js/find-external-domains.js', null, PPRH_VERSION, true );
+		wp_localize_script( 'pprh-find-domain-names', 'pprh_data', $preconnects );
+		wp_enqueue_script( 'pprh-find-domain-names' );
+	}
 
-			$data_to_retrieve = array(
-				'url'       => array(),
-				'hint_type' => 'preconnect',
-				'nonce'     => $ajax_nonce,
-			);
+	private function remove_prev_auto_preconnects() {
+		global $wpdb;
+		$table = PPRH_DB_TABLE;
 
-			wp_register_script( 'pprh-find-domain-names', plugins_url( PPRH_PLUGIN_FILENAME . '/js/find-external-domains.js' ), null, PPRH_VERSION, true );
-			wp_localize_script( 'pprh-find-domain-names', 'pprh_data', $data_to_retrieve );
-			wp_enqueue_script( 'pprh-find-domain-names' );
-		}
+		$wpdb->query(
+			$wpdb->prepare( "DELETE FROM $table WHERE auto_created = %d AND hint_type = %s", 1, 'preconnect' )
+		);
 	}
 
 	public function pprh_post_domain_names() {
-		if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
-		    define( 'CREATING_HINT', true );
+		if ( wp_doing_ajax() ) {
 			check_ajax_referer( 'pprh_ajax_nonce', 'nonce' );
-			include_once PPRH_PLUGIN_DIR . '/class-pprh-utils.php';
-			include_once PPRH_PLUGIN_DIR . '/class-pprh-create-hints.php';
-			new Create_Hints();
-			update_option( 'pprh_preconnects_set', 'true' );
+			define( 'CREATING_HINT', true );
+			include_once PPRH_ABS_DIR . '/includes/class-pprh-utils.php';
+			include_once PPRH_ABS_DIR . '/includes/class-pprh-create-hints.php';
+
+			$arr  = array();
+			$data = json_decode( wp_unslash( $_POST['pprh_data'] ), false );
+
+			foreach ( $data->hints as $hint ) {
+				$obj = new \stdClass();
+				$obj->url = $hint;
+				$obj->hint_type = 'preconnect';
+				$obj->auto_created = true;
+				array_push($arr, $obj );
+			}
+
+			$this->remove_prev_auto_preconnects();
+			new Create_Hints( $arr );
+			$this->update_options();
 			wp_die();
 		} else {
 			exit();
 		}
+	}
+
+	private function update_options() {
+		update_option( 'pprh_preconnects_set', 'true' );
 	}
 }
