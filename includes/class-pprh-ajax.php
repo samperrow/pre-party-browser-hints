@@ -24,8 +24,9 @@ class Ajax {
 
 	public function initialize() {
 		$preconnects = array(
-			'hints' => array(),
-			'nonce' => wp_create_nonce( 'pprh_ajax_nonce' ),
+			'hints'     => array(),
+			'nonce'     => wp_create_nonce( 'pprh_ajax_nonce' ),
+			'admin_url' => admin_url()
 		);
 
 		wp_register_script( 'pprh-find-domain-names', PPRH_REL_DIR . '/js/find-external-domains.js', null, PPRH_VERSION, true );

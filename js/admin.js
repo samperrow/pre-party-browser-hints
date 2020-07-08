@@ -146,7 +146,8 @@ jQuery(document).ready(function($) {
 	function createAjaxReq(dataObj) {
 		var host = document.location.origin;
 		var xhr = new XMLHttpRequest();
-		xhr.open('POST', host + '/wp-admin/admin-ajax.php', true);
+		var url = pprh_nonce.admin_url + 'admin-ajax.php';
+		xhr.open('POST', url, true);
 		xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
 		var json = JSON.stringify(dataObj);
 		var paginationPage = getUrlValue.call('paged');

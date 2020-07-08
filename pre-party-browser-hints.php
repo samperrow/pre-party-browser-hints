@@ -91,7 +91,8 @@ final class Init {
 	public function register_admin_files( $hook ) {
 		if ( preg_match( '/toplevel_page_pprh-plugin-settings/i', $hook ) ) {
 			$ajax_data = array(
-				'val' => wp_create_nonce( 'pprh_table_nonce' ),
+				'val'       => wp_create_nonce( 'pprh_table_nonce' ),
+				'admin_url' => admin_url()
 			);
 
 			wp_register_script( 'pprh_admin_js', plugin_dir_url( __FILE__ ) . 'js/admin.js', null, PPRH_VERSION, true );
@@ -169,7 +170,7 @@ final class Init {
 		$charset = $wpdb->get_charset_collate();
 
 		if ( ! function_exists( 'dbDelta' ) ) {
-			include_once ABSPATH . 'wp-admin/includes/upgrade.php';
+			require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 		}
 
 		$sql = "CREATE TABLE $table_name (

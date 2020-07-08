@@ -15,7 +15,7 @@ class Settings {
 	public function display_settings() {
 		?>
 			<div id="pprh-settings" class="pprh-content">
-				<form method="post" action="/wp-admin/admin.php?page=pprh-plugin-settings">
+				<form method="post" action="<?php echo admin_url(); ?>admin.php?page=pprh-plugin-settings">
 					<?php
 					wp_nonce_field( 'pprh_save_admin_options', 'pprh_admin_options_nonce' );
 					$this->save_user_options();
