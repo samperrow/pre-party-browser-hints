@@ -1,12 +1,35 @@
-jQuery(document).ready(function($) {
+// jQuery(document).ready(function($) {
+
+(function(global, factory) {
+	global.pprhAdminJS = factory();
+}(this, function() {
 	'use strict';
 
+	var $ = jQuery;
 	var currentURL = document.location.href;
 	var adminNoticeElem = document.getElementById('pprhNotice');
 	var globalTable = $('table#pprh-enter-data');
 	var emailSubmitBtn = document.getElementById('pprhSubmit');
+	var openCheckoutElem = $('input#pprhOpenCheckoutModal');
+	var bulkSubmitBtn = $('input#PPRHApply');
+	var adminURL = pprh_admin.admin_url;
 
-	emailSubmitBtn.addEventListener("click", emailValidate);
+	if (/page=pprh-plugin-settings/i.test(currentURL)) {
+		emailSubmitBtn.addEventListener("click", emailValidate);
+	}
+
+	if (openCheckoutElem) {
+		openCheckoutElem.on('click', function() {
+			return window.open('https://sphacks.io/checkout', '_blank', 'width=650,height=900,top=50');
+		});
+	}
+
+	bulkSubmitBtn.on('click', function(e) {
+		var val = $('select#pprh-option-select').val();
+		if (! confirm('Are you sure you want to ' + val + ' these hints?') ) {
+			e.preventDefault();
+		}
+	});
 
 	toggleDivs();
 	function toggleDivs() {
@@ -22,7 +45,19 @@ jQuery(document).ready(function($) {
 				tabs.removeClass('nav-tab-active');
 				$(this).addClass('nav-tab-active');
 				divs.removeClass('active');
-				$('div#pprh-' + className ).toggleClass('active');
+				$('div#pprh-' + className ).addClass('active');
+
+				if ( $(this).hasClass('settings') ) {
+					$('div#pprh-general').toggleClass('active');
+				}
+
+				else if ( $(this).hasClass('pprh-settings') ) {
+					$('#pprh-settings').addClass('active');
+					var id = $(this).attr('id').split('-settings')[0];
+					$('div.settings.pprh-content').removeClass('active');
+					$('div#' + id).addClass('active');
+				}
+
 				e.preventDefault();
 			});
 		});
@@ -113,20 +148,17 @@ jQuery(document).ready(function($) {
 				type_attr: elems.type_attr.val(),
 				action: op,
 				hint_id: (op === 'update') ? tableID.split('pprh-edit-')[1] : null,
+				post_id: getPostID()
 			};
 		}
 
 	}
 
-	function getRowElems(tableID) {
-		var table = $('table#' + tableID).find('tbody');
-		return {
-			url: table.find('input.pprh_url'),
-			hint_type: table.find('tr.pprhHintTypes'),
-			crossorigin: table.find('input.pprh_crossorigin'),
-			as_attr: table.find('select.pprh_as_attr'),
-			type_attr: table.find('select.pprh_type_attr'),
-		};
+	function getPostID() {
+		var postID = getUrlValue.call('post');
+		var homeOnly = document.getElementById('pprh-enter-data').getElementsByClassName('pprhHomePostHints')[0];
+		var result = (postID) ? postID : (homeOnly && homeOnly.checked) ? '0' : 'global';
+		return result;
 	}
 
 	function addDeleteHintListener() {
@@ -145,12 +177,15 @@ jQuery(document).ready(function($) {
 
 	function createAjaxReq(dataObj) {
 		var xhr = new XMLHttpRequest();
-		var url = pprh_nonce.admin_url + 'admin-ajax.php';
+		var url = adminURL + 'admin-ajax.php';
+		if (! dataObj.post_id) {
+			dataObj.post_id = getPostID();
+		}
 		xhr.open('POST', url, true);
 		xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
 		var json = JSON.stringify(dataObj);
 		var paginationPage = getUrlValue.call('paged');
-		var target = 'action=pprh_update_hints&pprh_data=' + json + '&val=' + pprh_nonce.val;
+		var target = 'action=pprh_update_hints&pprh_data=' + json + '&val=' + pprh_admin.val;
 
 		if (paginationPage.length > 0) {
 			target += '&paged=' + paginationPage;
@@ -180,6 +215,10 @@ jQuery(document).ready(function($) {
 	function addEventListeners() {
 		addDeleteHintListener();
 		addEditRowEventListener();
+
+		if (typeof pprhAdminJS === "object" && typeof pprhAdminJS.HideGlobalHints === "function") {
+			pprhAdminJS.HideGlobalHints();
+		}
 	}
 
 	function clearHintTable() {
@@ -192,9 +231,10 @@ jQuery(document).ready(function($) {
 
 		if (response.result && response.result.length > 0) {
 			outcome = response.result;
+			response.msg = (response.msg && response.msg.length > 0) ? response.msg : '';
 		} else {
 			outcome = 'error';
-			response.msg = 'Error saving resource hint.';
+			response.msg = 'Error saving resource hint.'
 		}
 
 		toggleAdminNotice('add', outcome);
@@ -232,12 +272,22 @@ jQuery(document).ready(function($) {
 		});
 	}
 
+	function getRowElems(tableID) {
+		var table = $('table#' + tableID).find('tbody');
+		return {
+			url: table.find('input.pprh_url'),
+			hint_type: table.find('tr.pprhHintTypes'),
+			crossorigin: table.find('input.pprh_crossorigin'),
+			as_attr: table.find('select.pprh_as_attr'),
+			type_attr: table.find('select.pprh_type_attr'),
+		};
+	}
 
 	function putHintInfoIntoElems(hintID) {
 		var json = $('input.pprh-hint-storage.' + hintID).val();
 		var data = JSON.parse(json);
-
 		var elems = getRowElems('pprh-edit-' + hintID);
+
 		elems.url.val(data.url);
 		elems.hint_type.find('input[value="' + data.hint_type + '"]').attr('checked', true);
 
@@ -275,4 +325,8 @@ jQuery(document).ready(function($) {
 
 	}
 
-});
+	return {
+		CreateAjaxReq: createAjaxReq
+	}
+
+}));

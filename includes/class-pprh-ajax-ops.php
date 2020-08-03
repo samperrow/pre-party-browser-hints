@@ -12,6 +12,7 @@ class Ajax_Ops {
 		'action' => '',
 		'result' => '',
 		'msg'    => '',
+		'post_id' => '',
 	);
 
 	private $data = array();
@@ -28,6 +29,7 @@ class Ajax_Ops {
 			$this->data = array( $data );
 			$action = $data->action;
 
+			do_action( 'pprh_load_ajax_ops_child' );
 			include_once PPRH_ABS_DIR . '/includes/class-pprh-utils.php';
 			include_once PPRH_ABS_DIR . '/includes/class-pprh-create-hints.php';
 			include_once PPRH_ABS_DIR . '/includes/class-pprh-display-hints.php';
@@ -38,15 +40,18 @@ class Ajax_Ops {
 				$this->results = $new_hint->results;
 			} elseif ( 'update' === $action ) {
 				$this->update_hint();
-			} else {
+			} elseif ( 'reset_post_prec' === $action ) {
+				$this->results = apply_filters( 'pprh_ajax_ops_reset_post_prec', $this->data );
+			} elseif ( 'reset_post_prerender' === $action ) {
+				$this->results = apply_filters( 'pprh_ajax_ops_reset_post_ga_prerender', $this->data );
+			}
+
+
+			elseif ( preg_match( '/disable|enable|delete/', $action ) ) {
 				$this->bulk_update();
 			}
 
-			$msg = ( 'success' === $this->results['result'] ) ? ' Resource hints ' . $action . 'd successfully.' : '';
-
-			$this->results['action'] = $action;
-			$this->results['msg'] = $msg . $this->results['msg'];
-
+			$this->results['post_id'] = $data->post_id;
 			$display_hints = new Display_Hints();
 			$display_hints->ajax_response( $this->results );
 			wp_die();
@@ -73,7 +78,8 @@ class Ajax_Ops {
 			array( '%s', '%s', '%s', '%s', '%s' ),
 			array( '%d' )
 		);
-		$this->results['result'] = ( $wpdb->result ) ? 'success' : 'failure';
+
+		$this->results = $this->set_str( $wpdb->result, 'Resource hints updated successfully.' );
 	}
 
 	private function bulk_update() {
@@ -95,7 +101,15 @@ class Ajax_Ops {
 			$wpdb->query( $sql );
 		}
 
-		$this->results['result'] = ( $wpdb->result ) ? 'success' : 'failure';
+		$msg = 'Resource hints ' . $data->action . 'd successfully.';
+		$this->results = $this->set_str( $wpdb->result, $msg );
+	}
+
+	protected function set_str( $result, $msg ) {
+		return array(
+			'msg'    => ( $result ) ? $msg : 'Error saving data.',
+			'result' => ( $result ) ? 'success' : 'failure',
+		);
 	}
 
 }

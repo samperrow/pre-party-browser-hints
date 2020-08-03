@@ -80,14 +80,13 @@ To activate the preloaded resource, you must call that file in HTML as you would
 
 == Changelog ==
 
-1. Most recent update: August 3, 2020.
+1. Most recent update: August 2, 2020.
 2. Version 1.7.3
 
-August 3, 2020:
+August 2, 2020:
 1) tested WP 5.5 compatbility
 2) corrected bug with updating hints
 3) simplified the sending of and creation of frontend hints
-4) Adjusted translations
 
 July 7, 2020:
 1) Replaced hardcoded "wp-admin" URL's with dynamic ones.

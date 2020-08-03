@@ -24,6 +24,22 @@ class Utils {
 		return strtolower( preg_replace( '/[^A-z|\/]/', '', $attr ) );
 	}
 
+	public static function strip_non_digits( $str ) {
+		return strtolower( preg_replace( '/[^0-9]/', '', $str ) );
+	}
+
+	public static function shorten_url( $str ) {
+		return esc_html( ( strlen( $str ) > 25 ) ? substr( $str, 0, 25 ) . '...' : $str );
+	}
+
+	public static function strip_non_alpha( $str ) {
+		return preg_replace( '/[^a-z]/', '', $str );
+	}
+
+	public static function getPostID() {
+		return ( isset( $_GET['post'] ) ) ? self::strip_non_digits( $_GET['post'] ) : null;
+	}
+
 	public static function pprh_show_update_result( $notice ) {
 		$msg = ( 'success' === $notice['result'] )
 			? 'Resource hints ' . $notice['action'] . ' successfully.'
@@ -55,16 +71,9 @@ class Utils {
 		<?php
 	}
 
-	public static function get_default_modal_post_types() {
-		global $wp_post_types;
-		$results = array();
-
-		foreach ( $wp_post_types as $post_type ) {
-			if ( $post_type->public && 'attachment' !== $post_type->name ) {
-				$results[] = $post_type->name;
-			}
-		}
-		return json_encode( ( count( $results ) > 0 ) ? $results :  array( 'page', 'post' ) );
+	public static function on_pprh_home() {
+	    global $pagenow;
+	    return ( 'admin.php' === $pagenow && isset( $_GET['page'] ) && 'pprh-plugin-settings' === $_GET['page'] );
 	}
 
 }

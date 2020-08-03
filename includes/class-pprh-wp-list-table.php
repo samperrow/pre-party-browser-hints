@@ -525,7 +525,7 @@ class WP_List_Table {
 		foreach ( $actions as $action => $link ) {
 			++$i;
 			( $i === $action_count ) ? $sep = '' : $sep = ' | ';
-			$out                          .= "<span class='$action'>$link$sep</span>";
+			$out .= "<span class='$action'>$link$sep</span>";
 		}
 		$out .= '</div>';
 
@@ -1158,7 +1158,7 @@ class WP_List_Table {
 		wp_nonce_field( 'ajax-custom-list-nonce', '_ajax_custom_list_nonce' );
 		$singular = $this->_args['singular'];
 
-		$this->on_post_page();
+//		$this->on_post_page();
 		$this->display_tablenav( 'top' );
 
 		$this->screen->render_screen_reader_content( 'heading_list' );
@@ -1271,8 +1271,11 @@ class WP_List_Table {
 	 * @param object $item The current item
 	 */
 	public function single_row( $item ) {
-//		$global_on_posts = ( $this->on_post_page && 'global' === $item['post_id'] ) ? 'pprhGlobalPostPage' : '';
-		echo sprintf( '<tr class="pprh-row hint %s" id="pprh-hint-%s">', $item['id'], $item['id'] );
+		$global = apply_filters( 'pprh_dh_is_global', $item );
+		if ( '' !== $global && 'global' !== $global ) {
+			$global = '';
+		}
+		echo sprintf( '<tr class="pprh-row hint %s %s" id="pprh-hint-%s">', $item['id'], $global, $item['id'] );
 		$this->single_row_columns( $item );
 		echo '</tr>';
 	}
@@ -1326,12 +1329,14 @@ class WP_List_Table {
 				echo '</th>';
 			} elseif ( method_exists( $this, '_column_' . $column_name ) ) {
 				echo $this->{'_column_' . $column_name}($item, $classes, $data, $primary);
-			} elseif ( method_exists( $this, 'column_' . $column_name ) ) {
+			}
+			elseif ( method_exists( $this, 'column_' . $column_name ) ) {
 				echo "<td $attributes>";
 				echo $this->{'column_' . $column_name}($item);
 				echo $this->handle_row_actions( $column_name, $primary );
 				echo '</td>';
-			} else {
+			}
+			else {
 				echo "<td $attributes>";
 				echo $this->column_default( $item, $column_name );
 				echo $this->handle_row_actions( $column_name, $primary );
@@ -1361,7 +1366,7 @@ class WP_List_Table {
      */
 	public function ajax_response( $results ) {
 		check_ajax_referer( 'pprh_table_nonce', 'val' );
-		$this->prepare_items();
+		$this->prepare_items( $results );
 
 		ob_start();
 		if ( ! empty( $_REQUEST['no_placeholder'] ) ) {

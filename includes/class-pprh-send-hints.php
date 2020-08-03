@@ -14,6 +14,7 @@ class Send_Hints {
 
 	public function __construct() {
 		add_action( 'wp_loaded', array( $this, 'get_resource_hints' ) );
+		do_action( 'pprh_load_send_hint_child' );
 	}
 
 	public function get_resource_hints() {
@@ -33,9 +34,15 @@ class Send_Hints {
 	public function get_hints() {
 		global $wpdb;
 		$table = PPRH_DB_TABLE;
+		$query = array(
+			'args' => array( 'enabled' ),
+		);
+
+		$query['sql'] = "SELECT url, hint_type, as_attr, type_attr, crossorigin FROM $table WHERE status = %s";
+		$new_query = apply_filters( 'pprh_sh_append_sql', $query );
 
 		return $wpdb->get_results(
-			$wpdb->prepare( "SELECT url, hint_type, as_attr, type_attr, crossorigin FROM $table WHERE status = %s", 'enabled' )
+			$wpdb->prepare( $new_query['sql'], $new_query['args'] )
 		);
 	}
 

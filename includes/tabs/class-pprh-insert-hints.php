@@ -15,7 +15,7 @@ class Insert_Hints {
 		new Display_Hints();
 		echo '</form>';
 		$new_hint = new New_Hint();
-		$new_hint->create_new_hint_table();
+		$new_hint->new_hint_table();
 		echo '</div>';
 	}
 

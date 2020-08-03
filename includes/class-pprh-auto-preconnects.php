@@ -6,14 +6,21 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class Ajax {
+class Auto_Preconnects {
 
-	public function __construct() {
-		if ( 'true' === get_option( 'pprh_allow_unauth' ) ) {
+	public $adv = false;
+
+	public function __construct( $load_adv ) {
+
+		if ( 'true' === get_option( 'pprh_prec_allow_unauth' ) ) {
 			$this->load();
 			add_action( 'wp_ajax_nopriv_pprh_post_domain_names', array( $this, 'pprh_post_domain_names' ) );
 		} elseif ( is_user_logged_in() ) {
 			$this->load();
+		}
+
+		if ( $load_adv ) {
+			do_action( 'pprh_load_auto_prec_child' );
 		}
 	}
 
@@ -23,15 +30,20 @@ class Ajax {
 	}
 
 	public function initialize() {
+
 		$preconnects = array(
 			'hints'     => array(),
 			'nonce'     => wp_create_nonce( 'pprh_ajax_nonce' ),
-			'admin_url' => admin_url()
+			'admin_url' => admin_url() . 'admin-ajax.php',
 		);
 
-		wp_register_script( 'pprh-find-domain-names', PPRH_REL_DIR . '/js/find-external-domains.js', null, PPRH_VERSION, true );
-		wp_localize_script( 'pprh-find-domain-names', 'pprh_data', $preconnects );
-		wp_enqueue_script( 'pprh-find-domain-names' );
+		$preconnects = apply_filters( 'pro_perform_reset', $preconnects );
+
+		if ( ! empty( $preconnects ) ) {
+			wp_register_script( 'pprh_find_domain_names', PPRH_REL_DIR . 'js/find-external-domains.js', null, PPRH_VERSION, true );
+			wp_localize_script( 'pprh_find_domain_names', 'pprh_data', $preconnects );
+			wp_enqueue_script( 'pprh_find_domain_names' );
+		}
 	}
 
 	private function remove_prev_auto_preconnects() {
@@ -50,7 +62,7 @@ class Ajax {
 			include_once PPRH_ABS_DIR . '/includes/class-pprh-utils.php';
 			include_once PPRH_ABS_DIR . '/includes/class-pprh-create-hints.php';
 
-			$arr  = array();
+			$hint_arr  = array();
 			$data = json_decode( wp_unslash( $_POST['pprh_data'] ), false );
 
 			foreach ( $data->hints as $hint ) {
@@ -58,19 +70,21 @@ class Ajax {
 				$obj->url = $hint;
 				$obj->hint_type = 'preconnect';
 				$obj->auto_created = true;
-				array_push($arr, $obj );
+				$obj = apply_filters( 'pprh_prec_verify', $obj, $data );
+				array_push($hint_arr, $obj );
 			}
 
 			$this->remove_prev_auto_preconnects();
-			new Create_Hints( $arr );
+			new Create_Hints( $hint_arr );
 			$this->update_options();
+			apply_filters( 'pprh_prec_update', $data );
 			wp_die();
 		} else {
-			exit();
+			exit;
 		}
 	}
 
 	private function update_options() {
-		update_option( 'pprh_preconnects_set', 'true' );
+		update_option( 'pprh_prec_preconnects_set', 'true' );
 	}
 }

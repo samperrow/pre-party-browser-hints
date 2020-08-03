@@ -13,7 +13,7 @@ class Admin_Tabs {
 	public function __construct() {
 		include_once PPRH_ABS_DIR . '/includes/class-pprh-display-hints.php';
 		include_once PPRH_ABS_DIR . '/includes/class-pprh-new-hint.php';
-
+        do_action( 'pprh_load_admin_tabs_child' );
 		$this->settings_page();
 	}
 
@@ -36,19 +36,25 @@ class Admin_Tabs {
 			'info'         => 'Resource Hint Information',
 		);
 
+		$tabs = apply_filters( 'pprh_pro_show_tabs', $tabs );
+
 		echo '<h2 class="nav-tab-wrapper">';
 		foreach ( $tabs as $tab => $name ) {
-			echo "<a class='nav-tab $tab' href='?page=pprh-plugin-settings'>" . $name . '</a>';
+			echo "<a class='nav-tab $tab' href=''>" . $name . '</a>';
 		}
 		echo '</h2>';
 		echo '<div class="pprh-box">';
 
-		foreach ($tabs as $tab => $name) {
-			include_once PPRH_ABS_DIR . "/includes/tabs/class-pprh-$tab.php";
-		}
-
+		$this->include_files();
 		$this->show_footer();
 		echo '</div>';
+	}
+
+	private function include_files() {
+		include_once PPRH_ABS_DIR . "/includes/tabs/class-pprh-insert-hints.php";
+		include_once PPRH_ABS_DIR . "/includes/tabs/class-pprh-settings.php";
+		include_once PPRH_ABS_DIR . "/includes/tabs/class-pprh-info.php";
+        do_action( 'pprh_pro_add_files' );
 	}
 
 	public function show_footer() {
