@@ -13,7 +13,7 @@
  * Text Domain:       pprh
  * Domain Path:       /languages
  *
- * last edited August 2, 2020
+ * last edited August 3, 2020
  *
  * Copyright 2016  Sam Perrow  (email : sam.perrow399@gmail.com)
  *
@@ -66,7 +66,7 @@ final class Init {
 			'manage_options',
 			'pprh-plugin-settings',
 			array( $this, 'load_files' ),
-			PPRH_REL_DIR . '/images/lightning.png'
+			PPRH_REL_DIR . 'images/lightning.png'
 		);
 
 		add_action( "load-{$settings_page}", array( $this, 'screen_option' ) );
@@ -96,9 +96,9 @@ final class Init {
 				'admin_url' => admin_url()
 			);
 
-			wp_register_script( 'pprh_admin_js', plugin_dir_url( __FILE__ ) . 'js/admin.js', array( 'jquery' ), PPRH_VERSION, true );
+			wp_register_script( 'pprh_admin_js', PPRH_REL_DIR . 'js/admin.js', array( 'jquery' ), PPRH_VERSION, true );
 			wp_localize_script( 'pprh_admin_js', 'pprh_nonce', $ajax_data );
-			wp_register_style( 'pprh_styles_css', plugin_dir_url( __FILE__ ) . '/css/styles.css', null, PPRH_VERSION, 'all' );
+			wp_register_style( 'pprh_styles_css', PPRH_REL_DIR . 'css/styles.css', null, PPRH_VERSION, 'all' );
 
 			wp_enqueue_script( 'pprh_admin_js' );
 			wp_enqueue_style( 'pprh_styles_css' );
