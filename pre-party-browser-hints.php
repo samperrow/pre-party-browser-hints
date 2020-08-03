@@ -3,7 +3,7 @@
  * Plugin Name:       Pre* Party Resource Hints
  * Plugin URI:        https://wordpress.org/plugins/pre-party-browser-hints/
  * Description:       Take advantage of the browser resource hints DNS-Prefetch, Prerender, Preconnect, Prefetch, and Preload to improve page load time.
- * Version:           1.7.2.2
+ * Version:           1.7.3
  * Requires at least: 4.4
  * Requires PHP:      5.6.30
  * Author:            Sam Perrow
@@ -13,7 +13,7 @@
  * Text Domain:       pprh
  * Domain Path:       /languages
  *
- * last edited July 7, 2020
+ * last edited August 2, 2020
  *
  * Copyright 2016  Sam Perrow  (email : sam.perrow399@gmail.com)
  *
@@ -48,6 +48,7 @@ final class Init {
 			include_once PPRH_ABS_DIR . '/includes/class-pprh-ajax-ops.php';
 			add_action( 'admin_menu', array( $this, 'load_admin_page' ) );
 		} else {
+			$this->pprh_disable_wp_hints();
 			include_once PPRH_ABS_DIR . '/includes/class-pprh-send-hints.php';
 		}
 
@@ -81,7 +82,7 @@ final class Init {
 		$abs_dir = untrailingslashit( __DIR__ );
 		$rel_dir = plugins_url() . '/pre-party-browser-hints/';
 
-		define( 'PPRH_VERSION', '2.0.2' );
+		define( 'PPRH_VERSION', '1.7.3' );
 		define( 'PPRH_DB_TABLE', $table );
 		define( 'PPRH_ABS_DIR', $abs_dir );
 		define( 'PPRH_REL_DIR', $rel_dir );
@@ -95,7 +96,7 @@ final class Init {
 				'admin_url' => admin_url()
 			);
 
-			wp_register_script( 'pprh_admin_js', plugin_dir_url( __FILE__ ) . 'js/admin.js', null, PPRH_VERSION, true );
+			wp_register_script( 'pprh_admin_js', plugin_dir_url( __FILE__ ) . 'js/admin.js', array( 'jquery' ), PPRH_VERSION, true );
 			wp_localize_script( 'pprh_admin_js', 'pprh_nonce', $ajax_data );
 			wp_register_style( 'pprh_styles_css', plugin_dir_url( __FILE__ ) . '/css/styles.css', null, PPRH_VERSION, 'all' );
 
@@ -187,6 +188,12 @@ final class Init {
         ) $charset;";
 
 		dbDelta( $sql, true );
+	}
+
+	public function pprh_disable_wp_hints() {
+		if ( 'true' === get_option( 'pprh_disable_wp_hints' ) ) {
+			return remove_action( 'wp_head', 'wp_resource_hints', 2 );
+		}
 	}
 
 }
