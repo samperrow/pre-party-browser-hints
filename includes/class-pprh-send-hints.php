@@ -10,14 +10,14 @@ class Send_Hints {
 
 	protected $hints = array();
 
-	protected $hint_location = '';
+	protected $send_hints_in_html = '';
 
 	public function __construct() {
 		add_action( 'wp_loaded', array( $this, 'get_resource_hints' ) );
 	}
 
 	public function get_resource_hints() {
-		$this->hint_location = get_option('pprh_html_head');
+		$this->send_hints_in_html = get_option('pprh_html_head');
 
 		$this->hints = $this->get_hints();
 
@@ -25,7 +25,7 @@ class Send_Hints {
 			return;
 		}
 
-		( 'false' === $this->hint_location && ! headers_sent() )
+		( 'false' === $this->send_hints_in_html && ! headers_sent() )
 			? add_action('send_headers', array($this, 'send_in_http_header'), 1, 0)
 			: add_action('wp_head', array($this, 'send_to_html_head'), 1, 0);
 	}
@@ -42,9 +42,9 @@ class Send_Hints {
 	public function send_to_html_head() {
 		foreach ( $this->hints as $key => $val ) {
 			$attrs = '';
-			$attrs .= $this->add_html_attr( 'as', $val->as_attr );
-			$attrs .= $this->add_html_attr( 'type', $val->type_attr );
-			$attrs .= $this->add_html_attr( 'crossorigin', trim( $val->crossorigin ) );
+			$attrs .= $this->add_attr( 'as', $val->as_attr );
+			$attrs .= $this->add_attr( 'type', $val->type_attr );
+			$attrs .= $this->add_attr( 'crossorigin', trim( $val->crossorigin ) );
 			echo sprintf( '<link href="%s" rel="%s"%s>', $val->url, $val->hint_type, $attrs );
 		}
 	}
@@ -54,9 +54,9 @@ class Send_Hints {
 
 		foreach ( $this->hints as $key => $val ) {
 			$attrs = '';
-			$attrs .= $this->add_header_attr( 'as', $val->as_attr );
-			$attrs .= $this->add_header_attr( 'type', $val->type_attr );
-			$attrs .= $this->add_header_attr( 'crossorigin', trim( $val->crossorigin ) );
+			$attrs .= $this->add_attr( 'as', $val->as_attr );
+			$attrs .= $this->add_attr( 'type', $val->type_attr );
+			$attrs .= $this->add_attr( 'crossorigin', trim( $val->crossorigin ) );
 			$str = sprintf( '<%s>; rel=%s;%s', $val->url, $val->hint_type, $attrs );
 			$str = rtrim( $str, ';' );
 			$output .= $str . ', ';
@@ -66,22 +66,13 @@ class Send_Hints {
 		header( $header_str );
 	}
 
-	private function add_header_attr( $name, $val ) {
+	private function add_attr( $name, $val ) {
 		if ( ! empty( $val ) ) {
 			$attr = Utils::clean_hint_attr( $val );
-			return " $name=$attr;";
-		} else {
-			return '';
+			$attr = ( 'true' === $this->send_hints_in_html ) ? "\"$attr\"" : "$attr;";
+			return ' ' . ( ( 'crossorigin' === $name ) ? $name : "$name=" . $attr );
 		}
-	}
-
-	private function add_html_attr( $name, $val ) {
-		if ( ! empty( $val ) ) {
-			$attr = Utils::clean_hint_attr( $val );
-			return " $name=\"$attr\"";
-		} else {
-			return '';
-		}
+		return '';
 	}
 
 }

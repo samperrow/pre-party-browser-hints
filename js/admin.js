@@ -108,7 +108,7 @@ jQuery(document).ready(function($) {
 			return {
 				url: hint_url,
 				hint_type: hintType,
-				crossorigin: elems.crossorigin.attr('checked') ? 'crossorigin' : '',
+				crossorigin: elems.crossorigin.is(':checked') ? 'crossorigin' : '',
 				as_attr: elems.as_attr.val(),
 				type_attr: elems.type_attr.val(),
 				action: op,
@@ -144,7 +144,6 @@ jQuery(document).ready(function($) {
 	}
 
 	function createAjaxReq(dataObj) {
-		var host = document.location.origin;
 		var xhr = new XMLHttpRequest();
 		var url = pprh_nonce.admin_url + 'admin-ajax.php';
 		xhr.open('POST', url, true);
@@ -260,7 +259,7 @@ jQuery(document).ready(function($) {
 		var checkboxes = $('table.pprh-post-table tbody th.check-column input:checkbox');
 
 		$.each(checkboxes, function() {
-			if ($(this).attr('checked')) {
+			if ($(this).is(':checked')) {
 				return idArr.push($(this).val());
 			}
 		});
