@@ -34,6 +34,7 @@ class Admin_Tabs {
 			'insert-hints' => 'Insert Hints',
 			'settings'     => 'Settings',
 			'info'         => 'Resource Hint Information',
+            'upgrade'      => 'Upgrade to Pro',
 		);
 
 		$tabs = apply_filters( 'pprh_pro_show_tabs', $tabs );
@@ -51,10 +52,11 @@ class Admin_Tabs {
 	}
 
 	private function include_files() {
-		include_once PPRH_ABS_DIR . "/includes/tabs/class-pprh-insert-hints.php";
-		include_once PPRH_ABS_DIR . "/includes/tabs/class-pprh-settings.php";
-		include_once PPRH_ABS_DIR . "/includes/tabs/class-pprh-info.php";
-        do_action( 'pprh_pro_add_files' );
+		include_once PPRH_ABS_DIR . '/includes/tabs/class-pprh-insert-hints.php';
+		include_once PPRH_ABS_DIR . '/includes/tabs/class-pprh-settings.php';
+		include_once PPRH_ABS_DIR . '/includes/tabs/class-pprh-info.php';
+		include_once PPRH_ABS_DIR . '/includes/tabs/class-pprh-upgrade.php';
+		do_action( 'pprh_pro_add_files' );
 	}
 
 	public function show_footer() {

@@ -8,7 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class Auto_Preconnects {
 
-	public $adv = false;
+	public $load_adv = false;
 
 	public function __construct( $load_adv ) {
 
@@ -20,6 +20,7 @@ class Auto_Preconnects {
 		}
 
 		if ( $load_adv ) {
+			$this->load_adv = $load_adv;
 			do_action( 'pprh_load_auto_prec_child' );
 		}
 	}
@@ -37,22 +38,15 @@ class Auto_Preconnects {
 			'admin_url' => admin_url() . 'admin-ajax.php',
 		);
 
-		$preconnects = apply_filters( 'pro_perform_reset', $preconnects );
+		if ( $this->load_adv ) {
+			$preconnects = apply_filters( 'pro_perform_reset', $preconnects );
+		}
 
 		if ( ! empty( $preconnects ) ) {
 			wp_register_script( 'pprh_find_domain_names', PPRH_REL_DIR . 'js/find-external-domains.js', null, PPRH_VERSION, true );
 			wp_localize_script( 'pprh_find_domain_names', 'pprh_data', $preconnects );
 			wp_enqueue_script( 'pprh_find_domain_names' );
 		}
-	}
-
-	private function remove_prev_auto_preconnects() {
-		global $wpdb;
-		$table = PPRH_DB_TABLE;
-
-		$wpdb->query(
-			$wpdb->prepare( "DELETE FROM $table WHERE auto_created = %d AND hint_type = %s", 1, 'preconnect' )
-		);
 	}
 
 	public function pprh_post_domain_names() {
@@ -86,5 +80,14 @@ class Auto_Preconnects {
 
 	private function update_options() {
 		update_option( 'pprh_prec_preconnects_set', 'true' );
+	}
+
+	private function remove_prev_auto_preconnects() {
+		global $wpdb;
+		$table = PPRH_DB_TABLE;
+
+		$wpdb->query(
+			$wpdb->prepare( "DELETE FROM $table WHERE auto_created = %d AND hint_type = %s", 1, 'preconnect' )
+		);
 	}
 }

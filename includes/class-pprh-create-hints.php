@@ -29,19 +29,19 @@ class Create_Hints {
 	public function init( $hints ) {
 		foreach ( $hints as $hint ) {
 			$new_hint = (object) $this->create_hint( $hint );
-			$post_id = $new_hint->post_id;
+//			$post_id = $new_hint->post_id;
 
 			$dup_hints_exist = apply_filters( 'pprh_hc_dup_hints_exist', $new_hint );
 
-			if ( $dup_hints_exist['result'] ) {
+			if ( ! empty( $dup_hints_exist->result ) ) {
 				$this->remove_dup_hints( $new_hint );
 			}
 
-			if ( $dup_hints_exist['make_global'] ) {
+			if ( ! empty( $dup_hints_exist->make_global ) ) {
 				$new_hint->post_id = 'global';
 			}
 
-			if ( strlen( $dup_hints_exist['msg'] ) > 0 ) {
+			if ( ! empty( $dup_hints_exist->msg ) && '' !== $dup_hints_exist->msg ) {
 				$this->check_and_append_str( $dup_hints_exist['msg'] );
 				$this->results['result'] = 'warning';
 			} else {

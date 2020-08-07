@@ -59,8 +59,6 @@ class Settings {
 	}
 
 	public function save_user_options() {
-		global $wpdb;
-
 		if ( isset( $_POST['pprh_save_options'] ) && check_admin_referer( 'pprh_save_admin_options', 'pprh_admin_options_nonce' ) ) {
 
             if ( isset( $_POST['pprh_save_options'] ) ) {
@@ -70,10 +68,9 @@ class Settings {
                 update_option( 'pprh_html_head', wp_unslash( $_POST['html_head'] ) );
 
                 do_action( 'pprh_pro_save_settings' );
-
-            } elseif ( isset( $_POST['pprh_prec_preconnects_set'] ) ) {
-                update_option( 'pprh_prec_preconnects_set', 'false' );
             }
+		} elseif ( isset( $_POST['pprh_prec_preconnects_set'] ) ) {
+			update_option( 'pprh_prec_preconnects_set', 'false' );
 		}
 	}
 

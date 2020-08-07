@@ -53,7 +53,7 @@ class Init {
 			include_once PPRH_ABS_DIR . '/includes/class-pprh-ajax-ops.php';
 			add_action( 'admin_menu', array( $this, 'load_admin_page' ) );
 		} elseif ( ! wp_doing_ajax() ) {
-			$this->pprh_disable_wp_hints();
+			$this->disable_wp_hints();
 			include_once PPRH_ABS_DIR . '/includes/class-pprh-send-hints.php';
 		}
 
@@ -62,14 +62,24 @@ class Init {
 			include_once PPRH_ABS_DIR . '/includes/class-pprh-auto-preconnects.php';
 			new Auto_Preconnects( $this->load_adv );
 		}
+
 	}
 
 	public function load_auto_preconnects() {
 		$preconnects_set = get_option( 'pprh_prec_preconnects_set' );
 		$autoload = get_option( 'pprh_prec_autoload_preconnects' );
-		$this->load_adv = apply_filters( 'pprh_prec_autoload', null );
+		$this->load_adv = apply_filters( 'pprh_prec_autoload', false );
 
-		return ( 'true' === $autoload && ('false' === $preconnects_set || $this->load_adv ) );
+		if ( 'true' === $autoload ) {
+
+			if ( $this->load_adv ) {
+				// try to get post id from requested URL, then see if that post id needs an auto prec
+				return true;
+			} else {
+				return 'false' === $preconnects_set;
+			}
+		}
+
 	}
 
 	public function load_admin_page() {
@@ -113,6 +123,8 @@ class Init {
 
 			wp_register_script( 'pprh_admin_js', PPRH_REL_DIR . 'js/admin.js', null, PPRH_VERSION, true );
 			wp_localize_script( 'pprh_admin_js', 'pprh_admin', $ajax_data );
+			wp_enqueue_script( 'pprh_admin_js' );
+
 			wp_enqueue_style( 'pprh_styles_css', PPRH_REL_DIR . 'css/styles.css', null, PPRH_VERSION, 'all' );
 		}
 	}
@@ -216,7 +228,7 @@ class Init {
 		dbDelta( $sql, true );
 	}
 
-	public function pprh_disable_wp_hints() {
+	public function disable_wp_hints() {
 		if ( 'true' === get_option( 'pprh_disable_wp_hints' ) ) {
 			return remove_action( 'wp_head', 'wp_resource_hints', 2 );
 		}

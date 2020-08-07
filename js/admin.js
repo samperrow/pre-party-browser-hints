@@ -13,15 +13,10 @@
 	var openCheckoutElem = $('input#pprhOpenCheckoutModal');
 	var bulkSubmitBtn = $('input#PPRHApply');
 	var adminURL = pprh_admin.admin_url;
+	var openCheckoutElem = $('input#pprhOpenCheckoutModal');
 
 	if (/page=pprh-plugin-settings/i.test(currentURL)) {
 		emailSubmitBtn.addEventListener("click", emailValidate);
-	}
-
-	if (openCheckoutElem) {
-		openCheckoutElem.on('click', function() {
-			return window.open('https://sphacks.io/checkout', '_blank', 'width=650,height=900,top=50');
-		});
 	}
 
 	bulkSubmitBtn.on('click', function(e) {
@@ -323,6 +318,12 @@
 			window.alert('Please select a row(s) for bulk updating.');
 		}
 
+	}
+
+	if (openCheckoutElem) {
+		openCheckoutElem.on('click', function() {
+			return window.open('https://sphacks.io/checkout', '_blank', 'width=650,height=900,top=50');
+		});
 	}
 
 	return {
