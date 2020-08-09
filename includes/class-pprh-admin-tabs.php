@@ -43,8 +43,7 @@ class Admin_Tabs {
 		foreach ( $tabs as $tab => $name ) {
 			echo "<a class='nav-tab $tab' href=''>" . $name . '</a>';
 		}
-		echo '</h2>';
-		echo '<div class="pprh-box">';
+		echo '</h2><div class="pprh-box">';
 
 		$this->include_files();
 		$this->show_footer();

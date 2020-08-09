@@ -10,7 +10,6 @@
 	var adminNoticeElem = document.getElementById('pprhNotice');
 	var globalTable = $('table#pprh-enter-data');
 	var emailSubmitBtn = document.getElementById('pprhSubmit');
-	var openCheckoutElem = $('input#pprhOpenCheckoutModal');
 	var bulkSubmitBtn = $('input#PPRHApply');
 	var adminURL = pprh_admin.admin_url;
 	var openCheckoutElem = $('input#pprhOpenCheckoutModal');

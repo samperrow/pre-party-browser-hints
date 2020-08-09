@@ -49,8 +49,6 @@ class Settings {
 			'auto-preconnect' => 'Auto Preconnect Settings',
 		);
 
-		$tabs = apply_filters( 'pprh_pro_load_auto_prerender', $tabs );
-
 		echo '<h2 class="nav-tab-wrapper">';
 		foreach ( $tabs as $tab => $name ) {
 			echo "<a id='pprh-$tab-settings' class='nav-tab pprh-settings' href=''>" . $name . '</a>';
