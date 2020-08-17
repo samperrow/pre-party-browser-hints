@@ -41,6 +41,7 @@ class Init {
 		add_filter( 'set-screen-option', array( $this, 'apply_wp_screen_options' ), 10, 3 );
 		register_activation_hook( __FILE__, array( $this, 'activate_plugin' ) );
 		add_action( 'wpmu_new_blog', array( $this, 'activate_plugin' ) );
+		add_action( 'admin_notices', array( $this, 'admin_notice' ) );
 
 		do_action( 'pprh_pro_init' );
 	}
@@ -104,11 +105,13 @@ class Init {
 		$table = $wpdb->prefix . 'pprh_table';
 		$abs_dir = untrailingslashit( __DIR__ );
 		$rel_dir = plugins_url() . '/pre-party-browser-hints/';
+		$home_url = admin_url() . 'admin.php?page=pprh-plugin-setttings';
 
 		define( 'PPRH_VERSION', '1.8.0' );
 		define( 'PPRH_DB_TABLE', $table );
 		define( 'PPRH_ABS_DIR', $abs_dir );
 		define( 'PPRH_REL_DIR', $rel_dir );
+		define( 'PPRH_HOME_URL', $home_url );
 	}
 
 	// Register and call the CSS and JS we need only on the needed page.
@@ -232,5 +235,11 @@ class Init {
 		if ( 'true' === get_option( 'pprh_disable_wp_hints' ) ) {
 			return remove_action( 'wp_head', 'wp_resource_hints', 2 );
 		}
+	}
+
+	public function admin_notice() {
+		$class = 'pprh-notice hidden notice is-dismissible';
+		$msg = __( '', 'pprh' );
+		printf( '<div id="%1$s" class="%2$s"><p>%3$s</p></div>', esc_attr( 'pprh-notice' ), esc_attr( $class ), esc_html( $msg ) );
 	}
 }

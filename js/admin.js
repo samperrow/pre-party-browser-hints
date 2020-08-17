@@ -7,7 +7,7 @@
 
 	var $ = jQuery;
 	var currentURL = document.location.href;
-	var adminNoticeElem = document.getElementById('pprhNotice');
+	var adminNoticeElem = document.getElementById('pprh-notice');
 	var globalTable = $('table#pprh-enter-data');
 	var emailSubmitBtn = document.getElementById('pprhSubmit');
 	var bulkSubmitBtn = $('input#PPRHApply');
@@ -16,6 +16,10 @@
 
 	if (/page=pprh-plugin-settings/i.test(currentURL)) {
 		emailSubmitBtn.addEventListener("click", emailValidate);
+	}
+
+	if ('' !== document.location.hash) {
+
 	}
 
 	bulkSubmitBtn.on('click', function(e) {
@@ -241,7 +245,9 @@
 	}
 
 	function toggleAdminNotice(action, outcome) {
-		adminNoticeElem.classList[action]('active');
+		adminNoticeElem.classList.toggle('hidden');
+		adminNoticeElem.classList.toggle('active');
+
 		adminNoticeElem.classList[action]('notice-' + outcome);
 	}
 
@@ -326,7 +332,8 @@
 	}
 
 	return {
-		CreateAjaxReq: createAjaxReq
+		CreateAjaxReq: createAjaxReq,
+		ToggleAdminNotice: toggleAdminNotice
 	}
 
 }));

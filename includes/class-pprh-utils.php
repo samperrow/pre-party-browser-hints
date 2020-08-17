@@ -60,20 +60,31 @@ class Utils {
 		echo '<div style="margin: 10px 0;" class="inline notice notice-' . $notice['result'] . ' is-dismissible"><p>' . esc_html( $msg ) . '</p></div>';
 	}
 
-	public static function pprh_notice() {
-		?>
-		<div id="pprhNotice" class="inline notice is-dismissible">
-			<p></p>
-			<button type="button" class="notice-dismiss">
-				<span class="screen-reader-text">Dismiss this notice.</span>
-			</button>
-		</div>
-		<?php
-	}
-
 	public static function on_pprh_home() {
 	    global $pagenow;
 	    return ( 'admin.php' === $pagenow && isset( $_GET['page'] ) && 'pprh-plugin-settings' === $_GET['page'] );
+	}
+
+	public static function admin_notice( $msg, $status ) {
+		?>
+		<script>
+            function pprhShowNotice() {
+                var msg = "<?php echo $msg; ?>";
+                var status = "<?php echo $status; ?>";
+                var adminNoticeElem = document.getElementById('pprh-notice');
+                adminNoticeElem.classList.toggle('hidden');
+                adminNoticeElem.classList.toggle('active');
+                adminNoticeElem.classList.toggle('notice-' + status)
+                adminNoticeElem.getElementsByTagName('p')[0].innerText = msg;
+
+                setTimeout(function() {
+                    adminNoticeElem.classList.toggle('hidden');
+                }, 10000 );
+
+            }
+            pprhShowNotice();
+		</script>
+		<?php
 	}
 
 }

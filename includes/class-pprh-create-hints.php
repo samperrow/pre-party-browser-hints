@@ -29,7 +29,6 @@ class Create_Hints {
 	public function init( $hints ) {
 		foreach ( $hints as $hint ) {
 			$new_hint = (object) $this->create_hint( $hint );
-//			$post_id = $new_hint->post_id;
 
 			$dup_hints_exist = apply_filters( 'pprh_hc_dup_hints_exist', $new_hint );
 
