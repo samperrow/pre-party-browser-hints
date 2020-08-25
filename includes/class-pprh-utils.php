@@ -71,14 +71,10 @@ class Utils {
             function pprhShowNotice() {
                 var msg = "<?php echo $msg; ?>";
                 var status = "<?php echo $status; ?>";
-                var adminNoticeElem = document.getElementById('pprh-notice');
-                adminNoticeElem.classList.toggle('hidden');
-                adminNoticeElem.classList.toggle('active');
-                adminNoticeElem.classList.toggle('notice-' + status)
-                adminNoticeElem.getElementsByTagName('p')[0].innerText = msg;
+                pprhAdminJS.ToggleAdminNotice(status, msg);
 
                 setTimeout(function() {
-                    adminNoticeElem.classList.toggle('hidden');
+                    pprhAdminJS.ToggleAdminNotice(status, '');
                 }, 10000 );
 
             }

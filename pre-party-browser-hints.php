@@ -52,6 +52,7 @@ class Init {
 
 		if ( is_admin() ) {
 			include_once PPRH_ABS_DIR . '/includes/class-pprh-ajax-ops.php';
+			include_once PPRH_ABS_DIR . '/includes/class-pprh-verify-hints.php';
 			add_action( 'admin_menu', array( $this, 'load_admin_page' ) );
 		} elseif ( ! wp_doing_ajax() ) {
 			$this->disable_wp_hints();
@@ -120,9 +121,11 @@ class Init {
 
 		if ( preg_match( '/' . $regex . '/i', $hook ) ) {
 			$ajax_data = array(
-				'val'       => wp_create_nonce( 'pprh_table_nonce' ),
-				'admin_url' => admin_url()
+				'nonce'      => wp_create_nonce( 'pprh_table_nonce' ),
+				'ajax_url' => admin_url() . 'admin-ajax.php',
 			);
+
+//			$admin_js = filemtime( PPRH_ABS_DIR . '/js/admin.js' );
 
 			wp_register_script( 'pprh_admin_js', PPRH_REL_DIR . 'js/admin.js', null, PPRH_VERSION, true );
 			wp_localize_script( 'pprh_admin_js', 'pprh_admin', $ajax_data );

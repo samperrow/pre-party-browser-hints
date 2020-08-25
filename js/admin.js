@@ -11,15 +11,10 @@
 	var globalTable = $('table#pprh-enter-data');
 	var emailSubmitBtn = document.getElementById('pprhSubmit');
 	var bulkSubmitBtn = $('input#PPRHApply');
-	var adminURL = pprh_admin.admin_url;
 	var openCheckoutElem = $('input#pprhOpenCheckoutModal');
 
 	if (/page=pprh-plugin-settings/i.test(currentURL)) {
 		emailSubmitBtn.addEventListener("click", emailValidate);
-	}
-
-	if ('' !== document.location.hash) {
-
 	}
 
 	bulkSubmitBtn.on('click', function(e) {
@@ -130,7 +125,7 @@
 		} else if (hintObj.hint_type === 'preload' && ! hintObj.as_attr) {
 			window.alert("You must specify an 'as' attribute when using preload hints.");
 		} else {
-			createAjaxReq(hintObj);
+			createAjaxReq(hintObj, 'pprh_update_hints', pprh_admin.nonce);
 		}
 
 		function getHintType() {
@@ -168,22 +163,21 @@
 				return createAjaxReq({
 					hint_ids: [hintID],
 					action: 'delete',
-				});
+				}, 'pprh_update_hints', pprh_admin.nonce);
 			}
 		});
 	}
 
-	function createAjaxReq(dataObj) {
+	function createAjaxReq(dataObj, action, nonce) {
 		var xhr = new XMLHttpRequest();
-		var url = adminURL + 'admin-ajax.php';
 		if (! dataObj.post_id) {
 			dataObj.post_id = getPostID();
 		}
-		xhr.open('POST', url, true);
+		xhr.open('POST', pprh_ga.ajax_url, true);
 		xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
 		var json = JSON.stringify(dataObj);
 		var paginationPage = getUrlValue.call('paged');
-		var target = 'action=pprh_update_hints&pprh_data=' + json + '&val=' + pprh_admin.val;
+		var target = 'action=' + action + '&pprh_data=' + json + '&nonce=' + nonce;
 
 		if (paginationPage.length > 0) {
 			target += '&paged=' + paginationPage;
@@ -235,19 +229,18 @@
 			response.msg = 'Error saving resource hint.'
 		}
 
-		toggleAdminNotice('add', outcome);
-		adminNoticeElem.getElementsByTagName('p')[0].innerHTML = response.msg;
+		toggleAdminNotice(outcome, response.msg);
+
 
 		setTimeout(function() {
-			toggleAdminNotice('remove', outcome);
+			toggleAdminNotice(outcome, '');
 		}, 10000 );
-
 	}
 
-	function toggleAdminNotice(action, outcome) {
-		adminNoticeElem.classList.toggle('hidden');
-		adminNoticeElem.classList.toggle('active');
-
+	function toggleAdminNotice(outcome, msg) {
+		var action = (msg === "") ? 'remove' : 'add';
+		adminNoticeElem.getElementsByTagName('p')[0].innerHTML = msg;
+		adminNoticeElem.classList[action]('active');
 		adminNoticeElem.classList[action]('notice-' + outcome);
 	}
 
@@ -318,7 +311,7 @@
 			return createAjaxReq({
 				action: op,
 				hint_ids: idArr,
-			});
+			}, 'pprh_update_hints', pprh_admin.nonce);
 		} else {
 			window.alert('Please select a row(s) for bulk updating.');
 		}
@@ -337,3 +330,22 @@
 	}
 
 }));
+
+
+
+function createAjaxReq2() {
+	var xhr = new XMLHttpRequest();
+	xhr.open('get', 'https://sphacks.local', true);
+	xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+	xhr.send();
+
+	xhr.onreadystatechange = function () {
+		if (xhr.readyState === 4 && xhr.status === 200) {
+			if (xhr.response.length > 0) {
+
+				console.log(xhr);
+				console.log(xhr.getResponseHeader('Link'));
+			}
+		}
+	}
+}

@@ -24,7 +24,7 @@ class Ajax_Ops {
 	public function pprh_update_hints() {
 		if ( isset( $_POST['pprh_data'] ) && wp_doing_ajax() ) {
 
-			check_ajax_referer( 'pprh_table_nonce', 'val' );
+			check_ajax_referer( 'pprh_table_nonce', 'nonce' );
 			$data = (object) json_decode( wp_unslash( $_POST['pprh_data'] ), true );
 			$this->data = array( $data );
 			$action = $data->action;
@@ -45,7 +45,6 @@ class Ajax_Ops {
 			} elseif ( 'reset_post_prerender' === $action ) {
 				$this->results = apply_filters( 'pprh_ajax_ops_reset_post_ga_prerender', $this->data );
 			}
-
 
 			elseif ( preg_match( '/disable|enable|delete/', $action ) ) {
 				$this->bulk_update();

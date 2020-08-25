@@ -125,7 +125,7 @@ class Display_Hints extends WP_List_Table {
 			array(
 				'total_items' => $total_items,
 				'per_page'    => $this->hints_per_page,
-				'total_pages' => ceil( $total_items / $this->hints_per_page ),
+				'total_pages' => (int) ceil( $total_items / $this->hints_per_page ),
 				'orderby'     => ! empty( $_REQUEST['orderby'] ) && '' !== $_REQUEST['orderby'] ? $_REQUEST['orderby'] : 'title',
 				'order'       => ! empty( $_REQUEST['order'] ) && '' !== $_REQUEST['order'] ? $_REQUEST['order'] : 'asc',
 			)
