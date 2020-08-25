@@ -69,6 +69,8 @@ class Settings {
             }
 		} elseif ( isset( $_POST['pprh_prec_preconnects_set'] ) ) {
 			update_option( 'pprh_prec_preconnects_set', 'false' );
+		} elseif ( isset( $_POST['pprh_verify_hints'] ) ) {
+			new Verify_Hints();
 		}
 	}
 

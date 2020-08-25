@@ -72,11 +72,6 @@ class Utils {
                 var msg = "<?php echo $msg; ?>";
                 var status = "<?php echo $status; ?>";
                 pprhAdminJS.ToggleAdminNotice(status, msg);
-
-                setTimeout(function() {
-                    pprhAdminJS.ToggleAdminNotice(status, '');
-                }, 10000 );
-
             }
             pprhShowNotice();
 		</script>

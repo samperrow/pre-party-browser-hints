@@ -51,7 +51,7 @@ class Admin_Tabs {
 
 	private function include_files() {
 		include_once PPRH_ABS_DIR . '/includes/tabs/class-pprh-insert-hints.php';
-		include_once PPRH_ABS_DIR . '/includes/tabs/class-pprh-settings.php';
+		include_once PPRH_ABS_DIR . '/includes/tabs/settings/class-pprh-settings.php';
 		include_once PPRH_ABS_DIR . '/includes/tabs/class-pprh-info.php';
 		include_once PPRH_ABS_DIR . '/includes/tabs/class-pprh-upgrade.php';
 		do_action( 'pprh_pro_add_files' );

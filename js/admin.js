@@ -230,11 +230,6 @@
 		}
 
 		toggleAdminNotice(outcome, response.msg);
-
-
-		setTimeout(function() {
-			toggleAdminNotice(outcome, '');
-		}, 10000 );
 	}
 
 	function toggleAdminNotice(outcome, msg) {
@@ -242,6 +237,12 @@
 		adminNoticeElem.getElementsByTagName('p')[0].innerHTML = msg;
 		adminNoticeElem.classList[action]('active');
 		adminNoticeElem.classList[action]('notice-' + outcome);
+
+		if (msg !== '') {
+			setTimeout(function() {
+				toggleAdminNotice(outcome, '');
+			}, 10000 );
+		}
 	}
 
 	addEditRowEventListener();

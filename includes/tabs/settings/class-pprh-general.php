@@ -24,6 +24,7 @@ class Gen_Settings extends Settings {
                 <?php
                 $this->disable_auto_wp_hints();
                 $this->set_hint_destination();
+                $this->verify_hints_are_active();
                 do_action( 'pprh_sc_general_settings' );
                 ?>
                 </tbody>
@@ -60,8 +61,6 @@ class Gen_Settings extends Settings {
 		<?php
 	}
 
-
-
 	public function set_hint_destination() {
 		?>
 		<tr>
@@ -88,6 +87,23 @@ class Gen_Settings extends Settings {
 		<?php
 	}
 
+    public function verify_hints_are_active() {
+        ?>
+        <tr>
+            <th><?php esc_html_e( 'Verify resource hints are being loaded correctly on front end?', 'pprh' ); ?></th>
 
+            <td>
+				<span class="pprh-help-tip-hint">
+					<span><?php esc_html_e( 'Frequently caching systems (plugins, web hosts, browsers) can prevent the visibility of resource hints on your website. This feature will check if hints are visible, and will recommend clearing your cache out otherwise.', 'pprh' ); ?></span>
+				</span>
+            </td>
+
+            <td>
+                <input type="submit" name="pprh_verify_hints" id="pprhVerifyHints" value="<?php esc_html_e('Verify hints', 'pprh' ); ?>" class="button button-secondary"/>
+            </td>
+        </tr>
+
+        <?php
+    }
 
 }
