@@ -173,7 +173,7 @@
 		if (! dataObj.post_id) {
 			dataObj.post_id = getPostID();
 		}
-		xhr.open('POST', pprh_ga.ajax_url, true);
+		xhr.open('POST', pprh_admin.ajax_url, true);
 		xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
 		var json = JSON.stringify(dataObj);
 		var paginationPage = getUrlValue.call('paged');
