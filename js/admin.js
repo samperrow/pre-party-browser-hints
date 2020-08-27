@@ -63,8 +63,6 @@ jQuery(document).ready(function($) {
 		if (response.total_pages === 1) {
 			$('div.tablenav, div.alignleft.actions.bulkactions').removeClass('no-pages');
 		}
-
-		table.find('input:checkbox').attr('checked', false);
 	}
 
 	$('input#pprhSubmitHints').on("click", function(e) {

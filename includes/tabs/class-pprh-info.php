@@ -55,21 +55,21 @@ class Hint_Info {
 
 		<p><?php echo sprintf( 'The waterfall chart below represents the resources loaded by %s, which requires a Google font, an embedded YouTube video, and Google Analytics, without any type of DNS prefetching enabled:', '<a href="https://output.jsbin.com/keninux/1">a typical website</a>' ); ?></p>
 
-		<img alt="Waterfall diagram before DNS Prefetching" class="pprh-admin-pic" width="1055" height="721" src="<?php $this->get_link( '/images/jsbin-no-dnsprefetch.jpg' ); ?>"/>
+		<img alt="Waterfall diagram before DNS Prefetching" class="pprh-admin-pic" width="1055" height="721" src="<?php $this->get_link( 'images/jsbin-no-dnsprefetch.jpg' ); ?>"/>
 
 		<br>
 
 		<p><?php esc_html_e( 'As you can see, the typical way DNS lookups occur is when each resource is requested by the browser. By inserting the below DNS prefetch hints at the top of the page, the browser will know to perform the DNS resolution before it is asked:' ); ?></p>
 
 		<div class="pprh-code-block">
-			<script src="<?php $this->get_link( '/js/markup/dns-prefetch.js' ); ?>"></script>
+			<script src="<?php $this->get_link( 'js/markup/dns-prefetch.js' ); ?>"></script>
 		</div>
 
 		<p><?php echo sprintf( 'The waterfall chart below clearly shows when the DNS resolution is made %s', '<a href="https://output.jsbin.com/keninux/2"> after taking advantage of DNS prefetching:</a>' ); ?></p>
 
 		<br>
 
-		<img alt="Waterfall diagram after DNS Prefetching" class="pprh-admin-pic" width="1056" height="496" src="<?php $this->get_link( '/images/jsbin-with-dnsprefetch.jpg' ); ?>"/>
+		<img alt="Waterfall diagram after DNS Prefetching" class="pprh-admin-pic" width="1056" height="496" src="<?php $this->get_link( 'images/jsbin-with-dnsprefetch.jpg' ); ?>"/>
 
 		<p><?php esc_html_e( 'The DNS lookups occur before each resource is requested, preventing that step from slowing down resource delivery. This can improve the loading of each resource by hundreds of milliseconds or more, which can be particularly helpful for mobile users.' ); ?></p>
 
@@ -97,7 +97,7 @@ class Hint_Info {
 
 		<p><?php esc_html_e( 'The waterfall chart below indicates when the browser loads a large image that has been prefetched:' ); ?></p>
 
-		<img alt="Effect of Prefetching" class="pprh-admin-pic" width="1055" height="263" src="<?php $this->get_link( '/images/jsbin-prefetch.jpg' ); ?>"/>
+		<img alt="Effect of Prefetching" class="pprh-admin-pic" width="1055" height="263" src="<?php $this->get_link( 'images/jsbin-prefetch.jpg' ); ?>"/>
 
 		<p><?php esc_html_e( 'More information:' ); ?></p>
 
@@ -126,18 +126,18 @@ class Hint_Info {
 		<p><?php echo sprintf( '%s has the URL "https://www.youtube.com" prerender hint enabled as below:', '<a href="https://output.jsbin.com/fenamaq">This demo website</a>' ); ?><p>
 
 		<div class="pprh-code-block">
-			<script src="<?php $this->get_link( '/js/markup/prerender.js' ); ?>"></script>
+			<script src="<?php $this->get_link( 'js/markup/prerender.js' ); ?>"></script>
 		</div>
 
 		<p><?php esc_html_e( 'The waterfall chart of the website is below:' ); ?></p>
 
-		<img alt="Waterfall diagram before prerender" class="pprh-admin-pic" width="1055" height="647" src="<?php $this->get_link( '/images/jsbin-prefetch-example.jpg' ); ?>"/>
+		<img alt="Waterfall diagram before prerender" class="pprh-admin-pic" width="1055" height="647" src="<?php $this->get_link( 'images/jsbin-prefetch-example.jpg' ); ?>"/>
 
 		<p><?php esc_html_e( 'As you can see, after the given browser has finished loading the host URL\'s typical contents, the browser will begin loading the prerendered page in the background. So when a user clicks to navigate to YouTube, that website will be rendered instantly!' ); ?></p>
 
 		<p><?php echo sprintf( 'For Chrome users, check out %s to see if a page has been successfully prerendered or not. If the prerender attempt was successful, you will see the following at the top of that page, along with past your past prerender history:', '<a href="chrome://net-internals/#prerender">chrome://net-internals/#prerender</a>' ); ?></p>
 
-		<img alt="Waterfall diagram with prerendered content" class="pprh-admin-pic" width="307" height="141" src="<?php $this->get_link( '/images/chrome-prerender-status.jpg' ); ?>"/>
+		<img alt="Waterfall diagram with prerendered content" class="pprh-admin-pic" width="307" height="141" src="<?php $this->get_link( 'images/chrome-prerender-status.jpg' ); ?>"/>
 
 		<p><?php esc_html_e( 'More information:' ); ?></p>
 
@@ -162,17 +162,17 @@ class Hint_Info {
 		<p><a href="https://output.jsbin.com/dudeger"><?php _e( 'This example page </a> loads a Google Font, embedded YouTube iframe video, and a Google Analytics tracker in the typical manner, without taking advantage of the preconnect resource hint. A summary of the normal requests this demo website makes is shown in the chart below, courtesy of <a href="https://www.webpagetest.org">webpagetest.org</a>', 'pprh' ); ?></p>
 
 		<h3 style="text-align: center;"><?php esc_html_e( 'Typical HTTPS Socket Negotiation Periods:' ); ?></h3>
-		<img alt="Waterfall diagram before preconnect hints enabled." class="pprh-admin-pic" width="1054" height="719" src="<?php $this->get_link( '/images/jsbin-no-preconnect.jpg' ); ?>"/>
+		<img alt="Waterfall diagram before preconnect hints enabled." class="pprh-admin-pic" width="1054" height="719" src="<?php $this->get_link( 'images/jsbin-no-preconnect.jpg' ); ?>"/>
 		<br>
 
 		<p><?php esc_html_e( 'Let\'s add the corresponding preconnect hints in the top of the web page and see what happens:' ); ?></p>
 
 		<div class="pprh-code-block">
-			<script src="<?php $this->get_link( '/js/markup/preconnect.js' ); ?>"></script>
+			<script src="<?php $this->get_link( 'js/markup/preconnect.js' ); ?>"></script>
 		</div>
 
 		<h3 style="text-align: center;"><?php esc_html_e( 'HTTPS Socket Negotiation With Preconnect Enabled:' ); ?></h3>
-		<img alt="Waterfall diagram after preconnect hints enabled." class="pprh-admin-pic" width="1056" height="721" src="<?php $this->get_link( '/images/jsbin-with-preconnect.jpg' ); ?>"/>
+		<img alt="Waterfall diagram after preconnect hints enabled." class="pprh-admin-pic" width="1056" height="721" src="<?php $this->get_link( 'images/jsbin-with-preconnect.jpg' ); ?>"/>
 
 		<p><?php esc_html_e( 'As you can see, the three steps required to load resources from external domains occurs much earlier in the page request, reducing the need for these to be loaded earlier. The "crossorigin" attribute must be used when preconnecting to fonts, if this is left out only a DNS prefetch will be performed.' ); ?></p>
 
@@ -201,12 +201,12 @@ class Hint_Info {
 		<p><?php esc_html_e( 'Let\'s see what the waterfall chart looks like after the following resource hints are placed into the top of a web page:' ); ?></p>
 
 		<div class="pprh-code-block">
-			<script src="<?php $this->get_link( '/js/markup/preload.js' ); ?>"></script>
+			<script src="<?php $this->get_link( 'js/markup/preload.js' ); ?>"></script>
 		</div>
 
 		<p><?php echo sprintf( 'The waterfall chart below, courtesy of %s, shows when preloading resources are loaded by the browser:', '<a href="https://www.webpagetest.org">webpagetest.org</a>' ); ?></p>
 
-		<img alt="Waterfall diagram before preload hints enabled." class="pprh-admin-pic" width="1046" height="597" src="<?php $this->get_link( '/images/jsbin-preload.jpg' ); ?>">
+		<img alt="Waterfall diagram before preload hints enabled." class="pprh-admin-pic" width="1046" height="597" src="<?php $this->get_link( 'images/jsbin-preload.jpg' ); ?>">
 
 		<h1><?php esc_html_e( 'Caution!' ); ?></h1>
 		<p><?php echo sprintf( 'Although the resources above may have been preloaded correctly, %s. In order to utilize preloaded resources, %s. For example, if a CSS file were preloaded, you would include a link element with an href set to the CSS file that has been preloaded. Same goes for JS files, and all others.', '<b>they cannot be used on the web page yet</b>', '<b>you must reference them within your web page</b>' ); ?></p>
