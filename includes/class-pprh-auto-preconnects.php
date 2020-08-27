@@ -21,7 +21,7 @@ class Auto_Preconnects {
 
 		if ( $load_adv ) {
 			$this->load_adv = $load_adv;
-			do_action( 'pprh_load_auto_prec_child' );
+//			do_action( 'pprh_load_auto_prec_child' );
 		}
 	}
 

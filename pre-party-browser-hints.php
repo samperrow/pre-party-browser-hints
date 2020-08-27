@@ -65,6 +65,7 @@ class Init {
 			new Auto_Preconnects( $this->load_adv );
 		}
 
+
 	}
 
 	public function load_auto_preconnects() {
