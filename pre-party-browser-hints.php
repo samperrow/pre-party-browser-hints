@@ -73,7 +73,6 @@ class Init {
 		$this->load_adv = apply_filters( 'pprh_prec_autoload', false );
 
 		if ( 'true' === $autoload ) {
-
 			if ( $this->load_adv ) {
 				// try to get post id from requested URL, then see if that post id needs an auto prec
 				return true;
@@ -81,7 +80,6 @@ class Init {
 				return 'false' === $preconnects_set;
 			}
 		}
-
 	}
 
 	public function load_admin_page() {
