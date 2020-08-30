@@ -33,7 +33,7 @@ class Utils {
 	}
 
 	public static function strip_non_alpha( $str ) {
-		return preg_replace( '/[^a-z]/', '', $str );
+		return preg_replace( '/[^A-z]/', '', $str );
 	}
 
 	public static function getPostID() {
