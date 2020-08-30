@@ -71,7 +71,9 @@ class Utils {
             function pprhShowNotice() {
                 var msg = "<?php echo $msg; ?>";
                 var status = "<?php echo $status; ?>";
-                pprhAdminJS.ToggleAdminNotice(status, msg);
+                if (typeof pprhAdminJS === "function") {
+                    pprhAdminJS.ToggleAdminNotice(status, msg);
+                }
             }
             pprhShowNotice();
 		</script>
