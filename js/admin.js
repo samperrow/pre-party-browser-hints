@@ -40,14 +40,8 @@
 				divs.removeClass('active');
 				$('div#pprh-' + className ).addClass('active');
 
-				if ( $(this).hasClass('settings') ) {
-					$('div#pprh-general').toggleClass('active');
-				}
-
-				else if ( $(this).hasClass('pprh-settings') ) {
-					$('#pprh-settings').addClass('active');
+				if ( $(this).hasClass('pprh-settings') ) {
 					var id = $(this).attr('id').split('-settings')[0];
-					$('div.settings.pprh-content').removeClass('active');
 					$('div#' + id).addClass('active');
 				}
 

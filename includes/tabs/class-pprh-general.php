@@ -6,9 +6,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-new Gen_Settings();
+new General_Settings();
 
-class Gen_Settings extends Settings {
+class General_Settings extends Settings {
 
 	public function __construct() {
 		$this->general_settings();
@@ -47,10 +47,10 @@ class Gen_Settings extends Settings {
 			<td>
 				<label>
 					<select name="disable_wp_hints">
-						<option value="true" <?php $this->get_option_status( 'disable_wp_hints', 'true' ); ?>>
+						<option value="true" <?php Utils::get_option_status( 'disable_wp_hints', 'true' ); ?>>
 							<?php esc_html_e( 'Yes', 'pprh' ); ?>
 						</option>
-						<option value="false" <?php $this->get_option_status( 'disable_wp_hints', 'false' ); ?>>
+						<option value="false" <?php Utils::get_option_status( 'disable_wp_hints', 'false' ); ?>>
 							<?php esc_html_e( 'No', 'pprh' ); ?>
 						</option>
 					</select>
@@ -74,10 +74,10 @@ class Gen_Settings extends Settings {
 
 			<td>
 				<select id="pprhHintLocation" name="html_head">
-					<option value="true" <?php $this->get_option_status( 'html_head', 'true' ); ?>>
+					<option value="true" <?php Utils::get_option_status( 'html_head', 'true' ); ?>>
 						<?php esc_html_e( 'HTML &lt;head&gt;', 'pprh' ); ?>
 					</option>
-					<option value="false" <?php $this->get_option_status( 'html_head', 'false' ); ?>>
+					<option value="false" <?php Utils::get_option_status( 'html_head', 'false' ); ?>>
 						<?php esc_html_e( 'HTTP Header', 'pprh' ); ?>
 					</option>
 				</select>

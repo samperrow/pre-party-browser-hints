@@ -6,9 +6,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-new Settings();
+new General_Settings();
 
-class Settings {
+class General_Settings {
 
 	protected $load_adv = false;
 
@@ -21,15 +21,13 @@ class Settings {
 	public function display_settings() {
 		?>
         <div id="pprh-settings" class="pprh-content">
-            <form method="post" action="<?php echo admin_url(); ?>admin.php?page=pprh-plugin-settings">
+            <form method="post" action="<?php echo PPRH_HOME_URL; ?>">
                 <?php
-                $this->main();
 
                 wp_nonce_field( 'pprh_save_admin_options', 'pprh_admin_options_nonce' );
                 $this->save_user_options();
 
-                include_once PPRH_ABS_DIR . '/includes/tabs/settings/class-pprh-general.php';
-                include_once PPRH_ABS_DIR . '/includes/tabs/settings/class-pprh-auto-preconnect.php';
+                include_once PPRH_ABS_DIR . '/includes/tabs/class-pprh-general.php';
 
                 do_action( 'pprh_sc_load_prerender_mu' );
                 ?>
@@ -41,19 +39,6 @@ class Settings {
             </form>
         </div>
 		<?php
-	}
-
-	public function main() {
-		$tabs = array(
-			'general'         => 'General Settings',
-			'auto-preconnect' => 'Auto Preconnect Settings',
-		);
-
-		echo '<h2 class="nav-tab-wrapper">';
-		foreach ( $tabs as $tab => $name ) {
-			echo "<a id='pprh-$tab-settings' class='nav-tab pprh-settings' href=''>" . $name . '</a>';
-		}
-		echo '</h2>';
 	}
 
 	public function save_user_options() {

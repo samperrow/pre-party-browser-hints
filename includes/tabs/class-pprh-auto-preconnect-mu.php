@@ -8,9 +8,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 new Auto_Preconnect();
 
-class Auto_Preconnect extends Settings {
+class Auto_Preconnect {
+
+    public $load_adv;
 
 	public function __construct() {
+	    do_action( 'pprh_load_auto_preconnects_mu' );
 		$this->preconnect_html();
 	}
 
@@ -23,14 +26,14 @@ class Auto_Preconnect extends Settings {
                 <tbody>
 
                 <?php
-                $this->auto_set_globals();
-                $this->allow_unauth();
+                    $this->auto_set_globals();
+                    $this->allow_unauth();
 
-                if ( ! $this->load_adv ) {
-                    $this->reset_preconnects();
-                }
+				    $load_basic = apply_filters( 'pprh_sc_preconnect_pro', true );
+                    if ( $load_basic ) {
+						$this->reset_preconnects();
+					}
 
-                do_action( 'pprh_sc_preconnect_pro' );
                 ?>
                 </tbody>
             </table>
@@ -70,10 +73,10 @@ class Auto_Preconnect extends Settings {
 			<td>
 				<label>
 					<select name="autoload_preconnects">
-						<option value="true" <?php $this->get_option_status( 'prec_autoload_preconnects', 'true' ); ?>>
+						<option value="true" <?php Utils::get_option_status( 'prec_autoload_preconnects', 'true' ); ?>>
 							<?php esc_html_e( 'Yes', 'pprh' ); ?>
 						</option>
-						<option value="false" <?php $this->get_option_status( 'prec_autoload_preconnects', 'false' ); ?>>
+						<option value="false" <?php Utils::get_option_status( 'prec_autoload_preconnects', 'false' ); ?>>
 							<?php esc_html_e( 'No', 'pprh' ); ?>
 						</option>
 					</select>
@@ -97,10 +100,10 @@ class Auto_Preconnect extends Settings {
 			<td>
 				<label>
 					<select name="allow_unauth">
-						<option value="true" <?php $this->get_option_status( 'prec_allow_unauth', 'true' ); ?>>
+						<option value="true" <?php Utils::get_option_status( 'prec_allow_unauth', 'true' ); ?>>
 							<?php esc_html_e( 'Yes', 'pprh' ); ?>
 						</option>
-						<option value="false" <?php $this->get_option_status( 'prec_allow_unauth', 'false' ); ?>>
+						<option value="false" <?php Utils::get_option_status( 'prec_allow_unauth', 'false' ); ?>>
 							<?php esc_html_e( 'No', 'pprh' ); ?>
 						</option>
 					</select>

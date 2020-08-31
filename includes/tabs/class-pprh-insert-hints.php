@@ -10,7 +10,7 @@ class Insert_Hints {
 
 	public function __construct() {
 		echo '<div id="pprh-insert-hints" class="pprh-content">';
-		echo '<form id="pprh-list-table" method="post" action="' . admin_url() . '">';
+		echo '<form id="pprh-list-table" method="post" action="' . PPRH_HOME_URL . '">';
 		wp_nonce_field( 'pprh_display_hints_nonce_action', 'pprh_display_hints_nonce' );
 		new Display_Hints();
 		echo '</form>';
