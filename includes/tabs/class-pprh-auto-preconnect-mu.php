@@ -10,8 +10,6 @@ new Auto_Preconnect();
 
 class Auto_Preconnect {
 
-    public $load_adv;
-
 	public function __construct() {
 	    do_action( 'pprh_load_auto_preconnects_mu' );
 		$this->preconnect_html();
@@ -21,22 +19,27 @@ class Auto_Preconnect {
 		?>
         <div id="pprh-auto-preconnect" class="pprh-content">
             <h2 style="margin-top: 30px;"><?php esc_html_e( 'Auto Preconnect Settings', 'pprh' ); ?></h2>
+            <form method="post" action="">
+                <?php wp_nonce_field( 'pprh_save_auto_preconnect_options', 'pprh_save_auto_preconnect_nonce' ); ?>
+                <table class="pprh-settings-table">
+                    <tbody>
+                        <?php
+                            $this->save_options();
+                            $this->auto_set_globals();
+                            $this->allow_unauth();
 
-            <table class="pprh-settings-table">
-                <tbody>
+                            $load_basic = apply_filters( 'pprh_sc_preconnect_pro', true );
+                            if ( $load_basic ) {
+                                $this->reset_preconnects();
+                            }
+                        ?>
+                    </tbody>
+                </table>
 
-                <?php
-                    $this->auto_set_globals();
-                    $this->allow_unauth();
-
-				    $load_basic = apply_filters( 'pprh_sc_preconnect_pro', true );
-                    if ( $load_basic ) {
-						$this->reset_preconnects();
-					}
-
-                ?>
-                </tbody>
-            </table>
+                <div class="text-center">
+                    <input type="submit" name="pprh_save_auto_preconnect" class="button button-primary" value="<?php esc_attr_e( 'Save Changes', 'pprh' ); ?>" />
+                </div>
+            </form>
         </div>
 		<?php
 	}
@@ -112,6 +115,22 @@ class Auto_Preconnect {
 		</tr>
 
 		<?php
+	}
+
+	public function save_options() {
+		if ( isset( $_POST['pprh_save_auto_preconnect'] ) && check_admin_referer( 'pprh_save_auto_preconnect_options', 'pprh_save_auto_preconnect_nonce' ) ) {
+
+            update_option( 'pprh_prec_autoload_preconnects', wp_unslash( $_POST['autoload_preconnects'] ) );
+            update_option( 'pprh_prec_allow_unauth', wp_unslash( $_POST['allow_unauth'] ) );
+
+			if ( isset( $_POST['pprh_prec_preconnects_set'] ) ) {
+			    update_option( 'pprh_preconnects_set', 'false' );
+			}
+
+			// pro below
+            do_action( 'pprh_save_auto_preconnect_options' );
+		}
+
 	}
 
 }
