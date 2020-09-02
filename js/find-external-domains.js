@@ -49,6 +49,6 @@
     }
 
     // if this js code gets cached in another file, prevent it from firing every page load.
-    setTimeout(fireAjax, 2000);
+    setTimeout(fireAjax, 7000);
 
 })();
