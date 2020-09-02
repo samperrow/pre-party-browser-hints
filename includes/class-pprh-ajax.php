@@ -8,7 +8,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class Ajax {
 
+	public $hash;
+
 	public function __construct() {
+
 		if ( 'true' === get_option( 'pprh_allow_unauth' ) ) {
 			$this->load();
 			add_action( 'wp_ajax_nopriv_pprh_post_domain_names', array( $this, 'pprh_post_domain_names' ) );
@@ -23,13 +26,17 @@ class Ajax {
 	}
 
 	public function initialize() {
+		$hash = uniqid( '', false );
+		update_option( 'pprh_preconnect_hash', $hash );
+
 		$preconnects = array(
 			'hints'     => array(),
 			'nonce'     => wp_create_nonce( 'pprh_ajax_nonce' ),
-			'admin_url' => admin_url()
+			'admin_url' => admin_url() . 'admin-ajax.php',
+			'hash'      => $hash,
 		);
 
-		wp_register_script( 'pprh-find-domain-names', PPRH_REL_DIR . '/js/find-external-domains.js', null, PPRH_VERSION, true );
+		wp_register_script( 'pprh-find-domain-names', PPRH_REL_DIR . 'js/find-external-domains.js', null, PPRH_VERSION, true );
 		wp_localize_script( 'pprh-find-domain-names', 'pprh_data', $preconnects );
 		wp_enqueue_script( 'pprh-find-domain-names' );
 	}
@@ -46,12 +53,19 @@ class Ajax {
 	public function pprh_post_domain_names() {
 		if ( wp_doing_ajax() ) {
 			check_ajax_referer( 'pprh_ajax_nonce', 'nonce' );
-			define( 'CREATING_HINT', true );
-			include_once PPRH_ABS_DIR . '/includes/class-pprh-utils.php';
-			include_once PPRH_ABS_DIR . '/includes/class-pprh-create-hints.php';
 
 			$arr  = array();
 			$data = json_decode( wp_unslash( $_POST['pprh_data'] ), false );
+			$prev_hash = get_option( 'pprh_preconnect_hash' );
+			$recd_hash = ( ! empty( $data->hash ) ? Utils::pprh_strip_non_alphanums( $data->hash ) : 'false' );
+
+			if ( $prev_hash !== $recd_hash ) {
+				wp_die();
+			}
+
+			define( 'CREATING_HINT', true );
+			include_once PPRH_ABS_DIR . '/includes/class-pprh-utils.php';
+			include_once PPRH_ABS_DIR . '/includes/class-pprh-create-hints.php';
 
 			foreach ( $data->hints as $hint ) {
 				$obj = new \stdClass();
@@ -72,5 +86,6 @@ class Ajax {
 
 	private function update_options() {
 		update_option( 'pprh_preconnects_set', 'true' );
+		update_option( 'pprh_preconnect_hash', '' );
 	}
 }

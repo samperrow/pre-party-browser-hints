@@ -3,7 +3,7 @@ Contributors: samperrow
 Donate link: https://www.paypal.me/samperrow
 Tags: W3C, DNS prefetch, prerender, preconnect, prefetch, preload, web perf, performance, speed, resource hints
 Requires at least: 4.4
-Tested up to: 5.5
+Tested up to: 5.5.1
 Stable tag: 1.7.3.1
 Requires PHP: 5.6.30
 License: GPLv2 or later
@@ -80,8 +80,13 @@ To activate the preloaded resource, you must call that file in HTML as you would
 
 == Changelog ==
 
-1. Most recent update: August 3, 2020.
-2. Version 1.7.3
+1. Most recent update: September 1, 2020.
+2. Version 1.7.3.1
+
+September 1, 2020:
+1) Modified how auto-preconnect hints are sent and received to require a hash value. This protects against cached
+scripts, and replay attacks.
+2) Made minor changes to HTML on pages and file paths.
 
 August 3, 2020:
 1) tested WP 5.5 compatbility

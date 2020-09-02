@@ -1,6 +1,5 @@
 (function() {
 
-    var scripts = document.getElementsByTagName('script');
     var host = document.location.origin;
     var altDomain = getAltHostName.call(host);
 
@@ -38,18 +37,18 @@
         });
     }
 
-    // if this js code gets cached in another file, prevent it from firing every page load.
-    if (/find-external-domains.js/i.test(scripts[scripts.length - 1].src)) {
-        setTimeout(function() {
-            findResourceSources();
-            var json = JSON.stringify(pprh_data);
-            var xhr = new XMLHttpRequest();
-            var url = pprh_data.admin_url + 'admin-ajax.php';
-            // console.log(pprh_data);
-            xhr.open('POST', url, true);
-            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
-			xhr.send('action=pprh_post_domain_names&pprh_data=' + json + '&nonce=' + pprh_data.nonce );
-		}, 7000);
+    function fireAjax() {
+        findResourceSources();
+        var json = JSON.stringify(pprh_data);
+        var xhr = new XMLHttpRequest();
+        var url = pprh_data.admin_url;
+        console.log(pprh_data);
+        xhr.open('POST', url, true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+        xhr.send('action=pprh_post_domain_names&pprh_data=' + json + '&nonce=' + pprh_data.nonce );
     }
+
+    // if this js code gets cached in another file, prevent it from firing every page load.
+    setTimeout(fireAjax, 2000);
 
 })();
