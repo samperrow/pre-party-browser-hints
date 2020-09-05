@@ -24,12 +24,13 @@ class Ajax {
 
 	public function initialize() {
 		$preconnects = array(
-			'hints'     => array(),
-			'nonce'     => wp_create_nonce( 'pprh_ajax_nonce' ),
-			'admin_url' => admin_url()
+			'hints'      => array(),
+			'nonce'      => wp_create_nonce( 'pprh_ajax_nonce' ),
+			'admin_url'  => admin_url() . 'admin-ajax.php',
+			'start_time' => time(),
 		);
 
-		wp_register_script( 'pprh-find-domain-names', PPRH_REL_DIR . '/js/find-external-domains.js', null, PPRH_VERSION, true );
+		wp_register_script( 'pprh-find-domain-names', PPRH_REL_DIR . 'js/find-external-domains.js', null, PPRH_VERSION, true );
 		wp_localize_script( 'pprh-find-domain-names', 'pprh_data', $preconnects );
 		wp_enqueue_script( 'pprh-find-domain-names' );
 	}
@@ -46,19 +47,19 @@ class Ajax {
 	public function pprh_post_domain_names() {
 		if ( wp_doing_ajax() ) {
 			check_ajax_referer( 'pprh_ajax_nonce', 'nonce' );
+			$arr  = array();
+			$data = json_decode( wp_unslash( $_POST['pprh_data'] ), false );
+
 			define( 'CREATING_HINT', true );
 			include_once PPRH_ABS_DIR . '/includes/class-pprh-utils.php';
 			include_once PPRH_ABS_DIR . '/includes/class-pprh-create-hints.php';
-
-			$arr  = array();
-			$data = json_decode( wp_unslash( $_POST['pprh_data'] ), false );
 
 			foreach ( $data->hints as $hint ) {
 				$obj = new \stdClass();
 				$obj->url = $hint;
 				$obj->hint_type = 'preconnect';
 				$obj->auto_created = true;
-				array_push($arr, $obj );
+				$arr[] = $obj;
 			}
 
 			$this->remove_prev_auto_preconnects();

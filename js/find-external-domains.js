@@ -1,6 +1,5 @@
 (function() {
 
-    var scripts = document.getElementsByTagName('script');
     var host = document.location.origin;
     var altDomain = getAltHostName.call(host);
 
@@ -38,18 +37,26 @@
         });
     }
 
-    // if this js code gets cached in another file, prevent it from firing every page load.
-    if (/find-external-domains.js/i.test(scripts[scripts.length - 1].src)) {
-        setTimeout(function() {
-            findResourceSources();
-            var json = JSON.stringify(pprh_data);
-            var xhr = new XMLHttpRequest();
-            var url = pprh_data.admin_url + 'admin-ajax.php';
-            // console.log(pprh_data);
-            xhr.open('POST', url, true);
-            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
-			xhr.send('action=pprh_post_domain_names&pprh_data=' + json + '&nonce=' + pprh_data.nonce );
-		}, 7000);
+    function fireAjax() {
+        findResourceSources();
+        var json = JSON.stringify(pprh_data);
+        var xhr = new XMLHttpRequest();
+        var url = pprh_data.admin_url;
+        // console.log(pprh_data);
+        xhr.open('POST', url, true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+        xhr.send('action=pprh_post_domain_names&pprh_data=' + json + '&nonce=' + pprh_data.nonce );
     }
 
+    function scriptSentWithinSixHours() {
+        var currentDT = new Date();
+        var startTime = Number(pprh_data.start_time) * 1000;
+        var inSixHours = new Date(startTime + (6*3600000));     // six hours from time script was initiated.
+        return (inSixHours > currentDT);
+    }
+
+    // sometimes this file can be cached, and this prevents it from constantly firing ajax requests.
+    if (scriptSentWithinSixHours()) {
+        setTimeout(fireAjax, 7000);
+    }
 })();
