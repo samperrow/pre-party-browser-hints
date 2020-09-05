@@ -13,7 +13,7 @@
  * Text Domain:       pprh
  * Domain Path:       /languages
  *
- * last edited September 1, 2020
+ * last edited September 5, 2020
  *
  * Copyright 2016  Sam Perrow  (email : sam.perrow399@gmail.com)
  *
@@ -90,7 +90,7 @@ final class Init {
 
 	// Register and call the CSS and JS we need only on the needed page.
 	public function register_admin_files( $hook ) {
-		if ( preg_match( '/toplevel_page_pprh-plugin-settings/i', $hook ) ) {
+		if ( false !== stripos( $hook, 'toplevel_page_pprh-plugin-settings' ) ) {
 			$ajax_data = array(
 				'val'       => wp_create_nonce( 'pprh_table_nonce' ),
 				'admin_url' => admin_url()
@@ -141,7 +141,7 @@ final class Init {
 			$pprh_tables = $this->get_multisite_tables();
 		}
 
-		array_push( $pprh_tables, PPRH_DB_TABLE );
+		$pprh_tables[] = PPRH_DB_TABLE;
 
 		foreach ( $pprh_tables as $pprh_table ) {
 			$this->create_table( $pprh_table );
@@ -192,7 +192,7 @@ final class Init {
 
 	public function pprh_disable_wp_hints() {
 		if ( 'true' === get_option( 'pprh_disable_wp_hints' ) ) {
-			return remove_action( 'wp_head', 'wp_resource_hints', 2 );
+			remove_action( 'wp_head', 'wp_resource_hints', 2 );
 		}
 	}
 
