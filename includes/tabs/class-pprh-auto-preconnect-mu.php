@@ -19,7 +19,7 @@ class Auto_Preconnect {
 		?>
         <div id="pprh-auto-preconnect" class="pprh-content">
             <h2 style="margin-top: 30px;"><?php esc_html_e( 'Auto Preconnect Settings', 'pprh' ); ?></h2>
-            <form method="post" action="">
+            <form method="post" action="<?php echo PPRH_HOME_URL; ?>">
                 <?php wp_nonce_field( 'pprh_save_auto_preconnect_options', 'pprh_save_auto_preconnect_nonce' ); ?>
                 <table class="pprh-settings-table">
                     <tbody>
