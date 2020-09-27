@@ -158,11 +158,20 @@ jQuery(document).ready(function($) {
 		xhr.onreadystatechange = function() {
 			if (xhr.readyState === 4 && xhr.status === 200) {
 				if (xhr.response.length > 0) {
-					var response = JSON.parse(xhr.response);
-					clearHintTable();
-					updateAdminNotice(response.result.query);
-					updateTable(response);
-					addEventListeners();
+					var response;
+					try {
+						response = JSON.parse(xhr.response);
+					} catch (e) {
+						response = xhr.response;
+					}
+					if (response && response.result && response.result.query) {
+						clearHintTable();
+						updateAdminNotice(response.result.query);
+						updateTable(response);
+						addEventListeners();
+					} else {
+						updateAdminNotice(response);
+					}
 				} else {
 					return updateAdminNotice(xhr);
 				}
@@ -185,15 +194,26 @@ jQuery(document).ready(function($) {
 	}
 
 	function updateAdminNotice(response) {
-		if (response.status === 'error' ) {
-			response.msg += response.last_error;
+		var resp = {
+			msg: '',
+			status: (response.status) ? response.status : 'error',
 		}
 
-		toggleAdminNotice('add', response.status);
-		adminNoticeElem.getElementsByTagName('p')[0].innerHTML = response.msg;
+		if (response.status === 'success' ) {
+			resp.msg += response.msg;
+		} else if (response.status === 'error' ) {
+			resp.msg += response.msg + ((response.last_error) ? response.last_error : '');
+		} else if (typeof response === "string" && /<code>(.*)?<\/code>/g.test(response)) {
+			resp.msg += response.split('<code>')[0].split('</code>')[0];
+		} else {
+			resp.msg += 'Error updating hint. Please clear your browser cache and try again, or contact support about the issue.';
+		}
+
+		toggleAdminNotice('add', resp.status);
+		adminNoticeElem.getElementsByTagName('p')[0].innerHTML = resp.msg;
 
 		setTimeout(function() {
-			toggleAdminNotice('remove', response.status);
+			toggleAdminNotice('remove', resp.status);
 		}, 10000 );
 	}
 
