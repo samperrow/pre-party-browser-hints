@@ -23,20 +23,19 @@ class Ajax_Ops {
 			check_ajax_referer( 'pprh_table_nonce', 'val' );
 			$data_obj = json_decode( wp_unslash( $_POST['pprh_data'] ) );
 
-			if ( ! is_object( $data_obj ) ) {
-				wp_die();
+			if ( is_object( $data_obj ) ) {
+				$action = $data_obj->action;
+				$data = array( $data_obj );
+
+				include_once PPRH_ABS_DIR . '/includes/class-pprh-utils.php';
+				include_once PPRH_ABS_DIR . '/includes/class-pprh-create-hints.php';
+				include_once PPRH_ABS_DIR . '/includes/class-pprh-display-hints.php';
+
+				$this->results['query'] = $this->handle_action( $data, $action );
+				$display_hints = new Display_Hints();
+				$display_hints->ajax_response( $this->results );
 			}
 
-			$action = $data_obj->action;
-			$data = array( $data_obj );
-
-			include_once PPRH_ABS_DIR . '/includes/class-pprh-utils.php';
-			include_once PPRH_ABS_DIR . '/includes/class-pprh-create-hints.php';
-			include_once PPRH_ABS_DIR . '/includes/class-pprh-display-hints.php';
-
-			$this->results['query'] = $this->handle_action( $data, $action );
-			$display_hints = new Display_Hints();
-			$display_hints->ajax_response( $this->results );
 			wp_die();
 		}
 	}
