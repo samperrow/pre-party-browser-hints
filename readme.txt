@@ -79,14 +79,24 @@ To activate the preloaded resource, you must call that file in HTML as you would
 
 
 == Changelog ==
+1. Most recent update: September 27, 2020.
+2. Version 1.7.3.2
 
-1. Most recent update: August 2, 2020.
-2. Version 1.8.0
+September 27, 2020:
+1) Added more information about how the "auto-preconnect" feature works.
+2) Cleaned up and added better management of hint creation/update/deletions.
+3) Removed some unneeded code.
 
-August 2, 2020:
+September 5, 2020:
+1) Modified how auto-preconnect hints are sent by requiring that they be used within six hours of their initiation.
+Sometimes that file gets cached, and its filename changes by other plugins, and constantly fires requests.
+2) Made minor changes to HTML on pages and file paths.
+
+August 3, 2020:
 1) tested WP 5.5 compatbility
 2) corrected bug with updating hints
 3) simplified the sending of and creation of frontend hints
+4) Adjusted translations
 
 July 7, 2020:
 1) Replaced hardcoded "wp-admin" URL's with dynamic ones.

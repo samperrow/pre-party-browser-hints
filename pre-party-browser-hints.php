@@ -13,7 +13,7 @@
  * Text Domain:       pprh
  * Domain Path:       /languages
  *
- * last edited August 2, 2020
+ * last edited September 27, 2020
  *
  * Copyright 2016  Sam Perrow  (email : sam.perrow399@gmail.com)
  *
@@ -28,9 +28,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 new Init();
 
-class Init {
-
-	public $load_adv = false;
+final class Init {
 
 	public function __construct() {
 		if ( isset( $_REQUEST['action'] ) && 'heartbeat' === $_REQUEST['action'] ) {
@@ -41,44 +39,26 @@ class Init {
 		add_filter( 'set-screen-option', array( $this, 'apply_wp_screen_options' ), 10, 3 );
 		register_activation_hook( __FILE__, array( $this, 'activate_plugin' ) );
 		add_action( 'wpmu_new_blog', array( $this, 'activate_plugin' ) );
-		add_action( 'admin_notices', array( $this, 'admin_notice' ) );
-
-		do_action( 'pprh_pro_init' );
 	}
 
 	public function initialize() {
 		$this->create_constants();
+		$autoload = get_option( 'pprh_autoload_preconnects' );
+		$preconnects_set = get_option( 'pprh_preconnects_set' );
 		include_once PPRH_ABS_DIR . '/includes/class-pprh-utils.php';
 
 		if ( is_admin() ) {
 			include_once PPRH_ABS_DIR . '/includes/class-pprh-ajax-ops.php';
-			include_once PPRH_ABS_DIR . '/includes/class-pprh-verify-hints.php';
 			add_action( 'admin_menu', array( $this, 'load_admin_page' ) );
-		} elseif ( ! wp_doing_ajax() ) {
-			$this->disable_wp_hints();
+		} else {
+			$this->pprh_disable_wp_hints();
 			include_once PPRH_ABS_DIR . '/includes/class-pprh-send-hints.php';
 		}
 
 		// this needs to be loaded front end and back end bc Ajax needs to be able to communicate between the two.
-		if ( $this->load_auto_preconnects() ) {
-			include_once PPRH_ABS_DIR . '/includes/class-pprh-auto-preconnects.php';
-			new Auto_Preconnects( $this->load_adv );
-		}
-
-	}
-
-	public function load_auto_preconnects() {
-		$preconnects_set = get_option( 'pprh_prec_preconnects_set' );
-		$autoload = get_option( 'pprh_prec_autoload_preconnects' );
-		$this->load_adv = apply_filters( 'pprh_prec_autoload', false );
-
-		if ( 'true' === $autoload ) {
-			if ( $this->load_adv ) {
-				// try to get post id from requested URL, then see if that post id needs an auto prec
-				return true;
-			} else {
-				return 'false' === $preconnects_set;
-			}
+		if ( 'true' === $autoload && 'false' === $preconnects_set ) {
+			include_once PPRH_ABS_DIR . '/includes/class-pprh-ajax.php';
+			new Ajax();
 		}
 	}
 
@@ -106,7 +86,7 @@ class Init {
 		$rel_dir = plugins_url() . '/pre-party-browser-hints/';
 		$home_url = admin_url() . 'admin.php?page=pprh-plugin-setttings';
 
-		define( 'PPRH_VERSION', '1.8.0' );
+		define( 'PPRH_VERSION', '1.7.3.2' );
 		define( 'PPRH_DB_TABLE', $table );
 		define( 'PPRH_ABS_DIR', $abs_dir );
 		define( 'PPRH_REL_DIR', $rel_dir );
@@ -115,21 +95,18 @@ class Init {
 
 	// Register and call the CSS and JS we need only on the needed page.
 	public function register_admin_files( $hook ) {
-		$regex = apply_filters( 'pprh_get_register_admin_files_regex', 'toplevel_page_pprh-plugin-settings' );
-
-		if ( preg_match( '/' . $regex . '/i', $hook ) ) {
+		if ( false !== stripos( $hook, 'toplevel_page_pprh-plugin-settings' ) ) {
 			$ajax_data = array(
-				'nonce'      => wp_create_nonce( 'pprh_table_nonce' ),
-				'ajax_url' => admin_url() . 'admin-ajax.php',
+				'val'       => wp_create_nonce( 'pprh_table_nonce' ),
+				'admin_url' => admin_url()
 			);
 
-//			$admin_js = filemtime( PPRH_ABS_DIR . '/js/admin.js' );
+			wp_register_script( 'pprh_admin_js', PPRH_REL_DIR . 'js/admin.js', array( 'jquery' ), PPRH_VERSION, true );
+			wp_localize_script( 'pprh_admin_js', 'pprh_nonce', $ajax_data );
+			wp_register_style( 'pprh_styles_css', PPRH_REL_DIR . 'css/styles.css', null, PPRH_VERSION, 'all' );
 
-			wp_register_script( 'pprh_admin_js', PPRH_REL_DIR . 'js/admin.js', null, PPRH_VERSION, true );
-			wp_localize_script( 'pprh_admin_js', 'pprh_admin', $ajax_data );
 			wp_enqueue_script( 'pprh_admin_js' );
-
-			wp_enqueue_style( 'pprh_styles_css', PPRH_REL_DIR . 'css/styles.css', null, PPRH_VERSION, 'all' );
+			wp_enqueue_style( 'pprh_styles_css' );
 		}
 	}
 
@@ -154,25 +131,11 @@ class Init {
 	}
 
 	public function set_options() {
+		add_option( 'pprh_allow_unauth', 'true', '', 'yes' );
+		add_option( 'pprh_autoload_preconnects', 'true', '', 'yes' );
 		add_option( 'pprh_disable_wp_hints', 'true', '', 'yes' );
 		add_option( 'pprh_html_head', 'true', '', 'yes' );
-
-//		add_option( 'pprh_prec_allow_unauth', 'true', '', 'yes' );
-//		add_option( 'pprh_autoload_preconnects', 'true', '', 'yes' );
-//		add_option( 'pprh_preconnects_set', 'false', '', 'yes' );
-
-		$allow_unauth = get_option( 'pprh_prec_allow_unauth' );
-		$autoload = get_option( 'pprh_autoload_preconnects' );
-		$prec_set = get_option( 'pprh_preconnects_set' );
-
-		add_option( 'pprh_prec_allow_unauth', $allow_unauth, '', 'yes' );
-		add_option( 'pprh_prec_autoload_preconnects', $autoload, '', 'yes' );
-		add_option( 'pprh_prec_preconnects_set', $prec_set, '', 'yes' );
-
-		delete_option( 'pprh_prec_allow_unauth' );
-		delete_option( 'pprh_autoload_preconnects' );
-		delete_option( 'pprh_preconnects_set' );
-
+		add_option( 'pprh_preconnects_set', 'false', '', 'yes' );
 	}
 
 	// Multisite install/delete db table.
@@ -183,7 +146,7 @@ class Init {
 			$pprh_tables = $this->get_multisite_tables();
 		}
 
-		array_push( $pprh_tables, PPRH_DB_TABLE );
+		$pprh_tables[] = PPRH_DB_TABLE;
 
 		foreach ( $pprh_tables as $pprh_table ) {
 			$this->create_table( $pprh_table );
@@ -234,13 +197,8 @@ class Init {
 
 	public function disable_wp_hints() {
 		if ( 'true' === get_option( 'pprh_disable_wp_hints' ) ) {
-			return remove_action( 'wp_head', 'wp_resource_hints', 2 );
+			remove_action( 'wp_head', 'wp_resource_hints', 2 );
 		}
 	}
 
-	public function admin_notice() {
-		$class = 'pprh-notice hidden notice is-dismissible';
-		$msg = __( '', 'pprh' );
-		printf( '<div id="%1$s" class="%2$s"><p>%3$s</p></div>', esc_attr( 'pprh-notice' ), esc_attr( $class ), esc_html( $msg ) );
-	}
 }
