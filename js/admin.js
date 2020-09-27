@@ -26,7 +26,6 @@ jQuery(document).ready(function($) {
 				e.preventDefault();
 			});
 		});
-
 	}
 
 	// used on all admin and modal screens w/ contact button.
@@ -86,7 +85,7 @@ jQuery(document).ready(function($) {
 
 	function createHint(e, tableID, op) {
 		var elems = getRowElems(tableID);
-		var hint_url = encodeURIComponent( elems.url.val() );
+		var hint_url = elems.url.val().replace(/'|"/g, '');
 		var hintType = getHintType.call(elems.hint_type);
 		var hintObj = createHintObj();
 
@@ -161,7 +160,7 @@ jQuery(document).ready(function($) {
 				if (xhr.response.length > 0) {
 					var response = JSON.parse(xhr.response);
 					clearHintTable();
-					updateAdminNotice(response.result);
+					updateAdminNotice(response.result.query);
 					updateTable(response);
 					addEventListeners();
 				} else {
@@ -186,22 +185,16 @@ jQuery(document).ready(function($) {
 	}
 
 	function updateAdminNotice(response) {
-		var outcome = '';
-
-		if (response.result && response.result.length > 0) {
-			outcome = response.result;
-		} else {
-			outcome = 'error';
-			response.msg = 'Error saving resource hint.';
+		if (response.status === 'error' ) {
+			response.msg += response.last_error;
 		}
 
-		toggleAdminNotice('add', outcome);
+		toggleAdminNotice('add', response.status);
 		adminNoticeElem.getElementsByTagName('p')[0].innerHTML = response.msg;
 
 		setTimeout(function() {
-			toggleAdminNotice('remove', outcome);
+			toggleAdminNotice('remove', response.status);
 		}, 10000 );
-
 	}
 
 	function toggleAdminNotice(action, outcome) {
@@ -270,7 +263,6 @@ jQuery(document).ready(function($) {
 		} else {
 			window.alert('Please select a row(s) for bulk updating.');
 		}
-
 	}
 
 });

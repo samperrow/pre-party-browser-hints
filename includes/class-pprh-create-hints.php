@@ -9,9 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Create_Hints {
 
 	public $results = array(
-		'action' => '',
-		'result' => '',
-		'msg'    => '',
+		'query'     => array(),
 		'new_hints' => array(),
 	);
 
@@ -32,8 +30,8 @@ class Create_Hints {
 			$new_hint = (object) $this->create_hint( $hint );
 
 			if ( $this->check_for_duplicate_post_hint( $new_hint ) ) {
-				$this->insert_hint( $new_hint );
-				array_push( $this->results['new_hints'], $new_hint );
+				$this->results['query'] = $this->insert_hint( $new_hint );
+				$this->results['new_hints'][] = $new_hint;
 			}
 		}
 
@@ -71,18 +69,19 @@ class Create_Hints {
 			$url = $hint->url;
 		}
 
-		return filter_var( str_replace( ' ', '', $url ), FILTER_SANITIZE_URL );
+		$url = Utils::clean_url( $url );
+		return $url;
 	}
 
 	private function parse_for_domain_name( $url ) {
 		$parsed_url = wp_parse_url( $url );
 
-		if ( ! empty( $parsed_url['scheme'] ) ) {
-			$this->results['msg'] .= ' Only the domain name of the entered URL is needed for that hint type.';
+		if ( ! empty( $parsed_url['host'] ) && ! empty( $parsed_url['path'] ) ) {
+			$this->results['query']['msg'] .= ' Only the domain name of the entered URL is needed for that hint type.';
 			$url = $parsed_url['scheme'] . '://' . $parsed_url['host'];
 		} elseif ( strpos( $url, '//' ) === 0 ) {
 			$url = '//' . $parsed_url['host'];
-		} else {
+		} elseif ( empty( $parsed_url['scheme'] ) && ! empty( $parsed_url['path'] ) ) {
 			$url = '//' . $parsed_url['path'];
 		}
 		return $url;
@@ -152,33 +151,18 @@ class Create_Hints {
 		);
 
 		if ( count( $prev_hints ) > 0 ) {
-			$this->results['msg'] .= 'An identical resource hint already exists!';
-			$this->results['result'] = 'warning';
+			$this->results['response']['msg'] .= 'An identical resource hint already exists!';
+			$this->results['query']['status'] = 'warning';
 			return false;
 		} else {
 			return true;
 		}
 	}
 
-	private function remove_duplicate_hints( $new_hint ) {
-		global $wpdb;
-
-		// if a global hint is being created, previous identical hints for posts can be deleted.
-		$wpdb->delete(
-			PPRH_DB_TABLE,
-			array(
-				'url'       => $new_hint->url,
-				'hint_type' => $new_hint->hint_type,
-			),
-			array( '%s', '%s' )
-		);
-		$this->results['msg'] .= ' Identical resource hints used on posts/pages were removed.';
-	}
-
 	private function insert_hint( $new_hint ) {
 		global $wpdb;
 		$current_user = wp_get_current_user()->display_name;
-		$this->results['action'] = 'created';
+		$action = 'created';
 
 		$wpdb->insert(
 			PPRH_DB_TABLE,
@@ -195,7 +179,7 @@ class Create_Hints {
 			array( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' )
 		);
 
-		$this->results['result'] = ( $wpdb->result ) ? 'success' : 'error';
+		return Utils::get_wpdb_result( $wpdb, $action );
 	}
 
 }
