@@ -90,10 +90,10 @@ class Settings {
 			<td>
 				<label>
 					<select name="autoload_preconnects">
-						<option value="true" <?php $this->get_option_status( 'autoload_preconnects', 'true' ); ?>>
+						<option value="true" <?php Utils::get_option_status( 'autoload_preconnects', 'true' ); ?>>
 							<?php esc_html_e( 'Yes', 'pprh' ); ?>
 						</option>
-						<option value="false" <?php $this->get_option_status( 'autoload_preconnects', 'false' ); ?>>
+						<option value="false" <?php Utils::get_option_status( 'autoload_preconnects', 'false' ); ?>>
 							<?php esc_html_e( 'No', 'pprh' ); ?>
 						</option>
 					</select>
@@ -145,10 +145,10 @@ class Settings {
             <td>
                 <label>
                     <select name="allow_unauth">
-                        <option value="true" <?php $this->get_option_status( 'allow_unauth', 'true' ); ?>>
+                        <option value="true" <?php Utils::get_option_status( 'allow_unauth', 'true' ); ?>>
 							<?php esc_html_e( 'Yes', 'pprh' ); ?>
                         </option>
-                        <option value="false" <?php $this->get_option_status( 'allow_unauth', 'false' ); ?>>
+                        <option value="false" <?php Utils::get_option_status( 'allow_unauth', 'false' ); ?>>
 							<?php esc_html_e( 'No', 'pprh' ); ?>
                         </option>
                     </select>
@@ -174,10 +174,10 @@ class Settings {
 			<td>
 				<label>
 					<select name="disable_wp_hints">
-						<option value="true" <?php $this->get_option_status( 'disable_wp_hints', 'true' ); ?>>
+						<option value="true" <?php Utils::get_option_status( 'disable_wp_hints', 'true' ); ?>>
 							<?php esc_html_e( 'Yes', 'pprh' ); ?>
 						</option>
-						<option value="false" <?php $this->get_option_status( 'disable_wp_hints', 'false' ); ?>>
+						<option value="false" <?php Utils::get_option_status( 'disable_wp_hints', 'false' ); ?>>
 							<?php esc_html_e( 'No', 'pprh' ); ?>
 						</option>
 					</select>
@@ -202,10 +202,10 @@ class Settings {
 
 			<td>
 				<select id="pprhHintLocation" name="html_head">
-					<option value="true" <?php $this->get_option_status( 'html_head', 'true' ); ?>>
+					<option value="true" <?php Utils::get_option_status( 'html_head', 'true' ); ?>>
 						<?php esc_html_e( 'HTML &lt;head&gt;', 'pprh' ); ?>
 					</option>
-					<option value="false" <?php $this->get_option_status( 'html_head', 'false' ); ?>>
+					<option value="false" <?php Utils::get_option_status( 'html_head', 'false' ); ?>>
 						<?php esc_html_e( 'HTTP Header', 'pprh' ); ?>
 					</option>
 				</select>
@@ -216,9 +216,7 @@ class Settings {
 		<?php
 	}
 
-	public function get_option_status( $option, $val ) {
-		echo esc_html( ( get_option( 'pprh_' . $option ) === $val ? 'selected=selected' : '' ) );
-	}
+
 
 }
 

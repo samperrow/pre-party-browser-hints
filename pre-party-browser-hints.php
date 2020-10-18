@@ -35,7 +35,7 @@ final class Init {
 			return;
 		}
 		add_action( 'init', array( $this, 'initialize' ) );
-		add_action( 'admin_enqueue_scripts', array( $this, 'register_admin_files' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'register_admin_files' ), 1, 1 );
 		add_filter( 'set-screen-option', array( $this, 'apply_wp_screen_options' ), 10, 3 );
 		register_activation_hook( __FILE__, array( $this, 'activate_plugin' ) );
 		add_action( 'wpmu_new_blog', array( $this, 'activate_plugin' ) );
@@ -61,7 +61,7 @@ final class Init {
 			new Auto_Preconnects();
 		}
 
-//		do_action( 'pprh_pro_init' );
+		do_action( 'pprh_pro_init' );
 	}
 
 	public function load_admin_page() {
@@ -103,9 +103,10 @@ final class Init {
 				'admin_url' => admin_url()
 			);
 
-			wp_register_script( 'pprh_admin_js', PPRH_ABS_DIR . 'js/admin.js', array( 'jquery' ), PPRH_VERSION, true );
+			wp_register_script( 'pprh_admin_js', PPRH_REL_DIR . 'js/admin.js', array( 'jquery' ), PPRH_VERSION, true );
+
             wp_localize_script( 'pprh_admin_js', 'pprh_nonce', $ajax_data );
-			wp_register_style( 'pprh_styles_css', PPRH_ABS_DIR . 'css/styles.css', null, PPRH_VERSION, 'all' );
+			wp_register_style( 'pprh_styles_css', PPRH_REL_DIR . 'css/styles.css', null, PPRH_VERSION, 'all' );
 
 			wp_enqueue_script( 'pprh_admin_js' );
 			wp_enqueue_style( 'pprh_styles_css' );
