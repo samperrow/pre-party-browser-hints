@@ -51,15 +51,17 @@ final class Init {
 			include_once PPRH_ABS_DIR . '/includes/class-pprh-ajax-ops.php';
 			add_action( 'admin_menu', array( $this, 'load_admin_page' ) );
 		} else {
-			$this->pprh_disable_wp_hints();
+			$this->disable_wp_hints();
 			include_once PPRH_ABS_DIR . '/includes/class-pprh-send-hints.php';
 		}
 
 		// this needs to be loaded front end and back end bc Ajax needs to be able to communicate between the two.
 		if ( 'true' === $autoload && 'false' === $preconnects_set ) {
-			include_once PPRH_ABS_DIR . '/includes/class-pprh-ajax.php';
-			new Ajax();
+			include_once PPRH_ABS_DIR . '/includes/class-pprh-auto-preconnects.php';
+			new Auto_Preconnects();
 		}
+
+//		do_action( 'pprh_pro_init' );
 	}
 
 	public function load_admin_page() {
@@ -82,7 +84,7 @@ final class Init {
 	public function create_constants() {
 		global $wpdb;
 		$table = $wpdb->prefix . 'pprh_table';
-		$abs_dir = untrailingslashit( __DIR__ );
+		$abs_dir = WP_PLUGIN_DIR . '/pre-party-browser-hints/';
 		$rel_dir = plugins_url() . '/pre-party-browser-hints/';
 		$home_url = admin_url() . 'admin.php?page=pprh-plugin-setttings';
 
@@ -101,9 +103,9 @@ final class Init {
 				'admin_url' => admin_url()
 			);
 
-			wp_register_script( 'pprh_admin_js', PPRH_REL_DIR . 'js/admin.js', array( 'jquery' ), PPRH_VERSION, true );
-			wp_localize_script( 'pprh_admin_js', 'pprh_nonce', $ajax_data );
-			wp_register_style( 'pprh_styles_css', PPRH_REL_DIR . 'css/styles.css', null, PPRH_VERSION, 'all' );
+			wp_register_script( 'pprh_admin_js', PPRH_ABS_DIR . 'js/admin.js', array( 'jquery' ), PPRH_VERSION, true );
+            wp_localize_script( 'pprh_admin_js', 'pprh_nonce', $ajax_data );
+			wp_register_style( 'pprh_styles_css', PPRH_ABS_DIR . 'css/styles.css', null, PPRH_VERSION, 'all' );
 
 			wp_enqueue_script( 'pprh_admin_js' );
 			wp_enqueue_style( 'pprh_styles_css' );
