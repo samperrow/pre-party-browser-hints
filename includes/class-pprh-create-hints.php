@@ -20,6 +20,7 @@ class Create_Hints {
 			exit();
 		}
 
+
 		$this->prev_hints = (object) array();
 		$this->init( $data );
 	}
@@ -29,6 +30,8 @@ class Create_Hints {
 			$new_hint = (object) $this->create_hint( $hint );
 
 			if ( $this->check_for_duplicate_post_hint( $new_hint ) ) {
+                $this->results['response']['msg'] .= 'An identical resource hint already exists!';
+                $this->results['query']['status'] = 'warning';
 				$this->results['query'] = $this->insert_hint( $new_hint );
 				$this->results['new_hints'][] = $new_hint;
 			}
@@ -37,26 +40,28 @@ class Create_Hints {
 		return $this->results;
 	}
 
-	private function create_hint( $hint ) {
-		if ( empty( $hint->url ) || empty( $hint->hint_type ) ) {
+	private function create_hint( $raw_hint ) {
+		if ( empty( $raw_hint->url ) || empty( $raw_hint->hint_type ) ) {
 			return 'err';
 		}
 
-		$hint_type = $this->set_hint_type( $hint->hint_type );
-		$url       = $this->set_url( $hint, $hint_type );
+		$hint_type = $this->set_hint_type( $raw_hint->hint_type );
+		$url       = $this->set_url( $raw_hint, $hint_type );
 		$file_type = $this->set_file_type( $url );
 
 		$new_hint = array(
 			'hint_type'    => $hint_type,
 			'url'          => $url,
 			'file_type'    => $file_type,
-			'as_attr'      => $this->set_as_attr( $hint, $file_type ),
-			'type_attr'    => $this->set_type_attr( $hint, $file_type ),
-			'crossorigin'  => $this->set_crossorigin( $hint, $file_type ),
-			'auto_created' => ( isset( $hint->auto_created ) ? 1 : 0 ),
+			'as_attr'      => $this->set_as_attr( $raw_hint, $file_type ),
+			'type_attr'    => $this->set_type_attr( $raw_hint, $file_type ),
+			'crossorigin'  => $this->set_crossorigin( $raw_hint, $file_type ),
+			'auto_created' => ( isset( $raw_hint->auto_created ) ? 1 : 0 ),
 		);
 
-		return $new_hint;
+        $final_hint = apply_filters( 'pprh_create_hints_add_to_hint', $new_hint, $raw_hint );
+
+		return $final_hint;
 	}
 
 	protected function set_hint_type( $type ) {
@@ -141,7 +146,7 @@ class Create_Hints {
 		return '';
 	}
 
-	private function check_for_duplicate_post_hint( $new_hint ) {
+	protected function check_for_duplicate_post_hint( $new_hint ) {
 		global $wpdb;
 		$table     = PPRH_DB_TABLE;
 		$hint_type = $new_hint->hint_type;
@@ -152,8 +157,6 @@ class Create_Hints {
 		);
 
 		if ( count( $prev_hints ) > 0 ) {
-			$this->results['response']['msg'] .= 'An identical resource hint already exists!';
-			$this->results['query']['status'] = 'warning';
 			return false;
 		} else {
 			return true;
@@ -165,19 +168,26 @@ class Create_Hints {
 		$current_user = wp_get_current_user()->display_name;
 		$action = 'create';
 
-		$wpdb->insert(
+		$query = array(
+		    'types' => array( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' ),
+		    'args' => array(
+                'url'         => $new_hint->url,
+                'hint_type'   => $new_hint->hint_type,
+                'status'      => 'enabled',
+                'as_attr'     => $new_hint->as_attr,
+                'type_attr'   => $new_hint->type_attr,
+                'crossorigin' => $new_hint->crossorigin,
+                'created_by'  => ( ! empty( $current_user ) ? $current_user : ''),
+                'auto_created' => $new_hint->auto_created,
+            ),
+        );
+
+        $query = apply_filters( 'pprh_insert_hint_filter', $query, $new_hint );
+
+        $wpdb->insert(
 			PPRH_DB_TABLE,
-			array(
-				'url'         => $new_hint->url,
-				'hint_type'   => $new_hint->hint_type,
-				'status'      => 'enabled',
-				'as_attr'     => $new_hint->as_attr,
-				'type_attr'   => $new_hint->type_attr,
-				'crossorigin' => $new_hint->crossorigin,
-				'created_by'  => ( ! empty( $current_user ) ? $current_user : ''),
-				'auto_created' => $new_hint->auto_created,
-			),
-			array( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' )
+            $query['args'],
+            $query['types']
 		);
 
 		return Utils::get_wpdb_result( $wpdb, $action );
