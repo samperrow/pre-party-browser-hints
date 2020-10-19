@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Ajax_Ops {
 
 	public $results = array(
-		'post_id' => '',
+		'post_id'   => '',
 		'query'     => array(),
 		'new_hints' => array(),
 	);

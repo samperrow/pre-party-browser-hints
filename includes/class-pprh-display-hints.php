@@ -28,7 +28,7 @@ class Display_Hints extends WP_List_Table {
 			)
 		);
 
-		do_action( 'pprh_load_display_hints_child' );
+//		do_action( 'pprh_load_display_hints_child' );
 
 		if ( ! wp_doing_ajax() ) {
 			$this->prepare_items( null );

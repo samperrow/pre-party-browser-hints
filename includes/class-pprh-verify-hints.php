@@ -12,7 +12,7 @@ class Verify_Hints {
 	private $hints;
 
 	public function __construct () {
-		do_action( 'pprh_load_verify_hints_child' );
+//		do_action( 'pprh_load_verify_hints_child' );
 		$this->html_head = get_option('pprh_html_head');
 		$this->hints = $this->get_hints();
 		$valid = $this->are_hints_valid();

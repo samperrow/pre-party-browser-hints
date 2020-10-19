@@ -275,7 +275,11 @@
 			} else {
 				window.alert('Please select a row(s) for bulk updating.');
 			}
+		}
 
+		return {
+			ToggleAdminNotice: toggleAdminNotice,
+			CreateAjaxReq: createAjaxReq,
 		}
 	}));
 

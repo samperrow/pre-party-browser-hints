@@ -13,7 +13,6 @@ class General_Settings {
 	protected $load_adv = false;
 
 	public function __construct() {
-		do_action( 'pprh_load_general_settings_child' );
 		$this->init();
 	}
 

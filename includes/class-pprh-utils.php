@@ -65,7 +65,7 @@ class Utils {
     }
 
 	public static function on_pprh_home() {
-	    return ( isset( $_GET['page'] ) && $_GET['page'] === 'pprh-plugin-settings' );
+	    return ( isset( $_GET['page'] ) && 'pprh-plugin-settings' === $_GET['page'] );
 	}
 
 }

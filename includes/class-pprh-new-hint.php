@@ -13,9 +13,6 @@ class New_Hint {
 		if ( ! is_admin() ) {
 			exit();
 		}
-
-        do_action( 'pprh_load_new_hint_child' );
-
 		?>
 
         <div class="pprh-container">

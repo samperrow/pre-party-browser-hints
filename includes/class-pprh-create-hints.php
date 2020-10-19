@@ -55,7 +55,6 @@ class Create_Hints {
 			'crossorigin'  => $this->set_crossorigin( $hint, $file_type ),
 			'auto_created' => ( isset( $hint->auto_created ) ? 1 : 0 ),
 		);
-	}
 
 		return $new_hint;
 	}
@@ -164,7 +163,7 @@ class Create_Hints {
 	private function insert_hint( $new_hint ) {
 		global $wpdb;
 		$current_user = wp_get_current_user()->display_name;
-		$action = 'created';
+		$action = 'create';
 
 		$wpdb->insert(
 			PPRH_DB_TABLE,
