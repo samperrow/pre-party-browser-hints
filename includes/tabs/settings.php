@@ -27,7 +27,6 @@ class Settings {
 	}
 
 	public function save_user_options() {
-//		global $wpdb;
 
 		if ( isset( $_POST['save_options'] ) || isset( $_POST['pprh_preconnects_set'] ) ) {
 
@@ -102,7 +101,7 @@ class Settings {
             <td>
                 <i><?php esc_html_e( 'This feature will collect the domain names of external resources used on your site, and create resource hints from those. For example, if you are using Google Fonts and Google Analytics, the "auto preconnect" feature will find the host names of these resources ("https://www
                     .google-analytics.com", "https://fonts.gstatic.com", "https://fonts.googleapis.com"), and create resource hints for those. To initialize this, you only need to view a page on your website and this plugin will take care of the rest! It will automatically run after plugin
-                    installation, or by clicking the "Reset" button below.' ); ?></i>
+                    installation, or by clicking the "Reset" button below.', 'pprh' ); ?></i>
             </td>
 		</tr>
 

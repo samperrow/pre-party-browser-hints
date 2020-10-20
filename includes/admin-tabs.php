@@ -11,8 +11,8 @@ class Admin_Tabs {
 	public $results;
 
 	public function __construct() {
-		include_once PPRH_ABS_DIR . '/includes/class-pprh-display-hints.php';
-		include_once PPRH_ABS_DIR . '/includes/class-pprh-new-hint.php';
+		include_once PPRH_ABS_DIR . '/includes/display-hints.php';
+		include_once PPRH_ABS_DIR . '/includes/new-hint.php';
         do_action( 'pprh_load_admin_tabs_child' );
 		$this->settings_page();
 	}
@@ -33,8 +33,9 @@ class Admin_Tabs {
 		$tabs = array(
 			'insert-hints'     => 'Insert Hints',
 			'general-settings' => 'Settings',
-			'auto-preconnect'  => 'Auto Preconnect',
-			'info'             => 'Resource Hint Info',
+			'preconnect'       => 'Preconnect',
+            'preload'          => 'Preload',
+            'info'             => 'Resource Hint Info',
             'upgrade'          => 'Upgrade to Pro',
 		);
 
@@ -52,11 +53,12 @@ class Admin_Tabs {
 	}
 
 	private function include_files() {
-		include_once PPRH_ABS_DIR . '/includes/tabs/class-pprh-insert-hints.php';
-		include_once PPRH_ABS_DIR . '/includes/tabs/class-pprh-general-settings.php';
-		include_once PPRH_ABS_DIR . '/includes/tabs/class-pprh-auto-preconnect-mu.php';
-		include_once PPRH_ABS_DIR . '/includes/tabs/class-pprh-info.php';
-		include_once PPRH_ABS_DIR . '/includes/tabs/class-pprh-upgrade.php';
+		include_once PPRH_ABS_DIR . '/includes/tabs/insert-hints.php';
+		include_once PPRH_ABS_DIR . '/includes/tabs/general-settings.php';
+		include_once PPRH_ABS_DIR . '/includes/tabs/preconnect-mu.php';
+        include_once PPRH_ABS_DIR . '/includes/tabs/preload.php';
+        include_once PPRH_ABS_DIR . '/includes/tabs/info.php';
+		include_once PPRH_ABS_DIR . '/includes/tabs/upgrade.php';
 		do_action( 'pprh_pro_add_files' );
 	}
 

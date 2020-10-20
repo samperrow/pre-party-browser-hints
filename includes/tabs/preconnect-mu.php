@@ -6,21 +6,21 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-new Auto_Preconnect();
+new Preconnect_MU();
 
-class Auto_Preconnect {
+class Preconnect_MU {
 
 	public function __construct() {
-	    do_action( 'pprh_load_auto_preconnects_mu' );
+	    do_action( 'pprh_load_preconnects_mu' );
 		$this->preconnect_html();
 	}
 
 	public function preconnect_html() {
 		?>
-        <div id="pprh-auto-preconnect" class="pprh-content">
+        <div id="pprh-preconnect" class="pprh-content">
             <h2 style="margin-top: 30px;"><?php esc_html_e( 'Auto Preconnect Settings', 'pprh' ); ?></h2>
             <form method="post" action="<?php echo PPRH_HOME_URL; ?>">
-                <?php wp_nonce_field( 'pprh_save_auto_preconnect_options', 'pprh_save_auto_preconnect_nonce' ); ?>
+                <?php wp_nonce_field( 'pprh_save_preconnect_options', 'pprh_save_preconnect_nonce' ); ?>
                 <table class="pprh-settings-table">
                     <tbody>
                         <?php
@@ -37,7 +37,7 @@ class Auto_Preconnect {
                 </table>
 
                 <div class="text-center">
-                    <input type="submit" name="pprh_save_auto_preconnect" class="button button-primary" value="<?php esc_attr_e( 'Save Changes', 'pprh' ); ?>" />
+                    <input type="submit" name="pprh_save_preconnect" class="button button-primary" value="<?php esc_attr_e( 'Save Changes', 'pprh' ); ?>" />
                 </div>
             </form>
         </div>
@@ -118,7 +118,7 @@ class Auto_Preconnect {
 	}
 
 	public function save_options() {
-		if ( isset( $_POST['pprh_save_auto_preconnect'] ) && check_admin_referer( 'pprh_save_auto_preconnect_options', 'pprh_save_auto_preconnect_nonce' ) ) {
+		if ( isset( $_POST['pprh_save_preconnect'] ) && check_admin_referer( 'pprh_save_preconnect_options', 'pprh_save_preconnect_nonce' ) ) {
 
             update_option( 'pprh_prec_autoload_preconnects', wp_unslash( $_POST['autoload_preconnects'] ) );
             update_option( 'pprh_prec_allow_unauth', wp_unslash( $_POST['allow_unauth'] ) );
@@ -128,7 +128,7 @@ class Auto_Preconnect {
 			}
 
 			// pro below
-            do_action( 'pprh_save_auto_preconnect_options' );
+            do_action( 'pprh_save_preconnect_options' );
 		}
 
 	}

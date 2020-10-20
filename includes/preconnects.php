@@ -6,7 +6,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class Auto_Preconnects {
+class Preconnects {
 
 	public $load_adv = false;
 
@@ -54,8 +54,8 @@ class Auto_Preconnects {
 			$data = json_decode( wp_unslash( $_POST['pprh_data'] ), false );
 
 			define( 'CREATING_HINT', true );
-			include_once PPRH_ABS_DIR . '/includes/class-pprh-utils.php';
-			include_once PPRH_ABS_DIR . '/includes/class-pprh-create-hints.php';
+			include_once PPRH_ABS_DIR . '/includes/utils.php';
+			include_once PPRH_ABS_DIR . '/includes/create-hints.php';
 
 			$arr  = array();
 			$data = json_decode( wp_unslash( $_POST['pprh_data'] ), false );

@@ -20,8 +20,9 @@ class Create_Hints {
 			exit();
 		}
 
+        do_action( 'pprh_load_create_hints_child' );
 
-		$this->prev_hints = (object) array();
+        $this->prev_hints = (object) array();
 		$this->init( $data );
 	}
 
@@ -29,12 +30,19 @@ class Create_Hints {
 		foreach ( $hints as $hint ) {
 			$new_hint = (object) $this->create_hint( $hint );
 
-			if ( $this->check_for_duplicate_post_hint( $new_hint ) ) {
+            $dups = $this->get_duplicate_hints( $new_hint );
+
+//            if ( isset( $new_hint->load_adv ) ) {
+//                $asdf = apply_filters( 'pprh_excessive_dup_hints_exist', $dups );
+//            }
+
+			if ( count( $dups ) > 0 ) {
                 $this->results['response']['msg'] .= 'An identical resource hint already exists!';
                 $this->results['query']['status'] = 'warning';
-				$this->results['query'] = $this->insert_hint( $new_hint );
-				$this->results['new_hints'][] = $new_hint;
-			}
+			} else {
+                $this->results['query'] = $this->insert_hint( $new_hint );
+                $this->results['new_hints'][] = $new_hint;
+            }
 		}
 
 		return $this->results;
@@ -146,20 +154,27 @@ class Create_Hints {
 		return '';
 	}
 
-	protected function check_for_duplicate_post_hint( $new_hint ) {
+    private function get_duplicate_hints( $new_hint ) {
 		global $wpdb;
 		$table     = PPRH_DB_TABLE;
 		$hint_type = $new_hint->hint_type;
 		$url       = $new_hint->url;
 
+		$sql = array(
+		    'query' => "SELECT url, hint_type FROM $table WHERE hint_type = %s AND url = %s",
+            'args'  => array( $hint_type, $url ),
+        );
+
+		$sql = apply_filters( 'pprh_append_duplicate_hints', $new_hint, $sql );
+
 		$prev_hints = $wpdb->get_results(
-			$wpdb->prepare( "SELECT url, hint_type FROM $table WHERE hint_type = %s AND url = %s", $hint_type, $url )
+			$wpdb->prepare( $sql['query'], $sql['args'] )
 		);
 
 		if ( count( $prev_hints ) > 0 ) {
-			return false;
-		} else {
 			return true;
+		} else {
+			return false;
 		}
 	}
 

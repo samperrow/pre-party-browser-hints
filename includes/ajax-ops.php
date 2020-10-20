@@ -33,9 +33,9 @@ class Ajax_Ops {
 			$action = $data_obj->action;
 			$data = array( $data_obj );
 
-			include_once PPRH_ABS_DIR . '/includes/class-pprh-utils.php';
-			include_once PPRH_ABS_DIR . '/includes/class-pprh-create-hints.php';
-			include_once PPRH_ABS_DIR . '/includes/class-pprh-display-hints.php';
+			include_once PPRH_ABS_DIR . '/includes/utils.php';
+			include_once PPRH_ABS_DIR . '/includes/create-hints.php';
+			include_once PPRH_ABS_DIR . '/includes/display-hints.php';
 
 			$this->results['query'] = $this->handle_action( $data, $action );
 			$display_hints = new Display_Hints();
