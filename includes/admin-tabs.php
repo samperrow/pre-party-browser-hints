@@ -31,12 +31,10 @@ class Admin_Tabs {
 
 	public function show_admin_tabs() {
 		$tabs = array(
-			'insert-hints'     => 'Insert Hints',
-			'general-settings' => 'Settings',
-			'preconnect'       => 'Preconnect',
-            'preload'          => 'Preload',
-            'info'             => 'Resource Hint Info',
-            'upgrade'          => 'Upgrade to Pro',
+			'insert-hints' => 'Insert Hints',
+			'settings'     => 'Settings',
+            'info'         => 'Resource Hint Info',
+            'upgrade'      => 'Upgrade to Pro',
 		);
 
 		$tabs = apply_filters( 'pprh_pro_show_tabs', $tabs );
@@ -54,9 +52,7 @@ class Admin_Tabs {
 
 	private function include_files() {
 		include_once PPRH_ABS_DIR . '/includes/tabs/insert-hints.php';
-		include_once PPRH_ABS_DIR . '/includes/tabs/general-settings.php';
-		include_once PPRH_ABS_DIR . '/includes/tabs/preconnect-mu.php';
-        include_once PPRH_ABS_DIR . '/includes/tabs/preload.php';
+        include_once PPRH_ABS_DIR . '/includes/tabs/settings.php';
         include_once PPRH_ABS_DIR . '/includes/tabs/info.php';
 		include_once PPRH_ABS_DIR . '/includes/tabs/upgrade.php';
 		do_action( 'pprh_pro_add_files' );

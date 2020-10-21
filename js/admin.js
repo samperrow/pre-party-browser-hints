@@ -20,17 +20,27 @@
 		function toggleDivs() {
 			var tabs = $('a.nav-tab');
 			var divs = $('div.pprh-content');
+			var settingsDivs = $('a.nav-tab.settings');
 
-			$('a.insert-hints').toggleClass('nav-tab-active');
-			$('#pprh-insert-hints').toggleClass('active');
+			tabs.first().toggleClass('nav-tab-active');
+			divs.first().toggleClass('active');
 
 			$.each(tabs, function () {
 				$(this).on('click', function (e) {
 					var className = e.currentTarget.classList[1];
+
 					tabs.removeClass('nav-tab-active');
 					$(this).addClass('nav-tab-active');
 					divs.removeClass('active');
+
 					$('div#pprh-' + className).toggleClass('active');
+
+					if ('settings' === className) {
+						// divs.
+						$('#pprh-general-settings').toggleClass('active');
+					}
+
+
 					e.preventDefault();
 				});
 			});

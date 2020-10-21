@@ -1,6 +1,15 @@
 // https://github.com/gijo-varghese/flying-pages
 function flyingPages() {
 
+    if (typeof pprh_fp_data === "undefined") {
+        const pprh_fp_data = {
+            delay: 0,
+            ignoreKeywords: [],
+            maxRPS: 3,
+            hoverDelay: 50
+        }
+    }
+
     const toPrefetch = new Set();
     const alreadyPrefetched = new Set();
 
@@ -52,8 +61,8 @@ function flyingPages() {
         if (window.location.href === url) return;
 
         // Ignore keywords in the array, if matched to the url
-        for (let i = 0; i < window.FPConfig.ignoreKeywords.length; i++) {
-            if (url.includes(window.FPConfig.ignoreKeywords[i])) return;
+        for (let i = 0; i < pprh_fp_data.ignoreKeywords.length; i++) {
+            if (url.includes(pprh_fp_data.ignoreKeywords[i])) return;
         }
 
         // If max RPS is 0 or is on mouse hover, process immediately (without queue)
@@ -68,7 +77,7 @@ function flyingPages() {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 const url = entry.target.href;
-                addUrlToQueue(url, !window.FPConfig.maxRPS);
+                addUrlToQueue(url, !pprh_fp_data.maxRPS);
             }
         });
     });
@@ -77,7 +86,7 @@ function flyingPages() {
     const startQueue = () =>
         setInterval(() => {
             Array.from(toPrefetch)
-                .slice(0, window.FPConfig.maxRPS)
+                .slice(0, pprh_fp_data.maxRPS)
                 .forEach(url => {
                     prefetchWithTimeout(url);
                     alreadyPrefetched.add(url);
@@ -93,7 +102,7 @@ function flyingPages() {
         if (elm && elm.href && !alreadyPrefetched.has(elm.href)) {
             hoverTimer = setTimeout(() => {
                 addUrlToQueue(elm.href, true);
-            }, window.FPConfig.hoverDelay);
+            }, pprh_fp_data.hoverDelay);
         }
     };
 
@@ -141,17 +150,6 @@ function flyingPages() {
         document.removeEventListener("touchstart", touchStartListener, true);
     };
 
-    // Default options incase options is not set
-    const defaultOptions = {
-        delay: 0,
-        ignoreKeywords: [],
-        maxRPS: 3,
-        hoverDelay: 50
-    };
-
-    // Combine default options with received options to create the new config and set the config in window for easy access
-    window.FPConfig = Object.assign(defaultOptions, window.FPConfig);
-
     // Start Queue
     startQueue();
 
@@ -160,7 +158,7 @@ function flyingPages() {
         setTimeout(
             () =>
                 document.querySelectorAll("a").forEach(e => linksObserver.observe(e)),
-            window.FPConfig.delay * 1000
+            pprh_fp_data.delay * 1000
         )
     );
 
