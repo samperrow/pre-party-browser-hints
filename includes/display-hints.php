@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 if ( ! class_exists( WP_List_Table::class ) ) {
-	require_once PPRH_ABS_DIR . '/includes/class-pprh-wp-list-table.php';
+	require_once PPRH_ABS_DIR . '/includes/wp-list-table.php';
 }
 
 class Display_Hints extends WP_List_Table {
@@ -152,7 +152,7 @@ class Display_Hints extends WP_List_Table {
 
 	public function inline_edit_row( $item ) {
 		if ( ! class_exists( 'PPRH\New_Hint' ) ) {
-			require_once PPRH_ABS_DIR . '/includes/class-pprh-new-hint.php';
+			require_once PPRH_ABS_DIR . '/includes/new-hint.php';
 		}
 
 		$json = json_encode( $item,true );

@@ -51,8 +51,8 @@ class Ajax {
 			$data = json_decode( wp_unslash( $_POST['pprh_data'] ), false );
 
 			define( 'CREATING_HINT', true );
-			include_once PPRH_ABS_DIR . '/includes/class-pprh-utils.php';
-			include_once PPRH_ABS_DIR . '/includes/class-pprh-create-hints.php';
+			include_once PPRH_ABS_DIR . '/includes/utils.php';
+			include_once PPRH_ABS_DIR . '/includes/create-hints.php';
 
 			foreach ( $data->hints as $hint ) {
 				$obj = new \stdClass();

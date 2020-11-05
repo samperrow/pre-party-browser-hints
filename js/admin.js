@@ -62,8 +62,6 @@ jQuery(document).ready(function($) {
 			});
 		}
 
-		// }
-
 		// used on all admin and modal screens w/ contact button.
 		function emailValidate(e) {
 			var emailAddr = document.getElementById("pprhEmailAddress");

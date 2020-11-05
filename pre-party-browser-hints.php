@@ -42,19 +42,19 @@ final class Init {
 		$this->create_constants();
 		$autoload = get_option( 'pprh_autoload_preconnects' );
 		$preconnects_set = get_option( 'pprh_preconnects_set' );
-		include_once PPRH_ABS_DIR . '/includes/class-pprh-utils.php';
+		include_once PPRH_ABS_DIR . '/includes/utils.php';
 
 		if ( is_admin() ) {
-			include_once PPRH_ABS_DIR . '/includes/class-pprh-ajax-ops.php';
+			include_once PPRH_ABS_DIR . '/includes/ajax-ops.php';
 			add_action( 'admin_menu', array( $this, 'load_admin_page' ) );
 		} else {
 			$this->pprh_disable_wp_hints();
-			include_once PPRH_ABS_DIR . '/includes/class-pprh-send-hints.php';
+			include_once PPRH_ABS_DIR . '/includes/send-hints.php';
 		}
 
 		// this needs to be loaded front end and back end bc Ajax needs to be able to communicate between the two.
 		if ( 'true' === $autoload && 'false' === $preconnects_set ) {
-			include_once PPRH_ABS_DIR . '/includes/class-pprh-ajax.php';
+			include_once PPRH_ABS_DIR . '/includes/ajax.php';
 			new Ajax();
 		}
 	}
@@ -73,7 +73,7 @@ final class Init {
 	}
 
 	public function load_files() {
-		include_once PPRH_ABS_DIR . '/includes/class-pprh-admin-tabs.php';
+		include_once PPRH_ABS_DIR . '/includes/admin-tabs.php';
 	}
 
 	public function create_constants() {

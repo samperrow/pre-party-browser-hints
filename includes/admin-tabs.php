@@ -11,8 +11,8 @@ class Admin_Tabs {
 	public $results;
 
 	public function __construct() {
-		include_once PPRH_ABS_DIR . '/includes/class-pprh-display-hints.php';
-		include_once PPRH_ABS_DIR . '/includes/class-pprh-new-hint.php';
+		include_once PPRH_ABS_DIR . '/includes/display-hints.php';
+		include_once PPRH_ABS_DIR . '/includes/new-hint.php';
 
 		$this->settings_page();
 	}
@@ -45,10 +45,6 @@ class Admin_Tabs {
 		}
 		echo '</h2>';
 		echo '<div class="pprh-box">';
-
-//		foreach ($tabs as $tab => $name) {
-//			include_once PPRH_ABS_DIR . "/includes/tabs/$tab.php";
-//		}
 
         $this->include_files();
 		$this->show_footer();
