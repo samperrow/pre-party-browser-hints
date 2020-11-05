@@ -6,9 +6,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class Preconnects {
-
-	public $load_adv = false;
+class Ajax {
 
 	public function __construct() {
 		if ( 'true' === get_option( 'pprh_allow_unauth' ) ) {
@@ -25,7 +23,6 @@ class Preconnects {
 	}
 
 	public function initialize() {
-
 		$preconnects = array(
 			'hints'      => array(),
 			'nonce'      => wp_create_nonce( 'pprh_ajax_nonce' ),
@@ -54,18 +51,15 @@ class Preconnects {
 			$data = json_decode( wp_unslash( $_POST['pprh_data'] ), false );
 
 			define( 'CREATING_HINT', true );
-			include_once PPRH_ABS_DIR . '/includes/utils.php';
-			include_once PPRH_ABS_DIR . '/includes/create-hints.php';
-
-			$arr  = array();
-			$data = json_decode( wp_unslash( $_POST['pprh_data'] ), false );
+			include_once PPRH_ABS_DIR . '/includes/class-pprh-utils.php';
+			include_once PPRH_ABS_DIR . '/includes/class-pprh-create-hints.php';
 
 			foreach ( $data->hints as $hint ) {
 				$obj = new \stdClass();
 				$obj->url = $hint;
 				$obj->hint_type = 'preconnect';
 				$obj->auto_created = true;
-				array_push($arr, $obj );
+				$arr[] = $obj;
 			}
 
 			$this->remove_prev_auto_preconnects();

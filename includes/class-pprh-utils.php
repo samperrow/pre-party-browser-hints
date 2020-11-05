@@ -60,24 +60,4 @@ class Utils {
         );
 	}
 
-    public function get_option_status( $option, $val ) {
-        echo esc_html( ( get_option( 'pprh_' . $option ) === $val ? 'selected=selected' : '' ) );
-    }
-
-	public static function on_pprh_home() {
-	    return ( isset( $_GET['page'] ) && 'pprh-plugin-settings' === $_GET['page'] );
-	}
-
-    public static function get_option( $option_name, $key, $default ) {
-        $arr = json_decode( get_option( $option_name ), false );
-        return ( isset( $arr->$key ) ) ? $arr->$key : $default;
-    }
-
-    public static function update_option( $option_name, $key, $new_value ) {
-        $arr = json_decode( get_option( $option_name ), false );
-        $arr->$key = $new_value;
-        $json = json_encode( $arr, false );
-        update_option( $option_name, $json );
-    }
-
 }

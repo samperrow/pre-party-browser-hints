@@ -1,296 +1,288 @@
-// jQuery(document).ready(function($) {
+jQuery(document).ready(function($) {
+	'use strict';
 
-	(function(global, factory) {
-		global.pprhAdminJS = factory();
-	}(this, function() {
+	var currentURL = document.location.href;
+	var adminNoticeElem = document.getElementById('pprhNotice');
+	var globalTable = $('table#pprh-enter-data');
+	var emailSubmitBtn = document.getElementById('pprhSubmit');
 
-		'use strict';
+	emailSubmitBtn.addEventListener("click", emailValidate);
 
-		var $ = jQuery;
+	toggleDivs();
+	function toggleDivs() {
+		var tabs = $('a.nav-tab');
+		var divs = $('div.pprh-content');
 
-		var currentURL = document.location.href;
-		var adminNoticeElem = document.getElementById('pprhNotice');
-		var globalTable = $('table#pprh-enter-data');
-		var emailSubmitBtn = document.getElementById('pprhSubmit');
+		$('a.insert-hints').toggleClass('nav-tab-active');
+		$('#pprh-insert-hints').toggleClass('active');
 
-		emailSubmitBtn.addEventListener("click", emailValidate);
-
-		toggleDivs();
-
-		function toggleDivs() {
-			var tabs = $('a.nav-tab');
-			var divs = $('div.pprh-content');
-			var settingsDivs = $('a.nav-tab.settings');
-
-			tabs.first().toggleClass('nav-tab-active');
-			divs.first().toggleClass('active');
-
-			$.each(tabs, function () {
-				$(this).on('click', function (e) {
-					var className = e.currentTarget.classList[1];
-
-					tabs.removeClass('nav-tab-active');
-					$(this).addClass('nav-tab-active');
-					divs.removeClass('active');
-
-					$('div#pprh-' + className).toggleClass('active');
-
-					if ('settings' === className) {
-						// divs.
-						$('#pprh-general-settings').toggleClass('active');
-					}
-
-
-					e.preventDefault();
-				});
-			});
-
-		}
-
-		// used on all admin and modal screens w/ contact button.
-		function emailValidate(e) {
-			var emailAddr = document.getElementById("pprhEmailAddress");
-			var emailMsg = document.getElementById("pprhEmailText");
-			var emailformat = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/i;
-
-			if (!emailformat.test(emailAddr.value) || emailMsg.value === "") {
+		$.each(tabs, function() {
+			$(this).on('click', function(e) {
+				var className = e.currentTarget.classList[1];
+				tabs.removeClass('nav-tab-active');
+				$(this).addClass('nav-tab-active');
+				divs.removeClass('active');
+				$('div#pprh-' + className ).toggleClass('active');
 				e.preventDefault();
-				window.alert('Please enter a valid message and email address.');
-			}
-		}
-
-		// update the hint table via ajax.
-		function updateTable(response) {
-			var table = $('table.pprh-post-table').first();
-			var tbody = table.find('tbody');
-
-			tbody.html('');
-
-			if (response.rows.length) {
-				tbody.html(response.rows);
-			}
-
-			if (response.pagination.bottom.length) {
-				$('.tablenav.top .tablenav-pages').html($(response.pagination.top).html());
-			}
-
-			if (response.pagination.top.length) {
-				$('.tablenav.bottom .tablenav-pages').html($(response.pagination.bottom).html());
-			}
-
-			if (response.total_pages === 1) {
-				$('div.tablenav, div.alignleft.actions.bulkactions').removeClass('no-pages');
-			}
-
-			table.find('input:checkbox').attr('checked', false);
-		}
-
-		$('input#pprhSubmitHints').on("click", function (e) {
-			createHint(e, 'pprh-enter-data', 'create');
+			});
 		});
+	}
 
+	// used on all admin and modal screens w/ contact button.
+	function emailValidate(e) {
+		var emailAddr = document.getElementById("pprhEmailAddress");
+		var emailMsg = document.getElementById("pprhEmailText");
+		var emailformat = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/i;
 
-		function getUrlValue() {
-			var val = '';
+		if (! emailformat.test(emailAddr.value) || emailMsg.value === "") {
+			e.preventDefault();
+			window.alert('Please enter a valid message and email address.');
+		}
+	}
 
-			if (currentURL.indexOf(this) > -1) {
-				try {
-					val = new URL(currentURL).searchParams.get(this);
-				} catch (e) {
-					val = currentURL.split(this + '=')[1].match(/^\d/)[0];
-				}
-			}
+	// update the hint table via ajax.
+	function updateTable(response) {
+		var table = $('table.pprh-post-table').first();
+		var tbody = table.find('tbody');
 
-			return val;
+		tbody.html('');
+
+		if ( response.rows.length ) {
+			tbody.html( response.rows );
 		}
 
-		function createHint(e, tableID, op) {
-			var elems = getRowElems(tableID);
-			var hint_url = elems.url.val().replace(/'|"/g, '');
-			var hintType = getHintType.call(elems.hint_type);
-			var hintObj = createHintObj();
-
-			if (hint_url.length === 0 || !hintType) {
-				window.alert('Please enter a proper URL and hint type.');
-			} else if (hintObj.hint_type === 'preload' && !hintObj.as_attr) {
-				window.alert("You must specify an 'as' attribute when using preload hints.");
-			} else {
-				createAjaxReq(hintObj);
-			}
-
-			function getHintType() {
-				return this.find('input:checked').val();
-			}
-
-			function createHintObj() {
-				return {
-					url: hint_url,
-					hint_type: hintType,
-					crossorigin: elems.crossorigin.is(':checked') ? 'crossorigin' : '',
-					as_attr: elems.as_attr.val(),
-					type_attr: elems.type_attr.val(),
-					action: op,
-					hint_id: (op === 'update') ? tableID.split('pprh-edit-')[1] : null,
-				};
-			}
-
+		if ( response.pagination.bottom.length ) {
+			$('.tablenav.top .tablenav-pages').html( $(response.pagination.top).html() );
 		}
 
-		function getRowElems(tableID) {
-			var table = $('table#' + tableID).find('tbody');
+		if ( response.pagination.top.length ) {
+			$('.tablenav.bottom .tablenav-pages').html( $(response.pagination.bottom).html() );
+		}
+
+		if (response.total_pages === 1) {
+			$('div.tablenav, div.alignleft.actions.bulkactions').removeClass('no-pages');
+		}
+	}
+
+	$('input#pprhSubmitHints').on("click", function(e) {
+		createHint(e, 'pprh-enter-data', 'create');
+	});
+
+
+	function getUrlValue() {
+		var val = '';
+
+		if (currentURL.indexOf(this) > -1) {
+			try {
+				val = new URL(currentURL).searchParams.get(this);
+			} catch (e) {
+				val = currentURL.split(this + '=')[1].match(/^\d/)[0];
+			}
+		}
+
+		return val;
+	}
+
+	function createHint(e, tableID, op) {
+		var elems = getRowElems(tableID);
+		var hint_url = elems.url.val().replace(/'|"/g, '');
+		var hintType = getHintType.call(elems.hint_type);
+		var hintObj = createHintObj();
+
+		if (hint_url.length === 0 || ! hintType) {
+			window.alert('Please enter a proper URL and hint type.');
+		} else if (hintObj.hint_type === 'preload' && ! hintObj.as_attr) {
+			window.alert("You must specify an 'as' attribute when using preload hints.");
+		} else {
+			createAjaxReq(hintObj);
+		}
+
+		function getHintType() {
+			return this.find('input:checked').val();
+		}
+
+		function createHintObj() {
 			return {
-				url: table.find('input.pprh_url'),
-				hint_type: table.find('tr.pprhHintTypes'),
-				crossorigin: table.find('input.pprh_crossorigin'),
-				as_attr: table.find('select.pprh_as_attr'),
-				type_attr: table.find('select.pprh_type_attr'),
+				url: hint_url,
+				hint_type: hintType,
+				crossorigin: elems.crossorigin.is(':checked') ? 'crossorigin' : '',
+				as_attr: elems.as_attr.val(),
+				type_attr: elems.type_attr.val(),
+				action: op,
+				hint_id: (op === 'update') ? tableID.split('pprh-edit-')[1] : null,
 			};
 		}
 
-		function addDeleteHintListener() {
-			$('span.delete').on('click', function (e) {
-				e.preventDefault();
+	}
 
-				if (confirm('Are you sure you want to delete this hint?')) {
-					var hintID = e.target.id.split('pprh-delete-hint-')[1];
-					return createAjaxReq({
-						hint_ids: [hintID],
-						action: 'delete',
-					});
-				}
-			});
+	function getRowElems(tableID) {
+		var table = $('table#' + tableID).find('tbody');
+		return {
+			url: table.find('input.pprh_url'),
+			hint_type: table.find('tr.pprhHintTypes'),
+			crossorigin: table.find('input.pprh_crossorigin'),
+			as_attr: table.find('select.pprh_as_attr'),
+			type_attr: table.find('select.pprh_type_attr'),
+		};
+	}
+
+	function addDeleteHintListener() {
+		$('span.delete').on('click', function(e) {
+			e.preventDefault();
+
+			if (confirm('Are you sure you want to delete this hint?')) {
+				var hintID = e.target.id.split('pprh-delete-hint-')[1];
+				return createAjaxReq({
+					hint_ids: [hintID],
+					action: 'delete',
+				});
+			}
+		});
+	}
+
+	function createAjaxReq(dataObj) {
+		var xhr = new XMLHttpRequest();
+		var url = pprh_nonce.admin_url + 'admin-ajax.php';
+		xhr.open('POST', url, true);
+		xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+		var json = JSON.stringify(dataObj);
+		var paginationPage = getUrlValue.call('paged');
+		var target = 'action=pprh_update_hints&pprh_data=' + json + '&val=' + pprh_nonce.val;
+
+		if (paginationPage.length > 0) {
+			target += '&paged=' + paginationPage;
 		}
 
-		function createAjaxReq(dataObj) {
-			var xhr = new XMLHttpRequest();
-			var url = pprh_nonce.admin_url + 'admin-ajax.php';
-			xhr.open('POST', url, true);
-			xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
-			var json = JSON.stringify(dataObj);
-			var paginationPage = getUrlValue.call('paged');
-			var target = 'action=pprh_update_hints&pprh_data=' + json + '&val=' + pprh_nonce.val;
+		xhr.send(target);
 
-			if (paginationPage.length > 0) {
-				target += '&paged=' + paginationPage;
-			}
-
-			xhr.send(target);
-
-			xhr.onreadystatechange = function () {
-				if (xhr.readyState === 4 && xhr.status === 200) {
-					if (xhr.response.length > 0) {
-						var response = JSON.parse(xhr.response);
+		xhr.onreadystatechange = function() {
+			if (xhr.readyState === 4 && xhr.status === 200) {
+				if (xhr.response.length > 0) {
+					var response;
+					try {
+						response = JSON.parse(xhr.response);
+					} catch (e) {
+						response = xhr.response;
+					}
+					if (response && response.result && response.result.query) {
 						clearHintTable();
 						updateAdminNotice(response.result.query);
 						updateTable(response);
 						addEventListeners();
 					} else {
-						return updateAdminNotice(xhr);
+						updateAdminNotice(response);
 					}
-
-				} else if (xhr.status > 400) {
+				} else {
 					return updateAdminNotice(xhr);
 				}
-			};
-		}
 
-		addEventListeners();
-
-		function addEventListeners() {
-			addDeleteHintListener();
-			addEditRowEventListener();
-		}
-
-		function clearHintTable() {
-			globalTable.find('tbody').find('select, input:text').val('');
-			globalTable.find('tbody').find('input:checkbox, input:radio').attr('checked', false);
-		}
-
-		function updateAdminNotice(response) {
-			if (response.status === 'error') {
-				response.msg += response.last_error;
+			} else if (xhr.status > 400) {
+				return updateAdminNotice(xhr);
 			}
+		};
+	}
 
-			toggleAdminNotice('add', response.status);
-			adminNoticeElem.getElementsByTagName('p')[0].innerHTML = response.msg;
-
-			setTimeout(function () {
-				toggleAdminNotice('remove', response.status);
-			}, 10000);
-		}
-
-		function toggleAdminNotice(action, outcome) {
-			adminNoticeElem.classList[action]('active');
-			adminNoticeElem.classList[action]('notice-' + outcome);
-		}
-
+	addEventListeners();
+	function addEventListeners() {
+		addDeleteHintListener();
 		addEditRowEventListener();
+	}
 
-		function addEditRowEventListener() {
-			$('span.edit').on('click', function () {
-				var hintID = $(this).find('a').attr('id').split('pprh-edit-hint-')[1];
-				var allRows = $('tr.pprh-row');
-				allRows.removeClass('active');
+	function clearHintTable() {
+		globalTable.find('tbody').find('select, input:text').val('');
+		globalTable.find('tbody').find('input:checkbox, input:radio').attr('checked', false);
+	}
 
-				var rows = $('tr.pprh-row.' + hintID);
-				rows.addClass('active');
-				putHintInfoIntoElems(hintID);
+	function updateAdminNotice(response) {
+		var resp = {
+			msg: '',
+			status: (response.status) ? response.status : 'error',
+		}
 
-				rows.find('button.button.cancel').first().on('click', function () {
-					rows.removeClass('active');
-				});
+		if (response.status === 'success' ) {
+			resp.msg += response.msg;
+		} else if (response.status === 'error' ) {
+			resp.msg += response.msg + ((response.last_error) ? response.last_error : '');
+		} else if (typeof response === "string" && /<code>(.*)?<\/code>/g.test(response)) {
+			resp.msg += response.split('<code>')[0].split('</code>')[0];
+		} else {
+			resp.msg += 'Error updating hint. Please clear your browser cache and try again, or contact support about the issue.';
+		}
 
-				$('tr.pprh-row.edit.' + hintID).find('button.pprh-update').on('click', function (e) {
-					createHint(e, 'pprh-edit-' + hintID, 'update');
-				});
+		toggleAdminNotice('add', resp.status);
+		adminNoticeElem.getElementsByTagName('p')[0].innerHTML = resp.msg;
+
+		setTimeout(function() {
+			toggleAdminNotice('remove', resp.status);
+		}, 10000 );
+	}
+
+	function toggleAdminNotice(action, outcome) {
+		adminNoticeElem.classList[action]('active');
+		adminNoticeElem.classList[action]('notice-' + outcome);
+	}
+
+	addEditRowEventListener();
+	function addEditRowEventListener() {
+		$('span.edit').on('click', function() {
+			var hintID = $(this).find('a').attr('id').split('pprh-edit-hint-')[1];
+			var allRows = $('tr.pprh-row');
+			allRows.removeClass('active');
+
+			var rows = $('tr.pprh-row.' + hintID);
+			rows.addClass('active');
+			putHintInfoIntoElems(hintID);
+
+			rows.find('button.button.cancel').first().on('click', function() {
+				rows.removeClass('active');
 			});
-		}
 
-		function putHintInfoIntoElems(hintID) {
-			var json = $('input.pprh-hint-storage.' + hintID).val();
-			var data = JSON.parse(json);
-			var elems = getRowElems('pprh-edit-' + hintID);
-
-			elems.url.val(data.url);
-			elems.hint_type.find('input[value="' + data.hint_type + '"]').attr('checked', true);
-
-			if (data['crossorigin']) {
-				elems.crossorigin.attr('checked', true);
-			}
-
-			elems.as_attr.val(data['as_attr'] ? data['as_attr'] : '');
-			elems.type_attr.val(data['type_attr'] ? data['type_attr'] : '')
-		}
-
-		// bulk deletes, enables/disables.
-		$('input.pprhBulkAction').on('click', bulkUpdates);
-
-		function bulkUpdates(e) {
-			e.preventDefault();
-			var idArr = [];
-			var op = $(e.currentTarget).prev().val();
-			var checkboxes = $('table.pprh-post-table tbody th.check-column input:checkbox');
-
-			$.each(checkboxes, function () {
-				if ($(this).is(':checked')) {
-					return idArr.push($(this).val());
-				}
+			$('tr.pprh-row.edit.' + hintID).find('button.pprh-update').on('click', function(e) {
+				createHint(e, 'pprh-edit-' + hintID, 'update');
 			});
+		});
+	}
 
-			if (idArr.length > 0) {
-				return createAjaxReq({
-					action: op,
-					hint_ids: idArr,
-				});
-			} else {
-				window.alert('Please select a row(s) for bulk updating.');
+
+	function putHintInfoIntoElems(hintID) {
+		var json = $('input.pprh-hint-storage.' + hintID).val();
+		var data = JSON.parse(json);
+
+		var elems = getRowElems('pprh-edit-' + hintID);
+		elems.url.val(data.url);
+		elems.hint_type.find('input[value="' + data.hint_type + '"]').attr('checked', true);
+
+		if (data['crossorigin']) {
+			elems.crossorigin.attr('checked', true);
+		}
+
+		elems.as_attr.val( data['as_attr'] ? data['as_attr'] : '');
+		elems.type_attr.val( data['type_attr'] ? data['type_attr'] : '')
+	}
+
+	// bulk deletes, enables/disables.
+	$('input.pprhBulkAction').on('click', bulkUpdates);
+
+	function bulkUpdates(e) {
+		e.preventDefault();
+		var idArr = [];
+		var op = $(e.currentTarget).prev().val();
+		var checkboxes = $('table.pprh-post-table tbody th.check-column input:checkbox');
+
+		$.each(checkboxes, function() {
+			if ($(this).is(':checked')) {
+				return idArr.push($(this).val());
 			}
-		}
+		});
 
-		return {
-			ToggleAdminNotice: toggleAdminNotice,
-			CreateAjaxReq: createAjaxReq,
+		if (idArr.length > 0) {
+			return createAjaxReq({
+				action: op,
+				hint_ids: idArr,
+			});
+		} else {
+			window.alert('Please select a row(s) for bulk updating.');
 		}
-	}));
+	}
 
-// });
+});

@@ -8,8 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class New_Hint {
 
-	public function new_hint_table() {
-
+	public function create_new_hint_table() {
 		if ( ! is_admin() ) {
 			exit();
 		}
@@ -31,26 +30,9 @@ class New_Hint {
 
                 <tfoot>
                     <tr>
-                        <td colspan="2">
-                            <?php
-							if ( ! Utils::on_pprh_home() ) {
-								do_action( 'pprh_new_post_auto_precs' );
-							}
-                            ?>
-                        </td>
-
-                        <td colspan="1">
+                        <td style="text-align: center; padding: 20px 0;" colspan="5">
                             <input id="pprhSubmitHints" type="button" class="button button-primary" value="<?php esc_attr_e( 'Insert Resource Hint', 'pprh' ); ?>" />
                         </td>
-
-                        <td colspan="2">
-							<?php
-							if ( ! Utils::on_pprh_home() ) {
-								do_action( 'pprh_nh_post_reset_ga' );
-							}
-							?>
-                        </td>
-
                     </tr>
                 </tfoot>
 
@@ -64,10 +46,6 @@ class New_Hint {
 		$this->enter_url();
 		$this->show_pp_radio_options();
 		$this->set_attrs();
-
-        if ( Utils::on_pprh_home() ) {
-			do_action( 'pprh_hc_home_page' );
-        }
 	}
 
 	protected function enter_url() {
