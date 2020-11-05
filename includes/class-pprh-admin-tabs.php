@@ -32,8 +32,7 @@ class Admin_Tabs {
 	public function show_admin_tabs() {
 		$tabs = array(
 			'insert-hints' => 'Insert Hints',
-			'insert-hints'     => 'Insert Hints',
-			'general-settings' => 'Settings',
+			'settings'     => 'Settings',
 			'preconnect'       => 'Preconnect',
             'preload'          => 'Preload',
             'info'             => 'Resource Hint Info',
@@ -47,17 +46,18 @@ class Admin_Tabs {
 		echo '</h2>';
 		echo '<div class="pprh-box">';
 
-		foreach ($tabs as $tab => $name) {
-			include_once PPRH_ABS_DIR . "/includes/tabs/class-pprh-$tab.php";
-		}
+//		foreach ($tabs as $tab => $name) {
+//			include_once PPRH_ABS_DIR . "/includes/tabs/$tab.php";
+//		}
 
+        $this->include_files();
 		$this->show_footer();
 		echo '</div>';
 	}
 
 	private function include_files() {
 		include_once PPRH_ABS_DIR . '/includes/tabs/insert-hints.php';
-		include_once PPRH_ABS_DIR . '/includes/tabs/general-settings.php';
+		include_once PPRH_ABS_DIR . '/includes/tabs/settings.php';
 		include_once PPRH_ABS_DIR . '/includes/tabs/preconnect-mu.php';
         include_once PPRH_ABS_DIR . '/includes/tabs/preload.php';
         include_once PPRH_ABS_DIR . '/includes/tabs/info.php';
