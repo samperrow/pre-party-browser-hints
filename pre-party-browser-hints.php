@@ -98,10 +98,14 @@ final class Init {
 
 			wp_register_script( 'pprh_admin_js', PPRH_REL_DIR . 'js/admin.js', array( 'jquery' ), PPRH_VERSION, true );
 			wp_localize_script( 'pprh_admin_js', 'pprh_nonce', $ajax_data );
+
+            wp_localize_script( 'pprh_admin_js', 'pprh_nonce', $ajax_data );
 			wp_register_style( 'pprh_styles_css', PPRH_REL_DIR . 'css/styles.css', null, PPRH_VERSION, 'all' );
 
 			wp_enqueue_script( 'pprh_admin_js' );
 			wp_enqueue_style( 'pprh_styles_css' );
+
+			do_action( 'pprh_pro_admin_enqueue_scripts' );
 		}
 	}
 
@@ -131,6 +135,14 @@ final class Init {
 		add_option( 'pprh_disable_wp_hints', 'true', '', 'yes' );
 		add_option( 'pprh_html_head', 'true', '', 'yes' );
 		add_option( 'pprh_preconnects_set', 'false', '', 'yes' );
+
+        add_option( 'pprh_preload_allow', 'false', '', 'yes' );
+        add_option( 'pprh_preload_delay', '0', '', 'yes' );
+        add_option( 'pprh_preload_ignoreKeywords', '', '', 'yes' );
+        add_option( 'pprh_preload_maxRPS', '3', '', 'yes' );
+        add_option( 'pprh_preload_hoverDelay', '50', '', 'yes' );
+
+
 	}
 
 	// Multisite install/delete db table.

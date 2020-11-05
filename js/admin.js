@@ -24,6 +24,41 @@ jQuery(document).ready(function($) {
 				divs.removeClass('active');
 				$('div#pprh-' + className ).toggleClass('active');
 				e.preventDefault();
+// jQuery(document).ready(function($) {
+
+	(function(global, factory) {
+		global.pprhAdminJS = factory();
+	}(this, function() {
+
+		'use strict';
+
+		var $ = jQuery;
+
+		var currentURL = document.location.href;
+		var adminNoticeElem = document.getElementById('pprhNotice');
+		var globalTable = $('table#pprh-enter-data');
+		var emailSubmitBtn = document.getElementById('pprhSubmit');
+
+		emailSubmitBtn.addEventListener("click", emailValidate);
+
+		toggleDivs();
+
+		function toggleDivs() {
+			var tabs = $('a.nav-tab');
+			var divs = $('div.pprh-content');
+
+			$('a.insert-hints').toggleClass('nav-tab-active');
+			$('#pprh-insert-hints').toggleClass('active');
+
+			$.each(tabs, function () {
+				$(this).on('click', function (e) {
+					var className = e.currentTarget.classList[1];
+					tabs.removeClass('nav-tab-active');
+					$(this).addClass('nav-tab-active');
+					divs.removeClass('active');
+					$('div#pprh-' + className).toggleClass('active');
+					e.preventDefault();
+				});
 			});
 		});
 	}

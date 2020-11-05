@@ -32,8 +32,12 @@ class Admin_Tabs {
 	public function show_admin_tabs() {
 		$tabs = array(
 			'insert-hints' => 'Insert Hints',
-			'settings'     => 'Settings',
-			'info'         => 'Resource Hint Information',
+			'insert-hints'     => 'Insert Hints',
+			'general-settings' => 'Settings',
+			'preconnect'       => 'Preconnect',
+            'preload'          => 'Preload',
+            'info'             => 'Resource Hint Info',
+            'upgrade'          => 'Upgrade to Pro',
 		);
 
 		echo '<h2 class="nav-tab-wrapper">';
@@ -49,6 +53,16 @@ class Admin_Tabs {
 
 		$this->show_footer();
 		echo '</div>';
+	}
+
+	private function include_files() {
+		include_once PPRH_ABS_DIR . '/includes/tabs/insert-hints.php';
+		include_once PPRH_ABS_DIR . '/includes/tabs/general-settings.php';
+		include_once PPRH_ABS_DIR . '/includes/tabs/preconnect-mu.php';
+        include_once PPRH_ABS_DIR . '/includes/tabs/preload.php';
+        include_once PPRH_ABS_DIR . '/includes/tabs/info.php';
+		include_once PPRH_ABS_DIR . '/includes/tabs/upgrade.php';
+		do_action( 'pprh_pro_add_files' );
 	}
 
 	public function show_footer() {
