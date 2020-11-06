@@ -3,7 +3,7 @@
  * Plugin Name:       Pre* Party Resource Hints
  * Plugin URI:        https://wordpress.org/plugins/pre-party-browser-hints/
  * Description:       Take advantage of the browser resource hints DNS-Prefetch, Prerender, Preconnect, Prefetch, and Preload to improve page load time.
- * Version:           1.7.3.2
+ * Version:           1.8.0
  * Requires at least: 4.4
  * Requires PHP:      5.6.30
  * Author:            Sam Perrow
@@ -17,7 +17,7 @@
  *
  * Copyright 2016  Sam Perrow  (email : sam.perrow399@gmail.com)
  *
-*/
+ */
 
 namespace PPRH;
 
@@ -31,11 +31,14 @@ new Init();
 final class Init {
 
 	public function __construct() {
+		if ( isset( $_REQUEST['action'] ) && 'heartbeat' === $_REQUEST['action'] ) {
+			return;
+		}
 		add_action( 'init', array( $this, 'initialize' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'register_admin_files' ) );
 		add_filter( 'set-screen-option', array( $this, 'apply_wp_screen_options' ), 10, 3 );
-		register_activation_hook( __FILE__, array( $this, 'activate_plugin' ) );
 		add_action( 'wpmu_new_blog', array( $this, 'activate_plugin' ) );
+		register_activation_hook( __FILE__, array( $this, 'activate_plugin' ) );
 	}
 
 	public function initialize() {
@@ -48,15 +51,18 @@ final class Init {
 			include_once PPRH_ABS_DIR . '/includes/ajax-ops.php';
 			add_action( 'admin_menu', array( $this, 'load_admin_page' ) );
 		} else {
-			$this->pprh_disable_wp_hints();
+			$this->disable_wp_hints();
+			$this->load_flying_pages();
 			include_once PPRH_ABS_DIR . '/includes/send-hints.php';
 		}
 
 		// this needs to be loaded front end and back end bc Ajax needs to be able to communicate between the two.
 		if ( 'true' === $autoload && 'false' === $preconnects_set ) {
-			include_once PPRH_ABS_DIR . '/includes/ajax.php';
-			new Ajax();
+			include_once PPRH_ABS_DIR . 'includes/preconnects.php';
+			new Preconnects();
 		}
+
+		do_action( 'pprh_pro_init' );
 	}
 
 	public function load_admin_page() {
@@ -79,13 +85,15 @@ final class Init {
 	public function create_constants() {
 		global $wpdb;
 		$table = $wpdb->prefix . 'pprh_table';
-		$abs_dir = untrailingslashit( __DIR__ );
+		$abs_dir = WP_PLUGIN_DIR . '/pre-party-browser-hints/';
 		$rel_dir = plugins_url() . '/pre-party-browser-hints/';
+		$home_url = admin_url() . 'admin.php?page=pprh-plugin-setttings';
 
-		define( 'PPRH_VERSION', '1.7.3.2' );
+		define( 'PPRH_VERSION', '1.8.0' );
 		define( 'PPRH_DB_TABLE', $table );
 		define( 'PPRH_ABS_DIR', $abs_dir );
 		define( 'PPRH_REL_DIR', $rel_dir );
+		define( 'PPRH_HOME_URL', $home_url );
 	}
 
 	// Register and call the CSS and JS we need only on the needed page.
@@ -98,16 +106,24 @@ final class Init {
 
 			wp_register_script( 'pprh_admin_js', PPRH_REL_DIR . 'js/admin.js', array( 'jquery' ), PPRH_VERSION, true );
 			wp_localize_script( 'pprh_admin_js', 'pprh_nonce', $ajax_data );
-
-            wp_localize_script( 'pprh_admin_js', 'pprh_nonce', $ajax_data );
 			wp_register_style( 'pprh_styles_css', PPRH_REL_DIR . 'css/styles.css', null, PPRH_VERSION, 'all' );
-
 			wp_enqueue_script( 'pprh_admin_js' );
 			wp_enqueue_style( 'pprh_styles_css' );
-
 			do_action( 'pprh_pro_admin_enqueue_scripts' );
 		}
 	}
+
+	private function load_flying_pages() {
+		$load_flying_pages = Utils::get_option( 'pprh_preload', 'allow', 'false' );
+
+		if ( $load_flying_pages === 'true' ) {
+			$fp_data = json_decode( get_option( 'pprh_preload' ), true );
+			wp_register_script( 'pprh_preload_flying_pages', PPRH_REL_DIR . 'js/flying-pages.js', null, PPRH_VERSION, true );
+			wp_localize_script( 'pprh_preload_flying_pages', 'pprh_fp_data', $fp_data );
+			wp_enqueue_script( 'pprh_preload_flying_pages' );
+		}
+	}
+
 
 	public function activate_plugin() {
 		$this->create_constants();
@@ -136,13 +152,15 @@ final class Init {
 		add_option( 'pprh_html_head', 'true', '', 'yes' );
 		add_option( 'pprh_preconnects_set', 'false', '', 'yes' );
 
-        add_option( 'pprh_preload_allow', 'false', '', 'yes' );
-        add_option( 'pprh_preload_delay', '0', '', 'yes' );
-        add_option( 'pprh_preload_ignoreKeywords', '', '', 'yes' );
-        add_option( 'pprh_preload_maxRPS', '3', '', 'yes' );
-        add_option( 'pprh_preload_hoverDelay', '50', '', 'yes' );
-
-
+		$preload_opts = array(
+			'allow'          => 'false',
+			'delay'          => '0',
+			'ignoreKeywords' => '',
+			'maxRPS'         => '3',
+			'hoverDelay'     => '50',
+		);
+		$json = json_encode( $preload_opts, false );
+		add_option( 'pprh_preload', $json, '', 'yes' );
 	}
 
 	// Multisite install/delete db table.
@@ -183,7 +201,7 @@ final class Init {
 		$charset = $wpdb->get_charset_collate();
 
 		if ( ! function_exists( 'dbDelta' ) ) {
-			require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+			include_once ABSPATH . 'wp-admin/includes/upgrade.php';
 		}
 
 		$sql = "CREATE TABLE $table_name (
@@ -202,7 +220,7 @@ final class Init {
 		dbDelta( $sql, true );
 	}
 
-	public function pprh_disable_wp_hints() {
+	public function disable_wp_hints() {
 		if ( 'true' === get_option( 'pprh_disable_wp_hints' ) ) {
 			remove_action( 'wp_head', 'wp_resource_hints', 2 );
 		}

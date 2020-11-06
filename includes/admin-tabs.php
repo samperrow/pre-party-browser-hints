@@ -33,10 +33,10 @@ class Admin_Tabs {
 		$tabs = array(
 			'insert-hints' => 'Insert Hints',
 			'settings'     => 'Settings',
-			'preconnect'       => 'Preconnect',
-            'preload'          => 'Preload',
-            'info'             => 'Resource Hint Info',
-            'upgrade'          => 'Upgrade to Pro',
+			'preconnect'   => 'Preconnect',
+            'preload'      => 'Preload',
+            'info'         => 'Resource Hint Info',
+            'upgrade'      => 'Upgrade to Pro',
 		);
 
 		echo '<h2 class="nav-tab-wrapper">';
