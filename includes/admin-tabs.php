@@ -35,7 +35,7 @@ class Admin_Tabs {
 			'settings'     => 'Settings',
 			'preconnect'   => 'Preconnect',
             'preload'      => 'Preload',
-            'info'         => 'Resource Hint Info',
+            'info'         => 'Information',
             'upgrade'      => 'Upgrade to Pro',
 		);
 
