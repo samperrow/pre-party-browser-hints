@@ -61,7 +61,8 @@ class Utils {
 	}
 
 	public static function get_option_status( $option, $val ) {
-		echo esc_html( ( get_option( 'pprh_' . $option ) === $val ? 'selected=selected' : '' ) );
+	    $opt = get_option( $option );
+		echo esc_html( $opt === $val ? 'selected=selected' : '');
 	}
 
 	public static function on_pprh_home() {

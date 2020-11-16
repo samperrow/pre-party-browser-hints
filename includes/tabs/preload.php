@@ -16,42 +16,23 @@ class Preload {
 
     public function load() {
         ?>
-        <div id="pprh-preload" class="pprh-content">
-            <h2 style="margin-top: 30px;"><?php esc_html_e( 'Preload Navigation Links', 'pprh' ); ?></h2>
-            <form method="post" action="<?php echo admin_url(); ?>admin.php?page=pprh-plugin-settings">
+            <div>
+            <h2 style="margin-top: 30px;"><?php esc_html_e( 'Auto Preload Settings', 'pprh' ); ?></h2>
                 <table class="pprh-settings-table">
                     <tbody>
                         <?php
                             wp_nonce_field( 'pprh_save_preload_options', 'pprh_admin_preload_nonce' );
-//                            $this->save_user_options();
                             $this->allow_preloading();
                             $this->preload_delay();
                             $this->set_ignoreKeywords();
                             $this->set_max_RPS();
                             $this->set_hover_delay();
-
                         ?>
                     </tbody>
                 </table>
-                <input name="pprh_save_preload_options" type="submit" value="Save"/>
-            </form>
         </div>
         <?php
     }
-
-//    public function save_user_options() {
-//
-//        if ( isset( $_POST['pprh_save_preload_options'] ) ) {
-//
-//            if ( check_admin_referer( 'pprh_save_preload_options', 'pprh_admin_preload_nonce' ) ) {
-//
-//                if ( isset( $_POST['preload_allow'] ) ) {
-//                    Utils::update_option( 'pprh_preload', 'allow', 'false' );
-//                }
-//            }
-//        }
-//    }
-
 
     public function allow_preloading() {
         ?>
@@ -67,10 +48,10 @@ class Preload {
             <td>
                 <label>
                     <select name="preload_allow">
-                        <option value="true" <?php Utils::get_option_status( 'preload_allow', 'true' ); ?>>
+                        <option value="true" <?php Utils::get_option_status( 'pprh_preload_enabled', 'true' ); ?>>
                             <?php esc_html_e( 'Yes', 'pprh' ); ?>
                         </option>
-                        <option value="false" <?php Utils::get_option_status( 'preload_allow', 'false' ); ?>>
+                        <option value="false" <?php Utils::get_option_status( 'pprh_preload_enabled', 'false' ); ?>>
                             <?php esc_html_e( 'No', 'pprh' ); ?>
                         </option>
                     </select>
@@ -97,7 +78,7 @@ class Preload {
 
             <td>
                 <label>
-                    <input type="text" value="<?php get_option( 'preload_delay'); ?>" />
+                    <input type="text" value="<?php get_option( 'pprh_preload_delay'); ?>" />
                 </label>
             </td>
             <td>
@@ -121,7 +102,7 @@ class Preload {
 
             <td>
                 <label>
-                    <input type="text" value="<?php get_option( 'preload_ignoreKeywords' ); ?>" />
+                    <input type="text" value="<?php get_option( 'pprh_preload_ignoreKeywords' ); ?>" />
                 </label>
             </td>
             <td>

@@ -146,21 +146,19 @@ final class Init {
 	}
 
 	public function set_options() {
-		add_option( 'pprh_allow_unauth', 'true', '', 'yes' );
-		add_option( 'pprh_autoload_preconnects', 'true', '', 'yes' );
 		add_option( 'pprh_disable_wp_hints', 'true', '', 'yes' );
 		add_option( 'pprh_html_head', 'true', '', 'yes' );
-		add_option( 'pprh_preconnects_set', 'false', '', 'yes' );
 
-		$preload_opts = array(
-			'allow'          => 'false',
-			'delay'          => '0',
-			'ignoreKeywords' => '',
-			'maxRPS'         => '3',
-			'hoverDelay'     => '50',
-		);
-		$json = json_encode( $preload_opts, false );
-		add_option( 'pprh_preload', $json, '', 'yes' );
+		add_option( 'pprh_preconnect_allow_unauth', 'true', '', 'yes' );
+		add_option( 'pprh_preconnect_autoload', 'true', '', 'yes' );
+		add_option( 'pprh_preconnect_loaded', 'false', '', 'yes' );
+
+		add_option( 'pprh_preload_enabled', 'false', '', 'yes' );
+		add_option( 'pprh_preload_delay', '0', '', 'yes' );
+		add_option( 'pprh_preload_ignoreKeywords', '', '', 'yes' );
+		add_option( 'pprh_preload_maxRPS', '3', '', 'yes' );
+		add_option( 'pprh_preload_hoverDelay', '50', '', 'yes' );
+
 	}
 
 	// Multisite install/delete db table.

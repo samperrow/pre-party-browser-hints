@@ -6,69 +6,74 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+if ( is_admin() ) {
+	new Settings();
+}
+
 class Settings {
 
 	public function __construct() {
+		include_once PPRH_ABS_DIR . '/includes/tabs/preconnect-mu.php';
+		include_once PPRH_ABS_DIR . '/includes/tabs/preload.php';
 		$this->display_settings();
+
 	}
 
 	public function display_settings() {
 		?>
 			<div id="pprh-settings" class="pprh-content">
-				<form method="post" action="<?php echo admin_url(); ?>admin.php?page=pprh-plugin-settings">
+                <form method="post" action="">
 					<?php
-					wp_nonce_field( 'pprh_save_admin_options', 'pprh_admin_options_nonce' );
-					$this->save_user_options();
-					$this->settings_html();
-					?>
-				</form>
-			</div>
+                        wp_nonce_field( 'pprh_save_admin_options', 'pprh_admin_options_nonce' );
+                        $this->save_user_options();
+                        $this->settings_html();
+
+                        new Preconnect_MU();
+                        new Preload();
+                    ?>
+
+                    <div class="text-center">
+                        <input type="submit" name="pprh_save_options" class="button button-primary" value="<?php esc_attr_e( 'Save Changes', 'pprh' ); ?>" />
+                    </div>
+
+                </form>
+            </div>
 		<?php
+
 	}
 
 	public function save_user_options() {
 
-		if ( isset( $_POST['save_options'] ) || isset( $_POST['pprh_preconnects_set'] ) ) {
+		if ( isset( $_POST['pprh_save_options'] ) ) {
 
 			if ( check_admin_referer( 'pprh_save_admin_options', 'pprh_admin_options_nonce' ) ) {
 
-				if ( isset( $_POST['save_options'] ) ) {
-					update_option( 'pprh_autoload_preconnects', wp_unslash( $_POST['autoload_preconnects'] ) );
-					update_option( 'pprh_disable_wp_hints', wp_unslash( $_POST['disable_wp_hints'] ) );
-					update_option( 'pprh_allow_unauth', wp_unslash( $_POST['allow_unauth'] ) );
-					update_option( 'pprh_html_head', wp_unslash( $_POST['html_head'] ) );
-				} elseif ( isset( $_POST['pprh_preconnects_set'] ) ) {
-					update_option( 'pprh_preconnects_set', 'false' );
-				}
-			}
+				update_option( 'pprh_disable_wp_hints', wp_unslash( $_POST['disable_wp_hints'] ) );
+				update_option( 'pprh_html_head', wp_unslash( $_POST['html_head'] ) );
+
+				update_option( 'pprh_preconnect_autoload', wp_unslash( $_POST['autoload_preconnects'] ) );
+                update_option( 'pprh_preconnect_allow_unauth', wp_unslash( $_POST['allow_unauth'] ) );
+            }
+		}
+
+		if ( isset( $_POST['pprh_preconnect_loaded' ] ) ) {
+		    update_option( 'pprh_preconnect_loaded', 'false' );
 		}
 	}
 
 	public function settings_html() {
-
 		?>
-		<h2 style="margin-top: 30px;"><?php esc_html_e( 'Settings', 'pprh' ); ?></h2>
+		<h2 style="margin-top: 30px;"><?php esc_html_e( 'General Settings', 'pprh' ); ?></h2>
 
 		<table class="pprh-settings-table">
 			<tbody>
 
 			<?php
-			$this->disable_auto_wp_hints();
-			$this->set_hint_destination();
+                $this->disable_auto_wp_hints();
+                $this->set_hint_destination();
 			?>
 			</tbody>
-
-			<tfoot>
-				<tr>
-					<td colspan="3">
-						<input type="submit" name="save_options" class="button button-primary" value="<?php esc_attr_e( 'Save Changes', 'pprh' ); ?>" />
-					</td>
-                    <td></td>
-				</tr>
-			</tfoot>
-
 		</table>
-
 		<?php
 	}
 
@@ -84,16 +89,10 @@ class Settings {
 			</td>
 
 			<td>
-				<label>
-					<select name="disable_wp_hints">
-						<option value="true" <?php Utils::get_option_status( 'disable_wp_hints', 'true' ); ?>>
-							<?php esc_html_e( 'Yes', 'pprh' ); ?>
-						</option>
-						<option value="false" <?php Utils::get_option_status( 'disable_wp_hints', 'false' ); ?>>
-							<?php esc_html_e( 'No', 'pprh' ); ?>
-						</option>
-					</select>
-				</label>
+                <select name="disable_wp_hints" value="">
+                    <option <?php Utils::get_option_status( 'disable_wp_hints', 'true' ); ?> value="true">Yes</option>
+                    <option <?php Utils::get_option_status( 'disable_wp_hints', 'false' ); ?> value="false"><?php esc_html_e( 'No', 'pprh' ); ?></option>
+                </select>
 			</td>
             <td></td>
 		</tr>
@@ -114,12 +113,9 @@ class Settings {
 
 			<td>
 				<select id="pprhHintLocation" name="html_head">
-					<option value="true" <?php Utils::get_option_status( 'html_head', 'true' ); ?>>
-						<?php esc_html_e( 'HTML &lt;head&gt;', 'pprh' ); ?>
-					</option>
-					<option value="false" <?php Utils::get_option_status( 'html_head', 'false' ); ?>>
-						<?php esc_html_e( 'HTTP Header', 'pprh' ); ?>
-					</option>
+<!--					<option value="true" --><?php //echo Utils::get_option_status( 'html_head', 'true' ); ?><!-- -->
+                    <option value="true" selected="selected"><?php esc_html_e( 'HTML &lt;head&gt;', 'pprh' ); ?></option>
+					<option value="false" ><?php esc_html_e( 'HTTP Header', 'pprh' ); ?></option>
 				</select>
 			</td>
             <td></td>
@@ -132,6 +128,3 @@ class Settings {
 
 }
 
-if ( is_admin() ) {
-	new Settings();
-}

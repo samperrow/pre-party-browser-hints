@@ -6,7 +6,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-new Preconnect_MU();
+//new Preconnect_MU();
 
 class Preconnect_MU {
 
@@ -17,29 +17,22 @@ class Preconnect_MU {
 
 	public function preconnect_html() {
 		?>
-		<div id="pprh-preconnect" class="pprh-content">
+        <div>
 			<h2 style="margin-top: 30px;"><?php esc_html_e( 'Auto Preconnect Settings', 'pprh' ); ?></h2>
-			<form method="post" action="<?php echo PPRH_HOME_URL; ?>">
-				<?php wp_nonce_field( 'pprh_save_preconnect_options', 'pprh_save_preconnect_nonce' ); ?>
-				<table class="pprh-settings-table">
-					<tbody>
-					<?php
-					$this->save_options();
-					$this->auto_set_globals();
-					$this->allow_unauth();
+            <table class="pprh-settings-table">
+                <tbody>
+                <?php
+                $this->auto_set_globals();
+                $this->allow_unauth();
 
-					$load_basic = apply_filters( 'pprh_sc_preconnect_pro', true );
-					if ( $load_basic ) {
-						$this->reset_preconnects();
-					}
-					?>
-					</tbody>
-				</table>
+                $load_basic = apply_filters( 'pprh_sc_preconnect_pro', true );
+                if ( $load_basic ) {
+                    $this->reset_preconnects();
+                }
+                ?>
+                </tbody>
+            </table>
 
-				<div class="text-center">
-					<input type="submit" name="pprh_save_preconnect" class="button button-primary" value="<?php esc_attr_e( 'Save Changes', 'pprh' ); ?>" />
-				</div>
-			</form>
 		</div>
 		<?php
 	}
@@ -56,7 +49,7 @@ class Preconnect_MU {
 			</td>
 
 			<td>
-				<input type="submit" name="pprh_prec_preconnects_set" id="pprhPreconnectReset" class="button-secondary" value="Reset">
+				<input type="submit" name="pprh_preconnect_loaded" id="pprhPreconnectReset" class="button-secondary" value="Reset">
 			</td>
 		</tr>
 		<?php
@@ -76,10 +69,10 @@ class Preconnect_MU {
 			<td>
 				<label>
 					<select name="autoload_preconnects">
-						<option value="true" <?php Utils::get_option_status( 'prec_autoload_preconnects', 'true' ); ?>>
+						<option value="true" <?php Utils::get_option_status( 'pprh_preconnect_autoload', 'true' ); ?>>
 							<?php esc_html_e( 'Yes', 'pprh' ); ?>
 						</option>
-						<option value="false" <?php Utils::get_option_status( 'prec_autoload_preconnects', 'false' ); ?>>
+						<option value="false" <?php Utils::get_option_status( 'pprh_preconnect_autoload', 'false' ); ?>>
 							<?php esc_html_e( 'No', 'pprh' ); ?>
 						</option>
 					</select>
@@ -103,10 +96,10 @@ class Preconnect_MU {
 			<td>
 				<label>
 					<select name="allow_unauth">
-						<option value="true" <?php Utils::get_option_status( 'prec_allow_unauth', 'true' ); ?>>
+						<option value="true" <?php Utils::get_option_status( 'pprh_preconnect_allow_unauth', 'true' ); ?>>
 							<?php esc_html_e( 'Yes', 'pprh' ); ?>
 						</option>
-						<option value="false" <?php Utils::get_option_status( 'prec_allow_unauth', 'false' ); ?>>
+						<option value="false" <?php Utils::get_option_status( 'pprh_preconnect_allow_unauth', 'false' ); ?>>
 							<?php esc_html_e( 'No', 'pprh' ); ?>
 						</option>
 					</select>
@@ -115,22 +108,6 @@ class Preconnect_MU {
 		</tr>
 
 		<?php
-	}
-
-	public function save_options() {
-		if ( isset( $_POST['pprh_save_preconnect'] ) && check_admin_referer( 'pprh_save_preconnect_options', 'pprh_save_preconnect_nonce' ) ) {
-
-			update_option( 'pprh_prec_autoload_preconnects', wp_unslash( $_POST['autoload_preconnects'] ) );
-			update_option( 'pprh_prec_allow_unauth', wp_unslash( $_POST['allow_unauth'] ) );
-
-			if ( isset( $_POST['pprh_prec_preconnects_set'] ) ) {
-				update_option( 'pprh_preconnects_set', 'false' );
-			}
-
-			// pro below
-			do_action( 'pprh_save_preconnect_options' );
-		}
-
 	}
 
 }
