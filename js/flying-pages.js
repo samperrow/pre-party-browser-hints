@@ -4,6 +4,13 @@ function flyingPages() {
     const toPrefetch = new Set();
     const alreadyPrefetched = new Set();
 
+    var fp_data = {
+        maxRPS: Number(pprh_fp_data.maxRPS),
+        delay: Number(pprh_fp_data.delay),
+        hoverDelay: Number(pprh_fp_data.hoverDelay),
+        ignoreKeywords: pprh_fp_data.ignoreKeywords
+    };
+
     // Check browser support for native 'prefetch'
     const prefetcher = document.createElement("link");
     const isSupported =
@@ -14,10 +21,7 @@ function flyingPages() {
         "isIntersecting" in IntersectionObserverEntry.prototype;
 
     // Checks if user is on slow connection or has enabled data saver
-    const isSlowConnection =
-        navigator.connection &&
-        (navigator.connection.saveData ||
-            (navigator.connection.effectiveType || "").includes("2g"));
+    const isSlowConnection = navigator.connection && (navigator.connection.saveData || (navigator.connection.effectiveType || "").includes("2g"));
 
     // Don't start preloading if user is on a slow connection or not supported
     if (isSlowConnection || !isSupported) return;
@@ -25,11 +29,12 @@ function flyingPages() {
     // Prefetch the given url using native 'prefetch'. Fallback to 'xhr' if not supported
     const prefetch = url =>
         new Promise((resolve, reject) => {
-            const link = document.createElement(`link`);
-            link.rel = `prefetch`;
+            const link = document.createElement('link');
+            link.rel = 'prefetch';
             link.href = url;
             link.onload = resolve;
             link.onerror = reject;
+            console.log(link);
             document.head.appendChild(link);
         });
 
@@ -52,8 +57,8 @@ function flyingPages() {
         if (window.location.href === url) return;
 
         // Ignore keywords in the array, if matched to the url
-        for (let i = 0; i < window.FPConfig.ignoreKeywords.length; i++) {
-            if (url.includes(window.FPConfig.ignoreKeywords[i])) return;
+        for (let i = 0; i < fp_data.ignoreKeywords.length; i++) {
+            if (url.includes(fp_data.ignoreKeywords[i])) return;
         }
 
         // If max RPS is 0 or is on mouse hover, process immediately (without queue)
@@ -68,7 +73,7 @@ function flyingPages() {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 const url = entry.target.href;
-                addUrlToQueue(url, !window.FPConfig.maxRPS);
+                addUrlToQueue(url, !fp_data.maxRPS);
             }
         });
     });
@@ -77,7 +82,7 @@ function flyingPages() {
     const startQueue = () =>
         setInterval(() => {
             Array.from(toPrefetch)
-                .slice(0, window.FPConfig.maxRPS)
+                .slice(0, fp_data.maxRPS)
                 .forEach(url => {
                     prefetchWithTimeout(url);
                     alreadyPrefetched.add(url);
@@ -93,7 +98,7 @@ function flyingPages() {
         if (elm && elm.href && !alreadyPrefetched.has(elm.href)) {
             hoverTimer = setTimeout(() => {
                 addUrlToQueue(elm.href, true);
-            }, window.FPConfig.hoverDelay);
+            }, fp_data.hoverDelay);
         }
     };
 
@@ -141,17 +146,6 @@ function flyingPages() {
         document.removeEventListener("touchstart", touchStartListener, true);
     };
 
-    // Default options incase options is not set
-    const defaultOptions = {
-        delay: 0,
-        ignoreKeywords: [],
-        maxRPS: 3,
-        hoverDelay: 50
-    };
-
-    // Combine default options with received options to create the new config and set the config in window for easy access
-    window.FPConfig = Object.assign(defaultOptions, window.FPConfig);
-
     // Start Queue
     startQueue();
 
@@ -160,7 +154,7 @@ function flyingPages() {
         setTimeout(
             () =>
                 document.querySelectorAll("a").forEach(e => linksObserver.observe(e)),
-            window.FPConfig.delay * 1000
+            fp_data.delay * 1000
         )
     );
 

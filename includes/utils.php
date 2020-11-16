@@ -12,6 +12,10 @@ class Utils {
 		return preg_replace( '/[^A-z0-9]/', '', $text );
 	}
 
+	public static function strip_non_numbers( $text ) {
+		return preg_replace( '/\D/', '', $text );
+	}
+
 	public static function clean_hint_type( $text ) {
 		return preg_replace( '/[^A-z\-]/', '', $text );
 	}
@@ -69,16 +73,16 @@ class Utils {
 		return ( isset( $_GET['page'] ) && 'pprh-plugin-settings' === $_GET['page'] );
 	}
 
-	public static function get_option( $option_name, $key, $default ) {
-		$arr = json_decode( get_option( $option_name ), false );
-		return ( isset( $arr->$key ) ) ? $arr->$key : $default;
-	}
-
-	public static function update_option( $option_name, $key, $new_value ) {
-		$arr = json_decode( get_option( $option_name ), false );
-		$arr->$key = $new_value;
-		$json = json_encode( $arr, false );
-		update_option( $option_name, $json );
-	}
+//	public static function get_option( $option_name, $key, $default ) {
+//		$arr = json_decode( get_option( $option_name ), false );
+//		return ( isset( $arr->$key ) ) ? $arr->$key : $default;
+//	}
+//
+//	public static function update_option( $option_name, $key, $new_value ) {
+//		$arr = json_decode( get_option( $option_name ), false );
+//		$arr->$key = $new_value;
+//		$json = json_encode( $arr, false );
+//		update_option( $option_name, $json );
+//	}
 
 }

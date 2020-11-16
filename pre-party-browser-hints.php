@@ -13,7 +13,7 @@
  * Text Domain:       pprh
  * Domain Path:       /languages
  *
- * last edited September 27, 2020
+ * last edited November 15, 2020
  *
  * Copyright 2016  Sam Perrow  (email : sam.perrow399@gmail.com)
  *
@@ -39,6 +39,10 @@ final class Init {
 		add_filter( 'set-screen-option', array( $this, 'apply_wp_screen_options' ), 10, 3 );
 		add_action( 'wpmu_new_blog', array( $this, 'activate_plugin' ) );
 		register_activation_hook( __FILE__, array( $this, 'activate_plugin' ) );
+	}
+
+	public function asdf() {
+		return 'hi';
 	}
 
 	public function initialize() {
@@ -114,10 +118,16 @@ final class Init {
 	}
 
 	private function load_flying_pages() {
-		$load_flying_pages = Utils::get_option( 'pprh_preload', 'allow', 'false' );
+		$load_flying_pages = get_option( 'pprh_preload_enabled' );
 
 		if ( $load_flying_pages === 'true' ) {
-			$fp_data = json_decode( get_option( 'pprh_preload' ), true );
+			$fp_data = array(
+				'delay'          => get_option( 'pprh_preload_delay', 0 ),
+				'hoverDelay'     => get_option( 'pprh_preload_hoverDelay', 50 ),
+				'maxRPS'         => get_option( 'pprh_preload_maxRPS', 3 ),
+				'ignoreKeywords' => get_option( 'pprh_preload_ignoreKeywords', '' ),
+			);
+
 			wp_register_script( 'pprh_preload_flying_pages', PPRH_REL_DIR . 'js/flying-pages.js', null, PPRH_VERSION, true );
 			wp_localize_script( 'pprh_preload_flying_pages', 'pprh_fp_data', $fp_data );
 			wp_enqueue_script( 'pprh_preload_flying_pages' );
