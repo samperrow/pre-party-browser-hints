@@ -36,6 +36,17 @@
 		});
 	}
 
+	$('input.pprh-reset').each(function() {
+		$(this).on('click', function(e) {
+			var text = e.target.defaultValue;
+			var res = confirm('Are you sure you want to ' + text + '?' );
+
+			if (! res) {
+				e.preventDefault();
+			}
+		});
+	});
+
 	// used on all admin and modal screens w/ contact button.
 	function emailValidate(e) {
 		var emailAddr = document.getElementById("pprhEmailAddress");
