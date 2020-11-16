@@ -32,13 +32,17 @@ class Settings {
                                 $this->general_settings();
                                 $this->preconnect_settings();
                                 $this->preload_settings();
+							    apply_filters( 'pprh_pro_settings', 'prerender' );
+
 
                                 $this->save_user_options();
-//                                $this->settings_html();
                             ?>
 
                         </tbody>
                     </table>
+
+
+
                     <div class="text-center">
                         <input type="submit" name="pprh_save_options" class="button button-primary" value="<?php esc_attr_e( 'Save Changes', 'pprh' ); ?>" />
                     </div>
@@ -93,8 +97,8 @@ class Settings {
 
             <td>
                 <select name="disable_wp_hints" value="">
-                    <option <?php Utils::get_option_status( 'disable_wp_hints', 'true' ); ?> value="true">Yes</option>
-                    <option <?php Utils::get_option_status( 'disable_wp_hints', 'false' ); ?> value="false"><?php esc_html_e( 'No', 'pprh' ); ?></option>
+                    <option <?php Utils::get_option_status( 'pprh_disable_wp_hints', 'true' ); ?> value="true">Yes</option>
+                    <option <?php Utils::get_option_status( 'pprh_disable_wp_hints', 'false' ); ?> value="false"><?php esc_html_e( 'No', 'pprh' ); ?></option>
                 </select>
             </td>
         </tr>
@@ -175,25 +179,26 @@ class Settings {
                 </td>
             </tr>
 
-            <?php if ( $load_basic ) { ?>
-            <tr>
-                <th><?php esc_html_e( 'Reset automatically created preconnect links?', 'pprh' ); ?></th>
-
-                <td>
-                    <span class="pprh-help-tip-hint">
-                        <span><?php esc_html_e( 'This will reset automatically created preconnect hints.', 'pprh' ); ?></span>
-                    </span>
-                </td>
-
-                <td>
-                    <input type="submit" name="pprh_preconnect_loaded" id="pprhPreconnectReset" class="button-secondary" value="Reset">
-                </td>
-            </tr>
-
             <?php
-            }
+		        $load_basic = apply_filters( 'pprh_pro_settings', 'preconnect' );
 
-        apply_filters( 'pprh_pro_settings', 'preconnect' );
+		        if ( ! $load_basic ) { ?>
+                <tr>
+                    <th><?php esc_html_e( 'Reset automatically created preconnect links?', 'pprh' ); ?></th>
+
+                    <td>
+                        <span class="pprh-help-tip-hint">
+                            <span><?php esc_html_e( 'This will reset automatically created preconnect hints.', 'pprh' ); ?></span>
+                        </span>
+                    </td>
+
+                    <td>
+                        <input type="submit" name="pprh_preconnect_loaded" id="pprhPreconnectReset" class="button-secondary" value="Reset">
+                    </td>
+                </tr>
+
+            <?php }
+
 	}
 
 	public function preload_settings() {
@@ -239,9 +244,6 @@ class Settings {
                     <input type="text" name="preload_delay" value="<?php esc_html_e( get_option( 'pprh_preload_delay') ); ?>" />
                 </label>
             </td>
-            <td>
-                <i><?php esc_html_e( '' ); ?></i>
-            </td>
         </tr>
 
         <tr>
@@ -257,9 +259,6 @@ class Settings {
                 <label>
                     <input type="text" name="preload_ignoreKeywords" value="<?php esc_html_e( get_option( 'pprh_preload_ignoreKeywords' ) ); ?>" />
                 </label>
-            </td>
-            <td>
-                <i><?php esc_html_e( '' ); ?></i>
             </td>
         </tr>
 
@@ -277,9 +276,6 @@ class Settings {
                     <input type="text" name="preload_maxRPS" value="<?php esc_html_e( get_option( 'pprh_preload_maxRPS' ) ); ?>" />
                 </label>
             </td>
-            <td>
-                <i><?php esc_html_e( '' ); ?></i>
-            </td>
         </tr>
 
         <tr>
@@ -296,14 +292,12 @@ class Settings {
                     <input type="text" name="preload_hoverDelay" value="<?php esc_html_e( get_option( 'pprh_preload_hoverDelay' ) ); ?>" />
                 </label>
             </td>
-            <td>
-                <i><?php esc_html_e( '' ); ?></i>
-            </td>
         </tr>
 
         <?php
 		// cite https://github.com/gijo-varghese/flying-pages
 	}
+
 
 
 

@@ -39,6 +39,9 @@ class Admin_Tabs {
             'upgrade'      => 'Upgrade to Pro',
 		);
 
+		$tabs = apply_filters( 'pprh_pro_show_tabs', $tabs );
+
+
 		echo '<h2 class="nav-tab-wrapper">';
 		foreach ( $tabs as $tab => $name ) {
 			echo "<a class='nav-tab $tab' href='?page=pprh-plugin-settings'>" . $name . '</a>';
