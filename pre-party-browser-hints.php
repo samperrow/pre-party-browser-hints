@@ -28,7 +28,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 new Init();
 
-final class Init {
+class Init {
 
 	public function __construct() {
 		if ( isset( $_REQUEST['action'] ) && 'heartbeat' === $_REQUEST['action'] ) {
@@ -39,10 +39,6 @@ final class Init {
 		add_filter( 'set-screen-option', array( $this, 'apply_wp_screen_options' ), 10, 3 );
 		add_action( 'wpmu_new_blog', array( $this, 'activate_plugin' ) );
 		register_activation_hook( __FILE__, array( $this, 'activate_plugin' ) );
-	}
-
-	public function asdf() {
-		return 'hi';
 	}
 
 	public function initialize() {
@@ -67,6 +63,10 @@ final class Init {
 		}
 
 		do_action( 'pprh_pro_init' );
+	}
+
+	public function asdf() {
+		return 'hi';
 	}
 
 	public function load_admin_page() {

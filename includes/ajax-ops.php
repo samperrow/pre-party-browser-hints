@@ -6,6 +6,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+if ( is_admin() ) {
+	new Ajax_Ops();
+}
+
 class Ajax_Ops {
 
 	public $results = array(
@@ -106,8 +110,4 @@ class Ajax_Ops {
 
 		return Utils::get_wpdb_result( $wpdb, $action );
 	}
-}
-
-if ( is_admin() ) {
-	new Ajax_Ops();
 }

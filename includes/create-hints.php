@@ -154,9 +154,9 @@ class Create_Hints {
 			$this->results['response']['msg'] .= 'An identical resource hint already exists!';
 			$this->results['query']['status'] = 'warning';
 			return false;
-		} else {
-			return true;
 		}
+
+		return true;
 	}
 
 	private function insert_hint( $new_hint ) {

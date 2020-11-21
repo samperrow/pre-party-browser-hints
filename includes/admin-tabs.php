@@ -36,7 +36,7 @@ class Admin_Tabs {
 			'insert-hints' => 'Insert Hints',
 			'settings'     => 'Settings',
             'info'         => 'Information',
-            'upgrade'      => 'Upgrade to Pro',
+//            'upgrade'      => 'Upgrade to Pro',
 		);
 
 		$tabs = apply_filters( 'pprh_pro_show_tabs', $tabs );
@@ -58,7 +58,7 @@ class Admin_Tabs {
 		include_once PPRH_ABS_DIR . '/includes/tabs/insert-hints.php';
 		include_once PPRH_ABS_DIR . '/includes/tabs/settings.php';
         include_once PPRH_ABS_DIR . '/includes/tabs/info.php';
-		include_once PPRH_ABS_DIR . '/includes/tabs/upgrade.php';
+//		include_once PPRH_ABS_DIR . '/includes/tabs/upgrade.php';
 		do_action( 'pprh_pro_add_files' );
 	}
 
