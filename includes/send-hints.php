@@ -19,7 +19,9 @@ class Send_Hints {
 	public function get_resource_hints() {
 		$this->send_hints_in_html = get_option('pprh_html_head');
 
-		$this->hints = $this->get_hints();
+		$dao = new DAO();
+		$this->hints = $dao-get_hints();
+//		$this->hints = $this->get_hints();
 
 		if ( ( ! is_array( $this->hints ) ) || count( $this->hints ) < 1 ) {
 			return;
@@ -30,14 +32,7 @@ class Send_Hints {
 			: add_action('wp_head', array($this, 'send_to_html_head'), 1, 0);
 	}
 
-	public function get_hints() {
-		global $wpdb;
-		$table = PPRH_DB_TABLE;
 
-		return $wpdb->get_results(
-			$wpdb->prepare( "SELECT url, hint_type, as_attr, type_attr, crossorigin FROM $table WHERE status = %s", 'enabled' )
-		);
-	}
 
 	public function send_to_html_head() {
 		foreach ( $this->hints as $key => $val ) {

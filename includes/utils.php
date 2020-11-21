@@ -73,16 +73,4 @@ class Utils {
 		return ( isset( $_GET['page'] ) && 'pprh-plugin-settings' === $_GET['page'] );
 	}
 
-//	public static function get_option( $option_name, $key, $default ) {
-//		$arr = json_decode( get_option( $option_name ), false );
-//		return ( isset( $arr->$key ) ) ? $arr->$key : $default;
-//	}
-//
-//	public static function update_option( $option_name, $key, $new_value ) {
-//		$arr = json_decode( get_option( $option_name ), false );
-//		$arr->$key = $new_value;
-//		$json = json_encode( $arr, false );
-//		update_option( $option_name, $json );
-//	}
-
 }

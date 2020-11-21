@@ -123,7 +123,7 @@ class Display_Hints extends WP_List_Table {
 	}
 
 	public function load_data() {
-		global $wpdb;
+//		global $wpdb;
 		$table = PPRH_DB_TABLE;
 		$sql = "SELECT * FROM $table";
 
@@ -134,7 +134,9 @@ class Display_Hints extends WP_List_Table {
 			$sql .= ' ORDER BY url DESC';
 		}
 
-		$this->data = $wpdb->get_results( $sql, ARRAY_A );
+		$dao = new DAO();
+		$this->data = $dao->get_hints( $sql );
+//		$this->data = $wpdb->get_results( $sql, ARRAY_A );
 		return $this->data;
 	}
 

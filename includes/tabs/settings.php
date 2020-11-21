@@ -32,7 +32,7 @@ class Settings {
                                 $this->general_settings();
                                 $this->preconnect_settings();
                                 $this->preload_settings();
-							    apply_filters( 'pprh_pro_settings', 'prerender' );
+//							    apply_filters( 'pprh_pro_settings', 'prerender' );
 
 
                                 $this->save_user_options();
@@ -59,7 +59,7 @@ class Settings {
 
 			if ( check_admin_referer( 'pprh_save_admin_options', 'pprh_admin_options_nonce' ) ) {
 
-				apply_filters( 'pprh_pro_settings', 'save' );
+//				apply_filters( 'pprh_pro_settings', 'save' );
 
 				update_option( 'pprh_disable_wp_hints', wp_unslash( $_POST['disable_wp_hints'] ) );
 				update_option( 'pprh_html_head', wp_unslash( $_POST['html_head'] ) );
@@ -121,13 +121,13 @@ class Settings {
         </tr>
 
         <?php
-		apply_filters( 'pprh_pro_settings', 'general' );
+//		apply_filters( 'pprh_pro_settings', 'general' );
 	}
 
 
 
 	public function preconnect_settings() {
-		$load_basic = apply_filters( 'pprh_sc_preconnect_pro', true );
+//		$load_basic = apply_filters( 'pprh_sc_preconnect_pro', true );
 
 		?>
             <tr>
@@ -180,9 +180,9 @@ class Settings {
             </tr>
 
             <?php
-		        $load_basic = apply_filters( 'pprh_pro_settings', 'preconnect' );
+//		        $load_basic = apply_filters( 'pprh_pro_settings', 'preconnect' );
 
-		        if ( ! $load_basic ) { ?>
+//		        if ( ! $load_basic ) { ?>
                 <tr>
                     <th><?php esc_html_e( 'Reset automatically created preconnect links?', 'pprh' ); ?></th>
 
@@ -197,8 +197,8 @@ class Settings {
                     </td>
                 </tr>
 
-            <?php }
 
+		<?php
 	}
 
 	public function preload_settings() {

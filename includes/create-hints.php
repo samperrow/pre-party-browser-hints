@@ -30,7 +30,8 @@ class Create_Hints {
 			$new_hint = (object) $this->create_hint( $hint );
 
 			if ( $this->check_for_duplicate_post_hint( $new_hint ) ) {
-				$this->results['query'] = $this->insert_hint( $new_hint );
+				$dao = new DAO();
+				$this->results['query'] = $dao->insert_hint( $new_hint );
 				$this->results['new_hints'][] = $new_hint;
 			}
 		}
@@ -157,29 +158,6 @@ class Create_Hints {
 		}
 
 		return true;
-	}
-
-	private function insert_hint( $new_hint ) {
-		global $wpdb;
-		$current_user = wp_get_current_user()->display_name;
-		$action = 'create';
-
-		$wpdb->insert(
-			PPRH_DB_TABLE,
-			array(
-				'url'         => $new_hint->url,
-				'hint_type'   => $new_hint->hint_type,
-				'status'      => 'enabled',
-				'as_attr'     => $new_hint->as_attr,
-				'type_attr'   => $new_hint->type_attr,
-				'crossorigin' => $new_hint->crossorigin,
-				'created_by'  => $current_user,
-				'auto_created' => $new_hint->auto_created,
-			),
-			array( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' )
-		);
-
-		return Utils::get_wpdb_result( $wpdb, $action );
 	}
 
 }

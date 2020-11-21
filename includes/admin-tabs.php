@@ -6,6 +6,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+if ( is_admin() ) {
+	new Admin_Tabs();
+}
+
 class Admin_Tabs {
 
 	public $results;
@@ -14,7 +18,7 @@ class Admin_Tabs {
 		include_once PPRH_ABS_DIR . '/includes/display-hints.php';
 		include_once PPRH_ABS_DIR . '/includes/new-hint.php';
 
-		do_action( 'pprh_load_admin_tabs_child' );
+//		do_action( 'pprh_load_admin_tabs_child' );
 
 		$this->settings_page();
 	}
@@ -39,7 +43,7 @@ class Admin_Tabs {
 //            'upgrade'      => 'Upgrade to Pro',
 		);
 
-		$tabs = apply_filters( 'pprh_pro_show_tabs', $tabs );
+//		$tabs = apply_filters( 'pprh_pro_show_tabs', $tabs );
 
 
 		echo '<h2 class="nav-tab-wrapper">';
@@ -59,7 +63,7 @@ class Admin_Tabs {
 		include_once PPRH_ABS_DIR . '/includes/tabs/settings.php';
         include_once PPRH_ABS_DIR . '/includes/tabs/info.php';
 //		include_once PPRH_ABS_DIR . '/includes/tabs/upgrade.php';
-		do_action( 'pprh_pro_add_files' );
+//		do_action( 'pprh_pro_add_files' );
 	}
 
 	public function show_footer() {
@@ -91,7 +95,7 @@ class Admin_Tabs {
 			</div>
 			<?php
 
-			if (isset( $_POST['pprh_send_email']) && check_admin_referer('pprh_email_nonce_action', 'pprh_email_nonce_nonce')) {
+			if ( isset( $_POST['pprh_send_email'] ) && check_admin_referer( 'pprh_email_nonce_action', 'pprh_email_nonce_nonce' ) ) {
                 $debug_info = "\nURL: " . home_url() . "\nPHP Version: " . PHP_VERSION . "\nWP Version: " . get_bloginfo( 'version' );
                 wp_mail( 'sam.perrow399@gmail.com', 'Pre Party User Message', 'From: ' . sanitize_email( wp_unslash( $_POST['pprh_email'] ) ) . $debug_info . "\nMessage: " . sanitize_text_field( wp_unslash( $_POST['pprh_text'] ) ) );
 			}
@@ -99,8 +103,4 @@ class Admin_Tabs {
 		echo '</div>';
 	}
 
-}
-
-if ( is_admin() ) {
-	new Admin_Tabs();
 }

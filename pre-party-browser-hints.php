@@ -3,7 +3,7 @@
  * Plugin Name:       Pre* Party Resource Hints
  * Plugin URI:        https://wordpress.org/plugins/pre-party-browser-hints/
  * Description:       Take advantage of the browser resource hints DNS-Prefetch, Prerender, Preconnect, Prefetch, and Preload to improve page load time.
- * Version:           1.8.0
+ * Version:           1.7.4
  * Requires at least: 4.4
  * Requires PHP:      5.6.30
  * Author:            Sam Perrow
@@ -13,7 +13,7 @@
  * Text Domain:       pprh
  * Domain Path:       /languages
  *
- * last edited November 15, 2020
+ * last edited November 20, 2020
  *
  * Copyright 2016  Sam Perrow  (email : sam.perrow399@gmail.com)
  *
@@ -31,9 +31,6 @@ new Init();
 class Init {
 
 	public function __construct() {
-//		if ( isset( $_REQUEST['action'] ) && 'heartbeat' === $_REQUEST['action'] ) {
-//			return;
-//		}
 		add_action( 'init', array( $this, 'initialize' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'register_admin_files' ) );
 		add_filter( 'set-screen-option', array( $this, 'apply_wp_screen_options' ), 10, 3 );
@@ -46,6 +43,7 @@ class Init {
 		$autoload = get_option( 'pprh_autoload_preconnects' );
 		$preconnects_set = get_option( 'pprh_preconnects_set' );
 		include_once PPRH_ABS_DIR . '/includes/utils.php';
+		include_once PPRH_ABS_DIR . '/includes/dao.php';
 
 		if ( is_admin() ) {
 			include_once PPRH_ABS_DIR . '/includes/ajax-ops.php';
@@ -62,7 +60,7 @@ class Init {
 			new Preconnects();
 		}
 
-		do_action( 'pprh_pro_init' );
+//		do_action( 'pprh_pro_init' );
 	}
 
 	public function asdf() {
@@ -93,7 +91,7 @@ class Init {
 		$rel_dir = plugins_url() . '/pre-party-browser-hints/';
 		$home_url = admin_url() . 'admin.php?page=pprh-plugin-setttings';
 
-		define( 'PPRH_VERSION', '1.8.0' );
+		define( 'PPRH_VERSION', '1.7.4' );
 		define( 'PPRH_DB_TABLE', $table );
 		define( 'PPRH_ABS_DIR', $abs_dir );
 		define( 'PPRH_REL_DIR', $rel_dir );
@@ -113,7 +111,7 @@ class Init {
 			wp_register_style( 'pprh_styles_css', PPRH_REL_DIR . 'css/styles.css', null, PPRH_VERSION, 'all' );
 			wp_enqueue_script( 'pprh_admin_js' );
 			wp_enqueue_style( 'pprh_styles_css' );
-			do_action( 'pprh_pro_admin_enqueue_scripts' );
+//			do_action( 'pprh_pro_admin_enqueue_scripts' );
 		}
 	}
 
