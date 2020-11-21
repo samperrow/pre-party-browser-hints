@@ -49,13 +49,13 @@ class DAO {
 		);
 	}
 
-	public function get_hints() {
-		global $wpdb;
-		$table = PPRH_DB_TABLE;
-
-		return $wpdb->get_results(
-			$wpdb->prepare( "SELECT url, hint_type, as_attr, type_attr, crossorigin FROM $table WHERE status = %s", 'enabled' )
-		);
-	}
+//	public function get_hints() {
+//		global $wpdb;
+//		$table = PPRH_DB_TABLE;
+//
+//		return $wpdb->get_results(
+//			$wpdb->prepare( "SELECT url, hint_type, as_attr, type_attr, crossorigin FROM $table WHERE status = %s", 'enabled' )
+//		);
+//	}
 
 }
