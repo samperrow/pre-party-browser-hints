@@ -31,9 +31,9 @@ new Init();
 class Init {
 
 	public function __construct() {
-		if ( isset( $_REQUEST['action'] ) && 'heartbeat' === $_REQUEST['action'] ) {
-			return;
-		}
+//		if ( isset( $_REQUEST['action'] ) && 'heartbeat' === $_REQUEST['action'] ) {
+//			return;
+//		}
 		add_action( 'init', array( $this, 'initialize' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'register_admin_files' ) );
 		add_filter( 'set-screen-option', array( $this, 'apply_wp_screen_options' ), 10, 3 );
