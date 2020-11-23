@@ -15,28 +15,23 @@ class Create_Hints {
 
 	public $prev_hints = array();
 
-	public function __construct( $data ) {
+	public function __construct() {
 		if ( ! defined( 'CREATING_HINT' ) || ! CREATING_HINT ) {
 			exit();
 		}
 
 		$this->prev_hints = (object) array();
-		$this->init( $data );
 	}
 
-	private function init( $hints ) {
+	public function init( $hint ) {
 
-		foreach ( $hints as $hint ) {
-			$new_hint = (object) $this->create_hint( $hint );
+		$new_hint = (object) $this->create_hint( $hint );
 
-			if ( $this->check_for_duplicate_post_hint( $new_hint ) ) {
-				$dao = new DAO();
-				$this->results['query'] = $dao->insert_hint( $new_hint );
-				$this->results['new_hints'][] = $new_hint;
-			}
+		if ( ! $this->duplicate_hint_exists( $new_hint ) ) {
+			return $new_hint;
 		}
 
-		return $this->results;
+		return false;
 	}
 
 	private function create_hint( $hint ) {
@@ -141,23 +136,20 @@ class Create_Hints {
 		return '';
 	}
 
-	private function check_for_duplicate_post_hint( $new_hint ) {
-		global $wpdb;
-		$table     = PPRH_DB_TABLE;
-		$hint_type = $new_hint->hint_type;
-		$url       = $new_hint->url;
-
-		$prev_hints = $wpdb->get_results(
-			$wpdb->prepare( "SELECT url, hint_type FROM $table WHERE hint_type = %s AND url = %s", $hint_type, $url )
-		);
+	private function duplicate_hint_exists( $new_hint ) {
+		$table = PPRH_DB_TABLE;
+		$sql = "SELECT url, hint_type FROM $table WHERE hint_type = %s AND url = %s";
+		$arr = array( $new_hint->hint_type, $new_hint->url );
+		$dao = new DAO();
+		$prev_hints = $dao->get_hints_query( $sql, $arr );
 
 		if ( count( $prev_hints ) > 0 ) {
 			$this->results['response']['msg'] .= 'An identical resource hint already exists!';
 			$this->results['query']['status'] = 'warning';
-			return false;
+			return true;
 		}
 
-		return true;
+		return false;
 	}
 
 }

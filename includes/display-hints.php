@@ -123,7 +123,6 @@ class Display_Hints extends WP_List_Table {
 	}
 
 	public function load_data() {
-//		global $wpdb;
 		$table = PPRH_DB_TABLE;
 		$sql = "SELECT * FROM $table";
 
@@ -136,7 +135,6 @@ class Display_Hints extends WP_List_Table {
 
 		$dao = new DAO();
 		$this->data = $dao->get_hints( $sql );
-//		$this->data = $wpdb->get_results( $sql, ARRAY_A );
 		return $this->data;
 	}
 
@@ -153,7 +151,7 @@ class Display_Hints extends WP_List_Table {
 	}
 
 	public function inline_edit_row( $item ) {
-		if ( ! class_exists( 'PPRH\New_Hint' ) ) {
+		if ( ! class_exists(New_Hint::class) ) {
 			require_once PPRH_ABS_DIR . '/includes/new-hint.php';
 		}
 

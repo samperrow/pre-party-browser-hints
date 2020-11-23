@@ -174,7 +174,8 @@ class Init {
 		$pprh_tables = array();
 
 		if ( is_multisite() ) {
-			$pprh_tables = $this->get_multisite_tables();
+			$dao = new DAO();
+			$pprh_tables = $dao->get_multisite_tables();
 		}
 
 		$pprh_tables[] = PPRH_DB_TABLE;
@@ -184,23 +185,7 @@ class Init {
 		}
 	}
 
-	private function get_multisite_tables() {
-		global $wpdb;
-		$blog_table = $wpdb->base_prefix . 'blogs';
-		$ms_table_names = array();
 
-		$ms_blog_ids = $wpdb->get_results(
-			$wpdb->prepare( "SELECT blog_id FROM $blog_table WHERE blog_id != %d", 1 )
-		);
-
-		if ( ! empty( $ms_blog_ids ) && count( $ms_blog_ids ) > 0 ) {
-			foreach ( $ms_blog_ids as $ms_blog_id ) {
-				$ms_table_name = $wpdb->base_prefix . $ms_blog_id->blog_id . '_pprh_table';
-				$ms_table_names[] = $ms_table_name;
-			}
-		}
-		return $ms_table_names;
-	}
 
 	private function create_table( $table_name ) {
 		global $wpdb;

@@ -25,11 +25,10 @@ class Ajax_Ops {
 		if ( isset( $_POST['pprh_data'] ) && wp_doing_ajax() ) {
 
 			check_ajax_referer( 'pprh_table_nonce', 'val' );
-			$data_obj = json_decode( wp_unslash( $_POST['pprh_data'] ) );
+			$data = json_decode( wp_unslash( $_POST['pprh_data'] ), false );
 
-			if ( is_object( $data_obj ) ) {
-				$action = $data_obj->action;
-				$data = array( $data_obj );
+			if ( is_object( $data ) ) {
+				$action = $data->action;
 
 				include_once PPRH_ABS_DIR . '/includes/utils.php';
 				include_once PPRH_ABS_DIR . '/includes/create-hints.php';
@@ -46,68 +45,23 @@ class Ajax_Ops {
 
 	private function handle_action( $data, $action ) {
 		$wp_db = null;
+		$dao = new DAO();
 		if ( preg_match( '/create|update|delete/', $action ) ) {
-			 $wp_db = $this->{$action . '_hint'}( $data, $action );
+			$wp_db = $dao->{$action . '_hint'}( $data );
 		} elseif ( preg_match( '/enable|disable/', $action ) ) {
-			$wp_db = $this->bulk_update( $data[0], $action );
+			$wp_db = $dao->bulk_update( $data, $action );
 		}
 		return $wp_db;
 	}
 
 	private function create_hint( $data ) {
 		define( 'CREATING_HINT', true );
-		$new_hint = new Create_Hints( $data );
-		return $new_hint->results['query'];
+		$create_hint = new Create_Hints();
+		$new_hint = $create_hint->init( $data );
+		$dao = new DAO();
+
+		return $dao->insert_hint( $new_hint );
 	}
 
-	private function update_hint( $data, $action ) {
-		global $wpdb;
-		$data = $data[0];
-		$hint_id = (int) $data->hint_id;
 
-		$wpdb->update(
-			PPRH_DB_TABLE,
-			array(
-				'url'         => $data->url,
-				'hint_type'   => $data->hint_type,
-				'as_attr'     => $data->as_attr,
-				'type_attr'   => $data->type_attr,
-				'crossorigin' => $data->crossorigin,
-			),
-			array(
-				'id' => $hint_id,
-			),
-			array( '%s', '%s', '%s', '%s', '%s' ),
-			array( '%d' )
-		);
-
-		return Utils::get_wpdb_result( $wpdb, $action );
-	}
-
-	private function delete_hint( $data, $action ) {
-		global $wpdb;
-		$table = PPRH_DB_TABLE;
-		$data = $data[0];
-
-		if ( ! is_array( $data->hint_ids ) ) {
-			return false;
-		}
-
-		$concat_ids = implode( ',', array_map( 'absint', $data->hint_ids ) );
-		$wpdb->query( "DELETE FROM $table WHERE id IN ($concat_ids)" );
-		return Utils::get_wpdb_result( $wpdb, $action );
-	}
-
-	private function bulk_update( $data, $action ) {
-		global $wpdb;
-		$table = PPRH_DB_TABLE;
-		$concat_ids = implode( ',', array_map( 'absint', $data->hint_ids ) );
-
-		$wpdb->query( $wpdb->prepare(
-			"UPDATE $table SET status = %s WHERE id IN ($concat_ids)",
-			$action
-		) );
-
-		return Utils::get_wpdb_result( $wpdb, $action );
-	}
 }

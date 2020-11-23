@@ -16,6 +16,8 @@
 	emailSubmitBtn.addEventListener("click", emailValidate);
 
 	toggleDivs();
+	addEventListeners();
+	addEditRowEventListener();
 
 	function toggleDivs() {
 		var tabs = $('a.nav-tab');
@@ -194,7 +196,7 @@
 		};
 	}
 
-	addEventListeners();
+
 
 	function addEventListeners() {
 		addDeleteHintListener();
@@ -224,7 +226,6 @@
 		adminNoticeElem.classList[action]('notice-' + outcome);
 	}
 
-	addEditRowEventListener();
 
 	function addEditRowEventListener() {
 		$('span.edit').on('click', function () {
