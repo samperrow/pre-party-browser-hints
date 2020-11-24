@@ -29,19 +29,14 @@ class Settings {
                         <tbody>
                             <?php
                                 wp_nonce_field( 'pprh_save_admin_options', 'pprh_admin_options_nonce' );
+                                $this->save_user_options();
                                 $this->general_settings();
                                 $this->preconnect_settings();
                                 $this->preload_settings();
 //							    apply_filters( 'pprh_pro_settings', 'prerender' );
-
-
-                                $this->save_user_options();
                             ?>
-
                         </tbody>
                     </table>
-
-
 
                     <div class="text-center">
                         <input type="submit" name="pprh_save_options" class="button button-primary" value="<?php esc_attr_e( 'Save Changes', 'pprh' ); ?>" />
@@ -75,8 +70,8 @@ class Settings {
 			}
 		}
 
-		if ( isset( $_POST['pprh_preconnect_loaded' ] ) ) {
-			update_option( 'pprh_preconnect_loaded', 'false' );
+		if ( isset( $_POST['pprh_preconnect_set' ] ) ) {
+			update_option( 'pprh_preconnect_set', 'false' );
 		}
 	}
 
@@ -114,8 +109,8 @@ class Settings {
 
             <td>
                 <select id="pprhHintLocation" name="html_head">
-                    <option value="true" selected="selected"><?php esc_html_e( 'HTML &lt;head&gt;', 'pprh' ); ?></option>
-                    <option value="false" ><?php esc_html_e( 'HTTP Header', 'pprh' ); ?></option>
+                    <option value="true" <?php Utils::get_option_status( 'pprh_html_head', 'true' ); ?>><?php esc_html_e( 'HTML &lt;head&gt;', 'pprh' ); ?></option>
+                    <option value="false" <?php Utils::get_option_status( 'pprh_html_head', 'false' ); ?>><?php esc_html_e( 'HTTP Header', 'pprh' ); ?></option>
                 </select>
             </td>
         </tr>
@@ -128,10 +123,13 @@ class Settings {
 
 	public function preconnect_settings() {
 //		$load_basic = apply_filters( 'pprh_sc_preconnect_pro', true );
-
 		?>
             <tr>
-                <td style="font-size: 23px; text-align: center; font-weight: bold;" colspan="3"><?php esc_html_e( 'Auto Preconnect Settings', 'pprh' ); ?></td>
+                <td style="font-size: 23px; text-align: center; font-weight: bold;" colspan="3"><?php esc_html_e( 'Auto Preconnect Settings', 'pprh' ); ?>
+                    <span class="pprh-help-tip-hint">
+                        <span><?php _e( 'This feature will collect the domain names of external resources used on your site, and create resource hints from those. For example, if you are using Google Fonts and Google Analytics, this feature will find the host names of these resources ("https://www.google-analytics.com", "https://fonts.gstatic.com", "https://fonts.googleapis.com"), and create resource hints for those. To initialize this, you only need to view a page on your website and this plugin will take care of the rest! It will automatically run after plugin installation, or by clicking the "Reset" button below.', 'pprh' ); ?></span>
+                    </span>
+                </td>
             </tr>
             <tr>
                 <th><?php esc_html_e( 'Automatically set preconnect hints?', 'pprh' ); ?></th>
@@ -193,7 +191,7 @@ class Settings {
                     </td>
 
                     <td>
-                        <input type="submit" name="pprh_preconnect_loaded" id="pprhPreconnectReset" class="button-secondary" value="Reset">
+                        <input type="submit" name="pprh_preconnect_set" id="pprhPreconnectReset" class="button-secondary" value="Reset">
                     </td>
                 </tr>
 
@@ -204,7 +202,11 @@ class Settings {
 	public function preload_settings() {
         ?>
         <tr>
-            <td style="font-size: 23px; text-align: center; font-weight: bold;" colspan="3"><?php esc_html_e( 'Auto Preload Settings', 'pprh' ); ?></td>
+            <td style="font-size: 23px; text-align: center; font-weight: bold;" colspan="3"><?php esc_html_e( 'Auto Preload Settings', 'pprh' ); ?>
+                <span class="pprh-help-tip-hint">
+					<span><?php _e( 'Preload pages before the user clicks on navigation links, making them load instantly. Special thanks to <a href="https://wpspeedmatters.com/">Gijo Varghese</a> for providing assistance with this preload feature.', 'pprh' ); ?></span>
+				</span>
+            </td>
         </tr>
 
         <tr>
@@ -212,7 +214,7 @@ class Settings {
 
             <td>
 				<span class="pprh-help-tip-hint">
-					<span><?php esc_html_e( 'When navigation (anchor) links are being moused over, this feature will initiate a preload request for the URL in the link.', 'pprh' ); ?></span>
+					<span><?php esc_html_e( 'When navigation (anchor) links are being moused over, this feature will initiate a preload request for the URL in the link. Select No (default) to disable this feature.', 'pprh' ); ?></span>
 				</span>
             </td>
 
@@ -293,6 +295,7 @@ class Settings {
                 </label>
             </td>
         </tr>
+
 
         <?php
 		// cite https://github.com/gijo-varghese/flying-pages

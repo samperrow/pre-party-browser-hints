@@ -59,7 +59,6 @@ class DAO {
 	public function delete_hint( $data ) {
 		global $wpdb;
 		$table = PPRH_DB_TABLE;
-		$data = $data[0];
 
 		if ( ! is_array( $data->hint_ids ) ) {
 			return false;
@@ -93,10 +92,7 @@ class DAO {
 			$wpdb->prepare( "DELETE FROM $table WHERE auto_created = %d AND hint_type = %s", 1, 'preconnect' )
 		);
 	}
-
-
-
-
+	
 
 	public function get_hints( $sql ) {
 		global $wpdb;

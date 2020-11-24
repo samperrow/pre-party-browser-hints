@@ -57,6 +57,6 @@
 
     // sometimes this file can be cached, and this prevents it from constantly firing ajax requests.
     if (scriptSentWithinSixHours()) {
-        setTimeout(fireAjax, 7000);
+        setTimeout(fireAjax, 1000);
     }
 })();

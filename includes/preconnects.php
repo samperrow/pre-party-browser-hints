@@ -11,7 +11,7 @@ class Preconnects {
 	public $load_adv = false;
 
 	public function __construct() {
-		if ( 'true' === get_option( 'pprh_allow_unauth' ) ) {
+		if ( 'true' === get_option( 'pprh_preconnect_allow_unauth' ) ) {
 			$this->load();
 			add_action( 'wp_ajax_nopriv_pprh_post_domain_names', array( $this, 'pprh_post_domain_names' ) );
 		} elseif ( is_user_logged_in() ) {
@@ -43,27 +43,13 @@ class Preconnects {
 	public function pprh_post_domain_names() {
 		if ( wp_doing_ajax() ) {
 			check_ajax_referer( 'pprh_ajax_nonce', 'nonce' );
-			$arr  = array();
-			$data = json_decode( wp_unslash( $_POST['pprh_data'] ), false );
 
-			define( 'CREATING_HINT', true );
-			include_once PPRH_ABS_DIR . '/includes/utils.php';
-			include_once PPRH_ABS_DIR . '/includes/create-hints.php';
+			$raw_hint_data = json_decode( wp_unslash( $_POST['pprh_data'] ), false );
 
-			$arr  = array();
-			$data = json_decode( wp_unslash( $_POST['pprh_data'] ), false );
-
-			foreach ( $data->hints as $hint ) {
-				$obj = new \stdClass();
-				$obj->url = $hint;
-				$obj->hint_type = 'preconnect';
-				$obj->auto_created = true;
-				array_push($arr, $obj );
+			if ( count( $raw_hint_data->hints ) > 0 ) {
+				$this->create_hint( $raw_hint_data );
 			}
 
-			$dao = new DAO();
-			$dao->remove_prev_auto_preconnects();
-			new Create_Hints( $arr );
 			$this->update_options();
 			wp_die();
 		} else {
@@ -71,7 +57,27 @@ class Preconnects {
 		}
 	}
 
+	public function create_hint( $hint_data ) {
+
+		include_once PPRH_ABS_DIR . '/includes/create-hints.php';
+
+		$dao = new DAO();
+		define( 'CREATING_HINT', true );
+		$create_hints = new Create_Hints();
+		$dao->remove_prev_auto_preconnects();
+
+		foreach ( $hint_data->hints as $hint ) {
+			$obj = new \stdClass();
+			$obj->url = $hint;
+			$obj->hint_type = 'preconnect';
+			$obj->auto_created = 1;
+			$new_hint = $create_hints->init( $obj );
+			$dao->create_hint( $new_hint );
+		}
+
+	}
+
 	private function update_options() {
-		update_option( 'pprh_preconnects_set', 'true' );
+		update_option( 'pprh_preconnect_set', 'true' );
 	}
 }

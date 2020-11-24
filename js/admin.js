@@ -27,7 +27,7 @@
 		divs.first().toggleClass('active');
 
 		$.each(tabs, function() {
-			$(this).on('click', function (e) {
+			$(this).on('click', function(e) {
 				var className = e.currentTarget.classList[1];
 				tabs.removeClass('nav-tab-active');
 				$(this).addClass('nav-tab-active');
@@ -111,6 +111,8 @@
 		var hint_url = elems.url.val().replace(/'|"/g, '');
 		var hintType = getHintType.call(elems.hint_type);
 		var hintObj = createHintObj();
+
+		// debugger;
 
 		if (hint_url.length === 0 || !hintType) {
 			window.alert('Please enter a proper URL and hint type.');

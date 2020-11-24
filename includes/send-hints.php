@@ -22,7 +22,7 @@ class Send_Hints {
 
 		$dao = new DAO();
 		$sql = "SELECT url, hint_type, as_attr, type_attr, crossorigin FROM $table WHERE status = %s";
-		$arr = array( 'enabled' );
+		$arr = array( 'enable' );
 		$this->hints = $dao->get_hints_query( $sql, $arr );
 
 		if ( ( ! is_array( $this->hints ) ) || count( $this->hints ) < 1 ) {

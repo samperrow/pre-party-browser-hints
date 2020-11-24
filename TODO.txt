@@ -2,6 +2,10 @@ for 1.7.4:
 
 -create basic unit tests for classes/methods
 
--put methods which use db calls into one folders (?)
+-test
 
+
+DONE:
+-put methods which use db calls into one folders (?)
 -document and acknowledge creator of preloading script
+-check compat with wp 5.6

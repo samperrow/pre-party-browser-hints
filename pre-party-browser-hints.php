@@ -40,8 +40,8 @@ class Init {
 
 	public function initialize() {
 		$this->create_constants();
-		$autoload = get_option( 'pprh_autoload_preconnects' );
-		$preconnects_set = get_option( 'pprh_preconnects_set' );
+		$autoload = get_option( 'pprh_preconnect_autoload' );
+		$preconnects_set = get_option( 'pprh_preconnect_set' );
 		include_once PPRH_ABS_DIR . '/includes/utils.php';
 		include_once PPRH_ABS_DIR . '/includes/dao.php';
 
@@ -159,7 +159,7 @@ class Init {
 
 		add_option( 'pprh_preconnect_allow_unauth', 'true', '', 'yes' );
 		add_option( 'pprh_preconnect_autoload', 'true', '', 'yes' );
-		add_option( 'pprh_preconnect_loaded', 'false', '', 'yes' );
+		add_option( 'pprh_preconnect_set', 'false', '', 'yes' );
 
 		add_option( 'pprh_preload_enabled', 'false', '', 'yes' );
 		add_option( 'pprh_preload_delay', '0', '', 'yes' );
@@ -199,7 +199,7 @@ class Init {
             id INT(9) NOT NULL AUTO_INCREMENT,
             url VARCHAR(255) DEFAULT '' NOT NULL,
             hint_type VARCHAR(55) DEFAULT '' NOT NULL,
-            status VARCHAR(55) DEFAULT 'enabled' NOT NULL,
+            status VARCHAR(55) DEFAULT 'enable' NOT NULL,
             as_attr VARCHAR(55) DEFAULT '',
             type_attr VARCHAR(55) DEFAULT '',
             crossorigin VARCHAR(55) DEFAULT '',

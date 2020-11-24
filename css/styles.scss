@@ -136,7 +136,8 @@ div#pprh-wrapper {
             content: "\f223";
             cursor: help;
             color: #555;
-            vertical-align: middle
+            vertical-align: middle;
+            font-size: 16px;
         }
 
         &:hover > span {
