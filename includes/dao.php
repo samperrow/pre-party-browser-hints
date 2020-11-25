@@ -92,7 +92,7 @@ class DAO {
 			$wpdb->prepare( "DELETE FROM $table WHERE auto_created = %d AND hint_type = %s", 1, 'preconnect' )
 		);
 	}
-	
+
 
 	public function get_hints( $sql ) {
 		global $wpdb;
