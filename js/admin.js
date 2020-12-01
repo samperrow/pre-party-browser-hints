@@ -112,8 +112,6 @@
 		var hintType = getHintType.call(elems.hint_type);
 		var hintObj = createHintObj();
 
-		// debugger;
-
 		if (hint_url.length === 0 || !hintType) {
 			window.alert('Please enter a proper URL and hint type.');
 		} else if (hintObj.hint_type === 'preload' && !hintObj.as_attr) {
@@ -183,11 +181,15 @@
 		xhr.onreadystatechange = function () {
 			if (xhr.readyState === 4 && xhr.status === 200) {
 				if (xhr.response.length > 0) {
-					var response = JSON.parse(xhr.response);
+					var resp = JSON.parse(xhr.response);
 					clearHintTable();
-					updateAdminNotice(response.result.query);
-					updateTable(response);
-					addEventListeners();
+
+					if (resp && resp.result && resp.result.query) {
+						updateAdminNotice(resp.result.query);
+						updateTable(resp);
+						addEventListeners();
+					}
+
 				} else {
 					return updateAdminNotice(xhr);
 				}

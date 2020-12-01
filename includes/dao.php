@@ -127,5 +127,28 @@ class DAO {
 		return $ms_table_names;
 	}
 
+	public function create_table( $table_name ) {
+		global $wpdb;
+		$charset = $wpdb->get_charset_collate();
+
+		if ( ! function_exists( 'dbDelta' ) ) {
+			include_once ABSPATH . 'wp-admin/includes/upgrade.php';
+		}
+
+		$sql = "CREATE TABLE $table_name (
+            id INT(9) NOT NULL AUTO_INCREMENT,
+            url VARCHAR(255) DEFAULT '' NOT NULL,
+            hint_type VARCHAR(55) DEFAULT '' NOT NULL,
+            status VARCHAR(55) DEFAULT 'enable' NOT NULL,
+            as_attr VARCHAR(55) DEFAULT '',
+            type_attr VARCHAR(55) DEFAULT '',
+            crossorigin VARCHAR(55) DEFAULT '',
+            created_by VARCHAR(55) DEFAULT '' NOT NULL,
+            auto_created INT(2) DEFAULT 0 NOT NULL,
+            PRIMARY KEY  (id)
+        ) $charset;";
+
+		dbDelta( $sql, true );
+	}
 
 }

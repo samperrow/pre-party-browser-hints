@@ -13,13 +13,12 @@ if ( is_admin() ) {
 class Settings {
 
 	public function __construct() {
-	    $this->init();
+	    $this->display_settings();
 	}
 
-	public function init() {
-		$this->display_settings();
-
-	}
+//	public function init() {
+//		$this->display_settings();
+//	}
 
 	public function display_settings() {
 		?>

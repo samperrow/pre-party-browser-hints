@@ -2,7 +2,7 @@ for 1.7.4:
 
 -create basic unit tests for classes/methods
 
--test
+-tests
 
 
 DONE:

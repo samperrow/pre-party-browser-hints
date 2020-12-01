@@ -63,10 +63,6 @@ class Init {
 //		do_action( 'pprh_pro_init' );
 	}
 
-	public function asdf() {
-		return 'hi';
-	}
-
 	public function load_admin_page() {
 		$settings_page = add_menu_page(
 			'Pre* Party Settings',
@@ -179,36 +175,11 @@ class Init {
 		}
 
 		$pprh_tables[] = PPRH_DB_TABLE;
+		$dao = new DAO();
 
 		foreach ( $pprh_tables as $pprh_table ) {
-			$this->create_table( $pprh_table );
+			$dao->create_table( $pprh_table );
 		}
-	}
-
-
-
-	private function create_table( $table_name ) {
-		global $wpdb;
-		$charset = $wpdb->get_charset_collate();
-
-		if ( ! function_exists( 'dbDelta' ) ) {
-			include_once ABSPATH . 'wp-admin/includes/upgrade.php';
-		}
-
-		$sql = "CREATE TABLE $table_name (
-            id INT(9) NOT NULL AUTO_INCREMENT,
-            url VARCHAR(255) DEFAULT '' NOT NULL,
-            hint_type VARCHAR(55) DEFAULT '' NOT NULL,
-            status VARCHAR(55) DEFAULT 'enable' NOT NULL,
-            as_attr VARCHAR(55) DEFAULT '',
-            type_attr VARCHAR(55) DEFAULT '',
-            crossorigin VARCHAR(55) DEFAULT '',
-            created_by VARCHAR(55) DEFAULT '' NOT NULL,
-            auto_created INT(2) DEFAULT 0 NOT NULL,
-            PRIMARY KEY  (id)
-        ) $charset;";
-
-		dbDelta( $sql, true );
 	}
 
 	public function disable_wp_hints() {

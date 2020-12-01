@@ -71,8 +71,13 @@ class Preconnects {
 			$obj->url = $hint;
 			$obj->hint_type = 'preconnect';
 			$obj->auto_created = 1;
-			$new_hint = $create_hints->init( $obj );
-			$dao->create_hint( $new_hint );
+
+			$valid_hint = $create_hints->verify_data( $obj );
+
+			if ( $valid_hint ) {
+				$new_hint = $create_hints->create_hint( $obj );
+				$dao->create_hint( $new_hint );
+			}
 		}
 
 	}

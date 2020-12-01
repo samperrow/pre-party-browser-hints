@@ -12,9 +12,9 @@ if ( is_admin() ) {
 
 class Ajax_Ops {
 
-	public $results = array(
+	public $response = array(
 		'query'     => array(),
-		'new_hints' => array(),
+//		'new_hints' => array(),
 	);
 
 	public function __construct() {
@@ -34,9 +34,9 @@ class Ajax_Ops {
 				include_once PPRH_ABS_DIR . '/includes/create-hints.php';
 				include_once PPRH_ABS_DIR . '/includes/display-hints.php';
 
-				$this->results['query'] = $this->handle_action( $data, $action );
+				$this->response['query'] = $this->handle_action( $data, $action );
 				$display_hints = new Display_Hints();
-				$display_hints->ajax_response( $this->results );
+				$display_hints->ajax_response( $this->response );
 			}
 
 			wp_die();
@@ -54,14 +54,14 @@ class Ajax_Ops {
 		return $wp_db;
 	}
 
-	private function create_hint( $data ) {
-		define( 'CREATING_HINT', true );
-		$create_hint = new Create_Hints();
-		$new_hint = $create_hint->init( $data );
-		$dao = new DAO();
-
-		return $dao->insert_hint( $new_hint );
-	}
+//	private function create_hint( $data ) {
+//		define( 'CREATING_HINT', true );
+//		$create_hint = new Create_Hints();
+//		$new_hint = $create_hint->init( $data );
+//		$dao = new DAO();
+//
+//		return $dao->insert_hint( $new_hint );
+//	}
 
 
 }
