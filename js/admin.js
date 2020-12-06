@@ -10,7 +10,6 @@
 
 	var currentURL = document.location.href;
 	var adminNoticeElem = document.getElementById('pprhNotice');
-	var globalTable = $('table#pprh-enter-data');
 	var emailSubmitBtn = document.getElementById('pprhSubmit');
 
 	emailSubmitBtn.addEventListener("click", emailValidate);
@@ -211,8 +210,11 @@
 	}
 
 	function clearHintTable() {
-		globalTable.find('tbody').find('select, input:text').val('');
-		globalTable.find('tbody').find('input:checkbox, input:radio').attr('checked', false);
+		var tbody = document.getElementById('pprh-enter-data').getElementsByTagName('tbody')[0];
+
+		tbody.querySelectorAll('select, input').forEach(function(elem) {
+			return elem[ (/radio|checkbox/.test(elem.type)) ? 'checked' : 'value' ] = '';
+		});
 	}
 
 	function updateAdminNotice(response) {
