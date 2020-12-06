@@ -16,10 +16,6 @@ class Settings {
 	    $this->display_settings();
 	}
 
-//	public function init() {
-//		$this->display_settings();
-//	}
-
 	public function display_settings() {
 		?>
 			<div id="pprh-settings" class="pprh-content">

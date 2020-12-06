@@ -6,17 +6,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-if ( is_admin() ) {
-	new Admin_Tabs();
-}
-
 class Admin_Tabs {
 
-	public $results;
+//	public $results;
 
 	public function __construct() {
-		include_once PPRH_ABS_DIR . '/includes/display-hints.php';
-		include_once PPRH_ABS_DIR . '/includes/new-hint.php';
+		include_once PPRH_ABS_DIR . 'includes/new-hint.php';
 
 //		do_action( 'pprh_load_admin_tabs_child' );
 
@@ -45,7 +40,6 @@ class Admin_Tabs {
 
 //		$tabs = apply_filters( 'pprh_pro_show_tabs', $tabs );
 
-
 		echo '<h2 class="nav-tab-wrapper">';
 		foreach ( $tabs as $tab => $name ) {
 			echo "<a class='nav-tab $tab' href='?page=pprh-plugin-settings'>" . $name . '</a>';
@@ -59,10 +53,10 @@ class Admin_Tabs {
 	}
 
 	private function include_files() {
-		include_once PPRH_ABS_DIR . '/includes/tabs/insert-hints.php';
-		include_once PPRH_ABS_DIR . '/includes/tabs/settings.php';
-        include_once PPRH_ABS_DIR . '/includes/tabs/info.php';
-//		include_once PPRH_ABS_DIR . '/includes/tabs/upgrade.php';
+		include_once PPRH_ABS_DIR . 'includes/tabs/insert-hints.php';
+		include_once PPRH_ABS_DIR . 'includes/tabs/settings.php';
+        include_once PPRH_ABS_DIR . 'includes/tabs/info.php';
+//		include_once PPRH_ABS_DIR . 'includes/tabs/upgrade.php';
 //		do_action( 'pprh_pro_add_files' );
 	}
 

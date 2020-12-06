@@ -26,14 +26,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-if ( ! class_exists( 'Pre_Party_Browser_Hints' ) ) {
-	new Pre_Party_Browser_Hints();
-}
+add_action( 'init', function() {
+	if ( ! class_exists( 'Pre_Party_Browser_Hints' ) ) {
+		new Pre_Party_Browser_Hints();
+	}
+});
 
 class Pre_Party_Browser_Hints {
 
 	public function __construct() {
-		add_action( 'init', array( $this, 'initialize' ) );
+		$this->initialize();
 		add_action( 'admin_enqueue_scripts', array( $this, 'register_admin_files' ) );
 		add_filter( 'set-screen-option', array( $this, 'apply_wp_screen_options' ), 10, 3 );
 		add_action( 'wpmu_new_blog', array( $this, 'activate_plugin' ) );
@@ -42,18 +44,21 @@ class Pre_Party_Browser_Hints {
 
 	public function initialize() {
 		$this->create_constants();
+		include_once PPRH_ABS_DIR . 'includes/utils.php';
+		include_once PPRH_ABS_DIR . 'includes/dao.php';
+		include_once PPRH_ABS_DIR . 'includes/create-hints.php';
+
 		$autoload = get_option( 'pprh_preconnect_autoload' );
 		$preconnects_set = get_option( 'pprh_preconnect_set' );
-		include_once PPRH_ABS_DIR . '/includes/utils.php';
-		include_once PPRH_ABS_DIR . '/includes/dao.php';
 
 		if ( is_admin() ) {
-			include_once PPRH_ABS_DIR . '/includes/ajax-ops.php';
+			include_once PPRH_ABS_DIR . 'includes/ajax-ops.php';
+			include_once PPRH_ABS_DIR . 'includes/display-hints.php';
 			add_action( 'admin_menu', array( $this, 'load_admin_page' ) );
 		} else {
-			$this->disable_wp_hints();
+			$this->check_if_wp_hints_disabled();
 			$this->load_flying_pages();
-			include_once PPRH_ABS_DIR . '/includes/send-hints.php';
+			include_once PPRH_ABS_DIR . 'includes/send-hints.php';
 		}
 
 		// this needs to be loaded front end and back end bc Ajax needs to be able to communicate between the two.
@@ -71,15 +76,19 @@ class Pre_Party_Browser_Hints {
 			'Pre* Party',
 			'manage_options',
 			'pprh-plugin-settings',
-			array( $this, 'load_files' ),
+			array( $this, 'load_plugin_page' ),
 			PPRH_REL_DIR . 'images/lightning.png'
 		);
 
 		add_action( "load-{$settings_page}", array( $this, 'screen_option' ) );
 	}
 
-	public function load_files() {
-		include_once PPRH_ABS_DIR . '/includes/admin-tabs.php';
+	public function load_plugin_page() {
+		include_once PPRH_ABS_DIR . 'includes/admin-tabs.php';
+
+		if ( is_admin() && ! class_exists( 'Admin_Tabs' ) ) {
+			new Admin_Tabs();
+		}
 	}
 
 	public function create_constants() {
@@ -130,11 +139,9 @@ class Pre_Party_Browser_Hints {
 		}
 	}
 
-
 	public function activate_plugin() {
-		$this->create_constants();
-		$this->set_options();
-		$this->setup_tables();
+		include_once PPRH_ABS_DIR . 'includes/activate-plugin.php';
+		new Activate_Plugin();
 	}
 
 	public function apply_wp_screen_options( $status, $option, $value ) {
@@ -151,64 +158,7 @@ class Pre_Party_Browser_Hints {
 		add_screen_option( 'per_page', $args );
 	}
 
-	public function set_options() {
-		add_option( 'pprh_disable_wp_hints', 'true', '', 'yes' );
-		add_option( 'pprh_html_head', 'true', '', 'yes' );
-
-		add_option( 'pprh_prefetch_enabled', 'false', '', 'yes' );
-		add_option( 'pprh_prefetch_delay', '0', '', 'yes' );
-		add_option( 'pprh_prefetch_ignoreKeywords', '', '', 'yes' );
-		add_option( 'pprh_prefetch_maxRPS', '3', '', 'yes' );
-		add_option( 'pprh_prefetch_hoverDelay', '50', '', 'yes' );
-
-		$this->update_option_names();
-	}
-
-	public function update_option_names() {
-		$preconnect_allow_unauth = get_option('pprh_allow_unauth');
-		$preconnect_autoload = get_option( 'pprh_autoload_preconnects' );
-		$preconnect_set = get_option( 'pprh_preconnects_set' );
-
-		if ( ! empty( $preconnect_allow_unauth ) ) {
-			add_option('pprh_preconnect_allow_unauth', $preconnect_allow_unauth, '', 'yes');
-			delete_option('pprh_allow_unauth');
-		} else {
-			add_option('pprh_preconnect_allow_unauth', 'true', '', 'yes');
-		}
-
-		if ( ! empty( $preconnect_autoload ) ) {
-			add_option('pprh_preconnect_autoload', $preconnect_autoload, '', 'yes');
-			delete_option('pprh_autoload_preconnects');
-		} else {
-			add_option( 'pprh_preconnect_autoload', 'true', '', 'yes' );
-		}
-
-		if ( ! empty( $preconnect_set ) ) {
-			add_option('pprh_preconnect_set', $preconnect_set, '', 'yes');
-			delete_option('pprh_preconnects_set');
-		} else {
-			add_option( 'pprh_preconnect_set', 'false', '', 'yes' );
-		}
-	}
-
-	// Multisite install/delete db table.
-	public function setup_tables() {
-		$pprh_tables = array();
-
-		if ( is_multisite() ) {
-			$dao = new DAO();
-			$pprh_tables = $dao->get_multisite_tables();
-		}
-
-		$pprh_tables[] = PPRH_DB_TABLE;
-		$dao = new DAO();
-
-		foreach ( $pprh_tables as $pprh_table ) {
-			$dao->create_table( $pprh_table );
-		}
-	}
-
-	public function disable_wp_hints() {
+	public function check_if_wp_hints_disabled() {
 		if ( 'true' === get_option( 'pprh_disable_wp_hints' ) ) {
 			remove_action( 'wp_head', 'wp_resource_hints', 2 );
 		}

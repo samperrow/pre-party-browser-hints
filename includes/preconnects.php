@@ -25,7 +25,6 @@ class Preconnects {
 	}
 
 	public function initialize() {
-
 		$preconnects = array(
 			'hints'      => array(),
 			'nonce'      => wp_create_nonce( 'pprh_ajax_nonce' ),
@@ -37,8 +36,6 @@ class Preconnects {
 		wp_localize_script( 'pprh-find-domain-names', 'pprh_data', $preconnects );
 		wp_enqueue_script( 'pprh-find-domain-names' );
 	}
-
-
 
 	public function pprh_post_domain_names() {
 		if ( wp_doing_ajax() ) {
@@ -58,9 +55,6 @@ class Preconnects {
 	}
 
 	public function create_hint( $hint_data ) {
-
-		include_once PPRH_ABS_DIR . '/includes/create-hints.php';
-
 		$dao = new DAO();
 		define( 'CREATING_HINT', true );
 		$create_hints = new Create_Hints();
@@ -71,7 +65,6 @@ class Preconnects {
 			$obj->url = $hint;
 			$obj->hint_type = 'preconnect';
 			$obj->auto_created = 1;
-
 			$valid_hint = $create_hints->verify_data( $obj );
 
 			if ( $valid_hint ) {
@@ -79,7 +72,6 @@ class Preconnects {
 				$dao->create_hint( $new_hint );
 			}
 		}
-
 	}
 
 	private function update_options() {

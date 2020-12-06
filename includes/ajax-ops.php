@@ -13,7 +13,7 @@ if ( is_admin() ) {
 class Ajax_Ops {
 
 	public $response = array(
-		'query'     => array(),
+		'query' => array(),
 	);
 
 	public function __construct() {
@@ -28,10 +28,6 @@ class Ajax_Ops {
 
 			if ( is_object( $data ) ) {
 				$action = $data->action;
-
-				include_once PPRH_ABS_DIR . '/includes/create-hints.php';
-				include_once PPRH_ABS_DIR . '/includes/display-hints.php';
-
 				$this->response['query'] = $this->handle_action( $data, $action );
 				$display_hints = new Display_Hints();
 				$display_hints->ajax_response( $this->response );
