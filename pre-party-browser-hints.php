@@ -124,7 +124,7 @@ class Pre_Party_Browser_Hints {
 				'ignoreKeywords' => get_option( 'pprh_prefetch_ignoreKeywords', '' ),
 			);
 
-			wp_register_script( 'pprh_prefetch_flying_pages', PPRH_REL_DIR . 'js/flying-pages.js', null, PPRH_VERSION, true );
+			wp_register_script( 'pprh_prefetch_flying_pages', PPRH_REL_DIR . 'js/flying-pages.min.js', null, PPRH_VERSION, true );
 			wp_localize_script( 'pprh_prefetch_flying_pages', 'pprh_fp_data', $fp_data );
 			wp_enqueue_script( 'pprh_prefetch_flying_pages' );
 		}

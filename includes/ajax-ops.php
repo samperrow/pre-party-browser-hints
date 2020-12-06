@@ -29,7 +29,6 @@ class Ajax_Ops {
 			if ( is_object( $data ) ) {
 				$action = $data->action;
 
-				include_once PPRH_ABS_DIR . '/includes/utils.php';
 				include_once PPRH_ABS_DIR . '/includes/create-hints.php';
 				include_once PPRH_ABS_DIR . '/includes/display-hints.php';
 

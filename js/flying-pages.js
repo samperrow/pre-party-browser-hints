@@ -1,4 +1,13 @@
-// https://github.com/gijo-varghese/flying-pages
+/*
+ * @name Flying Pages
+ * @description Flying Pages prefetch pages before the user click on links, making them load instantly
+ * @documentation https://github.com/gijo-varghese/flying-pages
+ * @author Gijo Varghese
+ *
+ * Copyright 2020 Gijo Varghese (https://wpspeedmatters.com)
+ * Licensed under the ISC license:
+ * https://opensource.org/licenses/ISC
+*/
 function flyingPages() {
 
     const toPrefetch = new Set();
@@ -34,7 +43,6 @@ function flyingPages() {
             link.href = url;
             link.onload = resolve;
             link.onerror = reject;
-            console.log(link);
             document.head.appendChild(link);
         });
 
@@ -58,7 +66,8 @@ function flyingPages() {
 
         // Ignore keywords in the array, if matched to the url
         for (let i = 0; i < fp_data.ignoreKeywords.length; i++) {
-            if (url.includes(fp_data.ignoreKeywords[i])) {
+            var keyword = fp_data.ignoreKeywords[i];
+            if (keyword.length > 0 && url.includes(keyword)) {
                 return;
             }
         }
@@ -168,3 +177,4 @@ function flyingPages() {
 }
 
 flyingPages();
+//
