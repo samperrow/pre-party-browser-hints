@@ -6,6 +6,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+new Send_Hints();
+
 class Send_Hints {
 
 	protected $hints = array();
@@ -22,7 +24,7 @@ class Send_Hints {
 
 		$dao = new DAO();
 		$sql = "SELECT url, hint_type, as_attr, type_attr, crossorigin FROM $table WHERE status = %s";
-		$arr = array( 'enable' );
+		$arr = array( 'enabled' );
 		$this->hints = $dao->get_hints_query( $sql, $arr );
 
 		if ( ( ! is_array( $this->hints ) ) || count( $this->hints ) < 1 ) {
@@ -73,5 +75,3 @@ class Send_Hints {
 	}
 
 }
-
-new Send_Hints();

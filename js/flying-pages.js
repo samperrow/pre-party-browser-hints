@@ -8,7 +8,7 @@ function flyingPages() {
         maxRPS: Number(pprh_fp_data.maxRPS),
         delay: Number(pprh_fp_data.delay),
         hoverDelay: Number(pprh_fp_data.hoverDelay),
-        ignoreKeywords: pprh_fp_data.ignoreKeywords
+        ignoreKeywords: pprh_fp_data.ignoreKeywords.replace(/\s/g, '').split(','),
     };
 
     // Check browser support for native 'prefetch'
@@ -23,7 +23,7 @@ function flyingPages() {
     // Checks if user is on slow connection or has enabled data saver
     const isSlowConnection = navigator.connection && (navigator.connection.saveData || (navigator.connection.effectiveType || "").includes("2g"));
 
-    // Don't start preloading if user is on a slow connection or not supported
+    // Don't start prefetching if user is on a slow connection or not supported
     if (isSlowConnection || !isSupported) return;
 
     // Prefetch the given url using native 'prefetch'. Fallback to 'xhr' if not supported
@@ -40,25 +40,27 @@ function flyingPages() {
 
     // Prefetch pages with a timeout
     const prefetchWithTimeout = url => {
-        const timer = setTimeout(() => stopPreloading(), 5000);
+        const timer = setTimeout(() => stopPrefetching(), 5000);
         prefetch(url)
-            .catch(() => stopPreloading())
+            .catch(() => stopPrefetching())
             .finally(() => clearTimeout(timer));
     };
 
     const addUrlToQueue = (url, processImmediately = false) => {
         if (alreadyPrefetched.has(url) || toPrefetch.has(url)) return;
 
-        // Prevent preloading 3rd party domains
+        // Prevent prefetching 3rd party domains
         const origin = window.location.origin;
         if (url.substring(0, origin.length) !== origin) return;
 
-        // Prevent current page from preloading
+        // Prevent current page from prefetching
         if (window.location.href === url) return;
 
         // Ignore keywords in the array, if matched to the url
         for (let i = 0; i < fp_data.ignoreKeywords.length; i++) {
-            if (url.includes(fp_data.ignoreKeywords[i])) return;
+            if (url.includes(fp_data.ignoreKeywords[i])) {
+                return;
+            }
         }
 
         // If max RPS is 0 or is on mouse hover, process immediately (without queue)
@@ -102,14 +104,14 @@ function flyingPages() {
         }
     };
 
-    // Preload on touchstart on mobile
+    // prefetch on touchstart on mobile
     const touchStartListener = event => {
         const elm = event.target.closest("a");
         if (elm && elm.href && !alreadyPrefetched.has(elm.href))
             addUrlToQueue(elm.href, true);
     };
 
-    // Clear timeout on mouse out if not already preloaded
+    // Clear timeout on mouse out if not already prefetched
     const mouseOutListener = event => {
         const elm = event.target.closest("a");
         if (elm && elm.href && !alreadyPrefetched.has(elm.href)) {
@@ -132,8 +134,8 @@ function flyingPages() {
             }, 1);
         };
 
-    // Stop preloading in case server is responding slow/errors
-    const stopPreloading = () => {
+    // Stop prefetching in case server is responding slow/errors
+    const stopPrefetching = () => {
         // Find all links are remove it from observer (viewport)
         document.querySelectorAll("a").forEach(e => linksObserver.unobserve(e));
 
@@ -149,7 +151,7 @@ function flyingPages() {
     // Start Queue
     startQueue();
 
-    // Start preloading links in viewport on idle callback, with a delay
+    // Start prefetching links in viewport on idle callback, with a delay
     requestIdleCallback(() =>
         setTimeout(
             () =>

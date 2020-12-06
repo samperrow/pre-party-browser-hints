@@ -64,6 +64,7 @@
 	// update the hint table via ajax.
 	function updateTable(response) {
 		var table = $('table.pprh-post-table').first();
+		var table2 = document.getElementsByClassName('pprh-post-table')[0];
 		var tbody = table.find('tbody');
 
 		tbody.html('');
@@ -84,7 +85,9 @@
 			$('div.tablenav, div.alignleft.actions.bulkactions').removeClass('no-pages');
 		}
 
-		table.find('input:checkbox').attr('checked', false);
+		table2.querySelectorAll(':checked').forEach(function(item) {
+			return item.checked = false;
+		});
 	}
 
 	$('input#pprhSubmitHints').on("click", function (e) {

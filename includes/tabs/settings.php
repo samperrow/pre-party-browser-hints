@@ -31,7 +31,7 @@ class Settings {
                                 $this->save_user_options();
                                 $this->general_settings();
                                 $this->preconnect_settings();
-                                $this->preload_settings();
+                                $this->prefetch_settings();
 //							    apply_filters( 'pprh_pro_settings', 'prerender' );
                             ?>
                         </tbody>
@@ -61,11 +61,11 @@ class Settings {
 				update_option( 'pprh_preconnect_autoload', wp_unslash( $_POST['autoload_preconnects'] ) );
                 update_option( 'pprh_preconnect_allow_unauth', wp_unslash( $_POST['allow_unauth'] ) );
 
-				update_option( 'pprh_preload_enabled', Utils::clean_url( $_POST['preload_enabled'] ) );
-				update_option( 'pprh_preload_delay', Utils::strip_non_numbers( $_POST['preload_delay'] ) );
-				update_option( 'pprh_preload_ignoreKeywords', Utils::clean_url_path( $_POST['preload_ignoreKeywords'] ) );
-				update_option( 'pprh_preload_maxRPS', Utils::strip_non_numbers( $_POST['preload_maxRPS'] ) );
-				update_option( 'pprh_preload_hoverDelay', Utils::strip_non_numbers( $_POST['preload_hoverDelay'] ) );
+				update_option( 'pprh_prefetch_enabled', Utils::clean_url( $_POST['prefetch_enabled'] ) );
+				update_option( 'pprh_prefetch_delay', Utils::strip_non_numbers( $_POST['prefetch_delay'] ) );
+				update_option( 'pprh_prefetch_ignoreKeywords', Utils::clean_url_path( $_POST['prefetch_ignoreKeywords'] ) );
+				update_option( 'pprh_prefetch_maxRPS', Utils::strip_non_numbers( $_POST['prefetch_maxRPS'] ) );
+				update_option( 'pprh_prefetch_hoverDelay', Utils::strip_non_numbers( $_POST['prefetch_hoverDelay'] ) );
 			}
 		}
 
@@ -198,32 +198,32 @@ class Settings {
 		<?php
 	}
 
-	public function preload_settings() {
+	public function prefetch_settings() {
         ?>
         <tr>
-            <td style="font-size: 23px; text-align: center; font-weight: bold;" colspan="3"><?php esc_html_e( 'Auto Preload Settings', 'pprh' ); ?>
+            <td style="font-size: 23px; text-align: center; font-weight: bold;" colspan="3"><?php esc_html_e( 'Auto Prefetch Settings', 'pprh' ); ?>
                 <span class="pprh-help-tip-hint">
-					<span><?php _e( 'Preload pages before the user clicks on navigation links, making them load instantly. Special thanks to <a href="https://wpspeedmatters.com/">Gijo Varghese</a> for providing assistance with this preload feature.', 'pprh' ); ?></span>
+					<span><?php _e( 'Prefetch pages before the user clicks on navigation links, making them load instantly. Special thanks to <a href="https://wpspeedmatters.com/">Gijo Varghese</a> for providing assistance with this prefetch feature.', 'pprh' ); ?></span>
 				</span>
             </td>
         </tr>
 
         <tr>
-            <th><?php esc_html_e( 'Allow for navigation links to be preloaded while in viewport?', 'pprh' ); ?></th>
+            <th><?php esc_html_e( 'Allow for navigation links to be prefetched while in viewport?', 'pprh' ); ?></th>
 
             <td>
 				<span class="pprh-help-tip-hint">
-					<span><?php esc_html_e( 'When navigation (anchor) links are being moused over, this feature will initiate a preload request for the URL in the link. Select No (default) to disable this feature.', 'pprh' ); ?></span>
+					<span><?php esc_html_e( 'When navigation (anchor) links are being moused over, this feature will initiate a prefetch request for the URL in the link. Select No (default) to disable this feature.', 'pprh' ); ?></span>
 				</span>
             </td>
 
             <td>
                 <label>
-                    <select name="preload_enabled">
-                        <option value="true" <?php Utils::get_option_status( 'pprh_preload_enabled', 'true' ); ?>>
+                    <select name="prefetch_enabled">
+                        <option value="true" <?php Utils::get_option_status( 'pprh_prefetch_enabled', 'true' ); ?>>
 							<?php esc_html_e( 'Yes', 'pprh' ); ?>
                         </option>
-                        <option value="false" <?php Utils::get_option_status( 'pprh_preload_enabled', 'false' ); ?>>
+                        <option value="false" <?php Utils::get_option_status( 'pprh_prefetch_enabled', 'false' ); ?>>
 							<?php esc_html_e( 'No', 'pprh' ); ?>
                         </option>
                     </select>
@@ -232,17 +232,17 @@ class Settings {
         </tr>
 
         <tr>
-            <th><?php esc_html_e( 'Preload initiation delay:', 'pprh' ); ?></th>
+            <th><?php esc_html_e( 'Prefetch initiation delay:', 'pprh' ); ?></th>
 
             <td>
 				<span class="pprh-help-tip-hint">
-					<span><?php esc_html_e( 'sdf', 'pprh' ); ?></span>
+					<span><?php esc_html_e( 'Start prefetching after a delay. Will be started when the browser becomes idle. Default is 0.', 'pprh' ); ?></span>
 				</span>
             </td>
 
             <td>
                 <label>
-                    <input type="text" name="preload_delay" value="<?php esc_html_e( get_option( 'pprh_preload_delay') ); ?>" />
+                    <input type="text" name="prefetch_delay" value="<?php esc_html_e( get_option( 'pprh_prefetch_delay') ); ?>" />
                 </label>
             </td>
         </tr>
@@ -252,19 +252,19 @@ class Settings {
 
             <td>
 				<span class="pprh-help-tip-hint">
-					<span><?php esc_html_e( 'A list of keywords to ignore from prefetching. Should be comma-separated values. Example "/logout","/cart","about.html","sample.png","#"', 'pprh' ); ?></span>
+					<span><?php esc_html_e( 'A list of keywords to ignore from prefetching. Should be comma-separated values, without quotes. Any links matching any of the values specified will not be prefetch. Example "/logout, /cart, about.html, sample.png, #"', 'pprh' ); ?></span>
 				</span>
             </td>
 
             <td>
                 <label>
-                    <input type="text" name="preload_ignoreKeywords" value="<?php esc_html_e( get_option( 'pprh_preload_ignoreKeywords' ) ); ?>" />
+                    <input type="text" name="prefetch_ignoreKeywords" value="<?php esc_html_e( get_option( 'pprh_prefetch_ignoreKeywords' ) ); ?>" />
                 </label>
             </td>
         </tr>
 
         <tr>
-            <th><?php esc_html_e( 'Maximum requests per second the preload queue should process:', 'pprh' ); ?></th>
+            <th><?php esc_html_e( 'Maximum requests per second the prefetch queue should process:', 'pprh' ); ?></th>
 
             <td>
 				<span class="pprh-help-tip-hint">
@@ -274,7 +274,7 @@ class Settings {
 
             <td>
                 <label>
-                    <input type="text" name="preload_maxRPS" value="<?php esc_html_e( get_option( 'pprh_preload_maxRPS' ) ); ?>" />
+                    <input type="text" name="prefetch_maxRPS" value="<?php esc_html_e( get_option( 'pprh_prefetch_maxRPS' ) ); ?>" />
                 </label>
             </td>
         </tr>
@@ -284,13 +284,13 @@ class Settings {
 
             <td>
 				<span class="pprh-help-tip-hint">
-					<span><?php esc_html_e( 'Defaults to 50 milliseconds', 'pprh' ); ?></span>
+					<span><?php esc_html_e( 'Set a short pause after the mouse hovers over a link before the prefetch hint is created. Defaults to 50 milliseconds', 'pprh' ); ?></span>
 				</span>
             </td>
 
             <td>
                 <label>
-                    <input type="text" name="preload_hoverDelay" value="<?php esc_html_e( get_option( 'pprh_preload_hoverDelay' ) ); ?>" />
+                    <input type="text" name="prefetch_hoverDelay" value="<?php esc_html_e( get_option( 'pprh_prefetch_hoverDelay' ) ); ?>" />
                 </label>
             </td>
         </tr>

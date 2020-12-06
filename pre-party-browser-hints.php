@@ -13,7 +13,7 @@
  * Text Domain:       pprh
  * Domain Path:       /languages
  *
- * last edited November 20, 2020
+ * last edited December 6, 2020
  *
  * Copyright 2016  Sam Perrow  (email : sam.perrow399@gmail.com)
  *
@@ -26,9 +26,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-new Init();
+if ( ! class_exists( 'Pre_Party_Browser_Hints' ) ) {
+	new Pre_Party_Browser_Hints();
+}
 
-class Init {
+class Pre_Party_Browser_Hints {
 
 	public function __construct() {
 		add_action( 'init', array( $this, 'initialize' ) );
@@ -112,19 +114,19 @@ class Init {
 	}
 
 	private function load_flying_pages() {
-		$load_flying_pages = get_option( 'pprh_preload_enabled' );
+		$load_flying_pages = get_option( 'pprh_prefetch_enabled' );
 
 		if ( $load_flying_pages === 'true' ) {
 			$fp_data = array(
-				'delay'          => get_option( 'pprh_preload_delay', 0 ),
-				'hoverDelay'     => get_option( 'pprh_preload_hoverDelay', 50 ),
-				'maxRPS'         => get_option( 'pprh_preload_maxRPS', 3 ),
-				'ignoreKeywords' => get_option( 'pprh_preload_ignoreKeywords', '' ),
+				'delay'          => get_option( 'pprh_prefetch_delay', 0 ),
+				'hoverDelay'     => get_option( 'pprh_prefetch_hoverDelay', 50 ),
+				'maxRPS'         => get_option( 'pprh_prefetch_maxRPS', 3 ),
+				'ignoreKeywords' => get_option( 'pprh_prefetch_ignoreKeywords', '' ),
 			);
 
-			wp_register_script( 'pprh_preload_flying_pages', PPRH_REL_DIR . 'js/flying-pages.js', null, PPRH_VERSION, true );
-			wp_localize_script( 'pprh_preload_flying_pages', 'pprh_fp_data', $fp_data );
-			wp_enqueue_script( 'pprh_preload_flying_pages' );
+			wp_register_script( 'pprh_prefetch_flying_pages', PPRH_REL_DIR . 'js/flying-pages.js', null, PPRH_VERSION, true );
+			wp_localize_script( 'pprh_prefetch_flying_pages', 'pprh_fp_data', $fp_data );
+			wp_enqueue_script( 'pprh_prefetch_flying_pages' );
 		}
 	}
 
@@ -153,16 +155,40 @@ class Init {
 		add_option( 'pprh_disable_wp_hints', 'true', '', 'yes' );
 		add_option( 'pprh_html_head', 'true', '', 'yes' );
 
-		add_option( 'pprh_preconnect_allow_unauth', 'true', '', 'yes' );
-		add_option( 'pprh_preconnect_autoload', 'true', '', 'yes' );
-		add_option( 'pprh_preconnect_set', 'false', '', 'yes' );
+		add_option( 'pprh_prefetch_enabled', 'false', '', 'yes' );
+		add_option( 'pprh_prefetch_delay', '0', '', 'yes' );
+		add_option( 'pprh_prefetch_ignoreKeywords', '', '', 'yes' );
+		add_option( 'pprh_prefetch_maxRPS', '3', '', 'yes' );
+		add_option( 'pprh_prefetch_hoverDelay', '50', '', 'yes' );
 
-		add_option( 'pprh_preload_enabled', 'false', '', 'yes' );
-		add_option( 'pprh_preload_delay', '0', '', 'yes' );
-		add_option( 'pprh_preload_ignoreKeywords', '', '', 'yes' );
-		add_option( 'pprh_preload_maxRPS', '3', '', 'yes' );
-		add_option( 'pprh_preload_hoverDelay', '50', '', 'yes' );
+		$this->update_option_names();
+	}
 
+	public function update_option_names() {
+		$preconnect_allow_unauth = get_option('pprh_allow_unauth');
+		$preconnect_autoload = get_option( 'pprh_autoload_preconnects' );
+		$preconnect_set = get_option( 'pprh_preconnects_set' );
+
+		if ( ! empty( $preconnect_allow_unauth ) ) {
+			add_option('pprh_preconnect_allow_unauth', $preconnect_allow_unauth, '', 'yes');
+			delete_option('pprh_allow_unauth');
+		} else {
+			add_option('pprh_preconnect_allow_unauth', 'true', '', 'yes');
+		}
+
+		if ( ! empty( $preconnect_autoload ) ) {
+			add_option('pprh_preconnect_autoload', $preconnect_autoload, '', 'yes');
+			delete_option('pprh_autoload_preconnects');
+		} else {
+			add_option( 'pprh_preconnect_autoload', 'true', '', 'yes' );
+		}
+
+		if ( ! empty( $preconnect_set ) ) {
+			add_option('pprh_preconnect_set', $preconnect_set, '', 'yes');
+			delete_option('pprh_preconnects_set');
+		} else {
+			add_option( 'pprh_preconnect_set', 'false', '', 'yes' );
+		}
 	}
 
 	// Multisite install/delete db table.

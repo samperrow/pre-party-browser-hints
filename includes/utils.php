@@ -56,11 +56,15 @@ class Utils {
 	}
 
 	public static function get_wpdb_result( $wp_db, $action ) {
+	    if ( ! ( strrpos( $action, 'd' ) === strlen( $action ) -1 ) ) {
+	        $action .= 'd';
+		}
+
 		return array(
 			'last_error' => $wp_db->last_error,
 			'last_query' => $wp_db->last_query,
 			'status'     => ( $wp_db->result ) ? 'success' : 'error',
-			'msg'        => ($wp_db->result) ? ' Resource hint ' . $action . 'd successfully.' : "Failed to $action hint.",
+			'msg'        => ($wp_db->result) ? ' Resource hint ' . $action . ' successfully.' : "Failed to $action hint.",
 		);
 	}
 

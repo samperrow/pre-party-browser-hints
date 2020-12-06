@@ -8,7 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class Preconnects {
 
-	public $load_adv = false;
+//	public $load_adv = false;
 
 	public function __construct() {
 		if ( 'true' === get_option( 'pprh_preconnect_allow_unauth' ) ) {

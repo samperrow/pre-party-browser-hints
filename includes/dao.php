@@ -72,6 +72,7 @@ class DAO {
 	public function bulk_update( $data, $action ) {
 		global $wpdb;
 		$table = PPRH_DB_TABLE;
+//		$action .= 'd';
 		$concat_ids = implode( ',', array_map( 'absint', $data->hint_ids ) );
 
 		$wpdb->query( $wpdb->prepare(
@@ -139,7 +140,7 @@ class DAO {
             id INT(9) NOT NULL AUTO_INCREMENT,
             url VARCHAR(255) DEFAULT '' NOT NULL,
             hint_type VARCHAR(55) DEFAULT '' NOT NULL,
-            status VARCHAR(55) DEFAULT 'enable' NOT NULL,
+            status VARCHAR(55) DEFAULT 'enabled' NOT NULL,
             as_attr VARCHAR(55) DEFAULT '',
             type_attr VARCHAR(55) DEFAULT '',
             crossorigin VARCHAR(55) DEFAULT '',

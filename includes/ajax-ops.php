@@ -14,7 +14,6 @@ class Ajax_Ops {
 
 	public $response = array(
 		'query'     => array(),
-//		'new_hints' => array(),
 	);
 
 	public function __construct() {
@@ -48,20 +47,10 @@ class Ajax_Ops {
 		$dao = new DAO();
 		if ( preg_match( '/create|update|delete/', $action ) ) {
 			$wp_db = $dao->{$action . '_hint'}( $data );
-		} elseif ( preg_match( '/enable|disable/', $action ) ) {
+		} elseif ( preg_match( '/enabled|disabled/', $action ) ) {
 			$wp_db = $dao->bulk_update( $data, $action );
 		}
 		return $wp_db;
 	}
-
-//	private function create_hint( $data ) {
-//		define( 'CREATING_HINT', true );
-//		$create_hint = new Create_Hints();
-//		$new_hint = $create_hint->init( $data );
-//		$dao = new DAO();
-//
-//		return $dao->insert_hint( $new_hint );
-//	}
-
 
 }

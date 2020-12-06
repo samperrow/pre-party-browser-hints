@@ -87,8 +87,8 @@ class Display_Hints extends WP_List_Table {
 	public function get_bulk_actions() {
 		return array(
 			'delete'  => __( 'Delete', 'pprh' ),
-			'enable'  => __( 'Enable', 'pprh' ),
-			'disable' => __( 'Disable', 'pprh' ),
+			'enabled'  => __( 'Enable', 'pprh' ),
+			'disabled' => __( 'Disable', 'pprh' ),
 		);
 	}
 

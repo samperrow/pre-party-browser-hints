@@ -4,6 +4,9 @@ for 1.7.4:
 
 -tests
 
+-test PHP compat down to 5.6
+-test browser compat
+-ensure new options are compat with old options!
 
 DONE:
 -put methods which use db calls into one folders (?)
