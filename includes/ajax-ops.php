@@ -6,9 +6,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-if ( is_admin() ) {
-	new Ajax_Ops();
-}
+//if ( is_admin() ) {
+//	new Ajax_Ops();
+//}
 
 class Ajax_Ops {
 

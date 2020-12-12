@@ -6,9 +6,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-if ( is_admin() ) {
-	new Settings();
-}
+//if ( is_admin() ) {
+//	new Settings();
+//}
 
 class Settings {
 

@@ -2,5 +2,4 @@
 *.DS_Store
 config.rb
 *.scssc
-/tests
 TODO.txt
