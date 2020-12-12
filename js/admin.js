@@ -222,18 +222,18 @@
 			response.msg += response.last_error;
 		}
 
-		if (response.status === 'success' ) {
-			response.msg += response.msg;
-		} else if (response.status === 'error' ) {
-			response.msg += response.msg + ((response.last_error) ? response.last_error : '');
-		} else if (typeof response === "string" && /<code>(.*)?<\/code>/g.test(response)) {
-			response.msg += response.split('<code>')[0].split('</code>')[0];
-		} else {
-			response.msg += 'Error updating hint. Please clear your browser cache and try again, or contact support about the issue.';
+		if (response.status !== 'success' ) {
+			if (response.status === 'error' ) {
+				response.msg += response.msg + ((response.last_error) ? response.last_error : '');
+			} else if (typeof response === "string" && /<code>(.*)?<\/code>/g.test(response)) {
+				response.msg += response.split('<code>')[0].split('</code>')[0];
+			} else {
+				response.msg += 'Error updating hint. Please clear your browser cache and try again, or contact support about the issue.';
+			}
 		}
 
-		toggleAdminNotice('add', resp.status);
-		adminNoticeElem.getElementsByTagName('p')[0].innerHTML = resp.msg;
+		toggleAdminNotice('add', response.status);
+		adminNoticeElem.getElementsByTagName('p')[0].innerHTML = response.msg;
 
 		setTimeout(function () {
 			toggleAdminNotice('remove', response.status);
