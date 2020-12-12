@@ -4,7 +4,7 @@ Donate link: https://www.paypal.me/samperrow
 Tags: W3C, DNS prefetch, prerender, preconnect, prefetch, preload, web perf, performance, speed, resource hints
 Requires at least: 4.4
 Tested up to: 5.5.2
-Stable tag: 1.7.3.2
+Stable tag: 1.7.4
 Requires PHP: 5.6.30
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -79,8 +79,14 @@ To activate the preloaded resource, you must call that file in HTML as you would
 
 
 == Changelog ==
-1. Most recent update: September 27, 2020.
-2. Version 1.7.3.2
+1. Most recent update: December 13, 2020.
+2. Version 1.7.4
+
+November 29, 2020:
+1) Ensured compatibility with WP 5.6.
+2) Added automatic preload hint creation upon hover on front end.
+3) Put all database calls into a single file for better organization, testing abilities (DAO model)
+4) cleaned up/organized other parts of plugin.
 
 September 27, 2020:
 1) Added more information about how the "auto-preconnect" feature works.

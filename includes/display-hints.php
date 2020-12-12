@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 if ( ! class_exists( WP_List_Table::class ) ) {
-	require_once PPRH_ABS_DIR . '/includes/class-pprh-wp-list-table.php';
+	require_once PPRH_ABS_DIR . 'includes/wp-list-table.php';
 }
 
 class Display_Hints extends WP_List_Table {
@@ -87,8 +87,8 @@ class Display_Hints extends WP_List_Table {
 	public function get_bulk_actions() {
 		return array(
 			'delete'  => __( 'Delete', 'pprh' ),
-			'enable'  => __( 'Enable', 'pprh' ),
-			'disable' => __( 'Disable', 'pprh' ),
+			'enabled'  => __( 'Enable', 'pprh' ),
+			'disabled' => __( 'Disable', 'pprh' ),
 		);
 	}
 
@@ -123,7 +123,6 @@ class Display_Hints extends WP_List_Table {
 	}
 
 	public function load_data() {
-		global $wpdb;
 		$table = PPRH_DB_TABLE;
 		$sql = "SELECT * FROM $table";
 
@@ -134,7 +133,8 @@ class Display_Hints extends WP_List_Table {
 			$sql .= ' ORDER BY url DESC';
 		}
 
-		$this->data = $wpdb->get_results( $sql, ARRAY_A );
+		$dao = new DAO();
+		$this->data = $dao->get_hints( $sql );
 		return $this->data;
 	}
 
@@ -151,8 +151,8 @@ class Display_Hints extends WP_List_Table {
 	}
 
 	public function inline_edit_row( $item ) {
-		if ( ! class_exists( 'PPRH\New_Hint' ) ) {
-			require_once PPRH_ABS_DIR . '/includes/class-pprh-new-hint.php';
+		if ( ! class_exists(New_Hint::class) ) {
+			require_once PPRH_ABS_DIR . 'includes/new-hint.php';
 		}
 
 		$json = json_encode( $item,true );

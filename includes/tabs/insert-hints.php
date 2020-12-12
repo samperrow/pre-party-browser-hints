@@ -18,5 +18,3 @@ class Insert_Hints {
 	}
 
 }
-
-new Insert_Hints();

@@ -1,20 +1,29 @@
-jQuery(document).ready(function($) {
+// jQuery(document).ready(function($) {
+
+(function(global, factory) {
+	global.pprhAdminJS = factory();
+}(this, function() {
+
 	'use strict';
+
+	var $ = jQuery;
 
 	var currentURL = document.location.href;
 	var adminNoticeElem = document.getElementById('pprhNotice');
-	var globalTable = $('table#pprh-enter-data');
 	var emailSubmitBtn = document.getElementById('pprhSubmit');
 
 	emailSubmitBtn.addEventListener("click", emailValidate);
 
 	toggleDivs();
+	addEventListeners();
+	addEditRowEventListener();
+
 	function toggleDivs() {
 		var tabs = $('a.nav-tab');
 		var divs = $('div.pprh-content');
 
-		$('a.insert-hints').toggleClass('nav-tab-active');
-		$('#pprh-insert-hints').toggleClass('active');
+		tabs.first().toggleClass('nav-tab-active');
+		divs.first().toggleClass('active');
 
 		$.each(tabs, function() {
 			$(this).on('click', function(e) {
@@ -22,11 +31,22 @@ jQuery(document).ready(function($) {
 				tabs.removeClass('nav-tab-active');
 				$(this).addClass('nav-tab-active');
 				divs.removeClass('active');
-				$('div#pprh-' + className ).toggleClass('active');
+				$('div#pprh-' + className).toggleClass('active');
 				e.preventDefault();
 			});
 		});
 	}
+
+	$('input.pprh-reset').each(function() {
+		$(this).on('click', function(e) {
+			var text = e.target.defaultValue;
+			var res = confirm('Are you sure you want to ' + text + '?' );
+
+			if (! res) {
+				e.preventDefault();
+			}
+		});
+	});
 
 	// used on all admin and modal screens w/ contact button.
 	function emailValidate(e) {
@@ -34,7 +54,7 @@ jQuery(document).ready(function($) {
 		var emailMsg = document.getElementById("pprhEmailText");
 		var emailformat = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/i;
 
-		if (! emailformat.test(emailAddr.value) || emailMsg.value === "") {
+		if (!emailformat.test(emailAddr.value) || emailMsg.value === "") {
 			e.preventDefault();
 			window.alert('Please enter a valid message and email address.');
 		}
@@ -43,28 +63,33 @@ jQuery(document).ready(function($) {
 	// update the hint table via ajax.
 	function updateTable(response) {
 		var table = $('table.pprh-post-table').first();
+		var table2 = document.getElementsByClassName('pprh-post-table')[0];
 		var tbody = table.find('tbody');
 
 		tbody.html('');
 
-		if ( response.rows.length ) {
-			tbody.html( response.rows );
+		if (response.rows.length) {
+			tbody.html(response.rows);
 		}
 
-		if ( response.pagination.bottom.length ) {
-			$('.tablenav.top .tablenav-pages').html( $(response.pagination.top).html() );
+		if (response.pagination.bottom.length) {
+			$('.tablenav.top .tablenav-pages').html($(response.pagination.top).html());
 		}
 
-		if ( response.pagination.top.length ) {
-			$('.tablenav.bottom .tablenav-pages').html( $(response.pagination.bottom).html() );
+		if (response.pagination.top.length) {
+			$('.tablenav.bottom .tablenav-pages').html($(response.pagination.bottom).html());
 		}
 
 		if (response.total_pages === 1) {
 			$('div.tablenav, div.alignleft.actions.bulkactions').removeClass('no-pages');
 		}
+
+		table2.querySelectorAll(':checked').forEach(function(item) {
+			return item.checked = false;
+		});
 	}
 
-	$('input#pprhSubmitHints').on("click", function(e) {
+	$('input#pprhSubmitHints').on("click", function (e) {
 		createHint(e, 'pprh-enter-data', 'create');
 	});
 
@@ -89,9 +114,9 @@ jQuery(document).ready(function($) {
 		var hintType = getHintType.call(elems.hint_type);
 		var hintObj = createHintObj();
 
-		if (hint_url.length === 0 || ! hintType) {
+		if (hint_url.length === 0 || !hintType) {
 			window.alert('Please enter a proper URL and hint type.');
-		} else if (hintObj.hint_type === 'preload' && ! hintObj.as_attr) {
+		} else if (hintObj.hint_type === 'preload' && !hintObj.as_attr) {
 			window.alert("You must specify an 'as' attribute when using preload hints.");
 		} else {
 			createAjaxReq(hintObj);
@@ -127,7 +152,7 @@ jQuery(document).ready(function($) {
 	}
 
 	function addDeleteHintListener() {
-		$('span.delete').on('click', function(e) {
+		$('span.delete').on('click', function (e) {
 			e.preventDefault();
 
 			if (confirm('Are you sure you want to delete this hint?')) {
@@ -155,23 +180,18 @@ jQuery(document).ready(function($) {
 
 		xhr.send(target);
 
-		xhr.onreadystatechange = function() {
+		xhr.onreadystatechange = function () {
 			if (xhr.readyState === 4 && xhr.status === 200) {
 				if (xhr.response.length > 0) {
-					var response;
-					try {
-						response = JSON.parse(xhr.response);
-					} catch (e) {
-						response = xhr.response;
-					}
-					if (response && response.result && response.result.query) {
-						clearHintTable();
-						updateAdminNotice(response.result.query);
-						updateTable(response);
+					var resp = JSON.parse(xhr.response);
+					clearHintTable();
+
+					if (resp && resp.result && resp.result.query) {
+						updateAdminNotice(resp.result.query);
+						updateTable(resp);
 						addEventListeners();
-					} else {
-						updateAdminNotice(response);
 					}
+
 				} else {
 					return updateAdminNotice(xhr);
 				}
@@ -182,21 +202,24 @@ jQuery(document).ready(function($) {
 		};
 	}
 
-	addEventListeners();
+
+
 	function addEventListeners() {
 		addDeleteHintListener();
 		addEditRowEventListener();
 	}
 
 	function clearHintTable() {
-		globalTable.find('tbody').find('select, input:text').val('');
-		globalTable.find('tbody').find('input:checkbox, input:radio').attr('checked', false);
+		var tbody = document.getElementById('pprh-enter-data').getElementsByTagName('tbody')[0];
+
+		tbody.querySelectorAll('select, input').forEach(function(elem) {
+			return elem[ (/radio|checkbox/.test(elem.type)) ? 'checked' : 'value' ] = '';
+		});
 	}
 
 	function updateAdminNotice(response) {
-		var resp = {
-			msg: '',
-			status: (response.status) ? response.status : 'error',
+		if (response.status === 'error') {
+			response.msg += response.last_error;
 		}
 
 		if (response.status === 'success' ) {
@@ -212,9 +235,9 @@ jQuery(document).ready(function($) {
 		toggleAdminNotice('add', resp.status);
 		adminNoticeElem.getElementsByTagName('p')[0].innerHTML = resp.msg;
 
-		setTimeout(function() {
-			toggleAdminNotice('remove', resp.status);
-		}, 10000 );
+		setTimeout(function () {
+			toggleAdminNotice('remove', response.status);
+		}, 10000);
 	}
 
 	function toggleAdminNotice(action, outcome) {
@@ -222,9 +245,9 @@ jQuery(document).ready(function($) {
 		adminNoticeElem.classList[action]('notice-' + outcome);
 	}
 
-	addEditRowEventListener();
+
 	function addEditRowEventListener() {
-		$('span.edit').on('click', function() {
+		$('span.edit').on('click', function () {
 			var hintID = $(this).find('a').attr('id').split('pprh-edit-hint-')[1];
 			var allRows = $('tr.pprh-row');
 			allRows.removeClass('active');
@@ -233,22 +256,21 @@ jQuery(document).ready(function($) {
 			rows.addClass('active');
 			putHintInfoIntoElems(hintID);
 
-			rows.find('button.button.cancel').first().on('click', function() {
+			rows.find('button.button.cancel').first().on('click', function () {
 				rows.removeClass('active');
 			});
 
-			$('tr.pprh-row.edit.' + hintID).find('button.pprh-update').on('click', function(e) {
+			$('tr.pprh-row.edit.' + hintID).find('button.pprh-update').on('click', function (e) {
 				createHint(e, 'pprh-edit-' + hintID, 'update');
 			});
 		});
 	}
 
-
 	function putHintInfoIntoElems(hintID) {
 		var json = $('input.pprh-hint-storage.' + hintID).val();
 		var data = JSON.parse(json);
-
 		var elems = getRowElems('pprh-edit-' + hintID);
+
 		elems.url.val(data.url);
 		elems.hint_type.find('input[value="' + data.hint_type + '"]').attr('checked', true);
 
@@ -256,8 +278,8 @@ jQuery(document).ready(function($) {
 			elems.crossorigin.attr('checked', true);
 		}
 
-		elems.as_attr.val( data['as_attr'] ? data['as_attr'] : '');
-		elems.type_attr.val( data['type_attr'] ? data['type_attr'] : '')
+		elems.as_attr.val(data['as_attr'] ? data['as_attr'] : '');
+		elems.type_attr.val(data['type_attr'] ? data['type_attr'] : '')
 	}
 
 	// bulk deletes, enables/disables.
@@ -269,7 +291,7 @@ jQuery(document).ready(function($) {
 		var op = $(e.currentTarget).prev().val();
 		var checkboxes = $('table.pprh-post-table tbody th.check-column input:checkbox');
 
-		$.each(checkboxes, function() {
+		$.each(checkboxes, function () {
 			if ($(this).is(':checked')) {
 				return idArr.push($(this).val());
 			}
@@ -285,4 +307,9 @@ jQuery(document).ready(function($) {
 		}
 	}
 
-});
+	return {
+		ToggleAdminNotice: toggleAdminNotice,
+		CreateAjaxReq: createAjaxReq,
+	}
+
+}));

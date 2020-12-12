@@ -1,5 +1,5 @@
 
 *.DS_Store
-.sass-cache
 config.rb
-/tests
+*.scssc
+TODO.txt

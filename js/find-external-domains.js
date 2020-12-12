@@ -42,7 +42,7 @@
         var json = JSON.stringify(pprh_data);
         var xhr = new XMLHttpRequest();
         var url = pprh_data.admin_url;
-        // console.log(pprh_data);
+        console.log(pprh_data);
         xhr.open('POST', url, true);
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
         xhr.send('action=pprh_post_domain_names&pprh_data=' + json + '&nonce=' + pprh_data.nonce );
@@ -57,6 +57,6 @@
 
     // sometimes this file can be cached, and this prevents it from constantly firing ajax requests.
     if (scriptSentWithinSixHours()) {
-        setTimeout(fireAjax, 7000);
+        setTimeout(fireAjax, 1000);
     }
 })();
