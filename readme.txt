@@ -79,14 +79,14 @@ To activate the preloaded resource, you must call that file in HTML as you would
 
 
 == Changelog ==
-1. Most recent update: November 29, 2020.
+1. Most recent update: December 13, 2020.
 2. Version 1.7.4
 
 November 29, 2020:
 1) Ensured compatibility with WP 5.6.
 2) Added automatic preload hint creation upon hover on front end.
 3) Put all database calls into a single file for better organization, testing abilities (DAO model)
-4)
+4) cleaned up/organized other parts of plugin.
 
 September 27, 2020:
 1) Added more information about how the "auto-preconnect" feature works.

@@ -9,20 +9,24 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Load_Client {
 
 	public function __construct () {
-		$this->check_if_wp_hints_disabled();
-
+		include_once PPRH_ABS_DIR . 'includes/utils.php';
+		include_once PPRH_ABS_DIR . 'includes/dao.php';
 		include_once PPRH_ABS_DIR . 'includes/send-hints.php';
 
 		add_action( 'wp_loaded', array( $this, 'send_resource_hints' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'load_flying_pages' ) );
+
+		if ( 'true' === get_option( 'pprh_disable_wp_hints' ) ) {
+			remove_action( 'wp_head', 'wp_resource_hints', 2 );
+		}
 	}
 
-	public function send_resource_hints()  {
+	public function send_resource_hints() {
 		$send_hints = new Send_Hints();
 		$send_hints->get_resource_hints();
 	}
 
-	private function load_flying_pages() {
+	public function load_flying_pages() {
 		$load_flying_pages = get_option( 'pprh_prefetch_enabled' );
 
 		if ( $load_flying_pages === 'true' ) {
@@ -39,10 +43,5 @@ class Load_Client {
 		}
 	}
 
-	public function check_if_wp_hints_disabled() {
-		if ( 'true' === get_option( 'pprh_disable_wp_hints' ) ) {
-			remove_action( 'wp_head', 'wp_resource_hints', 2 );
-		}
-	}
 
 }

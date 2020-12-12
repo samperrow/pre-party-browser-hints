@@ -13,7 +13,7 @@
  * Text Domain:       pprh
  * Domain Path:       /languages
  *
- * last edited December 6, 2020
+ * last edited December 13, 2020
  *
  * Copyright 2016  Sam Perrow  (email : sam.perrow399@gmail.com)
  *
@@ -40,8 +40,6 @@ class Pre_Party_Browser_Hints {
 
 	public function init()  {
 		$this->create_constants();
-		include_once PPRH_ABS_DIR . 'includes/utils.php';
-		include_once PPRH_ABS_DIR . 'includes/dao.php';
 
 		if ( is_admin() ) {
 			add_action( 'admin_menu', array( $this, 'load_admin_page' ) );
@@ -49,6 +47,14 @@ class Pre_Party_Browser_Hints {
 			add_filter( 'set-screen-option', array( $this, 'apply_wp_screen_options' ), 10, 3 );
 			add_action( 'wpmu_new_blog', array( $this, 'activate_plugin' ) );
 			register_activation_hook( __FILE__, array( $this, 'activate_plugin' ) );
+
+			if ( isset( $_GET['page'] ) && 'pprh-plugin-settings' === $_GET['page'] ) {
+				self::load_admin_essentials();
+			} elseif ( wp_doing_ajax() ) {
+				include_once PPRH_ABS_DIR . 'includes/ajax-ops.php';
+				new Ajax_Ops();
+			}
+
 		} else {
 			include_once PPRH_ABS_DIR . 'includes/load-client.php';
 			new Load_Client();
@@ -62,6 +68,14 @@ class Pre_Party_Browser_Hints {
 
 //		do_action( 'pprh_pro_init' );
 	}
+
+	public static function load_admin_essentials() {
+		include_once PPRH_ABS_DIR . 'includes/utils.php';
+		include_once PPRH_ABS_DIR . 'includes/dao.php';
+		include_once PPRH_ABS_DIR . 'includes/create-hints.php';
+		include_once PPRH_ABS_DIR . 'includes/display-hints.php';
+	}
+
 
 	public function create_constants() {
 		global $wpdb;

@@ -10,13 +10,10 @@ class Load_Admin {
 
 	public function __construct() {
 //		do_action( 'pprh_load_admin_tabs_child' );
-
 		$this->load_plugin_admin_files();
 	}
 
 	public function load_plugin_admin_files() {
-		include_once PPRH_ABS_DIR . 'includes/ajax-ops.php';
-		include_once PPRH_ABS_DIR . 'includes/display-hints.php';
 		include_once PPRH_ABS_DIR . 'includes/tabs/insert-hints.php';
 		include_once PPRH_ABS_DIR . 'includes/tabs/settings.php';
 		include_once PPRH_ABS_DIR . 'includes/tabs/info.php';
@@ -24,12 +21,10 @@ class Load_Admin {
 
 		echo '<div id="pprh-wrapper" class="wrap">';
 		echo '<h2>Pre* Party Plugin Settings</h2>';
+		Utils::pprh_notice();
 		$this->show_admin_tabs();
 		echo '<div class="pprh-box">';
 
-		Utils::pprh_notice();
-
-		new Ajax_Ops();
 		new Insert_Hints();
 		new Settings();
 		new Hint_Info();
@@ -93,10 +88,5 @@ class Load_Admin {
 
 		echo '</div>';
 	}
-
-
-
-
-
 
 }

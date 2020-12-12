@@ -20,10 +20,11 @@ class Settings {
 		?>
 			<div id="pprh-settings" class="pprh-content">
                 <form method="post" action="">
+                <?php wp_nonce_field( 'pprh_save_admin_options', 'pprh_admin_options_nonce' ); ?>
+
                     <table class="pprh-settings-table">
                         <tbody>
                             <?php
-                                wp_nonce_field( 'pprh_save_admin_options', 'pprh_admin_options_nonce' );
                                 $this->save_user_options();
                                 $this->general_settings();
                                 $this->preconnect_settings();
@@ -39,7 +40,6 @@ class Settings {
                 </form>
             </div>
 		<?php
-
 	}
 
 
@@ -86,7 +86,7 @@ class Settings {
             </td>
 
             <td>
-                <select name="disable_wp_hints" value="">
+                <select name="disable_wp_hints">
                     <option <?php Utils::get_option_status( 'pprh_disable_wp_hints', 'true' ); ?> value="true">Yes</option>
                     <option <?php Utils::get_option_status( 'pprh_disable_wp_hints', 'false' ); ?> value="false"><?php esc_html_e( 'No', 'pprh' ); ?></option>
                 </select>

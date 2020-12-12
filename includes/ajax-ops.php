@@ -6,10 +6,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-//if ( is_admin() ) {
-//	new Ajax_Ops();
-//}
-
 class Ajax_Ops {
 
 	public $response = array(
@@ -22,6 +18,8 @@ class Ajax_Ops {
 
 	public function pprh_update_hints() {
 		if ( isset( $_POST['pprh_data'] ) && wp_doing_ajax() ) {
+
+			Pre_Party_Browser_Hints::load_admin_essentials();
 
 			check_ajax_referer( 'pprh_table_nonce', 'val' );
 			$data = json_decode( wp_unslash( $_POST['pprh_data'] ), false );
