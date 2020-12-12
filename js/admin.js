@@ -223,13 +223,13 @@
 		}
 
 		if (response.status === 'success' ) {
-			resp.msg += response.msg;
+			response.msg += response.msg;
 		} else if (response.status === 'error' ) {
-			resp.msg += response.msg + ((response.last_error) ? response.last_error : '');
+			response.msg += response.msg + ((response.last_error) ? response.last_error : '');
 		} else if (typeof response === "string" && /<code>(.*)?<\/code>/g.test(response)) {
-			resp.msg += response.split('<code>')[0].split('</code>')[0];
+			response.msg += response.split('<code>')[0].split('</code>')[0];
 		} else {
-			resp.msg += 'Error updating hint. Please clear your browser cache and try again, or contact support about the issue.';
+			response.msg += 'Error updating hint. Please clear your browser cache and try again, or contact support about the issue.';
 		}
 
 		toggleAdminNotice('add', resp.status);
