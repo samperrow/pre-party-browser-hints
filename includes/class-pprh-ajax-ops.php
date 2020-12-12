@@ -9,12 +9,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Ajax_Ops {
 
 	public $results = array(
-		'action' => '',
-		'result' => '',
-		'msg'    => '',
+		'query'     => array(),
+		'new_hints' => array(),
 	);
-
-	private $data = array();
 
 	public function __construct() {
 		add_action( 'wp_ajax_pprh_update_hints', array( $this, 'pprh_update_hints' ) );
@@ -24,38 +21,44 @@ class Ajax_Ops {
 		if ( isset( $_POST['pprh_data'] ) && wp_doing_ajax() ) {
 
 			check_ajax_referer( 'pprh_table_nonce', 'val' );
-			$data = (object) json_decode( wp_unslash( $_POST['pprh_data'] ), true );
-			$this->data = array( $data );
-			$action = $data->action;
+			$data_obj = json_decode( wp_unslash( $_POST['pprh_data'] ) );
 
-			include_once PPRH_ABS_DIR . '/includes/class-pprh-utils.php';
-			include_once PPRH_ABS_DIR . '/includes/class-pprh-create-hints.php';
-			include_once PPRH_ABS_DIR . '/includes/class-pprh-display-hints.php';
+			if ( is_object( $data_obj ) ) {
+				$action = $data_obj->action;
+				$data = array( $data_obj );
 
-			if ( 'create' === $action ) {
-				define( 'CREATING_HINT', true );
-				$new_hint = new Create_Hints( $this->data );
-				$this->results = $new_hint->results;
-			} elseif ( 'update' === $action ) {
-				$this->update_hint();
-			} else {
-				$this->bulk_update();
+				include_once PPRH_ABS_DIR . '/includes/class-pprh-utils.php';
+				include_once PPRH_ABS_DIR . '/includes/class-pprh-create-hints.php';
+				include_once PPRH_ABS_DIR . '/includes/class-pprh-display-hints.php';
+
+				$this->results['query'] = $this->handle_action( $data, $action );
+				$display_hints = new Display_Hints();
+				$display_hints->ajax_response( $this->results );
 			}
 
-			$msg = ( 'success' === $this->results['result'] ) ? ' Resource hints ' . $action . 'd successfully.' : '';
-
-			$this->results['action'] = $action;
-			$this->results['msg'] = $msg . $this->results['msg'];
-
-			$display_hints = new Display_Hints();
-			$display_hints->ajax_response( $this->results );
 			wp_die();
 		}
 	}
 
-	private function update_hint() {
+	private function handle_action( $data, $action ) {
+		$wp_db = null;
+		if ( preg_match( '/create|update|delete/', $action ) ) {
+			 $wp_db = $this->{$action . '_hint'}( $data, $action );
+		} elseif ( preg_match( '/enable|disable/', $action ) ) {
+			$wp_db = $this->bulk_update( $data[0], $action );
+		}
+		return $wp_db;
+	}
+
+	private function create_hint( $data ) {
+		define( 'CREATING_HINT', true );
+		$new_hint = new Create_Hints( $data );
+		return $new_hint->results['query'];
+	}
+
+	private function update_hint( $data, $action ) {
 		global $wpdb;
-		$data = $this->data[0];
+		$data = $data[0];
 		$hint_id = (int) $data->hint_id;
 
 		$wpdb->update(
@@ -73,31 +76,36 @@ class Ajax_Ops {
 			array( '%s', '%s', '%s', '%s', '%s' ),
 			array( '%d' )
 		);
-		$this->results['result'] = ( $wpdb->result ) ? 'success' : 'failure';
+
+		return Utils::get_wpdb_result( $wpdb, $action );
 	}
 
-	private function bulk_update() {
+	private function delete_hint( $data, $action ) {
 		global $wpdb;
-		$data = $this->data[0];
+		$table = PPRH_DB_TABLE;
+		$data = $data[0];
+
+		if ( ! is_array( $data->hint_ids ) ) {
+			return false;
+		}
+
+		$concat_ids = implode( ',', array_map( 'absint', $data->hint_ids ) );
+		$wpdb->query( "DELETE FROM $table WHERE id IN ($concat_ids)" );
+		return Utils::get_wpdb_result( $wpdb, $action );
+	}
+
+	private function bulk_update( $data, $action ) {
+		global $wpdb;
 		$table = PPRH_DB_TABLE;
 		$concat_ids = implode( ',', array_map( 'absint', $data->hint_ids ) );
 
-		if ( 'delete' === $data->action ) {
-			$sql = "DELETE FROM $table WHERE id IN ($concat_ids)";
-		} elseif ( 'enable' === $data->action || 'disable' === $data->action ) {
-			$sql = $wpdb->prepare(
-				"UPDATE $table SET status = %s WHERE id IN ($concat_ids)",
-				$data->action . 'd'
-			);
-		}
+		$wpdb->query( $wpdb->prepare(
+			"UPDATE $table SET status = %s WHERE id IN ($concat_ids)",
+			$action
+		) );
 
-		if ( ! empty( $sql ) ) {
-			$wpdb->query( $sql );
-		}
-
-		$this->results['result'] = ( $wpdb->result ) ? 'success' : 'failure';
+		return Utils::get_wpdb_result( $wpdb, $action );
 	}
-
 }
 
 if ( is_admin() ) {

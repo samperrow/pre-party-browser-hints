@@ -26,15 +26,12 @@ class Hint_Info {
 			<p><a href="<?php esc_attr_e( '#preload' ); ?>">Preload</a></p>
             <p><a href="<?php esc_attr_e( '#prerender' ); ?>">Prerender</a></p>
 
-            <p><a href="<?php esc_attr_e( '#auto-prerender' ); ?>">Auto Prerender Feature</a></p>
-
 			<?php
 			$this->show_dnsprefetch_info();
 			$this->show_prefetch_info();
 			$this->show_preconnect_info();
 			$this->show_preload_info();
             $this->show_prerender_info();
-            $this->auto_prerender();
 			echo '</div>';
 	}
 
@@ -217,26 +214,6 @@ class Hint_Info {
 		</ul>
 		<hr>
 		<?php
-	}
-
-	public function auto_prerender()  {
-	    ?>
-        <span id="auto-prerender" style="display: block; height: 30px;"></span>
-		<h2><?php esc_html_e( 'Auto Prerender Feature' ); ?></h2>
-
-        <p><?php esc_html_e( 'This feature works by using your website\'s Google Analytics data to determine the most likely page a visitor will navigate towards, and creates a prerender hint for that page. For example, if 70% of visitors on your home page navigate towards the \'/products\' page, a prerender hint will be created with that URL, which displays only on the home page.', 'pprh' ); ?></p>
-
-        <p><?php esc_html_e( 'This means when a visitor lands on a given page, the content of the next most likely page will be downloaded in the background. When the navigation occurs, that page will be rendered instantly!', 'pprh' );?></p>
-
-		<h3><?php esc_html_e( 'Setup Instructions' ); ?></h3>
-
-        <p><?php esc_html_e( '<b>Analytics View ID:</b> To get the View ID, ', 'pprh' ); ?></p>
-        <ol>
-            <li>Sign in and authenticate with Google Analytics (<a href="analytics.google.com/analytics/web">analytics.google.com/analytics/web</a>)</li>
-            <li>Click the 'Admin' tab in the lower left corner of the Google Analytics screen.</li>
-        </ol>
-
-	    <?php
 	}
 
 }

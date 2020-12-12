@@ -8,12 +8,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class Utils {
 
-	public static function pprh_strip_non_alphanums( $text ) {
+	public static function strip_non_alphanums( $text ) {
 		return preg_replace( '/[^A-z0-9]/', '', $text );
 	}
 
 	public static function clean_hint_type( $text ) {
 		return preg_replace( '/[^A-z\-]/', '', $text );
+	}
+
+	public static function clean_url( $url ) {
+		return preg_replace( '/[\'<>^\"]/', '', $url );
 	}
 
 	public static function clean_url_path( $path ) {
@@ -22,26 +26,6 @@ class Utils {
 
 	public static function clean_hint_attr( $attr ) {
 		return strtolower( preg_replace( '/[^A-z|\/]/', '', $attr ) );
-	}
-
-	public static function pprh_show_update_result( $notice ) {
-		$msg = ( 'success' === $notice['result'] )
-			? 'Resource hints ' . $notice['action'] . ' successfully.'
-			: 'Resource hints failed to update. Please try again or submit a bug report in the form below.';
-
-		if ( ! empty( $notice['removedDupHint'] ) ) {
-			$msg .= ' A duplicate hint was removed that was not needed.';
-		}
-
-		if ( ! empty( $notice['url_parsed'] ) ) {
-			$msg .= ' Only the domain name of the URL you entered is necessary for DNS prefetch and preconnect hints.';
-		}
-
-		if ( ! empty( $notice['globalHintExists'] ) ) {
-			$msg = 'A duplicate global hint already exists, so there is no need to add another.';
-		}
-
-		echo '<div style="margin: 10px 0;" class="inline notice notice-' . $notice['result'] . ' is-dismissible"><p>' . esc_html( $msg ) . '</p></div>';
 	}
 
 	public static function pprh_notice() {
@@ -65,6 +49,15 @@ class Utils {
 			}
 		}
 		return json_encode( ( count( $results ) > 0 ) ? $results :  array( 'page', 'post' ) );
+	}
+
+	public static function get_wpdb_result( $wp_db, $action ) {
+        return array(
+            'last_error' => $wp_db->last_error,
+			'last_query' => $wp_db->last_query,
+            'status'     => ( $wp_db->result ) ? 'success' : 'error',
+            'msg'        => ($wp_db->result) ? ' Resource hint ' . $action . 'd successfully.' : "Failed to $action hint.",
+        );
 	}
 
 }
