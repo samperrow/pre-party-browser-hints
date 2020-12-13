@@ -70,6 +70,8 @@ class Pre_Party_Browser_Hints {
 		include_once PPRH_ABS_DIR . 'includes/dao.php';
 		include_once PPRH_ABS_DIR . 'includes/create-hints.php';
 		include_once PPRH_ABS_DIR . 'includes/display-hints.php';
+		include_once PPRH_ABS_DIR . 'updater.php';
+
 	}
 
 
