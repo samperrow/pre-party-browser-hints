@@ -26,11 +26,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-add_action( 'init', function() {
-	if ( ! class_exists( 'Pre_Party_Browser_Hints' ) ) {
-		new Pre_Party_Browser_Hints();
-	}
-});
+if ( ! class_exists( 'Pre_Party_Browser_Hints' ) ) {
+	new Pre_Party_Browser_Hints();
+}
 
 class Pre_Party_Browser_Hints {
 
@@ -40,21 +38,20 @@ class Pre_Party_Browser_Hints {
 
 	public function init()  {
 		$this->create_constants();
+		$this->load_admin_essentials();
+
+		add_action( 'wpmu_new_blog', array( $this, 'activate_plugin' ) );
+		register_activation_hook( __FILE__, array( $this, 'activate_plugin' ) );
 
 		if ( is_admin() ) {
 			add_action( 'admin_menu', array( $this, 'load_admin_page' ) );
 			add_action( 'admin_enqueue_scripts', array( $this, 'register_admin_files' ) );
 			add_filter( 'set-screen-option', array( $this, 'apply_wp_screen_options' ), 10, 3 );
-			add_action( 'wpmu_new_blog', array( $this, 'activate_plugin' ) );
-			register_activation_hook( __FILE__, array( $this, 'activate_plugin' ) );
 
-			if ( isset( $_GET['page'] ) && 'pprh-plugin-settings' === $_GET['page'] ) {
-				self::load_admin_essentials();
-			} elseif ( wp_doing_ajax() ) {
+			if ( wp_doing_ajax() ) {
 				include_once PPRH_ABS_DIR . 'includes/ajax-ops.php';
 				new Ajax_Ops();
 			}
-
 		} else {
 			include_once PPRH_ABS_DIR . 'includes/load-client.php';
 			new Load_Client();
@@ -65,11 +62,10 @@ class Pre_Party_Browser_Hints {
 			include_once PPRH_ABS_DIR . 'includes/preconnects.php';
 			new Preconnects();
 		}
-
 //		do_action( 'pprh_pro_init' );
 	}
 
-	public static function load_admin_essentials() {
+	public function load_admin_essentials() {
 		include_once PPRH_ABS_DIR . 'includes/utils.php';
 		include_once PPRH_ABS_DIR . 'includes/dao.php';
 		include_once PPRH_ABS_DIR . 'includes/create-hints.php';
