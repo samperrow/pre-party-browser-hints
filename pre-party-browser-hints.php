@@ -36,7 +36,7 @@ class Pre_Party_Browser_Hints {
 		$this->init();
 	}
 
-	public function init()  {
+	public function init() {
 		$this->create_constants();
 		$this->load_admin_essentials();
 
@@ -71,18 +71,28 @@ class Pre_Party_Browser_Hints {
 		include_once PPRH_ABS_DIR . 'includes/create-hints.php';
 		include_once PPRH_ABS_DIR . 'includes/display-hints.php';
 		include_once PPRH_ABS_DIR . 'updater.php';
+	}
 
+	public function check_to_upgrade() {
+		$desired_version = '1.7.4';
+		$current_version = get_option( 'pprh_version' );
+
+		if ( empty( $current_version ) || version_compare( $current_version, $desired_version ) < 0 ) {
+			$this->activate_plugin();
+			update_option( 'pprh_version', $desired_version );
+		}
 	}
 
 
 	public function create_constants() {
 		global $wpdb;
 		$table = $wpdb->prefix . 'pprh_table';
+		$plugin_version = get_option( 'pprh_version' );
 		$abs_dir = WP_PLUGIN_DIR . '/pre-party-browser-hints/';
 		$rel_dir = plugins_url() . '/pre-party-browser-hints/';
 		$home_url = admin_url() . 'admin.php?page=pprh-plugin-setttings';
 
-		define( 'PPRH_VERSION', '1.7.4' );
+		define( 'PPRH_VERSION', $plugin_version );
 		define( 'PPRH_DB_TABLE', $table );
 		define( 'PPRH_ABS_DIR', $abs_dir );
 		define( 'PPRH_REL_DIR', $rel_dir );
@@ -100,6 +110,7 @@ class Pre_Party_Browser_Hints {
 		);
 
 		add_action( "load-{$settings_page}", array( $this, 'screen_option' ) );
+		add_action( "load-{$settings_page}", array( $this, 'check_to_upgrade' ) );
 	}
 
 	public function load_admin() {

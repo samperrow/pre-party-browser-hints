@@ -19,4 +19,6 @@ function pprh_uninstall_plugin() {
 	delete_option( 'pprh_preconnect_allow_unauth' );
 	delete_option( 'pprh_preconnect_autoload' );
 	delete_option( 'pprh_preconnect_set' );
+
+	delete_option( 'pprh_version' );
 }
