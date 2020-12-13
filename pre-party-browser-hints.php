@@ -73,17 +73,6 @@ class Pre_Party_Browser_Hints {
 		include_once PPRH_ABS_DIR . 'updater.php';
 	}
 
-	public function check_to_upgrade() {
-		$desired_version = '1.7.4';
-		$current_version = get_option( 'pprh_version' );
-
-		if ( empty( $current_version ) || version_compare( $current_version, $desired_version ) < 0 ) {
-			$this->activate_plugin();
-			update_option( 'pprh_version', $desired_version );
-		}
-	}
-
-
 	public function create_constants() {
 		global $wpdb;
 		$table = $wpdb->prefix . 'pprh_table';
@@ -111,6 +100,35 @@ class Pre_Party_Browser_Hints {
 
 		add_action( "load-{$settings_page}", array( $this, 'screen_option' ) );
 		add_action( "load-{$settings_page}", array( $this, 'check_to_upgrade' ) );
+	}
+
+	public function screen_option() {
+		$args = array(
+			'label'   => 'URLs',
+			'default' => 10,
+			'option'  => 'pprh_screen_options',
+		);
+
+		add_screen_option( 'per_page', $args );
+	}
+
+	public function check_to_upgrade() {
+		$desired_version = '1.7.4';
+		$current_version = get_option( 'pprh_version' );
+
+		if ( empty( $current_version ) || version_compare( $current_version, $desired_version ) < 0 ) {
+			$this->activate_plugin();
+			update_option( 'pprh_version', $desired_version );
+			add_action( 'admin_notices', array( $this, 'upgrade_notice' ) );
+		}
+	}
+
+	public function upgrade_notice() {
+		?>
+		<div class="notice notice-info is-dismissible">
+			<p><?php _e('There is a new feature in 1.7.4 which allows prefetch hints to be automatically created. Click the "Setttings" tab to check this feature out and enable it if desired. Enjoy!' ); ?></p>
+		</div>
+		<?php
 	}
 
 	public function load_admin() {
@@ -144,14 +162,6 @@ class Pre_Party_Browser_Hints {
 		return ( 'pprh_screen_options' === $option ) ? $value : $status;
 	}
 
-	public function screen_option() {
-		$args = array(
-			'label'   => 'URLs',
-			'default' => 10,
-			'option'  => 'pprh_screen_options',
-		);
 
-		add_screen_option( 'per_page', $args );
-	}
 
 }
