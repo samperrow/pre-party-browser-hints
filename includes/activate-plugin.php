@@ -10,15 +10,17 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Activate_Plugin {
 
 	public function __construct() {
-		$this->set_options();
+		$this->add_options();
 		$this->update_option_names();
-		$this->setup_tables();
+
+		if ( 'activate_pre-party-browser-hints/pre-party-browser-hints.php' === current_action() ) {
+			$this->setup_tables();
+		}
 	}
 
-	private function set_options() {
+	private function add_options() {
 		add_option( 'pprh_disable_wp_hints', 'true', '', 'yes' );
 		add_option( 'pprh_html_head', 'true', '', 'yes' );
-
 		add_option( 'pprh_prefetch_enabled', 'false', '', 'yes' );
 		add_option( 'pprh_prefetch_delay', '0', '', 'yes' );
 		add_option( 'pprh_prefetch_ignoreKeywords', '', '', 'yes' );
@@ -54,7 +56,7 @@ class Activate_Plugin {
 	}
 
 	// Multisite install/delete db table.
-	private function setup_tables() {
+	public function setup_tables() {
 		$pprh_tables = array();
 
 		if ( is_multisite() ) {

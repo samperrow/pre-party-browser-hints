@@ -40,7 +40,6 @@ class Preconnects {
 	public function pprh_post_domain_names() {
 		if ( isset( $_POST['pprh_data'] ) && wp_doing_ajax() ) {
 			check_ajax_referer( 'pprh_ajax_nonce', 'nonce' );
-			Pre_Party_Browser_Hints::load_admin_essentials();
 
 			$raw_hint_data = json_decode( wp_unslash( $_POST['pprh_data'] ), false );
 

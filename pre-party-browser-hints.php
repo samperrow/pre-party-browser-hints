@@ -3,7 +3,7 @@
  * Plugin Name:       Pre* Party Resource Hints
  * Plugin URI:        https://wordpress.org/plugins/pre-party-browser-hints/
  * Description:       Take advantage of the browser resource hints DNS-Prefetch, Prerender, Preconnect, Prefetch, and Preload to improve page load time.
- * Version:           1.7.4
+ * Version:           1.7.4.1
  * Requires at least: 4.4
  * Requires PHP:      5.6.30
  * Author:            Sam Perrow
@@ -26,11 +26,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-add_action( 'init', function() {
-	if ( ! class_exists( 'Pre_Party_Browser_Hints' ) ) {
-		new Pre_Party_Browser_Hints();
-	}
-});
+if ( ! class_exists( 'Pre_Party_Browser_Hints' ) ) {
+	new Pre_Party_Browser_Hints();
+}
 
 class Pre_Party_Browser_Hints {
 
@@ -38,23 +36,22 @@ class Pre_Party_Browser_Hints {
 		$this->init();
 	}
 
-	public function init()  {
+	public function init() {
 		$this->create_constants();
+		$this->load_admin_essentials();
+
+		add_action( 'wpmu_new_blog', array( $this, 'activate_plugin' ) );
+		register_activation_hook( __FILE__, array( $this, 'activate_plugin' ) );
 
 		if ( is_admin() ) {
 			add_action( 'admin_menu', array( $this, 'load_admin_page' ) );
 			add_action( 'admin_enqueue_scripts', array( $this, 'register_admin_files' ) );
 			add_filter( 'set-screen-option', array( $this, 'apply_wp_screen_options' ), 10, 3 );
-			add_action( 'wpmu_new_blog', array( $this, 'activate_plugin' ) );
-			register_activation_hook( __FILE__, array( $this, 'activate_plugin' ) );
 
-			if ( isset( $_GET['page'] ) && 'pprh-plugin-settings' === $_GET['page'] ) {
-				self::load_admin_essentials();
-			} elseif ( wp_doing_ajax() ) {
+			if ( wp_doing_ajax() ) {
 				include_once PPRH_ABS_DIR . 'includes/ajax-ops.php';
 				new Ajax_Ops();
 			}
-
 		} else {
 			include_once PPRH_ABS_DIR . 'includes/load-client.php';
 			new Load_Client();
@@ -65,26 +62,25 @@ class Pre_Party_Browser_Hints {
 			include_once PPRH_ABS_DIR . 'includes/preconnects.php';
 			new Preconnects();
 		}
-
 //		do_action( 'pprh_pro_init' );
 	}
 
-	public static function load_admin_essentials() {
+	public function load_admin_essentials() {
 		include_once PPRH_ABS_DIR . 'includes/utils.php';
 		include_once PPRH_ABS_DIR . 'includes/dao.php';
 		include_once PPRH_ABS_DIR . 'includes/create-hints.php';
 		include_once PPRH_ABS_DIR . 'includes/display-hints.php';
 	}
 
-
 	public function create_constants() {
 		global $wpdb;
 		$table = $wpdb->prefix . 'pprh_table';
+		$plugin_version = get_option( 'pprh_version' );
 		$abs_dir = WP_PLUGIN_DIR . '/pre-party-browser-hints/';
 		$rel_dir = plugins_url() . '/pre-party-browser-hints/';
 		$home_url = admin_url() . 'admin.php?page=pprh-plugin-setttings';
 
-		define( 'PPRH_VERSION', '1.7.4' );
+		define( 'PPRH_VERSION', $plugin_version );
 		define( 'PPRH_DB_TABLE', $table );
 		define( 'PPRH_ABS_DIR', $abs_dir );
 		define( 'PPRH_REL_DIR', $rel_dir );
@@ -102,6 +98,36 @@ class Pre_Party_Browser_Hints {
 		);
 
 		add_action( "load-{$settings_page}", array( $this, 'screen_option' ) );
+		add_action( "load-{$settings_page}", array( $this, 'check_to_upgrade' ) );
+	}
+
+	public function screen_option() {
+		$args = array(
+			'label'   => 'URLs',
+			'default' => 10,
+			'option'  => 'pprh_screen_options',
+		);
+
+		add_screen_option( 'per_page', $args );
+	}
+
+	public function check_to_upgrade() {
+		$desired_version = '1.7.4';
+		$current_version = get_option( 'pprh_version' );
+
+		if ( empty( $current_version ) || version_compare( $current_version, $desired_version ) < 0 ) {
+			$this->activate_plugin();
+			update_option( 'pprh_version', $desired_version );
+			add_action( 'admin_notices', array( $this, 'upgrade_notice' ) );
+		}
+	}
+
+	public function upgrade_notice() {
+		?>
+		<div class="notice notice-info is-dismissible">
+			<p><?php _e('There is a new feature in 1.7.4 which allows prefetch hints to be automatically created. Click the "Setttings" tab to check this feature out and enable it if desired. Enjoy!' ); ?></p>
+		</div>
+		<?php
 	}
 
 	public function load_admin() {
@@ -135,14 +161,6 @@ class Pre_Party_Browser_Hints {
 		return ( 'pprh_screen_options' === $option ) ? $value : $status;
 	}
 
-	public function screen_option() {
-		$args = array(
-			'label'   => 'URLs',
-			'default' => 10,
-			'option'  => 'pprh_screen_options',
-		);
 
-		add_screen_option( 'per_page', $args );
-	}
 
 }
