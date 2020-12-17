@@ -106,7 +106,11 @@ class Create_Hints {
 	}
 
 	public function set_crossorigin( $hint, $file_type ) {
-		return ( ! empty( $hint->crossorigin ) || ( preg_match( '/fonts.(googleapis|gstatic).com/i', $hint->url ) || preg_match( '/(.woff|.woff2|.ttf|.eot)/', $file_type ) ) ) ? 'crossorigin' : '';
+		if ( ! empty( $hint->crossorigin ) || ( preg_match( '/fonts.(googleapis|gstatic).com/i', $hint->url ) || preg_match( '/(.woff|.woff2|.ttf|.eot)/', $file_type ) ) ) {
+			return 'crossorigin';
+		}
+
+		return '';
 	}
 
 	public function set_as_attr( $hint, $file_type ) {

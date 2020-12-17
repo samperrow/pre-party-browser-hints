@@ -62,7 +62,7 @@ class Pre_Party_Browser_Hints {
 			include_once PPRH_ABS_DIR . 'includes/preconnects.php';
 			new Preconnects();
 		}
-//		do_action( 'pprh_pro_init' );
+		do_action( 'pprh_pro_init' );
 	}
 
 	public function load_admin_essentials() {
@@ -148,7 +148,7 @@ class Pre_Party_Browser_Hints {
 			wp_register_style( 'pprh_styles_css', PPRH_REL_DIR . 'css/styles.css', null, PPRH_VERSION, 'all' );
 			wp_enqueue_script( 'pprh_admin_js' );
 			wp_enqueue_style( 'pprh_styles_css' );
-//			do_action( 'pprh_pro_admin_enqueue_scripts' );
+			do_action( 'pprh_pro_admin_enqueue_scripts' );
 		}
 	}
 

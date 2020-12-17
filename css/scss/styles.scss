@@ -97,6 +97,15 @@ div#pprh-wrapper {
     table.pprh-settings-table {
         font-size: 14px;
         text-align: left;
+        padding: 15px 0;
+
+        &.active {
+            display: block;
+        }
+
+        &.hidden {
+            display: none;
+        }
 
         tbody tr td {
             margin-bottom: 9px;

@@ -24,15 +24,23 @@
 
 		tabs.first().toggleClass('nav-tab-active');
 		divs.first().toggleClass('active');
+		$('table#general').addClass('active');
 
 		$.each(tabs, function() {
 			$(this).on('click', function(e) {
 				var className = e.currentTarget.classList[1];
+
+				if ( /general|preconnect|prefetch|prerender/.test(className)) {
+					$('table.pprh-settings-table:not(#' + className).css({ 'display': 'none' });
+					$('table#' + className).css({ 'display': 'block' });
+				} else {
+					divs.removeClass('active');
+					$('div#pprh-' + className).toggleClass('active');
+					e.preventDefault();
+				}
+
 				tabs.removeClass('nav-tab-active');
 				$(this).addClass('nav-tab-active');
-				divs.removeClass('active');
-				$('div#pprh-' + className).toggleClass('active');
-				e.preventDefault();
 			});
 		});
 	}
