@@ -14,6 +14,8 @@ class Ajax_Ops {
 
 	public function __construct() {
 		add_action( 'wp_ajax_pprh_update_hints', array( $this, 'pprh_update_hints' ) );
+
+		do_action( 'pprh_load_ajax_ops_child' );
     }
 
 	public function pprh_update_hints() {

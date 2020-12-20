@@ -10,11 +10,15 @@
 
 	var currentURL = document.location.href;
 	var adminNoticeElem = document.getElementById('pprhNotice');
-	var emailSubmitBtn = document.getElementById('pprhSubmit');
 
-	emailSubmitBtn.addEventListener("click", emailValidate);
 
-	toggleDivs();
+	if ( /pprh-plugin-settings/.test(currentURL)) {
+		toggleDivs();
+
+		var emailSubmitBtn = document.getElementById('pprhSubmit');
+		emailSubmitBtn.addEventListener("click", emailValidate);
+	}
+
 	addEventListeners();
 	addEditRowEventListener();
 
@@ -23,7 +27,7 @@
 		var divs = $('div.pprh-content');
 
 		tabs.first().toggleClass('nav-tab-active');
-		divs.first().toggleClass('active');
+		divs.not("#pprh-insert-hints").toggleClass('hidden');
 		$('table#general').addClass('active');
 
 		$.each(tabs, function() {
@@ -31,11 +35,11 @@
 				var className = e.currentTarget.classList[1];
 
 				if ( /general|preconnect|prefetch|prerender/.test(className)) {
-					$('table.pprh-settings-table:not(#' + className).css({ 'display': 'none' });
+					$('table.pprh-settings-table').not('#' + className).css({ 'display': 'none' });
 					$('table#' + className).css({ 'display': 'block' });
 				} else {
-					divs.removeClass('active');
-					$('div#pprh-' + className).toggleClass('active');
+					divs.addClass('hidden');
+					$('div#pprh-' + className).removeClass('hidden');
 					e.preventDefault();
 				}
 

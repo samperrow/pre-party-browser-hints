@@ -48,6 +48,7 @@ class Pre_Party_Browser_Hints {
 			add_action( 'admin_enqueue_scripts', array( $this, 'register_admin_files' ) );
 			add_filter( 'set-screen-option', array( $this, 'apply_wp_screen_options' ), 10, 3 );
 
+
 			if ( wp_doing_ajax() ) {
 				include_once PPRH_ABS_DIR . 'includes/ajax-ops.php';
 				new Ajax_Ops();
@@ -101,6 +102,12 @@ class Pre_Party_Browser_Hints {
 		add_action( "load-{$settings_page}", array( $this, 'check_to_upgrade' ) );
 	}
 
+	public function load_admin() {
+		include_once PPRH_ABS_DIR . 'includes/load-admin.php';
+
+		new Load_Admin();
+	}
+
 	public function screen_option() {
 		$args = array(
 			'label'   => 'URLs',
@@ -130,14 +137,11 @@ class Pre_Party_Browser_Hints {
 		<?php
 	}
 
-	public function load_admin() {
-        include_once PPRH_ABS_DIR . 'includes/load-admin.php';
-        new Load_Admin();
-    }
-
 	// Register and call the CSS and JS we need only on the needed page.
 	public function register_admin_files( $hook ) {
-		if ( 'toplevel_page_pprh-plugin-settings' === $hook ) {
+	    $str = apply_filters( 'pprh_load_scripts', '/toplevel_page_pprh-plugin-settings' );
+
+		if ( preg_match( $str, $hook ) ) {
 			$ajax_data = array(
 				'val'       => wp_create_nonce( 'pprh_table_nonce' ),
 				'admin_url' => admin_url()
