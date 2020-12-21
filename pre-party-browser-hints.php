@@ -103,7 +103,6 @@ class Pre_Party_Browser_Hints {
 
 	public function load_admin() {
 		include_once PPRH_ABS_DIR . 'includes/load-admin.php';
-
 		new Load_Admin();
 	}
 

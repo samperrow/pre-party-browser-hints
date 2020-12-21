@@ -1,0 +1,10 @@
+{
+  "name": "pre-party-browser-hints",
+  "version": "1.0.0",
+  "scripts": {
+    "test": "jest"
+  },
+  "devDependencies": {
+    "jquery": "^3.5.1"
+  }
+}

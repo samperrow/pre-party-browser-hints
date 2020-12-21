@@ -5,18 +5,14 @@
 }(this, function() {
 
 	'use strict';
-
 	var $ = jQuery;
-
 	var currentURL = document.location.href;
 	var adminNoticeElem = document.getElementById('pprhNotice');
-
 
 	if ( /pprh-plugin-settings/.test(currentURL)) {
 		var emailSubmitBtn = document.getElementById('pprhSubmit');
 		emailSubmitBtn.addEventListener("click", emailValidate);
 	}
-
 
 	addEventListeners();
 	addEditRowEventListener();
@@ -108,7 +104,6 @@
 	$('input#pprhSubmitHints').on("click", function (e) {
 		createHint(e, 'pprh-enter-data', 'create');
 	});
-
 
 	function getUrlValue() {
 		var val = '';
