@@ -42,10 +42,10 @@ class Create_Hints {
 
 	public function create_hint( $hint ) {
 		$hint_type = $this->get_hint_type( $hint->hint_type );
-		$url = $this->get_url( $hint, $hint_type );
+		$url = $this->get_url( $hint->url, $hint_type );
 		$file_type = $this->get_file_type( $url );
 		$auto_created = ( ! empty( $hint->auto_created ) ? 1 : 0 );
-		$as_attr = $this->set_as_attr( $hint, $file_type );
+		$as_attr = $this->set_as_attr( $hint->as_attr, $file_type );
 		$type_attr = $this->set_type_attr( $hint, $file_type );
 		$crossorigin = $this->set_crossorigin( $hint, $file_type );
 
@@ -57,11 +57,9 @@ class Create_Hints {
 		return Utils::clean_hint_type( $type );
 	}
 
-	public function get_url( $hint, $type ) {
+	public function get_url( $url, $type ) {
 		if ( preg_match( '/(dns-prefetch|preconnect)/', $type ) ) {
-			$url = $this->parse_for_domain_name( $hint->url );
-		} else {
-			$url = $hint->url;
+			$url = $this->parse_for_domain_name( $url );
 		}
 
 		$url = Utils::clean_url( $url );
@@ -95,14 +93,9 @@ class Create_Hints {
 		return '';
 	}
 
-	public function set_as_attr( $hint, $file_type ) {
-		$as_attr = ( ! empty( $hint->as_attr ) ) ? $hint->as_attr : '';
+	public function set_as_attr( $as_attr, $file_type ) {
 		$media_types = array(
-			'.js'    => 'script',
-			'.css'   => 'style',
 			'.mp3'   => 'audio',
-			'.mp4'   => 'video',
-			'.vtt'   => 'track',
 			'.swf'   => 'embed',
 			'.woff'  => 'font',
 			'.woff2' => 'font',
@@ -113,6 +106,11 @@ class Create_Hints {
 			'.png'   => 'image',
 			'.svg'   => 'image',
 			'.webp'  => 'image',
+			'.js'    => 'script',
+			'.css'   => 'style',
+			'.vtt'   => 'track',
+			'.mp4'   => 'video',
+			'.webm'  => 'video'
 		);
 
 		return ( ! empty( $as_attr ) ) ? Utils::clean_hint_attr( $as_attr ) : $this->get_file_type_mime( $media_types, $file_type );
