@@ -21,7 +21,7 @@ class Settings {
 	public function display_settings() {
 		?>
         <div id="pprh-settings" class="pprh-content">
-            <?php do_action( 'pprh_show_settings_tabs' ); ?>
+            <?php // do_action( 'pprh_show_settings_tabs' ); ?>
             <form method="post" action="">
                 <?php
                     wp_nonce_field( 'pprh_save_admin_options', 'pprh_admin_options_nonce' );
@@ -29,7 +29,7 @@ class Settings {
                     $this->general_settings();
                     $this->preconnect_settings();
                     $this->prefetch_settings();
-                    do_action( 'pprh_prerender_options' );
+                    //do_action( 'pprh_prerender_options' );
                 ?>
                 <div class="text-center">
                     <input type="submit" name="pprh_save_options" class="button button-primary" value="<?php esc_attr_e( 'Save Changes', 'pprh' ); ?>" />
@@ -58,7 +58,7 @@ class Settings {
 				update_option( 'pprh_prefetch_maxRPS', Utils::strip_non_numbers( $_POST['prefetch_maxRPS'] ) );
 				update_option( 'pprh_prefetch_hoverDelay', Utils::strip_non_numbers( $_POST['prefetch_hoverDelay'] ) );
 
-				do_action( 'pprh_save_settings' );
+//				do_action( 'pprh_save_settings' );
 			}
 		}
 
@@ -110,7 +110,7 @@ class Settings {
                     </td>
                 </tr>
 
-                <?php do_action( 'pprh_general_settings' ); ?>
+                <?php //do_action( 'pprh_general_settings' ); ?>
 
             </tbody>
         </table>
@@ -196,7 +196,7 @@ class Settings {
                     </td>
                 </tr>
 
-                <?php do_action( 'pprh_preconnect_options' ); ?>
+                <?php //do_action( 'pprh_preconnect_options' ); ?>
             </tbody>
         </table>
 

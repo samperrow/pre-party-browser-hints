@@ -34,8 +34,6 @@ class Send_Hints {
 			: add_action( 'wp_head', array( $this, 'send_to_html_head' ), 1, 0 );
 	}
 
-
-
 	public function send_to_html_head() {
 		foreach ( $this->hints as $key => $val ) {
 			$attrs = '';
