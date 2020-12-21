@@ -43,7 +43,10 @@ class Utils {
 		<?php
 	}
 
-
+	public static function get_opt_val( $opt ) {
+		$val = get_option( $opt );
+		return ( ! empty( $val ) ) ? $val : '';
+	}
 
 //    public static function get_default_modal_post_types() {
 //		global $wp_post_types;
@@ -82,7 +85,7 @@ class Utils {
 	public static function create_pprh_hint( $raw_data ) {
 		if ( ! class_exists( Create_Hints::class ) ) {
 			include_once PPRH_ABS_DIR . 'includes/create-hints.php';
-//			do_action( 'pprh_load_create_hints_child' );
+			do_action( 'pprh_load_create_hints_child' );
 		}
 
 		define( 'CREATING_HINT', true );

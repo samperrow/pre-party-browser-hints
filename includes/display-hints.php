@@ -19,7 +19,7 @@ class Display_Hints extends WP_List_Table {
 	public $items;
 
 	public function __construct() {
-//		do_action( 'pprh_load_display_hints_child' );
+		do_action( 'pprh_load_display_hints_child' );
 
 		parent::__construct(
 			array(
@@ -52,8 +52,8 @@ class Display_Hints extends WP_List_Table {
 				return $item['status'];
 			case 'created_by':
 				return $item['created_by'];
-//            case 'post_id':
-//                return apply_filters( 'pprh_get_post_link', $item['id'] );
+            case 'post_id':
+                return apply_filters( 'pprh_get_post_link', $item['id'] );
 			default:
 				return esc_html_e( 'Error', 'pprh' );
 		}
@@ -64,7 +64,7 @@ class Display_Hints extends WP_List_Table {
     }
 
 	public function get_columns() {
-		return array(
+		$arr = array(
 			'cb'          => '<input type="checkbox" />',
 			'url'         => __( 'URL', 'pprh' ),
 			'hint_type'   => __( 'Hint Type', 'pprh' ),
@@ -75,11 +75,11 @@ class Display_Hints extends WP_List_Table {
 			'created_by'  => __( 'Created By', 'pprh' ),
 		);
 
-//		return apply_filters( 'pprh_get_columns', $arr );
+		return apply_filters( 'pprh_get_columns', $arr );
 	}
 
 	public function get_sortable_columns() {
-		return array(
+		$arr = array(
 			'url'         => array( 'url', true ),
 			'hint_type'   => array( 'hint_type', false ),
 			'as_attr'     => array( 'as_attr', false ),
@@ -89,7 +89,7 @@ class Display_Hints extends WP_List_Table {
 			'created_by'  => array( 'created_by', false ),
 		);
 
-//		return apply_filters( 'pprh_get_sort_cols', $arr );
+		return apply_filters( 'pprh_get_sort_cols', $arr );
 	}
 
 	public function get_bulk_actions() {
@@ -165,7 +165,6 @@ class Display_Hints extends WP_List_Table {
 
 		$json = json_encode( $item,true );
 		$item_id = $item['id'];
-
 		?>
 			<tr class="pprh-row edit <?php echo $item_id; ?>">
 				<td colspan="8">
@@ -184,7 +183,6 @@ class Display_Hints extends WP_List_Table {
 				    <input type="hidden" class="pprh-hint-storage <?php echo $item_id; ?>" value='<?php echo $json; ?>'>
 				</td>
 		    </tr>
-
 		<?php
 	}
 

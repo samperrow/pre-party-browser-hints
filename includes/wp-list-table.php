@@ -1403,7 +1403,7 @@ class WP_List_Table {
 		}
 
 
-		$response['result'] = $results;
+		$response['result'] = $results['query'];
 
 		die( json_encode( $response, true ) );
 	}

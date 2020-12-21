@@ -10,8 +10,6 @@ class DAO {
 
 //	public function __construct() {}
 
-
-
 	public function create_hint( $new_hint ) {
 		global $wpdb;
 		$current_user = wp_get_current_user()->display_name;
@@ -85,8 +83,6 @@ class DAO {
 		return Utils::get_wpdb_result( $wpdb, $action );
 	}
 
-
-
 	public function remove_prev_auto_preconnects() {
 		global $wpdb;
 		$table = PPRH_DB_TABLE;
@@ -96,18 +92,18 @@ class DAO {
 		);
 	}
 
-
 	public function get_hints( $sql ) {
 		global $wpdb;
 
 		return $wpdb->get_results( $sql, ARRAY_A );
 	}
 
-	public function get_hints_query( $sql, $arr ) {
+	public function get_hints_query( $query ) {
 		global $wpdb;
+		$query = apply_filters( 'pprh_sh_append_sql', $query );
 
 		return $wpdb->get_results(
-			$wpdb->prepare( $sql, $arr )
+			$wpdb->prepare( $query['sql'], $query['args'] )
 		);
 	}
 

@@ -12,18 +12,19 @@ class Send_Hints {
 
 	protected $send_hints_in_html = '';
 
-//	public function __construct() {
-//		add_action( 'wp_loaded', array( $this, 'get_resource_hints' ) );
-//	}
+//	public function __construct() {}
 
 	public function get_resource_hints() {
 		$this->send_hints_in_html = get_option( 'pprh_html_head' );
 		$table = PPRH_DB_TABLE;
 
 		$dao = new DAO();
-		$sql = "SELECT url, hint_type, as_attr, type_attr, crossorigin FROM $table WHERE status = %s";
-		$arr = array( 'enabled' );
-		$this->hints = $dao->get_hints_query( $sql, $arr );
+		$query = array(
+			'sql' => "SELECT url, hint_type, as_attr, type_attr, crossorigin FROM $table WHERE status = %s",
+			'args' => array( 'enabled' )
+		);
+
+		$this->hints = $dao->get_hints_query( $query );
 
 		if ( ( ! is_array( $this->hints ) ) || count( $this->hints ) < 1 ) {
 			return;

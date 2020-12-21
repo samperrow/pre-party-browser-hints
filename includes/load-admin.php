@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Load_Admin {
 
 	public function __construct() {
-//		do_action( 'pprh_load_admin_child' );
+		do_action( 'pprh_load_admin_child' );
 		$this->load_plugin_admin_files();
 	}
 
@@ -21,14 +21,15 @@ class Load_Admin {
 
 		echo '<div id="pprh-wrapper" class="wrap">';
 		echo '<h2>Pre* Party Plugin Settings</h2>';
+
 		Utils::pprh_notice();
 		$this->show_admin_tabs();
 		echo '<div class="pprh-box">';
+		do_action( 'pprh_load_admin_tabs' );
 
 		new Insert_Hints();
 		new Settings();
 		new Hint_Info();
-//		do_action( 'pprh_call_pro_tabs' );
 		$this->show_footer();
 
 		echo '</div></div>';
@@ -39,10 +40,10 @@ class Load_Admin {
 			'insert-hints' => 'Insert Hints',
 			'settings'     => 'Settings',
 			'info'         => 'Information',
-//            'upgrade'      => 'Upgrade to Pro',
+            'upgrade'      => 'Upgrade to Pro',
 		);
 
-//		$tabs = apply_filters( 'pprh_load_tabs', $tabs );
+		$tabs = apply_filters( 'pprh_load_tabs', $tabs );
 
 		echo '<h2 class="nav-tab-wrapper">';
 		foreach ( $tabs as $tab => $name ) {

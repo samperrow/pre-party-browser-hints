@@ -3,7 +3,7 @@
  * Plugin Name:       Pre* Party Resource Hints
  * Plugin URI:        https://wordpress.org/plugins/pre-party-browser-hints/
  * Description:       Take advantage of the browser resource hints DNS-Prefetch, Prerender, Preconnect, Prefetch, and Preload to improve page load time.
- * Version:           1.7.4.2
+ * Version:           1.8.0
  * Requires at least: 4.4
  * Requires PHP:      5.6.30
  * Author:            Sam Perrow
@@ -64,7 +64,7 @@ class Pre_Party_Browser_Hints {
 			include_once PPRH_ABS_DIR . 'includes/preconnects.php';
 			new Preconnects();
 		}
-//		do_action( 'pprh_pro_init' );
+		do_action( 'pprh_pro_init' );
 	}
 
 	public function load_common_files() {
@@ -137,10 +137,9 @@ class Pre_Party_Browser_Hints {
 
 	// Register and call the CSS and JS we need only on the needed page.
 	public function register_admin_files( $hook ) {
-	    $str = '/toplevel_page_pprh-plugin-settings/';
-//	    $str = apply_filters( 'pprh_load_scripts', '/toplevel_page_pprh-plugin-settings' );
+	    $str = apply_filters( 'pprh_load_scripts', 'toplevel_page_pprh-plugin-settings' );
 
-		if ( preg_match( $str, $hook ) ) {
+		if ( strrpos( $hook, $str, 0 ) >= 0 ) {
 			$ajax_data = array(
 				'val'       => wp_create_nonce( 'pprh_table_nonce' ),
 				'admin_url' => admin_url()
@@ -151,7 +150,7 @@ class Pre_Party_Browser_Hints {
 			wp_register_style( 'pprh_styles_css', PPRH_REL_DIR . 'css/styles.css', null, PPRH_VERSION, 'all' );
 			wp_enqueue_script( 'pprh_admin_js' );
 			wp_enqueue_style( 'pprh_styles_css' );
-//			do_action( 'pprh_pro_admin_enqueue_scripts' );
+			do_action( 'pprh_pro_admin_enqueue_scripts' );
 		}
 	}
 
