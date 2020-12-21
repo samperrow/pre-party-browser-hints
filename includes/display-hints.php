@@ -19,6 +19,8 @@ class Display_Hints extends WP_List_Table {
 	public $items;
 
 	public function __construct() {
+		do_action( 'pprh_load_display_hints_child' );
+
 		parent::__construct(
 			array(
 				'singular' => 'url',
@@ -50,6 +52,8 @@ class Display_Hints extends WP_List_Table {
 				return $item['status'];
 			case 'created_by':
 				return $item['created_by'];
+            case 'post_id':
+                return apply_filters( 'pprh_get_post_link', $item['id'] );
 			default:
 				return esc_html_e( 'Error', 'pprh' );
 		}
@@ -60,7 +64,8 @@ class Display_Hints extends WP_List_Table {
     }
 
 	public function get_columns() {
-		return array(
+
+		$arr = array(
 			'cb'          => '<input type="checkbox" />',
 			'url'         => __( 'URL', 'pprh' ),
 			'hint_type'   => __( 'Hint Type', 'pprh' ),
@@ -70,6 +75,8 @@ class Display_Hints extends WP_List_Table {
 			'status'      => __( 'Status', 'pprh' ),
 			'created_by'  => __( 'Created By', 'pprh' ),
 		);
+
+		return apply_filters( 'pprh_get_columns', $arr );
 	}
 
 	public function get_sortable_columns() {
@@ -82,6 +89,8 @@ class Display_Hints extends WP_List_Table {
 			'status'      => array( 'status', false ),
 			'created_by'  => array( 'created_by', false ),
 		);
+
+//		return apply_filters( 'pprh_get_sort_cols', $arr );
 	}
 
 	public function get_bulk_actions() {

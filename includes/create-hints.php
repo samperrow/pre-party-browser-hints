@@ -26,50 +26,32 @@ class Create_Hints {
 		$this->prev_hints = (object) array();
 	}
 
-	public function verify_data( $hint ) {
+	public function initialize( $hint ) {
 		if ( empty( $hint->url ) || empty( $hint->hint_type ) ) {
-			return $this->response['msg'] = 'Please use a valid URL and hint type';
-		}
-
-		$hint_type = $this->get_hint_type( $hint->hint_type );
-		$url       = $this->get_url( $hint, $hint_type );
-
-		if ( $this->duplicate_hint_exists( $url, $hint_type ) ) {
 			return false;
 		}
 
-		return true;
+		$new_hint = $this->create_hint( $hint );
+
+		if ( $this->duplicate_hint_exists( $new_hint ) ) {
+			return false;
+		}
+
+		return $new_hint;
 	}
-
-
-
-//	public function init( $hint ) {
-//		$new_hint = (object) $this->create_hint( $hint );
-//
-//		if ( $this->duplicate_hint_exists( $new_hint ) ) {
-//			return false;
-//		}
-//
-//		return $new_hint;
-//	}
 
 	public function create_hint( $hint ) {
 		$hint_type = $this->get_hint_type( $hint->hint_type );
-		$url       = $this->get_url( $hint, $hint_type );
+		$url = $this->get_url( $hint, $hint_type );
 		$file_type = $this->get_file_type( $url );
+		$auto_created = ( ! empty( $hint->auto_created ) ? 1 : 0 );
+		$as_attr = $this->set_as_attr( $hint, $file_type );
+		$type_attr = $this->set_type_attr( $hint, $file_type );
+		$crossorigin = $this->set_crossorigin( $hint, $file_type );
 
-		return (object) array(
-			'hint_type'    => $hint_type,
-			'url'          => $url,
-			'file_type'    => $file_type,
-			'as_attr'      => $this->set_as_attr( $hint, $file_type ),
-			'type_attr'    => $this->set_type_attr( $hint, $file_type ),
-			'crossorigin'  => $this->set_crossorigin( $hint, $file_type ),
-			'auto_created' => ( isset( $hint->auto_created ) ? 1 : 0 ),
-		);
+		return Utils::create_hint_object( $url, $hint_type, $auto_created, $as_attr, $type_attr, $crossorigin );
+//		$new_hint = apply_filters( 'pprh_append_hints', $new_hint, $hint );
 	}
-
-
 
 	public function get_hint_type( $type ) {
 		return Utils::clean_hint_type( $type );
@@ -157,10 +139,10 @@ class Create_Hints {
 		return '';
 	}
 
-	public function duplicate_hint_exists( $url, $hint_type ) {
+	public function duplicate_hint_exists( $hint ) {
 		$table = PPRH_DB_TABLE;
 		$sql = "SELECT url, hint_type FROM $table WHERE hint_type = %s AND url = %s";
-		$arr = array( $url, $hint_type );
+		$arr = array( $hint->url, $hint->hint_type );
 		$dao = new DAO();
 		$prev_hints = $dao->get_hints_query( $sql, $arr );
 

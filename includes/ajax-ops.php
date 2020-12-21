@@ -14,8 +14,7 @@ class Ajax_Ops {
 
 	public function __construct() {
 		add_action( 'wp_ajax_pprh_update_hints', array( $this, 'pprh_update_hints' ) );
-
-		do_action( 'pprh_load_ajax_ops_child' );
+//		do_action( 'pprh_load_ajax_ops_child' );
     }
 
 	public function pprh_update_hints() {
@@ -38,10 +37,17 @@ class Ajax_Ops {
 	private function handle_action( $data, $action ) {
 		$wp_db = null;
 		$dao = new DAO();
-		if ( preg_match( '/create|update|delete/', $action ) ) {
-			$wp_db = $dao->{$action . '_hint'}( $data );
+
+		if ( 'create' === $action ) {
+			$pprh_hint = Utils::create_pprh_hint( $data );
+			$wp_db = $dao->create_hint( $pprh_hint );
+		} elseif ( 'update' === $action ) {
+			$pprh_hint = Utils::create_pprh_hint( $data );
+			$wp_db = $dao->update_hint( $pprh_hint, $data->hint_id );
 		} elseif ( preg_match( '/enabled|disabled/', $action ) ) {
 			$wp_db = $dao->bulk_update( $data, $action );
+		} elseif ( 'delete' === $action ) {
+			$wp_db = $dao->delete_hint( $data );
 		}
 		return $wp_db;
 	}

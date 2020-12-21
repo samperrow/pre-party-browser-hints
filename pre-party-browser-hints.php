@@ -48,7 +48,6 @@ class Pre_Party_Browser_Hints {
 			add_action( 'admin_enqueue_scripts', array( $this, 'register_admin_files' ) );
 			add_filter( 'set-screen-option', array( $this, 'apply_wp_screen_options' ), 10, 3 );
 
-
 			if ( wp_doing_ajax() ) {
 				include_once PPRH_ABS_DIR . 'includes/ajax-ops.php';
 				new Ajax_Ops();
@@ -63,13 +62,12 @@ class Pre_Party_Browser_Hints {
 			include_once PPRH_ABS_DIR . 'includes/preconnects.php';
 			new Preconnects();
 		}
-		do_action( 'pprh_pro_init' );
+//		do_action( 'pprh_pro_init' );
 	}
 
 	public function load_admin_essentials() {
 		include_once PPRH_ABS_DIR . 'includes/utils.php';
 		include_once PPRH_ABS_DIR . 'includes/dao.php';
-		include_once PPRH_ABS_DIR . 'includes/create-hints.php';
 		include_once PPRH_ABS_DIR . 'includes/display-hints.php';
 	}
 
@@ -119,7 +117,7 @@ class Pre_Party_Browser_Hints {
 	}
 
 	public function check_to_upgrade() {
-		$desired_version = '1.7.4';
+		$desired_version = '1.7.4.2';
 		$current_version = get_option( 'pprh_version' );
 
 		if ( empty( $current_version ) || version_compare( $current_version, $desired_version ) < 0 ) {
@@ -132,14 +130,15 @@ class Pre_Party_Browser_Hints {
 	public function upgrade_notice() {
 		?>
 		<div class="notice notice-info is-dismissible">
-			<p><?php _e('There is a new feature in 1.7.4 which allows prefetch hints to be automatically created. Click the "Setttings" tab to check this feature out and enable it if desired. Enjoy!' ); ?></p>
+			<p><?php _e('1.7.4.2 update info: ' ); ?></p>
 		</div>
 		<?php
 	}
 
 	// Register and call the CSS and JS we need only on the needed page.
 	public function register_admin_files( $hook ) {
-	    $str = apply_filters( 'pprh_load_scripts', '/toplevel_page_pprh-plugin-settings' );
+	    $str = '/toplevel_page_pprh-plugin-settings/';
+//	    $str = apply_filters( 'pprh_load_scripts', '/toplevel_page_pprh-plugin-settings' );
 
 		if ( preg_match( $str, $hook ) ) {
 			$ajax_data = array(

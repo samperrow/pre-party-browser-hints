@@ -13,22 +13,26 @@
 
 
 	if ( /pprh-plugin-settings/.test(currentURL)) {
-		toggleDivs();
-
 		var emailSubmitBtn = document.getElementById('pprhSubmit');
 		emailSubmitBtn.addEventListener("click", emailValidate);
 	}
 
+
 	addEventListeners();
 	addEditRowEventListener();
+	toggleDivs();
 
 	function toggleDivs() {
 		var tabs = $('a.nav-tab');
 		var divs = $('div.pprh-content');
 
 		tabs.first().toggleClass('nav-tab-active');
-		divs.not("#pprh-insert-hints").toggleClass('hidden');
+		$("#pprh-insert-hints").toggleClass('active');
 		$('table#general').addClass('active');
+
+		if (! tabs) {
+			return;
+		}
 
 		$.each(tabs, function() {
 			$(this).on('click', function(e) {
@@ -38,8 +42,8 @@
 					$('table.pprh-settings-table').not('#' + className).css({ 'display': 'none' });
 					$('table#' + className).css({ 'display': 'block' });
 				} else {
-					divs.addClass('hidden');
-					$('div#pprh-' + className).removeClass('hidden');
+					divs.removeClass('active');
+					$('div#pprh-' + className).addClass('active');
 					e.preventDefault();
 				}
 
