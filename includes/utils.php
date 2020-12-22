@@ -87,7 +87,16 @@ class Utils {
 
 		define( 'CREATING_HINT', true );
 		$create_hints = new Create_Hints();
-		return $create_hints->initialize( $raw_data );
+		$hint_result = $create_hints->initialize( $raw_data );
+
+//		if ( ! $hint_result['success'] ) {
+//
+//		} else {
+//			$wp_db = $dao->create_hint( $pprh_hint );
+//
+//		}
+
+		return $hint_result;
 	}
 
 	public static function create_hint_object( $url, $hint_type, $auto_created = 0, $as_attr = '', $type_attr = '', $crossorigin = '' ) {

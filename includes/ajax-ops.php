@@ -25,7 +25,7 @@ class Ajax_Ops {
 
 			if ( is_object( $data ) ) {
 				$action = $data->action;
-				$this->response['query'] = $this->handle_action( $data, $action );
+				$this->response = $this->handle_action( $data, $action );
 				$display_hints = new Display_Hints();
 				$display_hints->ajax_response( $this->response );
 			}
@@ -39,8 +39,11 @@ class Ajax_Ops {
 		$dao = new DAO();
 
 		if ( 'create' === $action ) {
-			$pprh_hint = Utils::create_pprh_hint( $data );
-			$wp_db = $dao->create_hint( $pprh_hint );
+			$hint_result = Utils::create_pprh_hint( $data );
+
+			if ( $hint_result['success'] && is_object( $hint_result['new_hint'] ) ) {
+				$wp_db = $dao->create_hint( $hint_result['new_hint'] );
+			}
 		} elseif ( 'update' === $action ) {
 			$pprh_hint = Utils::create_pprh_hint( $data );
 			$wp_db = $dao->update_hint( $pprh_hint, $data->hint_id );

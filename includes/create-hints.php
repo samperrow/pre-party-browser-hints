@@ -18,9 +18,10 @@ class Create_Hints {
 		}
 
 		$this->response = array(
-			'msg'    => '',
-			'status' => '',
-			'query'  => array(),
+			'msg'      => '',
+			'status'   => '',
+			'success'  => false,
+			'new_hint' => (object) array()
 		);
 
 		$this->prev_hints = (object) array();
@@ -34,10 +35,16 @@ class Create_Hints {
 		$new_hint = $this->create_hint( $hint );
 
 		if ( $this->duplicate_hint_exists( $new_hint ) ) {
-			return false;
+			$this->response['msg'] .= 'An identical resource hint already exists!';
+			$this->response['status'] = 'warning';
+		} else {
+			$this->response['msg'] .= '';
+			$this->response['status'] = 'success';
+			$this->response['success'] = true;
+			$this->response['new_hint'] = $new_hint;
 		}
 
-		return $new_hint;
+		return $this->response;
 	}
 
 	public function create_hint( $hint ) {
@@ -139,14 +146,12 @@ class Create_Hints {
 
 	public function duplicate_hint_exists( $hint ) {
 		$table = PPRH_DB_TABLE;
-		$sql = "SELECT url, hint_type FROM $table WHERE hint_type = %s AND url = %s";
+		$sql = "SELECT url, hint_type FROM $table WHERE url = %s AND hint_type = %s";
 		$arr = array( $hint->url, $hint->hint_type );
 		$dao = new DAO();
 		$prev_hints = $dao->get_hints_query( $sql, $arr );
 
 		if ( count( $prev_hints ) > 0 ) {
-			$this->response['msg'] .= 'An identical resource hint already exists!';
-			$this->response['status'] = 'warning';
 			return true;
 		}
 

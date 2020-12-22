@@ -106,9 +106,10 @@ class DAO {
 	public function get_hints_query( $sql, $arr ) {
 		global $wpdb;
 
-		return $wpdb->get_results(
+		$res = $wpdb->get_results(
 			$wpdb->prepare( $sql, $arr )
 		);
+		return $res;
 	}
 
 

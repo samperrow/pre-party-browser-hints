@@ -197,8 +197,8 @@
 					var resp = JSON.parse(xhr.response);
 					clearHintTable();
 
-					if (resp && resp.result && resp.result.query) {
-						updateAdminNotice(resp.result.query);
+					if (resp && resp.result && resp.result) {
+						updateAdminNotice(resp.result);
 						updateTable(resp);
 						addEventListeners();
 					}
