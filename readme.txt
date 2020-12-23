@@ -94,6 +94,13 @@ December 13, 2020:
  JS script)
 4) ensured compatibility with WP 5.6
 
+December 13, 2020:
+1) Updated/simplified class names and removed/added some classes
+2) Organized architecture
+3) added the ability to automatically prefetch hints (thanks to Gijo Varghese, who allowed me to borrow his Flying Pages
+ JS script)
+4) ensured compatibility with WP 5.6
+
 November 29, 2020:
 1) Ensured compatibility with WP 5.6.
 2) Added automatic preload hint creation upon hover on front end.

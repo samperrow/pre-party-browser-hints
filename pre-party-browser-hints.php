@@ -101,11 +101,6 @@ class Pre_Party_Browser_Hints {
 		add_action( "load-{$settings_page}", array( $this, 'check_to_upgrade' ) );
 	}
 
-	public function load_admin() {
-		include_once PPRH_ABS_DIR . 'includes/load-admin.php';
-		new Load_Admin();
-	}
-
 	public function screen_option() {
 		$args = array(
 			'label'   => 'URLs',
@@ -114,6 +109,11 @@ class Pre_Party_Browser_Hints {
 		);
 
 		add_screen_option( 'per_page', $args );
+	}
+
+	public function load_admin() {
+		include_once PPRH_ABS_DIR . 'includes/load-admin.php';
+		new Load_Admin();
 	}
 
 	public function check_to_upgrade() {
