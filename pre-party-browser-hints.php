@@ -13,7 +13,7 @@
  * Text Domain:       pprh
  * Domain Path:       /languages
  *
- * last edited December 21, 2020
+ * last edited December 23, 2020
  *
  * Copyright 2016  Sam Perrow  (email : sam.perrow399@gmail.com)
  *
@@ -123,7 +123,7 @@ class Pre_Party_Browser_Hints {
 		if ( empty( $current_version ) || version_compare( $current_version, $desired_version ) < 0 ) {
 			$this->activate_plugin();
 			update_option( 'pprh_version', $desired_version );
-			add_action( 'admin_notices', array( $this, 'upgrade_notice' ) );
+//			add_action( 'admin_notices', array( $this, 'upgrade_notice' ) );
 		}
 	}
 

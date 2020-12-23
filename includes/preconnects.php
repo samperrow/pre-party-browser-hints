@@ -61,10 +61,10 @@ class Preconnects {
 		foreach ( $hint_data->hints as $url ) {
 			$hint_obj = Utils::create_hint_object( $url, 'preconnect', 1 );
 
-			$new_hint = Utils::create_pprh_hint( $hint_obj );
+			$hint_result = Utils::create_pprh_hint( $hint_obj );
 
-			if ( is_object( $new_hint ) ) {
-				$dao->create_hint( $new_hint );
+			if ( is_array( $hint_result ) && is_object( $hint_result['new_hint'] ) ) {
+				$dao->create_hint( $hint_result, null );
 			}
 		}
 	}

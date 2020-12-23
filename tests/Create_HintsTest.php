@@ -43,8 +43,8 @@ final class Create_HintsTest extends TestCase{
 
 	public function testGet_Url(): void {
 		$create_hints = new \PPRH\Create_Hints();
-		$domain = 'https://www.espn.com';
-		$long_url = 'https://www.espn.com/football/asdfkajsdlf/asdt/a3?ver=saf353';
+		$domain = 'https://ajax.googleapis.com';
+		$long_url = 'https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js';
 
 		// these two hint types should only have the domain name
 		$new_url1 = $create_hints->get_url($long_url, 'preconnect');
