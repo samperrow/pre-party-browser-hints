@@ -8,7 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class Preconnects {
 
-//	public $load_adv = false;
+	public $load_adv = false;
 
 	public function __construct() {
 		if ( 'true' === get_option( 'pprh_preconnect_allow_unauth' ) ) {
@@ -56,20 +56,15 @@ class Preconnects {
 
 	public function create_hint( $hint_data ) {
 		$dao = new DAO();
-		define( 'CREATING_HINT', true );
-		$create_hints = new Create_Hints();
 		$dao->remove_prev_auto_preconnects();
 
-		foreach ( $hint_data->hints as $hint ) {
-			$obj = new \stdClass();
-			$obj->url = $hint;
-			$obj->hint_type = 'preconnect';
-			$obj->auto_created = 1;
-			$valid_hint = $create_hints->verify_data( $obj );
+		foreach ( $hint_data->hints as $url ) {
+			$hint_obj = Utils::create_hint_object( $url, 'preconnect', 1 );
 
-			if ( $valid_hint ) {
-				$new_hint = $create_hints->create_hint( $obj );
-				$dao->create_hint( $new_hint );
+			$hint_result = Utils::create_pprh_hint( $hint_obj );
+
+			if ( is_array( $hint_result ) && is_object( $hint_result['new_hint'] ) ) {
+				$dao->create_hint( $hint_result, null );
 			}
 		}
 	}

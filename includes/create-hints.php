@@ -8,81 +8,66 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class Create_Hints {
 
-	public $response = array();
-
-	public $prev_hints = array();
+	public $result = array();
 
 	public function __construct() {
 		if ( ! defined( 'CREATING_HINT' ) || ! CREATING_HINT ) {
 			exit();
 		}
 
-		$this->response = array(
-			'msg'    => '',
-			'status' => '',
-			'query'  => array(),
+		$this->result = array(
+			'new_hint' => (object) array(),
+			'response' => array(
+				'msg'     => '',
+				'status'  => '',
+				'success' => false
+			),
 		);
-
-		$this->prev_hints = (object) array();
 	}
 
-	public function verify_data( $hint ) {
+	public function initialize( $hint ) {
 		if ( empty( $hint->url ) || empty( $hint->hint_type ) ) {
-			return $this->response['msg'] = 'Please use a valid URL and hint type';
-		}
-
-		$hint_type = $this->get_hint_type( $hint->hint_type );
-		$url       = $this->get_url( $hint, $hint_type );
-
-		if ( $this->duplicate_hint_exists( $url, $hint_type ) ) {
 			return false;
 		}
 
-		return true;
+		$new_hint = $this->create_hint( $hint );
+
+		if ( $this->duplicate_hint_exists( $new_hint ) ) {
+			$this->result['response']['msg'] .= 'An identical resource hint already exists!';
+			$this->result['response']['status'] = 'warning';
+		} else {
+			$this->result['response']['status'] = 'success';
+			$this->result['response']['success'] = true;
+			$this->result['new_hint'] = $new_hint;
+		}
+
+		return $this->result;
 	}
-
-
-
-//	public function init( $hint ) {
-//		$new_hint = (object) $this->create_hint( $hint );
-//
-//		if ( $this->duplicate_hint_exists( $new_hint ) ) {
-//			return false;
-//		}
-//
-//		return $new_hint;
-//	}
 
 	public function create_hint( $hint ) {
 		$hint_type = $this->get_hint_type( $hint->hint_type );
-		$url       = $this->get_url( $hint, $hint_type );
+		$url = $this->get_url( $hint->url, $hint_type );
 		$file_type = $this->get_file_type( $url );
+		$auto_created = ( ! empty( $hint->auto_created ) ? 1 : 0 );
+		$as_attr = $this->set_as_attr( $hint->as_attr, $file_type );
+		$type_attr = $this->set_type_attr( $hint, $file_type );
+		$crossorigin = $this->set_crossorigin( $hint, $file_type );
 
-		return (object) array(
-			'hint_type'    => $hint_type,
-			'url'          => $url,
-			'file_type'    => $file_type,
-			'as_attr'      => $this->set_as_attr( $hint, $file_type ),
-			'type_attr'    => $this->set_type_attr( $hint, $file_type ),
-			'crossorigin'  => $this->set_crossorigin( $hint, $file_type ),
-			'auto_created' => ( isset( $hint->auto_created ) ? 1 : 0 ),
-		);
+		return Utils::create_hint_object( $url, $hint_type, $auto_created, $as_attr, $type_attr, $crossorigin );
+//		$new_hint = apply_filters( 'pprh_append_hints', $new_hint, $hint );
 	}
-
-
 
 	public function get_hint_type( $type ) {
 		return Utils::clean_hint_type( $type );
 	}
 
-	public function get_url( $hint, $type ) {
+	public function get_url( $url, $type ) {
+		$url = Utils::clean_url( $url );
+
 		if ( preg_match( '/(dns-prefetch|preconnect)/', $type ) ) {
-			$url = $this->parse_for_domain_name( $hint->url );
-		} else {
-			$url = $hint->url;
+			$url = $this->parse_for_domain_name( $url );
 		}
 
-		$url = Utils::clean_url( $url );
 		return $url;
 	}
 
@@ -90,7 +75,7 @@ class Create_Hints {
 		$parsed_url = wp_parse_url( $url );
 
 		if ( ! empty( $parsed_url['host'] ) && ! empty( $parsed_url['path'] ) ) {
-			$this->response['msg'] .= ' Only the domain name of the entered URL is needed for that hint type.';
+			$this->result['response']['msg'] .= ' Only the domain name of the entered URL is needed for that hint type.';
 			$url = $parsed_url['scheme'] . '://' . $parsed_url['host'];
 		} elseif ( strpos( $url, '//' ) === 0 ) {
 			$url = '//' . $parsed_url['host'];
@@ -106,17 +91,16 @@ class Create_Hints {
 	}
 
 	public function set_crossorigin( $hint, $file_type ) {
-		return ( ! empty( $hint->crossorigin ) || ( preg_match( '/fonts.(googleapis|gstatic).com/i', $hint->url ) || preg_match( '/(.woff|.woff2|.ttf|.eot)/', $file_type ) ) ) ? 'crossorigin' : '';
+		if ( ! empty( $hint->crossorigin ) || ( preg_match( '/fonts.(googleapis|gstatic).com/i', $hint->url ) || preg_match( '/(.woff|.woff2|.ttf|.eot)/', $file_type ) ) ) {
+			return 'crossorigin';
+		}
+
+		return '';
 	}
 
-	public function set_as_attr( $hint, $file_type ) {
-		$as_attr = ( ! empty( $hint->as_attr ) ) ? $hint->as_attr : '';
+	public function set_as_attr( $as_attr, $file_type ) {
 		$media_types = array(
-			'.js'    => 'script',
-			'.css'   => 'style',
 			'.mp3'   => 'audio',
-			'.mp4'   => 'video',
-			'.vtt'   => 'track',
 			'.swf'   => 'embed',
 			'.woff'  => 'font',
 			'.woff2' => 'font',
@@ -127,6 +111,11 @@ class Create_Hints {
 			'.png'   => 'image',
 			'.svg'   => 'image',
 			'.webp'  => 'image',
+			'.js'    => 'script',
+			'.css'   => 'style',
+			'.vtt'   => 'track',
+			'.mp4'   => 'video',
+			'.webm'  => 'video'
 		);
 
 		return ( ! empty( $as_attr ) ) ? Utils::clean_hint_attr( $as_attr ) : $this->get_file_type_mime( $media_types, $file_type );
@@ -153,16 +142,14 @@ class Create_Hints {
 		return '';
 	}
 
-	public function duplicate_hint_exists( $url, $hint_type ) {
+	public function duplicate_hint_exists( $hint ) {
 		$table = PPRH_DB_TABLE;
-		$sql = "SELECT url, hint_type FROM $table WHERE hint_type = %s AND url = %s";
-		$arr = array( $url, $hint_type );
+		$sql = "SELECT url, hint_type FROM $table WHERE url = %s AND hint_type = %s";
+		$arr = array( $hint->url, $hint->hint_type );
 		$dao = new DAO();
 		$prev_hints = $dao->get_hints_query( $sql, $arr );
 
 		if ( count( $prev_hints ) > 0 ) {
-			$this->response['msg'] .= 'An identical resource hint already exists!';
-			$this->response['status'] = 'warning';
 			return true;
 		}
 

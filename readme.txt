@@ -4,7 +4,7 @@ Donate link: https://www.paypal.me/samperrow
 Tags: W3C, DNS prefetch, prerender, preconnect, prefetch, preload, web perf, performance, speed, resource hints
 Requires at least: 4.4
 Tested up to: 5.6
-Stable tag: 1.7.4
+Stable tag: 1.7.4.2
 Requires PHP: 5.6.30
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -79,8 +79,20 @@ To activate the preloaded resource, you must call that file in HTML as you would
 
 
 == Changelog ==
-1. Most recent update: December 13, 2020.
-2. Version 1.7.4
+1. Most recent update: December 23, 2020.
+2. Version 1.7.4.2
+
+December 23, 2020:
+1) fixed issue with creating hints, and made the hint creation process more uniform.
+2) added support for the ".webm" video type
+3) improved testing, error handling, a few other architectural adjustments.
+
+December 13, 2020:
+1) Updated/simplified class names and removed/added some classes
+2) Organized architecture
+3) added the ability to automatically prefetch hints (thanks to Gijo Varghese, who allowed me to borrow his Flying Pages
+ JS script)
+4) ensured compatibility with WP 5.6
 
 December 13, 2020:
 1) Updated/simplified class names and removed/added some classes

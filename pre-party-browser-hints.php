@@ -3,7 +3,7 @@
  * Plugin Name:       Pre* Party Resource Hints
  * Plugin URI:        https://wordpress.org/plugins/pre-party-browser-hints/
  * Description:       Take advantage of the browser resource hints DNS-Prefetch, Prerender, Preconnect, Prefetch, and Preload to improve page load time.
- * Version:           1.7.4
+ * Version:           1.7.4.2
  * Requires at least: 4.4
  * Requires PHP:      5.6.30
  * Author:            Sam Perrow
@@ -13,7 +13,7 @@
  * Text Domain:       pprh
  * Domain Path:       /languages
  *
- * last edited December 13, 2020
+ * last edited December 23, 2020
  *
  * Copyright 2016  Sam Perrow  (email : sam.perrow399@gmail.com)
  *
@@ -38,7 +38,7 @@ class Pre_Party_Browser_Hints {
 
 	public function init() {
 		$this->create_constants();
-		$this->load_admin_essentials();
+		$this->load_common_files();
 
 		add_action( 'wpmu_new_blog', array( $this, 'activate_plugin' ) );
 		register_activation_hook( __FILE__, array( $this, 'activate_plugin' ) );
@@ -47,6 +47,8 @@ class Pre_Party_Browser_Hints {
 			add_action( 'admin_menu', array( $this, 'load_admin_page' ) );
 			add_action( 'admin_enqueue_scripts', array( $this, 'register_admin_files' ) );
 			add_filter( 'set-screen-option', array( $this, 'apply_wp_screen_options' ), 10, 3 );
+
+			include_once PPRH_ABS_DIR . 'includes/display-hints.php';
 
 			if ( wp_doing_ajax() ) {
 				include_once PPRH_ABS_DIR . 'includes/ajax-ops.php';
@@ -65,12 +67,9 @@ class Pre_Party_Browser_Hints {
 //		do_action( 'pprh_pro_init' );
 	}
 
-	public function load_admin_essentials() {
+	public function load_common_files() {
 		include_once PPRH_ABS_DIR . 'includes/utils.php';
 		include_once PPRH_ABS_DIR . 'includes/dao.php';
-		include_once PPRH_ABS_DIR . 'includes/create-hints.php';
-		include_once PPRH_ABS_DIR . 'includes/display-hints.php';
-		include_once PPRH_ABS_DIR . 'updater.php';
 	}
 
 	public function create_constants() {
@@ -112,33 +111,36 @@ class Pre_Party_Browser_Hints {
 		add_screen_option( 'per_page', $args );
 	}
 
+	public function load_admin() {
+		include_once PPRH_ABS_DIR . 'includes/load-admin.php';
+		new Load_Admin();
+	}
+
 	public function check_to_upgrade() {
-		$desired_version = '1.7.4';
+		$desired_version = '1.7.4.2';
 		$current_version = get_option( 'pprh_version' );
 
 		if ( empty( $current_version ) || version_compare( $current_version, $desired_version ) < 0 ) {
 			$this->activate_plugin();
 			update_option( 'pprh_version', $desired_version );
-			add_action( 'admin_notices', array( $this, 'upgrade_notice' ) );
+//			add_action( 'admin_notices', array( $this, 'upgrade_notice' ) );
 		}
 	}
 
 	public function upgrade_notice() {
 		?>
 		<div class="notice notice-info is-dismissible">
-			<p><?php _e('There is a new feature in 1.7.4 which allows prefetch hints to be automatically created. Click the "Setttings" tab to check this feature out and enable it if desired. Enjoy!' ); ?></p>
+			<p><?php _e('1.7.4.2 update info: ' ); ?></p>
 		</div>
 		<?php
 	}
 
-	public function load_admin() {
-        include_once PPRH_ABS_DIR . 'includes/load-admin.php';
-        new Load_Admin();
-    }
-
 	// Register and call the CSS and JS we need only on the needed page.
 	public function register_admin_files( $hook ) {
-		if ( 'toplevel_page_pprh-plugin-settings' === $hook ) {
+	    $str = '/toplevel_page_pprh-plugin-settings/';
+//	    $str = apply_filters( 'pprh_load_scripts', '/toplevel_page_pprh-plugin-settings' );
+
+		if ( preg_match( $str, $hook ) ) {
 			$ajax_data = array(
 				'val'       => wp_create_nonce( 'pprh_table_nonce' ),
 				'admin_url' => admin_url()
@@ -161,7 +163,5 @@ class Pre_Party_Browser_Hints {
 	public function apply_wp_screen_options( $status, $option, $value ) {
 		return ( 'pprh_screen_options' === $option ) ? $value : $status;
 	}
-
-
 
 }

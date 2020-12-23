@@ -19,6 +19,10 @@ div#pprh-wrapper {
 
     div#pprh-settings {
         max-width: 800px;
+
+        > h2 > a:hover {
+            cursor: pointer;
+        }
     }
 
 
@@ -33,7 +37,6 @@ div#pprh-wrapper {
             display: block;
         }
     }
-
 
     div.row-actions span:hover {
         cursor: pointer
@@ -57,9 +60,7 @@ div#pprh-wrapper {
         &.hint.active {
             display: none
         }
-
     }
-
 
     div.pprh-container {
         max-width: 765px;
@@ -76,10 +77,7 @@ div#pprh-wrapper {
         }
     }
 
-
-
     table#pprh-enter-data {
-
         tbody tr td {
             text-align: center
         }
@@ -97,6 +95,15 @@ div#pprh-wrapper {
     table.pprh-settings-table {
         font-size: 14px;
         text-align: left;
+        padding: 15px 0;
+
+        &.active {
+            display: block;
+        }
+
+        &.hidden {
+            display: none;
+        }
 
         tbody tr td {
             margin-bottom: 9px;

@@ -9,8 +9,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Load_Client {
 
 	public function __construct () {
-		include_once PPRH_ABS_DIR . 'includes/utils.php';
-		include_once PPRH_ABS_DIR . 'includes/dao.php';
 		include_once PPRH_ABS_DIR . 'includes/send-hints.php';
 
 		add_action( 'wp_loaded', array( $this, 'send_resource_hints' ) );

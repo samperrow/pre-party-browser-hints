@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Load_Admin {
 
 	public function __construct() {
-//		do_action( 'pprh_load_admin_tabs_child' );
+//		do_action( 'pprh_load_admin_child' );
 		$this->load_plugin_admin_files();
 	}
 
@@ -28,11 +28,10 @@ class Load_Admin {
 		new Insert_Hints();
 		new Settings();
 		new Hint_Info();
-
+//		do_action( 'pprh_call_pro_tabs' );
 		$this->show_footer();
 
-		echo '</div>';
-		echo '</div>';
+		echo '</div></div>';
 	}
 
 	public function show_admin_tabs() {
@@ -43,7 +42,7 @@ class Load_Admin {
 //            'upgrade'      => 'Upgrade to Pro',
 		);
 
-//		$tabs = apply_filters( 'pprh_pro_show_tabs', $tabs );
+//		$tabs = apply_filters( 'pprh_load_tabs', $tabs );
 
 		echo '<h2 class="nav-tab-wrapper">';
 		foreach ( $tabs as $tab => $name ) {

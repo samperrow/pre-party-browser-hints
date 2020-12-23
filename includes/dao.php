@@ -10,8 +10,9 @@ class DAO {
 
 //	public function __construct() {}
 
-	public function create_hint( $new_hint ) {
+	public function create_hint( $hint_result, $id = null ) {
 		global $wpdb;
+		$new_hint = $hint_result['new_hint'];
 		$current_user = wp_get_current_user()->display_name;
 		$auto_created = ( ! empty( $new_hint->auto_created ) ? $new_hint->auto_created : 0 );
 
@@ -33,18 +34,19 @@ class DAO {
 		return Utils::get_wpdb_result( $wpdb, 'create' );
 	}
 
-	public function update_hint( $data ) {
+	public function update_hint( $hint_result, $hint_id ) {
 		global $wpdb;
-		$hint_id = (int) $data->hint_id;
+		$new_hint = $hint_result['new_hint'];
+		$hint_id = (int) $hint_id;
 
 		$wpdb->update(
 			PPRH_DB_TABLE,
 			array(
-				'url'         => $data->url,
-				'hint_type'   => $data->hint_type,
-				'as_attr'     => $data->as_attr,
-				'type_attr'   => $data->type_attr,
-				'crossorigin' => $data->crossorigin,
+				'url'         => $new_hint->url,
+				'hint_type'   => $new_hint->hint_type,
+				'as_attr'     => $new_hint->as_attr,
+				'type_attr'   => $new_hint->type_attr,
+				'crossorigin' => $new_hint->crossorigin,
 			),
 			array(
 				'id' => $hint_id,
@@ -72,7 +74,6 @@ class DAO {
 	public function bulk_update( $data, $action ) {
 		global $wpdb;
 		$table = PPRH_DB_TABLE;
-//		$action .= 'd';
 		$concat_ids = implode( ',', array_map( 'absint', $data->hint_ids ) );
 
 		$wpdb->query( $wpdb->prepare(
@@ -104,9 +105,10 @@ class DAO {
 	public function get_hints_query( $sql, $arr ) {
 		global $wpdb;
 
-		return $wpdb->get_results(
+		$res = $wpdb->get_results(
 			$wpdb->prepare( $sql, $arr )
 		);
+		return $res;
 	}
 
 
