@@ -13,7 +13,7 @@
  * Text Domain:       pprh
  * Domain Path:       /languages
  *
- * last edited December 21, 2020
+ * last edited December 23, 2020
  *
  * Copyright 2016  Sam Perrow  (email : sam.perrow399@gmail.com)
  *
@@ -101,11 +101,6 @@ class Pre_Party_Browser_Hints {
 		add_action( "load-{$settings_page}", array( $this, 'check_to_upgrade' ) );
 	}
 
-	public function load_admin() {
-		include_once PPRH_ABS_DIR . 'includes/load-admin.php';
-		new Load_Admin();
-	}
-
 	public function screen_option() {
 		$args = array(
 			'label'   => 'URLs',
@@ -116,6 +111,11 @@ class Pre_Party_Browser_Hints {
 		add_screen_option( 'per_page', $args );
 	}
 
+	public function load_admin() {
+		include_once PPRH_ABS_DIR . 'includes/load-admin.php';
+		new Load_Admin();
+	}
+
 	public function check_to_upgrade() {
 		$desired_version = '1.7.4.2';
 		$current_version = get_option( 'pprh_version' );
@@ -123,7 +123,7 @@ class Pre_Party_Browser_Hints {
 		if ( empty( $current_version ) || version_compare( $current_version, $desired_version ) < 0 ) {
 			$this->activate_plugin();
 			update_option( 'pprh_version', $desired_version );
-			add_action( 'admin_notices', array( $this, 'upgrade_notice' ) );
+//			add_action( 'admin_notices', array( $this, 'upgrade_notice' ) );
 		}
 	}
 

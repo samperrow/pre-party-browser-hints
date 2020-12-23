@@ -67,9 +67,9 @@ class Utils {
 
 		return array(
 			'last_error' => $wp_db->last_error,
-			'last_query' => $wp_db->last_query,
+			'success'    => ( $wp_db->result ),
 			'status'     => ( $wp_db->result ) ? 'success' : 'error',
-			'msg'        => ($wp_db->result) ? ' Resource hint ' . $action . ' successfully.' : "Failed to $action hint.",
+			'msg'        => ( $wp_db->result ) ? "Resource hint $action successfully." : "Failed to $action hint.",
 		);
 	}
 
