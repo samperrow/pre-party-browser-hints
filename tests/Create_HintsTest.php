@@ -11,20 +11,28 @@ final class Create_HintsTest extends TestCase{
 
 //	public function __construct() {}
 
-	public function testInit (): void {
+	public function testInit(): void {
 		define('CREATING_HINT', true);
 		$create_hints = new \PPRH\Create_Hints();
-		$data = \PPRH\Utils::create_hint_object('https://www.espn.com', 'dns-prefetch', 0);
+		$test1 = \PPRH\Utils::create_hint_object('https://www.espn.com', 'dns-prefetch');
+		$test2 = \PPRH\Utils::create_hint_object('ht<tps://www.e>\'sp"n.com', 'dns-prefetch');
+		$test3 = \PPRH\Utils::create_hint_object('//espn.com', 'dns-prefetch');
 
-		$new_hint = $create_hints->initialize($data);
-		$this->assertEquals($new_hint, $data);
+		$test_hint1 = $create_hints->initialize($test1);
+		$this->assertEquals($test_hint1['new_hint'], $test1);
+
+		$test_hint2 = $create_hints->initialize($test2);
+		$this->assertEquals($test_hint2['new_hint'], $test1);
+
+		$test_hint3 = $create_hints->initialize($test3);
+		$this->assertEquals($test_hint3['new_hint'], $test3);
 	}
 
 
-	public function testEmptyDataFails (): void {
+	public function testEmptyDataFails(): void {
 		$create_hints = new \PPRH\Create_Hints();
 
-		$data1 = (object)array(
+		$data1 = (object) array(
 			'url' => '',
 			'hint_type' => 'dns-prefetch'
 		);
@@ -33,7 +41,7 @@ final class Create_HintsTest extends TestCase{
 		$this->assertEquals(false, $bool1);
 	}
 
-	public function testGet_Url (): void {
+	public function testGet_Url(): void {
 		$create_hints = new \PPRH\Create_Hints();
 		$domain = 'https://www.espn.com';
 		$long_url = 'https://www.espn.com/football/asdfkajsdlf/asdt/a3?ver=saf353';
@@ -76,6 +84,20 @@ final class Create_HintsTest extends TestCase{
 		$this->assertEquals( 'script', $as_attr6 );
 		$this->assertEquals( 'style', $as_attr7 );
 		$this->assertEquals( 'video', $as_attr8 );
+	}
+
+	// make sure 'https://www.espn.com' as a preconnect is added to db prior to running this.
+	public function testDuplicateHintAttemptFails(): void {
+		$create_hints = new \PPRH\Create_Hints();
+		$test1 = \PPRH\Utils::create_hint_object('https://www.espn.com', 'preconnect');
+		$test_hint1 = $create_hints->initialize($test1);
+		$arr = array(
+			'success' => false,
+			'msg'     => 'An identical resource hint already exists!',
+			'status'  => 'warning'
+		);
+
+		$this->assertEquals( $test_hint1['response'], $arr );
 	}
 
 }

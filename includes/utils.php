@@ -64,9 +64,9 @@ class Utils {
 
 		return array(
 			'last_error' => $wp_db->last_error,
-			'last_query' => $wp_db->last_query,
+			'success'    => ( $wp_db->result ),
 			'status'     => ( $wp_db->result ) ? 'success' : 'error',
-			'msg'        => ($wp_db->result) ? ' Resource hint ' . $action . ' successfully.' : "Failed to $action hint.",
+			'msg'        => ( $wp_db->result ) ? "Resource hint $action successfully." : "Failed to $action hint.",
 		);
 	}
 
@@ -87,16 +87,7 @@ class Utils {
 
 		define( 'CREATING_HINT', true );
 		$create_hints = new Create_Hints();
-		$hint_result = $create_hints->initialize( $raw_data );
-
-//		if ( ! $hint_result['success'] ) {
-//
-//		} else {
-//			$wp_db = $dao->create_hint( $pprh_hint );
-//
-//		}
-
-		return $hint_result;
+		return $create_hints->initialize( $raw_data );
 	}
 
 	public static function create_hint_object( $url, $hint_type, $auto_created = 0, $as_attr = '', $type_attr = '', $crossorigin = '' ) {

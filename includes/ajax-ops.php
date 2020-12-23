@@ -8,8 +8,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class Ajax_Ops {
 
-	public $response = array(
-		'query' => array(),
+	public $result = array(
+		'response' => array(),
 	);
 
 	public function __construct() {
@@ -25,9 +25,14 @@ class Ajax_Ops {
 
 			if ( is_object( $data ) ) {
 				$action = $data->action;
-				$this->response = $this->handle_action( $data, $action );
+
+				if ( preg_match( '/create|update/', $action ) ) {
+					$this->result = $this->create_hint( $data, $action );
+				} else {
+					$this->result['response'] = $this->handle_action( $data, $action );
+				}
 				$display_hints = new Display_Hints();
-				$display_hints->ajax_response( $this->response );
+				$display_hints->ajax_response( $this->result );
 			}
 
 			wp_die();
@@ -35,24 +40,29 @@ class Ajax_Ops {
 	}
 
 	private function handle_action( $data, $action ) {
-		$wp_db = null;
 		$dao = new DAO();
+		$wp_db = null;
 
-		if ( 'create' === $action ) {
-			$hint_result = Utils::create_pprh_hint( $data );
-
-			if ( $hint_result['success'] && is_object( $hint_result['new_hint'] ) ) {
-				$wp_db = $dao->create_hint( $hint_result['new_hint'] );
-			}
-		} elseif ( 'update' === $action ) {
-			$pprh_hint = Utils::create_pprh_hint( $data );
-			$wp_db = $dao->update_hint( $pprh_hint, $data->hint_id );
-		} elseif ( preg_match( '/enabled|disabled/', $action ) ) {
+		if ( preg_match( '/enabled|disabled/', $action ) ) {
 			$wp_db = $dao->bulk_update( $data, $action );
 		} elseif ( 'delete' === $action ) {
 			$wp_db = $dao->delete_hint( $data );
 		}
 		return $wp_db;
 	}
+
+	private function create_hint( $data, $action ) {
+		$dao = new DAO();
+
+		$hint_result = Utils::create_pprh_hint( $data );
+		$this->result['new_hint'] = $hint_result;
+
+		if ( $hint_result['response']['success'] && is_object( $hint_result['new_hint'] ) ) {
+			$hint_result['response'] = $dao->{$action . '_hint'}($hint_result, $data->hint_id);
+		}
+
+		return $hint_result;
+	}
+
 
 }

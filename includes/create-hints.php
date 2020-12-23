@@ -8,23 +8,21 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class Create_Hints {
 
-	public $response = array();
-
-	public $prev_hints = array();
+	public $result = array();
 
 	public function __construct() {
 		if ( ! defined( 'CREATING_HINT' ) || ! CREATING_HINT ) {
 			exit();
 		}
 
-		$this->response = array(
-			'msg'      => '',
-			'status'   => '',
-			'success'  => false,
-			'new_hint' => (object) array()
+		$this->result = array(
+			'new_hint' => (object) array(),
+			'response' => array(
+				'msg'     => '',
+				'status'  => '',
+				'success' => false
+			),
 		);
-
-		$this->prev_hints = (object) array();
 	}
 
 	public function initialize( $hint ) {
@@ -35,16 +33,15 @@ class Create_Hints {
 		$new_hint = $this->create_hint( $hint );
 
 		if ( $this->duplicate_hint_exists( $new_hint ) ) {
-			$this->response['msg'] .= 'An identical resource hint already exists!';
-			$this->response['status'] = 'warning';
+			$this->result['response']['msg'] .= 'An identical resource hint already exists!';
+			$this->result['response']['status'] = 'warning';
 		} else {
-			$this->response['msg'] .= '';
-			$this->response['status'] = 'success';
-			$this->response['success'] = true;
-			$this->response['new_hint'] = $new_hint;
+			$this->result['response']['status'] = 'success';
+			$this->result['response']['success'] = true;
+			$this->result['new_hint'] = $new_hint;
 		}
 
-		return $this->response;
+		return $this->result;
 	}
 
 	public function create_hint( $hint ) {
@@ -65,11 +62,12 @@ class Create_Hints {
 	}
 
 	public function get_url( $url, $type ) {
+		$url = Utils::clean_url( $url );
+
 		if ( preg_match( '/(dns-prefetch|preconnect)/', $type ) ) {
 			$url = $this->parse_for_domain_name( $url );
 		}
 
-		$url = Utils::clean_url( $url );
 		return $url;
 	}
 
@@ -77,7 +75,7 @@ class Create_Hints {
 		$parsed_url = wp_parse_url( $url );
 
 		if ( ! empty( $parsed_url['host'] ) && ! empty( $parsed_url['path'] ) ) {
-			$this->response['msg'] .= ' Only the domain name of the entered URL is needed for that hint type.';
+			$this->result['response']['msg'] .= ' Only the domain name of the entered URL is needed for that hint type.';
 			$url = $parsed_url['scheme'] . '://' . $parsed_url['host'];
 		} elseif ( strpos( $url, '//' ) === 0 ) {
 			$url = '//' . $parsed_url['host'];
