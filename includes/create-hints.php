@@ -146,12 +146,14 @@ class Create_Hints {
 	public function duplicate_hint_exists( $hint ) {
 		$table = PPRH_DB_TABLE;
 		$sql = "SELECT url, hint_type FROM $table WHERE url = %s AND hint_type = %s";
-		$arr = array(
+		$query = array(
 			'sql' => $sql,
-			'args' => array( '%s', '%s' )
+			'args' => array( $hint->url, $hint->hint_type )
 		);
+		$query = apply_filters( 'pprh_dup_hint_check', $hint, $query );
+
 		$dao = new DAO();
-		$prev_hints = $dao->get_hints_query( $arr );
+		$prev_hints = $dao->get_hints_query( $query );
 
 		if ( count( $prev_hints ) > 0 ) {
 			return true;

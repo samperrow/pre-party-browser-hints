@@ -108,7 +108,7 @@ class DAO {
 
 	public function get_hints_query( $query ) {
 		global $wpdb;
-		$query = apply_filters( 'pprh_sh_append_sql', $query );
+//		$query = apply_filters( 'pprh_sh_append_sql', $query );
 
 		$res = $wpdb->get_results(
 			$wpdb->prepare( $query['sql'], $query['args'] )
