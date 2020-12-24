@@ -12,7 +12,9 @@ class Send_Hints {
 
 	protected $send_hints_in_html = '';
 
-//	public function __construct() {}
+	public function __construct() {
+		add_action( 'wp_loaded', array( $this, 'get_resource_hints' ) );
+	}
 
 	public function get_resource_hints() {
 		$this->send_hints_in_html = get_option( 'pprh_html_head' );

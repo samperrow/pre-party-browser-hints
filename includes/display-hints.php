@@ -53,9 +53,9 @@ class Display_Hints extends WP_List_Table {
 			case 'created_by':
 				return $item['created_by'];
             case 'post_id':
-                return apply_filters( 'pprh_get_post_link', $item['id'] );
+                return apply_filters( 'pprh_get_post_link', $item['post_id'] );
 			default:
-				return esc_html_e( 'Error', 'pprh' );
+				return esc_html( 'Error', 'pprh' );
 		}
 	}
 
@@ -137,9 +137,10 @@ class Display_Hints extends WP_List_Table {
 		if ( ! empty( $_REQUEST['orderby'] ) ) {
 			$sql .= ' ORDER BY ' . esc_sql( $_REQUEST['orderby'] );
 			$sql .= ! empty( $_REQUEST['order'] ) ? ' ' . esc_sql( $_REQUEST['order'] ) : ' ASC';
-		} else {
-			$sql .= ' ORDER BY url DESC';
 		}
+
+		$sql = apply_filters( 'pprh_dh_append_sql', $sql);
+		$sql .= ' ORDER BY url DESC';
 
 		$dao = new DAO();
 		$this->data = $dao->get_hints( $sql );
@@ -184,6 +185,11 @@ class Display_Hints extends WP_List_Table {
 				</td>
 		    </tr>
 		<?php
+	}
+
+	protected function on_post_page() {
+	    global $pagenow;
+		$this->on_post_page = ( 'post.php' === $pagenow && isset( $_GET['post'] ) );
 	}
 
 }

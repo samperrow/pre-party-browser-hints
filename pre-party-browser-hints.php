@@ -117,13 +117,13 @@ class Pre_Party_Browser_Hints {
 	}
 
 	public function check_to_upgrade() {
-		$desired_version = '1.7.4.2';
+		$desired_version = '1.8.0';
 		$current_version = get_option( 'pprh_version' );
 
 		if ( empty( $current_version ) || version_compare( $current_version, $desired_version ) < 0 ) {
 			$this->activate_plugin();
 			update_option( 'pprh_version', $desired_version );
-//			add_action( 'admin_notices', array( $this, 'upgrade_notice' ) );
+			add_action( 'admin_notices', array( $this, 'upgrade_notice' ) );
 		}
 	}
 
@@ -139,14 +139,14 @@ class Pre_Party_Browser_Hints {
 	public function register_admin_files( $hook ) {
 	    $str = apply_filters( 'pprh_load_scripts', 'toplevel_page_pprh-plugin-settings' );
 
-		if ( strrpos( $hook, $str, 0 ) >= 0 ) {
+		if ( strpos( $str, $hook, 0 ) !== false ) {
 			$ajax_data = array(
 				'val'       => wp_create_nonce( 'pprh_table_nonce' ),
 				'admin_url' => admin_url()
 			);
 
 			wp_register_script( 'pprh_admin_js', PPRH_REL_DIR . 'js/admin.js', array( 'jquery' ), PPRH_VERSION, true );
-			wp_localize_script( 'pprh_admin_js', 'pprh_nonce', $ajax_data );
+			wp_localize_script( 'pprh_admin_js', 'pprh_data', $ajax_data );
 			wp_register_style( 'pprh_styles_css', PPRH_REL_DIR . 'css/styles.css', null, PPRH_VERSION, 'all' );
 			wp_enqueue_script( 'pprh_admin_js' );
 			wp_enqueue_style( 'pprh_styles_css' );

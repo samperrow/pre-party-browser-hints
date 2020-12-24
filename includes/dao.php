@@ -16,9 +16,9 @@ class DAO {
 		$current_user = wp_get_current_user()->display_name;
 		$auto_created = ( ! empty( $new_hint->auto_created ) ? $new_hint->auto_created : 0 );
 
-		$wpdb->insert(
-			PPRH_DB_TABLE,
-			array(
+		$args = array(
+			'types' => array( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d' ),
+			'columns' => array(
 				'url'          => $new_hint->url,
 				'hint_type'    => $new_hint->hint_type,
 				'status'       => 'enabled',
@@ -27,8 +27,15 @@ class DAO {
 				'crossorigin'  => $new_hint->crossorigin,
 				'created_by'   => $current_user,
 				'auto_created' => $auto_created,
-			),
-			array( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' )
+			)
+		);
+
+		$args = apply_filters( 'pprh_insert_hint_schema', $args, $new_hint );
+
+		$wpdb->insert(
+			PPRH_DB_TABLE,
+			$args['columns'],
+			$args['types']
 		);
 
 		return Utils::get_wpdb_result( $wpdb, 'create' );
@@ -104,7 +111,7 @@ class DAO {
 		$query = apply_filters( 'pprh_sh_append_sql', $query );
 
 		$res = $wpdb->get_results(
-			$wpdb->prepare( $sql, $arr )
+			$wpdb->prepare( $query['sql'], $query['args'] )
 		);
 		return $res;
 	}

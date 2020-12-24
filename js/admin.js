@@ -1,8 +1,8 @@
-jQuery(document).ready(function($) {
+// jQuery(document).ready(function($) {
 
 	(function (global, factory) {
 		global.pprhAdminJS = factory();
-	}(this, function () {
+	}(this, function() {
 
 		'use strict';
 		var $ = jQuery;
@@ -146,6 +146,7 @@ jQuery(document).ready(function($) {
 					type_attr: elems.type_attr.val(),
 					action: op,
 					hint_id: (op === 'update') ? tableID.split('pprh-edit-')[1] : null,
+					post_id: (typeof pprhProAdminJS === "object") ? pprhProAdminJS.GetPostId() : ""
 				};
 			}
 
@@ -178,12 +179,12 @@ jQuery(document).ready(function($) {
 
 		function createAjaxReq(dataObj) {
 			var xhr = new XMLHttpRequest();
-			var url = pprh_nonce.admin_url + 'admin-ajax.php';
+			var url = pprh_data.admin_url + 'admin-ajax.php';
 			xhr.open('POST', url, true);
 			xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
 			var json = JSON.stringify(dataObj);
 			var paginationPage = getUrlValue.call('paged');
-			var target = 'action=pprh_update_hints&pprh_data=' + json + '&val=' + pprh_nonce.val;
+			var target = 'action=pprh_update_hints&pprh_data=' + json + '&val=' + pprh_data.val;
 
 			if (paginationPage.length > 0) {
 				target += '&paged=' + paginationPage;
@@ -254,24 +255,6 @@ jQuery(document).ready(function($) {
 			adminNoticeElem.classList[action]('notice-' + outcome);
 		}
 
-		if (response.status !== 'success' ) {
-			if (response.status === 'error' ) {
-				response.msg += response.msg + ((response.last_error) ? response.last_error : '');
-			} else if (typeof response === "string" && /<code>(.*)?<\/code>/g.test(response)) {
-				response.msg += response.split('<code>')[0].split('</code>')[0];
-			} else {
-				response.msg += 'Error updating hint. Please clear your browser cache and try again, or contact support about the issue.';
-			}
-		}
-
-		toggleAdminNotice('add', response.status);
-		adminNoticeElem.getElementsByTagName('p')[0].innerHTML = response.msg;
-
-		setTimeout(function () {
-			toggleAdminNotice('remove', response.status);
-		}, 10000);
-	}
-
 		function addEditRowEventListener() {
 			$('span.edit').on('click', function () {
 				var hintID = $(this).find('a').attr('id').split('pprh-edit-hint-')[1];
@@ -340,4 +323,4 @@ jQuery(document).ready(function($) {
 
 	}));
 
-});
+// });

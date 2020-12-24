@@ -46,6 +46,7 @@ class New_Hint {
 		$this->enter_url();
 		$this->show_pp_radio_options();
 		$this->set_attrs();
+		do_action( 'pprh_hc_home_page' );
 	}
 
 	protected function enter_url() {

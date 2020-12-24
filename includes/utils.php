@@ -48,18 +48,6 @@ class Utils {
 		return ( ! empty( $val ) ) ? $val : '';
 	}
 
-//    public static function get_default_modal_post_types() {
-//		global $wp_post_types;
-//		$results = array();
-//
-//		foreach ( $wp_post_types as $post_type ) {
-//			if ( $post_type->public && 'attachment' !== $post_type->name ) {
-//				$results[] = $post_type->name;
-//			}
-//		}
-//		return json_encode( ( count( $results ) > 0 ) ? $results : array( 'page', 'post' ) );
-//	}
-
 	public static function get_wpdb_result( $wp_db, $action ) {
 	    if ( ! ( strrpos( $action, 'd' ) === strlen( $action ) -1 ) ) {
 	        $action .= 'd';
@@ -85,7 +73,6 @@ class Utils {
 	public static function create_pprh_hint( $raw_data ) {
 		if ( ! class_exists( Create_Hints::class ) ) {
 			include_once PPRH_ABS_DIR . 'includes/create-hints.php';
-			do_action( 'pprh_load_create_hints_child' );
 		}
 
 		define( 'CREATING_HINT', true );

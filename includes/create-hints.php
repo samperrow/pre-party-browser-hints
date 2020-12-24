@@ -53,8 +53,9 @@ class Create_Hints {
 		$type_attr = $this->set_type_attr( $hint, $file_type );
 		$crossorigin = $this->set_crossorigin( $hint, $file_type );
 
-		return Utils::create_hint_object( $url, $hint_type, $auto_created, $as_attr, $type_attr, $crossorigin );
-		$new_hint = apply_filters( 'pprh_append_hints', $new_hint, $hint );
+		$new_hint = Utils::create_hint_object( $url, $hint_type, $auto_created, $as_attr, $type_attr, $crossorigin );
+		$new_hint = apply_filters( 'pprh_append_hint', $new_hint, $hint );
+		return $new_hint;
 	}
 
 	public function get_hint_type( $type ) {
@@ -145,9 +146,12 @@ class Create_Hints {
 	public function duplicate_hint_exists( $hint ) {
 		$table = PPRH_DB_TABLE;
 		$sql = "SELECT url, hint_type FROM $table WHERE url = %s AND hint_type = %s";
-		$arr = array( $hint->url, $hint->hint_type );
+		$arr = array(
+			'sql' => $sql,
+			'args' => array( '%s', '%s' )
+		);
 		$dao = new DAO();
-		$prev_hints = $dao->get_hints_query( $sql, $arr );
+		$prev_hints = $dao->get_hints_query( $arr );
 
 		if ( count( $prev_hints ) > 0 ) {
 			return true;

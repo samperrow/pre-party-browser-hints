@@ -116,6 +116,8 @@ class WP_List_Table {
 		'single_row_columns',
 	);
 
+	protected $on_post_page = false;
+
 	/**
 	 * Constructor.
 	 *
@@ -1292,6 +1294,14 @@ class WP_List_Table {
 		return sprintf( '<input type="checkbox" name="urlValue[]" value="%1$s"/>', $item['id'] );
 	}
 
+	public function global_hint_alert() {
+		?>
+        <span class="pprh-help-tip-hint">
+			<span><?php esc_html_e( 'This is a global resource hint, and is used on all pages and posts. To update this hint, please do so from the main Pre* Party plugin page.', 'pprh' ); ?></span>
+		</span>
+		<?php
+	}
+
 	/**
 	 * Generates the columns for a single row of the table
 	 *
@@ -1302,7 +1312,7 @@ class WP_List_Table {
 	protected function single_row_columns( $item ) {
 		list( $columns, $hidden, $primary ) = $this->get_column_info();
 
-//		$hide_cb = ( $this->on_post_page && 'global' === $item['post_id'] ) ? ' pprhGlobalHint' : '';
+		$hide_cb = ( $this->on_post_page && 'global' === $item['post_id'] );
 
 		foreach ( $columns as $column_name => $column_display_name ) {
 			$classes = "$column_name column-$column_name";
@@ -1321,8 +1331,12 @@ class WP_List_Table {
 			$attributes = "class='$classes' $data";
 
 			if ( 'cb' === $column_name ) {
-				echo "<th scope='row' class='check-column'>";
-				echo $this->column_cb( $item );
+				echo '<th scope="row" class="check-column">';
+				if ( $hide_cb )  {
+					$this->global_hint_alert();
+				} else {
+					echo $this->column_cb( $item );
+				}
 				echo '</th>';
 			} elseif ( method_exists( $this, '_column_' . $column_name ) ) {
 				echo $this->{'_column_' . $column_name}($item, $classes, $data, $primary);
@@ -1402,9 +1416,7 @@ class WP_List_Table {
 			$response['total_pages_i18n'] = number_format_i18n( $this->_pagination_args['total_pages'] );
 		}
 
-
-		$response['result'] = $results['query'];
-
+		$response['result'] = $results;
 		die( json_encode( $response, true ) );
 	}
 
