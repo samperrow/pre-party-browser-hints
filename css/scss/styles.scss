@@ -15,6 +15,11 @@ div#pprh-wrapper {
         &.active {
             display: block;
         }
+
+        table.pprh-post-table tbody tr td div.global-hint {
+            visibility: hidden;
+            height: 19.5px;
+        }
     }
 
     div#pprh-settings {

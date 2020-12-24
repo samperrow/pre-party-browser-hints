@@ -1160,7 +1160,6 @@ class WP_List_Table {
 		wp_nonce_field( 'ajax-custom-list-nonce', '_ajax_custom_list_nonce' );
 		$singular = $this->_args['singular'];
 
-		$this->on_post_page();
 		$this->display_tablenav( 'top' );
 
 		$this->screen->render_screen_reader_content( 'heading_list' );
@@ -1285,23 +1284,6 @@ class WP_List_Table {
 	 */
 	protected function column_default( $item, $column_name ) {}
 
-    /**
-     * @param object $item
-     * @param $hide_cb
-     * @return string
-     */
-	protected function column_cb( $item ) {
-		return sprintf( '<input type="checkbox" name="urlValue[]" value="%1$s"/>', $item['id'] );
-	}
-
-	public function global_hint_alert() {
-		?>
-        <span class="pprh-help-tip-hint">
-			<span><?php esc_html_e( 'This is a global resource hint, and is used on all pages and posts. To update this hint, please do so from the main Pre* Party plugin page.', 'pprh' ); ?></span>
-		</span>
-		<?php
-	}
-
 	/**
 	 * Generates the columns for a single row of the table
 	 *
@@ -1311,8 +1293,7 @@ class WP_List_Table {
 	 */
 	protected function single_row_columns( $item ) {
 		list( $columns, $hidden, $primary ) = $this->get_column_info();
-
-		$hide_cb = ( $this->on_post_page && 'global' === $item['post_id'] );
+		$global_hint = ( $item['post_id'] === 'global' );
 
 		foreach ( $columns as $column_name => $column_display_name ) {
 			$classes = "$column_name column-$column_name";
@@ -1331,19 +1312,22 @@ class WP_List_Table {
 			$attributes = "class='$classes' $data";
 
 			if ( 'cb' === $column_name ) {
-				echo '<th scope="row" class="check-column">';
-				if ( $hide_cb )  {
-					$this->global_hint_alert();
-				} else {
-					echo $this->column_cb( $item );
-				}
+				echo '<th scope="row" class="check-column ">';
+                echo $this->column_cb( $item );
 				echo '</th>';
 			} elseif ( method_exists( $this, '_column_' . $column_name ) ) {
 				echo $this->{'_column_' . $column_name}($item, $classes, $data, $primary);
 			} elseif ( method_exists( $this, 'column_' . $column_name ) ) {
 				echo "<td $attributes>";
-				echo $this->{'column_' . $column_name}($item);
-				echo $this->handle_row_actions( $column_name, $primary );
+
+				if ( 'column_url' === 'column_' . $column_name && $this->on_post_page && $global_hint ) {
+                    echo sprintf( '%1$s', $item['url'] );
+                    echo '<div class="row-actions global-hint"></div>';
+				} else {
+					echo $this->{'column_' . $column_name}($item);
+					echo $this->handle_row_actions( $column_name, $primary );
+				}
+
 				echo '</td>';
 			} else {
 				echo "<td $attributes>";

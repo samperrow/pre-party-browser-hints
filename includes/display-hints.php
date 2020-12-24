@@ -118,6 +118,7 @@ class Display_Hints extends WP_List_Table {
 		$data = array_slice( $this->data, ( ( $current_page - 1 ) * $this->hints_per_page ), $this->hints_per_page );
 		$this->items = $data;
 		$total_items = count( $this->data );
+		$this->on_post_page();
 
 		$this->set_pagination_args(
 			array(
@@ -153,10 +154,27 @@ class Display_Hints extends WP_List_Table {
 
 	public function column_url( $item ) {
 		$actions = array(
-			'edit'    => sprintf( '<a id="pprh-edit-hint-%s" class="pprh-edit-hint">Edit</a>', $item['id'] ),
-			'delete'  => sprintf( '<a id="pprh-delete-hint-%s">Delete</a>', $item['id'] ),
+			'edit'   => sprintf( '<a id="pprh-edit-hint-%s" class="pprh-edit-hint">Edit</a>', $item['id'] ),
+			'delete' => sprintf( '<a id="pprh-delete-hint-%s">Delete</a>', $item['id'] ),
 		);
 		return sprintf( '%1$s %2$s', $item['url'], $this->row_actions( $actions ) );
+	}
+
+	protected function column_cb( $item ) {
+		$global_hint = ( $this->on_post_page && 'global' === $item['post_id'] );
+		if ($global_hint) {
+		    $this->global_hint_alert();
+        } else {
+			return sprintf( '<input type="checkbox" name="urlValue[]" value="%1$s"/>', $item['id'] );
+		}
+	}
+
+	public function global_hint_alert() {
+		?>
+        <span class="pprh-help-tip-hint">
+			<span><?php esc_html_e( 'This is a global resource hint, and is used on all pages and posts. To update this hint, please do so from the main Pre* Party plugin page.', 'pprh' ); ?></span>
+		</span>
+		<?php
 	}
 
 	public function inline_edit_row( $item ) {
@@ -188,8 +206,8 @@ class Display_Hints extends WP_List_Table {
 	}
 
 	protected function on_post_page() {
-	    global $pagenow;
-		$this->on_post_page = ( 'post.php' === $pagenow && isset( $_GET['post'] ) );
+	    $post_id = Utils_Pro::get_post_id();
+		$this->on_post_page = ( 'global' !== $post_id );
 	}
 
 }
