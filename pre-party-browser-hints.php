@@ -40,10 +40,9 @@ class Pre_Party_Browser_Hints {
 		$this->create_constants();
 		$this->load_common_files();
 
-		add_action( 'wpmu_new_blog', array( $this, 'activate_plugin' ) );
-		register_activation_hook( __FILE__, array( $this, 'activate_plugin' ) );
-
 		if ( is_admin() ) {
+			add_action( 'wpmu_new_blog', array( $this, 'activate_plugin' ) );
+			register_activation_hook( __FILE__, array( $this, 'activate_plugin' ) );
 			add_action( 'admin_menu', array( $this, 'load_admin_page' ) );
 			add_action( 'admin_enqueue_scripts', array( $this, 'register_admin_files' ) );
 			add_filter( 'set-screen-option', array( $this, 'apply_wp_screen_options' ), 10, 3 );
@@ -65,11 +64,17 @@ class Pre_Party_Browser_Hints {
 			new Preconnects();
 		}
 		do_action( 'pprh_pro_init' );
+		do_action( 'pprh_load_create_hints_child' );
+
 	}
 
 	public function load_common_files() {
 		include_once PPRH_ABS_DIR . 'includes/utils.php';
 		include_once PPRH_ABS_DIR . 'includes/dao.php';
+
+		if ( ! class_exists( Create_Hints::class ) ) {
+			include_once PPRH_ABS_DIR . 'includes/create-hints.php';
+		}
 	}
 
 	public function create_constants() {

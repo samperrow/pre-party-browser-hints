@@ -9,14 +9,23 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Create_Hints {
 
 	public $result = array();
+	
+	protected $duplicate_hints = array();
+
+	protected $duplicate_hints_exist = false;
+
+	protected $new_hint = array();
+
+	protected $raw_hint;
 
 	public function __construct() {
 		if ( ! defined( 'CREATING_HINT' ) || ! CREATING_HINT ) {
 			exit();
 		}
+		$this->new_hint = (object) $this->new_hint;
 
 		$this->result = array(
-			'new_hint' => (object) array(),
+			'new_hint' => $this->new_hint,
 			'response' => array(
 				'msg'     => '',
 				'status'  => '',
@@ -30,15 +39,24 @@ class Create_Hints {
 			return false;
 		}
 
-		$new_hint = $this->create_hint( $hint );
+		$this->raw_hint = $hint;
 
-		if ( $this->duplicate_hint_exists( $new_hint ) ) {
+		$this->new_hint = $this->create_hint( $hint );
+		$this->duplicate_hints = $this->get_duplicate_hints();
+		$duplicate_hints_exist = ( count( $this->duplicate_hints ) > 0 );
+
+		if ( $duplicate_hints_exist ) {
+			apply_filters( 'pprh_check_duplicates' );
+		}
+
+
+		if ( $duplicate_hints_exist ) {
 			$this->result['response']['msg'] .= 'An identical resource hint already exists!';
 			$this->result['response']['status'] = 'warning';
 		} else {
 			$this->result['response']['status'] = 'success';
 			$this->result['response']['success'] = true;
-			$this->result['new_hint'] = $new_hint;
+			$this->result['new_hint'] = $this->new_hint;
 		}
 
 		return $this->result;
@@ -143,23 +161,24 @@ class Create_Hints {
 		return '';
 	}
 
-	public function duplicate_hint_exists( $hint ) {
+
+	public function get_duplicate_hints() {
 		$table = PPRH_DB_TABLE;
-		$sql = "SELECT url, hint_type FROM $table WHERE url = %s AND hint_type = %s";
+		$sql = "SELECT url, hint_type, id FROM $table WHERE url = %s AND hint_type = %s";
 		$query = array(
-			'sql' => $sql,
-			'args' => array( $hint->url, $hint->hint_type )
+			'sql'  => $sql,
+			'args' => array( $this->new_hint->url, $this->new_hint->hint_type )
 		);
-		$query = apply_filters( 'pprh_dup_hint_check', $hint, $query );
+		$query = apply_filters( 'pprh_duplicate_hint_query', $query );
 
 		$dao = new DAO();
-		$prev_hints = $dao->get_hints_query( $query );
+		return $dao->get_hints_query( $query );
 
-		if ( count( $prev_hints ) > 0 ) {
-			return true;
-		}
-
-		return false;
+//		if ( count( $prev_hints ) > 0 ) {
+//			return true;
+//		}
+//
+//		return false;
 	}
 
 }

@@ -6,13 +6,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-//if ( is_admin() ) {
-//	new Settings();
-//}
-
 class Settings {
 
 	public function __construct() {
+	    do_action( 'pprh_load_settings_child' );
 	    $this->display_settings();
 	}
 

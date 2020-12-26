@@ -9,6 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Load_Admin {
 
 	public function __construct() {
+	    do_action( 'pprh_load_admin_child' );
 		$this->load_plugin_admin_files();
 	}
 
@@ -16,6 +17,7 @@ class Load_Admin {
 		include_once PPRH_ABS_DIR . 'includes/tabs/insert-hints.php';
 		include_once PPRH_ABS_DIR . 'includes/tabs/settings.php';
 		include_once PPRH_ABS_DIR . 'includes/tabs/info.php';
+		include_once PPRH_ABS_DIR . 'includes/tabs/upgrade.php';
 		include_once PPRH_ABS_DIR . 'includes/new-hint.php';
 
 		echo '<div id="pprh-wrapper" class="wrap">';
@@ -23,14 +25,15 @@ class Load_Admin {
 
 		Utils::pprh_notice();
 		$this->show_admin_tabs();
-		echo '<div class="pprh-box">';
-		do_action( 'pprh_load_admin_tabs' );
 
+		echo '<div class="pprh-box">';
+		do_action( 'pprh_load_tab_files' );
 		new Insert_Hints();
 		new Settings();
 		new Hint_Info();
-		$this->show_footer();
+		new Upgrade();
 
+		$this->show_footer();
 		echo '</div></div>';
 	}
 

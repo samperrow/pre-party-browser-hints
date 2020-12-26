@@ -71,9 +71,7 @@ class Utils {
 	}
 
 	public static function create_pprh_hint( $raw_data ) {
-		if ( ! class_exists( Create_Hints::class ) ) {
-			include_once PPRH_ABS_DIR . 'includes/create-hints.php';
-		}
+
 
 		define( 'CREATING_HINT', true );
 		$create_hints = new Create_Hints();

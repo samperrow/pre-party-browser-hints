@@ -24,6 +24,7 @@
 
 			tabs.first().toggleClass('nav-tab-active');
 			$("#pprh-insert-hints").toggleClass('active');
+			// divs.first().toggleClass('active');
 			$('table#general').addClass('active');
 
 			if (!tabs) {

@@ -6,8 +6,6 @@ if ( ! defined ('ABSPATH' ) ) {
 	exit;
 }
 
-new Upgrade();
-
 class Upgrade {
 
 	public function __construct() {
