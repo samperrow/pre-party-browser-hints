@@ -65,15 +65,15 @@ class DAO {
 		return Utils::get_wpdb_result( $wpdb, 'update' );
 	}
 
-	public function delete_hint( $data ) {
+	public function delete_hint( $hint_ids ) {
 		global $wpdb;
 		$table = PPRH_DB_TABLE;
 
-		if ( ! is_array( $data->hint_ids ) ) {
+		if ( ! is_array( $hint_ids ) || count( $hint_ids ) === 0 ) {
 			return false;
 		}
 
-		$concat_ids = implode( ',', array_map( 'absint', $data->hint_ids ) );
+		$concat_ids = implode( ',', array_map( 'absint', $hint_ids ) );
 		$wpdb->query( "DELETE FROM $table WHERE id IN ($concat_ids)" );
 		return Utils::get_wpdb_result( $wpdb, 'delete' );
 	}

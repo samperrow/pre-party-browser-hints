@@ -22,6 +22,7 @@ class Create_Hints {
 		if ( ! defined( 'CREATING_HINT' ) || ! CREATING_HINT ) {
 			exit();
 		}
+		do_action( 'pprh_load_create_hints_child' );
 		$this->new_hint = (object) $this->new_hint;
 
 		$this->result = array(
@@ -40,17 +41,13 @@ class Create_Hints {
 		}
 
 		$this->raw_hint = $hint;
-
 		$this->new_hint = $this->create_hint( $hint );
 		$this->duplicate_hints = $this->get_duplicate_hints();
 		$duplicate_hints_exist = ( count( $this->duplicate_hints ) > 0 );
 
-		if ( $duplicate_hints_exist ) {
-			apply_filters( 'pprh_check_duplicates' );
-		}
+		$msg = apply_filters( 'pprh_check_duplicates', $this );
 
-
-		if ( $duplicate_hints_exist ) {
+		if ( $duplicate_hints_exist && is_null( $msg ) ) {
 			$this->result['response']['msg'] .= 'An identical resource hint already exists!';
 			$this->result['response']['status'] = 'warning';
 		} else {
@@ -169,7 +166,7 @@ class Create_Hints {
 			'sql'  => $sql,
 			'args' => array( $this->new_hint->url, $this->new_hint->hint_type )
 		);
-		$query = apply_filters( 'pprh_duplicate_hint_query', $query );
+		$query = apply_filters( 'pprh_duplicate_hint_query', $query, $this->new_hint );
 
 		$dao = new DAO();
 		return $dao->get_hints_query( $query );

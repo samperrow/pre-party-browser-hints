@@ -66,20 +66,20 @@ class Utils {
 		echo esc_html( $opt === $val ? 'selected=selected' : '');
 	}
 
-	public static function on_pprh_home() {
-		return ( isset( $_GET['page'] ) && 'pprh-plugin-settings' === $_GET['page'] );
-	}
+
+
+//	public static function on_pprh_page() {
+//		if ( isset( $_GET['page'] ) && 'pprh-plugin-settings' === $_GET['page'] );
+//	}
 
 	public static function create_pprh_hint( $raw_data ) {
-
-
 		define( 'CREATING_HINT', true );
 		$create_hints = new Create_Hints();
 		return $create_hints->initialize( $raw_data );
 	}
 
-	public static function create_hint_object( $url, $hint_type, $auto_created = 0, $as_attr = '', $type_attr = '', $crossorigin = '' ) {
-        return (object) array(
+	public static function create_hint_object( $url, $hint_type, $auto_created = 0, $as_attr = '', $type_attr = '', $crossorigin = '', $post_id = '', $post_url = '' ) {
+        $arr = array(
             'url'          => $url,
             'hint_type'    => $hint_type,
             'auto_created' => $auto_created,
@@ -87,6 +87,17 @@ class Utils {
             'type_attr'    => $type_attr,
             'crossorigin'  => $crossorigin
         );
+
+        return (object) $arr;
+	}
+
+	public static function create_response( $msg, $status ) {
+	    $success = ( 'success' === $status );
+		return array(
+			'msg' => $msg,
+			'status' => $status,
+			'success' => $success
+		);
 	}
 
 }

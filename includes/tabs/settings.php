@@ -176,22 +176,26 @@ class Settings {
                 <?php
 		        $load_basic = apply_filters( 'pprh_pro_settings', 'preconnect' );
 
-//		        if ( ! $load_basic ) { ?>
-                <tr>
-                    <th><?php esc_html_e( 'Reset automatically created preconnect links?', 'pprh' ); ?></th>
+		        if ( is_null( $load_basic ) ) { ?>
+                    <tr>
+                        <th><?php esc_html_e( 'Reset automatically created preconnect links?', 'pprh' ); ?></th>
 
-                    <td>
-                        <span class="pprh-help-tip-hint">
-                            <span><?php esc_html_e( 'This will reset automatically created preconnect hints.', 'pprh' ); ?></span>
-                        </span>
-                    </td>
+                        <td>
+                            <span class="pprh-help-tip-hint">
+                                <span><?php esc_html_e( 'This will reset automatically created preconnect hints.', 'pprh' ); ?></span>
+                            </span>
+                        </td>
 
-                    <td>
-                        <input type="submit" name="pprh_preconnect_set" id="pprhPreconnectReset" class="button-secondary" value="Reset">
-                    </td>
-                </tr>
+                        <td>
+                            <input type="submit" name="pprh_preconnect_set" id="pprhPreconnectReset" class="button-secondary" value="Reset">
+                        </td>
+                    </tr>
 
-                <?php do_action( 'pprh_preconnect_options' ); ?>
+                <?php
+		            } else {
+		                do_action( 'pprh_show_preconnect_options' );
+                    }
+		        ?>
             </tbody>
         </table>
 

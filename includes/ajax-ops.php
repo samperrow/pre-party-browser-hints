@@ -14,11 +14,11 @@ class Ajax_Ops {
 
 	public function __construct() {
 		add_action( 'wp_ajax_pprh_update_hints', array( $this, 'pprh_update_hints' ) );
-		do_action( 'pprh_load_ajax_ops_child' );
     }
 
 	public function pprh_update_hints() {
 		if ( isset( $_POST['pprh_data'] ) && wp_doing_ajax() ) {
+			do_action( 'pprh_load_ajax_ops_child' );
 
 			check_ajax_referer( 'pprh_table_nonce', 'val' );
 			$data = json_decode( wp_unslash( $_POST['pprh_data'] ), false );
@@ -28,9 +28,17 @@ class Ajax_Ops {
 
 				if ( preg_match( '/create|update/', $action ) ) {
 					$this->result = $this->create_hint( $data, $action );
-				} else {
+				} elseif (preg_match( '/enabled|disabled|delete/', $action )) {
 					$this->result['response'] = $this->handle_action( $data, $action );
 				}
+				elseif ( 'reset_single_post_preconnects' === $action ) {
+					$this->result['response'] = apply_filters( 'pprh_reset_single_post_preconnect', $data );
+				}
+				// TODO
+//				elseif ( 'reset_single_post_prerenders' === $action ) {
+//					$this->result['response'] = apply_filters( 'pprh_reset_single_post_preconnect', $data );
+//				}
+
 				$display_hints = new Display_Hints();
 				$display_hints->ajax_response( $this->result );
 			}
@@ -46,7 +54,7 @@ class Ajax_Ops {
 		if ( preg_match( '/enabled|disabled/', $action ) ) {
 			$wp_db = $dao->bulk_update( $data, $action );
 		} elseif ( 'delete' === $action ) {
-			$wp_db = $dao->delete_hint( $data );
+			$wp_db = $dao->delete_hint( $data->hint_ids );
 		}
 		return $wp_db;
 	}

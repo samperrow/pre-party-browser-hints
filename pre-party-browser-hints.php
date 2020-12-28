@@ -57,24 +57,22 @@ class Pre_Party_Browser_Hints {
 			include_once PPRH_ABS_DIR . 'includes/load-client.php';
 			new Load_Client();
 		}
+		do_action( 'pprh_pro_init' );
 
 		// this needs to be loaded front end and back end bc Ajax needs to be able to communicate between the two.
 		if ( 'true' === get_option( 'pprh_preconnect_autoload' ) && 'false' === get_option( 'pprh_preconnect_set' ) ) {
 			include_once PPRH_ABS_DIR . 'includes/preconnects.php';
 			new Preconnects();
 		}
-		do_action( 'pprh_pro_init' );
-		do_action( 'pprh_load_create_hints_child' );
-
 	}
 
 	public function load_common_files() {
 		include_once PPRH_ABS_DIR . 'includes/utils.php';
 		include_once PPRH_ABS_DIR . 'includes/dao.php';
 
-		if ( ! class_exists( Create_Hints::class ) ) {
+//		if ( ! class_exists( Create_Hints::class ) ) {
 			include_once PPRH_ABS_DIR . 'includes/create-hints.php';
-		}
+//		}
 	}
 
 	public function create_constants() {
