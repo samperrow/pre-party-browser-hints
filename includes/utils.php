@@ -68,9 +68,12 @@ class Utils {
 
 
 
-//	public static function on_pprh_page() {
-//		if ( isset( $_GET['page'] ) && 'pprh-plugin-settings' === $_GET['page'] );
-//	}
+	public static function on_pprh_page() {
+	    global $pagenow;
+		return
+			( ( isset( $_GET['page'] ) && 'pprh-plugin-settings' === $_GET['page'] ) && 'admin.php' === $pagenow )
+            || ( ( isset( $_GET['action'] ) && 'edit' === $_GET['action'] ) && 'post.php' === $pagenow );
+	}
 
 	public static function create_pprh_hint( $raw_data ) {
 		define( 'CREATING_HINT', true );
@@ -81,12 +84,12 @@ class Utils {
 	public static function create_hint_object( $url, $hint_type, $auto_created = 0, $as_attr = '', $type_attr = '', $crossorigin = '', $post_id = '', $post_url = '' ) {
         $arr = array(
             'url'          => $url,
-            'hint_type'    => $hint_type,
-            'auto_created' => $auto_created,
             'as_attr'      => $as_attr,
-            'type_attr'    => $type_attr,
-            'crossorigin'  => $crossorigin
-        );
+			'hint_type'    => $hint_type,
+			'type_attr'    => $type_attr,
+			'crossorigin'  => $crossorigin,
+			'auto_created' => $auto_created
+		);
 
         return (object) $arr;
 	}

@@ -12,7 +12,21 @@
 		if (/pprh-plugin-settings/.test(currentURL)) {
 			var emailSubmitBtn = document.getElementById('pprhSubmit');
 			emailSubmitBtn.addEventListener("click", emailValidate);
+		} else if ( /post\.php/.test(currentURL))  {
+			var checkoutModal = $('input#pprhOpenCheckoutModal');
+			if (typeof checkoutModal === "object") {
+				checkoutModal.on('click', openCheckoutModal);
+			}
 		}
+
+		function openCheckoutModal() {
+			// var windowWidth = window.innerWidth;
+			// var windowHeight = window.innerHeight;
+			// var leftSpace = (windowWidth - 700) / 2;
+			window.open( 'https://sphacks.io/checkout', '_blank', '', false );
+			// window.open( 'https://sphacks.io/checkout', '_blank', 'height=800,left=100,scrollbars=yes,top=300,width=700', false );
+		}
+
 
 		addEventListeners();
 		addEditRowEventListener();

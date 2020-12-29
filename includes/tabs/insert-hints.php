@@ -11,7 +11,6 @@ class Insert_Hints {
 	public function __construct() {
 		echo '<div id="pprh-insert-hints" class="pprh-content">';
 		Utils::pprh_notice();
-
 		wp_nonce_field( 'pprh_display_hints_nonce_action', 'pprh_display_hints_nonce' );
 		new Display_Hints();
 		$new_hint = new New_Hint();

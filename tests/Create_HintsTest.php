@@ -87,17 +87,17 @@ final class Create_HintsTest extends TestCase{
 	}
 
 	// make sure 'https://www.espn.com' as a preconnect is added to db prior to running this.
-	public function testDuplicateHintAttemptFails(): void {
-		$create_hints = new \PPRH\Create_Hints();
-		$test1 = \PPRH\Utils::create_hint_object('https://www.espn.com', 'preconnect');
-		$test_hint1 = $create_hints->initialize($test1);
-		$arr = array(
-			'success' => false,
-			'msg'     => 'An identical resource hint already exists!',
-			'status'  => 'warning'
-		);
-
-		$this->assertEquals( $test_hint1['response'], $arr );
-	}
+//	public function testDuplicateHintAttemptFails(): void {
+//		$create_hints = new \PPRH\Create_Hints();
+//		$test1 = \PPRH\Utils::create_hint_object('https://www.espn.com', 'preconnect');
+//		$test_hint1 = $create_hints->initialize($test1);
+//		$arr = array(
+//			'success' => false,
+//			'msg'     => 'An identical resource hint already exists!',
+//			'status'  => 'warning'
+//		);
+//
+//		$this->assertEquals( $test_hint1['response'], $arr );
+//	}
 
 }
