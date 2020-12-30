@@ -40,6 +40,8 @@ class Pre_Party_Browser_Hints {
 		$this->create_constants();
 		$this->load_common_files();
 
+//		var_dump( $_SERVER );
+//        echo $GLOBALS['current_screen'];
 		if ( is_admin() ) {
 			add_action( 'wpmu_new_blog', array( $this, 'activate_plugin' ) );
 			register_activation_hook( __FILE__, array( $this, 'activate_plugin' ) );

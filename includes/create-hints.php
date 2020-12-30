@@ -12,8 +12,6 @@ class Create_Hints {
 	
 	protected $duplicate_hints = array();
 
-	protected $duplicate_hints_exist = false;
-
 	protected $new_hint = array();
 
 	protected $raw_hint;
@@ -44,10 +42,13 @@ class Create_Hints {
 		$this->new_hint = $this->create_hint( $hint );
 		$this->duplicate_hints = $this->get_duplicate_hints();
 		$duplicate_hints_exist = ( count( $this->duplicate_hints ) > 0 );
+		$msg = '';
 
-		$msg = apply_filters( 'pprh_check_duplicates', $this );
+		if ( ! empty( $this->new_hint->post_id ) ) {
+			$msg = apply_filters( 'pprh_check_duplicates', $this );
+		}
 
-		if ( $duplicate_hints_exist && is_null( $msg ) ) {
+		if ( $duplicate_hints_exist && '' === $msg ) {
 			$this->result['response']['msg'] .= 'An identical resource hint already exists!';
 			$this->result['response']['status'] = 'warning';
 		} else {
@@ -166,7 +167,10 @@ class Create_Hints {
 			'sql'  => $sql,
 			'args' => array( $this->new_hint->url, $this->new_hint->hint_type )
 		);
-		$query = apply_filters( 'pprh_duplicate_hint_query', $query, $this->new_hint );
+
+		if ( ! empty( $this->new_hint->post_id ) ) {
+			$query = apply_filters( 'pprh_duplicate_hint_query', $query, $this->new_hint );
+		}
 
 		$dao = new DAO();
 		return $dao->get_hints_query( $query );

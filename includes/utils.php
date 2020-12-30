@@ -17,7 +17,7 @@ class Utils {
 	}
 
 	public static function clean_hint_type( $text ) {
-		return preg_replace( '/[^A-z\-]/', '', $text );
+		return preg_replace( '/[^(A-z|\-)]/', '', $text );
 	}
 
 	public static function clean_url( $url ) {

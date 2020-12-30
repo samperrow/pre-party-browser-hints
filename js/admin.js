@@ -331,6 +331,11 @@
 			}
 		}
 
+		function licenseKeyStuff() {
+
+		}
+
+
 		return {
 			ToggleAdminNotice: toggleAdminNotice,
 			CreateAjaxReq: createAjaxReq,

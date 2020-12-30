@@ -2,21 +2,48 @@
 
 declare(strict_types=1);
 use PHPUnit\Framework\TestCase;
+use PPRH\PPRH_Pro;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-final class Create_HintsTest extends TestCase{
+final class Create_HintsTest extends TestCase {
 
 //	public function __construct() {}
 
-	public function testInit(): void {
+	public function testConstructor(): void {
 		define('CREATING_HINT', true);
+		$create_hints = new \PPRH\Create_Hints();
+
+		$new_hint = (object) array();
+
+		$result = array(
+			'new_hint' => $new_hint,
+			'response' => array(
+				'msg'     => '',
+				'status'  => '',
+				'success' => false
+			),
+		);
+
+
+		$this->assertClassHasAttribute('result', \PPRH\Create_Hints::class);
+		$this->assertEquals($create_hints->result, $result);
+
+		if ( is_plugin_active( 'pprh-pro' ) ) {
+			$this->assertTrue( class_exists(\PPRH\Create_Hints_Child::class ) );
+		}
+
+	}
+
+
+	public function testInitialize(): void {
 		$create_hints = new \PPRH\Create_Hints();
 		$test1 = \PPRH\Utils::create_hint_object('https://www.espn.com', 'dns-prefetch');
 		$test2 = \PPRH\Utils::create_hint_object('ht<tps://www.e>\'sp"n.com', 'dns-prefetch');
 		$test3 = \PPRH\Utils::create_hint_object('//espn.com', 'dns-prefetch');
+
 
 		$test_hint1 = $create_hints->initialize($test1);
 		$this->assertEquals($test_hint1['new_hint'], $test1);
@@ -64,6 +91,41 @@ final class Create_HintsTest extends TestCase{
 		$this->assertEquals($long_url, $new_url5);
 	}
 
+
+
+	public function testGetHintType(): void {
+		$create_hints = new \PPRH\Create_Hints();
+		$hint1 = 'd$ns-prefetch';
+		$hint2 = 'pre\'con>nect';
+		$hint3 = 'pre#fetch';
+		$hint4 = 'prelo1ad';
+
+		$this->assertEquals($create_hints->get_hint_type($hint1), 'dns-prefetch');
+		$this->assertEquals($create_hints->get_hint_type($hint2), 'preconnect');
+		$this->assertEquals($create_hints->get_hint_type($hint3), 'prefetch');
+		$this->assertEquals($create_hints->get_hint_type($hint4), 'preload');
+
+	}
+
+	public function testParseForDomainName(): void {
+		$create_hints = new \PPRH\Create_Hints();
+		$url1 = 'espn.com';
+		$url2 = 'https://example.com/asdflkasjd/asfdstest:8080';
+		$url3 = '//example.co.uk';
+
+		$this->assertEquals($create_hints->parse_for_domain_name($url1), '//espn.com');
+		$this->assertEquals($create_hints->parse_for_domain_name($url2), 'https://example.com');
+		$this->assertEquals($create_hints->parse_for_domain_name($url3), '//example.co.uk');
+	}
+
+//	public function testGetFileType(): void {
+//		$create_hints = new \PPRH\Create_Hints();
+//	}
+
+//	public function testSetCrossorigin(): void {
+//		$create_hints = new \PPRH\Create_Hints();
+//	}
+
 	public function testSetAsAttr(): void {
 		$create_hints = new \PPRH\Create_Hints();
 
@@ -85,6 +147,19 @@ final class Create_HintsTest extends TestCase{
 		$this->assertEquals( 'style', $as_attr7 );
 		$this->assertEquals( 'video', $as_attr8 );
 	}
+
+//	public function testSetTypeAttr(): void {
+//		$create_hints = new \PPRH\Create_Hints();
+//	}
+//
+//	public function testGetFileTypeMime(): void {
+//		$create_hints = new \PPRH\Create_Hints();
+//	}
+//
+//
+//	public function testGetDuplicateHints(): void {
+//		$create_hints = new \PPRH\Create_Hints();
+//	}
 
 	// make sure 'https://www.espn.com' as a preconnect is added to db prior to running this.
 //	public function testDuplicateHintAttemptFails(): void {
