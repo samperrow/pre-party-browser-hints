@@ -217,7 +217,3 @@ class Hint_Info {
 	}
 
 }
-
-//if ( is_admin() ) {
-//	new Hint_Info();
-//}

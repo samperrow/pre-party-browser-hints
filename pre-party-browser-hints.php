@@ -32,6 +32,8 @@ if ( ! class_exists( 'Pre_Party_Browser_Hints' ) ) {
 
 class Pre_Party_Browser_Hints {
 
+    private $on_pprh_page = false;
+
 	public function __construct() {
 		$this->init();
 	}
@@ -40,8 +42,8 @@ class Pre_Party_Browser_Hints {
 		$this->create_constants();
 		$this->load_common_files();
 
-//		var_dump( $_SERVER );
-//        echo $GLOBALS['current_screen'];
+		$this->on_pprh_page = Utils::on_pprh_page();
+
 		if ( is_admin() ) {
 			add_action( 'wpmu_new_blog', array( $this, 'activate_plugin' ) );
 			register_activation_hook( __FILE__, array( $this, 'activate_plugin' ) );
@@ -49,17 +51,18 @@ class Pre_Party_Browser_Hints {
 			add_action( 'admin_enqueue_scripts', array( $this, 'register_admin_files' ) );
 			add_filter( 'set-screen-option', array( $this, 'apply_wp_screen_options' ), 10, 3 );
 
-			include_once PPRH_ABS_DIR . 'includes/display-hints.php';
-
-			if ( wp_doing_ajax() ) {
+			if ( $this->on_pprh_page || wp_doing_ajax() ) {
+				include_once PPRH_ABS_DIR . 'includes/display-hints.php';
 				include_once PPRH_ABS_DIR . 'includes/ajax-ops.php';
 				new Ajax_Ops();
+				do_action( 'pprh_pro_admin_init' );
 			}
+
 		} else {
 			include_once PPRH_ABS_DIR . 'includes/load-client.php';
 			new Load_Client();
+			do_action( 'pprh_pro_client_init' );
 		}
-		do_action( 'pprh_pro_init' );
 
 		// this needs to be loaded front end and back end bc Ajax needs to be able to communicate between the two.
 		if ( 'true' === get_option( 'pprh_preconnect_autoload' ) && 'false' === get_option( 'pprh_preconnect_set' ) ) {
@@ -155,7 +158,8 @@ class Pre_Party_Browser_Hints {
 			wp_register_style( 'pprh_styles_css', PPRH_REL_DIR . 'css/styles.css', null, PPRH_VERSION, 'all' );
 			wp_enqueue_script( 'pprh_admin_js' );
 			wp_enqueue_style( 'pprh_styles_css' );
-			do_action( 'pprh_pro_admin_enqueue_scripts' );
+
+			do_action( 'pprh_register_admin_files' );
 		}
 	}
 

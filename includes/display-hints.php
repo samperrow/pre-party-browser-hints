@@ -101,10 +101,6 @@ class Display_Hints extends WP_List_Table {
 	}
 
 	public function prepare_items() {
-		if ( ! is_admin() ) {
-			exit;
-		}
-
 		$option                = 'pprh_screen_options';
 		$columns               = $this->get_columns();
 		$hidden                = array();

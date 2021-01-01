@@ -9,9 +9,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 class New_Hint {
 
 	public function create_new_hint_table() {
-		if ( ! is_admin() ) {
-			exit();
-		}
 		do_action( 'pprh_load_new_hint_child' );
 		?>
 

@@ -332,8 +332,18 @@
 		}
 
 		function licenseKeyStuff() {
+			var licKeyElem = $('input#pprhLicenseKey');
+			var activateLicBtn = $('input#pprhActivateLicense');
+			var purchaseLic = $('input#pprhOpenCheckoutModal');
 
+			licKeyElem.on('keyup', function() {
+				if ( $(this).val().length === 23) {
+					activateLicBtn.addClass('button-primary');
+				}
+				// console.log('hi')
+			});
 		}
+		licenseKeyStuff();
 
 
 		return {
