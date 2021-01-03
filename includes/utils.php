@@ -8,6 +8,22 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class Utils {
 
+//    public function __construct() {}
+
+	public static function admin_notice( $msg = '' ) {
+//		if ('' !== $msg) {
+//			echo $msg;
+//		}
+		?>
+		<div id="pprhNotice" class="inline notice is-dismissible">
+			<p></p>
+			<button type="button" class="notice-dismiss">
+				<span class="screen-reader-text"></span>
+			</button>
+		</div>
+		<?php
+	}
+
 	public static function strip_non_alphanums( $text ) {
 		return preg_replace( '/[^A-z0-9]/', '', $text );
 	}
@@ -32,17 +48,6 @@ class Utils {
 		return strtolower( preg_replace( '/[^A-z|\/]/', '', $attr ) );
 	}
 
-	public static function pprh_notice() {
-		?>
-        <div id="pprhNotice" class="inline notice is-dismissible">
-            <p></p>
-            <button type="button" class="notice-dismiss">
-                <span class="screen-reader-text">Dismiss this notice.</span>
-            </button>
-        </div>
-		<?php
-	}
-
 	public static function get_opt_val( $opt ) {
 		$val = get_option( $opt );
 		return ( ! empty( $val ) ) ? $val : '';
@@ -65,8 +70,6 @@ class Utils {
 	    $opt = get_option( $option );
 		echo esc_html( $opt === $val ? 'selected=selected' : '');
 	}
-
-
 
 	public static function on_pprh_page() {
 	    global $pagenow;

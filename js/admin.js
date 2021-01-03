@@ -29,7 +29,6 @@
 
 
 		addEventListeners();
-		addEditRowEventListener();
 		toggleDivs();
 
 		function toggleDivs() {
@@ -217,15 +216,11 @@
 							updateAdminNotice(resp.result.response);
 							updateTable(resp);
 							addEventListeners();
+							return;
 						}
-
-					} else {
-						return updateAdminNotice(xhr);
 					}
-
-				} else if (xhr.status > 400) {
-					return updateAdminNotice(xhr);
 				}
+				// updateAdminNotice('add', xhr);
 			};
 		}
 
@@ -242,7 +237,7 @@
 			});
 		}
 
-		function updateAdminNotice(response) {
+		function getResponseError(response) {
 			if (response.status === 'error') {
 				response.msg += response.last_error;
 			}
@@ -257,17 +252,26 @@
 				}
 			}
 
-			toggleAdminNotice('add', response.status);
-			adminNoticeElem.getElementsByTagName('p')[0].innerHTML = response.msg;
-
-			setTimeout(function () {
-				toggleAdminNotice('remove', response.status);
-			}, 10000);
+			return response;
 		}
 
-		function toggleAdminNotice(action, outcome) {
-			adminNoticeElem.classList[action]('active');
-			adminNoticeElem.classList[action]('notice-' + outcome);
+		function toggleAdminNotice(response) {
+			response = getResponseError(response);
+			updateAdminNotice(response);
+		}
+
+		function updateAdminNotice(response) {
+			var status = (response.status) ? response.status : '';
+			var msg = (response.msg) ? response.msg : '';
+
+			adminNoticeElem.classList.add('active');
+			adminNoticeElem.classList.add('notice-' + status);
+			adminNoticeElem.getElementsByTagName('p')[0].innerText = msg;
+
+			setTimeout(function() {
+				adminNoticeElem.classList.remove('active');
+				adminNoticeElem.classList.remove('notice-' + status);
+			}, 10000);
 		}
 
 		function addEditRowEventListener() {
@@ -340,7 +344,6 @@
 				if ( $(this).val().length === 23) {
 					activateLicBtn.addClass('button-primary');
 				}
-				// console.log('hi')
 			});
 		}
 		licenseKeyStuff();
@@ -349,6 +352,7 @@
 		return {
 			ToggleAdminNotice: toggleAdminNotice,
 			CreateAjaxReq: createAjaxReq,
+			UpdateAdminNotice: updateAdminNotice
 		}
 
 	}));

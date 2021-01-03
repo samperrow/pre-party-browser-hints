@@ -20,11 +20,11 @@ class Hint_Info {
 		<div id="pprh-info" class="pprh-content">
 			<h2><?php esc_html_e( 'Resource Hint Information', 'pprh' ); ?></h2>
 
-			<p><a href="<?php esc_attr_e( '#dns-prefetch' ); ?>">DNS Prefetch</a></p>
-			<p><a href="<?php esc_attr_e( '#prefetch' ); ?>">Prefetch</a></p>
-			<p><a href="<?php esc_attr_e( '#preconnect' ); ?>">Preconnect</a></p>
-			<p><a href="<?php esc_attr_e( '#preload' ); ?>">Preload</a></p>
-            <p><a href="<?php esc_attr_e( '#prerender' ); ?>">Prerender</a></p>
+			<p><a href="<?php esc_attr_e( '#dns-prefetch-info' ); ?>">DNS Prefetch</a></p>
+			<p><a href="<?php esc_attr_e( '#prefetch-info' ); ?>">Prefetch</a></p>
+			<p><a href="<?php esc_attr_e( '#preconnect-info' ); ?>">Preconnect</a></p>
+			<p><a href="<?php esc_attr_e( '#preload-info' ); ?>">Preload</a></p>
+            <p><a href="<?php esc_attr_e( '#prerender-info' ); ?>">Prerender</a></p>
 
 			<?php
 			$this->show_dnsprefetch_info();
@@ -42,7 +42,7 @@ class Hint_Info {
 
 	public function show_dnsprefetch_info() {
 		?>
-		<span id="dns-prefetch" style="display: block; height: 30px;"></span>
+		<span id="dns-prefetch-info" style="display: block; height: 30px;"></span>
 		<h2><?php esc_html_e( 'DNS Prefetch', 'pprh' ); ?></h2>
 		<p><?php echo sprintf( 'DNS Prefetching allows browsers to proactively perform domain name resolution on resources hosted on %s which are requested by a website.', '<b>external domain names</b>' ); ?></p>
 
@@ -81,7 +81,7 @@ class Hint_Info {
 
 	public function show_prefetch_info() {
 		?>
-		<span id="prefetch" style="display: block; height: 30px;"></span>
+		<span id="prefetch-info" style="display: block; height: 30px;"></span>
 		<h2><?php esc_html_e( 'Prefetch' ); ?></h2>
 
 		<p><?php echo sprintf( 'Prefetching allows %s (such as images, web fonts, CSS, JS files) to be loaded by the browser %s by the web page, by taking advantage of browser idle time.', '<b>individual resources</b>', '<b>before they are initiated</b>' ); ?></p>
@@ -109,7 +109,7 @@ class Hint_Info {
 
 	public function show_prerender_info() {
 		?>
-		<span id="prerender" style="display: block; height: 30px;"></span>
+		<span id="prerender-info" style="display: block; height: 30px;"></span>
 		<h2><?php esc_html_e( 'Prerender' ); ?></h2>
 
 		<p><?php echo sprintf( 'Prerendering allows %s to be loaded by the browser before any request is made by the user.', '<b>entire web pages</b>' ); ?></p>
@@ -149,7 +149,7 @@ class Hint_Info {
 
 	public function show_preconnect_info() {
 		?>
-		<span id="preconnect" style="display: block; height: 30px;"></span>
+		<span id="preconnect-info" style="display: block; height: 30px;"></span>
 		<h2><?php esc_html_e( 'Preconnect' ); ?></h2>
 
 		<p><?php esc_html_e( 'Preconnecting allows the browser to establish a connection to an external domain before the request has been made.' ); ?></p>
@@ -188,7 +188,7 @@ class Hint_Info {
 
 	public function show_preload_info() {
 		?>
-		<span id="preload" style="display: block; height: 30px;"></span>
+		<span id="preload-info" style="display: block; height: 30px;"></span>
 		<h2><?php esc_html_e( 'Preload' ); ?></h2>
 
 		<p><?php echo sprintf( 'Preload %s proactively.', '<b>fetches one resource</b>' ); ?></p>

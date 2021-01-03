@@ -13,7 +13,6 @@ class New_Hint {
 		?>
 
         <div class="pprh-container">
-
             <table id="pprh-enter-data" class="fixed widefat striped">
 
                 <thead>
@@ -28,11 +27,11 @@ class New_Hint {
 
                 <tfoot>
                     <tr>
-                        <?php do_action( 'pprh_reset_post_preconnects' ); ?>
-                        <td style="text-align: center; padding: 20px 0;" colspan="4">
+                        <td><?php do_action( 'pprh_reset_post_preconnects' ); ?></td>
+                        <td style="text-align: center; padding: 20px 0;" colspan="3">
                             <input id="pprhSubmitHints" type="button" class="button button-primary" value="<?php esc_attr_e( 'Insert Resource Hint', 'pprh' ); ?>" />
                         </td>
-<!--                        <td></td>-->
+                        <td><?php do_action( 'pprh_reset_post_prerenders' ); ?></td>
                     </tr>
                 </tfoot>
 

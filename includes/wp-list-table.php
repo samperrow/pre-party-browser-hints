@@ -116,7 +116,6 @@ class WP_List_Table {
 		'single_row_columns',
 	);
 
-	protected $on_post_page = false;
 
 	/**
 	 * Constructor.
@@ -1272,7 +1271,6 @@ class WP_List_Table {
 	 * @param object $item The current item
 	 */
 	public function single_row( $item ) {
-//		$global_on_posts = ( $this->on_post_page && 'global' === $item['post_id'] ) ? 'pprhGlobalPostPage' : '';
 		echo sprintf( '<tr class="pprh-row hint %s" id="pprh-hint-%s">', $item['id'], $item['id'] );
 		$this->single_row_columns( $item );
 		echo '</tr>';
@@ -1293,7 +1291,8 @@ class WP_List_Table {
 	 */
 	protected function single_row_columns( $item ) {
 		list( $columns, $hidden, $primary ) = $this->get_column_info();
-		$global_hint = ( $item['post_id'] === 'global' );
+
+		$on_posts_page_and_global = ( ! empty( $item['post_id'] ) ? apply_filters( 'pprh_on_posts_page_and_global', $item['post_id'] ) : false );
 
 		foreach ( $columns as $column_name => $column_display_name ) {
 			$classes = "$column_name column-$column_name";
@@ -1313,14 +1312,14 @@ class WP_List_Table {
 
 			if ( 'cb' === $column_name ) {
 				echo '<th scope="row" class="check-column ">';
-                echo $this->column_cb( $item );
+                echo $this->column_cb( $item, $on_posts_page_and_global = false );
 				echo '</th>';
 			} elseif ( method_exists( $this, '_column_' . $column_name ) ) {
 				echo $this->{'_column_' . $column_name}($item, $classes, $data, $primary);
 			} elseif ( method_exists( $this, 'column_' . $column_name ) ) {
 				echo "<td $attributes>";
 
-				if ( 'column_url' === 'column_' . $column_name && $this->on_post_page && $global_hint ) {
+				if ( 'url' === $column_name && $on_posts_page_and_global ) {
                     echo sprintf( '%1$s', $item['url'] );
                     echo '<div class="row-actions global-hint"></div>';
 				} else {

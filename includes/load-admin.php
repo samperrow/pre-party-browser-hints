@@ -10,8 +10,12 @@ class Load_Admin {
 
 	public function __construct() {
 	    do_action( 'pprh_load_admin_child' );
+		add_action( 'pprh_admin_notice', array( $this, 'admin_notice' ), 10, 1 );
+
 		$this->load_plugin_admin_files();
 	}
+
+
 
 	public function load_plugin_admin_files() {
 		include_once PPRH_ABS_DIR . 'includes/tabs/insert-hints.php';
@@ -23,7 +27,7 @@ class Load_Admin {
 		echo '<div id="pprh-wrapper" class="wrap">';
 		echo '<h2>Pre* Party Plugin Settings</h2>';
 
-		Utils::pprh_notice();
+		Utils::admin_notice('');
 		$this->show_admin_tabs();
 
 		echo '<div class="pprh-box">';
