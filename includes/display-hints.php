@@ -143,15 +143,11 @@ class Display_Hints extends WP_List_Table{
 	}
 
 	public function inline_edit_row( $item ) {
-		if ( ! class_exists(New_Hint::class) ) {
-			require_once PPRH_ABS_DIR . 'includes/new-hint.php';
-		}
-
 		$json = json_encode( $item,true );
 		$item_id = $item['id'];
 		?>
 			<tr class="pprh-row edit <?php echo $item_id; ?>">
-				<td colspan="8">
+				<td colspan="9">
 					<table id="pprh-edit-<?php echo $item_id; ?>">
 						<?php
 							$new_hint = new New_Hint();

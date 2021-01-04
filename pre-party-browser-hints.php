@@ -41,7 +41,6 @@ class Pre_Party_Browser_Hints {
 	public function init() {
 		$this->create_constants();
 		$this->load_common_files();
-
 		$this->on_pprh_page = Utils::on_pprh_page();
 
 		if ( is_admin() ) {

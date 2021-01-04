@@ -92,6 +92,11 @@ div#pprh-wrapper {
             text-align: center
         }
 
+        tfoot tr td {
+            text-align: center;
+            padding: 20px 0;
+        }
+
         &.widefat {
             border-spacing: 2px
         }

@@ -27,11 +27,11 @@ class New_Hint {
 
                 <tfoot>
                     <tr>
-                        <td><?php do_action( 'pprh_reset_post_preconnects' ); ?></td>
-                        <td style="text-align: center; padding: 20px 0;" colspan="3">
+                        <td colspan="2"><?php do_action( 'pprh_reset_post_preconnects' ); ?></td>
+                        <td colspan="1">
                             <input id="pprhSubmitHints" type="button" class="button button-primary" value="<?php esc_attr_e( 'Insert Resource Hint', 'pprh' ); ?>" />
                         </td>
-                        <td><?php do_action( 'pprh_reset_post_prerenders' ); ?></td>
+                        <td colspan="2"><?php do_action( 'pprh_reset_post_prerenders' ); ?></td>
                     </tr>
                 </tfoot>
 

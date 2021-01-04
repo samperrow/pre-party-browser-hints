@@ -1257,6 +1257,10 @@ class WP_List_Table {
 	 * @since 3.1.0
 	 */
 	public function display_rows() {
+		if ( ! class_exists(New_Hint::class) ) {
+			require_once PPRH_ABS_DIR . 'includes/new-hint.php';
+		}
+
 		foreach ( $this->items as $item ) {
 			$this->single_row( $item );
 			$this->inline_edit_row( $item );
@@ -1311,7 +1315,7 @@ class WP_List_Table {
 			$attributes = "class='$classes' $data";
 
 			if ( 'cb' === $column_name ) {
-				echo '<th scope="row" class="check-column ">';
+				echo '<th scope="row" class="check-column">';
                 echo $this->column_cb( $item, $on_posts_page_and_global = false );
 				echo '</th>';
 			} elseif ( method_exists( $this, '_column_' . $column_name ) ) {
