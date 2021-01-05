@@ -64,19 +64,40 @@ class Display_Hints extends WP_List_Table{
 	}
 
 	public function get_columns() {
-		$arr = array('cb' => '<input type="checkbox" />', 'url' => __('URL', 'pprh'), 'hint_type' => __('Hint Type', 'pprh'), 'as_attr' => __('As Attr', 'pprh'), 'type_attr' => __('Type Attr', 'pprh'), 'crossorigin' => __('Crossorigin', 'pprh'), 'status' => __('Status', 'pprh'), 'created_by' => __('Created By', 'pprh'),);
+		$arr = array(
+            'cb'          => '<input type="checkbox" />',
+            'url'         => __('URL', 'pprh'),
+            'hint_type'   => __('Hint Type', 'pprh'),
+            'as_attr'     => __('As Attr', 'pprh'),
+            'type_attr'   => __('Type Attr', 'pprh'),
+            'crossorigin' => __('Crossorigin', 'pprh'),
+            'status'      => __('Status', 'pprh'),
+            'created_by'  => __('Created By', 'pprh'),
+        );
 
 		return apply_filters('pprh_get_columns', $arr);
 	}
 
 	public function get_sortable_columns() {
-		$arr = array('url' => array('url', true), 'hint_type' => array('hint_type', false), 'as_attr' => array('as_attr', false), 'type_attr' => array('type_attr', false), 'crossorigin' => array('crossorigin', false), 'status' => array('status', false), 'created_by' => array('created_by', false),);
+		$arr = array(
+            'url'         => array('url', true),
+            'hint_type'   => array('hint_type', false),
+            'as_attr'     => array('as_attr', false),
+            'type_attr'   => array('type_attr', false),
+            'crossorigin' => array('crossorigin', false),
+            'status'      => array('status', false),
+            'created_by'  => array('created_by', false)
+        );
 
 		return apply_filters('pprh_get_sort_cols', $arr);
 	}
 
 	public function get_bulk_actions() {
-		return array('delete' => __('Delete', 'pprh'), 'enabled' => __('Enable', 'pprh'), 'disabled' => __('Disable', 'pprh'),);
+		return array(
+            'delete' => __('Delete', 'pprh'),
+            'enabled' => __('Enable', 'pprh'),
+            'disabled' => __('Disable', 'pprh')
+        );
 	}
 
 	public function prepare_items() {
@@ -86,7 +107,7 @@ class Display_Hints extends WP_List_Table{
 		$sortable = $this->get_sortable_columns();
 		$this->_column_headers = array($columns, $hidden, $sortable);
 		$user = get_current_user_id();
-		$total_hints = (int)get_user_meta($user, $option, true);
+		$total_hints = (int) get_user_meta($user, $option, true);
 		$this->hints_per_page = (!empty($total_hints)) ? $total_hints : 10;
 		$this->load_data();
 		$current_page = $this->get_pagenum();
@@ -120,13 +141,15 @@ class Display_Hints extends WP_List_Table{
 
 	public function column_url( $item ) {
 		$actions = array(
-			'edit'   => sprintf( '<a id="pprh-edit-hint-%s" class="pprh-edit-hint">Edit</a>', $item['id'] ),
-			'delete' => sprintf( '<a id="pprh-delete-hint-%s">Delete</a>', $item['id'] ),
+			'edit'   => sprintf( '<a id="pprh-edit-hint-%1$s" class="pprh-edit-hint">%2$s</a>', $item['id'], 'Edit' ),
+			'delete' => sprintf( '<a id="pprh-delete-hint-%1$s">%2$s</a>', $item['id'], 'Delete' ),
 		);
 		return sprintf( '%1$s %2$s', $item['url'], $this->row_actions( $actions ) );
 	}
 
 	protected function column_cb( $item, $hide ) {
+		$on_posts_page_and_global = ( ! empty( $item['post_id'] ) ? apply_filters( 'pprh_on_posts_page_and_global', $item['post_id'] ) : false );
+
 		if ( $hide ) {
 		    $this->global_hint_alert();
         } else {

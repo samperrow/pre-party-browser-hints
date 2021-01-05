@@ -1296,7 +1296,7 @@ class WP_List_Table {
 	protected function single_row_columns( $item ) {
 		list( $columns, $hidden, $primary ) = $this->get_column_info();
 
-		$on_posts_page_and_global = ( ! empty( $item['post_id'] ) ? apply_filters( 'pprh_on_posts_page_and_global', $item['post_id'] ) : false );
+//		$on_posts_page_and_global = ( ! empty( $item['post_id'] ) ? apply_filters( 'pprh_on_posts_page_and_global', $item['post_id'] ) : false );
 
 		foreach ( $columns as $column_name => $column_display_name ) {
 			$classes = "$column_name column-$column_name";
@@ -1323,13 +1323,16 @@ class WP_List_Table {
 			} elseif ( method_exists( $this, 'column_' . $column_name ) ) {
 				echo "<td $attributes>";
 
-				if ( 'url' === $column_name && $on_posts_page_and_global ) {
-                    echo sprintf( '%1$s', $item['url'] );
-                    echo '<div class="row-actions global-hint"></div>';
-				} else {
-					echo $this->{'column_' . $column_name}($item);
-					echo $this->handle_row_actions( $column_name, $primary );
-				}
+//				$on_posts_page_and_global
+//				if ( 'url' === $column_name ) {
+				    echo $this->{'column_' . $column_name}($item);
+//                    echo sprintf( '%1$s', $item['url'] );
+//                    echo '<div class="row-actions global-hint"></div>';
+//				}
+//				else {
+////					echo sprintf( '%1$s', $item[$column_name] );
+//					echo $this->handle_row_actions( $column_name, $primary );
+//				}
 
 				echo '</td>';
 			} else {
