@@ -8,10 +8,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class Preconnects {
 
-	public $load_adv = false;
-
 	public function __construct() {
-		if ( 'true' === get_option( 'pprh_preconnect_allow_unauth' ) ) {
+		if ( 'true' === get_option( 'pprh_preconnect_autoload' ) && 'false' === get_option( 'pprh_preconnect_set' ) ) {
+			add_action( 'wp_loaded', array( $this, 'initialize' ) );
+		}
+	}
+
+	public function initialize() {
+		add_action( 'wp_ajax_pprh_post_domain_names', array( $this, 'pprh_post_domain_names' ) );				// for logged in users
+
+		if ( 'true' === get_option( 'pprh_preconnect_allow_unauth' ) ) {										// not logged in
 			$this->load();
 			add_action( 'wp_ajax_nopriv_pprh_post_domain_names', array( $this, 'pprh_post_domain_names' ) );
 		} elseif ( is_user_logged_in() ) {
@@ -20,21 +26,19 @@ class Preconnects {
 	}
 
 	public function load() {
-		add_action( 'wp_footer', array( $this, 'initialize' ) );
-		add_action( 'wp_ajax_pprh_post_domain_names', array( $this, 'pprh_post_domain_names' ) );
+		$js_object = $this->set_js_object();
+		wp_register_script( 'pprh-find-domain-names', PPRH_REL_DIR . 'js/find-external-domains.js', null, PPRH_VERSION, true );
+		wp_localize_script( 'pprh-find-domain-names', 'pprh_data', $js_object );
+		wp_enqueue_script( 'pprh-find-domain-names' );
 	}
 
-	public function initialize() {
-		$preconnects = array(
+	public function set_js_object() {
+		return array(
 			'hints'      => array(),
 			'nonce'      => wp_create_nonce( 'pprh_ajax_nonce' ),
 			'admin_url'  => admin_url() . 'admin-ajax.php',
-			'start_time' => time(),
+			'start_time' => time()
 		);
-
-		wp_register_script( 'pprh-find-domain-names', PPRH_REL_DIR . 'js/find-external-domains.js', null, PPRH_VERSION, true );
-		wp_localize_script( 'pprh-find-domain-names', 'pprh_data', $preconnects );
-		wp_enqueue_script( 'pprh-find-domain-names' );
 	}
 
 	public function pprh_post_domain_names() {

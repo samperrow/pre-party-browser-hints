@@ -4,7 +4,7 @@ Donate link: https://www.paypal.me/samperrow
 Tags: W3C, DNS prefetch, prerender, preconnect, prefetch, preload, web perf, performance, speed, resource hints
 Requires at least: 4.4
 Tested up to: 5.6
-Stable tag: 1.7.4.2
+Stable tag: 1.7.4.3
 Requires PHP: 5.6.30
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -79,8 +79,12 @@ To activate the preloaded resource, you must call that file in HTML as you would
 
 
 == Changelog ==
-1. Most recent update: December 23, 2020.
-2. Version 1.7.4.2
+1. Most recent update: January 5, 2021.
+2. Version 1.7.4.3
+
+January 5, 2021:
+1) fixed error when loading auto preconnects.
+2 added some unit testing code.
 
 December 23, 2020:
 1) fixed issue with creating hints, and made the hint creation process more uniform.
