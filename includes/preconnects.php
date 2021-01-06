@@ -26,10 +26,12 @@ class Preconnects {
 	}
 
 	public function load() {
-		$js_object = $this->set_js_object();
-		wp_register_script( 'pprh-find-domain-names', PPRH_REL_DIR . 'js/find-external-domains.js', null, PPRH_VERSION, true );
-		wp_localize_script( 'pprh-find-domain-names', 'pprh_data', $js_object );
-		wp_enqueue_script( 'pprh-find-domain-names' );
+		if ( ! is_admin() ) {
+			$js_object = $this->set_js_object();
+			wp_register_script( 'pprh-find-domain-names', PPRH_REL_DIR . 'js/find-external-domains.js', null, PPRH_VERSION, true );
+			wp_localize_script( 'pprh-find-domain-names', 'pprh_data', $js_object );
+			wp_enqueue_script( 'pprh-find-domain-names' );
+		}
 	}
 
 	public function set_js_object() {
