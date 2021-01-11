@@ -3,18 +3,22 @@
 declare(strict_types=1);
 use PHPUnit\Framework\TestCase;
 
-//define( 'WP_ADMIN', true);
-//$_SERVER['PHP_SELF'] = '/Users/samperrow/repos/WordPress/wp-admin/admin.php';
-//include_once '/Users/samperrow/Desktop/repos/WordPress/wp-load.php';
-//include_once '/Users/samperrow/Desktop/repos/WordPress/wp-admin/includes/plugin.php';
 
 final class ActivatePluginTest extends TestCase {
 
 //	public function __construct () {}
 
-	public function test_constructor():void {
+	public function test_add_options():void {
 //		$activate_plugin = new \PPRH\Activate_Plugin();
 
+		update_option( 'pprh_disable_wp_hints', 'true' );
+		update_option( 'pprh_html_head', 'true' );
+		update_option( 'pprh_prefetch_enabled', 'false' );
+		update_option( 'pprh_prefetch_delay', '0' );
+		update_option( 'pprh_prefetch_ignoreKeywords', '' );
+		update_option( 'pprh_prefetch_maxRPS', '3' );
+		update_option( 'pprh_prefetch_hoverDelay', '50' );
+		
 		$opt1 = get_option( 'pprh_disable_wp_hints' );
 		$opt2 = get_option( 'pprh_html_head');
 		$opt3 = get_option( 'pprh_prefetch_enabled' );

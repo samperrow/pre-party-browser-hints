@@ -40,9 +40,9 @@ final class Create_HintsTest extends TestCase {
 
 	public function testInitialize(): void {
 		$create_hints = new \PPRH\Create_Hints();
-		$test1 = \PPRH\Utils::create_hint_object('https://www.espn.com', 'dns-prefetch');
-		$test2 = \PPRH\Utils::create_hint_object('ht<tps://www.e>\'sp"n.com', 'dns-prefetch');
-		$test3 = \PPRH\Utils::create_hint_object('//espn.com', 'dns-prefetch');
+		$test1 = \PPRH\Utils::create_raw_hint_object('https://www.espn.com', 'dns-prefetch');
+		$test2 = \PPRH\Utils::create_raw_hint_object('ht<tps://www.e>\'sp"n.com', 'dns-prefetch');
+		$test3 = \PPRH\Utils::create_raw_hint_object('//espn.com', 'dns-prefetch');
 
 
 		$test_hint1 = $create_hints->initialize($test1);
@@ -164,7 +164,7 @@ final class Create_HintsTest extends TestCase {
 	// make sure 'https://www.espn.com' as a preconnect is added to db prior to running this.
 //	public function testDuplicateHintAttemptFails(): void {
 //		$create_hints = new \PPRH\Create_Hints();
-//		$test1 = \PPRH\Utils::create_hint_object('https://www.espn.com', 'preconnect');
+//		$test1 = \PPRH\Utils::create_raw_hint_object('https://www.espn.com', 'preconnect');
 //		$test_hint1 = $create_hints->initialize($test1);
 //		$arr = array(
 //			'success' => false,

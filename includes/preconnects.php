@@ -65,7 +65,7 @@ class Preconnects {
 		$dao->remove_prev_auto_preconnects();
 
 		foreach ( $hint_data->hints as $url ) {
-			$hint_obj = Utils::create_hint_object( $url, 'preconnect', 1 );
+			$hint_obj = Utils::create_raw_hint_object( $url, 'preconnect', 1 );
 
 			$hint_result = Utils::create_pprh_hint( $hint_obj );
 

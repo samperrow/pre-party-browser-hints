@@ -82,8 +82,10 @@ class Settings {
 
                     <td>
                         <select name="disable_wp_hints">
-                            <option <?php Utils::get_option_status( 'pprh_disable_wp_hints', 'true' ); ?> value="true">Yes</option>
-                            <option <?php Utils::get_option_status( 'pprh_disable_wp_hints', 'false' ); ?> value="false"><?php esc_html_e( 'No', 'pprh' ); ?></option>
+                            <option <?php echo Utils::get_option_status( 'pprh_disable_wp_hints', 'true' ); ?>
+                                    value="true">Yes</option>
+                            <option <?php echo Utils::get_option_status( 'pprh_disable_wp_hints', 'false' ); ?>
+                                    value="false"><?php esc_html_e( 'No', 'pprh' ); ?></option>
                         </select>
                     </td>
                 </tr>
@@ -99,8 +101,10 @@ class Settings {
 
                     <td>
                         <select id="pprhHintLocation" name="html_head">
-                            <option value="true" <?php Utils::get_option_status( 'pprh_html_head', 'true' ); ?>><?php esc_html_e( 'HTML &lt;head&gt;', 'pprh' ); ?></option>
-                            <option value="false" <?php Utils::get_option_status( 'pprh_html_head', 'false' ); ?>><?php esc_html_e( 'HTTP Header', 'pprh' ); ?></option>
+                            <option value="true" <?php echo Utils::get_option_status( 'pprh_html_head', 'true' );
+                            ?>><?php esc_html_e( 'HTML &lt;head&gt;', 'pprh' ); ?></option>
+                            <option value="false" <?php echo Utils::get_option_status( 'pprh_html_head', 'false' );
+                            ?>><?php esc_html_e( 'HTTP Header', 'pprh' ); ?></option>
                         </select>
                     </td>
                 </tr>
@@ -139,10 +143,12 @@ class Settings {
                     <td>
                         <label>
                             <select name="autoload_preconnects">
-                                <option value="true" <?php Utils::get_option_status( 'pprh_preconnect_autoload', 'true' ); ?>>
+                                <option value="true" <?php echo Utils::get_option_status( 'pprh_preconnect_autoload',
+                                    'true' ); ?>>
                                     <?php esc_html_e( 'Yes', 'pprh' ); ?>
                                 </option>
-                                <option value="false" <?php Utils::get_option_status( 'pprh_preconnect_autoload', 'false' ); ?>>
+                                <option value="false" <?php echo Utils::get_option_status( 'pprh_preconnect_autoload',
+                                    'false' ); ?>>
                                     <?php esc_html_e( 'No', 'pprh' ); ?>
                                 </option>
                             </select>
@@ -162,10 +168,11 @@ class Settings {
                     <td>
                         <label>
                             <select name="allow_unauth">
-                                <option value="true" <?php Utils::get_option_status( 'pprh_preconnect_allow_unauth', 'true' ); ?>>
+                                <option value="true" <?php echo Utils::get_option_status( 'pprh_preconnect_allow_unauth', 'true' ); ?>>
                                     <?php esc_html_e( 'Yes', 'pprh' ); ?>
                                 </option>
-                                <option value="false" <?php Utils::get_option_status( 'pprh_preconnect_allow_unauth', 'false' ); ?>>
+                                <option value="false" <?php echo Utils::get_option_status(
+                                        'pprh_preconnect_allow_unauth', 'false' ); ?>>
                                     <?php esc_html_e( 'No', 'pprh' ); ?>
                                 </option>
                             </select>
@@ -227,10 +234,10 @@ class Settings {
                     <td>
                         <label>
                             <select name="prefetch_enabled">
-                                <option value="true" <?php Utils::get_option_status( 'pprh_prefetch_enabled', 'true' ); ?>>
+                                <option value="true" <?php echo Utils::get_option_status( 'pprh_prefetch_enabled', 'true' ); ?>>
                                     <?php esc_html_e( 'Yes', 'pprh' ); ?>
                                 </option>
-                                <option value="false" <?php Utils::get_option_status( 'pprh_prefetch_enabled', 'false' ); ?>>
+                                <option value="false" <?php echo Utils::get_option_status( 'pprh_prefetch_enabled', 'false' ); ?>>
                                     <?php esc_html_e( 'No', 'pprh' ); ?>
                                 </option>
                             </select>

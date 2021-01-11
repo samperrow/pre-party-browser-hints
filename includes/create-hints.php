@@ -17,9 +17,9 @@ class Create_Hints {
 	protected $raw_hint;
 
 	public function __construct() {
-		if ( ! defined( 'CREATING_HINT' ) || ! CREATING_HINT ) {
-			exit();
-		}
+//		if ( ! defined( 'CREATING_HINT' ) || ! CREATING_HINT ) {
+////			exit();
+////		}
 		do_action( 'pprh_load_create_hints_child' );
 		$this->new_hint = (object) $this->new_hint;
 
@@ -69,7 +69,7 @@ class Create_Hints {
 		$type_attr = $this->set_type_attr( $hint, $file_type );
 		$crossorigin = $this->set_crossorigin( $hint, $file_type );
 
-		$new_hint = Utils::create_hint_object( $url, $hint_type, $auto_created, $as_attr, $type_attr, $crossorigin );
+		$new_hint = Utils::create_raw_hint_object( $url, $hint_type, $auto_created, $as_attr, $type_attr, $crossorigin );
 		$new_hint = apply_filters( 'pprh_append_hint', $new_hint, $hint );
 		return $new_hint;
 	}

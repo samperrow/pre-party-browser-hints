@@ -25,7 +25,7 @@ class Utils {
 	}
 
 	public static function strip_non_alphanums( $text ) {
-		return preg_replace( '/[^A-z0-9]/', '', $text );
+		return preg_replace( '/[^a-z\d]/imu', '', $text );
 	}
 
 	public static function strip_non_numbers( $text ) {
@@ -33,11 +33,11 @@ class Utils {
 	}
 
 	public static function clean_hint_type( $text ) {
-		return preg_replace( '/[^(A-z|\-)]/', '', $text );
+		return preg_replace( '/[^a-z|\-]/i', '', $text );
 	}
 
 	public static function clean_url( $url ) {
-		return preg_replace( '/[\'<>^\"]/', '', $url );
+		return preg_replace( '/[\'<>^\"\\\]/', '', $url );
 	}
 
 	public static function clean_url_path( $path ) {
@@ -45,7 +45,7 @@ class Utils {
 	}
 
 	public static function clean_hint_attr( $attr ) {
-		return strtolower( preg_replace( '/[^A-z|\/]/', '', $attr ) );
+		return strtolower( preg_replace( '/[^a-z0-9|\/]/i', '', $attr ) );
 	}
 
 	public static function get_opt_val( $opt ) {
@@ -58,19 +58,22 @@ class Utils {
 	        $action .= 'd';
 		}
 
+	    $result = $wp_db->result;
+
 		return array(
 			'last_error' => $wp_db->last_error,
-			'success'    => ( $wp_db->result ),
-			'status'     => ( $wp_db->result ) ? 'success' : 'error',
-			'msg'        => ( $wp_db->result ) ? "Resource hint $action successfully." : "Failed to $action hint.",
+			'success'    => ( $result ),
+			'status'     => ( $result ) ? 'success' : 'error',
+			'msg'        => ( $result ) ? "Resource hint $action successfully." : "Failed to $action hint.",
 		);
 	}
 
 	public static function get_option_status( $option, $val ) {
 	    $opt = get_option( $option );
-		echo esc_html( $opt === $val ? 'selected=selected' : '');
+		return esc_html( $opt === $val ? 'selected=selected' : '');
 	}
 
+	// need to account for ajax
 	public static function on_pprh_page() {
 	    global $pagenow;
 		return
@@ -79,12 +82,12 @@ class Utils {
 	}
 
 	public static function create_pprh_hint( $raw_data ) {
-		define( 'CREATING_HINT', true );
+//		define( 'CREATING_HINT', true );
 		$create_hints = new Create_Hints();
 		return $create_hints->initialize( $raw_data );
 	}
 
-	public static function create_hint_object( $url, $hint_type, $auto_created = 0, $as_attr = '', $type_attr = '', $crossorigin = '', $post_id = '', $post_url = '' ) {
+	public static function create_raw_hint_object( $url, $hint_type, $auto_created = 0, $as_attr = '', $type_attr = '', $crossorigin = '', $post_id = '', $post_url = '' ) {
         $arr = array(
             'url'          => $url,
             'as_attr'      => $as_attr,
