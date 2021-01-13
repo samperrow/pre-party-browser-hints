@@ -51,10 +51,16 @@ class Ajax_Ops {
 		$dao = new DAO();
 		$wp_db = null;
 
+		if ( ! is_array( $data->hint_ids ) || count( $data->hint_ids ) === 0 ) {
+			return false;
+		}
+
+		$concat_ids = Utils::array_into_csv( $data->hint_ids );
+
 		if ( preg_match( '/enabled|disabled/', $action ) ) {
-			$wp_db = $dao->bulk_update( $data, $action );
+			$wp_db = $dao->bulk_update( $concat_ids, $action );
 		} elseif ( 'delete' === $action ) {
-			$wp_db = $dao->delete_hint( $data->hint_ids );
+			$wp_db = $dao->delete_hint( $concat_ids );
 		}
 		return $wp_db;
 	}
@@ -66,7 +72,7 @@ class Ajax_Ops {
 		$this->result['new_hint'] = $hint_result;
 
 		if ( $hint_result['response']['success'] && is_object( $hint_result['new_hint'] ) ) {
-			$hint_result['response'] = $dao->{$action . '_hint'}($hint_result, $data->hint_id);
+			$hint_result['response'] = $dao->{$action . '_hint'}($this->result['new_hint'], $data->hint_id);
 		}
 
 		return $hint_result;

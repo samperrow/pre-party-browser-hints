@@ -53,18 +53,29 @@ class Utils {
 		return ( ! empty( $val ) ) ? $val : '';
 	}
 
-	public static function get_wpdb_result( $wp_db, $action ) {
-	    if ( ! ( strrpos( $action, 'd' ) === strlen( $action ) -1 ) ) {
-	        $action .= 'd';
+	public static function create_db_result( $wpdb, $action, $new_hint = null ) {
+		if ( ! ( strrpos( $action, 'd' ) === strlen( $action ) -1 ) ) {
+			$action .= 'd';
 		}
+		$result     = (bool) $wpdb->result;
+		$hint_id  = ( ! empty( $wpdb->insert_id ) ? $wpdb->insert_id : null );
+		$last_error = $wpdb->last_error;
+		$result = self::create_db_response( $result, $hint_id, $last_error, $action, $new_hint );
+		$wpdb->flush();
 
-	    $result = $wp_db->result;
+		return $result;
+	}
 
+	public static function create_db_response( $result, $hint_id, $last_error, $action, $new_hint = null ) {
 		return array(
-			'last_error' => $wp_db->last_error,
-			'success'    => ( $result ),
-			'status'     => ( $result ) ? 'success' : 'error',
-			'msg'        => ( $result ) ? "Resource hint $action successfully." : "Failed to $action hint.",
+            'new_hint'  => $new_hint,
+			'db_result' => array(
+				'last_error' => $last_error,
+				'hint_id'    => $hint_id,
+				'success'    => $result,
+				'status'     => ( $result ) ? 'success' : 'error',
+				'msg'        => ( $result ) ? "Resource hint $action successfully." : "Failed to $action hint."
+            )
 		);
 	}
 
@@ -100,13 +111,14 @@ class Utils {
         return (object) $arr;
 	}
 
-	public static function create_response( $msg, $status ) {
-	    $success = ( 'success' === $status );
-		return array(
-			'msg' => $msg,
-			'status' => $status,
-			'success' => $success
-		);
+
+
+	public static function array_into_csv( $hint_ids ) {
+		if ( ! is_array( $hint_ids ) || count( $hint_ids ) === 0 ) {
+			return false;
+		}
+
+		return implode( ',', array_map( 'absint', $hint_ids ) );
 	}
 
 }

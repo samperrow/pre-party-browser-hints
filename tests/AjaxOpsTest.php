@@ -9,13 +9,13 @@ if (!defined('ABSPATH')) {
 	exit;
 }
 
-final class AjaxOpsTest extends TestCase {
-
-	public function test_x():void {
-		$this->assertEquals(true, true);
-	}
-
-}
+//final class AjaxOpsTest extends TestCase {
+//
+//	public function test_x():void {
+//		$this->assertEquals(true, true);
+//	}
+//
+//}
 
 
 

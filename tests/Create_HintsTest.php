@@ -46,13 +46,13 @@ final class Create_HintsTest extends TestCase {
 
 
 		$test_hint1 = $create_hints->initialize($test1);
-		$this->assertEquals($test_hint1['new_hint'], $test1);
+		$this->assertEquals($test_hint1, $test1);
 
 		$test_hint2 = $create_hints->initialize($test2);
-		$this->assertEquals($test_hint2['new_hint'], $test1);
+		$this->assertEquals($test_hint2, $test1);
 
 		$test_hint3 = $create_hints->initialize($test3);
-		$this->assertEquals($test_hint3['new_hint'], $test3);
+		$this->assertEquals($test_hint3, $test3);
 	}
 
 

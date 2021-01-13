@@ -84,37 +84,49 @@ final class UtilsTest extends TestCase {
 		$this->assertEquals( '', $test2 );
 	}
 
-	public function test_get_wpdb_result():void {
-		$action1 = 'created';
-		$wpdb1 = (object) array(
-			'result'     => true,
-			'last_error' => '',
-		);
-		$result1 = array(
-			'msg'        => "Resource hint $action1 successfully.",
-			'status'     => 'success',
-			'success'    => true,
-			'last_error' => '',
-		);
+//	public function test_create_db_result():void {
+//
+//
+//		$test1 = PPRH\Utils::create_db_result($str1);
+//
+//		$this->assertEquals( '', $test2 );
+//	}
 
-		$action2 = 'deleted';
-		$wpdb2 = (object) array(
-			'result'     => false,
-			'last_error' => 'Failed!',
-		);
-		$result2 = array(
-			'msg'        => "Failed to $action2 hint.",
-			'status'     => 'error',
-			'success'    => false,
-			'last_error' => 'Failed!',
-		);
-
-		$test1 = PPRH\Utils::get_wpdb_result($wpdb1, $action1);
-		$test2 = PPRH\Utils::get_wpdb_result($wpdb2, $action2 );
-
-		$this->assertEquals( $result1, $test1 );
-		$this->assertEquals( $result2, $test2 );
-	}
+//	public function test_get_wpdb_result():void {
+//		$action1 = 'created';
+//		$hint_id = null;
+//		$wpdb1 = (object) array(
+//			'result'     => true,
+//			'last_error' => '',
+//		);
+//		$result1 = array(
+//			'msg'        => "Resource hint $action1 successfully.",
+//			'status'     => 'success',
+//			'success'    => true,
+//			'last_error' => '',
+//			'hint_id'  => $hint_id,
+//		);
+//
+//		$action2 = 'deleted';
+//		$wpdb2 = (object) array(
+//			'result'     => false,
+//			'last_error' => 'Failed!',
+//			'hint_id'  => $hint_id,
+//		);
+//		$result2 = array(
+//			'msg'        => "Failed to $action2 hint.",
+//			'status'     => 'error',
+//			'success'    => false,
+//			'last_error' => 'Failed!',
+//			'hint_id'  => $hint_id,
+//		);
+//
+//		$test1 = PPRH\Utils::get_wpdb_result($wpdb1, $action1);
+//		$test2 = PPRH\Utils::get_wpdb_result($wpdb2, $action2 );
+//
+//		$this->assertEquals( $result1, $test1 );
+//		$this->assertEquals( $result2, $test2 );
+//	}
 
 	public function test_get_option_status():void {
 		$test1 = PPRH\Utils::get_option_status('pprh_prefetch_enabled', 'false' );
@@ -146,24 +158,18 @@ final class UtilsTest extends TestCase {
 			'hint_id' => null
 		);
 
-		$result1 = array(
-			'new_hint' => (object) array(
-				'url'          => '//test.com',
-				'hint_type'    => 'dns-prefetch',
-				'crossorigin'  => '',
-				'as_attr'      => '',
-				'type_attr'    => '',
-				'auto_created' => 0
-			),
-			'response' => array(
-				'msg'     => '',
-				'status'  => 'success',
-				'success' => true
-			)
+		$new_hint = (object) array(
+			'url'          => '//test.com',
+			'hint_type'    => 'dns-prefetch',
+			'crossorigin'  => '',
+			'as_attr'      => '',
+			'type_attr'    => '',
+			'auto_created' => 0
 		);
+
 		$test1 = PPRH\Utils::create_pprh_hint($raw_data1);
 
-		$this->assertEquals( $result1, $test1 );
+		$this->assertEquals( $new_hint, $test1 );
 	}
 
 	public function test_create_pprh_hint_fail():void {
@@ -198,18 +204,23 @@ final class UtilsTest extends TestCase {
 	}
 
 	public function test_create_response():void {
-		$msg = 'This is a successful test!';
-		$status = 'success';
+		$result = true;
+		$action = 'test';
 
-		$result1 = array(
-			'msg'     => $msg,
-			'status'  => $status,
-			'success' => true
+		$expected = array(
+			'new_hint' => null,
+			'db_result' => array(
+				'last_error' => '',
+				'hint_id'    => 0,
+				'success'    => $result,
+				'status'     => ( $result ) ? 'success' : 'error',
+				'msg'        => ( $result ) ? "Resource hint $action successfully." : "Failed to $action hint."
+			)
 		);
 
-		$test1 = PPRH\Utils::create_response($msg, $status);
+		$test1 = PPRH\Utils::create_db_response( true, 0, '', 'test', null );
 
-		$this->assertEquals( $result1, $test1 );
+		$this->assertEquals( $expected, $test1 );
 	}
 
 }

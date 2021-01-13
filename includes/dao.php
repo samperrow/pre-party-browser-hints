@@ -10,9 +10,8 @@ class DAO {
 
 //	public function __construct() {}
 
-	public function create_hint( $hint_result, $id = null ) {
+	public function create_hint( $new_hint, $id = null ) {
 		global $wpdb;
-		$new_hint = $hint_result['new_hint'];
 		$current_user = wp_get_current_user()->display_name;
 		$auto_created = ( ! empty( $new_hint->auto_created ) ? $new_hint->auto_created : 0 );
 
@@ -38,12 +37,12 @@ class DAO {
 			$args['types']
 		);
 
-		return Utils::get_wpdb_result( $wpdb, 'create' );
+		return Utils::create_db_result( $wpdb, 'create', $new_hint );
 	}
 
-	public function update_hint( $hint_result, $hint_id ) {
+
+	public function update_hint( $new_hint, $hint_id ) {
 		global $wpdb;
-		$new_hint = $hint_result['new_hint'];
 		$hint_id = (int) $hint_id;
 
 		$wpdb->update(
@@ -62,33 +61,26 @@ class DAO {
 			array( '%d' )
 		);
 
-		return Utils::get_wpdb_result( $wpdb, 'update' );
+		return Utils::create_db_result( $wpdb, 'update', $new_hint );
+	}
+
+	public function bulk_update( $hint_ids, $action ) {
+		global $wpdb;
+		$table = PPRH_DB_TABLE;
+
+		$wpdb->query( $wpdb->prepare(
+			"UPDATE $table SET status = %s WHERE id IN ($hint_ids)",
+			$action
+		) );
+
+		return Utils::create_db_result( $wpdb, $action, null );
 	}
 
 	public function delete_hint( $hint_ids ) {
 		global $wpdb;
 		$table = PPRH_DB_TABLE;
-
-		if ( ! is_array( $hint_ids ) || count( $hint_ids ) === 0 ) {
-			return false;
-		}
-
-		$concat_ids = implode( ',', array_map( 'absint', $hint_ids ) );
-		$wpdb->query( "DELETE FROM $table WHERE id IN ($concat_ids)" );
-		return Utils::get_wpdb_result( $wpdb, 'delete' );
-	}
-
-	public function bulk_update( $data, $action ) {
-		global $wpdb;
-		$table = PPRH_DB_TABLE;
-		$concat_ids = implode( ',', array_map( 'absint', $data->hint_ids ) );
-
-		$wpdb->query( $wpdb->prepare(
-			"UPDATE $table SET status = %s WHERE id IN ($concat_ids)",
-			$action
-		) );
-
-		return Utils::get_wpdb_result( $wpdb, $action );
+		$wpdb->query( "DELETE FROM $table WHERE id IN ($hint_ids)" );
+		return Utils::create_db_result( $wpdb, 'delete', null );
 	}
 
 	public function remove_prev_auto_preconnects() {

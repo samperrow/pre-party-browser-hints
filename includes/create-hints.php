@@ -57,7 +57,8 @@ class Create_Hints {
 			$this->result['new_hint'] = $this->new_hint;
 		}
 
-		return $this->result;
+//		return $this->result;
+		return $this->new_hint;
 	}
 
 	public function create_hint( $hint ) {
