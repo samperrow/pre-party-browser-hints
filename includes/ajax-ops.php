@@ -21,18 +21,18 @@ class Ajax_Ops {
 			do_action( 'pprh_load_ajax_ops_child' );
 
 			check_ajax_referer( 'pprh_table_nonce', 'val' );
-			$data = json_decode( wp_unslash( $_POST['pprh_data'] ), false );
+			$data = json_decode( wp_unslash( $_POST['pprh_data'] ), true );
 
-			if ( is_object( $data ) ) {
-				$action = $data->action;
+			if ( is_array( $data ) ) {
+				$action = $data['action'];
 
 				if ( preg_match( '/create|update/', $action ) ) {
 					$this->result = $this->create_hint( $data, $action );
-				} elseif (preg_match( '/enabled|disabled|delete/', $action )) {
-					$this->result['response'] = $this->handle_action( $data, $action );
+				} elseif (preg_match( '/enabled|disabled|delete/', $action ) ) {
+					$this->result = $this->handle_action( $data, $action );
 				}
 				elseif ( 'reset_single_post_preconnects' === $action ) {
-					$this->result['response'] = apply_filters( 'pprh_reset_single_post_preconnect', $data );
+					$this->result = apply_filters( 'pprh_reset_single_post_preconnect', $data );
 				}
 				// TODO
 //				elseif ( 'reset_single_post_prerenders' === $action ) {
@@ -40,9 +40,14 @@ class Ajax_Ops {
 //				}
 
 				$display_hints = new Display_Hints();
-				$display_hints->ajax_response( $this->result );
-			}
+				$json = $display_hints->ajax_response( $this->result );
 
+				if ( defined( 'PPRH_TESTING' ) && PPRH_TESTING ) {
+					return $json;
+				} else {
+					die( $json );
+				}
+			}
 			wp_die();
 		}
 	}
@@ -51,11 +56,11 @@ class Ajax_Ops {
 		$dao = new DAO();
 		$wp_db = null;
 
-		if ( ! is_array( $data->hint_ids ) || count( $data->hint_ids ) === 0 ) {
+		if ( ! is_array( $data['hint_ids'] ) || count( $data['hint_ids'] ) === 0 ) {
 			return false;
 		}
 
-		$concat_ids = Utils::array_into_csv( $data->hint_ids );
+		$concat_ids = Utils::array_into_csv( $data['hint_ids'] );
 
 		if ( preg_match( '/enabled|disabled/', $action ) ) {
 			$wp_db = $dao->bulk_update( $concat_ids, $action );
@@ -67,16 +72,10 @@ class Ajax_Ops {
 
 	private function create_hint( $data, $action ) {
 		$dao = new DAO();
+		$create_hints = new Create_Hints();
+		$new_hint = $create_hints->create_hint( $data );
 
-		$hint_result = Utils::create_pprh_hint( $data );
-		$this->result['new_hint'] = $hint_result;
-
-		if ( $hint_result['response']['success'] && is_object( $hint_result['new_hint'] ) ) {
-			$hint_result['response'] = $dao->{$action . '_hint'}($this->result['new_hint'], $data->hint_id);
-		}
-
-		return $hint_result;
+		return ( is_array( $new_hint ) ) ? $dao->{$action . '_hint'}($new_hint, $data['hint_id'] ) : false;
 	}
-
 
 }

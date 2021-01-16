@@ -50,8 +50,8 @@ class Pre_Party_Browser_Hints {
 			add_action( 'admin_enqueue_scripts', array( $this, 'register_admin_files' ) );
 			add_filter( 'set-screen-option', array( $this, 'apply_wp_screen_options' ), 10, 3 );
 
-			if ( $this->on_pprh_page || wp_doing_ajax() ) {
-				include_once PPRH_ABS_DIR . 'includes/display-hints.php';
+			if ( $this->on_pprh_page || wp_doing_ajax() || PPRH_TESTING ) {
+                include_once PPRH_ABS_DIR . 'includes/display-hints.php';
 				include_once PPRH_ABS_DIR . 'includes/ajax-ops.php';
 				new Ajax_Ops();
 				do_action( 'pprh_pro_admin_init' );

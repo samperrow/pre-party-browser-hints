@@ -148,48 +148,43 @@ final class UtilsTest extends TestCase {
 
 
 	public function test_create_pprh_hint_success():void {
-		$raw_data1 = (object) array(
-			'url' => 'test.com',
-			'hint_type' => 'dns-prefetch',
-			'crossorigin' => '',
-			'as_attr' => '',
-			'type_attr' => '',
-			'action' => 'create',
-			'hint_id' => null
+		$dao = new \PPRH\DAO();
+		$raw_data1 = \PPRH\Utils::create_raw_hint_array( 'test.com', 'dns-prefetch' );
+		$actual = \PPRH\Utils::create_pprh_hint($raw_data1);
+
+		$expected = (object) array(
+			'new_hint' => array(
+				'url'          => '//test.com',
+				'hint_type'    => 'dns-prefetch',
+				'crossorigin'  => '',
+				'as_attr'      => '',
+				'type_attr'    => '',
+				'auto_created' => 0
+			),
+			'db_result' => array(
+				'last_error' => '',
+				'hint_id'   => $actual->db_result['hint_id'],
+				'success'   => true,
+				'status'    => 'success',
+				'msg'       => 'Resource hint created successfully.'
+			)
 		);
 
-		$new_hint = (object) array(
-			'url'          => '//test.com',
-			'hint_type'    => 'dns-prefetch',
-			'crossorigin'  => '',
-			'as_attr'      => '',
-			'type_attr'    => '',
-			'auto_created' => 0
-		);
-
-		$test1 = PPRH\Utils::create_pprh_hint($raw_data1);
-
-		$this->assertEquals( $new_hint, $test1 );
+		$this->assertEquals( $expected, $actual );
+		$dao->delete_hint( $actual->db_result['hint_id'] );
 	}
 
 	public function test_create_pprh_hint_fail():void {
-		$raw_data1 = (object) array(
-			'url'         => '',
-			'hint_type'   => '',
-			'crossorigin' => '',
-			'as_attr'     => '',
-			'type_attr'   => '',
-			'action'      => 'create',
-			'hint_id'     => null
-		);
+//		$create_hints = new \PPRH\Create_Hints();
+		$raw_data1 = \PPRH\Utils::create_raw_hint_array( '', '' );
 
-		$test1 = PPRH\Utils::create_pprh_hint($raw_data1);
+		$actual = \PPRH\Utils::create_pprh_hint($raw_data1);
 
-		$this->assertEquals( false, $test1 );
+		$this->assertEquals( false, $actual );
 	}
 
-	public function test_create_raw_hint_object():void {
-		$result1 = (object) array(
+	public function test_create_raw_hint_array():void {
+		$result1 = array(
 			'url'          => 'test.com',
 			'hint_type'    => 'preconnect',
 			'crossorigin'  => 'crossorigin',
@@ -198,7 +193,7 @@ final class UtilsTest extends TestCase {
 			'auto_created' => 1
 		);
 
-		$test1 = PPRH\Utils::create_raw_hint_object('test.com', 'preconnect', 1, 'audio', 'font/woff2', 'crossorigin');
+		$test1 = PPRH\Utils::create_raw_hint_array('test.com', 'preconnect', 1, 'audio', 'font/woff2', 'crossorigin');
 
 		$this->assertEquals( $result1, $test1 );
 	}
@@ -207,7 +202,7 @@ final class UtilsTest extends TestCase {
 		$result = true;
 		$action = 'test';
 
-		$expected = array(
+		$expected = (object) array(
 			'new_hint' => null,
 			'db_result' => array(
 				'last_error' => '',

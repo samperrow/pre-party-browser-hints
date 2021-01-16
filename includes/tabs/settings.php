@@ -183,7 +183,7 @@ class Settings {
                 <?php
 		        $load_basic = apply_filters( 'pprh_pro_settings', 'preconnect' );
 
-		        if ( is_null( $load_basic ) ) { ?>
+		        if ( true !== $load_basic  ) { ?>
                     <tr>
                         <th><?php esc_html_e( 'Reset automatically created preconnect links?', 'pprh' ); ?></th>
 

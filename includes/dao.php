@@ -13,17 +13,17 @@ class DAO {
 	public function create_hint( $new_hint, $id = null ) {
 		global $wpdb;
 		$current_user = wp_get_current_user()->display_name;
-		$auto_created = ( ! empty( $new_hint->auto_created ) ? $new_hint->auto_created : 0 );
+		$auto_created = ( ! empty( $new_hint['auto_created'] ) ? (int) $new_hint['auto_created'] : 0 );
 
 		$args = array(
 			'types' => array( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d' ),
 			'columns' => array(
-				'url'          => $new_hint->url,
-				'hint_type'    => $new_hint->hint_type,
+				'url'          => $new_hint['url'],
+				'hint_type'    => $new_hint['hint_type'],
 				'status'       => 'enabled',
-				'as_attr'      => $new_hint->as_attr,
-				'type_attr'    => $new_hint->type_attr,
-				'crossorigin'  => $new_hint->crossorigin,
+				'as_attr'      => $new_hint['as_attr'],
+				'type_attr'    => $new_hint['type_attr'],
+				'crossorigin'  => $new_hint['crossorigin'],
 				'created_by'   => $current_user,
 				'auto_created' => $auto_created,
 			)
@@ -48,11 +48,11 @@ class DAO {
 		$wpdb->update(
 			PPRH_DB_TABLE,
 			array(
-				'url'         => $new_hint->url,
-				'hint_type'   => $new_hint->hint_type,
-				'as_attr'     => $new_hint->as_attr,
-				'type_attr'   => $new_hint->type_attr,
-				'crossorigin' => $new_hint->crossorigin,
+				'url'         => $new_hint['url'],
+				'hint_type'   => $new_hint['hint_type'],
+				'as_attr'     => $new_hint['as_attr'],
+				'type_attr'   => $new_hint['type_attr'],
+				'crossorigin' => $new_hint['crossorigin'],
 			),
 			array(
 				'id' => $hint_id,
@@ -92,20 +92,30 @@ class DAO {
 		);
 	}
 
-	public function get_hints( $sql ) {
+	public function get_hints( $query = null ) {
 		global $wpdb;
+		$table = PPRH_DB_TABLE;
+		$sql = "SELECT * FROM $table";
 
-		return $wpdb->get_results( $sql, ARRAY_A );
-	}
+		if ( ! empty( $query['sql'] ) ) {
+			$sql .= $query['sql'];
+		}
 
-	public function get_hints_query( $query ) {
-		global $wpdb;
+		if ( ! empty( $_REQUEST['orderby'] ) ) {
+			$sql .= ' ORDER BY ' . esc_sql( $_REQUEST['orderby'] );
+			$sql .= ! empty( $_REQUEST['order'] ) ? ' ' . esc_sql( $_REQUEST['order'] ) : ' ASC';
+		}
+
+//		$sql = apply_filters( 'pprh_dh_append_sql', $sql);
 //		$query = apply_filters( 'pprh_sh_append_sql', $query );
 
-		$res = $wpdb->get_results(
-			$wpdb->prepare( $query['sql'], $query['args'] )
-		);
-		return $res;
+		$sql .= ' ORDER BY url DESC';
+
+		if ( ! empty( $query['args'] ) ) {
+			$sql = $wpdb->prepare( $sql, $query['args'] );
+		}
+
+		return $wpdb->get_results( $sql, ARRAY_A );
 	}
 
 

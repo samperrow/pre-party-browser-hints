@@ -18,15 +18,14 @@ class Send_Hints {
 
 	public function get_resource_hints() {
 		$this->send_hints_in_html = get_option( 'pprh_html_head' );
-		$table = PPRH_DB_TABLE;
 
 		$dao = new DAO();
 		$query = array(
-			'sql' => "SELECT url, hint_type, as_attr, type_attr, crossorigin FROM $table WHERE status = %s",
+			'sql'  => " WHERE status = %s",
 			'args' => array( 'enabled' )
 		);
 
-		$this->hints = $dao->get_hints_query( $query );
+		$this->hints = $dao->get_hints( $query );
 
 		if ( ( ! is_array( $this->hints ) ) || count( $this->hints ) < 1 ) {
 			return;
@@ -40,10 +39,10 @@ class Send_Hints {
 	public function send_to_html_head() {
 		foreach ( $this->hints as $key => $val ) {
 			$attrs = '';
-			$attrs .= $this->add_attr( 'as', $val->as_attr );
-			$attrs .= $this->add_attr( 'type', $val->type_attr );
-			$attrs .= $this->add_attr( 'crossorigin', trim( $val->crossorigin ) );
-			echo sprintf( '<link href="%s" rel="%s"%s>', $val->url, $val->hint_type, $attrs );
+			$attrs .= $this->add_attr( 'as', $val['as_attr'] );
+			$attrs .= $this->add_attr( 'type', $val['type_attr'] );
+			$attrs .= $this->add_attr( 'crossorigin', trim( $val['crossorigin'] ) );
+			echo sprintf( '<link href="%s" rel="%s"%s>', $val['url'], $val['hint_type'], $attrs );
 		}
 	}
 
@@ -52,10 +51,10 @@ class Send_Hints {
 
 		foreach ( $this->hints as $key => $val ) {
 			$attrs = '';
-			$attrs .= $this->add_attr( 'as', $val->as_attr );
-			$attrs .= $this->add_attr( 'type', $val->type_attr );
-			$attrs .= $this->add_attr( 'crossorigin', trim( $val->crossorigin ) );
-			$str = sprintf( '<%s>; rel=%s;%s', $val->url, $val->hint_type, $attrs );
+			$attrs .= $this->add_attr( 'as', $val['as_attr'] );
+			$attrs .= $this->add_attr( 'type', $val['type_attr'] );
+			$attrs .= $this->add_attr( 'crossorigin', trim( $val['crossorigin'] ) );
+			$str = sprintf( '<%s>; rel=%s;%s', $val['url'], $val['hint_type'], $attrs );
 			$str = rtrim( $str, ';' );
 			$output .= $str . ', ';
 		}

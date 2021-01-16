@@ -10,7 +10,7 @@ if ( ! class_exists( WP_List_Table::class ) ) {
 	require_once PPRH_ABS_DIR . 'includes/wp-list-table.php';
 }
 
-class Display_Hints extends WP_List_Table{
+class Display_Hints extends WP_List_Table {
 
 	public $_column_headers;
 	public $hints_per_page;
@@ -94,45 +94,37 @@ class Display_Hints extends WP_List_Table{
 
 	public function get_bulk_actions() {
 		return array(
-            'delete' => __('Delete', 'pprh'),
-            'enabled' => __('Enable', 'pprh'),
-            'disabled' => __('Disable', 'pprh')
+            'delete'   => __( 'Delete', 'pprh' ),
+            'enabled'  => __( 'Enable', 'pprh' ),
+            'disabled' => __( 'Disable', 'pprh' )
         );
 	}
 
 	public function prepare_items() {
+		$dao = new DAO();
 		$option = 'pprh_screen_options';
 		$columns = $this->get_columns();
 		$hidden = array();
 		$sortable = $this->get_sortable_columns();
-		$this->_column_headers = array($columns, $hidden, $sortable);
+		$this->_column_headers = array( $columns, $hidden, $sortable );
 		$user = get_current_user_id();
-		$total_hints = (int) get_user_meta($user, $option, true);
-		$this->hints_per_page = (!empty($total_hints)) ? $total_hints : 10;
-		$this->load_data();
+		$total_hints = (int) get_user_meta( $user, $option, true );
+		$this->hints_per_page = ( ! empty( $total_hints ) ) ? $total_hints : 10;
+		$this->data = $dao->get_hints( null );
 		$current_page = $this->get_pagenum();
-		$data = array_slice($this->data, (($current_page - 1) * $this->hints_per_page), $this->hints_per_page);
+		$data = array_slice( $this->data, ( ( $current_page - 1 ) * $this->hints_per_page ), $this->hints_per_page );
 		$this->items = $data;
-		$total_items = count($this->data);
+		$total_items = count( $this->data );
 
-		$this->set_pagination_args(array('total_items' => $total_items, 'per_page' => $this->hints_per_page, 'total_pages' => ceil($total_items / $this->hints_per_page), 'orderby' => !empty($_REQUEST['orderby']) && '' !== $_REQUEST['orderby'] ? $_REQUEST['orderby'] : 'title', 'order' => !empty($_REQUEST['order']) && '' !== $_REQUEST['order'] ? $_REQUEST['order'] : 'asc',));
-	}
-
-	public function load_data() {
-		$table = PPRH_DB_TABLE;
-		$sql = "SELECT * FROM $table";
-
-		if ( ! empty( $_REQUEST['orderby'] ) ) {
-			$sql .= ' ORDER BY ' . esc_sql( $_REQUEST['orderby'] );
-			$sql .= ! empty( $_REQUEST['order'] ) ? ' ' . esc_sql( $_REQUEST['order'] ) : ' ASC';
-		}
-
-		$sql = apply_filters( 'pprh_dh_append_sql', $sql);
-		$sql .= ' ORDER BY url DESC';
-
-		$dao = new DAO();
-		$this->data = $dao->get_hints( $sql );
-		return $this->data;
+		$this->set_pagination_args(
+            array(
+				'order'       => ! empty( $_REQUEST['order'] ) && '' !== $_REQUEST['order'] ? $_REQUEST['order'] : 'asc',
+				'orderby'     => ! empty( $_REQUEST['orderby'] ) && '' !== $_REQUEST['orderby'] ? $_REQUEST['orderby'] : 'title',
+				'per_page'    => $this->hints_per_page,
+				'total_items' => $total_items,
+				'total_pages' => ceil( $total_items / $this->hints_per_page ),
+            )
+        );
 	}
 
 	public function no_items() {
@@ -167,7 +159,7 @@ class Display_Hints extends WP_List_Table{
 
 	public function inline_edit_row( $item ) {
 		$json = json_encode( $item,true );
-		$item_id = $item['id'];
+		$item_id = Utils::strip_non_numbers( $item['id'] );
 		?>
 			<tr class="pprh-row edit <?php echo $item_id; ?>">
 				<td colspan="9">
@@ -178,8 +170,8 @@ class Display_Hints extends WP_List_Table{
 						?>
                         <tr>
                             <td colspan="5">
-                                <button style="margin: 0 20px;" type="button" class="pprh-cancel button cancel">Cancel</button>
-                                <button style="margin: 0 20px;" type="button" class="pprh-update button button-primary save">Update</button>
+                                <button type="button" class="pprh-cancel button cancel">Cancel</button>
+                                <button type="button" class="pprh-update button button-primary save">Update</button>
                             </td>
                         </tr>
 					</table>

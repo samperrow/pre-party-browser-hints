@@ -14,17 +14,14 @@ class Create_Hints {
 
 	protected $new_hint = array();
 
-	protected $raw_hint;
-
 	public function __construct() {
 //		if ( ! defined( 'CREATING_HINT' ) || ! CREATING_HINT ) {
 ////			exit();
 ////		}
 		do_action( 'pprh_load_create_hints_child' );
-		$this->new_hint = (object) $this->new_hint;
 
 		$this->result = array(
-			'new_hint' => $this->new_hint,
+			'new_hint' => array(),
 			'response' => array(
 				'msg'     => '',
 				'status'  => '',
@@ -33,44 +30,33 @@ class Create_Hints {
 		);
 	}
 
-	public function initialize( $hint ) {
-		if ( empty( $hint->url ) || empty( $hint->hint_type ) ) {
-			return false;
-		}
-
-		$this->raw_hint = $hint;
-		$this->new_hint = $this->create_hint( $hint );
-		$this->duplicate_hints = $this->get_duplicate_hints();
+	public function validate_hint( $new_hint ) {
+		$this->duplicate_hints = $this->get_duplicate_hints( $new_hint );
 		$duplicate_hints_exist = ( count( $this->duplicate_hints ) > 0 );
 		$msg = '';
 
-		if ( ! empty( $this->new_hint->post_id ) ) {
-			$msg = apply_filters( 'pprh_check_duplicates', $this );
-		}
+//		if ( ! empty( $this->new_hint['post_id'] ) ) {
+//			$msg = apply_filters( 'pprh_check_duplicates', $this );
+//		}
 
-		if ( $duplicate_hints_exist && '' === $msg ) {
-			$this->result['response']['msg'] .= 'An identical resource hint already exists!';
-			$this->result['response']['status'] = 'warning';
-		} else {
-			$this->result['response']['status'] = 'success';
-			$this->result['response']['success'] = true;
-			$this->result['new_hint'] = $this->new_hint;
-		}
-
-//		return $this->result;
-		return $this->new_hint;
+		return ! ( $duplicate_hints_exist && '' === $msg );
 	}
 
+
 	public function create_hint( $hint ) {
-		$hint_type = $this->get_hint_type( $hint->hint_type );
-		$url = $this->get_url( $hint->url, $hint_type );
+		if ( empty( $hint['url'] ) || empty( $hint['hint_type'] ) ) {
+			return false;
+		}
+
+		$hint_type = $this->get_hint_type( $hint['hint_type'] );
+		$url = $this->get_url( $hint['url'], $hint_type );
 		$file_type = $this->get_file_type( $url );
-		$auto_created = ( ! empty( $hint->auto_created ) ? 1 : 0 );
-		$as_attr = $this->set_as_attr( $hint->as_attr, $file_type );
+		$auto_created = ( ! empty( $hint['auto_created'] ) ? 1 : 0 );
+		$as_attr = $this->set_as_attr( $hint['as_attr'], $file_type );
 		$type_attr = $this->set_type_attr( $hint, $file_type );
 		$crossorigin = $this->set_crossorigin( $hint, $file_type );
 
-		$new_hint = Utils::create_raw_hint_object( $url, $hint_type, $auto_created, $as_attr, $type_attr, $crossorigin );
+		$new_hint = Utils::create_raw_hint_array( $url, $hint_type, $auto_created, $as_attr, $type_attr, $crossorigin );
 		$new_hint = apply_filters( 'pprh_append_hint', $new_hint, $hint );
 		return $new_hint;
 	}
@@ -109,7 +95,7 @@ class Create_Hints {
 	}
 
 	public function set_crossorigin( $hint, $file_type ) {
-		if ( ! empty( $hint->crossorigin ) || ( preg_match( '/fonts.(googleapis|gstatic).com/i', $hint->url ) || preg_match( '/(.woff|.woff2|.ttf|.eot)/', $file_type ) ) ) {
+		if ( ! empty( $hint['crossorigin'] ) || ( preg_match( '/fonts.(googleapis|gstatic).com/i', $hint['url'] ) || preg_match( '/(.woff|.woff2|.ttf|.eot)/', $file_type ) ) ) {
 			return 'crossorigin';
 		}
 
@@ -140,7 +126,7 @@ class Create_Hints {
 	}
 
 	public function set_type_attr( $hint, $file_type ) {
-		$type_attr = ( ! empty( $hint->type_attr ) ) ? $hint->type_attr : '';
+		$type_attr = ( ! empty( $hint['type_attr'] ) ) ? $hint['type_attr'] : '';
 		$mimes = array(
 			'.woff'  => 'font/woff',
 			'.woff2' => 'font/woff2',
@@ -161,20 +147,20 @@ class Create_Hints {
 	}
 
 
-	public function get_duplicate_hints() {
-		$table = PPRH_DB_TABLE;
-		$sql = "SELECT url, hint_type, id FROM $table WHERE url = %s AND hint_type = %s";
+	public function get_duplicate_hints( $hint ) {
+//		$table = PPRH_DB_TABLE;
+//		$sql = "SELECT url, hint_type, id FROM $table WHERE url = %s AND hint_type = %s";
 		$query = array(
-			'sql'  => $sql,
-			'args' => array( $this->new_hint->url, $this->new_hint->hint_type )
+			'sql'  => " WHERE url = %s AND hint_type = %s",
+			'args' => array( $hint['url'], $hint['hint_type'] )
 		);
 
-		if ( ! empty( $this->new_hint->post_id ) ) {
-			$query = apply_filters( 'pprh_duplicate_hint_query', $query, $this->new_hint );
+		if ( ! empty( $hint['post_id'] ) ) {
+			$query = apply_filters( 'pprh_duplicate_hint_query', $query, $hint );
 		}
 
 		$dao = new DAO();
-		return $dao->get_hints_query( $query );
+		return $dao->get_hints( $query );
 
 //		if ( count( $prev_hints ) > 0 ) {
 //			return true;

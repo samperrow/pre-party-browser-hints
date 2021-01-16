@@ -67,7 +67,7 @@ class Utils {
 	}
 
 	public static function create_db_response( $result, $hint_id, $last_error, $action, $new_hint = null ) {
-		return array(
+		return (object) array(
             'new_hint'  => $new_hint,
 			'db_result' => array(
 				'last_error' => $last_error,
@@ -95,11 +95,21 @@ class Utils {
 	public static function create_pprh_hint( $raw_data ) {
 //		define( 'CREATING_HINT', true );
 		$create_hints = new Create_Hints();
-		return $create_hints->initialize( $raw_data );
+		$new_hint = $create_hints->create_hint( $raw_data );
+
+		if ( is_array( $new_hint ) ) {
+			$valid = $create_hints->validate_hint( $new_hint );
+
+			if ( $valid ) {
+				$dao = new DAO();
+				return $dao->create_hint( $new_hint );
+			}
+		}
+        return false;
 	}
 
-	public static function create_raw_hint_object( $url, $hint_type, $auto_created = 0, $as_attr = '', $type_attr = '', $crossorigin = '', $post_id = '', $post_url = '' ) {
-        $arr = array(
+	public static function create_raw_hint_array( $url, $hint_type, $auto_created = 0, $as_attr = '', $type_attr = '', $crossorigin = '' ) {
+		return array(
             'url'          => $url,
             'as_attr'      => $as_attr,
 			'hint_type'    => $hint_type,
@@ -107,11 +117,7 @@ class Utils {
 			'crossorigin'  => $crossorigin,
 			'auto_created' => $auto_created
 		);
-
-        return (object) $arr;
 	}
-
-
 
 	public static function array_into_csv( $hint_ids ) {
 		if ( ! is_array( $hint_ids ) || count( $hint_ids ) === 0 ) {

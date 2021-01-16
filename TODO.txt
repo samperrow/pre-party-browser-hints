@@ -1,0 +1,23 @@
+
+4) translations! Set up proper structure for languages to be created (pro and free)
+31. add warning saying that WP ajax must be running in admin area for plugin to work. (apparently there isn't a
+    constant for this)
+
+    - 1.7.4.3: (free) apply hint pagination limit not working?
+
+
+MISC:
+1) update readme to reflect new method of find-external-domains request expiring after 6 hours and caching. "To get this funtionality working properly, ensure that this file (/wp-content/plugins/pre-party-browser-hints/js/find-external-domains.js) is not effected by any cache plugins.”
+
+2) test/validate with PHP 8.0
+
+
+
+PREFETCH:
+3) add default "ignore keywords values?" (ex- /wp-admin, /wp-login.php, /cart, /checkout, add-to-cart, logout, #, ?, .png, .jpeg, .jpg, .gif, .svg, .webp)
+
+4) add "disable for logged in users" option
+
+5) add HTTPS check, and cache-control check?
+
+6) notify user that these prefetch hints do not get added to the db, and are only temporary.

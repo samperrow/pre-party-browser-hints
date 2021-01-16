@@ -58,6 +58,10 @@ div#pprh-wrapper {
 
     tr.pprh-row {
 
+        button.pprh-cancel {
+            margin: 0 40px 0 0;
+        }
+
         &.edit {
             display: none;
             text-align: center;

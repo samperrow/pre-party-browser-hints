@@ -16,7 +16,7 @@ final class Create_HintsTest extends TestCase {
 		define('CREATING_HINT', true);
 		$create_hints = new \PPRH\Create_Hints();
 
-		$new_hint = (object) array();
+		$new_hint = array();
 
 		$result = array(
 			'new_hint' => $new_hint,
@@ -34,37 +34,40 @@ final class Create_HintsTest extends TestCase {
 		if ( is_plugin_active( 'pprh-pro' ) ) {
 			$this->assertTrue( class_exists(\PPRH\Create_Hints_Child::class ) );
 		}
-
 	}
 
+//	public function test_validate_hint( $new_hint ) {
+//
+//
+//	}
 
-	public function testInitialize(): void {
+
+	public function test_create_hint_success(): void {
 		$create_hints = new \PPRH\Create_Hints();
-		$test1 = \PPRH\Utils::create_raw_hint_object('https://www.espn.com', 'dns-prefetch');
-		$test2 = \PPRH\Utils::create_raw_hint_object('ht<tps://www.e>\'sp"n.com', 'dns-prefetch');
-		$test3 = \PPRH\Utils::create_raw_hint_object('//espn.com', 'dns-prefetch');
+		$test1 = \PPRH\Utils::create_raw_hint_array('https://www.espn.com', 'dns-prefetch');
+		$test2 = \PPRH\Utils::create_raw_hint_array('ht<tps://www.e>\'sp"n.com', 'dns-prefetch');
+		$test3 = \PPRH\Utils::create_raw_hint_array('//espn.com', 'dns-prefetch');
 
-
-		$test_hint1 = $create_hints->initialize($test1);
+		$test_hint1 = $create_hints->create_hint($test1);
 		$this->assertEquals($test_hint1, $test1);
 
-		$test_hint2 = $create_hints->initialize($test2);
+		$test_hint2 = $create_hints->create_hint($test2);
 		$this->assertEquals($test_hint2, $test1);
 
-		$test_hint3 = $create_hints->initialize($test3);
+		$test_hint3 = $create_hints->create_hint($test3);
 		$this->assertEquals($test_hint3, $test3);
 	}
 
 
-	public function testEmptyDataFails(): void {
+	public function test_create_hint_fails(): void {
 		$create_hints = new \PPRH\Create_Hints();
 
-		$data1 = (object) array(
-			'url' => '',
+		$data1 = array(
+			'url'       => '',
 			'hint_type' => 'dns-prefetch'
 		);
 
-		$bool1 = $create_hints->initialize($data1);
+		$bool1 = $create_hints->create_hint($data1);
 		$this->assertEquals(false, $bool1);
 	}
 
@@ -164,8 +167,8 @@ final class Create_HintsTest extends TestCase {
 	// make sure 'https://www.espn.com' as a preconnect is added to db prior to running this.
 //	public function testDuplicateHintAttemptFails(): void {
 //		$create_hints = new \PPRH\Create_Hints();
-//		$test1 = \PPRH\Utils::create_raw_hint_object('https://www.espn.com', 'preconnect');
-//		$test_hint1 = $create_hints->initialize($test1);
+//		$test1 = \PPRH\Utils::create_raw_hint_array('https://www.espn.com', 'preconnect');
+//		$test_hint1 = $create_hints->validate_hint($test1);
 //		$arr = array(
 //			'success' => false,
 //			'msg'     => 'An identical resource hint already exists!',
