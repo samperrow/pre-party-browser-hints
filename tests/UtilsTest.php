@@ -152,35 +152,38 @@ final class UtilsTest extends TestCase {
 		$raw_data1 = \PPRH\Utils::create_raw_hint_array( 'test.com', 'dns-prefetch' );
 		$actual = \PPRH\Utils::create_pprh_hint($raw_data1);
 
-		$expected = (object) array(
-			'new_hint' => array(
-				'url'          => '//test.com',
-				'hint_type'    => 'dns-prefetch',
-				'crossorigin'  => '',
-				'as_attr'      => '',
-				'type_attr'    => '',
-				'auto_created' => 0
-			),
-			'db_result' => array(
-				'last_error' => '',
-				'hint_id'   => $actual->db_result['hint_id'],
-				'success'   => true,
-				'status'    => 'success',
-				'msg'       => 'Resource hint created successfully.'
-			)
+		$expected = array(
+			'url'          => '//test.com',
+			'hint_type'    => 'dns-prefetch',
+			'crossorigin'  => '',
+			'as_attr'      => '',
+			'type_attr'    => '',
+			'auto_created' => 0
 		);
 
 		$this->assertEquals( $expected, $actual );
-		$dao->delete_hint( $actual->db_result['hint_id'] );
 	}
 
 	public function test_create_pprh_hint_fail():void {
-//		$create_hints = new \PPRH\Create_Hints();
 		$raw_data1 = \PPRH\Utils::create_raw_hint_array( '', '' );
 
 		$actual = \PPRH\Utils::create_pprh_hint($raw_data1);
 
 		$this->assertEquals( false, $actual );
+	}
+
+	public function test_create_pprh_hint_dup_hints():void {
+		$dao = new \PPRH\DAO();
+		$data1 = \PPRH\Utils::create_raw_hint_array( 'blah.com', 'preconnect' );
+		$hint1 = \PPRH\Utils::create_pprh_hint($data1);
+
+		$actual1 = $dao->create_hint( $hint1, null );
+
+		$hint2 = \PPRH\Utils::create_pprh_hint($data1);
+
+		$this->assertEquals( true, $actual1->db_result['success'] );
+		$this->assertEquals( false, $hint2->db_result['success'] );
+		$dao->delete_hint( $actual1->db_result['hint_id'] );
 	}
 
 	public function test_create_raw_hint_array():void {
@@ -200,22 +203,43 @@ final class UtilsTest extends TestCase {
 
 	public function test_create_response():void {
 		$result = true;
-		$action = 'test';
+		$new_hint = null;
 
 		$expected = (object) array(
-			'new_hint' => null,
+			'new_hint'  => $new_hint,
 			'db_result' => array(
 				'last_error' => '',
-				'hint_id'    => 0,
+				'hint_id'    => '',
 				'success'    => $result,
 				'status'     => ( $result ) ? 'success' : 'error',
-				'msg'        => ( $result ) ? "Resource hint $action successfully." : "Failed to $action hint."
 			)
 		);
 
-		$test1 = PPRH\Utils::create_db_response( true, 0, '', 'test', null );
+		$test1 = PPRH\Utils::create_db_result( true, '', '', null );
 
 		$this->assertEquals( $expected, $test1 );
+	}
+
+//	public function test_db_op_success():void {
+//
+//
+//	}
+
+	public function test_esc_get_option():void {
+		$test_option_name1 = 'pprh_test_option1';
+		$test_option_name2 = 'pprh_test_option2';
+
+		add_option( $test_option_name1, 'https://<test.com>/asdfasdf', '', 'true' );
+		add_option( $test_option_name2, 'https://test.com/asdfasdf', '', 'true' );
+
+		$actual1 = \PPRH\Utils::esc_get_option( $test_option_name1 );
+		$actual2 = \PPRH\Utils::esc_get_option( $test_option_name2 );
+
+		$this->assertEquals( 'https://&lt;test.com&gt;/asdfasdf', $actual1 );
+		$this->assertEquals( 'https://test.com/asdfasdf', $actual2 );
+
+		delete_option( $test_option_name1 );
+		delete_option( $test_option_name2 );
 	}
 
 }

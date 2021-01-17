@@ -22,7 +22,7 @@ final class DAOTest extends TestCase {
 
 		$create_hint = $dao->create_hint($new_hint, null);
 		$hint_id = $create_hint->db_result['hint_id'];
-		$expected = Utils::create_db_response( true, $hint_id, '', 'created', $new_hint );
+		$expected = Utils::create_db_result( true, $hint_id, '', $new_hint );
 		$this->assertEquals($expected, $create_hint);
 		return $hint_id;
 	}
@@ -34,7 +34,7 @@ final class DAOTest extends TestCase {
 		$dao = new PPRH\DAO();
 		$new_hint = Utils::create_raw_hint_array( 'https://www.asdf2.com/foozball/blah.css', 'dns-prefetch', 0, 'font', 'font/woff2', '' );
 		$result = $dao->update_hint( $new_hint, $hint_id );
-		$expected = Utils::create_db_response( true, $hint_id, '', 'updated', $new_hint );
+		$expected = Utils::create_db_result( true, $hint_id, '', $new_hint );
 		$this->assertEquals($expected, $result);
 	}
 
@@ -46,7 +46,7 @@ final class DAOTest extends TestCase {
 		$dao = new PPRH\DAO();
 
 		$result = $dao->bulk_update( $hint_id_str, 'disabled' );
-		$expected = Utils::create_db_response( true, $hint_id_str, '', 'disabled', null );
+		$expected = Utils::create_db_result( true, $hint_id_str, '',null );
 		$this->assertEquals($expected, $result);
 	}
 
@@ -57,7 +57,7 @@ final class DAOTest extends TestCase {
 		$hint_id_str = (string) $hint_ids;
 		$dao = new PPRH\DAO();
 		$result = $dao->delete_hint( $hint_id_str );
-		$expected = Utils::create_db_response( true, $hint_id_str, '', 'deleted', null );
+		$expected = Utils::create_db_result( true, $hint_id_str, '',null );
 		$this->assertEquals($expected, $result);
 	}
 

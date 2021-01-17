@@ -11,6 +11,8 @@ MISC:
 
 2) test/validate with PHP 8.0
 
+7) need to simplify 'create_pprh_hint' method. sometimes it returns an arr, an obj, or bool.
+
 
 
 PREFETCH:

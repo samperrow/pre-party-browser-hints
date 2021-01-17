@@ -16,7 +16,7 @@ class DAO {
 		$auto_created = ( ! empty( $new_hint['auto_created'] ) ? (int) $new_hint['auto_created'] : 0 );
 
 		$args = array(
-			'types' => array( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d' ),
+			'types'   => array( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d' ),
 			'columns' => array(
 				'url'          => $new_hint['url'],
 				'hint_type'    => $new_hint['hint_type'],
@@ -37,7 +37,7 @@ class DAO {
 			$args['types']
 		);
 
-		return Utils::create_db_result( $wpdb, 'create', $new_hint );
+		return Utils::create_db_result( $wpdb->result, $wpdb->insert_id, $wpdb->last_error, $new_hint );
 	}
 
 
@@ -61,7 +61,7 @@ class DAO {
 			array( '%d' )
 		);
 
-		return Utils::create_db_result( $wpdb, 'update', $new_hint );
+		return Utils::create_db_result( $wpdb->result, $wpdb->insert_id, $wpdb->last_error, $new_hint );
 	}
 
 	public function bulk_update( $hint_ids, $action ) {
@@ -73,14 +73,14 @@ class DAO {
 			$action
 		) );
 
-		return Utils::create_db_result( $wpdb, $action, null );
+		return Utils::create_db_result( $wpdb->result, $wpdb->insert_id, $wpdb->last_error, null );
 	}
 
 	public function delete_hint( $hint_ids ) {
 		global $wpdb;
 		$table = PPRH_DB_TABLE;
 		$wpdb->query( "DELETE FROM $table WHERE id IN ($hint_ids)" );
-		return Utils::create_db_result( $wpdb, 'delete', null );
+		return Utils::create_db_result( $wpdb->result, $wpdb->insert_id, $wpdb->last_error, null );
 	}
 
 	public function remove_prev_auto_preconnects() {

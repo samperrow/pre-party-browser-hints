@@ -53,65 +53,41 @@ class Utils {
 		return ( ! empty( $val ) ) ? $val : '';
 	}
 
-	public static function create_db_result( $wpdb, $action, $new_hint = null ) {
-		if ( ! ( strrpos( $action, 'd' ) === strlen( $action ) -1 ) ) {
-			$action .= 'd';
-		}
-		$result     = (bool) $wpdb->result;
-		$hint_id  = ( ! empty( $wpdb->insert_id ) ? $wpdb->insert_id : null );
-		$last_error = $wpdb->last_error;
-		$result = self::create_db_response( $result, $hint_id, $last_error, $action, $new_hint );
-		$wpdb->flush();
-
-		return $result;
-	}
-
-	public static function create_db_response( $result, $hint_id, $last_error, $action, $new_hint = null ) {
+	// db results
+	public static function create_db_result( $result, $hint_id = '', $last_error = '', $new_hint = null ) {
 		return (object) array(
             'new_hint'  => $new_hint,
-			'db_result' => array(
-				'last_error' => $last_error,
-				'hint_id'    => $hint_id,
-				'success'    => $result,
-				'status'     => ( $result ) ? 'success' : 'error',
-				'msg'        => ( $result ) ? "Resource hint $action successfully." : "Failed to $action hint."
+            'db_result' => array(
+                'hint_id'    => $hint_id,
+                'success'    => $result,
+                'status'     => ( $result ) ? 'success' : 'error',
+                'last_error' => $last_error
             )
 		);
 	}
 
-	public static function get_option_status( $option, $val ) {
-	    $opt = get_option( $option );
-		return esc_html( $opt === $val ? 'selected=selected' : '');
-	}
-
-	// need to account for ajax
-	public static function on_pprh_page() {
-	    global $pagenow;
-		return
-			( ( isset( $_GET['page'] ) && 'pprh-plugin-settings' === $_GET['page'] ) && 'admin.php' === $pagenow )
-            || ( ( isset( $_GET['action'] ) && 'edit' === $_GET['action'] ) && 'post.php' === $pagenow );
-	}
-
+	// hint creation utils
 	public static function create_pprh_hint( $raw_data ) {
 //		define( 'CREATING_HINT', true );
 		$create_hints = new Create_Hints();
 		$new_hint = $create_hints->create_hint( $raw_data );
 
 		if ( is_array( $new_hint ) ) {
-			$valid = $create_hints->validate_hint( $new_hint );
+			$duplicate_hints_exist = $create_hints->duplicate_hints_exist( $new_hint );
 
-			if ( $valid ) {
-				$dao = new DAO();
-				return $dao->create_hint( $new_hint );
+			if ( $duplicate_hints_exist ) {
+				$error = 'A duplicate hint already exists!';
+				return self::create_db_result( false, '', $error, null );
 			}
+            return $new_hint;
 		}
         return false;
 	}
 
 	public static function create_raw_hint_array( $url, $hint_type, $auto_created = 0, $as_attr = '', $type_attr = '', $crossorigin = '' ) {
 		return array(
-            'url'          => $url,
-            'as_attr'      => $as_attr,
+			'url'          => $url,
+			'as_attr'      => $as_attr,
 			'hint_type'    => $hint_type,
 			'type_attr'    => $type_attr,
 			'crossorigin'  => $crossorigin,
@@ -127,4 +103,37 @@ class Utils {
 		return implode( ',', array_map( 'absint', $hint_ids ) );
 	}
 
+
+	public static function get_option_status( $option, $val ) {
+	    $opt = get_option( $option );
+		return esc_html( $opt === $val ? 'selected=selected' : '');
+	}
+
+	// need to account for ajax
+	public static function on_pprh_page() {
+	    global $pagenow;
+		return
+			( ( isset( $_GET['page'] ) && 'pprh-plugin-settings' === $_GET['page'] ) && 'admin.php' === $pagenow )
+            || ( ( isset( $_GET['action'] ) && 'edit' === $_GET['action'] ) && 'post.php' === $pagenow );
+	}
+
+
+
+	public static function esc_get_option( $option ) {
+	    return esc_html( get_option( $option ) );
+	}
+
 }
+
+
+//	public static function create_db_response( $result, $hint_id, $last_error, $action, $new_hint = null ) {
+//		return (object) array(
+//            'new_hint'  => $new_hint,
+//			'db_result' => array(
+//				'hint_id'    => $hint_id,
+//				'success'    => $result,
+//				'status'     => ( $result ) ? 'success' : 'error',
+//				'msg'        => ( $result ) ? "Resource hint $action successfully." : "Failed to $action hint. Error: $last_error"
+//            )
+//		);
+//	}

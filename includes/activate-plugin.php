@@ -21,6 +21,7 @@ class Activate_Plugin {
 	private function add_options() {
 		add_option( 'pprh_disable_wp_hints', 'true', '', 'yes' );
 		add_option( 'pprh_html_head', 'true', '', 'yes' );
+		add_option( 'pprh_prefetch_disableForLoggedInUsers', 'true', '', 'yes' );
 		add_option( 'pprh_prefetch_enabled', 'false', '', 'yes' );
 		add_option( 'pprh_prefetch_delay', '0', '', 'yes' );
 		add_option( 'pprh_prefetch_ignoreKeywords', '', '', 'yes' );

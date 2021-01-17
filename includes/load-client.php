@@ -8,7 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class Load_Client {
 
-	public function __construct () {
+	public function __construct() {
 		include_once PPRH_ABS_DIR . 'includes/send-hints.php';
 
 		add_action( 'wp_loaded', array( $this, 'send_resource_hints' ) );
@@ -26,6 +26,11 @@ class Load_Client {
 
 	public function load_flying_pages() {
 		$load_flying_pages = get_option( 'pprh_prefetch_enabled' );
+		$disable_for_logged_in_users = get_option( 'pprh_prefetch_disableForLoggedInUsers' );
+
+		if ( 'true' === $disable_for_logged_in_users && is_user_logged_in() )  {
+			return;
+		}
 
 		if ( $load_flying_pages === 'true' ) {
 			$fp_data = array(

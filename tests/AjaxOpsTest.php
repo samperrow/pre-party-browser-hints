@@ -12,6 +12,7 @@ if (!defined('ABSPATH')) {
 final class AjaxOpsTest extends TestCase {
 
 	public function test_pprh_update_hints():void {
+		$dao = new \PPRH\DAO();
 		define( 'DOING_AJAX', true );
 		$_SERVER['HTTP_HOST'] = 'sphacks.local';
 		$_SERVER['REQUEST_URI'] = '/wp-admin/admin.php?page=pprh-plugin-settings';
@@ -25,16 +26,19 @@ final class AjaxOpsTest extends TestCase {
 		// Nonce generated 0-12 hours ago.
 		$expected_nonce = substr( wp_hash( $i . '|' . $action . '|' . $uid . '|' . $token, 'nonce' ), -12, 10 );
 
-		$_POST['pprh_data'] = '{"url":"tester","hint_type":"dns-prefetch","crossorigin":"","as_attr":"","type_attr":"","action":"create","hint_id":null,"post_id":""}';
+		$_POST['pprh_data'] = '{"url":"tester","hint_type":"dns-prefetch","crossorigin":"","as_attr":"","type_attr":"","action":"create","hint_id":null}';
 		$_POST['action'] = 'pprh_update_hints';
 		$_REQUEST['val'] = $expected_nonce;
 
 		$ajax_ops = new \PPRH\Ajax_Ops();
 
-		$response = $ajax_ops->pprh_update_hints();
-		$obj = json_decode( $response, false );
-		$result = $obj->result->db_result->success;
+		$json = $ajax_ops->pprh_update_hints();
+		$response = json_decode( $json, true );
+		$db_result = $response['result']['db_result'];
+		$result = $db_result['success'];
+		$hint_id = $db_result['hint_id'];
 		$this->assertEquals(true, $result);
+		$dao->delete_hint( $hint_id );
 	}
 
 	// also need to verify update, delete, enable, disable, bulk operations work properly.

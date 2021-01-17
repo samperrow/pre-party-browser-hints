@@ -8,9 +8,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class Ajax_Ops {
 
-	public $result = array(
-		'response' => array(),
-	);
+//	public $result = array(
+//		'response' => array(),
+//	);
 
 	public function __construct() {
 		add_action( 'wp_ajax_pprh_update_hints', array( $this, 'pprh_update_hints' ) );
@@ -24,23 +24,30 @@ class Ajax_Ops {
 			$data = json_decode( wp_unslash( $_POST['pprh_data'] ), true );
 
 			if ( is_array( $data ) ) {
+
 				$action = $data['action'];
+				$result = (object) array(
+					'new_hint'  => array(),
+					'db_result' => array(),
+				);
 
 				if ( preg_match( '/create|update/', $action ) ) {
-					$this->result = $this->create_hint( $data, $action );
-				} elseif (preg_match( '/enabled|disabled|delete/', $action ) ) {
-					$this->result = $this->handle_action( $data, $action );
+					$result = $this->create_hint( $data, $action );
+				} elseif ( preg_match( '/enabled|disabled|delete/', $action ) ) {
+					$result = $this->handle_action( $data, $action );
 				}
-				elseif ( 'reset_single_post_preconnects' === $action ) {
-					$this->result = apply_filters( 'pprh_reset_single_post_preconnect', $data );
-				}
+//				elseif ( 'reset_single_post_preconnects' === $action ) {
+//					$result = apply_filters( 'pprh_reset_single_post_preconnect', $data );
+//				}
 				// TODO
 //				elseif ( 'reset_single_post_prerenders' === $action ) {
 //					$this->result['response'] = apply_filters( 'pprh_reset_single_post_preconnect', $data );
 //				}
 
+				$result->db_result['msg'] = $this->create_msg( $result->db_result, $action );
+
 				$display_hints = new Display_Hints();
-				$json = $display_hints->ajax_response( $this->result );
+				$json = $display_hints->ajax_response( $result );
 
 				if ( defined( 'PPRH_TESTING' ) && PPRH_TESTING ) {
 					return $json;
@@ -50,6 +57,22 @@ class Ajax_Ops {
 			}
 			wp_die();
 		}
+	}
+
+	public function create_msg( $db_result, $action )  {
+		if ( ! ( strrpos( $action, 'd' ) === strlen( $action ) -1 ) ) {
+			$action .= 'd';
+		}
+
+		if ( $db_result['success'] ) {
+			$msg = "Resource hint $action successfully.";
+		} elseif ( '' !== $db_result['last_error'] ) {
+			$msg = $db_result['last_error'];
+		} else {
+			$msg = "Failed to $action hint.";
+		}
+
+		return $msg;
 	}
 
 	private function handle_action( $data, $action ) {
@@ -72,10 +95,9 @@ class Ajax_Ops {
 
 	private function create_hint( $data, $action ) {
 		$dao = new DAO();
-		$create_hints = new Create_Hints();
-		$new_hint = $create_hints->create_hint( $data );
+		$response = Utils::create_pprh_hint( $data );
 
-		return ( is_array( $new_hint ) ) ? $dao->{$action . '_hint'}($new_hint, $data['hint_id'] ) : false;
+		return ( is_array( $response ) ? $dao->{$action . '_hint'}($response, $data['hint_id'] ) : $response );
 	}
 
 }

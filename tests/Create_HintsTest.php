@@ -13,7 +13,7 @@ final class Create_HintsTest extends TestCase {
 //	public function __construct() {}
 
 	public function testConstructor(): void {
-		define('CREATING_HINT', true);
+//		define('CREATING_HINT', true);
 		$create_hints = new \PPRH\Create_Hints();
 
 		$new_hint = array();
@@ -36,10 +36,21 @@ final class Create_HintsTest extends TestCase {
 		}
 	}
 
-//	public function test_validate_hint( $new_hint ) {
-//
-//
-//	}
+	public function test_duplicate_hints_exist() {
+		$create_hints = new \PPRH\Create_Hints();
+		$dao = new \PPRH\DAO();
+		$data1 = \PPRH\Utils::create_raw_hint_array( 'https://hint1.com', 'dns-prefetch', 0 );
+		$hint1 = \PPRH\Utils::create_pprh_hint( $data1 );
+
+		$res1 = $dao->create_hint( $hint1, null );
+
+		$data2 = \PPRH\Utils::create_raw_hint_array( 'https://hint1.com', 'dns-prefetch', 0 );
+		$actual = \PPRH\Utils::create_pprh_hint( $data2 );
+		$expected = \PPRH\Utils::create_db_result( false, '', 'A duplicate hint already exists!' );
+
+		$this->assertEquals( $expected, $actual );
+		$dao->delete_hint( $res1->db_result['hint_id'] );
+	}
 
 
 	public function test_create_hint_success(): void {
@@ -168,7 +179,7 @@ final class Create_HintsTest extends TestCase {
 //	public function testDuplicateHintAttemptFails(): void {
 //		$create_hints = new \PPRH\Create_Hints();
 //		$test1 = \PPRH\Utils::create_raw_hint_array('https://www.espn.com', 'preconnect');
-//		$test_hint1 = $create_hints->validate_hint($test1);
+//		$test_hint1 = $create_hints->duplicate_hints_exist($test1);
 //		$arr = array(
 //			'success' => false,
 //			'msg'     => 'An identical resource hint already exists!',

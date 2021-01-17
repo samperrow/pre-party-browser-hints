@@ -13,6 +13,7 @@ final class ActivatePluginTest extends TestCase {
 
 		update_option( 'pprh_disable_wp_hints', 'true' );
 		update_option( 'pprh_html_head', 'true' );
+		update_option( 'pprh_prefetch_disableForLoggedInUsers', 'true' );
 		update_option( 'pprh_prefetch_enabled', 'false' );
 		update_option( 'pprh_prefetch_delay', '0' );
 		update_option( 'pprh_prefetch_ignoreKeywords', '' );
@@ -21,17 +22,16 @@ final class ActivatePluginTest extends TestCase {
 		
 		$opt1 = get_option( 'pprh_disable_wp_hints' );
 		$opt2 = get_option( 'pprh_html_head');
-		$opt3 = get_option( 'pprh_prefetch_enabled' );
-		$opt4 = get_option( 'pprh_prefetch_delay' );
-		$opt5 = get_option( 'pprh_prefetch_ignoreKeywords');
-		$opt6 = get_option( 'pprh_prefetch_maxRPS' );
-		$opt7 = get_option( 'pprh_prefetch_hoverDelay');
+		$opt3 = get_option( 'pprh_prefetch_disableForLoggedInUsers' );
+		$opt4 = get_option( 'pprh_prefetch_enabled' );
+		$opt5 = get_option( 'pprh_prefetch_delay' );
+		$opt6 = get_option( 'pprh_prefetch_ignoreKeywords');
+		$opt7 = get_option( 'pprh_prefetch_maxRPS' );
+		$opt8 = get_option( 'pprh_prefetch_hoverDelay');
 
-		$arr1 = array( $opt1, $opt2, $opt3, $opt4, $opt5, $opt6, $opt7 );
-		$expected = array( 'true', 'true', 'false', '0', '', '3', '50' );
+		$arr1 = array( $opt1, $opt2, $opt3, $opt4, $opt5, $opt6, $opt7, $opt8 );
+		$expected = array( 'true', 'true', 'true', 'false', '0', '', '3', '50' );
 		$this->assertEquals( $arr1, $expected );
-
-		
 	}	
 
 }

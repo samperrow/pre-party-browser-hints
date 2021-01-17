@@ -50,29 +50,37 @@ class Preconnects {
 			$raw_hint_data = json_decode( wp_unslash( $_POST['pprh_data'] ), false );
 
 			if ( count( $raw_hint_data->hints ) > 0 ) {
-				$this->create_hint( $raw_hint_data );
+				$this->process_hints( $raw_hint_data );
 			}
 
 			$this->update_options();
 			wp_die();
+
+//			if ( defined( 'PPRH_TESTING' ) && PPRH_TESTING ) {
+//				return $json;
+//			} else {
+//				wp_die();
+//			}
 		} else {
 			exit();
 		}
 	}
 
-	public function create_hint( $hint_data ) {
+	public function process_hints( $hint_data ) {
 		$dao = new DAO();
-		$dao->remove_prev_auto_preconnects();
+//		$dao->remove_prev_auto_preconnects();
+		$results = array();
 
 		foreach ( $hint_data->hints as $url ) {
-			$hint_obj = Utils::create_raw_hint_array( $url, 'preconnect', 1 );
+			$hint_arr = Utils::create_raw_hint_array( $url, 'preconnect', 1 );
+			$hint = Utils::create_pprh_hint( $hint_arr );
 
-			$hint_result = Utils::create_pprh_hint( $hint_obj );
-
-			if ( is_array( $hint_result ) && is_object( $hint_result->new_hint ) ) {
-				$dao->create_hint( $hint_result, null );
+			if ( is_array( $hint ) && is_array( $hint->new_hint) ) {
+				$res = $dao->create_hint( $hint, null );
+				$results[] = $res;
 			}
 		}
+		return $results;
 	}
 
 	private function update_options() {

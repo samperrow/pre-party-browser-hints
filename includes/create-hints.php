@@ -9,8 +9,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Create_Hints {
 
 	public $result = array();
-	
-	protected $duplicate_hints = array();
 
 	protected $new_hint = array();
 
@@ -30,16 +28,15 @@ class Create_Hints {
 		);
 	}
 
-	public function validate_hint( $new_hint ) {
-		$this->duplicate_hints = $this->get_duplicate_hints( $new_hint );
-		$duplicate_hints_exist = ( count( $this->duplicate_hints ) > 0 );
-		$msg = '';
+	public function duplicate_hints_exist( $new_hint ) {
+		$duplicate_hints = $this->get_duplicate_hints( $new_hint );
+		$duplicate_hints_exist = ( count( $duplicate_hints ) > 0 );
+
+		return $duplicate_hints_exist;
 
 //		if ( ! empty( $this->new_hint['post_id'] ) ) {
 //			$msg = apply_filters( 'pprh_check_duplicates', $this );
 //		}
-
-		return ! ( $duplicate_hints_exist && '' === $msg );
 	}
 
 
@@ -161,12 +158,6 @@ class Create_Hints {
 
 		$dao = new DAO();
 		return $dao->get_hints( $query );
-
-//		if ( count( $prev_hints ) > 0 ) {
-//			return true;
-//		}
-//
-//		return false;
 	}
 
 }

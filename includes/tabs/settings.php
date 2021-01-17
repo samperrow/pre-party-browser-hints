@@ -47,6 +47,7 @@ class Settings {
 				update_option( 'pprh_preconnect_autoload', wp_unslash( $_POST['autoload_preconnects'] ) );
                 update_option( 'pprh_preconnect_allow_unauth', wp_unslash( $_POST['allow_unauth'] ) );
 
+				update_option( 'pprh_prefetch_disableForLoggedInUsers', Utils::clean_url( $_POST['pprh_prefetch_disableForLoggedInUsers'] ) );
 				update_option( 'pprh_prefetch_enabled', Utils::clean_url( $_POST['prefetch_enabled'] ) );
 				update_option( 'pprh_prefetch_delay', Utils::strip_non_numbers( $_POST['prefetch_delay'] ) );
 				update_option( 'pprh_prefetch_ignoreKeywords', Utils::clean_url_path( $_POST['prefetch_ignoreKeywords'] ) );
@@ -223,6 +224,29 @@ class Settings {
                 </tr>
 
                 <tr>
+                    <th><?php esc_html_e( 'Disable prefetching for logged in users?', 'pprh' ); ?></th>
+
+                    <td>
+                        <span class="pprh-help-tip-hint">
+                            <span><?php esc_html_e( 'It usually is not necessary for logged in users to prefetch content. This will save some server resources.', 'pprh' ); ?></span>
+                        </span>
+                    </td>
+
+                    <td>
+                        <label>
+                            <select name="prefetch_enabled">
+                                <option value="true" <?php echo Utils::get_option_status( 'pprh_prefetch_disableForLoggedInUsers', 'true' ); ?>>
+									<?php esc_html_e( 'Yes', 'pprh' ); ?>
+                                </option>
+                                <option value="false" <?php echo Utils::get_option_status( 'pprh_prefetch_disableForLoggedInUsers', 'false' ); ?>>
+									<?php esc_html_e( 'No', 'pprh' ); ?>
+                                </option>
+                            </select>
+                        </label>
+                    </td>
+                </tr>
+
+                <tr>
                     <th><?php esc_html_e( 'Allow for navigation links to be prefetched while in viewport?', 'pprh' ); ?></th>
 
                     <td>
@@ -256,7 +280,7 @@ class Settings {
 
                     <td>
                         <label>
-                            <input type="text" name="prefetch_delay" value="<?php esc_html_e( get_option( 'pprh_prefetch_delay') ); ?>" />
+                            <input type="text" name="prefetch_delay" value="<?php Utils::esc_get_option( 'pprh_prefetch_delay' ); ?>" />
                         </label>
                     </td>
                 </tr>
@@ -272,7 +296,7 @@ class Settings {
 
                     <td>
                         <label>
-                            <input type="text" name="prefetch_ignoreKeywords" value="<?php esc_html_e( get_option( 'pprh_prefetch_ignoreKeywords' ) ); ?>" />
+                            <input type="text" name="prefetch_ignoreKeywords" value="<?php Utils::esc_get_option('pprh_prefetch_ignoreKeywords' ); ?>" />
                         </label>
                     </td>
                 </tr>
@@ -288,7 +312,7 @@ class Settings {
 
                     <td>
                         <label>
-                            <input type="text" name="prefetch_maxRPS" value="<?php esc_html_e( get_option( 'pprh_prefetch_maxRPS' ) ); ?>" />
+                            <input type="text" name="prefetch_maxRPS" value="<?php echo Utils::esc_get_option( 'pprh_prefetch_maxRPS' ); ?>" />
                         </label>
                     </td>
                 </tr>
@@ -304,7 +328,7 @@ class Settings {
 
                     <td>
                         <label>
-                            <input type="text" name="prefetch_hoverDelay" value="<?php esc_html_e( get_option( 'pprh_prefetch_hoverDelay' ) ); ?>" />
+                            <input type="text" name="prefetch_hoverDelay" value="<?php Utils::esc_get_option( 'pprh_prefetch_hoverDelay' ); ?>" />
                         </label>
                     </td>
                 </tr>
