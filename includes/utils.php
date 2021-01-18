@@ -84,8 +84,8 @@ class Utils {
         return false;
 	}
 
-	public static function create_raw_hint_array( $url, $hint_type, $auto_created = 0, $as_attr = '', $type_attr = '', $crossorigin = '' ) {
-		return array(
+	public static function create_raw_hint_array( $url, $hint_type, $auto_created = 0, $as_attr = '', $type_attr = '', $crossorigin = '', $post_id = '', $post_url = '' ) {
+		$arr = array(
 			'url'          => $url,
 			'as_attr'      => $as_attr,
 			'hint_type'    => $hint_type,
@@ -93,6 +93,9 @@ class Utils {
 			'crossorigin'  => $crossorigin,
 			'auto_created' => $auto_created
 		);
+
+		$arr = apply_filters( 'pprh_append_hint_array', $arr, $post_id, $post_url );
+		return $arr;
 	}
 
 	public static function array_into_csv( $hint_ids ) {

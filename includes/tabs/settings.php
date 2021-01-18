@@ -234,7 +234,7 @@ class Settings {
 
                     <td>
                         <label>
-                            <select name="prefetch_enabled">
+                            <select name="pprh_prefetch_disableForLoggedInUsers">
                                 <option value="true" <?php echo Utils::get_option_status( 'pprh_prefetch_disableForLoggedInUsers', 'true' ); ?>>
 									<?php esc_html_e( 'Yes', 'pprh' ); ?>
                                 </option>

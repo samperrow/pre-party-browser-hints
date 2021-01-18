@@ -54,8 +54,8 @@ class Create_Hints {
 		$crossorigin = $this->set_crossorigin( $hint, $file_type );
 
 		$new_hint = Utils::create_raw_hint_array( $url, $hint_type, $auto_created, $as_attr, $type_attr, $crossorigin );
-		$new_hint = apply_filters( 'pprh_append_hint', $new_hint, $hint );
-		return $new_hint;
+		$new_hint2 = apply_filters( 'pprh_append_hint', $new_hint, $hint );
+		return $new_hint2;
 	}
 
 	public function get_hint_type( $type ) {

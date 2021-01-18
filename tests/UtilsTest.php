@@ -161,6 +161,11 @@ final class UtilsTest extends TestCase {
 			'auto_created' => 0
 		);
 
+		if ( defined( 'PPRH_PRO_ABS_DIR' ) ) {
+			$expected['post_id'] = '';
+			$expected['post_url'] = '';
+		}
+
 		$this->assertEquals( $expected, $actual );
 	}
 
@@ -187,7 +192,7 @@ final class UtilsTest extends TestCase {
 	}
 
 	public function test_create_raw_hint_array():void {
-		$result1 = array(
+		$expected = array(
 			'url'          => 'test.com',
 			'hint_type'    => 'preconnect',
 			'crossorigin'  => 'crossorigin',
@@ -196,9 +201,14 @@ final class UtilsTest extends TestCase {
 			'auto_created' => 1
 		);
 
-		$test1 = PPRH\Utils::create_raw_hint_array('test.com', 'preconnect', 1, 'audio', 'font/woff2', 'crossorigin');
+		if ( defined( 'PPRH_PRO_ABS_DIR' ) ) {
+			$expected['post_id'] = '';
+			$expected['post_url'] = '';
+		}
 
-		$this->assertEquals( $result1, $test1 );
+		$test1 = PPRH\Utils::create_raw_hint_array('test.com', 'preconnect', 1, 'audio', 'font/woff2', 'crossorigin' );
+
+		$this->assertEquals( $expected, $test1 );
 	}
 
 	public function test_create_response():void {

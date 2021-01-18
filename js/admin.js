@@ -279,7 +279,7 @@
 
 			setTimeout(function() {
 				adminNoticeElem.classList.remove('active');
-				adminNoticeElem.classList.remove('notice-' + status);
+				adminNoticeElem.classList.remove('notice-' + response.status);
 			}, 10000);
 		}
 

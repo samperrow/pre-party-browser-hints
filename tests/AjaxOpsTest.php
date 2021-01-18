@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
-use PPRH\PPRH_Pro;
+//use PPRH\PPRH_Pro;
 
 if (!defined('ABSPATH')) {
 	exit;
@@ -26,7 +26,7 @@ final class AjaxOpsTest extends TestCase {
 		// Nonce generated 0-12 hours ago.
 		$expected_nonce = substr( wp_hash( $i . '|' . $action . '|' . $uid . '|' . $token, 'nonce' ), -12, 10 );
 
-		$_POST['pprh_data'] = '{"url":"tester","hint_type":"dns-prefetch","crossorigin":"","as_attr":"","type_attr":"","action":"create","hint_id":null}';
+		$_POST['pprh_data'] = '{"url":"tester","hint_type":"dns-prefetch","crossorigin":"","as_attr":"","type_attr":"","action":"create","hint_id":null,"post_id":"global"}';
 		$_POST['action'] = 'pprh_update_hints';
 		$_REQUEST['val'] = $expected_nonce;
 

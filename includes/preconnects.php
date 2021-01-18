@@ -54,28 +54,25 @@ class Preconnects {
 			}
 
 			$this->update_options();
-			wp_die();
-
 //			if ( defined( 'PPRH_TESTING' ) && PPRH_TESTING ) {
 //				return $json;
 //			} else {
 //				wp_die();
 //			}
-		} else {
-			exit();
 		}
+		wp_die();
 	}
 
 	public function process_hints( $hint_data ) {
 		$dao = new DAO();
-//		$dao->remove_prev_auto_preconnects();
+		$dao->remove_prev_auto_preconnects();
 		$results = array();
 
 		foreach ( $hint_data->hints as $url ) {
 			$hint_arr = Utils::create_raw_hint_array( $url, 'preconnect', 1 );
 			$hint = Utils::create_pprh_hint( $hint_arr );
 
-			if ( is_array( $hint ) && is_array( $hint->new_hint) ) {
+			if ( is_array( $hint ) ) {
 				$res = $dao->create_hint( $hint, null );
 				$results[] = $res;
 			}
