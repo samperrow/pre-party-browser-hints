@@ -202,6 +202,9 @@
 			if ( ! callback ) {
 				callback = 'pprh_update_hints';
 			}
+			if ( ! nonce ) {
+				nonce = pprh_data.val;
+			}
 			// var target = 'action=' + callback + '&pprh_data=' + json + '&val=' + pprh_data.val;
 			var target = 'action=' + callback + '&pprh_data=' + json + '&val=' + nonce;
 
