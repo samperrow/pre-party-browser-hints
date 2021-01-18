@@ -152,9 +152,9 @@ class Create_Hints {
 			'args' => array( $hint['url'], $hint['hint_type'] )
 		);
 
-		if ( ! empty( $hint['post_id'] ) ) {
-			$query = apply_filters( 'pprh_duplicate_hint_query', $query, $hint );
-		}
+//		if ( ! empty( $hint['post_id'] ) ) {
+//			$query = apply_filters( 'pprh_duplicate_hint_query', $query, $hint );
+//		}
 
 		$dao = new DAO();
 		return $dao->get_hints( $query );

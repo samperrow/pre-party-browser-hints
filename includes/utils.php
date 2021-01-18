@@ -68,10 +68,9 @@ class Utils {
 
 	// hint creation utils
 	public static function create_pprh_hint( $raw_data ) {
-//		define( 'CREATING_HINT', true );
 		$create_hints = new Create_Hints();
 		$new_hint = $create_hints->create_hint( $raw_data );
-
+		
 		if ( is_array( $new_hint ) ) {
 			$duplicate_hints_exist = $create_hints->duplicate_hints_exist( $new_hint );
 

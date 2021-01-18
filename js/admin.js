@@ -191,14 +191,19 @@
 			});
 		}
 
-		function createAjaxReq(dataObj) {
+		function createAjaxReq(dataObj, callback, nonce) {
 			var xhr = new XMLHttpRequest();
 			var url = pprh_data.admin_url + 'admin-ajax.php';
 			xhr.open('POST', url, true);
 			xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
 			var json = JSON.stringify(dataObj);
 			var paginationPage = getUrlValue.call('paged');
-			var target = 'action=pprh_update_hints&pprh_data=' + json + '&val=' + pprh_data.val;
+
+			if ( ! callback ) {
+				callback = 'pprh_update_hints';
+			}
+			// var target = 'action=' + callback + '&pprh_data=' + json + '&val=' + pprh_data.val;
+			var target = 'action=' + callback + '&pprh_data=' + json + '&val=' + nonce;
 
 			if (paginationPage.length > 0) {
 				target += '&paged=' + paginationPage;
