@@ -203,10 +203,10 @@
 				callback = 'pprh_update_hints';
 			}
 			if ( ! nonce ) {
-				nonce = pprh_data.val;
+				nonce = pprh_data.nonce;
 			}
-			// var target = 'action=' + callback + '&pprh_data=' + json + '&val=' + pprh_data.val;
-			var target = 'action=' + callback + '&pprh_data=' + json + '&val=' + nonce;
+			// var target = 'action=' + callback + '&pprh_data=' + json + '&nonce=' + pprh_data.nonce;
+			var target = 'action=' + callback + '&pprh_data=' + json + '&nonce=' + nonce;
 
 			if (paginationPage.length > 0) {
 				target += '&paged=' + paginationPage;

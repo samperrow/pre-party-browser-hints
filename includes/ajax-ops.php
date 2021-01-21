@@ -20,7 +20,7 @@ class Ajax_Ops {
 		if ( isset( $_POST['pprh_data'] ) && wp_doing_ajax() ) {
 			do_action( 'pprh_load_ajax_ops_child' );
 
-			check_ajax_referer( 'pprh_table_nonce', 'val' );
+			check_ajax_referer( 'pprh_table_nonce', 'nonce' );
 			$data = json_decode( wp_unslash( $_POST['pprh_data'] ), true );
 
 			if ( is_array( $data ) ) {

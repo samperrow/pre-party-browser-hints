@@ -28,7 +28,7 @@ final class AjaxOpsTest extends TestCase {
 
 		$_POST['pprh_data'] = '{"url":"tester","hint_type":"dns-prefetch","crossorigin":"","as_attr":"","type_attr":"","action":"create","hint_id":null,"post_id":"global"}';
 		$_POST['action'] = 'pprh_update_hints';
-		$_REQUEST['val'] = $expected_nonce;
+		$_REQUEST['nonce'] = $expected_nonce;
 
 		$ajax_ops = new \PPRH\Ajax_Ops();
 

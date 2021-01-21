@@ -59,7 +59,9 @@ class Hint_Info {
 		<p><?php esc_html_e( 'As you can see, the typical way DNS lookups occur is when each resource is requested by the browser. By inserting the below DNS prefetch hints at the top of the page, the browser will know to perform the DNS resolution before it is asked:' ); ?></p>
 
 		<div class="pprh-code-block">
-			<script src="<?php $this->get_link( 'js/markup/dns-prefetch.js' ); ?>"></script>
+		    <a href="https://gist.githubusercontent.com/samperrow/3329b4d00bd708015ad8b84a6d8fba9d/raw/774c8c8c8771bab4089900c6716012933a3a7367/preconnect-hints.html">
+		        <img alt="DNS Prefetch in Action" class="pprh-admin-pic" width="653" height="287" src="<?php $this->get_link( 'images/dns-prefetch.png' ); ?>"/>
+		    </a>
 		</div>
 
 		<p><?php echo sprintf( 'The waterfall chart below clearly shows when the DNS resolution is made %s', '<a href="https://output.jsbin.com/keninux/2"> after taking advantage of DNS prefetching:</a>' ); ?></p>
@@ -123,7 +125,9 @@ class Hint_Info {
 		<p><?php echo sprintf( '%s has the URL "https://www.youtube.com" prerender hint enabled as below:', '<a href="https://output.jsbin.com/fenamaq">This demo website</a>' ); ?><p>
 
 		<div class="pprh-code-block">
-			<script src="<?php $this->get_link( 'js/markup/prerender.js' ); ?>"></script>
+		    <a href="https://gist.githubusercontent.com/samperrow/0b4161665b29262099f5fce295660708/raw/fd33f1f6332769f519778d19ed346be62a1d4f72/prerender-hint.html">
+                <img alt="Prerender resource hints" class="pprh-admin-pic" width="655" height="70" src="<?php $this->get_link( 'images/prerender.png' ); ?>"/>
+		    </a>
 		</div>
 
 		<p><?php esc_html_e( 'The waterfall chart of the website is below:' ); ?></p>
@@ -165,7 +169,9 @@ class Hint_Info {
 		<p><?php esc_html_e( 'Let\'s add the corresponding preconnect hints in the top of the web page and see what happens:' ); ?></p>
 
 		<div class="pprh-code-block">
-			<script src="<?php $this->get_link( 'js/markup/preconnect.js' ); ?>"></script>
+		    <a href="https://gist.githubusercontent.com/samperrow/9b71fa3be44258a9af670f799effaad6/raw/40fa60740aec3ae65e0f75dbcb3ce64c314dffc3/dns-prefetchh.html">
+                <img alt="Preconnect resource hints" class="pprh-admin-pic" width="653" height="266" src="<?php $this->get_link( 'images/preconnect.png' ); ?>"/>
+		    </a>
 		</div>
 
 		<h3 style="text-align: center;"><?php esc_html_e( 'HTTPS Socket Negotiation With Preconnect Enabled:' ); ?></h3>
@@ -174,7 +180,6 @@ class Hint_Info {
 		<p><?php esc_html_e( 'As you can see, the three steps required to load resources from external domains occurs much earlier in the page request, reducing the need for these to be loaded earlier. The "crossorigin" attribute must be used when preconnecting to fonts, if this is left out only a DNS prefetch will be performed.' ); ?></p>
 
 		<p><?php esc_html_e( 'Basically, preconnecting is DNS-prefetching, but also takes care of the initial connection and SSL negotiation, whereas DNS prefetching solely handles the DNS lookup.' ); ?></p>
-
 
 		<p><?php esc_html_e( 'More information:' ); ?></p>
 		<ul>
@@ -198,7 +203,9 @@ class Hint_Info {
 		<p><?php esc_html_e( 'Let\'s see what the waterfall chart looks like after the following resource hints are placed into the top of a web page:' ); ?></p>
 
 		<div class="pprh-code-block">
-			<script src="<?php $this->get_link( 'js/markup/preload.js' ); ?>"></script>
+           <a href="https://gist.githubusercontent.com/samperrow/5683b903e195225ebb9e6379c80eba8c/raw/fdebd454eca2b89d17b6249c37ff30eb37c6faba/preload-code.html">
+		        <img alt="Preload resource hints" class="pprh-admin-pic" width="826" height="112" src="<?php $this->get_link( 'images/preload.png' ); ?>"/>
+            </a>
 		</div>
 
 		<p><?php echo sprintf( 'The waterfall chart below, courtesy of %s, shows when preloading resources are loaded by the browser:', '<a href="https://www.webpagetest.org">webpagetest.org</a>' ); ?></p>

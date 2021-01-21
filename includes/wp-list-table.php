@@ -1364,7 +1364,7 @@ class WP_List_Table {
      * @since 3.1.0
      */
 	public function ajax_response( $results ) {
-		check_ajax_referer( 'pprh_table_nonce', 'val' );
+		check_ajax_referer( 'pprh_table_nonce', 'nonce' );
 		$this->prepare_items();
 
 		ob_start();

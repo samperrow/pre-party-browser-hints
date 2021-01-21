@@ -111,8 +111,8 @@ class Pre_Party_Browser_Hints {
 	public function screen_option() {
 		$args = array(
 			'label'   => 'URLs',
-			'default' => 10,
 			'option'  => 'pprh_screen_options',
+			'default' => 10,
 		);
 
 		add_screen_option( 'per_page', $args );
@@ -148,7 +148,7 @@ class Pre_Party_Browser_Hints {
 
 		if ( strpos( $str, $hook, 0 ) !== false ) {
 			$ajax_data = array(
-				'val'       => wp_create_nonce( 'pprh_table_nonce' ),
+				'nonce'     => wp_create_nonce( 'pprh_table_nonce' ),
 				'admin_url' => admin_url()
 			);
 
@@ -157,7 +157,6 @@ class Pre_Party_Browser_Hints {
 			wp_register_style( 'pprh_styles_css', PPRH_REL_DIR . 'css/styles.css', null, PPRH_VERSION, 'all' );
 			wp_enqueue_script( 'pprh_admin_js' );
 			wp_enqueue_style( 'pprh_styles_css' );
-
 			do_action( 'pprh_register_admin_files' );
 		}
 	}
