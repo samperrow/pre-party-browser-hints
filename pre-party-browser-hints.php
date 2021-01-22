@@ -166,6 +166,7 @@ class Pre_Party_Browser_Hints {
 		new Activate_Plugin();
 	}
 
+
 	public function apply_wp_screen_options( $status, $option, $value ) {
 		return ( 'pprh_screen_options' === $option ) ? $value : $status;
 	}
