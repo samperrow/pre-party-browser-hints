@@ -199,13 +199,10 @@
 			var json = JSON.stringify(dataObj);
 			var paginationPage = getUrlValue.call('paged');
 
-			if ( ! callback ) {
-				callback = 'pprh_update_hints';
-			}
-			if ( ! nonce ) {
-				nonce = pprh_data.nonce;
-			}
-			// var target = 'action=' + callback + '&pprh_data=' + json + '&nonce=' + pprh_data.nonce;
+			// for testing
+			if ( ! callback ) callback = 'pprh_update_hints';
+			if ( ! nonce ) nonce = pprh_data.nonce;
+
 			var target = 'action=' + callback + '&pprh_data=' + json + '&nonce=' + nonce;
 
 			if (paginationPage.length > 0) {
@@ -220,6 +217,9 @@
 						var resp = JSON.parse(xhr.response);
 						clearHintTable();
 
+						if ( Array.isArray(resp.result)) {
+							resp.result = resp.result[0];
+						}
 						if (resp && resp.result && resp.result.db_result) {
 							updateAdminNotice(resp.result.db_result);
 							updateTable(resp);
@@ -228,7 +228,6 @@
 						}
 					}
 				}
-				// updateAdminNotice('add', xhr);
 			};
 		}
 
@@ -245,10 +244,10 @@
 			});
 		}
 
-		function toggleAdminNotice(response) {
-			response = verifyResponse(response);
-			updateAdminNotice(response);
-		}
+		// function toggleAdminNotice(response) {
+		// 	// response = verifyResponse(response);
+		// 	updateAdminNotice(response);
+		// }
 
 		function verifyResponse(response) {
 			// if (response.status === 'error') {
@@ -258,36 +257,28 @@
 			var status = (response.status) ? response.status : 'error';
 			var msg = (response.msg) ? response.msg : 'Error updating hint. Please contact support or try again later.';
 
-			if ( response.last_error !== '' && ! response.success )   {
+			if ( response.last_error !== '' && ! response.success ) {
 				msg = response.last_error;
 			}
 
 			response.msg = msg;
 			response.status = status;
-			// if (!response.success) {
-			//
-			// }
-			// if (!response.success) {
-			// 	if (response.status === 'error') {
-			// 		response.msg += response.msg + ((response.last_error) ? response.last_error : '');
-			// 	} else if (typeof response === "string" && /<code>(.*)?<\/code>/g.test(response)) {
-			// 		response.msg += response.split('<code>')[0].split('</code>')[0];
-			// 	} else if (response.msg === '') {
-			// 		response.msg += 'Error updating hint. Please contact support or try again later.';
-			// 	}
-			// }
-
 			return response;
 		}
 
 		function updateAdminNotice(response) {
+			response = verifyResponse(response);
+
+			// var status = (response.status) ? response.status : 'error';
+			// var msg = (response.msg) ? response.msg : 'Error updating hint';
+
 			adminNoticeElem.classList.add('active');
 			adminNoticeElem.classList.add('notice-' + response.status);
 			adminNoticeElem.getElementsByTagName('p')[0].innerText = response.msg;
 
 			setTimeout(function() {
 				adminNoticeElem.classList.remove('active');
-				adminNoticeElem.classList.remove('notice-' + response.status);
+				adminNoticeElem.classList.remove('notice-' + status);
 			}, 10000);
 		}
 
@@ -367,7 +358,7 @@
 
 
 		return {
-			ToggleAdminNotice: toggleAdminNotice,
+			// ToggleAdminNotice: toggleAdminNotice,
 			CreateAjaxReq: createAjaxReq,
 			UpdateAdminNotice: updateAdminNotice
 		}

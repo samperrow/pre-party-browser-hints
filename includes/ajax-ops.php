@@ -44,7 +44,6 @@ class Ajax_Ops {
 //					$this->result['response'] = apply_filters( 'pprh_reset_single_post_preconnect', $data );
 //				}
 
-				$result->db_result['msg'] = $this->create_msg( $result->db_result, $action );
 
 				$display_hints = new Display_Hints();
 				$json = $display_hints->ajax_response( $result );
@@ -57,22 +56,6 @@ class Ajax_Ops {
 			}
 			wp_die();
 		}
-	}
-
-	public function create_msg( $db_result, $action )  {
-		if ( ! ( strrpos( $action, 'd' ) === strlen( $action ) -1 ) ) {
-			$action .= 'd';
-		}
-
-		if ( $db_result['success'] ) {
-			$msg = "Resource hint $action successfully.";
-		} elseif ( '' !== $db_result['last_error'] ) {
-			$msg = $db_result['last_error'];
-		} else {
-			$msg = "Failed to $action hint.";
-		}
-
-		return $msg;
 	}
 
 	private function handle_action( $data, $action ) {

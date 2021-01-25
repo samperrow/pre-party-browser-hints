@@ -105,7 +105,6 @@ class Pre_Party_Browser_Hints {
 		);
 
 		add_action( "load-{$settings_page}", array( $this, 'screen_option' ) );
-//		add_action( "load-{$settings_page}", array( $this, 'check_to_upgrade' ) );
 	}
 
 	public function screen_option() {

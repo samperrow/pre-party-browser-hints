@@ -10,16 +10,10 @@ class Utils {
 
 //    public function __construct() {}
 
-	public static function admin_notice( $msg = '' ) {
-//		if ('' !== $msg) {
-//			echo $msg;
-//		}
+	public static function admin_notice() {
 		?>
-		<div id="pprhNotice" class="inline notice is-dismissible">
+		<div id="pprhNotice" class="notice is-dismissible">
 			<p></p>
-			<button type="button" class="notice-dismiss">
-				<span class="screen-reader-text"></span>
-			</button>
 		</div>
 		<?php
 	}
@@ -53,30 +47,24 @@ class Utils {
 		return ( ! empty( $val ) ) ? $val : '';
 	}
 
-	// db results
-	public static function create_db_result( $result, $hint_id = '', $last_error = '', $new_hint = null ) {
-		return (object) array(
-            'new_hint'  => $new_hint,
-            'db_result' => array(
-                'hint_id'    => $hint_id,
-                'success'    => $result,
-                'status'     => ( $result ) ? 'success' : 'error',
-                'last_error' => $last_error
-            )
-		);
-	}
+
 
 	// hint creation utils
 	public static function create_pprh_hint( $raw_data ) {
 		$create_hints = new Create_Hints();
+		$dao = new DAO();
 		$new_hint = $create_hints->create_hint( $raw_data );
 
 		if ( is_array( $new_hint ) ) {
 			$duplicate_hints_exist = $create_hints->duplicate_hints_exist( $new_hint );
 
 			if ( $duplicate_hints_exist ) {
-				$error = 'A duplicate hint already exists!';
-				return self::create_db_result( false, '', $error, null );
+//				$arr = array(
+//					'result'     => false,
+//					'hint_id'    => '',
+//					'last_error' => 'A duplicate hint already exists!'
+//				);
+				return $dao->create_db_result( false, '', 'A duplicate hint already exists!', 'created', null );
 			}
             return $new_hint;
 		}
@@ -119,23 +107,8 @@ class Utils {
             || ( ( isset( $_GET['action'] ) && 'edit' === $_GET['action'] ) && 'post.php' === $pagenow );
 	}
 
-
-
 	public static function esc_get_option( $option ) {
 	    return esc_html( get_option( $option ) );
 	}
 
 }
-
-
-//	public static function create_db_response( $result, $hint_id, $last_error, $action, $new_hint = null ) {
-//		return (object) array(
-//            'new_hint'  => $new_hint,
-//			'db_result' => array(
-//				'hint_id'    => $hint_id,
-//				'success'    => $result,
-//				'status'     => ( $result ) ? 'success' : 'error',
-//				'msg'        => ( $result ) ? "Resource hint $action successfully." : "Failed to $action hint. Error: $last_error"
-//            )
-//		);
-//	}

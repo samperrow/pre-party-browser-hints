@@ -39,6 +39,7 @@ final class Create_HintsTest extends TestCase {
 	public function test_duplicate_hints_exist() {
 		$create_hints = new \PPRH\Create_Hints();
 		$dao = new \PPRH\DAO();
+		$error = 'A duplicate hint already exists!';
 		$data1 = \PPRH\Utils::create_raw_hint_array( 'https://hint1.com', 'dns-prefetch', 0 );
 		$hint1 = \PPRH\Utils::create_pprh_hint( $data1 );
 
@@ -46,7 +47,12 @@ final class Create_HintsTest extends TestCase {
 
 		$data2 = \PPRH\Utils::create_raw_hint_array( 'https://hint1.com', 'dns-prefetch', 0 );
 		$actual = \PPRH\Utils::create_pprh_hint( $data2 );
-		$expected = \PPRH\Utils::create_db_result( false, '', 'A duplicate hint already exists!' );
+//		$fake_wpdb = (object) array(
+//			'result'     => true,
+//			'hint_id'    => $res1->db_result['hint_id'],
+//			'last_error' => $error
+//		);
+		$expected = $dao->create_db_result( false, '', $error, 'created', null );
 
 		$this->assertEquals( $expected, $actual );
 		$dao->delete_hint( $res1->db_result['hint_id'] );

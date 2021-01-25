@@ -212,20 +212,22 @@ final class UtilsTest extends TestCase {
 	}
 
 	public function test_create_response():void {
+		$dao = new \PPRH\DAO();
 		$result = true;
 		$new_hint = null;
 
 		$expected = (object) array(
 			'new_hint'  => $new_hint,
 			'db_result' => array(
-				'last_error' => '',
-				'hint_id'    => '',
-				'success'    => $result,
+				'msg'        => 'Resource hint created successfully.',
 				'status'     => ( $result ) ? 'success' : 'error',
+				'success'    => $result,
+				'hint_id'    => '',
+				'last_error' => '',
 			)
 		);
 
-		$test1 = PPRH\Utils::create_db_result( true, '', '', null );
+		$test1 = $dao->create_db_result( true, '', '', 'created', null );
 
 		$this->assertEquals( $expected, $test1 );
 	}

@@ -10,6 +10,46 @@ class DAO {
 
 //	public function __construct() {}
 
+//	protected function get_wpdb_args( $wp_db ) {
+//		return array(
+//			'result'     => $wp_db->result,
+//			'hint_id'    => $wp_db->insert_id,
+//			'last_error' => $wp_db->last_error
+//		);
+//	}
+
+	// db results
+	public function create_db_result( $result, $hint_id, $last_error, $action = '', $new_hint = null ) {
+		return (object) array(
+			'new_hint'  => $new_hint,
+			'db_result' => array(
+				'msg'        => self::create_msg( $result, $last_error, $action ),
+				'status'     => ( $result ) ? 'success' : 'error',
+				'hint_id'    => $hint_id,
+				'success'    => $result,
+				'last_error' => $last_error
+			)
+		);
+	}
+
+	public static function create_msg( $result, $last_error, $action )  {
+		if ( ! ( strrpos( $action, 'd' ) === strlen( $action ) -1 ) ) {
+			$action .= 'd';
+		}
+
+		if ( $result ) {
+			$msg = "Resource hint $action successfully.";
+		} elseif ( '' !== $last_error ) {
+//			$msg = $wpdb_args['last_error'];
+			$msg = $last_error;
+		} else {
+			$msg = "Failed to $action hint.";
+		}
+
+		return $msg;
+	}
+
+
 	public function create_hint( $new_hint, $id = null ) {
 		global $wpdb;
 		$current_user = wp_get_current_user()->display_name;
@@ -37,7 +77,7 @@ class DAO {
 			$args['types']
 		);
 
-		return Utils::create_db_result( $wpdb->result, $wpdb->insert_id, $wpdb->last_error, $new_hint );
+		return $this->create_db_result( $wpdb->result, $wpdb->insert_id, $wpdb->last_error, 'created', $new_hint );
 	}
 
 
@@ -61,7 +101,7 @@ class DAO {
 			array( '%d' )
 		);
 
-		return Utils::create_db_result( $wpdb->result, $wpdb->insert_id, $wpdb->last_error, $new_hint );
+		return $this->create_db_result( $wpdb->result, $wpdb->insert_id, $wpdb->last_error, 'updated', $new_hint );
 	}
 
 	public function bulk_update( $hint_ids, $action ) {
@@ -73,14 +113,14 @@ class DAO {
 			$action
 		) );
 
-		return Utils::create_db_result( $wpdb->result, $wpdb->insert_id, $wpdb->last_error, null );
+		return $this->create_db_result( $wpdb->result, $wpdb->insert_id, $wpdb->last_error, $action, null );
 	}
 
 	public function delete_hint( $hint_ids ) {
 		global $wpdb;
 		$table = PPRH_DB_TABLE;
 		$wpdb->query( "DELETE FROM $table WHERE id IN ($hint_ids)" );
-		return Utils::create_db_result( $wpdb->result, $wpdb->insert_id, $wpdb->last_error, null );
+		return $this->create_db_result( $wpdb->result, $wpdb->insert_id, $wpdb->last_error, 'deleted', null );
 	}
 
 	public function remove_prev_auto_preconnects() {

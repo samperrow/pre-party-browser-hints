@@ -37,6 +37,7 @@ final class AjaxOpsTest extends TestCase {
 		$db_result = $response['result']['db_result'];
 		$result = $db_result['success'];
 		$hint_id = $db_result['hint_id'];
+//		var_dump($db_result['success']);
 		$this->assertEquals(true, $result);
 		$dao->delete_hint( $hint_id );
 	}
