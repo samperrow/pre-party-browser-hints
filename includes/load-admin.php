@@ -27,7 +27,7 @@ class Load_Admin {
 		echo '<div id="pprh-wrapper" class="wrap">';
 		echo '<h2>Pre* Party Plugin Settings</h2>';
 
-		Utils::admin_notice('');
+		Utils::admin_notice();
 		$this->show_admin_tabs();
 
 		echo '<div class="pprh-box">';

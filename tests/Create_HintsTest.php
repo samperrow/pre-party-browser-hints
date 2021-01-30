@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 use PHPUnit\Framework\TestCase;
+use PPRH\Create_Hints;
 use PPRH\PPRH_Pro;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -37,33 +38,26 @@ final class Create_HintsTest extends TestCase {
 	}
 
 	public function test_duplicate_hints_exist() {
-		$create_hints = new \PPRH\Create_Hints();
 		$dao = new \PPRH\DAO();
+		$dup_hint = \PPRH\Create_Hints::create_raw_hint_array( 'https://duplicate-hint.com', 'dns-prefetch', 0 );
 		$error = 'A duplicate hint already exists!';
-		$data1 = \PPRH\Utils::create_raw_hint_array( 'https://hint1.com', 'dns-prefetch', 0 );
-		$hint1 = \PPRH\Utils::create_pprh_hint( $data1 );
 
-		$res1 = $dao->create_hint( $hint1, null );
+		$dummy_hint = \PPRH\Create_Hints::create_pprh_hint( $dup_hint );
+		$dummy_hint_result = $dao->create_hint( $dummy_hint, null );
 
-		$data2 = \PPRH\Utils::create_raw_hint_array( 'https://hint1.com', 'dns-prefetch', 0 );
-		$actual = \PPRH\Utils::create_pprh_hint( $data2 );
-//		$fake_wpdb = (object) array(
-//			'result'     => true,
-//			'hint_id'    => $res1->db_result['hint_id'],
-//			'last_error' => $error
-//		);
-		$expected = $dao->create_db_result( false, '', $error, 'created', null );
+		$dup_hint_error = \PPRH\Create_Hints::create_pprh_hint( $dup_hint );
+		$expected = $dao->create_db_result( false, '', $error, 'create', null );
 
-		$this->assertEquals( $expected, $actual );
-		$dao->delete_hint( $res1->db_result['hint_id'] );
+		$this->assertEquals( $expected, $dup_hint_error );
+		$dao->delete_hint( $dummy_hint_result->db_result['hint_id'] );
 	}
 
 
 	public function test_create_hint_success(): void {
 		$create_hints = new \PPRH\Create_Hints();
-		$test1 = \PPRH\Utils::create_raw_hint_array('https://www.espn.com', 'dns-prefetch');
-		$test2 = \PPRH\Utils::create_raw_hint_array('ht<tps://www.e>\'sp"n.com', 'dns-prefetch');
-		$test3 = \PPRH\Utils::create_raw_hint_array('//espn.com', 'dns-prefetch');
+		$test1 = \PPRH\Create_Hints::create_raw_hint_array('https://www.espn.com', 'dns-prefetch');
+		$test2 = \PPRH\Create_Hints::create_raw_hint_array('ht<tps://www.e>\'sp"n.com', 'dns-prefetch');
+		$test3 = \PPRH\Create_Hints::create_raw_hint_array('//espn.com', 'dns-prefetch');
 
 		$test_hint1 = $create_hints->create_hint($test1);
 		$this->assertEquals($test_hint1, $test1);
@@ -184,7 +178,7 @@ final class Create_HintsTest extends TestCase {
 	// make sure 'https://www.espn.com' as a preconnect is added to db prior to running this.
 //	public function testDuplicateHintAttemptFails(): void {
 //		$create_hints = new \PPRH\Create_Hints();
-//		$test1 = \PPRH\Utils::create_raw_hint_array('https://www.espn.com', 'preconnect');
+//		$test1 = \PPRH\Create_Hints::create_raw_hint_array('https://www.espn.com', 'preconnect');
 //		$test_hint1 = $create_hints->duplicate_hints_exist($test1);
 //		$arr = array(
 //			'success' => false,

@@ -33,14 +33,10 @@ class DAO {
 	}
 
 	public static function create_msg( $result, $last_error, $action )  {
-		if ( ! ( strrpos( $action, 'd' ) === strlen( $action ) -1 ) ) {
-			$action .= 'd';
-		}
-
 		if ( $result ) {
+			$action .= 'd';
 			$msg = "Resource hint $action successfully.";
 		} elseif ( '' !== $last_error ) {
-//			$msg = $wpdb_args['last_error'];
 			$msg = $last_error;
 		} else {
 			$msg = "Failed to $action hint.";
@@ -77,7 +73,7 @@ class DAO {
 			$args['types']
 		);
 
-		return $this->create_db_result( $wpdb->result, $wpdb->insert_id, $wpdb->last_error, 'created', $new_hint );
+		return $this->create_db_result( $wpdb->result, $wpdb->insert_id, $wpdb->last_error, 'create', $new_hint );
 	}
 
 
@@ -101,7 +97,7 @@ class DAO {
 			array( '%d' )
 		);
 
-		return $this->create_db_result( $wpdb->result, $wpdb->insert_id, $wpdb->last_error, 'updated', $new_hint );
+		return $this->create_db_result( $wpdb->result, $wpdb->insert_id, $wpdb->last_error, 'update', $new_hint );
 	}
 
 	public function bulk_update( $hint_ids, $action ) {
@@ -110,7 +106,7 @@ class DAO {
 
 		$wpdb->query( $wpdb->prepare(
 			"UPDATE $table SET status = %s WHERE id IN ($hint_ids)",
-			$action
+			$action . 'd'
 		) );
 
 		return $this->create_db_result( $wpdb->result, $wpdb->insert_id, $wpdb->last_error, $action, null );
@@ -120,7 +116,7 @@ class DAO {
 		global $wpdb;
 		$table = PPRH_DB_TABLE;
 		$wpdb->query( "DELETE FROM $table WHERE id IN ($hint_ids)" );
-		return $this->create_db_result( $wpdb->result, $wpdb->insert_id, $wpdb->last_error, 'deleted', null );
+		return $this->create_db_result( $wpdb->result, $wpdb->insert_id, $wpdb->last_error, 'delete', null );
 	}
 
 	public function remove_prev_auto_preconnects() {
@@ -144,12 +140,13 @@ class DAO {
 		if ( ! empty( $_REQUEST['orderby'] ) ) {
 			$sql .= ' ORDER BY ' . esc_sql( $_REQUEST['orderby'] );
 			$sql .= ! empty( $_REQUEST['order'] ) ? ' ' . esc_sql( $_REQUEST['order'] ) : ' ASC';
+		} else {
+			$sql .= ' ORDER BY url DESC';
 		}
 
 //		$sql = apply_filters( 'pprh_dh_append_sql', $sql);
 //		$query = apply_filters( 'pprh_sh_append_sql', $query );
 
-		$sql .= ' ORDER BY url DESC';
 
 		if ( ! empty( $query['args'] ) ) {
 			$sql = $wpdb->prepare( $sql, $query['args'] );

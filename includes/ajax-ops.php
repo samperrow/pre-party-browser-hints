@@ -24,6 +24,7 @@ class Ajax_Ops {
 			$data = json_decode( wp_unslash( $_POST['pprh_data'] ), true );
 
 			if ( is_array( $data ) ) {
+				$dao = new DAO();
 
 				$action = $data['action'];
 				$result = (object) array(
@@ -31,10 +32,15 @@ class Ajax_Ops {
 					'db_result' => array(),
 				);
 
+				$concat_ids = Utils::array_into_csv( $data['hint_ids'] );
+
 				if ( preg_match( '/create|update/', $action ) ) {
-					$result = $this->create_hint( $data, $action );
-				} elseif ( preg_match( '/enabled|disabled|delete/', $action ) ) {
-					$result = $this->handle_action( $data, $action );
+					$new_hint = Create_Hints::create_pprh_hint( $data );
+					$result = ( is_array( $new_hint ) ? $dao->{$action . '_hint'}($new_hint, $data['hint_ids'] ) : $new_hint );
+				} elseif ( preg_match( '/enable|disable/', $action ) ) {
+					$result = $dao->bulk_update( $concat_ids, $action );
+				} elseif ( 'delete' === $action ) {
+					$result = $dao->delete_hint( $concat_ids );
 				}
 //				elseif ( 'reset_single_post_preconnects' === $action ) {
 //					$result = apply_filters( 'pprh_reset_single_post_preconnect', $data );
@@ -58,29 +64,5 @@ class Ajax_Ops {
 		}
 	}
 
-	private function handle_action( $data, $action ) {
-		$dao = new DAO();
-		$wp_db = null;
-
-		if ( ! is_array( $data['hint_ids'] ) || count( $data['hint_ids'] ) === 0 ) {
-			return false;
-		}
-
-		$concat_ids = Utils::array_into_csv( $data['hint_ids'] );
-
-		if ( preg_match( '/enabled|disabled/', $action ) ) {
-			$wp_db = $dao->bulk_update( $concat_ids, $action );
-		} elseif ( 'delete' === $action ) {
-			$wp_db = $dao->delete_hint( $concat_ids );
-		}
-		return $wp_db;
-	}
-
-	private function create_hint( $data, $action ) {
-		$dao = new DAO();
-		$response = Utils::create_pprh_hint( $data );
-
-		return ( is_array( $response ) ? $dao->{$action . '_hint'}($response, $data['hint_id'] ) : $response );
-	}
 
 }

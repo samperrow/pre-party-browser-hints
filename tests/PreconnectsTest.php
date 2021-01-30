@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-namespace PPRH;
+//namespace PPRH;
 
 use PHPUnit\Framework\TestCase;
+use PPRH\Create_Hints;
 
 //class PreconnectsTest extends TestCase {
 
@@ -52,8 +53,8 @@ use PHPUnit\Framework\TestCase;
 //		$preconnects = new \PPRH\Preconnects();
 //		$url1 = 'https://auto-preconnect.com';
 //
-//		$hint_arr = Utils::create_raw_hint_array($url1, 'preconnect', 1 );
-//		$hint1 = Utils::create_pprh_hint( $hint_arr );
+//		$hint_arr = Create_Hints::create_raw_hint_array($url1, 'preconnect', 1 );
+//		$hint1 = Create_Hints::create_pprh_hint( $hint_arr );
 //
 //		$asdf = (object) array(
 //			'hints' => array(

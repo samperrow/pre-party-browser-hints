@@ -8,24 +8,19 @@
 		var $ = jQuery;
 		var currentURL = document.location.href;
 		var adminNoticeElem = document.getElementById('pprhNotice');
+		var checkoutModal = $('input#pprhOpenCheckoutModal');
 
 		if (/pprh-plugin-settings/.test(currentURL)) {
 			var emailSubmitBtn = document.getElementById('pprhSubmit');
 			emailSubmitBtn.addEventListener("click", emailValidate);
-		} else if ( /post\.php/.test(currentURL))  {
-			var checkoutModal = $('input#pprhOpenCheckoutModal');
-			if (typeof checkoutModal === "object") {
-				checkoutModal.on('click', openCheckoutModal);
-			}
 		}
+		// else if ( /post\.php/.test(currentURL))  {
+		// 	if (typeof checkoutModal === "object") {
+		// 		checkoutModal.on('click', openCheckoutModal);
+		// 	}
+		// }
 
-		function openCheckoutModal() {
-			// var windowWidth = window.innerWidth;
-			// var windowHeight = window.innerHeight;
-			// var leftSpace = (windowWidth - 700) / 2;
-			window.open( 'https://sphacks.io/checkout', '_blank', '', false );
-			// window.open( 'https://sphacks.io/checkout', '_blank', 'height=800,left=100,scrollbars=yes,top=300,width=700', false );
-		}
+
 
 
 		addEventListeners();
@@ -159,7 +154,7 @@
 					as_attr: elems.as_attr.val(),
 					type_attr: elems.type_attr.val(),
 					action: op,
-					hint_id: (op === 'update') ? tableID.split('pprh-edit-')[1] : null,
+					hint_ids: (op === 'update') ? tableID.split('pprh-edit-')[1] : null,
 					post_id: (typeof pprhProAdminJS === "object") ? pprhProAdminJS.GetPostId() : ""
 				};
 			}
@@ -343,10 +338,16 @@
 			}
 		}
 
+		if (typeof checkoutModal === "object") {
+			checkoutModal.on('click', openCheckoutModal);
+		}
+
 		function licenseKeyStuff() {
 			var licKeyElem = $('input#pprhLicenseKey');
 			var activateLicBtn = $('input#pprhActivateLicense');
-			var purchaseLic = $('input#pprhOpenCheckoutModal');
+			// var purchaseLic = $('input#pprhOpenCheckoutModal');
+
+			// purchaseLic.on('click', openCheckoutModal);
 
 			licKeyElem.on('keyup', function() {
 				if ( $(this).val().length === 23) {
@@ -355,6 +356,14 @@
 			});
 		}
 		licenseKeyStuff();
+
+		function openCheckoutModal() {
+			// var windowWidth = window.innerWidth;
+			// var windowHeight = window.innerHeight;
+			// var leftSpace = (windowWidth - 700) / 2;
+			// window.open( 'https://sphacks.io/checkout', '_blank', '', false );
+			window.open( 'https://sphacks.io/checkout', '_blank', 'height=800,left=100,scrollbars=yes,top=300,width=700', false );
+		}
 
 
 		return {

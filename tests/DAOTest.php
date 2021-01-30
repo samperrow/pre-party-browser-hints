@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
+use PPRH\Create_Hints;
 use PPRH\Utils;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -17,12 +18,12 @@ final class DAOTest extends TestCase {
 	public function test_create_hint(): int {
 		$dao = new PPRH\DAO();
 		$create_hints = new \PPRH\Create_Hints();
-		$hint_arr = Utils::create_raw_hint_array('https://www.asdf.com/foozball', 'preconnect', 1);
+		$hint_arr = Create_Hints::create_raw_hint_array('https://www.asdf.com/foozball', 'preconnect', 1);
 		$new_hint = $create_hints->create_hint($hint_arr);
 
 		$create_hint = $dao->create_hint($new_hint, null);
 		$hint_id = $create_hint->db_result['hint_id'];
-		$expected = $dao->create_db_result( true, $hint_id, '', 'created', $new_hint );
+		$expected = $dao->create_db_result( true, $hint_id, '', 'create', $new_hint );
 		$this->assertEquals($expected, $create_hint);
 		return $hint_id;
 	}
@@ -32,9 +33,9 @@ final class DAOTest extends TestCase {
 	 */
 	public function test_update_hint( int $hint_id ): void {
 		$dao = new PPRH\DAO();
-		$new_hint = Utils::create_raw_hint_array( 'https://www.asdf2.com/foozball/blah.css', 'dns-prefetch', 0, 'font', 'font/woff2', '' );
+		$new_hint = Create_Hints::create_raw_hint_array( 'https://www.asdf2.com/foozball/blah.css', 'dns-prefetch', 0, 'font', 'font/woff2', '' );
 		$result = $dao->update_hint( $new_hint, $hint_id );
-		$expected = $dao->create_db_result( true, $hint_id, '', 'updated', $new_hint );
+		$expected = $dao->create_db_result( true, $hint_id, '', 'update', $new_hint );
 		$this->assertEquals($expected, $result);
 	}
 
@@ -57,7 +58,7 @@ final class DAOTest extends TestCase {
 		$hint_id_str = (string) $hint_ids;
 		$dao = new PPRH\DAO();
 		$result = $dao->delete_hint( $hint_id_str );
-		$expected = $dao->create_db_result( true, $hint_id_str, '', 'deleted', null );
+		$expected = $dao->create_db_result( true, $hint_id_str, '', 'delete', null );
 		$this->assertEquals($expected, $result);
 	}
 
@@ -70,8 +71,8 @@ final class DAOTest extends TestCase {
 //
 //	public function test_get_hints(): void {
 //		$dao = new PPRH\DAO();
-//		$hint_arr = Utils::create_raw_hint_array('https://www.asdf.com/foozball', 'preconnect', 1);
-//		$new_hint = Utils::create_pprh_hint($hint_arr);
+//		$hint_arr = Create_Hints::create_raw_hint_array('https://www.asdf.com/foozball', 'preconnect', 1);
+//		$new_hint = Create_Hints::create_pprh_hint($hint_arr);
 //		$expected = $dao->create_hint($new_hint, null);
 //		$id = $expected->db_result['hint_id'];
 //

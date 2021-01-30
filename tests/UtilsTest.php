@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
+use PPRH\Create_Hints;
 use PPRH\PPRH_Pro;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -149,8 +150,8 @@ final class UtilsTest extends TestCase {
 
 	public function test_create_pprh_hint_success():void {
 		$dao = new \PPRH\DAO();
-		$raw_data1 = \PPRH\Utils::create_raw_hint_array( 'test.com', 'dns-prefetch' );
-		$actual = \PPRH\Utils::create_pprh_hint($raw_data1);
+		$raw_data1 = \PPRH\Create_Hints::create_raw_hint_array( 'test.com', 'dns-prefetch' );
+		$actual = \PPRH\Create_Hints::create_pprh_hint($raw_data1);
 
 		$expected = array(
 			'url'          => '//test.com',
@@ -170,21 +171,21 @@ final class UtilsTest extends TestCase {
 	}
 
 	public function test_create_pprh_hint_fail():void {
-		$raw_data1 = \PPRH\Utils::create_raw_hint_array( '', '' );
+		$raw_data1 = \PPRH\Create_Hints::create_raw_hint_array( '', '' );
 
-		$actual = \PPRH\Utils::create_pprh_hint($raw_data1);
+		$actual = \PPRH\Create_Hints::create_pprh_hint($raw_data1);
 
 		$this->assertEquals( false, $actual );
 	}
 
 	public function test_create_pprh_hint_dup_hints():void {
 		$dao = new \PPRH\DAO();
-		$data1 = \PPRH\Utils::create_raw_hint_array( 'blah.com', 'preconnect' );
-		$hint1 = \PPRH\Utils::create_pprh_hint($data1);
+		$data1 = \PPRH\Create_Hints::create_raw_hint_array( 'blah.com', 'preconnect' );
+		$hint1 = \PPRH\Create_Hints::create_pprh_hint($data1);
 
 		$actual1 = $dao->create_hint( $hint1, null );
 
-		$hint2 = \PPRH\Utils::create_pprh_hint($data1);
+		$hint2 = \PPRH\Create_Hints::create_pprh_hint($data1);
 
 		$this->assertEquals( true, $actual1->db_result['success'] );
 		$this->assertEquals( false, $hint2->db_result['success'] );
@@ -206,7 +207,7 @@ final class UtilsTest extends TestCase {
 			$expected['post_url'] = '';
 		}
 
-		$test1 = PPRH\Utils::create_raw_hint_array('test.com', 'preconnect', 1, 'audio', 'font/woff2', 'crossorigin' );
+		$test1 = PPRH\Create_Hints::create_raw_hint_array('test.com', 'preconnect', 1, 'audio', 'font/woff2', 'crossorigin' );
 
 		$this->assertEquals( $expected, $test1 );
 	}
@@ -227,7 +228,7 @@ final class UtilsTest extends TestCase {
 			)
 		);
 
-		$test1 = $dao->create_db_result( true, '', '', 'created', null );
+		$test1 = $dao->create_db_result( true, '', '', 'create', null );
 
 		$this->assertEquals( $expected, $test1 );
 	}

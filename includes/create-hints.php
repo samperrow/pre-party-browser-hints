@@ -28,6 +28,41 @@ class Create_Hints {
 		);
 	}
 
+	// hint creation utils
+	public static function create_pprh_hint( $raw_data ) {
+		$create_hints = new Create_Hints();
+		$dao = new DAO();
+		$new_hint = $create_hints->create_hint( $raw_data );
+
+		if ( is_array( $new_hint ) ) {
+			$duplicate_hints_exist = $create_hints->duplicate_hints_exist( $new_hint );
+
+			if ( $duplicate_hints_exist ) {
+				return $dao->create_db_result( false, '', 'A duplicate hint already exists!', 'create', null );
+			}
+			return $new_hint;
+		}
+		return false;
+	}
+
+	public static function create_raw_hint_array( $url, $hint_type, $auto_created = 0, $as_attr = '', $type_attr = '', $crossorigin = '', $post_id = '', $post_url = '' ) {
+		$arr = array(
+			'url'          => $url,
+			'as_attr'      => $as_attr,
+			'hint_type'    => $hint_type,
+			'type_attr'    => $type_attr,
+			'crossorigin'  => $crossorigin,
+			'auto_created' => $auto_created
+		);
+
+		$arr = apply_filters( 'pprh_append_hint_array', $arr, $post_id, $post_url );
+		return $arr;
+	}
+
+
+
+
+
 	public function duplicate_hints_exist( $new_hint ) {
 		$duplicate_hints = $this->get_duplicate_hints( $new_hint );
 		$duplicate_hints_exist = ( count( $duplicate_hints ) > 0 );
@@ -53,7 +88,7 @@ class Create_Hints {
 		$type_attr = $this->set_type_attr( $hint, $file_type );
 		$crossorigin = $this->set_crossorigin( $hint, $file_type );
 
-		$new_hint = Utils::create_raw_hint_array( $url, $hint_type, $auto_created, $as_attr, $type_attr, $crossorigin );
+		$new_hint = self::create_raw_hint_array( $url, $hint_type, $auto_created, $as_attr, $type_attr, $crossorigin );
 		$new_hint2 = apply_filters( 'pprh_append_hint', $new_hint, $hint );
 		return $new_hint2;
 	}

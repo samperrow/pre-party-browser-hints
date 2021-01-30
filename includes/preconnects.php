@@ -69,8 +69,8 @@ class Preconnects {
 		$results = array();
 
 		foreach ( $hint_data->hints as $url ) {
-			$hint_arr = Utils::create_raw_hint_array( $url, 'preconnect', 1 );
-			$hint = Utils::create_pprh_hint( $hint_arr );
+			$hint_arr = Create_Hints::create_raw_hint_array( $url, 'preconnect', 1 );
+			$hint = Create_Hints::create_pprh_hint( $hint_arr );
 
 			if ( is_array( $hint ) ) {
 				$res = $dao->create_hint( $hint, null );
