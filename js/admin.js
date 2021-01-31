@@ -239,20 +239,11 @@
 			});
 		}
 
-		// function toggleAdminNotice(response) {
-		// 	// response = verifyResponse(response);
-		// 	updateAdminNotice(response);
-		// }
-
 		function verifyResponse(response) {
-			// if (response.status === 'error') {
-			// 	response.msg += response.last_error;
-			// }
-
 			var status = (response.status) ? response.status : 'error';
 			var msg = (response.msg) ? response.msg : 'Error updating hint. Please contact support or try again later.';
 
-			if ( response.last_error !== '' && ! response.success ) {
+			if ( response.last_error && response.last_error !== '' && ! response.success ) {
 				msg = response.last_error;
 			}
 
@@ -263,10 +254,6 @@
 
 		function updateAdminNotice(response) {
 			response = verifyResponse(response);
-
-			// var status = (response.status) ? response.status : 'error';
-			// var msg = (response.msg) ? response.msg : 'Error updating hint';
-
 			adminNoticeElem.classList.add('active');
 			adminNoticeElem.classList.add('notice-' + response.status);
 			adminNoticeElem.getElementsByTagName('p')[0].innerText = response.msg;

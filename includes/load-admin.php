@@ -15,8 +15,6 @@ class Load_Admin {
 		$this->load_plugin_admin_files();
 	}
 
-
-
 	public function load_plugin_admin_files() {
 		include_once PPRH_ABS_DIR . 'includes/tabs/insert-hints.php';
 		include_once PPRH_ABS_DIR . 'includes/tabs/settings.php';
