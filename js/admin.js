@@ -362,7 +362,7 @@
 			// var windowHeight = window.innerHeight;
 			// var leftSpace = (windowWidth - 700) / 2;
 			// window.open( 'https://sphacks.io/checkout', '_blank', '', false );
-			window.open( 'https://sphacks.local/checkout', '_blank', 'height=850,scrollbars=yes,width=700', false );
+			window.open( 'https://sphacks.io/checkout', '_blank', 'height=850,scrollbars=yes,width=700', false );
 		}
 
 
