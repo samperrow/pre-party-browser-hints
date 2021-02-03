@@ -48,8 +48,12 @@ div#pprh-wrapper {
         }
     }
 
-    div.row-actions span:hover {
-        cursor: pointer
+    div.row-actions {
+        min-height: 21px;
+
+        span:hover {
+            cursor: pointer
+        }
     }
 
     div.inside tr.pprhGlobalPostPage span.delete a {

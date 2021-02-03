@@ -525,13 +525,11 @@ class WP_List_Table {
 		$out = '<div class="' . ( $always_visible ? 'row-actions visible' : 'row-actions' ) . '">';
 		foreach ( $actions as $action => $link ) {
 			++$i;
-			( $i === $action_count ) ? $sep = '' : $sep = ' | ';
-			$out                          .= "<span class='$action'>$link$sep</span>";
+			$sep = ('' === $link || $i === $action_count) ? '' : ' | ';
+			$out .= "<span class='$action'>$link$sep</span>";
 		}
 		$out .= '</div>';
-
 		$out .= '<button type="button" class="toggle-row"><span class="screen-reader-text">' . __( 'Show more details' ) . '</span></button>';
-
 		return $out;
 	}
 
@@ -1158,24 +1156,19 @@ class WP_List_Table {
 	public function display() {
 		wp_nonce_field( 'ajax-custom-list-nonce', '_ajax_custom_list_nonce' );
 		$singular = $this->_args['singular'];
-
 		$this->display_tablenav( 'top' );
-
 		$this->screen->render_screen_reader_content( 'heading_list' );
+		$id_string = 'id="the-list';
+		$id_string .= ( $singular ) ? "-$singular\" data-wp-lists='list:$singular'" : '"';
 		?>
         <table style="border-spacing: 2px;" class="wp-list-table pprh-post-table <?php echo implode( ' ', $this->get_table_classes() ); ?>">
-
             <thead>
                 <tr>
                     <?php $this->print_column_headers(); ?>
                 </tr>
             </thead>
 
-            <tbody id="the-list
-                <?php if ( $singular ) {
-                    echo "-$singular\" data-wp-lists='list:$singular'";
-                } ?>
-                >
+            <tbody <?php echo "$id_string"; ?>>
                 <?php $this->display_rows_or_placeholder(); ?>
             </tbody>
 
@@ -1294,7 +1287,7 @@ class WP_List_Table {
 	protected function single_row_columns( $item ) {
 		list( $columns, $hidden, $primary ) = $this->get_column_info();
 
-//		$on_posts_page_and_global = ( ! empty( $item['post_id'] ) ? apply_filters( 'pprh_on_posts_page_and_global', $item['post_id'] ) : false );
+		$on_posts_page_and_global = ( ! empty( $item['post_id'] ) ? apply_filters( 'pprh_on_posts_page_and_global', $item['post_id'] ) : false );
 
 		foreach ( $columns as $column_name => $column_display_name ) {
 			$classes = "$column_name column-$column_name";
@@ -1314,24 +1307,15 @@ class WP_List_Table {
 
 			if ( 'cb' === $column_name ) {
 				echo '<th scope="row" class="check-column">';
-                echo $this->column_cb( $item, $on_posts_page_and_global = false );
+                echo $this->column_cb( $item, $on_posts_page_and_global );
 				echo '</th>';
 			} elseif ( method_exists( $this, '_column_' . $column_name ) ) {
 				echo $this->{'_column_' . $column_name}($item, $classes, $data, $primary);
 			} elseif ( method_exists( $this, 'column_' . $column_name ) ) {
 				echo "<td $attributes>";
-
-//				$on_posts_page_and_global
-//				if ( 'url' === $column_name ) {
-				    echo $this->{'column_' . $column_name}($item);
-//                    echo sprintf( '%1$s', $item['url'] );
-//                    echo '<div class="row-actions global-hint"></div>';
-//				}
-//				else {
-////					echo sprintf( '%1$s', $item[$column_name] );
-//					echo $this->handle_row_actions( $column_name, $primary );
-//				}
-
+				if ( 'url' === $column_name ) {
+				    echo $this->{'column_' . $column_name}($item, $on_posts_page_and_global);
+				}
 				echo '</td>';
 			} else {
 				echo "<td $attributes>";

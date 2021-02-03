@@ -127,20 +127,29 @@ class Display_Hints extends WP_List_Table {
 		esc_html_e( 'Enter a URL or domain name..', 'pprh' );
 	}
 
-	public function column_url( $item ) {
-		$actions = array(
-			'edit'   => sprintf( '<a id="pprh-edit-hint-%1$s" class="pprh-edit-hint">%2$s</a>', $item['id'], 'Edit' ),
-			'delete' => sprintf( '<a id="pprh-delete-hint-%1$s">%2$s</a>', $item['id'], 'Delete' ),
-		);
+	public function column_url( $item, $hide ) {
+
+	    if ( $hide ) {
+	        $actions = array(
+                'edit'   => '',
+                'delete' => ''
+            );
+        } else {
+			$actions = array(
+				'edit'   => sprintf( '<a id="pprh-edit-hint-%1$s" class="pprh-edit-hint">%2$s</a>', $item['id'], 'Edit' ),
+				'delete' => sprintf( '<a id="pprh-delete-hint-%1$s">%2$s</a>', $item['id'], 'Delete' ),
+			);
+        }
+
 		return sprintf( '%1$s %2$s', $item['url'], $this->row_actions( $actions ) );
 	}
 
 	protected function column_cb( $item, $hide ) {
-		$on_posts_page_and_global = ( ! empty( $item['post_id'] )
-            ? apply_filters( 'pprh_on_posts_page_and_global', $item['post_id'] )
-            : false );
+    //		$on_posts_page_and_global = ( ! empty( $item['post_id'] )
+    //            ? apply_filters( 'pprh_on_posts_page_and_global', $item['post_id'] )
+    //            : false );
 
-		if ( $on_posts_page_and_global ) {
+		if ( $hide ) {
 		    $this->global_hint_alert();
         } else {
 			return sprintf( '<input type="checkbox" name="urlValue[]" value="%1$s"/>', $item['id'] );

@@ -129,7 +129,8 @@
 		}
 
 		function createHint(e, tableID, op) {
-			var elems = getRowElems(tableID);
+			var table = $('table#' + tableID);
+			var elems = getRowElems(table);
 			var hint_url = elems.url.val().replace(/'|"/g, '');
 			var hintType = getHintType.call(elems.hint_type);
 			var hintObj = createHintObj();
@@ -155,20 +156,20 @@
 					type_attr: elems.type_attr.val(),
 					action: op,
 					hint_ids: (op === 'update') ? tableID.split('pprh-edit-')[1] : null,
-					post_id: (typeof pprhProAdminJS === "object") ? pprhProAdminJS.GetPostId() : ""
+					post_id: (typeof pprhProAdminJS === "object") ? pprhProAdminJS.GetPostId(table) : ""
 				};
 			}
 
 		}
 
-		function getRowElems(tableID) {
-			var table = $('table#' + tableID).find('tbody');
+		function getRowElems(table) {
+			var tbody = table.find('tbody');
 			return {
-				url: table.find('input.pprh_url'),
-				hint_type: table.find('tr.pprhHintTypes'),
-				crossorigin: table.find('input.pprh_crossorigin'),
-				as_attr: table.find('select.pprh_as_attr'),
-				type_attr: table.find('select.pprh_type_attr'),
+				url: tbody.find('input.pprh_url'),
+				hint_type: tbody.find('tr.pprhHintTypes'),
+				crossorigin: tbody.find('input.pprh_crossorigin'),
+				as_attr: tbody.find('select.pprh_as_attr'),
+				type_attr: tbody.find('select.pprh_type_attr'),
 			};
 		}
 
@@ -287,7 +288,8 @@
 		function putHintInfoIntoElems(hintID) {
 			var json = $('input.pprh-hint-storage.' + hintID).val();
 			var data = JSON.parse(json);
-			var elems = getRowElems('pprh-edit-' + hintID);
+			var table = $('table#pprh-edit-' + hintID);
+			var elems = getRowElems(table);
 
 			elems.url.val(data.url);
 			elems.hint_type.find('input[value="' + data.hint_type + '"]').attr('checked', true);

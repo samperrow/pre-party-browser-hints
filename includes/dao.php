@@ -133,18 +133,19 @@ class DAO {
 		$table = PPRH_DB_TABLE;
 		$sql = "SELECT * FROM $table";
 
-		if ( ! empty( $query['sql'] ) ) {
-			$sql .= $query['sql'];
-		}
+//		if ( ! empty( $query['sql'] ) ) {
+//			$sql .= $query['sql'];
+//		}
 
-		if ( ! empty( $_REQUEST['orderby'] ) ) {
+		if ( defined( 'PPRH_PRO_ABS_DIR' ) ) {
+			$sql = apply_filters( 'pprh_dh_append_sql', $sql );
+		} elseif ( ! empty( $_REQUEST['orderby'] ) ) {
 			$sql .= ' ORDER BY ' . esc_sql( $_REQUEST['orderby'] );
 			$sql .= ! empty( $_REQUEST['order'] ) ? ' ' . esc_sql( $_REQUEST['order'] ) : ' ASC';
 		} else {
-			$sql .= ' ORDER BY url DESC';
+			$sql .= ' ORDER BY url ASC';
 		}
 
-//		$sql = apply_filters( 'pprh_dh_append_sql', $sql);
 //		$query = apply_filters( 'pprh_sh_append_sql', $query );
 
 
