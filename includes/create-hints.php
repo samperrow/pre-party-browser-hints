@@ -16,7 +16,6 @@ class Create_Hints {
 //		if ( ! defined( 'CREATING_HINT' ) || ! CREATING_HINT ) {
 ////			exit();
 ////		}
-		do_action( 'pprh_load_create_hints_child' );
 
 		$this->result = array(
 			'new_hint' => array(),

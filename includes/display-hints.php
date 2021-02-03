@@ -18,11 +18,7 @@ class Display_Hints extends WP_List_Table {
 	public $data;
 	public $items;
 
-
-
 	public function __construct() {
-		do_action('pprh_load_display_hints_child');
-
 		parent::__construct( array(
             'ajax' => true,
 			'plural' => 'urls',
@@ -140,9 +136,11 @@ class Display_Hints extends WP_List_Table {
 	}
 
 	protected function column_cb( $item, $hide ) {
-		$on_posts_page_and_global = ( ! empty( $item['post_id'] ) ? apply_filters( 'pprh_on_posts_page_and_global', $item['post_id'] ) : false );
+		$on_posts_page_and_global = ( ! empty( $item['post_id'] )
+            ? apply_filters( 'pprh_on_posts_page_and_global', $item['post_id'] )
+            : false );
 
-		if ( $hide ) {
+		if ( $on_posts_page_and_global ) {
 		    $this->global_hint_alert();
         } else {
 			return sprintf( '<input type="checkbox" name="urlValue[]" value="%1$s"/>', $item['id'] );

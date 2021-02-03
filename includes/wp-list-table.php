@@ -1140,7 +1140,7 @@ class WP_List_Table {
 
 			$tag   = ( 'cb' === $column_key ) ? 'td' : 'th';
 			$scope = ( 'th' === $tag ) ? 'scope="col"' : '';
-			$id    = $with_id ? "id='$column_key'" : '';
+			$id    = $with_id ? "id='pprh-$column_key'" : '';
 
 			if ( ! empty( $class ) ) {
 				$class = "class='" . implode( ' ', $class ) . "'";
@@ -1163,33 +1163,31 @@ class WP_List_Table {
 
 		$this->screen->render_screen_reader_content( 'heading_list' );
 		?>
-<table style="border-spacing: 2px;" class="wp-list-table pprh-post-table <?php echo implode( ' ', $this->get_table_classes() ); ?>">
+        <table style="border-spacing: 2px;" class="wp-list-table pprh-post-table <?php echo implode( ' ', $this->get_table_classes() ); ?>">
 
-	<thead>
-	<tr>
-		<?php $this->print_column_headers(); ?>
-	</tr>
-	</thead>
+            <thead>
+                <tr>
+                    <?php $this->print_column_headers(); ?>
+                </tr>
+            </thead>
 
-	<tbody id="the-list"
+            <tbody id="the-list
+                <?php if ( $singular ) {
+                    echo "-$singular\" data-wp-lists='list:$singular'";
+                } ?>
+                >
+                <?php $this->display_rows_or_placeholder(); ?>
+            </tbody>
+
+            <tfoot>
+                <tr>
+                    <?php $this->print_column_headers( false ); ?>
+                </tr>
+            </tfoot>
+
+        </table>
 		<?php
-		if ( $singular ) {
-			echo " data-wp-lists='list:$singular'";
-		}
-		?>
-		>
-		<?php $this->display_rows_or_placeholder(); ?>
-	</tbody>
-
-	<tfoot>
-	<tr>
-		<?php $this->print_column_headers( false ); ?>
-	</tr>
-	</tfoot>
-
-</table>
-		<?php
-			$this->display_tablenav( 'bottom' );
+            $this->display_tablenav( 'bottom' );
 	}
 
 	/**

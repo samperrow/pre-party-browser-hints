@@ -9,7 +9,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Load_Admin {
 
 	public function __construct() {
-	    do_action( 'pprh_load_admin_child' );
 		add_action( 'pprh_admin_notice', array( $this, 'admin_notice' ), 10, 1 );
 
 		$this->load_plugin_admin_files();

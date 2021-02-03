@@ -18,7 +18,6 @@ class Ajax_Ops {
 
 	public function pprh_update_hints() {
 		if ( isset( $_POST['pprh_data'] ) && wp_doing_ajax() ) {
-			do_action( 'pprh_load_ajax_ops_child' );
 
 			check_ajax_referer( 'pprh_table_nonce', 'nonce' );
 			$data = json_decode( wp_unslash( $_POST['pprh_data'] ), true );
@@ -50,7 +49,6 @@ class Ajax_Ops {
 //					$this->result['response'] = apply_filters( 'pprh_reset_single_post_preconnect', $data );
 //				}
 
-
 				$display_hints = new Display_Hints();
 				$json = $display_hints->ajax_response( $result );
 
@@ -63,6 +61,5 @@ class Ajax_Ops {
 			wp_die();
 		}
 	}
-
 
 }

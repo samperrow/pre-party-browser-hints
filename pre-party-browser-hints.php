@@ -73,10 +73,7 @@ class Pre_Party_Browser_Hints {
 	public function load_common_files() {
 		include_once PPRH_ABS_DIR . 'includes/utils.php';
 		include_once PPRH_ABS_DIR . 'includes/dao.php';
-
-//		if ( ! class_exists( Create_Hints::class ) ) {
-			include_once PPRH_ABS_DIR . 'includes/create-hints.php';
-//		}
+        include_once PPRH_ABS_DIR . 'includes/create-hints.php';
 	}
 
 	public function create_constants() {
