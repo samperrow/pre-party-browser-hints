@@ -40,6 +40,11 @@
 
     function fireAjax() {
         findResourceSources();
+        var post_url = document.location.href.split(host);
+        if ( Array.isArray(post_url) && '' !== post_url[1]) {
+            pprh_data.post_url = post_url[1];
+        }
+
         var json = JSON.stringify(pprh_data);
         var xhr = new XMLHttpRequest();
         var url = pprh_data.admin_url;
