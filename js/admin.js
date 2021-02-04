@@ -21,8 +21,6 @@
 		// }
 
 
-
-
 		addEventListeners();
 		toggleDivs();
 
@@ -32,7 +30,6 @@
 
 			tabs.first().toggleClass('nav-tab-active');
 			$("#pprh-insert-hints").toggleClass('active');
-			// divs.first().toggleClass('active');
 			$('table#general').addClass('active');
 
 			if (!tabs) {
@@ -128,38 +125,33 @@
 			return val;
 		}
 
-		function createHint(e, tableID, op) {
+		function createHintObj(tableID, operation) {
 			var table = $('table#' + tableID);
 			var elems = getRowElems(table);
 			var hint_url = elems.url.val().replace(/'|"/g, '');
-			var hintType = getHintType.call(elems.hint_type);
-			var hintObj = createHintObj();
+			var hintType = elems.hint_type.find('input:checked').val()
 
-			if (hint_url.length === 0 || !hintType) {
+			return {
+				url: hint_url,
+				hint_type: hintType,
+				crossorigin: elems.crossorigin.is(':checked') ? 'crossorigin' : '',
+				as_attr: elems.as_attr.val(),
+				type_attr: elems.type_attr.val(),
+				action: operation,
+				hint_ids: (operation === 'update') ? tableID.split('pprh-edit-')[1] : []
+			};
+		}
+
+		function createHint(e, tableID, operation) {
+			var hintObj = createHintObj(tableID, operation);
+
+			if (hintObj.url.length === 0 || !hintObj.hint_type) {
 				window.alert('Please enter a proper URL and hint type.');
 			} else if (hintObj.hint_type === 'preload' && !hintObj.as_attr) {
 				window.alert("You must specify an 'as' attribute when using preload hints.");
 			} else {
 				createAjaxReq(hintObj);
 			}
-
-			function getHintType() {
-				return this.find('input:checked').val();
-			}
-
-			function createHintObj() {
-				return {
-					url: hint_url,
-					hint_type: hintType,
-					crossorigin: elems.crossorigin.is(':checked') ? 'crossorigin' : '',
-					as_attr: elems.as_attr.val(),
-					type_attr: elems.type_attr.val(),
-					action: op,
-					hint_ids: (op === 'update') ? tableID.split('pprh-edit-')[1] : null,
-					post_id: (typeof pprhProAdminJS === "object") ? pprhProAdminJS.GetPostId(table) : ""
-				};
-			}
-
 		}
 
 		function getRowElems(table) {
@@ -354,11 +346,27 @@
 			window.open( 'https://sphacks.io/checkout', '_blank', 'height=850,scrollbars=yes,width=700', false );
 		}
 
+		// function getPostId(table) {
+		// 	var homeOnlyHint = table.find( $('input.pprh_home.pprhHomePostHints').first() );
+		//
+		// 	if (! homeOnlyHint) {
+		// 		return '';
+		// 	}
+		// 	var postId = '';
+		//
+		// 	if (/page=pprh-plugin-settings/.test(currentURL)) {
+		// 		postId = (homeOnlyHint && homeOnlyHint.is(':checked')) ? '0' : 'global';
+		// 	} else if (/post\.php\?post=/.test(currentURL)) {
+		// 		postId = currentURL.match(/post\.php\?post=(\d*)/)[1];
+		// 	}
+		// 	return postId;
+		// }
 
 		return {
-			// ToggleAdminNotice: toggleAdminNotice,
 			CreateAjaxReq: createAjaxReq,
-			UpdateAdminNotice: updateAdminNotice
+			UpdateAdminNotice: updateAdminNotice,
+			CreateHintObj: createHintObj,
+			// GetPostId: getPostId
 		}
 
 	}));

@@ -30,7 +30,7 @@ final class AjaxOpsTest extends TestCase {
 		$_POST['action'] = 'pprh_update_hints';
 		$_REQUEST['nonce'] = $expected_nonce;
 
-		$ajax_ops = new \PPRH\Ajax_Ops();
+		$ajax_ops = new \PPRH\AjaxOps();
 
 		$json = $ajax_ops->pprh_update_hints();
 		$response = json_decode( $json, true );

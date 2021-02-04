@@ -2,20 +2,20 @@
 
 declare(strict_types=1);
 use PHPUnit\Framework\TestCase;
-use PPRH\Create_Hints;
+use PPRH\CreateHints;
 use PPRH\PPRH_Pro;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-final class Create_HintsTest extends TestCase {
+final class CreateHintsTest extends TestCase {
 
 //	public function __construct() {}
 
 	public function testConstructor(): void {
 //		define('CREATING_HINT', true);
-		$create_hints = new \PPRH\Create_Hints();
+		$create_hints = new \PPRH\CreateHints();
 
 		$new_hint = array();
 
@@ -29,23 +29,23 @@ final class Create_HintsTest extends TestCase {
 		);
 
 
-		$this->assertClassHasAttribute('result', \PPRH\Create_Hints::class);
+		$this->assertClassHasAttribute('result', \PPRH\CreateHints::class);
 		$this->assertEquals($create_hints->result, $result);
 
 		if ( is_plugin_active( 'pprh-pro' ) ) {
-			$this->assertTrue( class_exists(\PPRH\Create_Hints_Child::class ) );
+			$this->assertTrue( class_exists(\PPRH\CreateHintsChild::class ) );
 		}
 	}
 
 	public function test_duplicate_hints_exist() {
 		$dao = new \PPRH\DAO();
-		$dup_hint = \PPRH\Create_Hints::create_raw_hint_array( 'https://duplicate-hint.com', 'dns-prefetch', 0 );
+		$dup_hint = \PPRH\CreateHints::create_raw_hint_array( 'https://duplicate-hint.com', 'dns-prefetch', 0 );
 		$error = 'A duplicate hint already exists!';
 
-		$dummy_hint = \PPRH\Create_Hints::create_pprh_hint( $dup_hint );
-		$dummy_hint_result = $dao->create_hint( $dummy_hint, null );
+		$dummy_hint = \PPRH\CreateHints::create_pprh_hint( $dup_hint );
+		$dummy_hint_result = $dao->create_hint( $dummy_hint );
 
-		$dup_hint_error = \PPRH\Create_Hints::create_pprh_hint( $dup_hint );
+		$dup_hint_error = \PPRH\CreateHints::create_pprh_hint( $dup_hint );
 		$expected = $dao->create_db_result( false, '', $error, 'create', null );
 
 		$this->assertEquals( $expected, $dup_hint_error );
@@ -54,10 +54,10 @@ final class Create_HintsTest extends TestCase {
 
 
 	public function test_create_hint_success(): void {
-		$create_hints = new \PPRH\Create_Hints();
-		$test1 = \PPRH\Create_Hints::create_raw_hint_array('https://www.espn.com', 'dns-prefetch');
-		$test2 = \PPRH\Create_Hints::create_raw_hint_array('ht<tps://www.e>\'sp"n.com', 'dns-prefetch');
-		$test3 = \PPRH\Create_Hints::create_raw_hint_array('//espn.com', 'dns-prefetch');
+		$create_hints = new \PPRH\CreateHints();
+		$test1 = \PPRH\CreateHints::create_raw_hint_array('https://www.espn.com', 'dns-prefetch');
+		$test2 = \PPRH\CreateHints::create_raw_hint_array('ht<tps://www.e>\'sp"n.com', 'dns-prefetch');
+		$test3 = \PPRH\CreateHints::create_raw_hint_array('//espn.com', 'dns-prefetch');
 
 		$test_hint1 = $create_hints->create_hint($test1);
 		$this->assertEquals($test_hint1, $test1);
@@ -71,7 +71,7 @@ final class Create_HintsTest extends TestCase {
 
 
 	public function test_create_hint_fails(): void {
-		$create_hints = new \PPRH\Create_Hints();
+		$create_hints = new \PPRH\CreateHints();
 
 		$data1 = array(
 			'url'       => '',
@@ -83,7 +83,7 @@ final class Create_HintsTest extends TestCase {
 	}
 
 	public function testGet_Url(): void {
-		$create_hints = new \PPRH\Create_Hints();
+		$create_hints = new \PPRH\CreateHints();
 		$domain = 'https://ajax.googleapis.com';
 		$long_url = 'https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js';
 
@@ -108,7 +108,7 @@ final class Create_HintsTest extends TestCase {
 
 
 	public function testGetHintType(): void {
-		$create_hints = new \PPRH\Create_Hints();
+		$create_hints = new \PPRH\CreateHints();
 		$hint1 = 'd$ns-prefetch';
 		$hint2 = 'pre\'con>nect';
 		$hint3 = 'pre#fetch';
@@ -122,7 +122,7 @@ final class Create_HintsTest extends TestCase {
 	}
 
 	public function testParseForDomainName(): void {
-		$create_hints = new \PPRH\Create_Hints();
+		$create_hints = new \PPRH\CreateHints();
 		$url1 = 'espn.com';
 		$url2 = 'https://example.com/asdflkasjd/asfdstest:8080';
 		$url3 = '//example.co.uk';
@@ -133,15 +133,15 @@ final class Create_HintsTest extends TestCase {
 	}
 
 //	public function testGetFileType(): void {
-//		$create_hints = new \PPRH\Create_Hints();
+//		$create_hints = new \PPRH\CreateHints();
 //	}
 
 //	public function testSetCrossorigin(): void {
-//		$create_hints = new \PPRH\Create_Hints();
+//		$create_hints = new \PPRH\CreateHints();
 //	}
 
 	public function testSetAsAttr(): void {
-		$create_hints = new \PPRH\Create_Hints();
+		$create_hints = new \PPRH\CreateHints();
 
 		$as_attr1 = $create_hints->set_as_attr( 'video', '.mp4' );
 		$as_attr2 = $create_hints->set_as_attr( '', '.mp4' );
@@ -163,21 +163,21 @@ final class Create_HintsTest extends TestCase {
 	}
 
 //	public function testSetTypeAttr(): void {
-//		$create_hints = new \PPRH\Create_Hints();
+//		$create_hints = new \PPRH\CreateHints();
 //	}
 //
 //	public function testGetFileTypeMime(): void {
-//		$create_hints = new \PPRH\Create_Hints();
+//		$create_hints = new \PPRH\CreateHints();
 //	}
 //
 //
 //	public function testGetDuplicateHints(): void {
-//		$create_hints = new \PPRH\Create_Hints();
+//		$create_hints = new \PPRH\CreateHints();
 //	}
 
 	// make sure 'https://www.espn.com' as a preconnect is added to db prior to running this.
 //	public function testDuplicateHintAttemptFails(): void {
-//		$create_hints = new \PPRH\Create_Hints();
+//		$create_hints = new \PPRH\CreateHints();
 //		$test1 = \PPRH\Create_Hints::create_raw_hint_array('https://www.espn.com', 'preconnect');
 //		$test_hint1 = $create_hints->duplicate_hints_exist($test1);
 //		$arr = array(

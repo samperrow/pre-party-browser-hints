@@ -6,11 +6,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class Create_Hints {
+class CreateHints {
 
 	public $result = array();
 
-	protected $new_hint = array();
+//	protected $new_hint = array();
 
 	public function __construct() {
 //		if ( ! defined( 'CREATING_HINT' ) || ! CREATING_HINT ) {
@@ -29,7 +29,7 @@ class Create_Hints {
 
 	// hint creation utils
 	public static function create_pprh_hint( $raw_data ) {
-		$create_hints = new Create_Hints();
+		$create_hints = new CreateHints();
 		$dao = new DAO();
 		$new_hint = $create_hints->create_hint( $raw_data );
 
@@ -44,33 +44,23 @@ class Create_Hints {
 		return false;
 	}
 
-	public static function create_raw_hint_array( $url, $hint_type, $auto_created = 0, $as_attr = '', $type_attr = '', $crossorigin = '', $post_id = '', $post_url = '' ) {
-		$arr = array(
-			'url'          => $url,
-			'as_attr'      => $as_attr,
-			'hint_type'    => $hint_type,
-			'type_attr'    => $type_attr,
-			'crossorigin'  => $crossorigin,
-			'auto_created' => $auto_created
-		);
-
-		$arr = apply_filters( 'pprh_append_hint_array', $arr, $post_id, $post_url );
-		return $arr;
-	}
-
-
-
-
+//	public static function create_raw_hint_array( $url, $hint_type, $auto_created = 0, $as_attr = '', $type_attr = '', $crossorigin = '', $post_id = '', $post_url = '' ) {
+//		$arr = array(
+//			'url'          => $url,
+//			'as_attr'      => $as_attr,
+//			'hint_type'    => $hint_type,
+//			'type_attr'    => $type_attr,
+//			'crossorigin'  => $crossorigin,
+//			'auto_created' => $auto_created
+//		);
+//
+//		$arr = apply_filters( 'pprh_append_hint_array', $arr, $post_id, $post_url );
+//		return $arr;
+//	}
 
 	public function duplicate_hints_exist( $new_hint ) {
 		$duplicate_hints = $this->get_duplicate_hints( $new_hint );
-		$duplicate_hints_exist = ( count( $duplicate_hints ) > 0 );
-
-		return $duplicate_hints_exist;
-
-//		if ( ! empty( $this->new_hint['post_id'] ) ) {
-//			$msg = apply_filters( 'pprh_check_duplicates', $this );
-//		}
+		return ( count( $duplicate_hints ) > 0 );
 	}
 
 
@@ -82,14 +72,18 @@ class Create_Hints {
 		$hint_type = $this->get_hint_type( $hint['hint_type'] );
 		$url = $this->get_url( $hint['url'], $hint_type );
 		$file_type = $this->get_file_type( $url );
-		$auto_created = ( ! empty( $hint['auto_created'] ) ? 1 : 0 );
-		$as_attr = $this->set_as_attr( $hint['as_attr'], $file_type );
-		$type_attr = $this->set_type_attr( $hint, $file_type );
-		$crossorigin = $this->set_crossorigin( $hint, $file_type );
 
-		$new_hint = self::create_raw_hint_array( $url, $hint_type, $auto_created, $as_attr, $type_attr, $crossorigin );
-		$new_hint2 = apply_filters( 'pprh_append_hint', $new_hint, $hint );
-		return $new_hint2;
+
+		$new_hint = array(
+			'url'          => $url,
+			'as_attr'      => $this->set_as_attr( $hint['as_attr'], $file_type ),
+			'hint_type'    => $hint_type,
+			'type_attr'    => $this->set_type_attr( $hint, $file_type ),
+			'crossorigin'  => $this->set_crossorigin( $hint, $file_type ),
+			'auto_created' => ( ! empty( $hint['auto_created'] ) ? 1 : 0 )
+		);
+
+		return apply_filters( 'pprh_append_hint', $new_hint, $hint );
 	}
 
 	public function get_hint_type( $type ) {
@@ -179,8 +173,6 @@ class Create_Hints {
 
 
 	public function get_duplicate_hints( $hint ) {
-//		$table = PPRH_DB_TABLE;
-//		$sql = "SELECT url, hint_type, id FROM $table WHERE url = %s AND hint_type = %s";
 		$query = array(
 			'sql'  => " WHERE url = %s AND hint_type = %s",
 			'args' => array( $hint['url'], $hint['hint_type'] )

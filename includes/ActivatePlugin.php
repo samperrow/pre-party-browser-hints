@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class Activate_Plugin {
+class ActivatePlugin {
 
 	public function __construct() {
 		$this->add_options();

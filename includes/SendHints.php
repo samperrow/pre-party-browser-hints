@@ -6,7 +6,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class Send_Hints {
+class SendHints {
 
 	protected $hints = array();
 

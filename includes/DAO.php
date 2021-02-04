@@ -8,8 +8,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class DAO {
 
-//	public function __construct() {}
-
 //	protected function get_wpdb_args( $wp_db ) {
 //		return array(
 //			'result'     => $wp_db->result,
@@ -46,7 +44,7 @@ class DAO {
 	}
 
 
-	public function create_hint( $new_hint, $id = null ) {
+	public function create_hint( $new_hint ) {
 		global $wpdb;
 		$current_user = wp_get_current_user()->display_name;
 		$auto_created = ( ! empty( $new_hint['auto_created'] ) ? (int) $new_hint['auto_created'] : 0 );
@@ -133,9 +131,21 @@ class DAO {
 		$table = PPRH_DB_TABLE;
 		$sql = "SELECT * FROM $table";
 
-//		if ( ! empty( $query['sql'] ) ) {
-//			$sql .= $query['sql'];
-//		}
+		if ( ! empty( $query['sql'] ) ) {
+			$sql .= $query['sql'];
+		}
+
+		if ( ! empty( $query['args'] ) ) {
+			$sql = $wpdb->prepare( $sql, $query['args'] );
+		}
+
+		return $wpdb->get_results( $sql, ARRAY_A );
+	}
+
+	public function get_hints_ordered( $query = null ) {
+		global $wpdb;
+		$table = PPRH_DB_TABLE;
+		$sql = "SELECT * FROM $table";
 
 		if ( defined( 'PPRH_PRO_ABS_DIR' ) ) {
 			$sql = apply_filters( 'pprh_dh_append_sql', $sql );
@@ -147,7 +157,6 @@ class DAO {
 		}
 
 //		$query = apply_filters( 'pprh_sh_append_sql', $query );
-
 
 		if ( ! empty( $query['args'] ) ) {
 			$sql = $wpdb->prepare( $sql, $query['args'] );

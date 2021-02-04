@@ -9,19 +9,31 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Preconnects {
 
 	public function __construct() {
-		if ( 'true' === get_option( 'pprh_preconnect_autoload' ) && 'false' === get_option( 'pprh_preconnect_set' ) ) {
-			add_action( 'wp_loaded', array( $this, 'initialize' ) );
-		}
+		add_action( 'wp_loaded', array( $this, 'initialize' ) );
 	}
 
 	public function initialize() {
+		$do_reset = false;
 		add_action( 'wp_ajax_pprh_post_domain_names', array( $this, 'pprh_post_domain_names' ) );				// for logged in users
 
-		if ( 'true' === get_option( 'pprh_preconnect_allow_unauth' ) ) {										// not logged in
-			$this->load();
-			add_action( 'wp_ajax_nopriv_pprh_post_domain_names', array( $this, 'pprh_post_domain_names' ) );
-		} elseif ( is_user_logged_in() ) {
-			$this->load();
+		if ( 'true' === get_option( 'pprh_preconnect_autoload' ) && 'false' === get_option( 'pprh_preconnect_set' ) ) {
+			$do_reset = true;
+		}
+		elseif ( defined( 'PPRH_PRO_ABS_DIR' ) ) {
+			$reset_data = apply_filters( 'pprh_perform_reset', array() );
+			if ( 'true' === $reset_data['reset'] ) {
+				$do_reset = true;
+			}
+		}
+
+		if ( $do_reset ) {
+
+			if ( 'true' === get_option( 'pprh_preconnect_allow_unauth' ) ) {										// not logged in
+				$this->load();
+				add_action( 'wp_ajax_nopriv_pprh_post_domain_names', array( $this, 'pprh_post_domain_names' ) );
+			} elseif ( is_user_logged_in() ) {
+				$this->load();
+			}
 		}
 	}
 
@@ -69,11 +81,15 @@ class Preconnects {
 		$results = array();
 
 		foreach ( $hint_data->hints as $url ) {
-			$hint_arr = Create_Hints::create_raw_hint_array( $url, 'preconnect', 1 );
-			$hint = Create_Hints::create_pprh_hint( $hint_arr );
+			$hint_arr = array(
+				'url'          => $url,
+				'hint_type'    => 'preconnect',
+				'auto_created' => 1
+			);
+			$hint = CreateHints::create_pprh_hint( $hint_arr );
 
 			if ( is_array( $hint ) ) {
-				$res = $dao->create_hint( $hint, null );
+				$res = $dao->create_hint( $hint );
 				$results[] = $res;
 			}
 		}

@@ -1248,10 +1248,6 @@ class WP_List_Table {
 	 * @since 3.1.0
 	 */
 	public function display_rows() {
-		if ( ! class_exists(New_Hint::class) ) {
-			require_once PPRH_ABS_DIR . 'includes/new-hint.php';
-		}
-
 		foreach ( $this->items as $item ) {
 			$this->single_row( $item );
 			$this->inline_edit_row( $item );
@@ -1277,6 +1273,14 @@ class WP_List_Table {
 	 */
 	protected function column_default( $item, $column_name ) {}
 
+	protected function global_hint_alert() {
+		?>
+        <span class="pprh-help-tip-hint">
+			<span><?php esc_html_e( 'This is a global resource hint, and is used on all pages and posts. To update this hint, please do so from the main Pre* Party plugin page.', 'pprh' ); ?></span>
+		</span>
+		<?php
+	}
+
 	/**
 	 * Generates the columns for a single row of the table
 	 *
@@ -1287,7 +1291,9 @@ class WP_List_Table {
 	protected function single_row_columns( $item ) {
 		list( $columns, $hidden, $primary ) = $this->get_column_info();
 
-		$on_posts_page_and_global = ( ! empty( $item['post_id'] ) ? apply_filters( 'pprh_on_posts_page_and_global', $item['post_id'] ) : false );
+		$on_posts_page_and_global = ( ! empty( $item['post_id'] && is_plugin_active( 'pprh-pro/pprh-pro.php' ) )
+            ? apply_filters( 'pprh_on_posts_page_and_global', $item['post_id'] )
+            : false );
 
 		foreach ( $columns as $column_name => $column_display_name ) {
 			$classes = "$column_name column-$column_name";
@@ -1307,7 +1313,11 @@ class WP_List_Table {
 
 			if ( 'cb' === $column_name ) {
 				echo '<th scope="row" class="check-column">';
-                echo $this->column_cb( $item, $on_posts_page_and_global );
+				if ($on_posts_page_and_global) {
+					$this->global_hint_alert();
+				} else {
+					echo $this->column_cb( $item );
+				}
 				echo '</th>';
 			} elseif ( method_exists( $this, '_column_' . $column_name ) ) {
 				echo $this->{'_column_' . $column_name}($item, $classes, $data, $primary);

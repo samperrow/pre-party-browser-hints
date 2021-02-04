@@ -6,17 +6,17 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class New_Hint {
+class NewHint {
 
 	public function create_new_hint_table() {
 		?>
 
         <div class="pprh-container">
-            <table id="pprh-enter-data" class="fixed widefat striped">
+            <table id="pprh-enter-data" class="fixed widefat striped" aria-label="Add a new resource hint">
 
                 <thead>
                     <tr>
-                        <th colspan="5" style="text-align: center; font-size: 23px; font-weight: 600; padding: 15px 0;"><?php esc_html_e( 'Add New Resource Hint', 'pprh' ); ?></th>
+                        <th colspan="5" scope="colgroup"><?php esc_html_e( 'Add New Resource Hint', 'pprh' ); ?></th>
                     </tr>
                 </thead>
 

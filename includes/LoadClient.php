@@ -6,10 +6,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class Load_Client {
+class LoadClient {
 
 	public function __construct() {
-		include_once PPRH_ABS_DIR . 'includes/send-hints.php';
+		include_once PPRH_ABS_DIR . 'includes/SendHints.php';
 
 		add_action( 'wp_loaded', array( $this, 'send_resource_hints' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'load_flying_pages' ) );
@@ -20,7 +20,7 @@ class Load_Client {
 	}
 
 	public function send_resource_hints() {
-		$send_hints = new Send_Hints();
+		$send_hints = new SendHints();
 		$send_hints->get_resource_hints();
 	}
 

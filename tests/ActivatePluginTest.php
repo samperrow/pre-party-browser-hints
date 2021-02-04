@@ -9,8 +9,7 @@ final class ActivatePluginTest extends TestCase {
 //	public function __construct () {}
 
 	public function test_add_options():void {
-//		$activate_plugin = new \PPRH\Activate_Plugin();
-
+//		$activate_plugin = new \PPRH\ActivatePlugin();
 		update_option( 'pprh_disable_wp_hints', 'true' );
 		update_option( 'pprh_html_head', 'true' );
 		update_option( 'pprh_prefetch_disableForLoggedInUsers', 'true' );

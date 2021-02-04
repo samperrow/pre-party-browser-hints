@@ -8,8 +8,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class Utils {
 
-//    public function __construct() {}
-
 	public static function admin_notice() {
 		?>
 		<div id="pprhNotice" class="notice is-dismissible">

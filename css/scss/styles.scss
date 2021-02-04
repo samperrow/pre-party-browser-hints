@@ -96,6 +96,13 @@ div#pprh-wrapper {
     }
 
     table#pprh-enter-data {
+        thead tr th {
+            text-align: center;
+            font-size: 23px;
+            font-weight: 600;
+            padding: 15px 0;
+        }
+
         tbody tr td {
             text-align: center
         }

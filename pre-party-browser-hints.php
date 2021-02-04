@@ -50,30 +50,25 @@ class Pre_Party_Browser_Hints {
 			add_action( 'admin_enqueue_scripts', array( $this, 'register_admin_files' ) );
 			add_filter( 'set-screen-option', array( $this, 'apply_wp_screen_options' ), 10, 3 );
 
-			if ( $this->on_pprh_page || wp_doing_ajax() || defined( 'PPRH_TESTING' ) ) {
-                include_once PPRH_ABS_DIR . 'includes/display-hints.php';
-				include_once PPRH_ABS_DIR . 'includes/ajax-ops.php';
-				new Ajax_Ops();
+			if ( $this->on_pprh_page || wp_doing_ajax() ) {
+//				|| defined( 'PPRH_TESTING' )
+                include_once PPRH_ABS_DIR . 'includes/DisplayHints.php';
+				include_once PPRH_ABS_DIR . 'includes/AjaxOps.php';
+				new AjaxOps();
 				do_action( 'pprh_pro_admin_init' );
 			}
 
 		} else {
-			include_once PPRH_ABS_DIR . 'includes/load-client.php';
-			new Load_Client();
+			include_once PPRH_ABS_DIR . 'includes/LoadClient.php';
+			new LoadClient();
 			do_action( 'pprh_pro_client_init' );
 		}
 
 		// this needs to be loaded front end and back end bc Ajax needs to be able to communicate between the two.
-		if ( 'true' === get_option( 'pprh_preconnect_autoload' ) && 'false' === get_option( 'pprh_preconnect_set' ) ) {
-			include_once PPRH_ABS_DIR . 'includes/preconnects.php';
+//		if ( 'true' === get_option( 'pprh_preconnect_autoload' ) && 'false' === get_option( 'pprh_preconnect_set' ) ) {
+			include_once PPRH_ABS_DIR . 'includes/Preconnects.php';
 			new Preconnects();
-		}
-	}
-
-	public function load_common_files() {
-		include_once PPRH_ABS_DIR . 'includes/utils.php';
-		include_once PPRH_ABS_DIR . 'includes/dao.php';
-        include_once PPRH_ABS_DIR . 'includes/create-hints.php';
+//		}
 	}
 
 	public function create_constants() {
@@ -84,11 +79,20 @@ class Pre_Party_Browser_Hints {
 		$rel_dir = plugins_url() . '/pre-party-browser-hints/';
 		$home_url = admin_url() . 'admin.php?page=pprh-plugin-setttings';
 
-		define( 'PPRH_VERSION', $plugin_version );
-		define( 'PPRH_DB_TABLE', $table );
-		define( 'PPRH_ABS_DIR', $abs_dir );
-		define( 'PPRH_REL_DIR', $rel_dir );
-		define( 'PPRH_HOME_URL', $home_url );
+		if ( ! defined( 'PPRH_VERSION' ) ) {
+			define( 'PPRH_VERSION', $plugin_version );
+			define( 'PPRH_DB_TABLE', $table );
+			define( 'PPRH_ABS_DIR', $abs_dir );
+			define( 'PPRH_REL_DIR', $rel_dir );
+			define( 'PPRH_HOME_URL', $home_url );
+        }
+	}
+
+	public function load_common_files() {
+		include_once PPRH_ABS_DIR . 'includes/Utils.php';
+		include_once PPRH_ABS_DIR . 'includes/DAO.php';
+		include_once PPRH_ABS_DIR . 'includes/CreateHints.php';
+		include_once PPRH_ABS_DIR . 'includes/NewHint.php';
 	}
 
 	public function load_admin_page() {
@@ -116,8 +120,10 @@ class Pre_Party_Browser_Hints {
 	}
 
 	public function load_admin() {
-		include_once PPRH_ABS_DIR . 'includes/load-admin.php';
-		new Load_Admin();
+		if ( ! current_user_can( 'update_plugins' ) )  {
+			wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
+		}
+		include_once PPRH_ABS_DIR . 'includes/LoadAdmin.php';
 	}
 
 	public function check_to_upgrade() {
@@ -159,10 +165,9 @@ class Pre_Party_Browser_Hints {
 	}
 
 	public function activate_plugin() {
-		include_once PPRH_ABS_DIR . 'includes/activate-plugin.php';
-		new Activate_Plugin();
+		include_once PPRH_ABS_DIR . 'includes/ActivatePlugin.php';
+		new ActivatePlugin();
 	}
-
 
 	public function apply_wp_screen_options( $status, $option, $value ) {
 		return ( 'pprh_screen_options' === $option ) ? $value : $status;

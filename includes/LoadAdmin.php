@@ -6,32 +6,33 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class Load_Admin {
+new LoadAdmin();
+
+class LoadAdmin {
 
 	public function __construct() {
 		add_action( 'pprh_admin_notice', array( $this, 'admin_notice' ), 10, 1 );
-
 		$this->load_plugin_admin_files();
 	}
 
 	public function load_plugin_admin_files() {
-		include_once PPRH_ABS_DIR . 'includes/tabs/insert-hints.php';
-		include_once PPRH_ABS_DIR . 'includes/tabs/settings.php';
-		include_once PPRH_ABS_DIR . 'includes/tabs/info.php';
-		include_once PPRH_ABS_DIR . 'includes/tabs/upgrade.php';
-		include_once PPRH_ABS_DIR . 'includes/new-hint.php';
+		include_once PPRH_ABS_DIR . 'includes/tabs/InsertHints.php';
+		include_once PPRH_ABS_DIR . 'includes/tabs/Settings.php';
+		include_once PPRH_ABS_DIR . 'includes/tabs/HintInfo.php';
+		include_once PPRH_ABS_DIR . 'includes/tabs/Upgrade.php';
 
-		echo '<div id="pprh-wrapper" class="wrap">';
-		echo '<h2>Pre* Party Plugin Settings</h2>';
+		echo '<div id="pprh-wrapper" class="wrap"><h2>';
+		esc_html_e( 'Pre* Party Plugin Settings', 'pprh' );
+		echo '</h2>';
 
 		Utils::admin_notice();
 		$this->show_admin_tabs();
 
 		echo '<div class="pprh-box">';
 		do_action( 'pprh_load_tab_files' );
-		new Insert_Hints();
+		new InsertHints();
 		new Settings();
-		new Hint_Info();
+		new HintInfo();
 		new Upgrade();
 
 		$this->show_footer();
@@ -42,7 +43,7 @@ class Load_Admin {
 		$tabs = array(
 			'insert-hints' => 'Insert Hints',
 			'settings'     => 'Settings',
-			'info'         => 'Information',
+			'hint-info'    => 'Information',
             'upgrade'      => 'Upgrade to Pro',
 		);
 

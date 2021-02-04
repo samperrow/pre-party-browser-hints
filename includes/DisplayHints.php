@@ -10,12 +10,11 @@ if ( ! class_exists( WP_List_Table::class ) ) {
 	require_once PPRH_ABS_DIR . 'includes/wp-list-table.php';
 }
 
-class Display_Hints extends WP_List_Table {
+class DisplayHints extends WP_List_Table {
 
 	public $_column_headers;
 	public $hints_per_page;
 	public $table;
-	public $data;
 	public $items;
 
 	public function __construct() {
@@ -33,26 +32,16 @@ class Display_Hints extends WP_List_Table {
 	}
 
 	public function column_default( $item, $column_name ) {
-		switch ($column_name) {
-			case 'url':
-				return $item['url'];
-			case 'hint_type':
-				return $item['hint_type'];
-			case 'as_attr':
-				return $this->set_item($item['as_attr']);
-			case 'type_attr':
-				return $this->set_item($item['type_attr']);
-			case 'crossorigin':
-				return $this->set_item($item['crossorigin']);
-			case 'status':
-				return $item['status'];
-			case 'created_by':
-				return $item['created_by'];
-			case 'post_id':
-				return apply_filters('pprh_get_post_link', $item['post_id']);
-			default:
-				return esc_html('Error', 'pprh');
-		}
+
+		if ('post_id' === $column_name) {
+            return apply_filters('pprh_get_post_link', $item['post_id']);
+        }
+
+		if ('' === $item[$column_name]) {
+            return $this->set_item( $item[$column_name] );
+        }
+
+		return $item[$column_name];
 	}
 
 	private function set_item( $item ) {
@@ -106,11 +95,10 @@ class Display_Hints extends WP_List_Table {
 		$user = get_current_user_id();
 		$total_hints = (int) get_user_meta( $user, $option, true );
 		$this->hints_per_page = ( ! empty( $total_hints ) ) ? $total_hints : 10;
-		$this->data = $dao->get_hints( null );
+		$data = $dao->get_hints_ordered( null );
 		$current_page = $this->get_pagenum();
-		$data = array_slice( $this->data, ( ( $current_page - 1 ) * $this->hints_per_page ), $this->hints_per_page );
-		$this->items = $data;
-		$total_items = count( $this->data );
+		$this->items = array_slice( $data, ( ( $current_page - 1 ) * $this->hints_per_page ), $this->hints_per_page );
+		$total_items = count( $data );
 
 		$this->set_pagination_args(
             array(
@@ -127,7 +115,7 @@ class Display_Hints extends WP_List_Table {
 		esc_html_e( 'Enter a URL or domain name..', 'pprh' );
 	}
 
-	public function column_url( $item, $hide ) {
+	public function column_url( $item, $hide = false ) {
 
 	    if ( $hide ) {
 	        $actions = array(
@@ -144,16 +132,8 @@ class Display_Hints extends WP_List_Table {
 		return sprintf( '%1$s %2$s', $item['url'], $this->row_actions( $actions ) );
 	}
 
-	protected function column_cb( $item, $hide ) {
-    //		$on_posts_page_and_global = ( ! empty( $item['post_id'] )
-    //            ? apply_filters( 'pprh_on_posts_page_and_global', $item['post_id'] )
-    //            : false );
-
-		if ( $hide ) {
-		    $this->global_hint_alert();
-        } else {
-			return sprintf( '<input type="checkbox" name="urlValue[]" value="%1$s"/>', $item['id'] );
-		}
+	protected function column_cb( $item ) {
+		return sprintf( '<input type="checkbox" name="urlValue[]" value="%1$s"/>', $item['id'] );
 	}
 
 	public function global_hint_alert() {
@@ -170,9 +150,14 @@ class Display_Hints extends WP_List_Table {
 		?>
 			<tr class="pprh-row edit <?php echo $item_id; ?>">
 				<td colspan="9">
-					<table id="pprh-edit-<?php echo $item_id; ?>">
+					<table id="pprh-edit-<?php echo $item_id; ?>" aria-label="Update this resource hint">
+                        <thead>
+                            <tr>
+                                <th colspan="5" scope="colgroup"><?php esc_html_e( 'Update Resource Hint', 'pprh' ); ?></th>
+                            </tr>
+                        </thead>
 						<?php
-							$new_hint = new New_Hint();
+							$new_hint = new NewHint();
 						    $new_hint->insert_table_body();
 						?>
                         <tr>
