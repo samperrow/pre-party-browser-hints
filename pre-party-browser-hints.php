@@ -43,6 +43,8 @@ class Pre_Party_Browser_Hints {
 		$this->load_common_files();
 		$this->on_pprh_page = Utils::on_pprh_page();
 
+		do_action( 'pprh_load_pro' );
+
 		if ( is_admin() ) {
 			add_action( 'wpmu_new_blog', array( $this, 'activate_plugin' ) );
 			register_activation_hook( __FILE__, array( $this, 'activate_plugin' ) );
@@ -50,24 +52,25 @@ class Pre_Party_Browser_Hints {
 			add_action( 'admin_enqueue_scripts', array( $this, 'register_admin_files' ) );
 			add_filter( 'set-screen-option', array( $this, 'apply_wp_screen_options' ), 10, 3 );
 
-			if ( $this->on_pprh_page || wp_doing_ajax() ) {
-//				|| defined( 'PPRH_TESTING' )
+			if ( $this->on_pprh_page || wp_doing_ajax() || defined( 'PPRH_TESTING' ) ) {
                 include_once PPRH_ABS_DIR . 'includes/DisplayHints.php';
 				include_once PPRH_ABS_DIR . 'includes/AjaxOps.php';
 				new AjaxOps();
-				do_action( 'pprh_pro_admin_init' );
+				do_action( 'pprh_load_admin' );
 			}
 
 		} else {
 			include_once PPRH_ABS_DIR . 'includes/LoadClient.php';
 			new LoadClient();
-			do_action( 'pprh_pro_client_init' );
+			do_action( 'pprh_load_client' );
 		}
 
 		// this needs to be loaded front end and back end bc Ajax needs to be able to communicate between the two.
-//		if ( 'true' === get_option( 'pprh_preconnect_autoload' ) && 'false' === get_option( 'pprh_preconnect_set' ) ) {
+//		if ( self::load_auto_preconnects() ) {
+//		    if ( ! defined( 'PPRH_DOING_AUTO_PRECONNECTS' ) ) {
+//				define( 'PPRH_DOING_AUTO_PRECONNECTS', true );
+//            }
 			include_once PPRH_ABS_DIR . 'includes/Preconnects.php';
-			new Preconnects();
 //		}
 	}
 
@@ -94,6 +97,13 @@ class Pre_Party_Browser_Hints {
 		include_once PPRH_ABS_DIR . 'includes/CreateHints.php';
 		include_once PPRH_ABS_DIR . 'includes/NewHint.php';
 	}
+
+//	public static function load_auto_preconnects() {
+//		$autoload = get_option( 'pprh_preconnect_autoload' );
+//		$preconnects_set = get_option( 'pprh_preconnect_set' );
+//		$load_free = ( 'true' === $autoload && 'false' === $preconnects_set );
+//		return ( $load_free );
+//	}
 
 	public function load_admin_page() {
 		$settings_page = add_menu_page(

@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
-//use PPRH\PPRH_Pro;
 
 if (!defined('ABSPATH')) {
 	exit;
@@ -11,9 +10,20 @@ if (!defined('ABSPATH')) {
 
 final class AjaxOpsTest extends TestCase {
 
-	public function test_pprh_update_hints():void {
+	public function test_onAdmin():bool {
+		$on_admin = is_admin();
+		$this->assertEquals($on_admin, $on_admin);
+		return $on_admin;
+	}
+
+	/**
+	 * @depends test_onAdmin
+	 */
+	public function test_pprh_update_hints( bool $on_admin ):void {
+		if ( ! $on_admin ) {
+			return;
+		}
 		$dao = new \PPRH\DAO();
-		define( 'DOING_AJAX', true );
 		$_SERVER['HTTP_HOST'] = 'sphacks.local';
 		$_SERVER['REQUEST_URI'] = '/wp-admin/admin.php?page=pprh-plugin-settings';
 		$_SERVER['HTTP_REFERER'] = 'sphacks.local';
@@ -37,7 +47,6 @@ final class AjaxOpsTest extends TestCase {
 		$db_result = $response['result']['db_result'];
 		$result = $db_result['success'];
 		$hint_id = $db_result['hint_id'];
-//		var_dump($db_result['success']);
 		$this->assertEquals(true, $result);
 		$dao->delete_hint( $hint_id );
 	}

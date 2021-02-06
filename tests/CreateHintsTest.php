@@ -2,8 +2,6 @@
 
 declare(strict_types=1);
 use PHPUnit\Framework\TestCase;
-use PPRH\CreateHints;
-use PPRH\PPRH_Pro;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -32,14 +30,15 @@ final class CreateHintsTest extends TestCase {
 		$this->assertClassHasAttribute('result', \PPRH\CreateHints::class);
 		$this->assertEquals($create_hints->result, $result);
 
-		if ( is_plugin_active( 'pprh-pro' ) ) {
-			$this->assertTrue( class_exists(\PPRH\CreateHintsChild::class ) );
-		}
+//		if ( is_plugin_active( 'pprh-pro/pprh-pro.php' ) ) {
+//			$this->assertTrue( class_exists(\PPRH_PRO\CreateHintsChild::class ) );
+//		}
 	}
 
 	public function test_duplicate_hints_exist() {
 		$dao = new \PPRH\DAO();
-		$dup_hint = \PPRH\CreateHints::create_raw_hint_array( 'https://duplicate-hint.com', 'dns-prefetch', 0 );
+		$dup_hint = TestUtils::create_hint_array( 'https://duplicate-hint.com', 'dns-prefetch', '', '', '', 0 );
+
 		$error = 'A duplicate hint already exists!';
 
 		$dummy_hint = \PPRH\CreateHints::create_pprh_hint( $dup_hint );
@@ -55,9 +54,9 @@ final class CreateHintsTest extends TestCase {
 
 	public function test_create_hint_success(): void {
 		$create_hints = new \PPRH\CreateHints();
-		$test1 = \PPRH\CreateHints::create_raw_hint_array('https://www.espn.com', 'dns-prefetch');
-		$test2 = \PPRH\CreateHints::create_raw_hint_array('ht<tps://www.e>\'sp"n.com', 'dns-prefetch');
-		$test3 = \PPRH\CreateHints::create_raw_hint_array('//espn.com', 'dns-prefetch');
+		$test1 = TestUtils::create_hint_array( 'https://www.espn.com', 'dns-prefetch' );
+		$test2 = TestUtils::create_hint_array( 'ht<tps://www.e>\'sp"n.com', 'dns-prefetch' );
+		$test3 = TestUtils::create_hint_array( '//espn.com', 'dns-prefetch' );
 
 		$test_hint1 = $create_hints->create_hint($test1);
 		$this->assertEquals($test_hint1, $test1);
@@ -72,12 +71,7 @@ final class CreateHintsTest extends TestCase {
 
 	public function test_create_hint_fails(): void {
 		$create_hints = new \PPRH\CreateHints();
-
-		$data1 = array(
-			'url'       => '',
-			'hint_type' => 'dns-prefetch'
-		);
-
+		$data1 = TestUtils::create_hint_array( '', 'dns-prefetch' );
 		$bool1 = $create_hints->create_hint($data1);
 		$this->assertEquals(false, $bool1);
 	}

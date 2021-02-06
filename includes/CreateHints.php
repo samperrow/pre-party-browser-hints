@@ -25,6 +25,10 @@ class CreateHints {
 				'success' => false
 			),
 		);
+
+		if ( defined( 'PPRH_PRO_ABS_DIR' ) ) {
+			include_once PPRH_PRO_ABS_DIR . 'includes/CreateHintsChild.php';
+		}
 	}
 
 	// hint creation utils
@@ -73,10 +77,9 @@ class CreateHints {
 		$url = $this->get_url( $hint['url'], $hint_type );
 		$file_type = $this->get_file_type( $url );
 
-
 		$new_hint = array(
 			'url'          => $url,
-			'as_attr'      => $this->set_as_attr( $hint['as_attr'], $file_type ),
+			'as_attr'      => $this->set_as_attr( $hint, $file_type ),
 			'hint_type'    => $hint_type,
 			'type_attr'    => $this->set_type_attr( $hint, $file_type ),
 			'crossorigin'  => $this->set_crossorigin( $hint, $file_type ),
@@ -127,7 +130,8 @@ class CreateHints {
 		return '';
 	}
 
-	public function set_as_attr( $as_attr, $file_type ) {
+	public function set_as_attr( $hint, $file_type ) {
+		$as_attr = ( ! empty( $hint['as_attr'] ) ? Utils::clean_hint_attr( $hint['as_attr'] ) : '' );
 		$media_types = array(
 			'.mp3'   => 'audio',
 			'.swf'   => 'embed',
@@ -147,7 +151,11 @@ class CreateHints {
 			'.webm'  => 'video'
 		);
 
-		return ( ! empty( $as_attr ) ) ? Utils::clean_hint_attr( $as_attr ) : $this->get_file_type_mime( $media_types, $file_type );
+//		var_dump($this->get_file_type_mime( $media_types, $file_type ));
+
+		return ( '' === $as_attr )
+			? $this->get_file_type_mime( $media_types, $file_type )
+			: $as_attr;
 	}
 
 	public function set_type_attr( $hint, $file_type ) {
@@ -185,5 +193,7 @@ class CreateHints {
 		$dao = new DAO();
 		return $dao->get_hints( $query );
 	}
+
+
 
 }

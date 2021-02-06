@@ -366,7 +366,6 @@
 			CreateAjaxReq: createAjaxReq,
 			UpdateAdminNotice: updateAdminNotice,
 			CreateHintObj: createHintObj,
-			// GetPostId: getPostId
 		}
 
 	}));

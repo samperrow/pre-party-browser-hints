@@ -3,8 +3,7 @@
 declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
-use PPRH\Create_Hints;
-use PPRH\PPRH_Pro;
+//use PPRH\PPRH_PRO;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -16,8 +15,8 @@ final class UtilsTest extends TestCase {
 		$str1 = '!f_a#FED__=26 5b-2tb(&YT^>"28352';
 		$str2 = 'sfjsdlfj4w9tu3wofjw93u3';
 
-		$test1 = PPRH\Utils::strip_non_alphanums($str1);
-		$test2 = PPRH\Utils::strip_non_alphanums($str2);
+		$test1 = \PPRH\Utils::strip_non_alphanums($str1);
+		$test2 = \PPRH\Utils::strip_non_alphanums($str2);
 
 		$this->assertEquals( 'faFED265b2tbYT28352', $test1 );
 		$this->assertEquals( $str2, $test2 );
@@ -25,7 +24,7 @@ final class UtilsTest extends TestCase {
 
 	public function test_strip_non_numbers():void {
 		$str1 = '!f_a#FED__=26 5b-2tb(&YT^>"28352';
-		$test1 = PPRH\Utils::strip_non_numbers($str1);
+		$test1 = \PPRH\Utils::strip_non_numbers($str1);
 
 		$this->assertEquals( '265228352', $test1 );
 	}
@@ -34,8 +33,8 @@ final class UtilsTest extends TestCase {
 		$str1 = 'DNS-prefetch';
 		$str2 = 'pre*(con@"><nect';
 
-		$test1 = PPRH\Utils::clean_hint_type($str1);
-		$test2 = PPRH\Utils::clean_hint_type($str2);
+		$test1 = \PPRH\Utils::clean_hint_type($str1);
+		$test2 = \PPRH\Utils::clean_hint_type($str2);
 
 		$this->assertEquals( $str1, $test1 );
 		$this->assertEquals( 'preconnect', $test2 );
@@ -45,8 +44,8 @@ final class UtilsTest extends TestCase {
 		$str1 = 'https://www.espn.com';
 		$str2 = 'https"://<script\>test.com<script>';
 
-		$test1 = PPRH\Utils::clean_url($str1);
-		$test2 = PPRH\Utils::clean_url($str2);
+		$test1 = \PPRH\Utils::clean_url($str1);
+		$test2 = \PPRH\Utils::clean_url($str2);
 
 		$this->assertEquals( $str1, $test1 );
 		$this->assertEquals( 'https://scripttest.comscript', $test2 );
@@ -67,8 +66,8 @@ final class UtilsTest extends TestCase {
 		$str1 = 'font/woff2';
 		$str2 = 'f<\/asdlfkj43*#t935u23" asdflkj3';
 
-		$test1 = PPRH\Utils::clean_hint_attr($str1);
-		$test2 = PPRH\Utils::clean_hint_attr($str2);
+		$test1 = \PPRH\Utils::clean_hint_attr($str1);
+		$test2 = \PPRH\Utils::clean_hint_attr($str2);
 
 		$this->assertEquals( $str1, $test1 );
 		$this->assertEquals( 'f/asdlfkj43t935u23asdflkj3', $test2 );
@@ -78,8 +77,8 @@ final class UtilsTest extends TestCase {
 		$str1 = 'pprh_preconnect_allow_unauth';
 		$str2 = 'pprh_not_real_option';
 
-		$test1 = PPRH\Utils::get_opt_val($str1);
-		$test2 = PPRH\Utils::get_opt_val($str2);
+		$test1 = \PPRH\Utils::get_opt_val($str1);
+		$test2 = \PPRH\Utils::get_opt_val($str2);
 
 		$this->assertEquals( 'true', $test1 );
 		$this->assertEquals( '', $test2 );
@@ -130,8 +129,8 @@ final class UtilsTest extends TestCase {
 //	}
 
 	public function test_get_option_status():void {
-		$test1 = PPRH\Utils::get_option_status('pprh_prefetch_enabled', 'false' );
-		$test2 = PPRH\Utils::get_option_status('pprh_prefetch_enabled', 'true' );
+		$test1 = \PPRH\Utils::get_option_status('pprh_prefetch_enabled', 'false' );
+		$test2 = \PPRH\Utils::get_option_status('pprh_prefetch_enabled', 'true' );
 
 		$this->assertEquals( 'selected=selected', $test1 );
 		$this->assertEquals( '', $test2 );
@@ -142,45 +141,31 @@ final class UtilsTest extends TestCase {
 		$pagenow = 'admin.php';
 		$_GET['page'] = 'pprh-plugin-settings';
 
-		$test1 = PPRH\Utils::on_pprh_page();
+		$test1 = \PPRH\Utils::on_pprh_page();
 
 		$this->assertEquals( true, $test1 );
 	}
 
 
 	public function test_create_pprh_hint_success():void {
-		$dao = new \PPRH\DAO();
-		$raw_data1 = \PPRH\CreateHints::create_raw_hint_array( 'test.com', 'dns-prefetch' );
-		$actual = \PPRH\CreateHints::create_pprh_hint($raw_data1);
+		$raw_data1 = TestUtils::create_hint_array( 'test.com', 'dns-prefetch' );
+		$actual_raw = \PPRH\CreateHints::create_pprh_hint($raw_data1);
+		$expected = TestUtils::create_hint_array( '//test.com', 'dns-prefetch' );
 
-		$expected = array(
-			'url'          => '//test.com',
-			'hint_type'    => 'dns-prefetch',
-			'crossorigin'  => '',
-			'as_attr'      => '',
-			'type_attr'    => '',
-			'auto_created' => 0
-		);
-
-		if ( defined( 'PPRH_PRO_ABS_DIR' ) ) {
-			$expected['post_id'] = '';
-			$expected['post_url'] = '';
-		}
+		$actual = apply_filters( 'pprh_append_hint', $actual_raw, $raw_data1 );
 
 		$this->assertEquals( $expected, $actual );
 	}
 
 	public function test_create_pprh_hint_fail():void {
-		$raw_data1 = \PPRH\CreateHints::create_raw_hint_array( '', '' );
-
+		$raw_data1 = TestUtils::create_hint_array( '', '' );
 		$actual = \PPRH\CreateHints::create_pprh_hint($raw_data1);
-
 		$this->assertEquals( false, $actual );
 	}
 
 	public function test_create_pprh_hint_dup_hints():void {
 		$dao = new \PPRH\DAO();
-		$data1 = \PPRH\CreateHints::create_raw_hint_array( 'blah.com', 'preconnect' );
+		$data1 = TestUtils::create_hint_array( 'blah.com', 'preconnect' );
 		$hint1 = \PPRH\CreateHints::create_pprh_hint($data1);
 
 		$actual1 = $dao->create_hint( $hint1 );
@@ -192,24 +177,21 @@ final class UtilsTest extends TestCase {
 		$dao->delete_hint( $actual1->db_result['hint_id'] );
 	}
 
-	public function test_create_raw_hint_array():void {
-		$expected = array(
+	public function test_create_hint_array():void {
+		$expected = TestUtils::create_hint_array( 'test.com', 'preconnect', 'audio', 'font/woff2', 'crossorigin', 1 );
+
+		$test1 = array(
 			'url'          => 'test.com',
 			'hint_type'    => 'preconnect',
-			'crossorigin'  => 'crossorigin',
+			'auto_created' => 1,
 			'as_attr'      => 'audio',
 			'type_attr'    => 'font/woff2',
-			'auto_created' => 1
+			'crossorigin'  => 'crossorigin'
 		);
 
-		if ( defined( 'PPRH_PRO_ABS_DIR' ) ) {
-			$expected['post_id'] = '';
-			$expected['post_url'] = '';
-		}
+		$actual = apply_filters( 'pprh_append_hint', $test1, $test1 );
 
-		$test1 = PPRH\CreateHints::create_raw_hint_array('test.com', 'preconnect', 1, 'audio', 'font/woff2', 'crossorigin' );
-
-		$this->assertEquals( $expected, $test1 );
+		$this->assertEquals( $expected, $actual );
 	}
 
 	public function test_create_response():void {

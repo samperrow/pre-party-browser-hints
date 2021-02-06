@@ -17,7 +17,8 @@ final class DAOTest extends TestCase {
 	public function test_create_hint(): int {
 		$dao = new PPRH\DAO();
 		$create_hints = new \PPRH\CreateHints();
-		$hint_arr = \PPRH\CreateHints::create_raw_hint_array('https://www.asdf.com/foozball', 'preconnect', 1);
+		$hint_arr = TestUtils::create_hint_array( 'https://www.asdf.com/foozball', 'preconnect', '', '', '', 1 );
+
 		$new_hint = $create_hints->create_hint($hint_arr);
 
 		$create_hint = $dao->create_hint($new_hint);
@@ -32,7 +33,8 @@ final class DAOTest extends TestCase {
 	 */
 	public function test_update_hint( int $hint_id ): void {
 		$dao = new PPRH\DAO();
-		$new_hint = \PPRH\CreateHints::create_raw_hint_array( 'https://www.asdf2.com/foozball/blah.css', 'dns-prefetch', 0, 'font', 'font/woff2', '' );
+		$new_hint = TestUtils::create_hint_array( 'https://www.asdf2.com/foozball/blah.css', 'dns-prefetch', 'font', 'font/woff2', '', 0 );
+
 		$result = $dao->update_hint( $new_hint, $hint_id );
 		$expected = $dao->create_db_result( true, $hint_id, '', 'update', $new_hint );
 		$this->assertEquals($expected, $result);

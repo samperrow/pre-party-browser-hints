@@ -8,14 +8,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class DAO {
 
-//	protected function get_wpdb_args( $wp_db ) {
-//		return array(
-//			'result'     => $wp_db->result,
-//			'hint_id'    => $wp_db->insert_id,
-//			'last_error' => $wp_db->last_error
-//		);
-//	}
-
 	// db results
 	public function create_db_result( $result, $hint_id, $last_error, $action = '', $new_hint = null ) {
 		return (object) array(
