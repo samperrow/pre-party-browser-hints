@@ -10,38 +10,40 @@ new Preconnects();
 
 class Preconnects {
 
+	public $reset_pro = null;
+
 	public function __construct() {
-		add_action( 'wp_loaded', array( $this, 'initialize' ) );
+		// wp_loaded
+		add_action( 'wp_loaded', array( $this, 'asdf' ), 9, 0 );
+		add_action( 'wp_loaded', array( $this, 'initialize' ), 10, 0 );
+	}
+
+	public function asdf() {
+		do_action('pprh_load_preconnects_child');
+		$this->reset_pro = apply_filters('pprh_perform_reset', null);
 	}
 
 	public function initialize() {
-		if ( ! $this->load_auto_preconnects() ) {
+		if ( ! $this->load_auto_preconnects( $this->reset_pro ) ) {
 			return false;
-		}
-
-		if ( ! is_admin() ) {
-			do_action('pprh_load_preconnects_child');
-
-			$reset_data = apply_filters('pprh_perform_reset', array());
-			$load_pro = ( ! empty( $reset_data['reset'] ) && $reset_data['reset'] );
-			if ( ! ( empty( $reset_data ) ) && ! $load_pro ) {
-				return false;
-			}
 		}
 
 		$allow_unauth = get_option( 'pprh_preconnect_allow_unauth' );
 		$this->load_ajax_actions( $allow_unauth );
 
-		if ( 'true' === $allow_unauth || is_user_logged_in() ) {
+		if ( ! is_admin() && ( 'true' === $allow_unauth || is_user_logged_in() ) ) {
 			$this->load_js_files();
 		}
 	}
 
-	public function load_auto_preconnects() {
+	public function load_auto_preconnects( $reset_pro ) {
 		$autoload = get_option( 'pprh_preconnect_autoload' );
 		$preconnects_set = get_option( 'pprh_preconnect_set' );
 		$load_free = ( 'true' === $autoload && 'false' === $preconnects_set );
-		return ( $load_free );
+
+		$load_pro = ( null !== $reset_pro && ! empty( $reset_pro['reset'] ) && $reset_pro['reset'] );
+
+		return ( (null === $reset_pro && $load_free) || $load_pro );
 	}
 
 	public function load_ajax_actions( $allow_unauth ) {
@@ -54,12 +56,10 @@ class Preconnects {
 	}
 
 	public function load_js_files() {
-		if ( ! is_admin() ) {
-			$js_object = $this->create_js_object();
-			wp_register_script( 'pprh-find-domain-names', PPRH_REL_DIR . 'js/find-external-domains.js', null, PPRH_VERSION, true );
-			wp_localize_script( 'pprh-find-domain-names', 'pprh_data', $js_object );
-			wp_enqueue_script( 'pprh-find-domain-names' );
-		}
+		$js_object = $this->create_js_object();
+		wp_register_script( 'pprh-find-domain-names', PPRH_REL_DIR . 'js/find-external-domains.js', null, PPRH_VERSION, true );
+		wp_localize_script( 'pprh-find-domain-names', 'pprh_data', $js_object );
+		wp_enqueue_script( 'pprh-find-domain-names' );
 	}
 
 	public function create_js_object() {
@@ -82,7 +82,7 @@ class Preconnects {
 				$results = $this->process_hints( $raw_hint_data );
 			}
 
-			if ( defined( 'PPRH_PRO_ABS_DIR' ) ) {
+			if ( PPRH_IS_PRO_PLUGIN_ACTIVE ) {
 				apply_filters( 'pprh_update_options', $raw_hint_data );
 			} else {
 				$this->update_options();

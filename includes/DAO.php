@@ -139,7 +139,7 @@ class DAO {
 		$table = PPRH_DB_TABLE;
 		$sql = "SELECT * FROM $table";
 
-		if ( defined( 'PPRH_PRO_ABS_DIR' ) ) {
+		if ( PPRH_IS_PRO_PLUGIN_ACTIVE ) {
 			$sql = apply_filters( 'pprh_dh_append_sql', $sql );
 		} elseif ( ! empty( $_REQUEST['orderby'] ) ) {
 			$sql .= ' ORDER BY ' . esc_sql( $_REQUEST['orderby'] );
@@ -148,11 +148,6 @@ class DAO {
 			$sql .= ' ORDER BY url ASC';
 		}
 
-//		$query = apply_filters( 'pprh_sh_append_sql', $query );
-
-		if ( ! empty( $query['args'] ) ) {
-			$sql = $wpdb->prepare( $sql, $query['args'] );
-		}
 
 		return $wpdb->get_results( $sql, ARRAY_A );
 	}

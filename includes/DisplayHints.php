@@ -19,9 +19,9 @@ class DisplayHints extends WP_List_Table {
 
 	public function __construct() {
 		parent::__construct( array(
-            'ajax' => true,
-			'plural' => 'urls',
-			'screen' => 'toplevel_page_pprh-plugin-settings',
+            'ajax'     => true,
+			'plural'   => 'urls',
+			'screen'   => 'toplevel_page_pprh-plugin-settings',
 			'singular' => 'url'
 		) );
 
@@ -116,7 +116,6 @@ class DisplayHints extends WP_List_Table {
 	}
 
 	public function column_url( $item, $hide = false ) {
-
 	    if ( $hide ) {
 	        $actions = array(
                 'edit'   => '',
@@ -136,7 +135,7 @@ class DisplayHints extends WP_List_Table {
 		return sprintf( '<input type="checkbox" name="urlValue[]" value="%1$s"/>', $item['id'] );
 	}
 
-	public function global_hint_alert() {
+	protected function global_hint_alert() {
 		?>
         <span class="pprh-help-tip-hint">
 			<span><?php esc_html_e( 'This is a global resource hint, and is used on all pages and posts. To update this hint, please do so from the main Pre* Party plugin page.', 'pprh' ); ?></span>

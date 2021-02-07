@@ -143,7 +143,7 @@ class WP_List_Table {
 	 * }
 	 */
 	public function __construct( $args = array() ) {
-		$args = wp_parse_args(
+		$args = \wp_parse_args(
 			$args,
 			array(
 				'plural'   => '',
@@ -153,7 +153,7 @@ class WP_List_Table {
 			)
 		);
 
-		$this->screen = \convert_to_screen( $args['screen'] );
+		$this->screen = convert_to_screen( $args['screen'] );
 
 		add_filter( "manage_{$this->screen->id}_columns", array( $this, 'get_columns' ), 0 );
 
@@ -1273,12 +1273,11 @@ class WP_List_Table {
 	 */
 	protected function column_default( $item, $column_name ) {}
 
-	protected function global_hint_alert() {
-		?>
-        <span class="pprh-help-tip-hint">
-			<span><?php esc_html_e( 'This is a global resource hint, and is used on all pages and posts. To update this hint, please do so from the main Pre* Party plugin page.', 'pprh' ); ?></span>
-		</span>
-		<?php
+
+	protected function on_post_page_and_global_hint( $item ) {
+		return ( ! empty( $item['post_id'] && PPRH_IS_PRO_PLUGIN_ACTIVE )
+			? apply_filters( 'pprh_on_posts_page_and_global', $item['post_id'] )
+			: false );
 	}
 
 	/**
@@ -1291,9 +1290,7 @@ class WP_List_Table {
 	protected function single_row_columns( $item ) {
 		list( $columns, $hidden, $primary ) = $this->get_column_info();
 
-		$on_posts_page_and_global = ( ! empty( $item['post_id'] && is_plugin_active( 'pprh-pro/pprh-pro.php' ) )
-            ? apply_filters( 'pprh_on_posts_page_and_global', $item['post_id'] )
-            : false );
+		$on_posts_page_and_global_hint = $this->on_post_page_and_global_hint( $item );
 
 		foreach ( $columns as $column_name => $column_display_name ) {
 			$classes = "$column_name column-$column_name";
@@ -1313,7 +1310,7 @@ class WP_List_Table {
 
 			if ( 'cb' === $column_name ) {
 				echo '<th scope="row" class="check-column">';
-				if ($on_posts_page_and_global) {
+				if ($on_posts_page_and_global_hint) {
 					$this->global_hint_alert();
 				} else {
 					echo $this->column_cb( $item );
@@ -1324,7 +1321,7 @@ class WP_List_Table {
 			} elseif ( method_exists( $this, 'column_' . $column_name ) ) {
 				echo "<td $attributes>";
 				if ( 'url' === $column_name ) {
-				    echo $this->{'column_' . $column_name}($item, $on_posts_page_and_global);
+				    echo $this->{'column_' . $column_name}($item, $on_posts_page_and_global_hint);
 				}
 				echo '</td>';
 			} else {

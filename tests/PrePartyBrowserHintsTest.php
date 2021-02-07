@@ -37,28 +37,7 @@ final class PrePartyBrowserHintsTest extends TestCase {
 		$this->assertEquals( true, $new_hint );
 	}
 
-//	public function test_load_auto_preconnects():void {
-//		$autoload_option = 'pprh_preconnect_autoload';
-//		$set = 'pprh_preconnect_set';
-//		$autoload_initial = get_option( $autoload_option );
-//		$preconnects_set_initial = get_option( $set );
-//
-//		update_option( $autoload_option, 'true' );
-//		update_option( $set, 'false' );
-//		$load_preconnects = \PPRH\Pre_Party_Browser_Hints::load_auto_preconnects();
-//		$this->assertEquals( true, $load_preconnects );
-//
-//		update_option( $autoload_option, 'false' );
-//		$load_preconnects2 = \PPRH\Pre_Party_Browser_Hints::load_auto_preconnects();
-//		$this->assertEquals( false, $load_preconnects2 );
-//
-//		update_option( $set, 'true' );
-//		$load_preconnects3 = \PPRH\Pre_Party_Browser_Hints::load_auto_preconnects();
-//		$this->assertEquals( false, $load_preconnects3 );
-//
-//		update_option( $autoload_option, $autoload_initial );
-//		update_option( $set, $preconnects_set_initial );
-//	}
+
 
 	public function test_Load_admin():void {
 		$bool = current_user_can( 'update_plugins' );
@@ -90,7 +69,7 @@ final class PrePartyBrowserHintsTest extends TestCase {
 		global $wp_scripts;
 		$pprh = new \PPRH\Pre_Party_Browser_Hints();
 		$preconnects = new \PPRH\Preconnects();
-		$load_auto_preconnects = $preconnects->load_auto_preconnects();
+		$load_auto_preconnects = $preconnects->load_auto_preconnects(null);
 		$pprh->register_admin_files( 'toplevel_page_pprh-plugin-settings' );
 		$actual_scripts = array();
 
@@ -105,7 +84,7 @@ final class PrePartyBrowserHintsTest extends TestCase {
 		if ( ! is_admin() ) {
 			$expected_scripts[] = 'pprh_admin_js';
 		}
-		elseif ( is_plugin_active( 'pprh-pro/pprh-pro.php' ) ) {
+		elseif ( PPRH_IS_PRO_PLUGIN_ACTIVE ) {
 			$expected_scripts = array( 'pprh_admin_js', 'pprh_pro_admin_js', 'pprh_pro_ga_js', 'ga_pro_platform_js' );
 		} else {
 			$expected_scripts = array( 'pprh_admin_js' );

@@ -7,6 +7,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+new ActivatePlugin();
+
 class ActivatePlugin {
 
 	public function __construct() {

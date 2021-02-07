@@ -70,4 +70,8 @@ class Utils {
 	    return esc_html( get_option( $option ) );
 	}
 
+	public static function pprh_is_plugin_active( $plugin ) {
+		return in_array( $plugin, (array) get_option( 'active_plugins', array() ), true ) || is_plugin_active_for_network( $plugin );
+	}
+
 }
