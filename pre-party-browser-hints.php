@@ -85,7 +85,7 @@ class Pre_Party_Browser_Hints {
 		$plugin_version = get_option( 'pprh_version' );
 		$rel_dir = plugins_url() . '/pre-party-browser-hints/';
 		$home_url = admin_url() . 'admin.php?page=pprh-plugin-setttings';
-		$pprh_pro_active = Utils::pprh_is_plugin_active( 'pprh-pro/pprh-pro.php' );
+		$pprh_pro_active = Utils::pprh_is_plugin_active();
 
 		if ( ! defined( 'PPRH_VERSION' ) ) {
 			define( 'PPRH_VERSION', $plugin_version );

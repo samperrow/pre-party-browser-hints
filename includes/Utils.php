@@ -10,7 +10,8 @@ class Utils {
 
 	public static function admin_notice() {
 		?>
-		<div id="pprhNotice" class="notice is-dismissible">
+        <div id="pprhNoticeBox"></div>
+        <div id="pprhNotice" class="notice is-dismissible">
 			<p></p>
 		</div>
 		<?php
@@ -70,8 +71,11 @@ class Utils {
 	    return esc_html( get_option( $option ) );
 	}
 
-	public static function pprh_is_plugin_active( $plugin ) {
-		return in_array( $plugin, (array) get_option( 'active_plugins', array() ), true ) || is_plugin_active_for_network( $plugin );
+	public static function pprh_is_plugin_active() {
+	    $plugin = 'pprh-pro/pprh-pro.php';
+		$site_active = (in_array( $plugin, (array) get_option( 'active_plugins', array() ), true ));
+		$network_active = (function_exists( 'is_plugin_active_for_network' )) ? is_plugin_active_for_network( $plugin ) : false;
+		return $site_active || $network_active;
 	}
 
 }

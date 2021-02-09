@@ -245,15 +245,16 @@
 			return response;
 		}
 
+		// TODO: remove previous notices which have a different status. i.e- removing an 'error' box after a successful notice
 		function updateAdminNotice(response) {
 			response = verifyResponse(response);
-			adminNoticeElem.classList.add('active');
 			adminNoticeElem.classList.add('notice-' + response.status);
+			adminNoticeElem.classList.add('active');
 			adminNoticeElem.getElementsByTagName('p')[0].innerText = response.msg;
 
 			setTimeout(function() {
 				adminNoticeElem.classList.remove('active');
-				adminNoticeElem.classList.remove('notice-' + status);
+				adminNoticeElem.classList.remove('notice-' + response.status);
 			}, 10000);
 		}
 
@@ -361,6 +362,8 @@
 		// 	}
 		// 	return postId;
 		// }
+
+
 
 		return {
 			CreateAjaxReq: createAjaxReq,
