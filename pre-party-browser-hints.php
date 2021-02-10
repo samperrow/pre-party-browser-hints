@@ -51,7 +51,7 @@ class Pre_Party_Browser_Hints {
 		$this->on_pprh_page = Utils::on_pprh_page();
 
 		if ( is_admin() ) {
-			$this->load_admin();
+            $this->load_admin();
 		} else {
 			$this->load_client();
 		}
@@ -113,7 +113,7 @@ class Pre_Party_Browser_Hints {
 		$settings_page = add_menu_page(
 			'Pre* Party Settings',
 			'Pre* Party',
-			'manage_options',
+			'update_plugins',
 			'pprh-plugin-settings',
 			array( $this, 'load_admin_page' ),
 			PPRH_REL_DIR . 'images/lightning.png'
@@ -121,13 +121,24 @@ class Pre_Party_Browser_Hints {
 
 		add_action( "load-{$settings_page}", array( $this, 'screen_option' ) );
 		add_action( "load-{$settings_page}", array( $this, 'check_to_upgrade' ) );
+
+//		add_action( 'admin_init', function() {
+//			add_meta_box( 'pprhSettings', 'Settings!', array( $this, 'test'), 'toplevel_page_pprh-plugin-settings' );
+//		});
 	}
+
+//	public function test() {
+//	    echo 'heasdfasfd';
+//    }
 
 	public function load_admin_page() {
 		if ( ! current_user_can( 'update_plugins' ) )  {
 			wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
 		}
+
 		include_once PPRH_ABS_DIR . 'includes/LoadAdmin.php';
+
+
 	}
 
 	public function screen_option() {

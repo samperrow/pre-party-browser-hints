@@ -13,6 +13,8 @@ class LoadAdmin {
 	public function __construct() {
 		add_action( 'pprh_admin_notice', array( $this, 'admin_notice' ), 10, 1 );
 		$this->load_plugin_admin_files();
+
+
 	}
 
 	public function load_plugin_admin_files() {
@@ -34,6 +36,7 @@ class LoadAdmin {
 		new Settings();
 		new HintInfo();
 		new Upgrade();
+
 
 		$this->show_footer();
 		echo '</div></div>';

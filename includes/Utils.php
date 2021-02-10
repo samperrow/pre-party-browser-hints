@@ -56,7 +56,12 @@ class Utils {
 
 	public static function get_option_status( $option, $val ) {
 	    $opt = get_option( $option );
-		return esc_html( $opt === $val ? 'selected=selected' : '');
+		return esc_html( $opt === $val ? 'selected=selected' : '' );
+	}
+
+	public static function is_option_checked( $option ) {
+		$value = get_option( $option );
+		return esc_html( 'true' === $value ? 'checked=checked' : '' );
 	}
 
 	// need to account for ajax

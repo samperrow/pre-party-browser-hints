@@ -20,20 +20,21 @@ div#pprh-wrapper {
             height: 19.5px;
         }
 
-        &#pprh-license,
-        &#pprh-upgrade {
-            max-width: 600px;
-        }
+        //&#pprh-license,
+        //&#pprh-upgrade {
+        //    max-width: 600px;
+        //}
+    }
+
+    div.pprh-box {
+        margin-top: 20px;
     }
 
     div#pprh-settings {
-        max-width: 800px;
-
         > h2 > a:hover {
             cursor: pointer;
         }
     }
-
 
     div#pprhNotice {
         margin: 5px 0;
@@ -120,19 +121,9 @@ div#pprh-wrapper {
         }
     }
 
-
     table.pprh-settings-table {
         font-size: 14px;
         text-align: left;
-        padding: 15px 0;
-
-        &.active {
-            display: block;
-        }
-
-        &.hidden {
-            display: none;
-        }
 
         tbody tr td {
             margin-bottom: 9px;
@@ -217,9 +208,7 @@ div#pprh-wrapper {
     .pprh-admin-pic {
         display: block;
         margin: 0 auto;
-        //max-width: 95%;
         height: auto;
-        //border: 2px solid #bbb
     }
 
     div.pprh-code-block {

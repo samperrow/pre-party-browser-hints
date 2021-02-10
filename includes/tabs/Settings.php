@@ -9,19 +9,23 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Settings {
 
 	public function __construct() {
-	    $this->display_settings();
+		do_action( 'pprh_load_settings_child' );
+//		add_action( 'admin_init', array( $this, 'add_meta_box_summary' ) );
+
+
+		$this->display_settings();
 	}
 
 	public function display_settings() {
 		?>
         <div id="pprh-settings" class="pprh-content">
-            <?php do_action( 'pprh_show_settings_tabs' ); ?>
+            <?php // do_action( 'pprh_show_settings_tabs' ); ?>
             <form method="post" action="">
                 <?php
                     wp_nonce_field( 'pprh_save_admin_options', 'pprh_admin_options_nonce' );
                     $this->save_user_options();
                     $this->general_settings();
-                    $this->preconnect_settings();
+				    $this->preconnect_settings();
                     $this->prefetch_settings();
                     do_action( 'pprh_prerender_settings' );
                 ?>
@@ -33,86 +37,77 @@ class Settings {
 		<?php
 	}
 
-
 	public function save_user_options() {
+	    if ( isset( $_POST['pprh_save_options'] ) && check_admin_referer( 'pprh_save_admin_options', 'pprh_admin_options_nonce' ) ) {
 
-		if ( isset( $_POST['pprh_save_options'] ) ) {
+			$options = array(
+                'autoload_preconnects'             => isset($_POST['preconnect_autoload_preconnects']) ? 'true' : 'false',
+                'allow_unauth'                     => isset($_POST['preconnect_allow_unauth']) ? 'true' : 'false',
+                'disable_wp_hints'                 => isset($_POST['disable_wp_hints']) ? 'true' : 'false',
+                'prefetch_enabled'                 => isset($_POST['prefetch_enabled']) ? 'true' : 'false',
+                'prefetch_disableForLoggedInUsers' => isset($_POST['prefetch_disableForLoggedInUsers']) ? 'true' : 'false'
+            );
 
-			if ( check_admin_referer( 'pprh_save_admin_options', 'pprh_admin_options_nonce' ) ) {
+			update_option('pprh_disable_wp_hints', $options['disable_wp_hints']);
+			update_option('pprh_html_head', wp_unslash($_POST['html_head']));
 
-				update_option( 'pprh_disable_wp_hints', wp_unslash( $_POST['disable_wp_hints'] ) );
-				update_option( 'pprh_html_head', wp_unslash( $_POST['html_head'] ) );
+			update_option('pprh_preconnect_autoload', $options['autoload_preconnects']);
+			update_option('pprh_preconnect_allow_unauth', $options['allow_unauth']);
 
-				update_option( 'pprh_preconnect_autoload', wp_unslash( $_POST['autoload_preconnects'] ) );
-                update_option( 'pprh_preconnect_allow_unauth', wp_unslash( $_POST['allow_unauth'] ) );
+			update_option('pprh_prefetch_disableForLoggedInUsers', $options['prefetch_disableForLoggedInUsers']);
+			update_option('pprh_prefetch_enabled', $options['prefetch_enabled']);
+			update_option('pprh_prefetch_delay', Utils::strip_non_numbers($_POST['prefetch_delay']));
+			update_option('pprh_prefetch_ignoreKeywords', Utils::clean_url_path($_POST['prefetch_ignoreKeywords']));
+			update_option('pprh_prefetch_maxRPS', Utils::strip_non_numbers($_POST['prefetch_maxRPS']));
+			update_option('pprh_prefetch_hoverDelay', Utils::strip_non_numbers($_POST['prefetch_hoverDelay']));
 
-				update_option( 'pprh_prefetch_disableForLoggedInUsers', Utils::clean_url( $_POST['pprh_prefetch_disableForLoggedInUsers'] ) );
-				update_option( 'pprh_prefetch_enabled', Utils::clean_url( $_POST['prefetch_enabled'] ) );
-				update_option( 'pprh_prefetch_delay', Utils::strip_non_numbers( $_POST['prefetch_delay'] ) );
-				update_option( 'pprh_prefetch_ignoreKeywords', Utils::clean_url_path( $_POST['prefetch_ignoreKeywords'] ) );
-				update_option( 'pprh_prefetch_maxRPS', Utils::strip_non_numbers( $_POST['prefetch_maxRPS'] ) );
-				update_option( 'pprh_prefetch_hoverDelay', Utils::strip_non_numbers( $_POST['prefetch_hoverDelay'] ) );
-
-				do_action( 'pprh_save_settings' );
+			if (isset($_POST['pprh_preconnect_set'])) {
+				update_option('pprh_preconnect_set', 'false');
 			}
 		}
 
-		if ( isset( $_POST['pprh_preconnect_set' ] ) ) {
-			update_option( 'pprh_preconnect_set', 'false' );
-		}
+		do_action( 'pprh_save_settings' );
 	}
 
 	public function general_settings() {
-        ?>
-        <table class="pprh-settings-table" id="general">
-            <tbody>
+		$disable_wp_hints = \PPRH\Utils::is_option_checked( 'pprh_disable_wp_hints' );
+		?>
+        <div class="postbox" id="general">
+            <div class="inside">
+                <h3 style="font-size: 23px; font-weight: bold;"><?php esc_html_e( 'General Settings', 'pprh' ); ?></h3>
 
-                <tr>
-                    <td style="font-size: 23px; text-align: center; font-weight: bold;" colspan="3"><?php esc_html_e( 'General Settings', 'pprh' ); ?></td>
-                </tr>
+                <table class="form-table">
+                    <tbody>
 
-                <tr>
-                    <th><?php esc_html_e( 'Disable automatically generated WordPress resource hints?', 'pprh' ); ?></th>
+                        <tr>
+                            <th><?php esc_html_e( 'Disable automatically generated WordPress resource hints?', 'pprh' ); ?></th>
 
-                    <td>
-                        <span class="pprh-help-tip-hint">
-                            <span><?php esc_html_e( 'This option will remove three resource hints automatically generated by WordPress, as of 4.8.2.', 'pprh' ); ?></span>
-                        </span>
-                    </td>
+                            <td>
+                                <input type="checkbox" name="disable_wp_hints" value="1" <?php echo $disable_wp_hints; ?>/>
+                                <p><?php esc_html_e( 'This option will remove three resource hints automatically generated by WordPress, as of 4.8.2.', 'pprh' ); ?></p>
+                            </td>
+                        </tr>
 
-                    <td>
-                        <select name="disable_wp_hints">
-                            <option <?php echo Utils::get_option_status( 'pprh_disable_wp_hints', 'true' ); ?>
-                                    value="true">Yes</option>
-                            <option <?php echo Utils::get_option_status( 'pprh_disable_wp_hints', 'false' ); ?>
-                                    value="false"><?php esc_html_e( 'No', 'pprh' ); ?></option>
-                        </select>
-                    </td>
-                </tr>
+                        <tr>
+                            <th><?php esc_html_e( 'Send resource hints in HTML head or HTTP header?', 'pprh' ); ?></th>
 
-                <tr>
-                    <th><?php esc_html_e( 'Send resource hints in HTML head or HTTP header?', 'pprh' ); ?></th>
+                            <td>
+                                <select id="pprhHintLocation" name="html_head">
+                                    <option value="true" <?php echo Utils::get_option_status( 'pprh_html_head', 'true' );
+                                    ?>><?php esc_html_e( 'HTML &lt;head&gt;', 'pprh' ); ?></option>
+                                    <option value="false" <?php echo Utils::get_option_status( 'pprh_html_head', 'false' );
+                                    ?>><?php esc_html_e( 'HTTP Header', 'pprh' ); ?></option>
+                                </select>
+                                <p><?php esc_html_e( 'Send hints in the HTML &lt;head&gt; or the HTTP header.', 'pprh' ); ?></p>
+                            </td>
+                        </tr>
 
-                    <td>
-                        <span class="pprh-help-tip-hint">
-                            <span><?php esc_html_e( 'Send hints', 'pprh' ); ?></span>
-                        </span>
-                    </td>
+                        <?php do_action( 'pprh_general_settings' ); ?>
 
-                    <td>
-                        <select id="pprhHintLocation" name="html_head">
-                            <option value="true" <?php echo Utils::get_option_status( 'pprh_html_head', 'true' );
-                            ?>><?php esc_html_e( 'HTML &lt;head&gt;', 'pprh' ); ?></option>
-                            <option value="false" <?php echo Utils::get_option_status( 'pprh_html_head', 'false' );
-                            ?>><?php esc_html_e( 'HTTP Header', 'pprh' ); ?></option>
-                        </select>
-                    </td>
-                </tr>
-
-                <?php do_action( 'pprh_general_settings' ); ?>
-
-            </tbody>
-        </table>
+                    </tbody>
+                </table>
+            </div>
+        </div>
         <?php
 		apply_filters( 'pprh_pro_settings', 'general' );
 	}
@@ -121,219 +116,135 @@ class Settings {
 
 	public function preconnect_settings() {
 		$load_basic = apply_filters( 'pprh_sc_preconnect_pro', true );
+		$autoload = \PPRH\Utils::is_option_checked( 'pprh_preconnect_autoload' );
+		$allow_unauth = \PPRH\Utils::is_option_checked( 'pprh_preconnect_allow_unauth' );
 		?>
-        <table class="pprh-settings-table" id="preconnect">
-            <tbody>
-                <tr>
-                    <td style="font-size: 23px; text-align: center; font-weight: bold;" colspan="3"><?php esc_html_e( 'Auto Preconnect Settings', 'pprh' ); ?>
-                        <span class="pprh-help-tip-hint">
-                            <span><?php _e( 'This feature will collect the domain names of external resources used on your site, and create resource hints from those. For example, if you are using Google Fonts and Google Analytics, this feature will find the host names of these resources ("https://www.google-analytics.com", "https://fonts.gstatic.com", "https://fonts.googleapis.com"), and create resource hints for those. To initialize this, you only need to view a page on your website and this plugin will take care of the rest! It will automatically run after plugin installation, or by clicking the "Reset" button below.', 'pprh' ); ?></span>
-                        </span>
-                    </td>
-                </tr>
-                <tr>
-                    <th><?php esc_html_e( 'Automatically set preconnect hints?', 'pprh' ); ?></th>
+        <div class="postbox" id="preconnect">
+            <div class="inside">
+               <h3 style="font-size: 23px; font-weight: bold;"><?php esc_html_e( 'Auto Preconnect Settings', 'pprh' ); ?>
+                    <span class="pprh-help-tip-hint">
+                        <span><?php _e( 'This feature will collect the domain names of external resources used on your site, and create resource hints from those. For example, if you are using Google Fonts and Google Analytics, this feature will find the host names of these resources ("https://www.google-analytics.com", "https://fonts.gstatic.com", "https://fonts.googleapis.com"), and create resource hints for those. To initialize this, you only need to view a page on your website and this plugin will take care of the rest! It will automatically run after plugin installation, or by clicking the "Reset" button below.', 'pprh' ); ?></span>
+                    </span>
+                </h3>
 
-                    <td>
-                        <span class="pprh-help-tip-hint">
-                            <span><?php esc_html_e( 'JavaScript, CSS, and images loaded from external domains will preconnect automatically.', 'pprh' ); ?></span>
-                        </span>
-                    </td>
+                <table class="form-table">
+                    <tbody>
 
-                    <td>
-                        <label>
-                            <select name="autoload_preconnects">
-                                <option value="true" <?php echo Utils::get_option_status( 'pprh_preconnect_autoload',
-                                    'true' ); ?>>
-                                    <?php esc_html_e( 'Yes', 'pprh' ); ?>
-                                </option>
-                                <option value="false" <?php echo Utils::get_option_status( 'pprh_preconnect_autoload',
-                                    'false' ); ?>>
-                                    <?php esc_html_e( 'No', 'pprh' ); ?>
-                                </option>
-                            </select>
-                        </label>
-                    </td>
-                </tr>
+                        <tr>
+                            <th><?php esc_html_e( 'Automatically set preconnect hints?', 'pprh' ); ?></th>
 
-                <tr>
-                    <th><?php esc_html_e( 'Allow unauthenticated users to automatically set preconnect hints via Ajax?', 'pprh' ); ?></th>
+                            <td>
+                                <input type="checkbox" name="preconnect_autoload_preconnects" value="1" <?php echo $autoload; ?>/>
+                                <p><?php esc_html_e( 'JavaScript, CSS, and images loaded from external domains will preconnect automatically.', 'pprh' ); ?></p>
+                            </td>
+                        </tr>
 
-                    <td>
-                        <span class="pprh-help-tip-hint">
-                            <span><?php esc_html_e( 'This plugin has a feature which allows preconnect hints to be automatically created asynchronously in the background with Ajax by the first user to visit a page (assuming the user has that option to be reset). There is an extremely remote possibility that if a visitor knew the hints would be set, they could choose to manually load many external scripts, which could trick the plugin script into accepting these as valid preconnect hints. But again this is a very remote possiblity and only a nuisance, not a vulnerability, due to the strict sanitization procedures in place.', 'pprh' ); ?></span>
-                        </span>
-                    </td>
+                        <tr>
+                            <th><?php esc_html_e( 'Allow unauthenticated users to automatically set preconnect hints via Ajax?', 'pprh' ); ?></th>
 
-                    <td>
-                        <label>
-                            <select name="allow_unauth">
-                                <option value="true" <?php echo Utils::get_option_status( 'pprh_preconnect_allow_unauth', 'true' ); ?>>
-                                    <?php esc_html_e( 'Yes', 'pprh' ); ?>
-                                </option>
-                                <option value="false" <?php echo Utils::get_option_status(
-                                        'pprh_preconnect_allow_unauth', 'false' ); ?>>
-                                    <?php esc_html_e( 'No', 'pprh' ); ?>
-                                </option>
-                            </select>
-                        </label>
-                    </td>
-                </tr>
+                            <td>
+                                <input type="checkbox" name="preconnect_allow_unauth" value="1" <?php echo $allow_unauth; ?>/>
+                                <p><?php esc_html_e( 'This plugin has a feature which allows preconnect hints to be automatically created asynchronously in the background with Ajax by the first user to visit a page (assuming the user has that option to be reset). There is an extremely remote possibility that if a visitor knew the hints would be set, they could choose to manually load many external scripts, which could trick the plugin script into accepting these as valid preconnect hints. But again this is a very remote possiblity and only a nuisance, not a vulnerability, due to the strict sanitization procedures in place.', 'pprh' ); ?></p>
+                            </td>
+                        </tr>
 
-                <?php
-		        $load_basic = apply_filters( 'pprh_pro_settings', 'preconnect' );
+                        <?php
+                        $load_basic = apply_filters( 'pprh_pro_settings', 'preconnect' );
 
-		        if ( true !== $load_basic  ) { ?>
-                    <tr>
-                        <th><?php esc_html_e( 'Reset automatically created preconnect links?', 'pprh' ); ?></th>
+                        if ( true !== $load_basic ) { ?>
+                            <tr>
+                                <th><?php esc_html_e( 'Reset automatically created preconnect links?', 'pprh' ); ?></th>
 
-                        <td>
-                            <span class="pprh-help-tip-hint">
-                                <span><?php esc_html_e( 'This will reset automatically created preconnect hints.', 'pprh' ); ?></span>
-                            </span>
-                        </td>
+                                <td>
+                                    <input type="submit" name="pprh_preconnect_set" id="pprhPreconnectReset" class="button-secondary" value="Reset">
+                                    <p><?php esc_html_e( 'This will reset automatically created preconnect hints.', 'pprh' ); ?></p>
+                                </td>
+                            </tr>
 
-                        <td>
-                            <input type="submit" name="pprh_preconnect_set" id="pprhPreconnectReset" class="button-secondary" value="Reset">
-                        </td>
-                    </tr>
-
-                <?php
-		            } else {
-		                do_action( 'pprh_show_preconnect_options' );
-                    }
-		        ?>
-            </tbody>
-        </table>
-
+                        <?php
+                            } else {
+                                do_action( 'pprh_show_preconnect_options' );
+                            }
+                        ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
 		<?php
 	}
 
 	public function prefetch_settings() {
-        ?>
+		$prefetch_disableForLoggedInUsers = \PPRH\Utils::is_option_checked( 'pprh_prefetch_disableForLoggedInUsers' );
+		$prefetch_enabled = \PPRH\Utils::is_option_checked( 'pprh_prefetch_enabled' );
+		?>
+        <div class="postbox" id="prefetch">
+            <div class="inside">
+                <h3 style="font-size: 23px; font-weight: bold;"><?php esc_html_e( 'Auto Prefetch Settings', 'pprh' ); ?>
+                    <span class="pprh-help-tip-hint">
+                        <span><?php _e( 'Prefetch pages before the user clicks on navigation links, making them load instantly. Special thanks to <a href="https://wpspeedmatters.com/">Gijo Varghese</a> for providing assistance with this prefetch feature.', 'pprh' ); ?></span>
+                    </span>
+                </h3>
 
-        <table class="pprh-settings-table" id="prefetch">
-            <tbody>
-                <tr>
-                    <td style="font-size: 23px; text-align: center; font-weight: bold;" colspan="3"><?php esc_html_e( 'Auto Prefetch Settings', 'pprh' ); ?>
-                        <span class="pprh-help-tip-hint">
-                            <span><?php _e( 'Prefetch pages before the user clicks on navigation links, making them load instantly. Special thanks to <a href="https://wpspeedmatters.com/">Gijo Varghese</a> for providing assistance with this prefetch feature.', 'pprh' ); ?></span>
-                        </span>
-                    </td>
-                </tr>
+                <table class="form-table">
+                    <tbody>
+                        <tr>
+                            <th scope="row"><?php esc_html_e( 'Disable prefetching for logged in users?', 'pprh' ); ?></th>
 
-                <tr>
-                    <th><?php esc_html_e( 'Disable prefetching for logged in users?', 'pprh' ); ?></th>
+                            <td>
+                                <input type="checkbox" name="prefetch_disableForLoggedInUsers" value="1" <?php echo $prefetch_disableForLoggedInUsers; ?>/>
+                                <p><?php esc_html_e( 'It usually is not necessary for logged in users to prefetch content. This will save some server resources.', 'pprh' ); ?></p>
+                            </td>
+                        </tr>
 
-                    <td>
-                        <span class="pprh-help-tip-hint">
-                            <span><?php esc_html_e( 'It usually is not necessary for logged in users to prefetch content. This will save some server resources.', 'pprh' ); ?></span>
-                        </span>
-                    </td>
+                        <tr>
+                            <th><?php esc_html_e( 'Allow for navigation links to be prefetched while in viewport?', 'pprh' ); ?></th>
 
-                    <td>
-                        <label>
-                            <select name="pprh_prefetch_disableForLoggedInUsers">
-                                <option value="true" <?php echo Utils::get_option_status( 'pprh_prefetch_disableForLoggedInUsers', 'true' ); ?>>
-									<?php esc_html_e( 'Yes', 'pprh' ); ?>
-                                </option>
-                                <option value="false" <?php echo Utils::get_option_status( 'pprh_prefetch_disableForLoggedInUsers', 'false' ); ?>>
-									<?php esc_html_e( 'No', 'pprh' ); ?>
-                                </option>
-                            </select>
-                        </label>
-                    </td>
-                </tr>
+                            <td>
+                                <input type="checkbox" name="prefetch_enabled" value="true" <?php echo $prefetch_enabled; ?>/>
+                                <p><?php esc_html_e( 'When navigation (anchor) links are being moused over, this feature will initiate a prefetch request for the URL in the link. Select No (default) to disable this feature.', 'pprh' ); ?></p>
+                            </td>
+                        </tr>
 
-                <tr>
-                    <th><?php esc_html_e( 'Allow for navigation links to be prefetched while in viewport?', 'pprh' ); ?></th>
+                        <tr>
+                            <th><?php esc_html_e( 'Prefetch initiation delay:', 'pprh' ); ?></th>
 
-                    <td>
-                        <span class="pprh-help-tip-hint">
-                            <span><?php esc_html_e( 'When navigation (anchor) links are being moused over, this feature will initiate a prefetch request for the URL in the link. Select No (default) to disable this feature.', 'pprh' ); ?></span>
-                        </span>
-                    </td>
+                            <td>
+                                <input type="text" name="prefetch_delay" value="<?php Utils::esc_get_option( 'pprh_prefetch_delay' ); ?>" />
+                                <p><?php esc_html_e( 'Start prefetching after a delay. Will be started when the browser becomes idle. Default is 0.', 'pprh' ); ?></p>
+                            </td>
+                        </tr>
 
-                    <td>
-                        <label>
-                            <select name="prefetch_enabled">
-                                <option value="true" <?php echo Utils::get_option_status( 'pprh_prefetch_enabled', 'true' ); ?>>
-                                    <?php esc_html_e( 'Yes', 'pprh' ); ?>
-                                </option>
-                                <option value="false" <?php echo Utils::get_option_status( 'pprh_prefetch_enabled', 'false' ); ?>>
-                                    <?php esc_html_e( 'No', 'pprh' ); ?>
-                                </option>
-                            </select>
-                        </label>
-                    </td>
-                </tr>
+                        <tr>
+                            <th><?php esc_html_e( 'Ignore these keywords:', 'pprh' ); ?></th>
 
-                <tr>
-                    <th><?php esc_html_e( 'Prefetch initiation delay:', 'pprh' ); ?></th>
+                            <td>
+                                <input type="text" name="prefetch_ignoreKeywords" value="<?php Utils::esc_get_option('pprh_prefetch_ignoreKeywords' ); ?>" />
+                                <p><?php esc_html_e( 'A list of keywords to ignore from prefetching. Should be comma-separated values, without quotes. Any links matching any of the values specified will not be prefetch. Example "/logout, /cart, about.html, sample.png, #"', 'pprh' ); ?></p>
+                            </td>
+                        </tr>
 
-                    <td>
-                        <span class="pprh-help-tip-hint">
-                            <span><?php esc_html_e( 'Start prefetching after a delay. Will be started when the browser becomes idle. Default is 0.', 'pprh' ); ?></span>
-                        </span>
-                    </td>
+                        <tr>
+                            <th><?php esc_html_e( 'Maximum requests per second the prefetch queue should process:', 'pprh' ); ?></th>
 
-                    <td>
-                        <label>
-                            <input type="text" name="prefetch_delay" value="<?php Utils::esc_get_option( 'pprh_prefetch_delay' ); ?>" />
-                        </label>
-                    </td>
-                </tr>
+                            <td>
+                                <input type="text" name="prefetch_maxRPS" value="<?php echo Utils::esc_get_option( 'pprh_prefetch_maxRPS' ); ?>" />
+                                <p><?php esc_html_e( 'Set to 0 to process all requests immediately (without queue). Defaults to 3.', 'pprh' ); ?></p>
+                            </td>
+                        </tr>
 
-                <tr>
-                    <th><?php esc_html_e( 'Ignore these keywords:', 'pprh' ); ?></th>
+                        <tr>
+                            <th><?php esc_html_e( 'Delay in prefetching links on mouse hover (milliseconds)', 'pprh' ); ?></th>
 
-                    <td>
-                        <span class="pprh-help-tip-hint">
-                            <span><?php esc_html_e( 'A list of keywords to ignore from prefetching. Should be comma-separated values, without quotes. Any links matching any of the values specified will not be prefetch. Example "/logout, /cart, about.html, sample.png, #"', 'pprh' ); ?></span>
-                        </span>
-                    </td>
+                            <td>
+                                <input type="text" name="prefetch_hoverDelay" value="<?php Utils::esc_get_option( 'pprh_prefetch_hoverDelay' ); ?>" />
+                                <p><?php esc_html_e( 'Set a short pause after the mouse hovers over a link before the prefetch hint is created. Defaults to 50 milliseconds', 'pprh' ); ?></p>
+                            </td>
+                        </tr>
 
-                    <td>
-                        <label>
-                            <input type="text" name="prefetch_ignoreKeywords" value="<?php Utils::esc_get_option('pprh_prefetch_ignoreKeywords' ); ?>" />
-                        </label>
-                    </td>
-                </tr>
-
-                <tr>
-                    <th><?php esc_html_e( 'Maximum requests per second the prefetch queue should process:', 'pprh' ); ?></th>
-
-                    <td>
-                        <span class="pprh-help-tip-hint">
-                            <span><?php esc_html_e( 'Set to 0 to process all requests immediately (without queue). Defaults to 3.', 'pprh' ); ?></span>
-                        </span>
-                    </td>
-
-                    <td>
-                        <label>
-                            <input type="text" name="prefetch_maxRPS" value="<?php echo Utils::esc_get_option( 'pprh_prefetch_maxRPS' ); ?>" />
-                        </label>
-                    </td>
-                </tr>
-
-                <tr>
-                    <th><?php esc_html_e( 'Delay in prefetching links on mouse hover (milliseconds)', 'pprh' ); ?></th>
-
-                    <td>
-                        <span class="pprh-help-tip-hint">
-                            <span><?php esc_html_e( 'Set a short pause after the mouse hovers over a link before the prefetch hint is created. Defaults to 50 milliseconds', 'pprh' ); ?></span>
-                        </span>
-                    </td>
-
-                    <td>
-                        <label>
-                            <input type="text" name="prefetch_hoverDelay" value="<?php Utils::esc_get_option( 'pprh_prefetch_hoverDelay' ); ?>" />
-                        </label>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
         <?php
 		// cite https://github.com/gijo-varghese/flying-pages
