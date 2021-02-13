@@ -87,14 +87,12 @@ class DisplayHints extends WP_List_Table {
 
 	public function prepare_items() {
 		$dao = new DAO();
-		$option = 'pprh_screen_options';
+		$this->hints_per_page = $this->set_hints_per_page();
 		$columns = $this->get_columns();
 		$hidden = array();
 		$sortable = $this->get_sortable_columns();
 		$this->_column_headers = array( $columns, $hidden, $sortable );
-		$user = get_current_user_id();
-		$total_hints = (int) get_user_meta( $user, $option, true );
-		$this->hints_per_page = ( ! empty( $total_hints ) ) ? $total_hints : 10;
+
 		$data = $dao->get_hints_ordered( null );
 		$current_page = $this->get_pagenum();
 		$this->items = array_slice( $data, ( ( $current_page - 1 ) * $this->hints_per_page ), $this->hints_per_page );
@@ -110,6 +108,17 @@ class DisplayHints extends WP_List_Table {
             )
         );
 	}
+
+	public function set_hints_per_page() {
+		$user = get_current_user_id();
+		$screen = get_current_screen();
+		$option = 'pprh_per_page';
+		$hints_per_page = (int) get_user_meta( $user, $option, true );
+		if ( empty ( $hints_per_page) || $hints_per_page < 1 ) {
+			$hints_per_page = $screen->get_option( 'per_page', 'default' );
+		}
+		return $hints_per_page;
+    }
 
 	public function no_items() {
 		esc_html_e( 'Enter a URL or domain name..', 'pprh' );
