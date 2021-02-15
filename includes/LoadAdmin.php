@@ -16,10 +16,13 @@ class LoadAdmin {
 	}
 
 	public function load_plugin_admin_files() {
-		include_once PPRH_ABS_DIR . 'includes/tabs/InsertHints.php';
-		include_once PPRH_ABS_DIR . 'includes/tabs/Settings.php';
-		include_once PPRH_ABS_DIR . 'includes/tabs/HintInfo.php';
-		include_once PPRH_ABS_DIR . 'includes/tabs/Upgrade.php';
+		include_once PPRH_ABS_DIR . 'includes/views/InsertHints.php';
+        include_once PPRH_ABS_DIR . 'includes/views/Settings.php';
+		include_once PPRH_ABS_DIR . 'includes/views/settings/GeneralSettings.php';
+		include_once PPRH_ABS_DIR . 'includes/views/settings/PreconnectSettings.php';
+		include_once PPRH_ABS_DIR . 'includes/views/settings/PrefetchSettings.php';
+		include_once PPRH_ABS_DIR . 'includes/views/HintInfo.php';
+		include_once PPRH_ABS_DIR . 'includes/views/Upgrade.php';
 
 		echo '<div id="pprh-wrapper" class="wrap"><h2>';
 		esc_html_e( 'Pre* Party Plugin Settings', 'pprh' );
@@ -29,9 +32,10 @@ class LoadAdmin {
 		$this->show_admin_tabs();
 
 		echo '<div class="pprh-box">';
-		do_action( 'pprh_load_tab_files' );
+		do_action( 'pprh_load_view_files' );
 		new InsertHints();
 		new Settings();
+//		do_meta_boxes('toplevel_page_pprh-plugin-settings', 'side', null);
 		new HintInfo();
 		new Upgrade();
 

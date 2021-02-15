@@ -9,8 +9,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 class LoadClient {
 
 	public function __construct() {
-		include_once PPRH_ABS_DIR . 'includes/SendHints.php';
-
 		add_action( 'wp_loaded', array( $this, 'send_resource_hints' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'load_flying_pages' ) );
 
@@ -20,31 +18,33 @@ class LoadClient {
 	}
 
 	public function send_resource_hints() {
+		include_once PPRH_ABS_DIR . 'includes/SendHints.php';
 		$send_hints = new SendHints();
 		$send_hints->get_resource_hints();
 	}
 
-	public function load_flying_pages() {
+	public function load_flying_pages(): void {
 		$load_flying_pages = get_option( 'pprh_prefetch_enabled' );
 		$disable_for_logged_in_users = get_option( 'pprh_prefetch_disableForLoggedInUsers' );
+		$debug = ( defined( 'PPRH_DEBUG' ) && PPRH_DEBUG );
 
-		if ( 'true' === $disable_for_logged_in_users && is_user_logged_in() )  {
+		$js_script_path = ($debug) ? 'js/flying-pages.js' : 'js/flying-pages.min.js';
+
+		if ( ($load_flying_pages !== 'true') || ('true' === $disable_for_logged_in_users && is_user_logged_in() ) ) {
 			return;
 		}
 
-		if ( $load_flying_pages === 'true' ) {
-			$fp_data = array(
-				'delay'          => get_option( 'pprh_prefetch_delay', 0 ),
-				'hoverDelay'     => get_option( 'pprh_prefetch_hoverDelay', 50 ),
-				'maxRPS'         => get_option( 'pprh_prefetch_maxRPS', 3 ),
-				'ignoreKeywords' => get_option( 'pprh_prefetch_ignoreKeywords', '' ),
-			);
+		$fp_data = array(
+			'debug'          => ( $debug ) ? 'true' : 'false',
+			'delay'          => get_option( 'pprh_prefetch_delay', 0 ),
+			'maxRPS'         => get_option( 'pprh_prefetch_maxRPS', 3 ),
+			'hoverDelay'     => get_option( 'pprh_prefetch_hoverDelay', 50 ),
+			'ignoreKeywords' => get_option( 'pprh_prefetch_ignoreKeywords', '' ),
+		);
 
-			wp_register_script( 'pprh_prefetch_flying_pages', PPRH_REL_DIR . 'js/flying-pages.min.js', null, PPRH_VERSION, true );
-			wp_localize_script( 'pprh_prefetch_flying_pages', 'pprh_fp_data', $fp_data );
-			wp_enqueue_script( 'pprh_prefetch_flying_pages' );
-		}
+		wp_register_script( 'pprh_prefetch_flying_pages', PPRH_REL_DIR . $js_script_path, null, PPRH_VERSION, true );
+		wp_localize_script( 'pprh_prefetch_flying_pages', 'pprh_fp_data', $fp_data );
+		wp_enqueue_script( 'pprh_prefetch_flying_pages' );
 	}
-
 
 }

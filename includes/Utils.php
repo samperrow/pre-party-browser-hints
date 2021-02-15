@@ -61,7 +61,7 @@ class Utils {
 
 	public static function is_option_checked( $option ) {
 		$value = get_option( $option );
-		return esc_html( 'true' === $value ? 'checked=checked' : '' );
+		return esc_html( 'true' === $value ? 'checked' : '' );
 	}
 
 	// need to account for ajax
@@ -73,7 +73,8 @@ class Utils {
 	}
 
 	public static function esc_get_option( $option ) {
-	    return esc_html( get_option( $option ) );
+	    $value = get_option( $option );
+	    return esc_html( $value );
 	}
 
 	public static function pprh_is_plugin_active() {
@@ -81,6 +82,11 @@ class Utils {
 		$site_active = (in_array( $plugin, (array) get_option( 'active_plugins', array() ), true ));
 		$network_active = (function_exists( 'is_plugin_active_for_network' )) ? is_plugin_active_for_network( $plugin ) : false;
 		return $site_active || $network_active;
+	}
+
+	public static function json_to_array( $json ) {
+		$arr = explode(', ', $json);
+		return wp_unslash(json_encode($arr));
 	}
 
 }

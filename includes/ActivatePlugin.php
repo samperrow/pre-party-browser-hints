@@ -9,22 +9,32 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class ActivatePlugin {
 
-	public function __construct() {
+	public $plugin_activated = false;
+
+//	public function __construct() {}
+
+	public function init() {
 		$this->add_options();
 		$this->update_option_names();
+		$json = $this->update_prefetch_ignoreKeywords();
+		update_option( 'pprh_prefetch_ignoreKeywords', $json );
+
 
 		if ( 'activate_pre-party-browser-hints/pre-party-browser-hints.php' === current_action() ) {
 			$this->setup_tables();
+			$this->plugin_activated = true;
 		}
 	}
 
 	private function add_options() {
+		$default_prefetch_ignore_links = 'wp-admin, /wp-login.php, /cart, /checkout, add-to-cart, logout, #, ?, .png, .jpeg, .jpg, .gif, .svg, .webp';
+
 		add_option( 'pprh_disable_wp_hints', 'true', '', 'yes' );
 		add_option( 'pprh_html_head', 'true', '', 'yes' );
 		add_option( 'pprh_prefetch_disableForLoggedInUsers', 'true', '', 'yes' );
 		add_option( 'pprh_prefetch_enabled', 'false', '', 'yes' );
 		add_option( 'pprh_prefetch_delay', '0', '', 'yes' );
-		add_option( 'pprh_prefetch_ignoreKeywords', '', '', 'yes' );
+		add_option( 'pprh_prefetch_ignoreKeywords', $default_prefetch_ignore_links, '', 'yes' );
 		add_option( 'pprh_prefetch_maxRPS', '3', '', 'yes' );
 		add_option( 'pprh_prefetch_hoverDelay', '50', '', 'yes' );
 	}
@@ -54,6 +64,11 @@ class ActivatePlugin {
 		} else {
 			add_option( 'pprh_preconnect_set', 'false', '', 'yes' );
 		}
+	}
+
+	public function update_prefetch_ignoreKeywords() {
+		$orig_ignore_keywords = get_option( 'pprh_prefetch_ignoreKeywords' );
+		return Utils::json_to_array( $orig_ignore_keywords );
 	}
 
 	// Multisite install/delete db table.

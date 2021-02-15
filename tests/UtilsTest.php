@@ -129,11 +129,19 @@ final class UtilsTest extends TestCase {
 //	}
 
 	public function test_get_option_status():void {
-		$test1 = \PPRH\Utils::get_option_status('pprh_prefetch_enabled', 'false' );
-		$test2 = \PPRH\Utils::get_option_status('pprh_prefetch_enabled', 'true' );
+		$option_name = 'pprh_prefetch_enabled';
+		$prefetch_enabled = get_option( $option_name );
 
-		$this->assertEquals( 'selected=selected', $test1 );
+		update_option( $option_name, 'false' );
+		$test2 = \PPRH\Utils::get_option_status($option_name, 'true' );
 		$this->assertEquals( '', $test2 );
+
+
+		update_option( $option_name, 'true' );
+		$test1 = \PPRH\Utils::get_option_status($option_name, 'true' );
+		$this->assertEquals( 'selected=selected', $test1 );
+
+		update_option( $option_name, $prefetch_enabled );
 	}
 
 	public function test_on_pprh_page():void {

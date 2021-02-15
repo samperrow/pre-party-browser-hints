@@ -89,9 +89,8 @@ class DisplayHints extends WP_List_Table {
 		$dao = new DAO();
 		$this->hints_per_page = $this->set_hints_per_page();
 		$columns = $this->get_columns();
-		$hidden = array();
 		$sortable = $this->get_sortable_columns();
-		$this->_column_headers = array( $columns, $hidden, $sortable );
+		$this->_column_headers = array( $columns, array(), $sortable );
 
 		$data = $dao->get_hints_ordered( null );
 		$current_page = $this->get_pagenum();
@@ -114,9 +113,9 @@ class DisplayHints extends WP_List_Table {
 		$screen = get_current_screen();
 		$option = 'pprh_per_page';
 		$hints_per_page = (int) get_user_meta( $user, $option, true );
-		if ( empty ( $hints_per_page) || $hints_per_page < 1 ) {
-			$hints_per_page = $screen->get_option( 'per_page', 'default' );
-		}
+		$hints_per_page = ( null !== $screen && ( empty ( $hints_per_page) || $hints_per_page < 1 ) )
+            ? $screen->get_option( 'per_page', 'default' )
+            : 10;
 		return $hints_per_page;
     }
 

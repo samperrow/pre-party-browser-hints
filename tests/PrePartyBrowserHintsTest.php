@@ -1,12 +1,7 @@
 <?php
 
 declare(strict_types=1);
-
 use PHPUnit\Framework\TestCase;
-
-//if (!defined('ABSPATH')) {
-//	exit;
-//}
 
 final class PrePartyBrowserHintsTest extends TestCase {
 
@@ -51,7 +46,15 @@ final class PrePartyBrowserHintsTest extends TestCase {
 		$current_version = get_option( $option_name );
 		update_option( $option_name, $desired_version );
 
-		$activate_plugin = class_exists(\PPRH\ActivatePlugin::class);
+
+		$activate_plugin = class_exists(\PPRH\ActivatePlugin::class );
+
+		if ($activate_plugin) {
+			$activate_plugin = new \PPRH\ActivatePlugin();
+			$activate_plugin->plugin_activated;
+			$activate_plugin = ( $activate_plugin->plugin_activated );
+		}
+
 
 		$expected_true = version_compare( $current_version, $desired_version ) < 0;
 		$expected_false = version_compare( $current_version, $desired_version ) === 0;

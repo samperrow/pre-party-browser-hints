@@ -18,6 +18,7 @@ function flyingPages() {
         delay: Number(pprh_fp_data.delay),
         hoverDelay: Number(pprh_fp_data.hoverDelay),
         ignoreKeywords: pprh_fp_data.ignoreKeywords.replace(/\s/g, '').split(','),
+        debug: 'true' === pprh_fp_data.debug
     };
 
     // Check browser support for native 'prefetch'
@@ -44,6 +45,9 @@ function flyingPages() {
             link.onload = resolve;
             link.onerror = reject;
             document.head.appendChild(link);
+            if (fp_data.debug) {
+                console.log(link);
+            }
         });
 
     // Prefetch pages with a timeout
@@ -69,6 +73,14 @@ function flyingPages() {
             var keyword = fp_data.ignoreKeywords[i];
             if (keyword.length > 0 && url.includes(keyword)) {
                 return;
+            }
+
+            // wildcard check
+            else if (keyword.indexOf("*") === (keyword.length - 1) ) {
+                let wildcard = keyword.replace("*", "");
+                if ( url.indexOf(wildcard) > 0) {
+                    return;
+                }
             }
         }
 

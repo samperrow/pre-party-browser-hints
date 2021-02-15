@@ -3,7 +3,7 @@
  * Plugin Name:       Pre* Party Resource Hints
  * Plugin URI:        https://wordpress.org/plugins/pre-party-browser-hints/
  * Description:       Take advantage of the browser resource hints DNS-Prefetch, Prerender, Preconnect, Prefetch, and Preload to improve page load time.
- * Version:           1.8.0
+ * Version:           1.7.5
  * Requires at least: 4.4
  * Requires PHP:      5.6.30
  * Author:            Sam Perrow
@@ -29,6 +29,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 define( 'PPRH_ABS_DIR', WP_PLUGIN_DIR . '/pre-party-browser-hints/' );
 define( 'PPRH_REL_DIR', plugins_url() . '/pre-party-browser-hints/' );
 define( 'PPRH_HOME_URL', admin_url() . 'admin.php?page=pprh-plugin-setttings' );
+define( 'PPRH_DEBUG', true );
 
 $pprh_load = new \PPRH\Pre_Party_Browser_Hints();
 
@@ -57,13 +58,15 @@ class Pre_Party_Browser_Hints {
 
 	public function activate_plugin() {
 		include_once PPRH_ABS_DIR . 'includes/ActivatePlugin.php';
-		new ActivatePlugin();
+		$activate_plugin = new ActivatePlugin();
+		$activate_plugin->init();
 	}
 
 	public function load_admin() {
 		add_action( 'admin_menu', array( $this, 'load_admin_menu' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'register_admin_files' ) );
 		add_filter( 'set-screen-option', array( $this, 'pprh_set_screen_option' ), 10, 3 );
+		load_plugin_textdomain( 'pprh', false, PPRH_REL_DIR . 'languages' );
 
 		if ( $this->on_pprh_page || wp_doing_ajax() || defined( 'PPRH_TESTING' ) ) {
 			include_once PPRH_ABS_DIR . 'includes/DisplayHints.php';
@@ -74,6 +77,7 @@ class Pre_Party_Browser_Hints {
 	}
 
     public function load_client() {
+
 		include_once PPRH_ABS_DIR . 'includes/LoadClient.php';
 		new LoadClient();
 		do_action( 'pprh_load_client' );
@@ -111,9 +115,26 @@ class Pre_Party_Browser_Hints {
 
 		add_action( "load-{$settings_page}", array( $this, 'screen_option' ) );
 		add_action( "load-{$settings_page}", array( $this, 'check_to_upgrade' ) );
+//		add_action( 'admin_init', array( $this, 'create_meta_boxes' ) );
 	}
 
-	public function load_admin_page() {
+
+//	public function create_meta_boxes() {
+//		add_meta_box( 'pprhMEta', 'pprh meta box', array( $this, 'test_cb'), 'toplevel_page_pprh-plugin-settings', 'side', 'low');
+//	}
+
+//	public function test_cb() {
+//		include_once PPRH_ABS_DIR . 'includes/views/Settings.php';
+//		$settings = new Settings();
+//
+//		echo '<div id="pprh-settings" class="pprh-content">';
+//
+//		$settings->general_settings();
+//        echo '</div>';
+//	}
+
+
+    public function load_admin_page() {
 		if ( ! current_user_can( 'manage_options' ) )  {
 			wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
 		}
