@@ -35,7 +35,7 @@ final class PrePartyBrowserHintsTest extends TestCase {
 
 
 	public function test_Load_admin():void {
-		$bool = current_user_can( 'update_plugins' );
+		$bool = current_user_can( 'manage_options' );
 		$load_admin = class_exists( \PPRH\LoadAdmin::class );
 		$this->assertEquals( $load_admin, $bool );
 	}
@@ -88,9 +88,9 @@ final class PrePartyBrowserHintsTest extends TestCase {
 			$expected_scripts[] = 'pprh_admin_js';
 		}
 		elseif ( PPRH_IS_PRO_PLUGIN_ACTIVE ) {
-			$expected_scripts = array( 'pprh_admin_js', 'pprh_pro_admin_js', 'pprh_pro_ga_js', 'ga_pro_platform_js' );
+			$expected_scripts = array( 'thickbox', 'pprh_admin_js', 'pprh_pro_admin_js', 'pprh_pro_ga_js', 'ga_pro_platform_js' );
 		} else {
-			$expected_scripts = array( 'pprh_admin_js' );
+			$expected_scripts = array( 'thickbox', 'pprh_admin_js' );
 		}
 
 		$this->assertEquals( $expected_scripts, $actual_scripts);

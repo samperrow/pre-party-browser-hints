@@ -50,7 +50,7 @@ class PreconnectSettings {
 						<th><?php esc_html_e( 'Automatically set preconnect hints?', 'pprh' ); ?></th>
 
 						<td>
-							<input type="checkbox" name="preconnect_autoload_preconnects" value="1" <?php echo $this->autoload; ?>/>
+							<input type="checkbox" name="preconnect_autoload_preconnects" value="true" <?php echo $this->autoload; ?>/>
 							<p><?php esc_html_e( 'JavaScript, CSS, and images loaded from external domains will preconnect automatically.', 'pprh' ); ?></p>
 						</td>
 					</tr>

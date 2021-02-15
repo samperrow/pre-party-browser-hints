@@ -67,6 +67,7 @@ class Pre_Party_Browser_Hints {
 		add_action( 'admin_enqueue_scripts', array( $this, 'register_admin_files' ) );
 		add_filter( 'set-screen-option', array( $this, 'pprh_set_screen_option' ), 10, 3 );
 		load_plugin_textdomain( 'pprh', false, PPRH_REL_DIR . 'languages' );
+		add_action( 'pprh_load_admin_page', array( $this, 'load_admin_page' ) );
 
 		if ( $this->on_pprh_page || wp_doing_ajax() || defined( 'PPRH_TESTING' ) ) {
 			include_once PPRH_ABS_DIR . 'includes/DisplayHints.php';
@@ -77,7 +78,6 @@ class Pre_Party_Browser_Hints {
 	}
 
     public function load_client() {
-
 		include_once PPRH_ABS_DIR . 'includes/LoadClient.php';
 		new LoadClient();
 		do_action( 'pprh_load_client' );
@@ -115,6 +115,7 @@ class Pre_Party_Browser_Hints {
 
 		add_action( "load-{$settings_page}", array( $this, 'screen_option' ) );
 		add_action( "load-{$settings_page}", array( $this, 'check_to_upgrade' ) );
+
 //		add_action( 'admin_init', array( $this, 'create_meta_boxes' ) );
 	}
 
@@ -190,7 +191,7 @@ class Pre_Party_Browser_Hints {
 			wp_register_style( 'pprh_styles_css', PPRH_REL_DIR . 'css/styles.css', null, PPRH_VERSION, 'all' );
 			wp_enqueue_script( 'pprh_admin_js' );
 			wp_enqueue_style( 'pprh_styles_css' );
-			do_action( 'pprh_register_admin_files' );
+//			do_action( 'pprh_register_admin_files' );
 		}
 	}
 
