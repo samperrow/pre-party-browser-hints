@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 class LoadClient {
 
 	public function __construct() {
-		add_action( 'wp_loaded', array( $this, 'send_resource_hints' ) );
+		add_action( 'wp_loaded', array( $this, 'send_resource_hints' ), 0, 1 );
 		add_action( 'wp_enqueue_scripts', array( $this, 'load_flying_pages' ) );
 
 		if ( 'true' === get_option( 'pprh_disable_wp_hints' ) ) {
@@ -20,7 +20,6 @@ class LoadClient {
 	public function send_resource_hints() {
 		include_once PPRH_ABS_DIR . 'includes/SendHints.php';
 		$send_hints = new SendHints();
-		$send_hints->get_resource_hints();
 	}
 
 	public function load_flying_pages(): void {

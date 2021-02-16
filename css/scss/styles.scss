@@ -23,11 +23,6 @@ div#pprh-wrapper {
             visibility: hidden;
             height: 19.5px;
         }
-
-        //&#pprh-license,
-        //&#pprh-upgrade {
-        //    max-width: 600px;
-        //}
     }
 
     div.pprh-box {
@@ -230,3 +225,13 @@ div#pprh-wrapper {
     }
 }
 
+div#TB_ajaxContent {
+    div#asdf table tbody tr {
+        height: 130px;
+
+        td {
+            text-align: center;
+        }
+    }
+
+}

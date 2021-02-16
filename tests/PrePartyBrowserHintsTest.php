@@ -85,10 +85,11 @@ final class PrePartyBrowserHintsTest extends TestCase {
 		}
 
 		if ( ! is_admin() ) {
-			$expected_scripts[] = 'pprh_admin_js';
+			$expected_scripts = array( 'pprh_admin_js' );
 		}
 		elseif ( PPRH_IS_PRO_PLUGIN_ACTIVE ) {
-			$expected_scripts = array( 'thickbox', 'pprh_admin_js', 'pprh_pro_admin_js', 'pprh_pro_ga_js', 'ga_pro_platform_js' );
+//			$expected_scripts = array( 'thickbox', 'pprh_admin_js', 'pprh_pro_admin_js', 'pprh_pro_ga_js', 'ga_pro_platform_js' );
+			$expected_scripts = array( 'thickbox', 'pprh_admin_js' );
 		} else {
 			$expected_scripts = array( 'thickbox', 'pprh_admin_js' );
 		}

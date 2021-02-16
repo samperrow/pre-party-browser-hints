@@ -13,27 +13,38 @@ class SendHints {
 	protected $send_hints_in_html = '';
 
 	public function __construct() {
-		add_action( 'wp_loaded', array( $this, 'get_resource_hints' ) );
+		add_action( 'wp_loaded', array( $this, 'init' ) );
+		$this->send_hints_in_html = get_option( 'pprh_html_head' );
 	}
 
-	public function get_resource_hints() {
-		$this->send_hints_in_html = get_option( 'pprh_html_head' );
-
-		$dao = new DAO();
-		$query = array(
-			'sql'  => " WHERE status = %s",
-			'args' => array( 'enabled' )
-		);
-
-		$this->hints = $dao->get_hints( $query );
+	public function init() {
+		$query = $this->get_query();
+		$this->hints = $this->get_resource_hints( $query );
 
 		if ( ( ! is_array( $this->hints ) ) || count( $this->hints ) < 1 ) {
-			return;
+			return false;
 		}
 
 		( 'false' === $this->send_hints_in_html && ! headers_sent() )
 			? add_action( 'send_headers', array( $this, 'send_in_http_header' ), 1, 0 )
 			: add_action( 'wp_head', array( $this, 'send_to_html_head' ), 1, 0 );
+	}
+
+	// tested
+	public function get_query() {
+		$query = array(
+			'sql'  => " WHERE status = %s",
+			'args' => array( 'enabled' )
+		);
+
+		$query = apply_filters( 'pprh_sh_append_sql', $query );
+		return $query;
+	}
+
+	// tested
+	public function get_resource_hints( $query ) {
+		$dao = new DAO();
+		return $dao->get_hints( $query );
 	}
 
 	public function send_to_html_head() {

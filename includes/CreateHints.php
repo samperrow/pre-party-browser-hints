@@ -17,18 +17,15 @@ class CreateHints {
 ////			exit();
 ////		}
 
-		$this->result = array(
-			'new_hint' => array(),
-			'response' => array(
-				'msg'     => '',
-				'status'  => '',
-				'success' => false
-			),
-		);
+//		$this->result = array(
+//			'new_hint' => array(),
+//			'response' => array(
+//				'msg'     => '',
+//				'status'  => '',
+//				'success' => false
+//			),
+//		);
 
-		if ( defined( 'PPRH_PRO_ABS_DIR' ) ) {
-			include_once PPRH_PRO_ABS_DIR . 'includes/CreateHintsChild.php';
-		}
 	}
 
 	// hint creation utils
@@ -43,24 +40,11 @@ class CreateHints {
 			if ( $duplicate_hints_exist ) {
 				return $dao->create_db_result( false, '', 'A duplicate hint already exists!', 'create', null );
 			}
-			return $new_hint;
+			return $dao->create_db_result( true, '', '', 'create', $new_hint );
+//			return $new_hint;
 		}
 		return false;
 	}
-
-//	public static function create_raw_hint_array( $url, $hint_type, $auto_created = 0, $as_attr = '', $type_attr = '', $crossorigin = '', $post_id = '', $post_url = '' ) {
-//		$arr = array(
-//			'url'          => $url,
-//			'as_attr'      => $as_attr,
-//			'hint_type'    => $hint_type,
-//			'type_attr'    => $type_attr,
-//			'crossorigin'  => $crossorigin,
-//			'auto_created' => $auto_created
-//		);
-//
-//		$arr = apply_filters( 'pprh_append_hint_array', $arr, $post_id, $post_url );
-//		return $arr;
-//	}
 
 	public function duplicate_hints_exist( $new_hint ) {
 		$duplicate_hints = $this->get_duplicate_hints( $new_hint );
@@ -68,25 +52,25 @@ class CreateHints {
 	}
 
 
-	public function create_hint( $hint ) {
-		if ( empty( $hint['url'] ) || empty( $hint['hint_type'] ) ) {
+	public function create_hint( $raw_hint ) {
+		if ( empty( $raw_hint['url'] ) || empty( $raw_hint['hint_type'] ) ) {
 			return false;
 		}
 
-		$hint_type = $this->get_hint_type( $hint['hint_type'] );
-		$url = $this->get_url( $hint['url'], $hint_type );
+		$hint_type = $this->get_hint_type( $raw_hint['hint_type'] );
+		$url = $this->get_url( $raw_hint['url'], $hint_type );
 		$file_type = $this->get_file_type( $url );
 
 		$new_hint = array(
 			'url'          => $url,
-			'as_attr'      => $this->set_as_attr( $hint, $file_type ),
+			'as_attr'      => $this->set_as_attr( $raw_hint, $file_type ),
 			'hint_type'    => $hint_type,
-			'type_attr'    => $this->set_type_attr( $hint, $file_type ),
-			'crossorigin'  => $this->set_crossorigin( $hint, $file_type ),
-			'auto_created' => ( ! empty( $hint['auto_created'] ) ? 1 : 0 )
+			'type_attr'    => $this->set_type_attr( $raw_hint, $file_type ),
+			'crossorigin'  => $this->set_crossorigin( $raw_hint, $file_type ),
+			'auto_created' => ( ! empty( $raw_hint['auto_created'] ) ? 1 : 0 )
 		);
 
-		return apply_filters( 'pprh_append_hint', $new_hint, $hint );
+		return apply_filters( 'pprh_append_hint', $new_hint, $raw_hint );
 	}
 
 	public function get_hint_type( $type ) {
@@ -107,7 +91,7 @@ class CreateHints {
 		$parsed_url = wp_parse_url( $url );
 
 		if ( ! empty( $parsed_url['host'] ) && ! empty( $parsed_url['path'] ) ) {
-			$this->result['response']['msg'] .= ' Only the domain name of the entered URL is needed for that hint type.';
+//			$this->result['response']['msg'] .= ' Only the domain name of the entered URL is needed for that hint type.';
 			$url = $parsed_url['scheme'] . '://' . $parsed_url['host'];
 		} elseif ( strpos( $url, '//' ) === 0 ) {
 			$url = '//' . $parsed_url['host'];

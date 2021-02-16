@@ -11,29 +11,23 @@ final class CreateHintsTest extends TestCase {
 
 //	public function __construct() {}
 
-	public function testConstructor(): void {
-//		define('CREATING_HINT', true);
-		$create_hints = new \PPRH\CreateHints();
-
-		$new_hint = array();
-
-		$result = array(
-			'new_hint' => $new_hint,
-			'response' => array(
-				'msg'     => '',
-				'status'  => '',
-				'success' => false
-			),
-		);
+//	public function testConstructor(): void {
+//		$create_hints = new \PPRH\CreateHints();
+//		$new_hint = array();
+//
+//		$result = array(
+//			'new_hint' => $new_hint,
+//			'response' => array(
+//				'msg'     => '',
+//				'status'  => '',
+//				'success' => false
+//			),
+//		);
 
 
-		$this->assertClassHasAttribute('result', \PPRH\CreateHints::class);
-		$this->assertEquals($create_hints->result, $result);
-
-//		if ( is_plugin_active( 'pprh-pro/pprh-pro.php' ) ) {
-//			$this->assertTrue( class_exists(\PPRH_PRO\CreateHintsChild::class ) );
-//		}
-	}
+//		$this->assertClassHasAttribute('result', \PPRH\CreateHints::class);
+//		$this->assertEquals($create_hints->result, $result);
+//	}
 
 	public function test_duplicate_hints_exist() {
 		$dao = new \PPRH\DAO();
@@ -42,7 +36,7 @@ final class CreateHintsTest extends TestCase {
 		$error = 'A duplicate hint already exists!';
 
 		$dummy_hint = \PPRH\CreateHints::create_pprh_hint( $dup_hint );
-		$dummy_hint_result = $dao->create_hint( $dummy_hint );
+		$dummy_hint_result = $dao->create_hint( $dummy_hint->new_hint );
 
 		$dup_hint_error = \PPRH\CreateHints::create_pprh_hint( $dup_hint );
 		$expected = $dao->create_db_result( false, '', $error, 'create', null );

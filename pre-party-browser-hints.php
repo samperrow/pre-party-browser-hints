@@ -80,7 +80,7 @@ class Pre_Party_Browser_Hints {
     public function load_client() {
 		include_once PPRH_ABS_DIR . 'includes/LoadClient.php';
 		new LoadClient();
-		do_action( 'pprh_load_client' );
+		do_action( 'pprh_pro_load_client' );
     }
 
 	public function create_constants() {
