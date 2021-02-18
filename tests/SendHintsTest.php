@@ -14,7 +14,7 @@ class SendHintsTest extends TestCase {
 //			'hint_type' => 'prefetch',
 //		);
 //		$new_hint = \PPRH\CreateHints::create_pprh_hint( $test_hint_data );
-//		$this->test_hint = $dao->create_hint( $new_hint );
+//		$this->test_hint = $dao->insert_hint( $new_hint );
 //	}
 
 	public function test_get_query() {

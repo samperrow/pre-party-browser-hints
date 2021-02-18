@@ -6,14 +6,21 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-new LoadAdmin();
+//new LoadAdmin();
 
 class LoadAdmin {
 
-	public function __construct() {
-		add_action( 'pprh_admin_notice', array( $this, 'admin_notice' ), 10, 1 );
-		$this->load_plugin_admin_files();
+    public $on_pprh_admin = false;
+
+	public function __construct( $on_pprh_admin ) {
+        $this->on_pprh_admin = $on_pprh_admin;
+
 	}
+
+//		add_action( 'pprh_admin_notice', array( $this, 'admin_notice' ), 10, 1 );
+//		$this->load_plugin_admin_files();
+//		$this->show_plugin_dashboard();
+//
 
 	public function load_plugin_admin_files() {
 		include_once PPRH_ABS_DIR . 'includes/views/InsertHints.php';
@@ -23,6 +30,13 @@ class LoadAdmin {
 		include_once PPRH_ABS_DIR . 'includes/views/settings/PrefetchSettings.php';
 		include_once PPRH_ABS_DIR . 'includes/views/HintInfo.php';
 		include_once PPRH_ABS_DIR . 'includes/views/Upgrade.php';
+		do_action( 'pprh_la_load_view_files' );
+	}
+
+	public function show_plugin_dashboard() {
+	    if ( ! $this->on_pprh_admin ) {
+	        return;
+        }
 
 		echo '<div id="pprh-wrapper" class="wrap"><h2>';
 		esc_html_e( 'Pre* Party Plugin Settings', 'pprh' );
@@ -32,17 +46,17 @@ class LoadAdmin {
 		$this->show_admin_tabs();
 
 		echo '<div class="pprh-box">';
-		do_action( 'pprh_load_view_files' );
-		new InsertHints();
-		new Settings();
-//		do_meta_boxes('toplevel_page_pprh-plugin-settings', 'side', null);
+		new InsertHints($this->on_pprh_admin);
+		new Settings($this->on_pprh_admin);
 		new HintInfo();
 		new Upgrade();
 
+		do_action( 'pprh_la_load_view_classes' );
 
 		$this->show_footer();
 		echo '</div></div>';
-	}
+    }
+
 
 	public function show_admin_tabs() {
 		$tabs = array(
@@ -52,7 +66,7 @@ class LoadAdmin {
             'upgrade'      => 'Upgrade to Pro',
 		);
 
-		$tabs = apply_filters( 'pprh_load_tabs', $tabs );
+		$tabs = apply_filters( 'pprh_la_load_tabs', $tabs );
 
 		echo '<h2 class="nav-tab-wrapper">';
 		foreach ( $tabs as $tab => $name ) {

@@ -9,10 +9,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 class GeneralSettings {
 
 	public $disable_wp_hints = false;
+//	public $on_pprh_admin = false;
 
-	public function set_values() {
-		$this->disable_wp_hints = \PPRH\Utils::is_option_checked( 'pprh_disable_wp_hints' );
-	}
+//	public function __construct() {
+//		$this->on_pprh_admin = $on_pprh_admin;
+//	}
 
 	public function save_options() {
 		$options = array(
@@ -24,8 +25,16 @@ class GeneralSettings {
 		update_option('pprh_html_head', $options['html_head']);
 	}
 
-	public function markup() {
+	public function show_settings() {
 		$this->set_values();
+		$this->markup();
+	}
+
+	public function set_values() {
+		$this->disable_wp_hints = \PPRH\Utils::is_option_checked( 'pprh_disable_wp_hints' );
+	}
+
+	public function markup() {
 		?>
 		<div class="postbox" id="general">
 			<div class="inside">
@@ -55,14 +64,14 @@ class GeneralSettings {
 						</td>
 					</tr>
 
-					<?php do_action( 'pprh_general_settings' ); ?>
+					<?php do_action( 'pprh_sc_general_settings' ); ?>
 
 					</tbody>
 				</table>
 			</div>
 		</div>
 		<?php
-		apply_filters( 'pprh_pro_settings', 'general' );
+//		apply_filters( 'pprh_sc_pro_settings', 'general' );
 	}
 
 }

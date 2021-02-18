@@ -13,17 +13,12 @@ class Preconnects {
 	public $reset_pro = null;
 
 	public function __construct() {
-		// wp_loaded
-		add_action( 'wp_loaded', array( $this, 'asdf' ), 9, 0 );
 		add_action( 'wp_loaded', array( $this, 'initialize' ), 10, 0 );
 	}
 
-	public function asdf() {
-		do_action('pprh_load_preconnects_child');
-		$this->reset_pro = apply_filters('pprh_perform_reset', null);
-	}
-
 	public function initialize() {
+		$this->reset_pro = apply_filters('pprh_preconnects_perform_reset', null);
+
 		if ( ! $this->load_auto_preconnects( $this->reset_pro ) ) {
 			return false;
 		}
@@ -32,7 +27,7 @@ class Preconnects {
 		$this->load_ajax_actions( $allow_unauth );
 
 		if ( ! is_admin() && ( 'true' === $allow_unauth || is_user_logged_in() ) ) {
-			$this->load_js_files();
+			add_action( 'wp_enqueue_scripts', array( $this, 'load_js_files' ) );
 		}
 	}
 
@@ -69,7 +64,7 @@ class Preconnects {
 			'admin_url'  => admin_url() . 'admin-ajax.php',
 			'start_time' => time()
 		);
-		return apply_filters( 'pprh_append_js_object', $arr );
+		return apply_filters( 'pprh_preconnects_append_js_object', $arr );
 	}
 
 	public function pprh_post_domain_names() {
@@ -82,9 +77,8 @@ class Preconnects {
 				$results = $this->process_hints( $raw_hint_data );
 			}
 
-			if ( PPRH_IS_PRO_PLUGIN_ACTIVE ) {
-				apply_filters( 'pprh_update_options', $raw_hint_data );
-			} else {
+			$updated = apply_filters( 'pprh_preconnects_update_options', $raw_hint_data );
+			if ( null === $updated ) {
 				$this->update_options();
 			}
 
@@ -114,8 +108,8 @@ class Preconnects {
 			$hint = CreateHints::create_pprh_hint( $hint_arr );
 
 			if ( is_array( $hint ) ) {
-				$res = $dao->create_hint( $hint );
-				$results[] = $res->db_result['success'];
+				$result = $dao->insert_hint( $hint );
+				$results[] = $result->db_result['success'];
 			}
 		}
 		return $results;

@@ -138,7 +138,7 @@ class PreconnectsTest extends TestCase {
 			'start_time' => time()
 		);
 
-		$js_object = apply_filters( 'pprh_append_js_object', $arr );
+		$js_object = apply_filters( 'pprh_preconnects_append_js_object', $arr );
 
 		$asdf = $preconnects->create_js_object();
 		return $asdf;

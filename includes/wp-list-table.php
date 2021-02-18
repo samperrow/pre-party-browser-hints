@@ -143,13 +143,14 @@ class WP_List_Table {
 	 * }
 	 */
 	public function __construct( $args = array() ) {
-		$args = \wp_parse_args(
+		$args = wp_parse_args(
 			$args,
 			array(
 				'plural'   => '',
 				'singular' => '',
 				'ajax'     => true,
 				'screen'   => null,
+                'on_pprh_admin' => $args['on_pprh_admin']
 			)
 		);
 
@@ -1274,11 +1275,7 @@ class WP_List_Table {
 	protected function column_default( $item, $column_name ) {}
 
 
-	protected function on_post_page_and_global_hint( $item ) {
-		return ( ! empty( $item['post_id'] && PPRH_IS_PRO_PLUGIN_ACTIVE )
-			? apply_filters( 'pprh_on_posts_page_and_global', $item['post_id'] )
-			: false );
-	}
+
 
 	/**
 	 * Generates the columns for a single row of the table
@@ -1289,8 +1286,7 @@ class WP_List_Table {
 	 */
 	protected function single_row_columns( $item ) {
 		list( $columns, $hidden, $primary ) = $this->get_column_info();
-
-		$on_posts_page_and_global_hint = $this->on_post_page_and_global_hint( $item );
+		$global_hint_alert = $this->on_post_page_and_global_hint( $item );
 
 		foreach ( $columns as $column_name => $column_display_name ) {
 			$classes = "$column_name column-$column_name";
@@ -1308,9 +1304,11 @@ class WP_List_Table {
 
 			$attributes = "class='$classes' $data";
 
+
 			if ( 'cb' === $column_name ) {
 				echo '<th scope="row" class="check-column">';
-				if ($on_posts_page_and_global_hint) {
+
+				if ($global_hint_alert) {
 					$this->global_hint_alert();
 				} else {
 					echo $this->column_cb( $item );
@@ -1321,7 +1319,10 @@ class WP_List_Table {
 			} elseif ( method_exists( $this, 'column_' . $column_name ) ) {
 				echo "<td $attributes>";
 				if ( 'url' === $column_name ) {
-				    echo $this->{'column_' . $column_name}($item, $on_posts_page_and_global_hint);
+					if ($global_hint_alert) {
+					    $item['id'] = '';
+					}
+				    echo $this->{'column_' . $column_name}($item, $global_hint_alert);
 				}
 				echo '</td>';
 			} else {

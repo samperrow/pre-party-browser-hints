@@ -17,12 +17,13 @@ class DisplayHints extends WP_List_Table {
 	public $table;
 	public $items;
 
-	public function __construct() {
+	public function __construct( $on_pprh_admin ) {
 		parent::__construct( array(
             'ajax'     => true,
 			'plural'   => 'urls',
 			'screen'   => 'toplevel_page_pprh-plugin-settings',
-			'singular' => 'url'
+			'singular' => 'url',
+            'on_pprh_admin' => $on_pprh_admin
 		) );
 
 		if ( ! wp_doing_ajax() ) {
@@ -34,7 +35,7 @@ class DisplayHints extends WP_List_Table {
 	public function column_default( $item, $column_name ) {
 
 		if ('post_id' === $column_name) {
-            return apply_filters('pprh_get_post_link', $item['post_id']);
+            return apply_filters('pprh_dh_get_post_link', $item['post_id']);
         }
 
 		if ('' === $item[$column_name]) {
@@ -60,7 +61,7 @@ class DisplayHints extends WP_List_Table {
             'created_by'  => __('Created By', 'pprh'),
         );
 
-		return apply_filters('pprh_get_columns', $arr);
+		return apply_filters('pprh_dh_get_columns', $arr);
 	}
 
 	public function get_sortable_columns() {
@@ -74,7 +75,7 @@ class DisplayHints extends WP_List_Table {
             'created_by'  => array('created_by', false)
         );
 
-		return apply_filters('pprh_get_sort_cols', $arr);
+		return apply_filters('pprh_dh_get_sortortable_columns', $arr);
 	}
 
 	public function get_bulk_actions() {
@@ -123,17 +124,14 @@ class DisplayHints extends WP_List_Table {
 		esc_html_e( 'Enter a URL or domain name..', 'pprh' );
 	}
 
-	public function column_url( $item, $hide = false ) {
-	    if ( $hide ) {
-	        $actions = array(
-                'edit'   => '',
-                'delete' => ''
-            );
-        } else {
+	public function column_url( $item ) {
+	    if ( ! empty( $item['id'] ) ) {
 			$actions = array(
 				'edit'   => sprintf( '<a id="pprh-edit-hint-%1$s" class="pprh-edit-hint">%2$s</a>', $item['id'], 'Edit' ),
 				'delete' => sprintf( '<a id="pprh-delete-hint-%1$s">%2$s</a>', $item['id'], 'Delete' ),
 			);
+        } else {
+	        $actions = array('edit'   => '', 'delete' => '');
         }
 
 		return sprintf( '%1$s %2$s', $item['url'], $this->row_actions( $actions ) );
@@ -180,6 +178,13 @@ class DisplayHints extends WP_List_Table {
 		<?php
 	}
 
+	public function on_post_page_and_global_hint( $item ) {
+		return ( ! empty( $item['post_id'] ) && PPRH_PRO_PLUGIN_ACTIVE && ! $this->_args['on_pprh_admin'] )
+            ? ( 'global' === $item['post_id'])
+			: false;
+
+//        ? apply_filters( 'pprh_dh_on_posts_page_and_global', $item['post_id'] )
+	}
 
 
 }

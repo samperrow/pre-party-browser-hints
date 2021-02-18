@@ -89,4 +89,10 @@ class Utils {
 		return wp_unslash(json_encode($arr));
 	}
 
+	public static function on_pprh_admin() {
+	    $screen = get_current_screen();
+	    $pprh_screen = 'toplevel_page_pprh-plugin-settings';
+	    return ( null !== $screen && ! empty( $screen->id ) && $pprh_screen === $screen->id );
+	}
+
 }

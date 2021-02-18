@@ -9,29 +9,25 @@ if ( ! defined( 'ABSPATH' ) ) {
 class LoadClient {
 
 	public function __construct() {
-		add_action( 'wp_loaded', array( $this, 'send_resource_hints' ), 0, 1 );
-		add_action( 'wp_enqueue_scripts', array( $this, 'load_flying_pages' ) );
+		add_action( 'wp_loaded', array( $this, 'verify_to_load_fp' ) );
 
-		if ( 'true' === get_option( 'pprh_disable_wp_hints' ) ) {
-			remove_action( 'wp_head', 'wp_resource_hints', 2 );
-		}
 	}
 
-	public function send_resource_hints() {
-		include_once PPRH_ABS_DIR . 'includes/SendHints.php';
-		$send_hints = new SendHints();
-	}
-
-	public function load_flying_pages(): void {
-		$load_flying_pages = get_option( 'pprh_prefetch_enabled' );
+	public function verify_to_load_fp() {
+		$load_flying_pages = ( 'true' !== get_option( 'pprh_prefetch_enabled' ) );
 		$disable_for_logged_in_users = get_option( 'pprh_prefetch_disableForLoggedInUsers' );
-		$debug = ( defined( 'PPRH_DEBUG' ) && PPRH_DEBUG );
+		$disabled = ('true' === $disable_for_logged_in_users && is_user_logged_in() );
 
-		$js_script_path = ($debug) ? 'js/flying-pages.js' : 'js/flying-pages.min.js';
-
-		if ( ($load_flying_pages !== 'true') || ('true' === $disable_for_logged_in_users && is_user_logged_in() ) ) {
+		if ( $load_flying_pages || $disabled ) {
 			return;
 		}
+
+		add_action( 'wp_enqueue_scripts', array( $this, 'load_flying_pages' ) );
+	}
+
+	public function load_flying_pages() {
+		$debug = ( defined( 'PPRH_DEBUG' ) && PPRH_DEBUG );
+		$js_script_path = ($debug) ? 'js/flying-pages.js' : 'js/flying-pages.min.js';
 
 		$fp_data = array(
 			'debug'          => ( $debug ) ? 'true' : 'false',

@@ -8,14 +8,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class PreconnectSettings {
 
-	public $load_basic;
 	public $autoload = false;
 	public $allow_unauth = false;
 
-	public function set_values() {
-		$this->load_basic = apply_filters( 'pprh_sc_preconnect_pro', true );
-		$this->autoload = \PPRH\Utils::is_option_checked( 'pprh_preconnect_autoload' );
-		$this->allow_unauth = \PPRH\Utils::is_option_checked( 'pprh_preconnect_allow_unauth' );
+	protected $on_pprh_admin = false;
+
+	public function __construct($on_pprh_admin) {
+	    $this->on_pprh_admin = $on_pprh_admin;
     }
 
 	public function save_options() {
@@ -32,8 +31,17 @@ class PreconnectSettings {
 		}
     }
 
+	public function show_settings() {
+		$this->set_values();
+		$this->markup();
+	}
+
+	public function set_values() {
+		$this->autoload = \PPRH\Utils::is_option_checked( 'pprh_preconnect_autoload' );
+		$this->allow_unauth = \PPRH\Utils::is_option_checked( 'pprh_preconnect_allow_unauth' );
+	}
+
 	public function markup() {
-	    $this->set_values();
 		?>
 		<div class="postbox" id="preconnect">
 			<div class="inside">
@@ -64,7 +72,7 @@ class PreconnectSettings {
 						</td>
 					</tr>
 
-					<?php $this->load_pro(); ?>
+					<?php $this->load_reset_settings(); ?>
 
 					</tbody>
 				</table>
@@ -73,23 +81,24 @@ class PreconnectSettings {
 		<?php
 	}
 
-	public function load_pro() {
-		$this->load_basic = apply_filters( 'pprh_pro_settings', 'preconnect' );
+    public function load_reset_settings() {
+		if ( $this->on_pprh_admin && PPRH_PRO_PLUGIN_ACTIVE ) {
+            do_action( 'pprh_sc_show_preconnect_settings');
+            return true;
+		} else { ?>
+            <tr>
+                <th><?php esc_html_e( 'Reset automatically created preconnect links?', 'pprh' ); ?></th>
 
-		if ( true !== $this->load_basic ) { ?>
-			<tr>
-				<th><?php esc_html_e( 'Reset automatically created preconnect links?', 'pprh' ); ?></th>
-
-				<td>
-					<input type="submit" name="pprh_preconnect_set" id="pprhPreconnectReset" class="button-secondary" value="Reset">
-					<p><?php esc_html_e( 'This will reset automatically created preconnect hints.', 'pprh' ); ?></p>
-				</td>
-			</tr>
-
-			<?php
-		} else {
-			do_action( 'pprh_show_preconnect_options' );
+                <td>
+                    <input type="submit" name="pprh_preconnect_set" id="pprhPreconnectReset" class="button-secondary" value="Reset">
+                    <p><?php esc_html_e( 'This will reset automatically created preconnect hints, allowing new preconnect hints to be generated when your front end is loaded.', 'pprh' ); ?></p>
+                </td>
+            </tr>
+		<?php
+		    return false;
 		}
 	}
 
 }
+
+

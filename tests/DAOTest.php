@@ -21,7 +21,7 @@ final class DAOTest extends TestCase {
 
 		$new_hint = $create_hints->create_hint($hint_arr);
 
-		$create_hint = $dao->create_hint($new_hint);
+		$create_hint = $dao->insert_hint($new_hint);
 		$hint_id = $create_hint->db_result['hint_id'];
 		$expected = $dao->create_db_result( true, $hint_id, '', 'create', $new_hint );
 		$this->assertEquals($expected, $create_hint);
@@ -74,7 +74,7 @@ final class DAOTest extends TestCase {
 //		$dao = new PPRH\DAO();
 //		$hint_arr = Create_Hints::create_raw_hint_array('https://www.asdf.com/foozball', 'preconnect', 1);
 //		$new_hint = Create_Hints::create_pprh_hint($hint_arr);
-//		$expected = $dao->create_hint($new_hint);
+//		$expected = $dao->insert_hint($new_hint);
 //		$id = $expected->db_result['hint_id'];
 //
 //		$expected = array_merge( array('id' => $id, 'status' => 'enabled', 'created_by' => '' ), $expected->new_hint );

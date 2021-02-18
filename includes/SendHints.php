@@ -12,14 +12,10 @@ class SendHints {
 
 	protected $send_hints_in_html = '';
 
-	public function __construct() {
-		add_action( 'wp_loaded', array( $this, 'init' ) );
-		$this->send_hints_in_html = get_option( 'pprh_html_head' );
-	}
-
 	public function init() {
 		$query = $this->get_query();
 		$this->hints = $this->get_resource_hints( $query );
+		$this->send_hints_in_html = get_option( 'pprh_html_head' );
 
 		if ( ( ! is_array( $this->hints ) ) || count( $this->hints ) < 1 ) {
 			return false;

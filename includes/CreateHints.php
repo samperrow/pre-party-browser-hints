@@ -12,7 +12,7 @@ class CreateHints {
 
 //	protected $new_hint = array();
 
-	public function __construct() {
+//	public function __construct() {
 //		if ( ! defined( 'CREATING_HINT' ) || ! CREATING_HINT ) {
 ////			exit();
 ////		}
@@ -26,11 +26,11 @@ class CreateHints {
 //			),
 //		);
 
-	}
+//	}
 
 	// hint creation utils
 	public static function create_pprh_hint( $raw_data ) {
-		$create_hints = new CreateHints();
+		$create_hints = new self();
 		$dao = new DAO();
 		$new_hint = $create_hints->create_hint( $raw_data );
 
@@ -40,8 +40,8 @@ class CreateHints {
 			if ( $duplicate_hints_exist ) {
 				return $dao->create_db_result( false, '', 'A duplicate hint already exists!', 'create', null );
 			}
-			return $dao->create_db_result( true, '', '', 'create', $new_hint );
-//			return $new_hint;
+
+			return $new_hint;
 		}
 		return false;
 	}
@@ -70,7 +70,7 @@ class CreateHints {
 			'auto_created' => ( ! empty( $raw_hint['auto_created'] ) ? 1 : 0 )
 		);
 
-		return apply_filters( 'pprh_append_hint', $new_hint, $raw_hint );
+		return apply_filters( 'pprh_ch_append_hint', $new_hint, $raw_hint );
 	}
 
 	public function get_hint_type( $type ) {
@@ -171,7 +171,7 @@ class CreateHints {
 		);
 
 //		if ( ! empty( $hint['post_id'] ) ) {
-//			$query = apply_filters( 'pprh_duplicate_hint_query', $query, $hint );
+//			$query = apply_filters( 'pprh_ch_duplicate_hint_query', $query, $hint );
 //		}
 
 		$dao = new DAO();

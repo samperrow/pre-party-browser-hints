@@ -144,15 +144,15 @@ final class UtilsTest extends TestCase {
 		update_option( $option_name, $prefetch_enabled );
 	}
 
-	public function test_on_pprh_page():void {
-		global $pagenow;
-		$pagenow = 'admin.php';
-		$_GET['page'] = 'pprh-plugin-settings';
-
-		$test1 = \PPRH\Utils::on_pprh_page();
-
-		$this->assertEquals( true, $test1 );
-	}
+//	public function test_on_pprh_page():void {
+//		global $pagenow;
+//		$pagenow = 'admin.php';
+//		$_GET['page'] = 'pprh-plugin-settings';
+//
+//		$test1 = \PPRH\Utils::on_pprh_page();
+//
+//		$this->assertEquals( true, $test1 );
+//	}
 
 
 	public function test_create_pprh_hint_success():void {
@@ -160,7 +160,7 @@ final class UtilsTest extends TestCase {
 		$actual_raw = \PPRH\CreateHints::create_pprh_hint($raw_data1);
 		$expected = TestUtils::create_hint_array( '//test.com', 'dns-prefetch' );
 
-		$actual = apply_filters( 'pprh_append_hint', $actual_raw, $raw_data1 );
+		$actual = apply_filters( 'pprh_ch_append_hint', $actual_raw, $raw_data1 );
 
 		$this->assertEquals( $expected, $actual );
 	}
@@ -176,7 +176,7 @@ final class UtilsTest extends TestCase {
 		$data1 = TestUtils::create_hint_array( 'blah.com', 'preconnect' );
 		$hint1 = \PPRH\CreateHints::create_pprh_hint($data1);
 
-		$actual1 = $dao->create_hint( $hint1 );
+		$actual1 = $dao->insert_hint( $hint1 );
 
 		$hint2 = \PPRH\CreateHints::create_pprh_hint($data1);
 
@@ -197,8 +197,7 @@ final class UtilsTest extends TestCase {
 			'crossorigin'  => 'crossorigin'
 		);
 
-		$actual = apply_filters( 'pprh_append_hint', $test1, $test1 );
-
+		$actual = apply_filters( 'pprh_ch_append_hint', $test1, array('post_id' => 'global', 'post_url' => '') );
 		$this->assertEquals( $expected, $actual );
 	}
 

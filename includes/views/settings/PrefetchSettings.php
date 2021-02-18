@@ -14,14 +14,8 @@ class PrefetchSettings {
 	public $prefetch_initialization_delay = 0;
 
 
-	public function set_values() {
-		$this->prefetch_disableForLoggedInUsers = \PPRH\Utils::is_option_checked( 'pprh_prefetch_disableForLoggedInUsers' );
-		$this->prefetch_enabled = \PPRH\Utils::is_option_checked( 'pprh_prefetch_enabled' );
 
-		$prefetch_ignoreKeywords = get_option( 'pprh_prefetch_ignoreKeywords' );
-		$this->ignoreKeywords = json_decode( $prefetch_ignoreKeywords, true );
-		$this->prefetch_initialization_delay = Utils::esc_get_option( 'pprh_prefetch_delay' );
-	}
+
 
 	protected function get_each_keyword() {
 		foreach ($this->ignoreKeywords as $keyword) {
@@ -47,8 +41,21 @@ class PrefetchSettings {
 		update_option( 'pprh_prefetch_hoverDelay',              $options['prefetch_hoverDelay'] );
 	}
 
-	public function markup() {
+	public function show_settings() {
 		$this->set_values();
+		$this->markup();
+	}
+
+	public function set_values() {
+		$this->prefetch_disableForLoggedInUsers = \PPRH\Utils::is_option_checked( 'pprh_prefetch_disableForLoggedInUsers' );
+		$this->prefetch_enabled = \PPRH\Utils::is_option_checked( 'pprh_prefetch_enabled' );
+
+		$prefetch_ignoreKeywords = get_option( 'pprh_prefetch_ignoreKeywords' );
+		$this->ignoreKeywords = json_decode( $prefetch_ignoreKeywords, true );
+		$this->prefetch_initialization_delay = Utils::esc_get_option( 'pprh_prefetch_delay' );
+	}
+
+	public function markup() {
 		?>
 		<div class="postbox" id="prefetch">
 			<div class="inside">

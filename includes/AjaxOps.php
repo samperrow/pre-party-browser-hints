@@ -20,44 +20,57 @@ class AjaxOps {
 			if ( is_array( $data ) ) {
 				$action = $data['action'];
 				$result = $this->handle_action( $data, $action );
-				$display_hints = new DisplayHints();
-				$json = $display_hints->ajax_response( $result );
 
-				if ( defined( 'PPRH_TESTING' ) && PPRH_TESTING ) {
-					return $json;
-				} else {
+				if ( is_object( $result ) ) {
+					$on_pprh_admin = Utils::on_pprh_admin();
+					$display_hints = new DisplayHints($on_pprh_admin);
+					$json = $display_hints->ajax_response( $result );
+
+					if ( defined( 'PPRH_TESTING' ) && PPRH_TESTING ) {
+						return $json;
+					}
+
 					die( $json );
 				}
 			}
-			wp_die();
 		}
+		wp_die();
 	}
 
 	public function handle_action( $data, $action ) {
 		$dao = new DAO();
-		$result = (object) array(
-			'new_hint'  => array(),
-			'db_result' => array(),
-		);
 		$concat_ids = Utils::array_into_csv( $data['hint_ids'] );
 
 		if ( preg_match( '/create|update/', $action ) ) {
-			$new_hint = CreateHints::create_pprh_hint( $data );
-			$result = ( is_array( $new_hint ) ? $dao->{$action . '_hint'}($new_hint, $data['hint_ids'] ) : $new_hint );
+			$result = $this->create_update_hint( $data, $action );
 		} elseif ( preg_match( '/enable|disable/', $action ) ) {
 			$result = $dao->bulk_update( $concat_ids, $action );
 		} elseif ( 'delete' === $action ) {
 			$result = $dao->delete_hint( $concat_ids );
 		}
-		elseif ( 'reset_single_post_preconnects' === $action ) {
-			$result = apply_filters( 'pprh_reset_single_post_preconnect', $data );
-		}
-// 		TODO
-//		elseif ( 'reset_single_post_prerenders' === $action ) {
-//			$this->result['response'] = apply_filters( 'pprh_reset_single_post_preconnect', $data );
+
+//		TODO
+//		elseif ( 'reset_single_post_preconnects' === $action ) {
+//			$result = apply_filters( 'pprh_reset_single_post_preconnect', $data );
+//		}
+//		elseif ( 'reset_single_post_prerender' === $action ) {
+//			$result = apply_filters( 'pprh_reset_single_post_prerender', $data );
 //		}
 
-		return $result;
+		return ( is_object( $result ) ? $result : false );
 	}
+
+	protected function create_update_hint( $data, $action ) {
+		$dao = new DAO();
+		$new_hint = CreateHints::create_pprh_hint( $data );
+
+		if ( is_array( $new_hint ) ) {
+			return ( 'create' === $action )
+				? $dao->insert_hint( $new_hint )
+				: $dao->update_hint( $new_hint, $data['hint_ids'] );
+		}
+		return false;
+	}
+
 
 }

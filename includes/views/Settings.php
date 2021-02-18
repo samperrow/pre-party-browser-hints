@@ -12,11 +12,12 @@ class Settings {
 	private $preconnect_settings;
 	private $prefetch_settings;
 
-	public function __construct() {
+	protected $on_pprh_admin = false;
 
-		do_action( 'pprh_load_settings_child' );
+	public function __construct($on_pprh_admin) {
+        $this->on_pprh_admin = $on_pprh_admin;
 		$this->general_settings = new GeneralSettings();
-		$this->preconnect_settings = new PreconnectSettings();
+		$this->preconnect_settings = new PreconnectSettings($on_pprh_admin);
 		$this->prefetch_settings = new PrefetchSettings();
 		$this->display_settings();
 	}
@@ -28,11 +29,15 @@ class Settings {
                 <?php
                     wp_nonce_field( 'pprh_save_admin_options', 'pprh_admin_options_nonce' );
                     $this->save_user_options();
-                    $this->general_settings->markup();
-				    $this->preconnect_settings->markup();
-			    	$this->prefetch_settings->markup();
 
-				    do_action( 'pprh_prerender_settings' );
+                    if ($this->on_pprh_admin) {
+						$this->general_settings->show_settings();
+						$this->preconnect_settings->show_settings();
+						$this->prefetch_settings->show_settings();
+					}
+
+
+				    do_action( 'pprh_sc_prerender_settings' );
                 ?>
                 <div class="text-center">
                     <input type="submit" name="pprh_save_options" class="button button-primary" value="<?php esc_attr_e( 'Save Changes', 'pprh' ); ?>" />
@@ -49,7 +54,7 @@ class Settings {
 			$this->prefetch_settings->save_options();
 		}
 
-		do_action( 'pprh_save_settings' );
+		do_action( 'pprh_sc_save_settings' );
 	}
 
 }

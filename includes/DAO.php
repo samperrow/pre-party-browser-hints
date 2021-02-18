@@ -36,7 +36,7 @@ class DAO {
 	}
 
 
-	public function create_hint( $new_hint ) {
+	public function insert_hint( $new_hint ) {
 		global $wpdb;
 		$current_user = wp_get_current_user()->display_name;
 		$auto_created = ( ! empty( $new_hint['auto_created'] ) ? (int) $new_hint['auto_created'] : 0 );
@@ -55,7 +55,7 @@ class DAO {
 			)
 		);
 
-		$args = apply_filters( 'pprh_insert_hint_schema', $args, $new_hint );
+		$args = apply_filters( 'pprh_ch_insert_hint_schema', $args, $new_hint );
 
 		$wpdb->insert(
 			PPRH_DB_TABLE,
@@ -139,15 +139,15 @@ class DAO {
 		$table = PPRH_DB_TABLE;
 		$sql = "SELECT * FROM $table";
 
-		if ( PPRH_IS_PRO_PLUGIN_ACTIVE ) {
-			$sql = apply_filters( 'pprh_dh_append_sql', $sql );
+
+		if ( PPRH_PRO_PLUGIN_ACTIVE ) {
+			$sql .= apply_filters( 'pprh_dh_append_sql', $sql );
 		} elseif ( ! empty( $_REQUEST['orderby'] ) ) {
 			$sql .= ' ORDER BY ' . esc_sql( $_REQUEST['orderby'] );
 			$sql .= ! empty( $_REQUEST['order'] ) ? ' ' . esc_sql( $_REQUEST['order'] ) : ' ASC';
 		} else {
 			$sql .= ' ORDER BY url ASC';
 		}
-
 
 		return $wpdb->get_results( $sql, ARRAY_A );
 	}

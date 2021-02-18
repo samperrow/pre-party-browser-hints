@@ -36,7 +36,7 @@ final class CreateHintsTest extends TestCase {
 		$error = 'A duplicate hint already exists!';
 
 		$dummy_hint = \PPRH\CreateHints::create_pprh_hint( $dup_hint );
-		$dummy_hint_result = $dao->create_hint( $dummy_hint->new_hint );
+		$dummy_hint_result = $dao->insert_hint( $dummy_hint );
 
 		$dup_hint_error = \PPRH\CreateHints::create_pprh_hint( $dup_hint );
 		$expected = $dao->create_db_result( false, '', $error, 'create', null );
