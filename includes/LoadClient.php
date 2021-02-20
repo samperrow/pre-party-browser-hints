@@ -8,10 +8,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class LoadClient {
 
-	public function __construct() {
-		add_action( 'wp_loaded', array( $this, 'verify_to_load_fp' ) );
+//	public function __construct() {
+//
+//	}
 
+	public function send_hints() {
+		include_once PPRH_ABS_DIR . 'includes/SendHints.php';
+		$send_hints = new SendHints();
+		$send_hints->init();
 	}
+
 
 	public function verify_to_load_fp() {
 		$load_flying_pages = ( 'true' !== get_option( 'pprh_prefetch_enabled' ) );

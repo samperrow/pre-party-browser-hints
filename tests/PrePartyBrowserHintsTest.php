@@ -69,10 +69,12 @@ final class PrePartyBrowserHintsTest extends TestCase {
 	}
 
 	public function test_register_admin_files():void {
+		if ( ! is_admin() ) {
+			return;
+		}
+
 		global $wp_scripts;
 		$pprh = new \PPRH\Pre_Party_Browser_Hints();
-		$preconnects = new \PPRH\Preconnects();
-		$load_auto_preconnects = $preconnects->load_auto_preconnects(null);
 		$pprh->register_admin_files( 'toplevel_page_pprh-plugin-settings' );
 		$actual_scripts = array();
 
@@ -80,21 +82,11 @@ final class PrePartyBrowserHintsTest extends TestCase {
 			$actual_scripts[] =  $wp_scripts->registered[$script]->handle;
 		}
 
-		if ( $load_auto_preconnects ) {
-			$expected_scripts[] = 'pprh-find-domain-names';
-		}
-
-//		if ( ! is_admin() ) {
-//			$expected_scripts = array( 'pprh_admin_js' );
-//		}
-//		elseif ( PPRH_PRO_PLUGIN_ACTIVE ) {
-//			$expected_scripts = array( 'pprh_admin_js' );
-//		} else {
-//			$expected_scripts = array( 'pprh_admin_js' );
+//		if ( is_admin() ) {
+			$expected_scripts = array( 'pprh_admin_js' );
 //		}
 
-		$expected_scripts = array( 'pprh_admin_js' );
-
+//		$expected_scripts = array();
 
 		$this->assertEquals( $expected_scripts, $actual_scripts);
 	}

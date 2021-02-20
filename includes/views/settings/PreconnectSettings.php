@@ -21,14 +21,16 @@ class PreconnectSettings {
 	    $options = array(
 			'autoload_preconnects' => isset( $_POST['preconnect_autoload_preconnects'] )  ? 'true' : 'false',
 			'allow_unauth'         => isset( $_POST['preconnect_allow_unauth'] )          ? 'true' : 'false',
+            'preconnect_set'       => ( isset( $_POST['pprh_preconnect_set'] ) && 'Reset' === $_POST['pprh_preconnect_set'] ) ? 'false' : 'true'
         );
 
 		update_option('pprh_preconnect_autoload', $options['autoload_preconnects']);
 		update_option('pprh_preconnect_allow_unauth', $options['allow_unauth']);
+		update_option('pprh_preconnect_set', $options['preconnect_set']);
 
-		if (isset($_POST['pprh_preconnect_set'])) {
-			update_option('pprh_preconnect_set', 'false');
-		}
+//		if (isset($_POST['pprh_preconnect_set'])) {
+//			update_option('pprh_preconnect_set', 'false');
+//		}
     }
 
 	public function show_settings() {
@@ -90,7 +92,7 @@ class PreconnectSettings {
                 <th><?php esc_html_e( 'Reset automatically created preconnect links?', 'pprh' ); ?></th>
 
                 <td>
-                    <input type="submit" name="pprh_preconnect_set" id="pprhPreconnectReset" class="button-secondary" value="Reset">
+                    <input type="submit" name="pprh_preconnect_set" id="pprhPreconnectReset" class="pprh-reset button-primary" data-text="reset auto-preconnect hints?" value="Reset">
                     <p><?php esc_html_e( 'This will reset automatically created preconnect hints, allowing new preconnect hints to be generated when your front end is loaded.', 'pprh' ); ?></p>
                 </td>
             </tr>

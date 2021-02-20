@@ -48,7 +48,7 @@ class Settings {
 	}
 
 	public function save_user_options() {
-	    if ( isset( $_POST['pprh_save_options'] ) && check_admin_referer( 'pprh_save_admin_options', 'pprh_admin_options_nonce' ) ) {
+	    if ( ( isset( $_POST['pprh_save_options'] ) || isset( $_POST['pprh_preconnect_set'] ) ) && check_admin_referer( 'pprh_save_admin_options', 'pprh_admin_options_nonce' ) ) {
 			$this->general_settings->save_options();
 			$this->preconnect_settings->save_options();
 			$this->prefetch_settings->save_options();

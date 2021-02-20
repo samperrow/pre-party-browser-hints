@@ -42,6 +42,10 @@ class Pre_Party_Browser_Hints {
 		$this->load_common_files();
 		$this->create_constants();
 
+		if ( ! function_exists( 'wp_doing_ajax' ) ) {
+			apply_filters( 'wp_doing_ajax', defined( 'DOING_AJAX' ) && DOING_AJAX );
+		}
+
 		if ( is_admin() ) {
 			add_action( 'wp_loaded', array( $this, 'load_admin' ), 10, 0 );
 		} else {
@@ -49,37 +53,40 @@ class Pre_Party_Browser_Hints {
 		}
 
 		// this needs to be loaded front end and back end bc Ajax needs to be able to communicate between the two.
-		include_once PPRH_ABS_DIR . 'includes/Preconnects.php';
+		add_action( 'init', function() {
+			include_once PPRH_ABS_DIR . 'includes/Preconnects.php';
+			new Preconnects();
+        });
 	}
 
 	public function load_admin() {
-		$on_pprh_page = Utils::on_pprh_page();
+	    $utils = new Utils();
+		$on_pprh_page = $utils->on_pprh_page();
 		add_action( 'admin_menu', array( $this, 'load_admin_menu' ) );
+
+		if ( ! $on_pprh_page ) {
+			return;
+		}
 
 		add_action( 'admin_enqueue_scripts', array( $this, 'register_admin_files' ) );
 		add_filter( 'set-screen-option', array( $this, 'pprh_set_screen_option' ), 10, 3 );
 		load_plugin_textdomain( 'pprh', false, PPRH_REL_DIR . 'languages' );
 		add_action( 'pprh_load_dashboard', array( $this, 'load_dashboard' ) );
 
-        if ( $on_pprh_page || wp_doing_ajax() || defined( 'PPRH_TESTING' ) ) {
-            include_once PPRH_ABS_DIR . 'includes/DisplayHints.php';
-            include_once PPRH_ABS_DIR . 'includes/AjaxOps.php';
-			new AjaxOps();
-        }
+        include_once PPRH_ABS_DIR . 'includes/DisplayHints.php';
+        include_once PPRH_ABS_DIR . 'includes/AjaxOps.php';
+        new AjaxOps();
 
 		do_action( 'pprh_pro_load_admin' );
 	}
 
     public function load_client() {
 		include_once PPRH_ABS_DIR . 'includes/LoadClient.php';
-		include_once PPRH_ABS_DIR . 'includes/SendHints.php';
-		do_action( 'pprh_pro_load_client' );
-
-		$send_hints = new SendHints();
-		$send_hints->init();
+//		do_action( 'pprh_pro_load_client' );
 
 		$load_client = new LoadClient();
 		$load_client->verify_to_load_fp();
+		$load_client->send_hints();
 
 		if ( 'true' === get_option( 'pprh_disable_wp_hints' ) ) {
 			remove_action( 'wp_head', 'wp_resource_hints', 2 );

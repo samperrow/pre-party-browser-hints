@@ -6,41 +6,78 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-new Preconnects();
-
 class Preconnects {
 
-	public $reset_pro = null;
+	public $reset_data;
 
+	public $is_admin;
+
+	// tested
 	public function __construct() {
+//		add_action( 'wp_loaded', array( $this, 'initialize' ), 10, 0 );
 		add_action( 'wp_loaded', array( $this, 'initialize' ), 10, 0 );
+
+		$this->is_admin = is_admin();
+
+		$this->reset_data = array(
+			'autoload'        => get_option( 'pprh_preconnect_autoload' ),
+			'allow_unauth'    => get_option( 'pprh_preconnect_allow_unauth' ),
+			'preconnects_set' => get_option( 'pprh_preconnect_set' )
+		);
 	}
 
+	// tested
 	public function initialize() {
-		$this->reset_pro = apply_filters('pprh_preconnects_perform_reset', null);
+		$this->reset_data['reset_pro'] = apply_filters( 'pprh_preconnects_perform_reset', null);
+		$perform_reset = $this->check_to_perform_reset( $this->reset_data );
 
-		if ( ! $this->load_auto_preconnects( $this->reset_pro ) ) {
+		if ( false === $perform_reset ) {
 			return false;
 		}
 
-		$allow_unauth = get_option( 'pprh_preconnect_allow_unauth' );
+		$allow_unauth = $this->reset_data['allow_unauth'];
+		$user_logged_in = is_user_logged_in();
+
 		$this->load_ajax_actions( $allow_unauth );
+		$this->check_to_enqueue_scripts( $allow_unauth, $user_logged_in );
+		return true;
+	}
 
-		if ( ! is_admin() && ( 'true' === $allow_unauth || is_user_logged_in() ) ) {
-			add_action( 'wp_enqueue_scripts', array( $this, 'load_js_files' ) );
+	// tested
+	public function check_to_perform_reset( $reset_data ) {
+
+		if ( null === $reset_data['reset_pro'] ) {
+			$perform_reset = $this->perform_free_reset( $reset_data );
+		} else {
+			$perform_reset = $this->perform_pro_reset( $reset_data['reset_pro'] );
 		}
+
+		return $perform_reset;
 	}
 
-	public function load_auto_preconnects( $reset_pro ) {
-		$autoload = get_option( 'pprh_preconnect_autoload' );
-		$preconnects_set = get_option( 'pprh_preconnect_set' );
-		$load_free = ( 'true' === $autoload && 'false' === $preconnects_set );
+	// tested
+	public function check_to_enqueue_scripts( $allow_unauth, $user_logged_in ) {
+		$allow_unlogged_in_users = ( 'true' === $allow_unauth );
+		$enqueue_scripts = ( $allow_unlogged_in_users || $user_logged_in );
 
-		$load_pro = ( null !== $reset_pro && ! empty( $reset_pro['reset'] ) && $reset_pro['reset'] );
+		if ( $enqueue_scripts ) {
+			add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
+		}
 
-		return ( (null === $reset_pro && $load_free) || $load_pro );
+		return $enqueue_scripts;
 	}
 
+	// tested
+	public function perform_free_reset( $reset_data ) {
+		return ( 'true' === $reset_data['autoload'] && 'false' === $reset_data['preconnects_set'] );
+	}
+
+	// tested
+	public function perform_pro_reset( $reset_pro ) {
+		return ( ! empty( $reset_pro ) && $reset_pro['perform_reset'] );
+	}
+
+	// tested
 	public function load_ajax_actions( $allow_unauth ) {
 		$ajax_cb = 'pprh_post_domain_names';
 
@@ -50,13 +87,19 @@ class Preconnects {
 		add_action( "wp_ajax_$ajax_cb", array( $this, $ajax_cb ) );					// for logged in users
 	}
 
-	public function load_js_files() {
+	// tested
+	public function enqueue_scripts() {
+		if ( $this->is_admin ) {
+			return false;
+		}
+
 		$js_object = $this->create_js_object();
 		wp_register_script( 'pprh-find-domain-names', PPRH_REL_DIR . 'js/find-external-domains.js', null, PPRH_VERSION, true );
 		wp_localize_script( 'pprh-find-domain-names', 'pprh_data', $js_object );
 		wp_enqueue_script( 'pprh-find-domain-names' );
 	}
 
+	// tested
 	public function create_js_object() {
 		$arr = array(
 			'hints'      => array(),
@@ -67,43 +110,41 @@ class Preconnects {
 		return apply_filters( 'pprh_preconnects_append_js_object', $arr );
 	}
 
+	// tested
 	public function pprh_post_domain_names() {
 		if ( isset( $_POST['pprh_data'] ) && wp_doing_ajax() ) {
 			check_ajax_referer( 'pprh_ajax_nonce', 'nonce' );
 			$results = array();
-			$raw_hint_data = json_decode( wp_unslash( $_POST['pprh_data'] ), false );
+			$raw_hint_data = json_decode( wp_unslash( $_POST['pprh_data'] ), true );
 
-			if ( count( $raw_hint_data->hints ) > 0 ) {
+			if ( count( $raw_hint_data['hints'] ) > 0 ) {
 				$results = $this->process_hints( $raw_hint_data );
 			}
 
-			$updated = apply_filters( 'pprh_preconnects_update_options', $raw_hint_data );
-			if ( null === $updated ) {
-				$this->update_options();
-			}
+//			$updated = apply_filters( 'pprh_preconnects_update_options', $raw_hint_data );
+//			if ( is_object( $updated )) {
+//				$this->update_options();
+//			}
 
 			if ( defined( 'PPRH_TESTING' ) && PPRH_TESTING ) {
-				return json_encode($results, JSON_THROW_ON_ERROR);
+				return json_encode($results);
 			}
 
 		}
 		wp_die();
 	}
 
+	// tested
 	public function process_hints( $hint_data ) {
 		$dao = new DAO();
-		$dao->remove_prev_auto_preconnects();
+//		$dao->remove_prev_auto_preconnects();
 		$results = array();
 
-		foreach ( $hint_data->hints as $url ) {
-			$hint_arr = array(
-				'url'          => $url,
-				'hint_type'    => 'preconnect',
-				'auto_created' => 1
-			);
+		$new_cols = apply_filters( 'pprh_preconnects_create_hint_array', $hint_data );
 
-			$hint_arr['post_url'] = ( ! empty( $hint_data->post_url ) ? $hint_data->post_url : '' );
-			$hint_arr['post_id'] = ( ! empty( $hint_data->post_id ) ? $hint_data->post_id : '' );
+		foreach ( $hint_data['hints'] as $url ) {
+
+			$hint_arr = $this->create_hint_array( $url, $new_cols );
 
 			$hint = CreateHints::create_pprh_hint( $hint_arr );
 
@@ -115,7 +156,21 @@ class Preconnects {
 		return $results;
 	}
 
+	// tested
+	public function create_hint_array( $url, $new_cols ) {
+		$hint_arr['url'] = $url;
+		$hint_arr['hint_type'] = 'preconnect';
+		$hint_arr['auto_created'] = 1;
+
+		if ( is_array( $new_cols ) ) {
+			return array_merge( $hint_arr, $new_cols );
+		}
+
+		return $hint_arr;
+	}
+
 	private function update_options() {
 		update_option( 'pprh_preconnect_set', 'true' );
 	}
+
 }

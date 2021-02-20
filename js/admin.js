@@ -50,8 +50,8 @@
 
 		$('input.pprh-reset').each(function () {
 			$(this).on('click', function (e) {
-				var text = e.target.defaultValue;
-				var res = confirm('Are you sure you want to ' + text + '?');
+				var text = e.target.getAttribute('data-text');
+				var res = confirm('Are you sure you want to ' + text);
 
 				if (!res) {
 					e.preventDefault();

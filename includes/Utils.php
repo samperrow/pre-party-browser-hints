@@ -64,29 +64,31 @@ class Utils {
 		return esc_html( 'true' === $value ? 'checked' : '' );
 	}
 
-	// need to account for ajax
-	public static function on_pprh_page() {
-	    global $pagenow;
-		return
-			( ( isset( $_GET['page'] ) && 'pprh-plugin-settings' === $_GET['page'] ) && 'admin.php' === $pagenow )
-            || ( ( isset( $_GET['action'] ) && 'edit' === $_GET['action'] ) && 'post.php' === $pagenow );
-	}
-
 	public static function esc_get_option( $option ) {
 	    $value = get_option( $option );
 	    return esc_html( $value );
 	}
 
-	public static function pprh_is_plugin_active() {
-	    $plugin = 'pprh-pro/pprh-pro.php';
-		$site_active = (in_array( $plugin, (array) get_option( 'active_plugins', array() ), true ));
-		$network_active = (function_exists( 'is_plugin_active_for_network' )) ? is_plugin_active_for_network( $plugin ) : false;
-		return $site_active || $network_active;
+	public static function json_to_array( $json ) {
+		$arr = explode( ', ', $json );
+		return wp_unslash( json_encode( $arr ) );
 	}
 
-	public static function json_to_array( $json ) {
-		$arr = explode(', ', $json);
-		return wp_unslash(json_encode($arr));
+	public static function pprh_is_plugin_active() {
+		$plugin = 'pprh-pro/pprh-pro.php';
+		$site_active = ( in_array( $plugin, (array) get_option( 'active_plugins', array() ), true ) );
+		$network_active = ( function_exists( 'is_plugin_active_for_network' ) ) ? is_plugin_active_for_network( $plugin ) : false;
+		return ( $site_active || $network_active );
+	}
+
+	public function on_pprh_page() {
+		global $pagenow;
+		$referrer = ( ! empty( $_SERVER['HTTP_REFERER'] ) ? self::clean_url( $_SERVER['HTTP_REFERER'] ) : '' );
+		$pprh_page = 'pprh-plugin-settings';
+		$doing_ajax = ( false !== stripos( $referrer, $pprh_page ) && wp_doing_ajax() );
+		$on_pprh_admin = ( ( isset( $_GET['page'] ) && $pprh_page === $_GET['page'] ) && 'admin.php' === $pagenow );
+		$pro_on_pprh_page = apply_filters( 'pprh_utils_pro_on_pprh_page', $pagenow, $referrer );
+		return ( $on_pprh_admin || $doing_ajax || $pro_on_pprh_page);
 	}
 
 	public static function on_pprh_admin() {
