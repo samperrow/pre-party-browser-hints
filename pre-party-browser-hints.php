@@ -53,10 +53,10 @@ class Pre_Party_Browser_Hints {
 		}
 
 		// this needs to be loaded front end and back end bc Ajax needs to be able to communicate between the two.
-		add_action( 'init', function() {
+//		add_action( 'init', function() {
 			include_once PPRH_ABS_DIR . 'includes/Preconnects.php';
 			new Preconnects();
-        });
+//        });
 	}
 
 	public function load_admin() {

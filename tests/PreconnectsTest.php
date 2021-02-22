@@ -380,6 +380,7 @@ class PreconnectsTest extends TestCase {
 
 
 	public function test_pprh_post_domain_names() {
+		$dao = new \PPRH\DAO();
 		$preconnects = new \PPRH\Preconnects();
 
 		$_SERVER['HTTP_HOST'] = 'sphacks.local';
@@ -398,10 +399,10 @@ class PreconnectsTest extends TestCase {
 
 		$_POST['action'] = 'pprh_post_domain_names';
 		$actual = $preconnects->pprh_post_domain_names();
-		$actual_json = $actual;
-		$expected_json = json_encode( array( true ) );
+		$dao->delete_hint( $actual[0]->db_result['hint_id'] );
+		$actual_result = ( is_array($actual) && is_object( $actual[0] ) );
 
-		$this->assertEquals( $expected_json, $actual_json );
+		$this->assertEquals( true, $actual_result );
 	}
 
 
@@ -419,7 +420,7 @@ class PreconnectsTest extends TestCase {
 
 		$result_arr = $preconnects->process_hints( $test_data );
 
-		$this->assertEquals( array( true, true ), $result_arr );
+		$this->assertEquals( count( $test_data['hints'] ), count( $result_arr ) );
 	}
 
 	public function test_create_hint_array():void {

@@ -6,6 +6,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+// TODO: work on updating options properly.
+
 class Preconnects {
 
 	public $reset_data;
@@ -14,7 +16,6 @@ class Preconnects {
 
 	// tested
 	public function __construct() {
-//		add_action( 'wp_loaded', array( $this, 'initialize' ), 10, 0 );
 		add_action( 'wp_loaded', array( $this, 'initialize' ), 10, 0 );
 
 		$this->is_admin = is_admin();
@@ -30,22 +31,20 @@ class Preconnects {
 	public function initialize() {
 		$this->reset_data['reset_pro'] = apply_filters( 'pprh_preconnects_perform_reset', null);
 		$perform_reset = $this->check_to_perform_reset( $this->reset_data );
+		$allow_unauth = $this->reset_data['allow_unauth'];
+		$this->load_ajax_actions( $allow_unauth );
 
 		if ( false === $perform_reset ) {
 			return false;
 		}
 
-		$allow_unauth = $this->reset_data['allow_unauth'];
 		$user_logged_in = is_user_logged_in();
-
-		$this->load_ajax_actions( $allow_unauth );
 		$this->check_to_enqueue_scripts( $allow_unauth, $user_logged_in );
 		return true;
 	}
 
 	// tested
 	public function check_to_perform_reset( $reset_data ) {
-
 		if ( null === $reset_data['reset_pro'] ) {
 			$perform_reset = $this->perform_free_reset( $reset_data );
 		} else {
@@ -82,9 +81,9 @@ class Preconnects {
 		$ajax_cb = 'pprh_post_domain_names';
 
 		if ( 'true' === $allow_unauth ) {
-			add_action( "wp_ajax_nopriv_$ajax_cb", array( $this, $ajax_cb ) );		// not logged in
+			add_action( "wp_ajax_nopriv_{$ajax_cb}", array( $this, $ajax_cb ) );		// not logged in
 		}
-		add_action( "wp_ajax_$ajax_cb", array( $this, $ajax_cb ) );					// for logged in users
+		add_action( "wp_ajax_{$ajax_cb}", array( $this, $ajax_cb ) );					// for logged in users
 	}
 
 	// tested
@@ -110,15 +109,16 @@ class Preconnects {
 		return apply_filters( 'pprh_preconnects_append_js_object', $arr );
 	}
 
-	// tested
+
 	public function pprh_post_domain_names() {
 		if ( isset( $_POST['pprh_data'] ) && wp_doing_ajax() ) {
 			check_ajax_referer( 'pprh_ajax_nonce', 'nonce' );
-			$results = array();
+			$db_results = array();
 			$raw_hint_data = json_decode( wp_unslash( $_POST['pprh_data'] ), true );
 
 			if ( count( $raw_hint_data['hints'] ) > 0 ) {
-				$results = $this->process_hints( $raw_hint_data );
+				$new_hints = $this->process_hints( $raw_hint_data );
+				$db_results = $this->insert_hints_to_db( $new_hints );
 			}
 
 //			$updated = apply_filters( 'pprh_preconnects_update_options', $raw_hint_data );
@@ -127,33 +127,41 @@ class Preconnects {
 //			}
 
 			if ( defined( 'PPRH_TESTING' ) && PPRH_TESTING ) {
-				return json_encode($results);
+				return $db_results;
 			}
 
 		}
 		wp_die();
 	}
 
+
+
 	// tested
 	public function process_hints( $hint_data ) {
-		$dao = new DAO();
-//		$dao->remove_prev_auto_preconnects();
-		$results = array();
-
+		$new_hints = array();
 		$new_cols = apply_filters( 'pprh_preconnects_create_hint_array', $hint_data );
 
 		foreach ( $hint_data['hints'] as $url ) {
-
 			$hint_arr = $this->create_hint_array( $url, $new_cols );
-
 			$hint = CreateHints::create_pprh_hint( $hint_arr );
 
 			if ( is_array( $hint ) ) {
-				$result = $dao->insert_hint( $hint );
-				$results[] = $result->db_result['success'];
+				$new_hints[] = $hint;
 			}
 		}
-		return $results;
+
+		return $new_hints;
+	}
+
+	public function insert_hints_to_db( $hint_arr ) {
+		$dao = new DAO();
+		$db_result = array();
+
+		foreach( $hint_arr as $hint ) {
+			$db_result[] = $dao->insert_hint( $hint );
+		}
+
+		return $db_result;
 	}
 
 	// tested
