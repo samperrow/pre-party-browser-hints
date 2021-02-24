@@ -6,40 +6,44 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-// TODO: work on updating options properly.
-
 class Preconnects {
-
-	public $reset_data;
 
 	public $is_admin;
 
+	public $config;
+
 	// tested
 	public function __construct() {
-		add_action( 'wp_loaded', array( $this, 'initialize' ), 10, 0 );
+		add_action( 'wp_loaded', array( $this, 'init_controller' ), 10, 0 );
 
-		$this->is_admin = is_admin();
-
-		$this->reset_data = array(
-			'autoload'        => get_option( 'pprh_preconnect_autoload' ),
-			'allow_unauth'    => get_option( 'pprh_preconnect_allow_unauth' ),
-			'preconnects_set' => get_option( 'pprh_preconnect_set' )
+		$this->config = array(
+			'is_admin' => is_admin(),
+			'reset_data' => array(
+				'autoload'        => get_option( 'pprh_preconnect_autoload' ),
+				'allow_unauth'    => get_option( 'pprh_preconnect_allow_unauth' ),
+				'preconnects_set' => get_option( 'pprh_preconnect_set' )
+			)
 		);
+
+		$this->config['reset_data']['reset_pro'] = apply_filters( 'pprh_preconnects_do_reset_init', null );
+	}
+
+	public function init_controller() {
+		return $this->initialize( $this->config );
 	}
 
 	// tested
-	public function initialize() {
-		$this->reset_data['reset_pro'] = apply_filters( 'pprh_preconnects_perform_reset', null);
-		$perform_reset = $this->check_to_perform_reset( $this->reset_data );
-		$allow_unauth = $this->reset_data['allow_unauth'];
+	public function initialize( $args ) {
+		$perform_reset = $this->check_to_perform_reset( $args['reset_data'] );
+		$allow_unauth = $args['reset_data']['allow_unauth'];
 		$this->load_ajax_actions( $allow_unauth );
 
 		if ( false === $perform_reset ) {
 			return false;
 		}
 
-		$user_logged_in = is_user_logged_in();
-		$this->check_to_enqueue_scripts( $allow_unauth, $user_logged_in );
+		$allow_unauth_users = $this->allow_unauth_users( $allow_unauth );
+		$this->check_to_enqueue_scripts( $allow_unauth_users );
 		return true;
 	}
 
@@ -55,15 +59,12 @@ class Preconnects {
 	}
 
 	// tested
-	public function check_to_enqueue_scripts( $allow_unauth, $user_logged_in ) {
-		$allow_unlogged_in_users = ( 'true' === $allow_unauth );
-		$enqueue_scripts = ( $allow_unlogged_in_users || $user_logged_in );
-
-		if ( $enqueue_scripts ) {
+	public function check_to_enqueue_scripts( $allow_unauth_users ) {
+		if ( $allow_unauth_users ) {
 			add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 		}
 
-		return $enqueue_scripts;
+		return $allow_unauth_users;
 	}
 
 	// tested
@@ -88,7 +89,7 @@ class Preconnects {
 
 	// tested
 	public function enqueue_scripts() {
-		if ( $this->is_admin ) {
+		if ( $this->config['is_admin'] ) {
 			return false;
 		}
 
@@ -100,19 +101,41 @@ class Preconnects {
 
 	// tested
 	public function create_js_object() {
-		$arr = array(
+		$js_arr = array(
 			'hints'      => array(),
 			'nonce'      => wp_create_nonce( 'pprh_ajax_nonce' ),
 			'admin_url'  => admin_url() . 'admin-ajax.php',
 			'start_time' => time()
 		);
-		return apply_filters( 'pprh_preconnects_append_js_object', $arr );
+
+		if ( ! empty( $this->config['reset_data']['reset_pro'] ) ) {
+			$js_arr = apply_filters( 'pprh_preconnects_append_hint_object', $js_arr, $this->config['reset_data']['reset_pro'] );
+		}
+
+		return $js_arr;
 	}
+
+	// tested
+	// Returns false if the user is not logged in, and the admin chooses not to allow unauthenticated users from settings hints.
+	public function allow_unauth_users( $allow_unauth = 'true', $user_logged_in = null ) {
+		if ( null === $user_logged_in ) {
+			$user_logged_in = is_user_logged_in();
+		}
+
+		$allow_unauth_bool = ( 'true' === $allow_unauth );
+		return ( $allow_unauth_bool || $user_logged_in );
+	}
+
 
 
 	public function pprh_post_domain_names() {
 		if ( isset( $_POST['pprh_data'] ) && wp_doing_ajax() ) {
 			check_ajax_referer( 'pprh_ajax_nonce', 'nonce' );
+
+			if ( ! $this->allow_unauth_users( $this->config['reset_data']['allow_unauth'] ) ) {
+				return false;
+			}
+
 			$db_results = array();
 			$raw_hint_data = json_decode( wp_unslash( $_POST['pprh_data'] ), true );
 
@@ -121,10 +144,10 @@ class Preconnects {
 				$db_results = $this->insert_hints_to_db( $new_hints );
 			}
 
-//			$updated = apply_filters( 'pprh_preconnects_update_options', $raw_hint_data );
-//			if ( is_object( $updated )) {
-//				$this->update_options();
-//			}
+			$updated = apply_filters( 'pprh_preconnects_update_options', $raw_hint_data );
+			if ( is_null( $updated ) ) {
+				$this->update_options();
+			}
 
 			if ( defined( 'PPRH_TESTING' ) && PPRH_TESTING ) {
 				return $db_results;
@@ -139,10 +162,16 @@ class Preconnects {
 	// tested
 	public function process_hints( $hint_data ) {
 		$new_hints = array();
-		$new_cols = apply_filters( 'pprh_preconnects_create_hint_array', $hint_data );
+
+		$hint_arr = array(
+			'hint_type'    => 'preconnect',
+			'auto_created' => 1
+		);
+
+		$hint_arr = apply_filters( 'pprh_preconnects_append_hint_object', $hint_arr, $hint_data );
 
 		foreach ( $hint_data['hints'] as $url ) {
-			$hint_arr = $this->create_hint_array( $url, $new_cols );
+			$hint_arr['url'] = $url;
 			$hint = CreateHints::create_pprh_hint( $hint_arr );
 
 			if ( is_array( $hint ) ) {
@@ -162,19 +191,6 @@ class Preconnects {
 		}
 
 		return $db_result;
-	}
-
-	// tested
-	public function create_hint_array( $url, $new_cols ) {
-		$hint_arr['url'] = $url;
-		$hint_arr['hint_type'] = 'preconnect';
-		$hint_arr['auto_created'] = 1;
-
-		if ( is_array( $new_cols ) ) {
-			return array_merge( $hint_arr, $new_cols );
-		}
-
-		return $hint_arr;
 	}
 
 	private function update_options() {

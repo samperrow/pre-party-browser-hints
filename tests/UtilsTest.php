@@ -77,10 +77,11 @@ final class UtilsTest extends TestCase {
 		$str1 = 'pprh_preconnect_allow_unauth';
 		$str2 = 'pprh_not_real_option';
 
-		$test1 = \PPRH\Utils::get_opt_val($str1);
+		$test_1 = \PPRH\Utils::get_opt_val($str1);
+		$actual_test_1 = ( 'true' === $test_1 || 'false' === $test_1 );
 		$test2 = \PPRH\Utils::get_opt_val($str2);
 
-		$this->assertEquals( 'true', $test1 );
+		$this->assertEquals( true, $actual_test_1 );
 		$this->assertEquals( '', $test2 );
 	}
 

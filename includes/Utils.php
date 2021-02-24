@@ -41,6 +41,10 @@ class Utils {
 		return strtolower( preg_replace( '/[^a-z0-9|\/]/i', '', $attr ) );
 	}
 
+	public static function is_null_or_empty_string( $str ) {
+		return ( null === $str || '' === $str );
+	}
+
 	public static function get_opt_val( $opt ) {
 		$val = get_option( $opt );
 		return ( ! empty( $val ) ) ? $val : '';
