@@ -65,11 +65,6 @@ final class DAOTest extends TestCase {
 
 
 //
-//	public function test_remove_prev_auto_preconnects(): void {
-//		$this->assertEquals(true, true);
-//
-//	}
-//
 //	public function test_get_hints(): void {
 //		$dao = new PPRH\DAO();
 //		$hint_arr = Create_Hints::create_raw_hint_array('https://www.asdf.com/foozball', 'preconnect', 1);

@@ -109,26 +109,11 @@ class DAO {
 		return $this->create_db_result( $wpdb->result, $wpdb->insert_id, $wpdb->last_error, 'delete', null );
 	}
 
-	public function remove_prev_auto_preconnects() {
-		global $wpdb;
-		$table = PPRH_DB_TABLE;
-
-		$wpdb->query(
-			$wpdb->prepare( "DELETE FROM $table WHERE auto_created = %d AND hint_type = %s", 1, 'preconnect' )
-		);
-	}
-
 	public function get_hints( $query = null ) {
 		global $wpdb;
-		$table = PPRH_DB_TABLE;
-		$sql = "SELECT * FROM $table";
-
-		if ( ! empty( $query['sql'] ) ) {
-			$sql .= $query['sql'];
-		}
 
 		if ( ! empty( $query['args'] ) ) {
-			$sql = $wpdb->prepare( $sql, $query['args'] );
+			$sql = $wpdb->prepare( $query['sql'], $query['args'] );
 		}
 
 		return $wpdb->get_results( $sql, ARRAY_A );

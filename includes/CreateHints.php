@@ -10,23 +10,14 @@ class CreateHints {
 
 	public $result = array();
 
-//	protected $new_hint = array();
+//	public function __construct() {}
 
-//	public function __construct() {
-//		if ( ! defined( 'CREATING_HINT' ) || ! CREATING_HINT ) {
-////			exit();
-////		}
 
-//		$this->result = array(
-//			'new_hint' => array(),
-//			'response' => array(
-//				'msg'     => '',
-//				'status'  => '',
-//				'success' => false
-//			),
-//		);
 
-//	}
+	public function resolve_duplicate_hints( $pprh_hint ) {
+
+
+	}
 
 	// hint creation utils
 	public static function create_pprh_hint( $raw_data ) {
@@ -135,8 +126,6 @@ class CreateHints {
 			'.webm'  => 'video'
 		);
 
-//		var_dump($this->get_file_type_mime( $media_types, $file_type ));
-
 		return ( '' === $as_attr )
 			? $this->get_file_type_mime( $media_types, $file_type )
 			: $as_attr;
@@ -164,15 +153,16 @@ class CreateHints {
 	}
 
 
+	// tested
 	public function get_duplicate_hints( $hint ) {
+		$table = PPRH_DB_TABLE;
+
 		$query = array(
-			'sql'  => " WHERE url = %s AND hint_type = %s",
+			'sql'  => "SELECT * FROM $table WHERE url = %s AND hint_type = %s",
 			'args' => array( $hint['url'], $hint['hint_type'] )
 		);
 
-//		if ( ! empty( $hint['post_id'] ) ) {
-//			$query = apply_filters( 'pprh_ch_duplicate_hint_query', $query, $hint );
-//		}
+		$query = apply_filters( 'pprh_ch_duplicate_hint_query', $query, $hint );
 
 		$dao = new DAO();
 		return $dao->get_hints( $query );
