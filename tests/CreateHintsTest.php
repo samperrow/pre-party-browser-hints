@@ -29,15 +29,17 @@ final class CreateHintsTest extends TestCase {
 //		$this->assertEquals($create_hints->result, $result);
 //	}
 
-	public function test_duplicate_hints_exist() {
+	public function test_duplicate_hints_exist_free() {
 		$dao = new \PPRH\DAO();
+		$create_hints = new \PPRH\CreateHints();
+
 		$dup_hint = TestUtils::create_hint_array( 'https://duplicate-hint.com', 'dns-prefetch', '', '', '', 0 );
 		$error = 'A duplicate hint already exists!';
 
-		$dummy_hint = \PPRH\CreateHints::create_pprh_hint( $dup_hint );
+		$dummy_hint = $create_hints->new_hint_controller( $dup_hint );
 		$dummy_hint_result = $dao->insert_hint( $dummy_hint );
 
-		$dup_hint_error = \PPRH\CreateHints::create_pprh_hint( $dup_hint );
+		$dup_hint_error = $create_hints->new_hint_controller( $dup_hint );
 		$expected = $dao->create_db_result( false, '', $error, 'create', null );
 
 		$this->assertEquals( $expected, $dup_hint_error );
@@ -76,13 +78,18 @@ final class CreateHintsTest extends TestCase {
 	}
 
 	public function test_duplicate_hints_exist_pro_3() {
+		if ( ! \PPRH\Utils::pprh_is_plugin_active() ) {
+			return;
+		}
+
 		$dao = new \PPRH\DAO();
 		$create_hints = new \PPRH\CreateHints();
-		$dummy_hint_1 = TestUtils::create_hint_array( 'https://test-get-duplicate-hints-pro-3.com', 'preconnect', '', '', '', 0, '2326', '/test-page' );
+		$dup_url = 'https://test-get-duplicate-hints-pro-3.com';
+		$dummy_hint_1 = TestUtils::create_hint_array( $dup_url, 'preconnect', '', '', '', 0, '2326', '/test-page' );
 
 		$dummy_hint_result = $dao->insert_hint( $dummy_hint_1 );
 
-		$dummy_hint_2 = TestUtils::create_hint_array( 'https://test-get-duplicate-hints-pro-3.com', 'preconnect', '', '', '', 0, 'global', '/test-page' );
+		$dummy_hint_2 = TestUtils::create_hint_array( $dup_url, 'preconnect', '', '', '', 0, 'global', '/test-page' );
 
 		$actual = $create_hints->duplicate_hints_exist( $dummy_hint_2 );
 
@@ -114,6 +121,10 @@ final class CreateHintsTest extends TestCase {
 	}
 
 	public function test_get_duplicate_hints_pro():void {
+		if ( ! \PPRH\Utils::pprh_is_plugin_active() ) {
+			return;
+		}
+
 		global $wpdb;
 		$dao = new \PPRH\DAO();
 		$create_hints = new \PPRH\CreateHints();

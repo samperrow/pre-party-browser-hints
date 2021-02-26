@@ -53,10 +53,11 @@ class Pre_Party_Browser_Hints {
 		}
 
 		// this needs to be loaded front end and back end bc Ajax needs to be able to communicate between the two.
-//		add_action( 'init', function() {
+//		add_action( 'wp_loaded', function() {
 			include_once PPRH_ABS_DIR . 'includes/Preconnects.php';
-			new Preconnects();
-//        });
+			$preconnects = new Preconnects();
+//			$preconnects->init_controller();
+//        }, 10, 0 );
 	}
 
 	public function load_admin() {
@@ -82,7 +83,6 @@ class Pre_Party_Browser_Hints {
 
     public function load_client() {
 		include_once PPRH_ABS_DIR . 'includes/LoadClient.php';
-//		do_action( 'pprh_pro_load_client' );
 
 		$load_client = new LoadClient();
 		$load_client->verify_to_load_fp();

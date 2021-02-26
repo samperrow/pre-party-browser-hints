@@ -9,20 +9,13 @@ if (!defined('ABSPATH')) {
 
 final class AjaxOpsTest extends TestCase {
 
-	public function test_onAdmin():bool {
-		$on_admin = is_admin();
-		$this->assertEquals($on_admin, $on_admin);
-		return $on_admin;
-	}
-
-	/**
-	 * @depends test_onAdmin
-	 */
-	public function test_pprh_update_hints( bool $on_admin ):void {
-		if ( ! $on_admin ) {
+	public function test_pprh_update_hints():void {
+		if ( ! PPRH_IS_ADMIN || ! wp_doing_ajax() ) {
 			return;
 		}
 		$dao = new \PPRH\DAO();
+		$ajax_ops = new \PPRH\AjaxOps();
+
 		$_SERVER['HTTP_HOST'] = 'sphacks.local';
 		$_SERVER['REQUEST_URI'] = '/wp-admin/admin.php?page=pprh-plugin-settings';
 		$_SERVER['HTTP_REFERER'] = 'sphacks.local';
@@ -39,7 +32,6 @@ final class AjaxOpsTest extends TestCase {
 		$_POST['action'] = 'pprh_update_hints';
 		$_REQUEST['nonce'] = $expected_nonce;
 
-		$ajax_ops = new \PPRH\AjaxOps();
 
 		$json = $ajax_ops->pprh_update_hints();
 		$response = json_decode( $json, true );

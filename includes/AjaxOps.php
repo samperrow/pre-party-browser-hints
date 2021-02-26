@@ -57,18 +57,23 @@ class AjaxOps {
 //			$result = apply_filters( 'pprh_reset_single_post_prerender', $data );
 //		}
 
+		// TODO: if error, return generic error msg if no error from db is there.
 		return ( is_object( $result ) ? $result : false );
 	}
 
 	protected function create_update_hint( $data, $action ) {
 		$dao = new DAO();
-		$new_hint = CreateHints::create_pprh_hint( $data );
+		$create_hints = new CreateHints();
+		$pprh_hint = $create_hints->new_hint_controller( $data );
 
-		if ( is_array( $new_hint ) ) {
+		if ( is_array( $pprh_hint ) ) {
 			return ( 'create' === $action )
-				? $dao->insert_hint( $new_hint )
-				: $dao->update_hint( $new_hint, $data['hint_ids'] );
+				? $dao->insert_hint( $pprh_hint )
+				: $dao->update_hint( $pprh_hint, $data['hint_ids'] );
+		} elseif ( is_object( $pprh_hint ) ) {
+			return $pprh_hint;
 		}
+
 		return false;
 	}
 

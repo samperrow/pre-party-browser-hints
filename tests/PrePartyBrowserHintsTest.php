@@ -69,9 +69,7 @@ final class PrePartyBrowserHintsTest extends TestCase {
 	}
 
 	public function test_register_admin_files():void {
-		if ( ! is_admin() ) {
-			return;
-		}
+		if ( ! PPRH_IS_ADMIN ) return;
 
 		global $wp_scripts;
 		$pprh = new \PPRH\Pre_Party_Browser_Hints();
@@ -82,12 +80,7 @@ final class PrePartyBrowserHintsTest extends TestCase {
 			$actual_scripts[] =  $wp_scripts->registered[$script]->handle;
 		}
 
-//		if ( is_admin() ) {
-			$expected_scripts = array( 'pprh_admin_js' );
-//		}
-
-//		$expected_scripts = array();
-
+		$expected_scripts = array( 'thickbox', 'pprh_admin_js' );
 		$this->assertEquals( $expected_scripts, $actual_scripts);
 	}
 

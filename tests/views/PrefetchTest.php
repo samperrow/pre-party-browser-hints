@@ -5,9 +5,8 @@ use PHPUnit\Framework\TestCase;
 class PrefetchTest extends TestCase {
 
 	public function test_flying_pages_loaded(): void {
-		if ( is_admin() ) {
-			return;
-		}
+		if ( PPRH_IS_ADMIN ) return;
+
 		$option_name = 'pprh_prefetch_enabled';
 		$option_value = get_option($option_name);
 		$expected = ('true' === $option_value);

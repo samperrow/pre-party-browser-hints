@@ -87,18 +87,22 @@ class Utils {
 
 	public function on_pprh_page() {
 		global $pagenow;
+		$on_pprh_admin = self::on_pprh_admin();
 		$referrer = ( ! empty( $_SERVER['HTTP_REFERER'] ) ? self::clean_url( $_SERVER['HTTP_REFERER'] ) : '' );
-		$pprh_page = 'pprh-plugin-settings';
-		$doing_ajax = ( false !== stripos( $referrer, $pprh_page ) && wp_doing_ajax() );
-		$on_pprh_admin = ( ( isset( $_GET['page'] ) && $pprh_page === $_GET['page'] ) && 'admin.php' === $pagenow );
 		$pro_on_pprh_page = apply_filters( 'pprh_utils_pro_on_pprh_page', $pagenow, $referrer );
-		return ( $on_pprh_admin || $doing_ajax || $pro_on_pprh_page);
+		return ( $on_pprh_admin || $pro_on_pprh_page);
 	}
 
 	public static function on_pprh_admin() {
-	    $screen = get_current_screen();
-	    $pprh_screen = 'toplevel_page_pprh-plugin-settings';
-	    return ( null !== $screen && ! empty( $screen->id ) && $pprh_screen === $screen->id );
+		$pprh_page = 'pprh-plugin-settings';
+
+		if ( wp_doing_ajax() ) {
+			$referrer = ( ! empty( $_SERVER['HTTP_REFERER'] ) ? self::clean_url( $_SERVER['HTTP_REFERER'] ) : '' );
+			return ( false !== stripos( $referrer, $pprh_page ) );
+		} else {
+		    global $pagenow;
+			return ( ( isset( $_GET['page'] ) && $pprh_page === $_GET['page'] ) && 'admin.php' === $pagenow );
+	    }
 	}
 
 }

@@ -25,10 +25,10 @@ class Preconnects {
 			)
 		);
 
-		$this->config['reset_data']['reset_pro'] = apply_filters( 'pprh_preconnects_do_reset_init', null );
 	}
 
 	public function init_controller() {
+		$this->config['reset_data']['reset_pro'] = apply_filters( 'pprh_preconnects_do_reset_init', null );
 		return $this->initialize( $this->config );
 	}
 
@@ -49,7 +49,7 @@ class Preconnects {
 
 	// tested
 	public function check_to_perform_reset( $reset_data ) {
-		if ( null === $reset_data['reset_pro'] ) {
+		if ( empty( $reset_data['reset_pro'] ) || null === $reset_data['reset_pro'] ) {
 			$perform_reset = $this->perform_free_reset( $reset_data );
 		} else {
 			$perform_reset = $this->perform_pro_reset( $reset_data['reset_pro'] );
@@ -161,6 +161,7 @@ class Preconnects {
 
 	// tested
 	public function process_hints( $hint_data ) {
+		$create_hints = new \PPRH\CreateHints();
 		$new_hints = array();
 
 		$hint_arr = array(
@@ -172,9 +173,10 @@ class Preconnects {
 
 		foreach ( $hint_data['hints'] as $url ) {
 			$hint_arr['url'] = $url;
-			$hint = CreateHints::create_pprh_hint( $hint_arr );
+			$hint = $create_hints->new_hint_controller( $hint_arr );
+//			$hint = CreateHints::create_pprh_hint( $hint_arr );
 
-			if ( is_array( $hint ) ) {
+			if ( false !== $hint ) {
 				$new_hints[] = $hint;
 			}
 		}

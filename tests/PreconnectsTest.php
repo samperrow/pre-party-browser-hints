@@ -13,7 +13,6 @@ class PreconnectsTest extends TestCase {
 			'autoload'        => get_option( 'pprh_preconnect_autoload' ),
 			'allow_unauth'    => get_option( 'pprh_preconnect_allow_unauth' ),
 			'preconnects_set' => get_option( 'pprh_preconnect_set' ),
-			'reset_pro' => apply_filters( 'pprh_preconnects_do_reset_init', null )
 		);
 
 		$this->assertEquals( true, $loaded );
@@ -82,7 +81,7 @@ class PreconnectsTest extends TestCase {
 		update_post_meta( $post_id, 'pprh_preconnect_post_do_reset', 'false' );
 
 		$config = array(
-			'is_admin' => is_admin(),
+			'is_admin' => PPRH_IS_ADMIN,
 			'reset_data' => array(
 				'autoload'        => $autoload,
 				'allow_unauth'    => $allow_unauth,
@@ -123,9 +122,21 @@ class PreconnectsTest extends TestCase {
 		$preconnects_1 = new \PPRH\Preconnects();
 
 		$actual_1 = $preconnects_1->init_controller();
-		$expected = ( 'true' === get_option( 'pprh_preconnect_pro_reset_globals' ) );
+		$expected_1 = ( 'true' === get_option( 'pprh_preconnect_pro_reset_globals' ) );
 
-		$this->assertEquals($expected, $actual_1);
+		$expected_config = array(
+			'is_admin' => PPRH_IS_ADMIN,
+			'reset_data' => array(
+				'autoload'        => get_option( 'pprh_preconnect_autoload' ),
+				'allow_unauth'    => get_option( 'pprh_preconnect_allow_unauth' ),
+				'preconnects_set' => get_option( 'pprh_preconnect_set' ),
+				'reset_pro' => apply_filters( 'pprh_preconnects_do_reset_init', null )
+			)
+		);
+
+		$this->assertEquals($expected_1, $actual_1);
+		$this->assertEquals($expected_config, $preconnects_1->config);
+
 	}
 
 	public function eval_free_initialize() {
@@ -330,17 +341,19 @@ class PreconnectsTest extends TestCase {
 			$actual_scripts[] =  $wp_scripts->registered[$script]->handle;
 		}
 
-		if ( is_admin() ) {
-			$expected_scripts = array( 'pprh_admin_js' );
+		$expected_scripts = array();
+
+		if ( PPRH_IS_ADMIN ) {
+			$expected_scripts = array( 'thickbox', 'pprh_admin_js' );
 		} else {
-			$expected_scripts = array( 'pprh-find-domain-names' );
+			$expected_scripts[] = 'pprh-find-domain-names';
 		}
 
 		$this->assertEquals( $expected_scripts, $actual_scripts);
 	}
 
 	public function test_create_js_object() {
-		if ( is_admin() ) {
+		if ( PPRH_IS_ADMIN ) {
 			return false;
 		}
 		$preconnects = new \PPRH\Preconnects();
@@ -352,10 +365,12 @@ class PreconnectsTest extends TestCase {
 			'start_time'    => time(),
 		);
 
-		if ( ! is_admin() && defined( 'PPRH_PRO_PLUGIN_ACTIVE' ) && PPRH_PRO_PLUGIN_ACTIVE ) {
-			$expected_arr_1['post_url'] = '';
-			$expected_arr_1['post_id'] = '';
-			$expected_arr_1['reset_globals'] = 'false';
+		$expected_arr_1['post_id'] = '';
+		$expected_arr_1['post_url'] = '';
+		$expected_arr_1['reset_globals'] = 'false';
+
+		if ( ! PPRH_IS_ADMIN && \PPRH\Utils::pprh_is_plugin_active() ) {
+			$preconnects->config['reset_data']['reset_pro'] = apply_filters( 'pprh_preconnects_do_reset_init', null );
 		}
 
 		$actual_object_1 = $preconnects->create_js_object();
@@ -468,6 +483,9 @@ class PreconnectsTest extends TestCase {
 
 
 	public function util_load_ajax_actions( $allow_unauth ) {
+		if ( ! wp_doing_ajax() ) {
+			return;
+		}
 		$preconnects = new \PPRH\Preconnects();
 		$preconnects->load_ajax_actions( $allow_unauth );
 		$ajax_cb = 'pprh_post_domain_names';
@@ -496,9 +514,10 @@ class PreconnectsTest extends TestCase {
 
 
 	public function test_pprh_post_domain_names() {
-		if ( is_admin() ) {
+		if ( PPRH_IS_ADMIN || ! wp_doing_ajax() ) {
 			return;
 		}
+
 		$dao = new \PPRH\DAO();
 		$preconnects = new \PPRH\Preconnects();
 

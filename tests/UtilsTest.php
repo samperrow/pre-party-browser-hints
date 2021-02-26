@@ -157,8 +157,9 @@ final class UtilsTest extends TestCase {
 
 
 	public function test_create_pprh_hint_success():void {
+		$create_hints = new \PPRH\CreateHints();
 		$raw_data1 = TestUtils::create_hint_array( 'test.com', 'dns-prefetch' );
-		$actual_raw = \PPRH\CreateHints::create_pprh_hint($raw_data1);
+		$actual_raw = $create_hints->create_hint( $raw_data1 );
 		$expected = TestUtils::create_hint_array( '//test.com', 'dns-prefetch' );
 
 		$actual = apply_filters( 'pprh_ch_append_hint', $actual_raw, $raw_data1 );
@@ -167,19 +168,21 @@ final class UtilsTest extends TestCase {
 	}
 
 	public function test_create_pprh_hint_fail():void {
+		$create_hints = new \PPRH\CreateHints();
 		$raw_data1 = TestUtils::create_hint_array( '', '' );
-		$actual = \PPRH\CreateHints::create_pprh_hint($raw_data1);
+		$actual = $create_hints->create_hint( $raw_data1 );
 		$this->assertEquals( false, $actual );
 	}
 
 	public function test_create_pprh_hint_dup_hints():void {
 		$dao = new \PPRH\DAO();
+		$create_hints = new \PPRH\CreateHints();
 		$data1 = TestUtils::create_hint_array( 'blah.com', 'preconnect' );
-		$hint1 = \PPRH\CreateHints::create_pprh_hint($data1);
+		$hint1 = $create_hints->create_hint($data1);
 
 		$actual1 = $dao->insert_hint( $hint1 );
 
-		$hint2 = \PPRH\CreateHints::create_pprh_hint($data1);
+		$hint2 = $create_hints->new_hint_controller( $hint1 );
 
 		$this->assertEquals( true, $actual1->db_result['success'] );
 		$this->assertEquals( false, $hint2->db_result['success'] );
@@ -198,7 +201,7 @@ final class UtilsTest extends TestCase {
 			'crossorigin'  => 'crossorigin'
 		);
 
-		$actual = apply_filters( 'pprh_ch_append_hint', $test1, array('post_id' => 'global', 'post_url' => '') );
+		$actual = apply_filters( 'pprh_ch_append_hint', $test1, array('post_id' => '', 'post_url' => '') );
 		$this->assertEquals( $expected, $actual );
 	}
 
@@ -244,5 +247,40 @@ final class UtilsTest extends TestCase {
 		delete_option( $test_option_name1 );
 		delete_option( $test_option_name2 );
 	}
+
+	public function test_on_pprh_admin() {
+		if ( PPRH_IS_ADMIN ) {
+			if ( wp_doing_ajax() ) {
+				$_SERVER['HTTP_REFERER'] = 'pprh-plugin-settings';
+				$actual_1 = \PPRH\Utils::on_pprh_admin();
+
+				$_SERVER['HTTP_REFERER'] = 'post.php';
+				$actual_2 = \PPRH\Utils::on_pprh_admin();
+
+				$_SERVER['HTTP_REFERER'] = '';
+				$actual_3 = \PPRH\Utils::on_pprh_admin();
+			} else {
+				$_GET['page'] = 'pprh-plugin-settings';
+				$actual_1 = \PPRH\Utils::on_pprh_admin();
+
+				$_GET['page'] = 'post.php';
+				$actual_2 = \PPRH\Utils::on_pprh_admin();
+
+				$_GET['page'] = '';
+				$actual_3 = \PPRH\Utils::on_pprh_admin();
+			}
+
+			$this->assertEquals( true, $actual_1 );
+			$this->assertEquals( false, $actual_2 );
+			$this->assertEquals( false, $actual_3 );
+		}
+
+		else {
+			$actual_4 = \PPRH\Utils::on_pprh_admin();
+			$this->assertEquals( false, $actual_4 );
+		}
+
+	}
+
 
 }

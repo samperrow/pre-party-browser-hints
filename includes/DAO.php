@@ -167,7 +167,7 @@ class DAO {
 		$sql = "CREATE TABLE $table_name (
             id INT(9) NOT NULL AUTO_INCREMENT,
             url VARCHAR(255) DEFAULT '' NOT NULL,
-            hint_type VARCHAR(55) DEFAULT '' NOT NULL,
+            hint_type ENUM('dns-prefetch', 'prefetch', 'prerender', 'preconnect', 'preload') NOT NULL,
             status VARCHAR(55) DEFAULT 'enabled' NOT NULL,
             as_attr VARCHAR(55) DEFAULT '',
             type_attr VARCHAR(55) DEFAULT '',

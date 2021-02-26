@@ -179,10 +179,7 @@ class DisplayHints extends WP_List_Table {
 	}
 
 	public function on_post_page_and_global_hint( $item ) {
-		if ( ! empty( $item['post_id'] ) && PPRH_PRO_PLUGIN_ACTIVE && ! $this->_args['on_pprh_admin'] && ! wp_doing_ajax() ) {
-			return ( 'global' === $item['post_id'] );
-		}
-        return false;
+		return ( ! empty( $item['post_id'] ) && 'global' === $item['post_id'] && PPRH_PRO_PLUGIN_ACTIVE && ! $this->_args['on_pprh_admin'] );
 	}
 
 

@@ -6,9 +6,8 @@ use PHPUnit\Framework\TestCase;
 class GeneralSettingsTest extends TestCase {
 
 //	public function test_set_values () {
-//		if ( ! is_admin() )  {
-//			return;
-//		}
+//		if ( ! PPRH_IS_ADMIN ) return;
+
 //		$general_settings = new \PPRH\GeneralSettings();
 //		$general_settings->set_values();
 //		$actual = \PPRH\Utils::is_option_checked( 'pprh_disable_wp_hints' );
@@ -18,9 +17,8 @@ class GeneralSettingsTest extends TestCase {
 //	}
 
 	public function test_save_options():void {
-		if ( ! is_admin() )  {
-			return;
-		}
+		if ( ! PPRH_IS_ADMIN ) return;
+
 		$this->option_update( 'disable_wp_hints', 'false');
 		$this->option_update( 'html_head', 'true');
 	}

@@ -8,16 +8,17 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class SendHints {
 
-	protected $hints = array();
+	public $hints = array();
 
 	protected $send_hints_in_html = '';
 
+	// tested
 	public function init() {
 		$query = $this->get_query();
 		$this->hints = $this->get_resource_hints( $query );
 		$this->send_hints_in_html = get_option( 'pprh_html_head' );
 
-		if ( ( ! is_array( $this->hints ) ) || count( $this->hints ) < 1 ) {
+		if ( ! is_array( $this->hints ) || count( $this->hints ) < 1 ) {
 			return false;
 		}
 
@@ -28,8 +29,9 @@ class SendHints {
 
 	// tested
 	public function get_query() {
+		$table = PPRH_DB_TABLE;
 		$query = array(
-			'sql'  => " WHERE status = %s",
+			'sql'  => "SELECT * FROM $table WHERE status = %s",
 			'args' => array( 'enabled' )
 		);
 

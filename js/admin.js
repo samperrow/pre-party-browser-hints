@@ -195,18 +195,18 @@
 			xhr.onreadystatechange = function () {
 				if (xhr.readyState === 4 && xhr.status === 200) {
 					if (xhr.response.length > 0) {
-						var resp = JSON.parse(xhr.response);
+						var response = JSON.parse(xhr.response);
 						clearHintTable();
 
-						if ( Array.isArray(resp.result)) {
-							resp.result = resp.result[0];
+						if ( typeof response.result === "object") {
+							if (response.result.db_result) {
+								updateAdminNotice(response.result.db_result);
+								updateTable(response);
+								addEventListeners();
+								return;
+							}
 						}
-						if (resp && resp.result && resp.result.db_result) {
-							updateAdminNotice(resp.result.db_result);
-							updateTable(resp);
-							addEventListeners();
-							return;
-						}
+						console.error(response);
 					}
 				}
 			};
@@ -339,24 +339,6 @@
 			// window.open( 'https://sphacks.io/checkout', '_blank', '', false );
 			window.open( 'https://sphacks.io/checkout', '_blank', 'height=850,scrollbars=yes,width=700', false );
 		}
-
-		// function getPostId(table) {
-		// 	var homeOnlyHint = table.find( $('input.pprh_home.pprhHomePostHints').first() );
-		//
-		// 	if (! homeOnlyHint) {
-		// 		return '';
-		// 	}
-		// 	var postId = '';
-		//
-		// 	if (/page=pprh-plugin-settings/.test(currentURL)) {
-		// 		postId = (homeOnlyHint && homeOnlyHint.is(':checked')) ? '0' : 'global';
-		// 	} else if (/post\.php\?post=/.test(currentURL)) {
-		// 		postId = currentURL.match(/post\.php\?post=(\d*)/)[1];
-		// 	}
-		// 	return postId;
-		// }
-
-
 
 		return {
 			CreateAjaxReq: createAjaxReq,
