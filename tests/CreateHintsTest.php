@@ -11,23 +11,62 @@ final class CreateHintsTest extends TestCase {
 
 //	public function __construct() {}
 
-//	public function testConstructor(): void {
-//		$create_hints = new \PPRH\CreateHints();
-//		$new_hint = array();
-//
-//		$result = array(
-//			'new_hint' => $new_hint,
-//			'response' => array(
-//				'msg'     => '',
-//				'status'  => '',
-//				'success' => false
-//			),
-//		);
+	public function test_new_hint_controller():void {
+		$dao = new \PPRH\DAO();
+		$create_hints = new \PPRH\CreateHints();
+
+		$dummy_hint = TestUtils::create_hint_array( 'https://free-hint.com', 'dns-prefetch', '', '', '', 0 );
+		$dummy_pprh_hint = $create_hints->new_hint_controller( $dummy_hint );
+
+		$dummy_hint_result = $dao->insert_hint( $dummy_pprh_hint );
+
+		$actual = $create_hints->new_hint_controller( $dummy_hint );
+		$expected = $dao->create_db_result( false, '', 'A duplicate hint already exists!', 'create', null );
 
 
-//		$this->assertClassHasAttribute('result', \PPRH\CreateHints::class);
-//		$this->assertEquals($create_hints->result, $result);
-//	}
+		$this->assertEquals( $expected, $actual );
+		$hint_id = $dummy_hint_result->db_result['hint_id'];
+		$dao->delete_hint( $hint_id );
+	}
+
+	public function test_new_hint_controller_2():void {
+		$dao = new \PPRH\DAO();
+		$create_hints = new \PPRH\CreateHints();
+
+		$dummy_hint = TestUtils::create_hint_array( 'https://global-hint.com', 'dns-prefetch', '', '', '', 0, 'global', '/' );
+		$dummy_pprh_hint = $create_hints->new_hint_controller( $dummy_hint );
+
+		$dummy_hint_result = $dao->insert_hint( $dummy_pprh_hint );
+
+		$actual = $create_hints->new_hint_controller( $dummy_hint );
+//		$expected = $dao->create_db_result( false, '', 'A duplicate hint already exists!', 'create', null );
+
+
+		$this->assertEquals( $dummy_pprh_hint, $actual );
+		$hint_id = $dummy_hint_result->db_result['hint_id'];
+		$dao->delete_hint( $hint_id );
+	}
+
+	public function test_new_hint_controller_3():void {
+		$dao = new \PPRH\DAO();
+		$create_hints = new \PPRH\CreateHints();
+		$url = 'https://GlobalAndPost-hint.com';
+
+		$post_hint = TestUtils::create_hint_array( $url, 'dns-prefetch', '', '', '', 0, '2138', '/sitemap' );
+		$dummy_pprh_post_hint = $create_hints->new_hint_controller( $post_hint );
+
+		$dummy_post_hint_result = $dao->insert_hint( $dummy_pprh_post_hint );
+
+		$dummy_global_hint = TestUtils::create_hint_array( $url, 'dns-prefetch', '', '', '', 0, 'global', '/' );
+
+		$actual = $create_hints->new_hint_controller( $dummy_global_hint );
+//		$expected = $dao->create_db_result( false, '', 'A duplicate hint already exists!', 'create', null );
+
+
+		$this->assertEquals( $dummy_global_hint, $actual );
+		$hint_id = $dummy_post_hint_result->db_result['hint_id'];
+		$dao->delete_hint( $hint_id );
+	}
 
 	public function test_duplicate_hints_exist_free() {
 		$dao = new \PPRH\DAO();
@@ -89,11 +128,11 @@ final class CreateHintsTest extends TestCase {
 
 		$dummy_hint_result = $dao->insert_hint( $dummy_hint_1 );
 
-		$dummy_hint_2 = TestUtils::create_hint_array( $dup_url, 'preconnect', '', '', '', 0, 'global', '/test-page' );
+		$dummy_hint_2 = TestUtils::create_hint_array( $dup_url, 'preconnect', '', '', '', 0, '2326', '/test-page' );
 
 		$actual = $create_hints->duplicate_hints_exist( $dummy_hint_2 );
 
-		$this->assertEquals( false, $actual );
+		$this->assertEquals( true, $actual );
 		$dao->delete_hint( $dummy_hint_result->db_result['hint_id'] );
 	}
 

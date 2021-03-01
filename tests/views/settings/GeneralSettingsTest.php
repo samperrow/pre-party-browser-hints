@@ -19,26 +19,26 @@ class GeneralSettingsTest extends TestCase {
 	public function test_save_options():void {
 		if ( ! PPRH_IS_ADMIN ) return;
 
-		$this->option_update( 'disable_wp_hints', 'false');
-		$this->option_update( 'html_head', 'true');
+		$orig_value_1 = get_option( 'pprh_disable_wp_hints' );
+		$orig_value_2 = get_option( 'pprh_html_head' );
+
+		$this->option_update( 'pprh_disable_wp_hints', 'false');
+		$this->option_update( 'pprh_html_head', 'true');
+
+		update_option( 'pprh_disable_wp_hints', $orig_value_1 );
+		update_option( 'pprh_html_head', $orig_value_2 );
 	}
 
 //	public function test_save_options2():void {
-//		$this->option_update( 'disable_wp_hints', 'true');
-//		$this->option_update( 'html_head', 'false');
+//		$this->option_update( 'pprh_disable_wp_hints', 'true');
+//		$this->option_update( 'pprh_html_head', 'false');
 //	}
 
-	public function option_update( $short_option_name, $test_value ) {
+	public function option_update( $option_name, $test_value ) {
 		$general_settings = new \PPRH\GeneralSettings();
-		$full_option_name = 'pprh_' . $short_option_name;
-		$orig_value = get_option( $full_option_name );
-		if ( 'true' === $test_value) {
-			$_POST[$short_option_name] = $test_value;
-		}
+		$_POST[$option_name] = $test_value;
 		$general_settings->save_options();
-
-		$this->assertEquals(get_option( $full_option_name ), $test_value );
-		update_option( $full_option_name, $orig_value );
+		$this->assertEquals(get_option( $option_name ), $test_value );
 	}
 
 

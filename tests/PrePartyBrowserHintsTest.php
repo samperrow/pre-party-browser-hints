@@ -35,8 +35,8 @@ final class PrePartyBrowserHintsTest extends TestCase {
 
 
 	public function test_Load_dashboard():void {
-		$bool = current_user_can( 'manage_options' );
 		$load_admin = class_exists( \PPRH\LoadAdmin::class );
+		$bool = current_user_can( 'manage_options' );
 		$this->assertEquals( $load_admin, $bool );
 	}
 

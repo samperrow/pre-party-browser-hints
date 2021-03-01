@@ -174,7 +174,6 @@ class Preconnects {
 		foreach ( $hint_data['hints'] as $url ) {
 			$hint_arr['url'] = $url;
 			$hint = $create_hints->new_hint_controller( $hint_arr );
-//			$hint = CreateHints::create_pprh_hint( $hint_arr );
 
 			if ( false !== $hint ) {
 				$new_hints[] = $hint;

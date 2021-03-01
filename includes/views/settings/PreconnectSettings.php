@@ -19,8 +19,8 @@ class PreconnectSettings {
 
 	public function save_options() {
 	    $options = array(
-			'autoload_preconnects' => isset( $_POST['preconnect_autoload_preconnects'] )  ? 'true' : 'false',
-			'allow_unauth'         => isset( $_POST['preconnect_allow_unauth'] )          ? 'true' : 'false',
+			'autoload_preconnects' => isset( $_POST['pprh_preconnect_autoload_preconnects'] )  ? 'true' : 'false',
+			'allow_unauth'         => isset( $_POST['pprh_preconnect_allow_unauth'] )          ? 'true' : 'false',
             'preconnect_set'       => ( isset( $_POST['pprh_preconnect_set'] ) && 'Reset' === $_POST['pprh_preconnect_set'] ) ? 'false' : 'true'
         );
 
@@ -60,7 +60,7 @@ class PreconnectSettings {
 						<th><?php esc_html_e( 'Automatically set preconnect hints?', 'pprh' ); ?></th>
 
 						<td>
-							<input type="checkbox" name="preconnect_autoload_preconnects" value="true" <?php echo $this->autoload; ?>/>
+							<input type="checkbox" name="pprh_preconnect_autoload_preconnects" value="true" <?php echo $this->autoload; ?>/>
 							<p><?php esc_html_e( 'JavaScript, CSS, and images loaded from external domains will preconnect automatically.', 'pprh' ); ?></p>
 						</td>
 					</tr>
@@ -69,7 +69,7 @@ class PreconnectSettings {
 						<th><?php esc_html_e( 'Allow unauthenticated users to automatically set preconnect hints via Ajax?', 'pprh' ); ?></th>
 
 						<td>
-							<input type="checkbox" name="preconnect_allow_unauth" value="1" <?php echo $this->allow_unauth; ?>/>
+							<input type="checkbox" name="pprh_preconnect_allow_unauth" value="1" <?php echo $this->allow_unauth; ?>/>
 							<p><?php esc_html_e( 'This plugin has a feature which allows preconnect hints to be automatically created asynchronously in the background with Ajax by the first user to visit a page (assuming the user has that option to be reset). There is an extremely remote possibility that if a visitor knew the hints would be set, they could choose to manually load many external scripts, which could trick the plugin script into accepting these as valid preconnect hints. But again this is a very remote possiblity and only a nuisance, not a vulnerability, due to the strict sanitization procedures in place.', 'pprh' ); ?></p>
 						</td>
 					</tr>

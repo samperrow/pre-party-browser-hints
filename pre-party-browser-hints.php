@@ -26,11 +26,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'PPRH_ABS_DIR', WP_PLUGIN_DIR . '/pre-party-browser-hints/' );
-define( 'PPRH_REL_DIR', plugins_url() . '/pre-party-browser-hints/' );
-define( 'PPRH_HOME_URL', admin_url() . 'admin.php?page=pprh-plugin-setttings' );
-define( 'PPRH_DEBUG', true );
-
 $pprh_load = new \PPRH\Pre_Party_Browser_Hints();
 
 register_activation_hook( __FILE__, array( $pprh_load, 'activate_plugin' ) );
@@ -39,6 +34,10 @@ add_action( 'wpmu_new_blog', array( $pprh_load, 'activate_plugin' ) );
 class Pre_Party_Browser_Hints {
 
 	public function __construct() {
+	    add_action( 'init', array( $this, 'load_plugin' ) );
+	}
+
+	public function load_plugin() {
 		$this->load_common_files();
 		$this->create_constants();
 
@@ -47,18 +46,16 @@ class Pre_Party_Browser_Hints {
 		}
 
 		if ( is_admin() ) {
-			add_action( 'wp_loaded', array( $this, 'load_admin' ), 10, 0 );
+			add_action( 'wp_loaded', array( $this, 'load_admin' ) );
+//			$this->load_admin();
 		} else {
-			add_action( 'wp_loaded', array( $this, 'load_client' ), 10, 0 );
+			$this->load_client();
 		}
 
 		// this needs to be loaded front end and back end bc Ajax needs to be able to communicate between the two.
-//		add_action( 'wp_loaded', function() {
-			include_once PPRH_ABS_DIR . 'includes/Preconnects.php';
-			$preconnects = new Preconnects();
-//			$preconnects->init_controller();
-//        }, 10, 0 );
-	}
+		include_once PPRH_ABS_DIR . 'includes/Preconnects.php';
+		$preconnects = new Preconnects();
+    }
 
 	public function load_admin() {
 	    $utils = new Utils();
@@ -68,6 +65,7 @@ class Pre_Party_Browser_Hints {
 		if ( ! $on_pprh_page ) {
 			return;
 		}
+//		echo 'asdfasdfasf';
 
 		add_action( 'admin_enqueue_scripts', array( $this, 'register_admin_files' ) );
 		add_filter( 'set-screen-option', array( $this, 'pprh_set_screen_option' ), 10, 3 );
@@ -103,14 +101,18 @@ class Pre_Party_Browser_Hints {
 			define( 'PPRH_VERSION', $plugin_version );
 			define( 'PPRH_DB_TABLE', $table );
 			define( 'PPRH_PRO_PLUGIN_ACTIVE', $pprh_pro_active );
+			define( 'PPRH_ABS_DIR', WP_PLUGIN_DIR . '/pre-party-browser-hints/' );
+			define( 'PPRH_REL_DIR', plugins_url() . '/pre-party-browser-hints/' );
+			define( 'PPRH_HOME_URL', admin_url() . 'admin.php?page=pprh-plugin-setttings' );
+			define( 'PPRH_DEBUG', true );
         }
 	}
 
 	public function load_common_files() {
-		include_once PPRH_ABS_DIR . 'includes/Utils.php';
-		include_once PPRH_ABS_DIR . 'includes/DAO.php';
-		include_once PPRH_ABS_DIR . 'includes/CreateHints.php';
-		include_once PPRH_ABS_DIR . 'includes/NewHint.php';
+		include_once 'includes/Utils.php';
+		include_once 'includes/DAO.php';
+		include_once 'includes/CreateHints.php';
+		include_once 'includes/NewHint.php';
 	}
 
 	public function load_admin_menu() {
@@ -133,9 +135,9 @@ class Pre_Party_Browser_Hints {
 		}
 
 		$on_pprh_admin = Utils::on_pprh_admin();
-
 		include_once PPRH_ABS_DIR . 'includes/LoadAdmin.php';
-        $load_admin = new LoadAdmin( $on_pprh_admin );
+
+		$load_admin = new LoadAdmin( $on_pprh_admin );
 		$load_admin->load_plugin_admin_files();
 		$load_admin->show_plugin_dashboard();
 	}

@@ -10,16 +10,22 @@ class CreateHints {
 
 	public $result = array();
 
+	public $duplicate_hints = array();
+
 //	public function __construct() {}
 
 
 
 	public function resolve_duplicate_hints( $pprh_hint ) {
-		$dao = new DAO();
+		if ( ! empty( $pprh_hint['post_id'] ) ) {
+			$clear_duplicate_nonglobals = get_option( 'pprh_pro_clear_dup_nonglobals' );
 
-
-
-//		return $resp;
+			if ( 'global' === $pprh_hint['post_id'] ) {
+				apply_filters( 'pprh_ch_resolve_duplicate_hints',  $this->duplicate_hints );
+			} elseif ( 'true' === $clear_duplicate_nonglobals ) {
+				apply_filters( 'pprh_ch_excessive_dup_hints_exist', $this->duplicate_hints );
+			}
+		}
 	}
 
 	public function new_hint_controller( $raw_data ) {
@@ -27,10 +33,15 @@ class CreateHints {
 		$pprh_hint = $this->create_hint( $raw_data );
 
 		if ( is_array( $pprh_hint ) ) {
-			$verified = $this->verify_hint( $pprh_hint );
+			$duplicate_hints_exist = $this->duplicate_hints_exist( $pprh_hint );
 
-			if ( ! $verified ) {
-				return $dao->create_db_result( false, '', 'A duplicate hint already exists!', 'create', null );
+			if ( $duplicate_hints_exist ) {
+
+				if ( empty( $pprh_hint['post_id'] ) ) {
+					return $dao->create_db_result( false, '', 'A duplicate hint already exists!', 'create', null );
+				}
+
+				$this->resolve_duplicate_hints( $pprh_hint );
 			}
 
 			return $pprh_hint;
@@ -39,24 +50,11 @@ class CreateHints {
 		return false;
 	}
 
-	public function verify_hint( $pprh_hint ) {
-		$duplicate_hints_exist = $this->duplicate_hints_exist( $pprh_hint );
-
-		if ( $duplicate_hints_exist ) {
-			if ( ! empty( $pprh_hint['post_id'] ) && 'global' === $pprh_hint['post_id'] ) {
-				apply_filters( 'pprh_ch_resolve_duplicate_hints', $pprh_hint );
-			} else {
-				return false;
-			}
-		}
-		return true;
-	}
-
 	// hint creation utils
 
-	public function duplicate_hints_exist( $new_hint ) {
-		$duplicate_hints = $this->get_duplicate_hints( $new_hint );
-		return ( count( $duplicate_hints ) > 0 );
+	public function duplicate_hints_exist( $pprh_hint ) {
+		$this->duplicate_hints = $this->get_duplicate_hints( $pprh_hint );
+		return ( count( $this->duplicate_hints ) > 0 );
 	}
 
 

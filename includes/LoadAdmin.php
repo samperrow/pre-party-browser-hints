@@ -14,13 +14,7 @@ class LoadAdmin {
 
 	public function __construct( $on_pprh_admin ) {
         $this->on_pprh_admin = $on_pprh_admin;
-
 	}
-
-//		add_action( 'pprh_admin_notice', array( $this, 'admin_notice' ), 10, 1 );
-//		$this->load_plugin_admin_files();
-//		$this->show_plugin_dashboard();
-//
 
 	public function load_plugin_admin_files() {
 		include_once PPRH_ABS_DIR . 'includes/views/InsertHints.php';
