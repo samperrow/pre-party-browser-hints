@@ -190,12 +190,12 @@ final class UtilsTest extends TestCase {
 	}
 
 	public function test_create_hint_array():void {
-		$expected = TestUtils::create_hint_array( 'test.com', 'preconnect', 'audio', 'font/woff2', 'crossorigin', 1 );
+		$expected = TestUtils::create_hint_array( 'test.com', 'preconnect', 'audio', 'font/woff2', 'crossorigin' );
 
 		$test1 = array(
 			'url'          => 'test.com',
 			'hint_type'    => 'preconnect',
-			'auto_created' => 1,
+//			'auto_created' => 1,
 			'as_attr'      => 'audio',
 			'type_attr'    => 'font/woff2',
 			'crossorigin'  => 'crossorigin'

@@ -112,6 +112,7 @@ class Pre_Party_Browser_Hints {
 		include_once 'includes/Utils.php';
 		include_once 'includes/DAO.php';
 		include_once 'includes/CreateHints.php';
+		include_once 'includes/CreateHintsUtil.php';
 		include_once 'includes/NewHint.php';
 	}
 

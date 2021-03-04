@@ -39,7 +39,7 @@ class DAO {
 	public function insert_hint( $new_hint ) {
 		global $wpdb;
 		$current_user = wp_get_current_user()->display_name;
-		$auto_created = ( ! empty( $new_hint['auto_created'] ) ? (int) $new_hint['auto_created'] : 0 );
+//		$auto_created = ( ! empty( $new_hint['auto_created'] ) ? (int) $new_hint['auto_created'] : 0 );
 
 		$args = array(
 			'types'   => array( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d' ),
@@ -51,7 +51,6 @@ class DAO {
 				'type_attr'    => $new_hint['type_attr'],
 				'crossorigin'  => $new_hint['crossorigin'],
 				'created_by'   => $current_user,
-				'auto_created' => $auto_created,
 			)
 		);
 
@@ -173,7 +172,7 @@ class DAO {
             type_attr VARCHAR(55) DEFAULT '',
             crossorigin VARCHAR(55) DEFAULT '',
             created_by VARCHAR(55) DEFAULT '' NOT NULL,
-            auto_created INT(2) DEFAULT 0 NOT NULL,
+//            auto_created INT(2) DEFAULT 0 NOT NULL,
             PRIMARY KEY  (id)
         ) $charset;";
 

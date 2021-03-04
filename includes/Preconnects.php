@@ -159,21 +159,19 @@ class Preconnects {
 
 
 
-	// tested
 	public function process_hints( $hint_data ) {
-		$create_hints = new \PPRH\CreateHints();
+		$create_hints_util = new \PPRH\CreateHintsUtil();
 		$new_hints = array();
 
 		$hint_arr = array(
-			'hint_type'    => 'preconnect',
-			'auto_created' => 1
+			'hint_type' => 'preconnect'
 		);
 
 		$hint_arr = apply_filters( 'pprh_preconnects_append_hint_object', $hint_arr, $hint_data );
 
 		foreach ( $hint_data['hints'] as $url ) {
 			$hint_arr['url'] = $url;
-			$hint = $create_hints->new_hint_controller( $hint_arr );
+			$hint = $create_hints_util->new_hint_controller( $hint_arr );
 
 			if ( false !== $hint ) {
 				$new_hints[] = $hint;
