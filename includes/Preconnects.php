@@ -104,6 +104,7 @@ class Preconnects {
 		$js_arr = array(
 			'hints'      => array(),
 			'nonce'      => wp_create_nonce( 'pprh_ajax_nonce' ),
+			'hint_type'  => 'preconnect',
 			'admin_url'  => admin_url() . 'admin-ajax.php',
 			'start_time' => time()
 		);
@@ -141,13 +142,16 @@ class Preconnects {
 
 			if ( count( $raw_hint_data['hints'] ) > 0 ) {
 				$new_hints = $this->process_hints( $raw_hint_data );
-				$db_results = $this->insert_hints_to_db( $new_hints );
+
+				if ( count( $new_hints ) > 0 ) {
+					$db_results = $this->insert_hints_to_db( $new_hints );
+				}
 			}
 
-			$updated = apply_filters( 'pprh_preconnects_update_options', $raw_hint_data );
-			if ( is_null( $updated ) ) {
-				$this->update_options();
-			}
+//			$updated = apply_filters( 'pprh_preconnects_update_options', $raw_hint_data );
+//			if ( is_null( $updated ) ) {
+//				$this->update_options();
+//			}
 
 			if ( defined( 'PPRH_TESTING' ) && PPRH_TESTING ) {
 				return $db_results;
@@ -163,17 +167,12 @@ class Preconnects {
 		$create_hints_util = new \PPRH\CreateHintsUtil();
 		$new_hints = array();
 
-		$hint_arr = array(
-			'hint_type' => 'preconnect'
-		);
-
-		$hint_arr = apply_filters( 'pprh_preconnects_append_hint_object', $hint_arr, $hint_data );
-
 		foreach ( $hint_data['hints'] as $url ) {
+			$hint_arr = $hint_data;
 			$hint_arr['url'] = $url;
 			$hint = $create_hints_util->new_hint_controller( $hint_arr );
 
-			if ( false !== $hint ) {
+			if ( is_array( $hint ) ) {
 				$new_hints[] = $hint;
 			}
 		}

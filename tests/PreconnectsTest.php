@@ -59,7 +59,6 @@ class PreconnectsTest extends TestCase {
 //
 //		$arr['reset_pro'] = array(
 //			'post_id'       => $args['post_id'],
-//			'post_url'      => $args['post_url'],
 //			'reset_globals' => $args['reset_globals'],
 //			'reset_home'    => $args['reset_home'],
 //			'post_reset'    => $args['post_reset']
@@ -74,7 +73,6 @@ class PreconnectsTest extends TestCase {
 		$allow_unauth = 'true';
 		$preconnects_set = 'true';
 		$post_id = '2326';
-		$post_url = '/test-page';
 		$reset_globals = 'false';
 		$do_reset = false;
 
@@ -88,7 +86,6 @@ class PreconnectsTest extends TestCase {
 				'preconnects_set' => $preconnects_set,
 				'reset_pro' => array(
 					'post_id'       => $post_id,
-					'post_url'      => $post_url,
 					'reset_globals' => $reset_globals,
 					'perform_reset' => $do_reset,
 				)
@@ -366,7 +363,6 @@ class PreconnectsTest extends TestCase {
 		);
 
 		$expected_arr_1['post_id'] = '';
-		$expected_arr_1['post_url'] = '';
 		$expected_arr_1['reset_globals'] = 'false';
 
 		if ( ! PPRH_IS_ADMIN && \PPRH\Utils::pprh_is_plugin_active() ) {
@@ -379,7 +375,6 @@ class PreconnectsTest extends TestCase {
 
 		$preconnects->config['reset_data']['reset_pro'] = array(
 			'post_id'  => '100',
-			'post_url' => '/asdf',
 		);
 
 		$expected_object_2 = apply_filters( 'pprh_preconnects_append_hint_object', $expected_arr_1, $preconnects->config['reset_data']['reset_pro'] );
@@ -541,7 +536,6 @@ class PreconnectsTest extends TestCase {
 			'admin_url'  => admin_url() . 'admin-ajax.php',
 			'start_time' => time(),
 			'post_id'    => 'global',
-			'post_url'   => '/test',
 			'reset_globals' => 'true'
 		);
 

@@ -124,7 +124,7 @@
 			var hint_url = elems.url.val().replace(/'|"/g, '');
 			var hintType = elems.hint_type.find('input:checked').val()
 
-			return {
+			var obj =  {
 				url: hint_url,
 				hint_type: hintType,
 				crossorigin: elems.crossorigin.is(':checked') ? 'crossorigin' : '',
@@ -133,6 +133,12 @@
 				action: operation,
 				hint_ids: (operation === 'update') ? tableID.split('pprh-edit-')[1] : []
 			};
+
+			if (typeof pprhAdminJS.pprhProAdminJS === "object") {
+				obj.post_id = pprhAdminJS.pprhProAdminJS.GetPostId();
+			}
+
+			return obj;
 		}
 
 		function createHint(e, tableID, operation) {

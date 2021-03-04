@@ -176,13 +176,13 @@ final class UtilsTest extends TestCase {
 
 	public function test_create_pprh_hint_dup_hints():void {
 		$dao = new \PPRH\DAO();
-		$create_hints = new \PPRH\CreateHints();
+		$create_hints_util = new \PPRH\CreateHintsUtil();
 		$data1 = TestUtils::create_hint_array( 'blah.com', 'preconnect' );
-		$hint1 = $create_hints->create_hint($data1);
+		$hint1 = $create_hints_util->create_hint($data1);
 
 		$actual1 = $dao->insert_hint( $hint1 );
 
-		$hint2 = $create_hints->new_hint_controller( $hint1 );
+		$hint2 = $create_hints_util->new_hint_controller( $hint1 );
 
 		$this->assertEquals( true, $actual1->db_result['success'] );
 		$this->assertEquals( false, $hint2->db_result['success'] );
@@ -195,13 +195,12 @@ final class UtilsTest extends TestCase {
 		$test1 = array(
 			'url'          => 'test.com',
 			'hint_type'    => 'preconnect',
-//			'auto_created' => 1,
 			'as_attr'      => 'audio',
 			'type_attr'    => 'font/woff2',
 			'crossorigin'  => 'crossorigin'
 		);
 
-		$actual = apply_filters( 'pprh_ch_append_hint', $test1, array('post_id' => '', 'post_url' => '') );
+		$actual = apply_filters( 'pprh_ch_append_hint', $test1, array() );
 		$this->assertEquals( $expected, $actual );
 	}
 
