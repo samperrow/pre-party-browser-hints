@@ -152,10 +152,10 @@ class Preconnects {
 			}
 		}
 
-//		$updated = apply_filters( 'pprh_preconnects_update_options', $raw_hint_data );
-//		if ( is_null( $updated ) ) {
-//			$this->update_options();
-//		}
+		$updated = apply_filters( 'pprh_preconnects_update_options', $raw_hint_data );
+		if ( is_null( $updated ) ) {
+			$this->update_options();
+		}
 
 		return true;
 //		if ( defined( 'PPRH_TESTING' ) && PPRH_TESTING ) {
