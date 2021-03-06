@@ -530,14 +530,8 @@ class PreconnectsTest extends TestCase {
 		$url1 = 'https://fonts.gstaticTest.com';
 		$url2 = 'https://fonts.gstaticTest2.net';
 
-		$test_data = array(
-			'hints' => array( $url1, $url2 ),
-			'nonce'      => wp_create_nonce( 'pprh_ajax_nonce' ),
-			'admin_url'  => admin_url() . 'admin-ajax.php',
-			'start_time' => time(),
-			'post_id'    => 'global',
-			'reset_globals' => 'true'
-		);
+		$test_data = $preconnects->create_js_object();
+		$test_data['hints'] = array( $url1, $url2 );
 
 		$_POST['pprh_data'] = json_encode( $test_data );
 		$_REQUEST['_ajax_nonce'] = $expected_nonce;
@@ -556,18 +550,36 @@ class PreconnectsTest extends TestCase {
 
 	}
 
+//	public function test_do_ajax_callback():void {
+//		$preconnects = new \PPRH\Preconnects();
+//
+//		$test_data = $preconnects->create_js_object();
+//		$test_data['hints'] = array( 'testtest.com' );
+//
+//		$_POST['pprh_data'] = json_encode( $test_data );
+//
+//
+//		$preconnects->config['reset_data']['allow_unauth'] = 'false';
+//
+//		$actual_1 = $preconnects->do_ajax_callback();
+//
+//		$preconnects->config['reset_data']['allow_unauth'] = 'true';
+//		$actual_2 = $preconnects->do_ajax_callback();
+//
+//
+//
+//		$this->assertEquals( false, $actual_1 );
+//		$this->assertEquals( true, $actual_2 );
+//
+//	}
 
 	public function test_process_hints() {
 		$preconnects = new \PPRH\Preconnects();
 		$url1 = 'https://test-process-hints.com';
 		$url2 = 'https://test-process-hints.net';
 
-		$test_data = array(
-			'hints' => array( $url1, $url2 ),
-			'nonce'      => wp_create_nonce( 'pprh_ajax_nonce' ),
-			'admin_url'  => admin_url() . 'admin-ajax.php',
-			'start_time' => time()
-		);
+		$test_data = $preconnects->create_js_object();
+		$test_data['hints'] = array( $url1, $url2 );
 
 		$result_arr = $preconnects->process_hints( $test_data );
 

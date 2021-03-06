@@ -10,6 +10,28 @@ if ( ! defined( 'ABSPATH' ) ) {
 class CreateHintsUtilTest extends TestCase {
 
 
+
+	public function test_handle_duplicate_hints_free() {
+		$dao = new \PPRH\DAO();
+		$create_hints_util = new \PPRH\CreateHintsUtil();
+
+		$hint_1 = TestUtils::create_hint_array( 'https://dup-hint1.com', 'dns-prefetch', '', '', '' );
+
+		$pprh_hint_1 = $create_hints_util->new_hint_controller( $hint_1 );
+		$db_response = $dao->insert_hint($pprh_hint_1);
+
+		$hint_2 = TestUtils::create_hint_array( 'https://dup-hint1.com', 'dns-prefetch', '', '', '');
+		$actual = $create_hints_util->new_hint_controller( $hint_2 );
+
+		$expected = $dao->create_db_result( false, '', 'A duplicate hint already exists!', 'create', null );
+
+		// attempt to create post hint when global hint is already in place should fail.
+		$this->assertEquals( $expected, $actual );
+		$dao->delete_hint( $db_response->db_result['hint_id'] );
+	}
+
+
+
 	public function test_handle_duplicate_hints_1() {
 		$dao = new \PPRH\DAO();
 		$create_hints_util = new \PPRH\CreateHintsUtil();
@@ -30,19 +52,23 @@ class CreateHintsUtilTest extends TestCase {
 	}
 
 	public function test_handle_duplicate_hints_2() {
+		if ( ! \PPRH\Utils::pprh_is_plugin_active() ) {
+			return;
+		}
+
 		$dao = new \PPRH\DAO();
 		$create_hints_util = new \PPRH\CreateHintsUtil();
 
-		$hint_1 = TestUtils::create_hint_array( 'https://dup-hint2.com', 'dns-prefetch', '', '', '', '2138' );
+		$hint_1 = TestUtils::create_hint_array( 'https://dup-hint2.com', 'dns-prefetch', '', '', '', '2138');
+		$hint_2 = TestUtils::create_hint_array( 'https://dup-hint2.com', 'dns-prefetch', '', '', '', 'global');
 
 		$pprh_hint_1 = $create_hints_util->new_hint_controller( $hint_1 );
 		$db_response = $dao->insert_hint($pprh_hint_1);
 
-		$hint_2 = TestUtils::create_hint_array( 'https://dup-hint2.com', 'dns-prefetch', '', '', '', 'global' );
 		$actual = $create_hints_util->new_hint_controller( $hint_2 );
 		$expected = $create_hints_util->create_hint($hint_2);
 
-		// attempt to create post hint when global hint is already in place should fail.
+
 		$this->assertEquals( $expected, $actual );
 		$dao->delete_hint( $db_response->db_result['hint_id'] );
 	}
@@ -66,6 +92,10 @@ class CreateHintsUtilTest extends TestCase {
 	}
 
 	public function test_new_hint_controller_2():void {
+		if ( ! \PPRH\Utils::pprh_is_plugin_active() ) {
+			return;
+		}
+
 		$dao = new \PPRH\DAO();
 		$create_hints_util = new \PPRH\CreateHintsUtil();
 
@@ -81,6 +111,10 @@ class CreateHintsUtilTest extends TestCase {
 	}
 
 	public function test_new_hint_controller_3():void {
+		if ( ! \PPRH\Utils::pprh_is_plugin_active() ) {
+			return;
+		}
+
 		$dao = new \PPRH\DAO();
 		$create_hints_util = new \PPRH\CreateHintsUtil();
 		$url = 'https://GlobalAndPost-hint.com';
@@ -215,9 +249,9 @@ class CreateHintsUtilTest extends TestCase {
 		$dao->delete_hint( $dummy_hint_result->db_result['hint_id'] );
 	}
 
-	public function test_duplicate_hints_exist() {
-
-	}
+//	public function test_duplicate_hints_exist() {
+//
+//	}
 
 	public function test_resolve_duplicate_hints() {
 		$create_hints_util = new \PPRH\CreateHintsUtil();
@@ -229,7 +263,11 @@ class CreateHintsUtilTest extends TestCase {
 		$actual_2 = $create_hints_util->resolve_duplicate_hints( $hint_2 );
 
 
+		$expected = \PPRH\Utils::pprh_is_plugin_active();
+
+
 		$this->assertEquals( false, $actual_1 );
-		$this->assertEquals( true, $actual_2 );
+		$this->assertEquals( $expected, $actual_2 );
 	}
+
 }

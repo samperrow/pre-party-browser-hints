@@ -127,38 +127,40 @@ class Preconnects {
 		return ( $allow_unauth_bool || $user_logged_in );
 	}
 
-
-
 	public function pprh_post_domain_names() {
 		if ( isset( $_POST['pprh_data'] ) && wp_doing_ajax() ) {
-			check_ajax_referer( 'pprh_ajax_nonce', 'nonce' );
-
-			if ( ! $this->allow_unauth_users( $this->config['reset_data']['allow_unauth'] ) ) {
-				return false;
-			}
-
-			$db_results = array();
-			$raw_hint_data = json_decode( wp_unslash( $_POST['pprh_data'] ), true );
-
-			if ( count( $raw_hint_data['hints'] ) > 0 ) {
-				$new_hints = $this->process_hints( $raw_hint_data );
-
-				if ( count( $new_hints ) > 0 ) {
-					$db_results = $this->insert_hints_to_db( $new_hints );
-				}
-			}
-
-//			$updated = apply_filters( 'pprh_preconnects_update_options', $raw_hint_data );
-//			if ( is_null( $updated ) ) {
-//				$this->update_options();
-//			}
-
-			if ( defined( 'PPRH_TESTING' ) && PPRH_TESTING ) {
-				return $db_results;
-			}
-
+			check_ajax_referer('pprh_ajax_nonce', 'nonce');
+			$this->do_ajax_callback();
 		}
 		wp_die();
+	}
+
+	public function do_ajax_callback() {
+		if ( ! $this->allow_unauth_users( $this->config['reset_data']['allow_unauth'] ) ) {
+			return false;
+		}
+
+		$db_results = array();
+		$raw_hint_data = json_decode( wp_unslash( $_POST['pprh_data'] ), true );
+
+		if ( count( $raw_hint_data['hints'] ) > 0 ) {
+			$new_hints = $this->process_hints( $raw_hint_data );
+
+			if ( count( $new_hints ) > 0 ) {
+//				$db_results = $this->insert_hints_to_db( $new_hints );
+				$this->insert_hints_to_db( $new_hints );
+			}
+		}
+
+//		$updated = apply_filters( 'pprh_preconnects_update_options', $raw_hint_data );
+//		if ( is_null( $updated ) ) {
+//			$this->update_options();
+//		}
+
+		return true;
+//		if ( defined( 'PPRH_TESTING' ) && PPRH_TESTING ) {
+//			return $db_results;
+//		}
 	}
 
 
@@ -171,7 +173,7 @@ class Preconnects {
 			$hint_arr = $hint_data;
 			$hint_arr['url'] = $url;
 			$hint = $create_hints_util->new_hint_controller( $hint_arr );
-
+//var_dump($hint);
 			if ( is_array( $hint ) ) {
 				$new_hints[] = $hint;
 			}
