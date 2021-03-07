@@ -37,6 +37,7 @@ class ActivatePlugin {
 		add_option( 'pprh_prefetch_ignoreKeywords', $default_prefetch_ignore_links, '', 'yes' );
 		add_option( 'pprh_prefetch_maxRPS', '3', '', 'yes' );
 		add_option( 'pprh_prefetch_hoverDelay', '50', '', 'yes' );
+		add_option( 'pprh_prefetch_max_prefetches', '10', '', 'yes' );
 	}
 
 	private function update_option_names() {

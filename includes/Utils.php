@@ -105,4 +105,9 @@ class Utils {
 	    }
 	}
 
+	public static function get_all_hints() {
+		$dao = new DAO();
+		return $dao->get_all_hints();
+	}
+
 }

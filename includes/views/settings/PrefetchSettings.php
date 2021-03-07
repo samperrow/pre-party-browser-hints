@@ -12,6 +12,7 @@ class PrefetchSettings {
 	public $prefetch_enabled = false;
 	public $ignoreKeywords;
 	public $prefetch_initialization_delay = 0;
+	public $prefetch_max_prefetches;
 
 	public function get_each_keyword( $keywords ) {
 	    $str = '';
@@ -43,6 +44,7 @@ class PrefetchSettings {
 			'pprh_prefetch_ignoreKeywords'          => isset( $_POST['pprh_prefetch_ignoreKeywords'] )          ? $this->turn_textarea_to_json( $_POST['pprh_prefetch_ignoreKeywords'] ) : '',
 			'pprh_prefetch_maxRPS'                  => isset( $_POST['pprh_prefetch_maxRPS'] )                  ? Utils::strip_non_numbers( $_POST['pprh_prefetch_maxRPS'] ) : '3',
 			'pprh_prefetch_hoverDelay'              => isset( $_POST['pprh_prefetch_hoverDelay'] )              ? Utils::strip_non_numbers( $_POST['pprh_prefetch_hoverDelay'] ) : '50',
+			'pprh_prefetch_max_prefetches'          => isset( $_POST['pprh_prefetch_max_prefetches'] )          ? Utils::strip_non_numbers( $_POST['pprh_prefetch_max_prefetches'] ) : '10',
 		);
 
 		update_option( 'pprh_prefetch_enabled',                 $options['pprh_prefetch_enabled'] );
@@ -51,6 +53,7 @@ class PrefetchSettings {
 		update_option( 'pprh_prefetch_ignoreKeywords',          $options['pprh_prefetch_ignoreKeywords'] );
 		update_option( 'pprh_prefetch_maxRPS',                  $options['pprh_prefetch_maxRPS'] );
 		update_option( 'pprh_prefetch_hoverDelay',              $options['pprh_prefetch_hoverDelay'] );
+		update_option( 'pprh_prefetch_max_prefetches',          $options['pprh_prefetch_max_prefetches'] );
 	}
 
 	public function show_settings() {
@@ -65,6 +68,7 @@ class PrefetchSettings {
 		$prefetch_ignoreKeywords = get_option( 'pprh_prefetch_ignoreKeywords' );
 		$this->ignoreKeywords = json_decode( $prefetch_ignoreKeywords, true );
 		$this->prefetch_initialization_delay = Utils::esc_get_option( 'pprh_prefetch_delay' );
+		$this->prefetch_max_prefetches = Utils::esc_get_option( 'pprh_prefetch_max_prefetches' );
 	}
 
 	public function markup() {
@@ -132,6 +136,16 @@ class PrefetchSettings {
 							<p><?php esc_html_e( 'Set a short pause after the mouse hovers over a link before the prefetch hint is created. Default is 50 milliseconds.', 'pprh' ); ?></p>
 						</td>
 					</tr>
+
+                    <tr>
+                        <th><?php esc_html_e( 'Delay in prefetching links on mouse hover (milliseconds)', 'pprh' ); ?></th>
+
+                        <td>
+                            <input type="number" step="1" min="1" max="100" name="pprh_prefetch_max_prefetches" value="<?php echo $this->prefetch_max_prefetches; ?>">
+                            <p><?php esc_html_e( 'Set the maximum number of prefetch hints you would like to be loaded. This can save some server resources. Default is 10.', 'pprh' ); ?></p>
+                        </td>
+                    </tr>
+
 
 					</tbody>
 				</table>

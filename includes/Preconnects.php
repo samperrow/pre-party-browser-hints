@@ -140,14 +140,12 @@ class Preconnects {
 			return false;
 		}
 
-		$db_results = array();
 		$raw_hint_data = json_decode( wp_unslash( $_POST['pprh_data'] ), true );
 
 		if ( count( $raw_hint_data['hints'] ) > 0 ) {
 			$new_hints = $this->process_hints( $raw_hint_data );
 
 			if ( count( $new_hints ) > 0 ) {
-//				$db_results = $this->insert_hints_to_db( $new_hints );
 				$this->insert_hints_to_db( $new_hints );
 			}
 		}
@@ -158,22 +156,19 @@ class Preconnects {
 		}
 
 		return true;
-//		if ( defined( 'PPRH_TESTING' ) && PPRH_TESTING ) {
-//			return $db_results;
-//		}
 	}
 
 
 
 	public function process_hints( $hint_data ) {
-		$create_hints_util = new \PPRH\CreateHintsUtil();
+		$create_hints_util = new CreateHintsUtil();
 		$new_hints = array();
 
 		foreach ( $hint_data['hints'] as $url ) {
 			$hint_arr = $hint_data;
 			$hint_arr['url'] = $url;
 			$hint = $create_hints_util->new_hint_controller( $hint_arr );
-//var_dump($hint);
+
 			if ( is_array( $hint ) ) {
 				$new_hints[] = $hint;
 			}

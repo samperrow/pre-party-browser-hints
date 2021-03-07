@@ -558,7 +558,6 @@ class PreconnectsTest extends TestCase {
 //
 //		$_POST['pprh_data'] = json_encode( $test_data );
 //
-//
 //		$preconnects->config['reset_data']['allow_unauth'] = 'false';
 //
 //		$actual_1 = $preconnects->do_ajax_callback();
@@ -566,11 +565,8 @@ class PreconnectsTest extends TestCase {
 //		$preconnects->config['reset_data']['allow_unauth'] = 'true';
 //		$actual_2 = $preconnects->do_ajax_callback();
 //
-//
-//
 //		$this->assertEquals( false, $actual_1 );
 //		$this->assertEquals( true, $actual_2 );
-//
 //	}
 
 	public function test_process_hints() {

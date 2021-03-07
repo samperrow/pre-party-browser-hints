@@ -8,6 +8,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class AjaxOps {
 
+	public $all_hints = array();
+
 	public function __construct() {
 		add_action( 'wp_ajax_pprh_update_hints', array( $this, 'pprh_update_hints' ) );
     }
@@ -22,9 +24,10 @@ class AjaxOps {
 				$result = $this->handle_action( $data, $action );
 
 				if ( is_object( $result ) ) {
+					$this->all_hints = Utils::get_all_hints();
 					$on_pprh_admin = Utils::on_pprh_admin();
-					$display_hints = new DisplayHints($on_pprh_admin);
-					$json = $display_hints->ajax_response( $result );
+					$display_hints = new DisplayHints( $this->all_hints, $on_pprh_admin );
+					$json = $display_hints->ajax_response( $result, $this->all_hints );
 
 					if ( defined( 'PPRH_TESTING' ) && PPRH_TESTING ) {
 						return $json;
@@ -63,7 +66,7 @@ class AjaxOps {
 
 	protected function create_update_hint( $data, $action ) {
 		$dao = new DAO();
-		$create_hints_util = new CreateHintsUtil();
+		$create_hints_util = new CreateHintsUtil($this->all_hints);
 		$pprh_hint = $create_hints_util->new_hint_controller( $data );
 
 		if ( is_array( $pprh_hint ) ) {

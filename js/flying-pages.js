@@ -13,14 +13,6 @@ function flyingPages() {
     const toPrefetch = new Set();
     const alreadyPrefetched = new Set();
 
-    var fp_data = {
-        maxRPS: Number(pprh_fp_data.maxRPS),
-        delay: Number(pprh_fp_data.delay),
-        hoverDelay: Number(pprh_fp_data.hoverDelay),
-        ignoreKeywords: pprh_fp_data.ignoreKeywords.replace(/\s/g, '').split(','),
-        debug: 'true' === pprh_fp_data.debug
-    };
-
     // Check browser support for native 'prefetch'
     const prefetcher = document.createElement("link");
     const isSupported =
@@ -29,6 +21,17 @@ function flyingPages() {
         prefetcher.relList.supports("prefetch") &&
         window.IntersectionObserver &&
         "isIntersecting" in IntersectionObserverEntry.prototype;
+
+    var fp_data = {
+        maxRPS: Number(pprh_fp_data.maxRPS),
+        delay: Number(pprh_fp_data.delay),
+        hoverDelay: Number(pprh_fp_data.hoverDelay),
+        ignoreKeywords: pprh_fp_data.ignoreKeywords.replace(/\s/g, '').split(','),
+        debug: 'true' === pprh_fp_data.debug,
+        maxPrefetches: Number(pprh_fp_data.maxPrefetches)
+    };
+
+    var prefetchCount = 0;
 
     // Checks if user is on slow connection or has enabled data saver
     const isSlowConnection = navigator.connection && (navigator.connection.saveData || (navigator.connection.effectiveType || "").includes("2g"));
@@ -61,6 +64,8 @@ function flyingPages() {
     const addUrlToQueue = (url, processImmediately = false) => {
         if (alreadyPrefetched.has(url) || toPrefetch.has(url)) return;
 
+        if (prefetchCount >= fp_data.maxPrefetches) return;
+
         // Prevent prefetching 3rd party domains
         const origin = window.location.origin;
         if (url.substring(0, origin.length) !== origin) return;
@@ -89,6 +94,8 @@ function flyingPages() {
             prefetchWithTimeout(url);
             alreadyPrefetched.add(url);
         } else toPrefetch.add(url);
+
+        prefetchCount++;
     };
 
     // Observe the links in viewport, add url to queue if found intersecting

@@ -10,32 +10,13 @@ class CreateHintsUtil extends CreateHints {
 
 	public $duplicate_hints = array();
 
-//	public function create_raw_hint_arr( $url, $hint_type, $post_id = '' ) {
-//		$arr = array(
-//			'url'          => $url,
-//			'hint_type'    => $hint_type,
-//		);
-//
-//
-//		if ( \PPRH\Utils::pprh_is_plugin_active() ) {
-//			$arr['post_id'] = $post_id;
-//		}
-//
-//		return $arr;
-//	}
+	public $all_hints = array();
 
+	public $new_pprh_hint = array();
 
-//	public function process_data_array( $raw_hint_arr ) {
-//		$hint_arr = array();
-//
-//		foreach( $raw_hint_arr as $raw_hint ) {
-//			$raw_hint = $this->create_raw_hint_arr( $raw_hint['url'], $raw_hint['hint_type'] );
-//			$pprh_hint = $this->create_hint( $raw_hint );
-//			$hint_arr[] = $pprh_hint;
-//		}
-//
-//		return $hint_arr;
-//	}
+	public function __construct( $all_hints = null ) {
+		$this->all_hints = $all_hints;
+	}
 
 	public function new_hint_controller( $raw_hint ) {
 		$dao = new DAO();
@@ -71,19 +52,12 @@ class CreateHintsUtil extends CreateHints {
 		return true;
 	}
 
-	// tested
-	public function get_duplicate_hints( $hint ) {
-		$table = PPRH_DB_TABLE;
-		$dao = new DAO();
+	public function get_duplicate_hints( $new_pprh_hint ) {
+		$this->new_pprh_hint = $new_pprh_hint;
 
-		$query = array(
-			'sql'  => "SELECT * FROM $table WHERE url = %s AND hint_type = %s",
-			'args' => array( $hint['url'], $hint['hint_type'] )
-		);
-
-		$query = apply_filters( 'pprh_ch_duplicate_hint_query', $query, $hint );
-
-		return $dao->get_hints( $query );
+		return array_filter( $this->all_hints, function( $hint ) {
+			return ( $this->new_pprh_hint['url'] === $hint['url'] && $this->new_pprh_hint['hint_type'] === $hint['hint_type']  );
+		});
 	}
 
 	// tested

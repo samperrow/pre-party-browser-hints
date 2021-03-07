@@ -107,15 +107,18 @@ class DAO {
 		return $this->create_db_result( $wpdb->result, $wpdb->insert_id, $wpdb->last_error, 'delete', null );
 	}
 
-	public function get_hints( $query = null ) {
+
+
+
+
+
+	public function get_all_hints() {
 		global $wpdb;
-
-		if ( ! empty( $query['args'] ) ) {
-			$sql = $wpdb->prepare( $query['sql'], $query['args'] );
-		}
-
+		$table = PPRH_DB_TABLE;
+		$sql = "SELECT * FROM $table";
 		return $wpdb->get_results( $sql, ARRAY_A );
 	}
+
 
 	public function get_hints_ordered( $query = null ) {
 		global $wpdb;
@@ -134,6 +137,9 @@ class DAO {
 
 		return $wpdb->get_results( $sql, ARRAY_A );
 	}
+
+
+
 
 
 	public function get_multisite_tables() {

@@ -146,10 +146,10 @@ class WP_List_Table {
 		$args = wp_parse_args(
 			$args,
 			array(
-				'plural'   => '',
-				'singular' => '',
-				'ajax'     => true,
-				'screen'   => null,
+				'plural'        => '',
+				'singular'      => '',
+				'ajax'          => true,
+				'screen'        => null,
                 'on_pprh_admin' => $args['on_pprh_admin']
 			)
 		);
@@ -168,7 +168,6 @@ class WP_List_Table {
 		$this->_args = $args;
 
 		if ( $args['ajax'] ) {
-			// wp_enqueue_script( 'list-table' );
 			add_action( 'admin_footer', array( $this, '_js_vars' ) );
 		}
 
@@ -270,7 +269,7 @@ class WP_List_Table {
 	 * @since 3.1.0
 	 * @abstract
 	 */
-	public function prepare_items() {
+	public function prepare_items( $all_hints ) {
 		die( 'function WP_List_Table::prepare_items() must be over-ridden in a sub-class.' );
 	}
 
@@ -1353,8 +1352,8 @@ class WP_List_Table {
      * @param $results
      * @since 3.1.0
      */
-	public function ajax_response( $results ) {
-		$this->prepare_items();
+	public function ajax_response( $results, $all_hints ) {
+		$this->prepare_items( $all_hints );
 
 		ob_start();
 		if ( ! empty( $_REQUEST['no_placeholder'] ) ) {

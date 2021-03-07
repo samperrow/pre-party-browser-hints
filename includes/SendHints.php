@@ -12,10 +12,8 @@ class SendHints {
 
 	protected $send_hints_in_html = '';
 
-	// tested
-	public function init() {
-		$query = $this->get_query();
-		$this->hints = $this->get_resource_hints( $query );
+	public function init( $all_hints ) {
+		$this->hints = $this->filter_hints( $all_hints );
 		$this->send_hints_in_html = get_option( 'pprh_html_head' );
 
 		if ( ! is_array( $this->hints ) || count( $this->hints ) < 1 ) {
@@ -27,22 +25,17 @@ class SendHints {
 			: add_action( 'wp_head', array( $this, 'send_to_html_head' ), 1, 0 );
 	}
 
-	// tested
-	public function get_query() {
-		$table = PPRH_DB_TABLE;
-		$query = array(
-			'sql'  => "SELECT * FROM $table WHERE status = %s",
-			'args' => array( 'enabled' )
-		);
 
-		$query = apply_filters( 'pprh_sh_append_sql', $query );
-		return $query;
-	}
+	public function filter_hints( $all_hints ) {
+		$hints = array();
 
-	// tested
-	public function get_resource_hints( $query ) {
-		$dao = new DAO();
-		return $dao->get_hints( $query );
+		foreach( $all_hints as $hint ) {
+			if ( 'enabled' === $hint['status'] ) {
+				$hints[] = $hint;
+			}
+		}
+
+		return $hints;
 	}
 
 	public function send_to_html_head() {
@@ -68,7 +61,8 @@ class SendHints {
 			$output .= $str . ', ';
 		}
 
-		$header_str = 'Link: ' . rtrim( $output, ';' );
+		$output = rtrim( $output, ';, ' );
+		$header_str = 'Link: ' . $output;
 		header( $header_str );
 	}
 

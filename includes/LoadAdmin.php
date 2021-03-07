@@ -12,8 +12,11 @@ class LoadAdmin {
 
     public $on_pprh_admin = false;
 
-	public function __construct( $on_pprh_admin ) {
+    public $all_hints = array();
+
+	public function __construct( $all_hints, $on_pprh_admin ) {
         $this->on_pprh_admin = $on_pprh_admin;
+        $this->all_hints = $all_hints;
 	}
 
 	public function load_plugin_admin_files() {
@@ -40,8 +43,8 @@ class LoadAdmin {
 		$this->show_admin_tabs();
 
 		echo '<div class="pprh-box">';
-		new InsertHints($this->on_pprh_admin);
-		new Settings($this->on_pprh_admin);
+		new InsertHints( $this->all_hints, $this->on_pprh_admin );
+		new Settings( $this->on_pprh_admin );
 		new HintInfo();
 		new Upgrade();
 
@@ -57,7 +60,7 @@ class LoadAdmin {
 			'insert-hints' => 'Insert Hints',
 			'settings'     => 'Settings',
 			'hint-info'    => 'Information',
-            'upgrade'      => 'Upgrade to Pro',
+//            'upgrade'      => 'Upgrade to Pro',
 		);
 
 		$tabs = apply_filters( 'pprh_la_load_tabs', $tabs );

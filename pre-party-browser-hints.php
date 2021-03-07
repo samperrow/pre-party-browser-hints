@@ -33,6 +33,8 @@ add_action( 'wpmu_new_blog', array( $pprh_load, 'activate_plugin' ) );
 
 class Pre_Party_Browser_Hints {
 
+    public $all_hints = array();
+
 	public function __construct() {
 	    add_action( 'init', array( $this, 'load_plugin' ) );
 	}
@@ -45,9 +47,12 @@ class Pre_Party_Browser_Hints {
 			apply_filters( 'wp_doing_ajax', defined( 'DOING_AJAX' ) && DOING_AJAX );
 		}
 
+		if ( ! wp_doing_ajax() ) {
+			$this->all_hints = Utils::get_all_hints();
+        }
+
 		if ( is_admin() ) {
 			add_action( 'wp_loaded', array( $this, 'load_admin' ) );
-//			$this->load_admin();
 		} else {
 			$this->load_client();
 		}
@@ -65,14 +70,13 @@ class Pre_Party_Browser_Hints {
 		if ( ! $on_pprh_page ) {
 			return;
 		}
-//		echo 'asdfasdfasf';
 
 		add_action( 'admin_enqueue_scripts', array( $this, 'register_admin_files' ) );
 		add_filter( 'set-screen-option', array( $this, 'pprh_set_screen_option' ), 10, 3 );
 		load_plugin_textdomain( 'pprh', false, PPRH_REL_DIR . 'languages' );
 		add_action( 'pprh_load_dashboard', array( $this, 'load_dashboard' ) );
 
-        include_once PPRH_ABS_DIR . 'includes/DisplayHints.php';
+		include_once PPRH_ABS_DIR . 'includes/DisplayHints.php';
         include_once PPRH_ABS_DIR . 'includes/AjaxOps.php';
         new AjaxOps();
 
@@ -81,10 +85,13 @@ class Pre_Party_Browser_Hints {
 
     public function load_client() {
 		include_once PPRH_ABS_DIR . 'includes/LoadClient.php';
+		include_once PPRH_ABS_DIR . 'includes/SendHints.php';
 
 		$load_client = new LoadClient();
 		$load_client->verify_to_load_fp();
-		$load_client->send_hints();
+
+		$send_hints = new SendHints();
+		$send_hints->init($this->all_hints);
 
 		if ( 'true' === get_option( 'pprh_disable_wp_hints' ) ) {
 			remove_action( 'wp_head', 'wp_resource_hints', 2 );
@@ -131,14 +138,15 @@ class Pre_Party_Browser_Hints {
 	}
 
     public function load_dashboard() {
-		if ( ! current_user_can( 'manage_options' ) )  {
+		if ( ! current_user_can( 'manage_options' ) ) {
 			wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
 		}
 
 		$on_pprh_admin = Utils::on_pprh_admin();
 		include_once PPRH_ABS_DIR . 'includes/LoadAdmin.php';
+//		$all_hints = Utils::get_all_hints();
 
-		$load_admin = new LoadAdmin( $on_pprh_admin );
+		$load_admin = new LoadAdmin( $this->all_hints, $on_pprh_admin );
 		$load_admin->load_plugin_admin_files();
 		$load_admin->show_plugin_dashboard();
 	}

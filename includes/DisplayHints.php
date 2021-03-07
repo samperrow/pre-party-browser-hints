@@ -17,7 +17,7 @@ class DisplayHints extends WP_List_Table {
 	public $table;
 	public $items;
 
-	public function __construct( $on_pprh_admin ) {
+	public function __construct( $all_hints, $on_pprh_admin ) {
 		parent::__construct( array(
             'ajax'     => true,
 			'plural'   => 'urls',
@@ -27,7 +27,7 @@ class DisplayHints extends WP_List_Table {
 		) );
 
 		if ( ! wp_doing_ajax() ) {
-			$this->prepare_items();
+			$this->prepare_items( $all_hints );
 			$this->display();
 		}
 	}
@@ -86,14 +86,15 @@ class DisplayHints extends WP_List_Table {
         );
 	}
 
-	public function prepare_items() {
+	public function prepare_items( $all_hints ) {
 		$dao = new DAO();
 		$this->hints_per_page = $this->set_hints_per_page();
 		$columns = $this->get_columns();
 		$sortable = $this->get_sortable_columns();
 		$this->_column_headers = array( $columns, array(), $sortable );
 
-		$data = $dao->get_hints_ordered( null );
+//		$data = $dao->get_hints_ordered( null );
+        $data = $all_hints;
 		$current_page = $this->get_pagenum();
 		$this->items = array_slice( $data, ( ( $current_page - 1 ) * $this->hints_per_page ), $this->hints_per_page );
 		$total_items = count( $data );
@@ -115,8 +116,7 @@ class DisplayHints extends WP_List_Table {
 		$option = 'pprh_per_page';
 		$hints_per_page = (int) get_user_meta( $user, $option, true );
 		$hints_per_page = ( null !== $screen && ( empty ( $hints_per_page) || $hints_per_page < 1 ) )
-            ? $screen->get_option( 'per_page', 'default' )
-            : 10;
+            ? $screen->get_option( 'per_page', 'default' ) : 10;
 		return $hints_per_page;
     }
 
