@@ -66,7 +66,7 @@ class AjaxOps {
 
 	protected function create_update_hint( $data, $action ) {
 		$dao = new DAO();
-		$create_hints_util = new CreateHintsUtil($this->all_hints);
+		$create_hints_util = new CreateHintsUtil();
 		$pprh_hint = $create_hints_util->new_hint_controller( $data );
 
 		if ( is_array( $pprh_hint ) ) {

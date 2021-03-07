@@ -21,6 +21,8 @@ class CreateHintsUtilTest extends TestCase {
 		$db_response = $dao->insert_hint($pprh_hint_1);
 
 		$hint_2 = TestUtils::create_hint_array( 'https://dup-hint1.com', 'dns-prefetch', '', '', '');
+
+		$create_hints_util = new \PPRH\CreateHintsUtil();
 		$actual = $create_hints_util->new_hint_controller( $hint_2 );
 
 		$expected = $dao->create_db_result( false, '', 'A duplicate hint already exists!', 'create', null );
@@ -42,6 +44,7 @@ class CreateHintsUtilTest extends TestCase {
 		$db_response = $dao->insert_hint($pprh_hint_1);
 
 		$hint_2 = TestUtils::create_hint_array( 'https://dup-hint1.com', 'dns-prefetch', '', '', '', '2138' );
+		$create_hints_util = new \PPRH\CreateHintsUtil();
 		$actual = $create_hints_util->new_hint_controller( $hint_2 );
 
 		$expected = $dao->create_db_result( false, '', 'A duplicate hint already exists!', 'create', null );
@@ -82,6 +85,7 @@ class CreateHintsUtilTest extends TestCase {
 
 		$dummy_hint_result = $dao->insert_hint( $dummy_pprh_hint );
 
+		$create_hints_util = new \PPRH\CreateHintsUtil();
 		$actual = $create_hints_util->new_hint_controller( $dummy_hint );
 		$expected = $dao->create_db_result( false, '', 'A duplicate hint already exists!', 'create', null );
 
@@ -144,6 +148,7 @@ class CreateHintsUtilTest extends TestCase {
 		$dummy_hint = $create_hints_util->new_hint_controller( $dup_hint );
 		$dummy_hint_result = $dao->insert_hint( $dummy_hint );
 
+		$create_hints_util = new \PPRH\CreateHintsUtil();
 		$dup_hint_error = $create_hints_util->new_hint_controller( $dup_hint );
 		$expected = $dao->create_db_result( false, '', $error, 'create', null );
 
@@ -216,7 +221,7 @@ class CreateHintsUtilTest extends TestCase {
 
 		$actual = $create_hints_util->get_duplicate_hints( $test_hint );
 
-		$this->assertEquals( $expected, $actual );
+		$this->assertEquals( count($expected), count($actual) );
 		$dao->delete_hint( $dummy_hint_result->db_result['hint_id'] );
 	}
 

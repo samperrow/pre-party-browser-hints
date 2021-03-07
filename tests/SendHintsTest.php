@@ -21,12 +21,13 @@ class SendHintsTest extends TestCase {
 		if ( PPRH_IS_ADMIN ) return;
 
 		$send_hints = new \PPRH\SendHints();
+		$all_hints = \PPRH\Utils::get_all_hints();
 
 		$send_hints->hints = array();
-		$actual_1 = $send_hints->init();
+		$actual_1 = $send_hints->init($all_hints);
 
 		$send_hints->hints = false;
-		$actual_2 = $send_hints->init();
+		$actual_2 = $send_hints->init($all_hints);
 
 		$send_hints->hints = array(
 			array(
@@ -35,7 +36,7 @@ class SendHintsTest extends TestCase {
 			)
 		);
 
-		$send_hints->init();
+		$send_hints->init($all_hints);
 		$send_hints_in_html = get_option( 'pprh_html_head' );
 
 		if ( 'false' === $send_hints_in_html && ! headers_sent() ) {
@@ -48,40 +49,6 @@ class SendHintsTest extends TestCase {
 		$this->assertEquals( false, $actual_2 );
 		$this->assertEquals( true, $actual_3 );
 	}
-
-	public function test_get_query() {
-		if ( PPRH_IS_ADMIN ) return;
-
-//		$this->construct();
-		$_SERVER['REQUEST_URI'] = '/sp-calendar-pro/core/';
-		$send_hints = new \PPRH\SendHints();
-		$actual_query = $send_hints->get_query();
-		$table = PPRH_DB_TABLE;
-
-		$expected_query = array(
-			'sql'  => "SELECT * FROM $table WHERE status = %s",
-			'args' => array( 'enabled' )
-		);
-
-		$expected_query = apply_filters( 'pprh_sh_append_sql', $expected_query );
-		$this->assertEquals( $expected_query, $actual_query );
-		return $actual_query;
-	}
-
-	/**
-	 * @depends test_get_query
-	 */
-	public function test_get_resource_hints( $query ) {
-		if ( PPRH_IS_ADMIN ) return;
-
-		$send_hints = new \PPRH\SendHints();
-		$actual_hints = $send_hints->get_resource_hints( $query );
-		$actual_hints_count = is_array( $actual_hints );
-		$this->assertEquals( true, $actual_hints_count );
-	}
-
-
-
 
 
 	public function test_send_to_html_head() {

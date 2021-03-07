@@ -6,8 +6,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-//new LoadAdmin();
-
 class LoadAdmin {
 
     public $on_pprh_admin = false;

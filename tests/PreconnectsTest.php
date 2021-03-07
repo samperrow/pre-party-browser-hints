@@ -350,9 +350,8 @@ class PreconnectsTest extends TestCase {
 	}
 
 	public function test_create_js_object() {
-		if ( PPRH_IS_ADMIN ) {
-			return false;
-		}
+		if ( PPRH_IS_ADMIN ) return;
+
 		$preconnects = new \PPRH\Preconnects();
 
 		$expected_arr_1 = array(
@@ -360,12 +359,13 @@ class PreconnectsTest extends TestCase {
 			'nonce'         => wp_create_nonce( 'pprh_ajax_nonce' ),
 			'admin_url'     => admin_url() . 'admin-ajax.php',
 			'start_time'    => time(),
+			'hint_type' => 'preconnect'
 		);
 
-		$expected_arr_1['post_id'] = '';
-		$expected_arr_1['reset_globals'] = 'false';
 
-		if ( ! PPRH_IS_ADMIN && \PPRH\Utils::pprh_is_plugin_active() ) {
+		if ( \PPRH\Utils::pprh_is_plugin_active() ) {
+			$expected_arr_1['post_id'] = '';
+			$expected_arr_1['reset_globals'] = 'false';
 			$preconnects->config['reset_data']['reset_pro'] = apply_filters( 'pprh_preconnects_do_reset_init', null );
 		}
 

@@ -35,9 +35,11 @@ final class PrePartyBrowserHintsTest extends TestCase {
 
 
 	public function test_Load_dashboard():void {
-		$load_admin = class_exists( \PPRH\LoadAdmin::class );
-		$bool = current_user_can( 'manage_options' );
-		$this->assertEquals( $load_admin, $bool );
+		if ( ! PPRH_IS_ADMIN ) return;
+
+		$expected = class_exists( \PPRH\LoadAdmin::class );
+		$actual = current_user_can( 'manage_options' );
+		$this->assertEquals( $expected, $actual );
 	}
 
 	public function test_check_to_upgrade():void {

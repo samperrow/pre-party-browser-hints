@@ -14,8 +14,8 @@ class CreateHintsUtil extends CreateHints {
 
 	public $new_pprh_hint = array();
 
-	public function __construct( $all_hints = null ) {
-		$this->all_hints = $all_hints;
+	public function __construct() {
+//		$this->all_hints = $all_hints;
 	}
 
 	public function new_hint_controller( $raw_hint ) {
@@ -54,8 +54,9 @@ class CreateHintsUtil extends CreateHints {
 
 	public function get_duplicate_hints( $new_pprh_hint ) {
 		$this->new_pprh_hint = $new_pprh_hint;
+		$all_hints = \PPRH\Utils::get_all_hints();
 
-		return array_filter( $this->all_hints, function( $hint ) {
+		return array_filter( $all_hints, function( $hint ) {
 			return ( $this->new_pprh_hint['url'] === $hint['url'] && $this->new_pprh_hint['hint_type'] === $hint['hint_type']  );
 		});
 	}
