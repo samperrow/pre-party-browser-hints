@@ -62,16 +62,16 @@ function flyingPages() {
     };
 
     const addUrlToQueue = (url, processImmediately = false) => {
-        if (alreadyPrefetched.has(url) || toPrefetch.has(url)) return;
-
-        if (prefetchCount >= fp_data.maxPrefetches) return;
-
-        // Prevent prefetching 3rd party domains
         const origin = window.location.origin;
-        if (url.substring(0, origin.length) !== origin) return;
 
+        // Prevent prefetching 3rd party domain
         // Prevent current page from prefetching
-        if (window.location.href === url) return;
+        if ( (alreadyPrefetched.has(url) || toPrefetch.has(url) )
+            || (prefetchCount >= fp_data.maxPrefetches && ! processImmediately)
+            || (url.substring(0, origin.length) !== origin)
+            || (window.location.href === url) ) {
+            return;
+        }
 
         // Ignore keywords in the array, if matched to the url
         for (let i = 0; i < fp_data.ignoreKeywords.length; i++) {
@@ -83,7 +83,7 @@ function flyingPages() {
             // wildcard check
             else if (keyword.indexOf("*") === (keyword.length - 1) ) {
                 let wildcard = keyword.replace("*", "");
-                if ( url.indexOf(wildcard) > 0) {
+                if ( url.indexOf(wildcard) >= 0) {
                     return;
                 }
             }

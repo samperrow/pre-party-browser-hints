@@ -138,14 +138,13 @@ class PrefetchSettings {
 					</tr>
 
                     <tr>
-                        <th><?php esc_html_e( 'Delay in prefetching links on mouse hover (milliseconds)', 'pprh' ); ?></th>
+                        <th><?php esc_html_e( 'Maximum number of prefetch hints loaded? (Excluding mouse hover or touch events)', 'pprh' ); ?></th>
 
                         <td>
                             <input type="number" step="1" min="1" max="100" name="pprh_prefetch_max_prefetches" value="<?php echo $this->prefetch_max_prefetches; ?>">
                             <p><?php esc_html_e( 'Set the maximum number of prefetch hints you would like to be loaded. This can save some server resources. Default is 10.', 'pprh' ); ?></p>
                         </td>
                     </tr>
-
 
 					</tbody>
 				</table>
