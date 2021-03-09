@@ -28,7 +28,7 @@ final class ActivatePluginTest extends TestCase {
 
 
 	public function test_update_prefetch_ignoreKeywords():void {
-		include_once PPRH_ABS_DIR . 'includes/ActivatePlugin.php';
+		include_once PPRH_ABS_DIR . 'includes/admin/ActivatePlugin.php';
 		$activate_plugin = new \PPRH\ActivatePlugin();
 		$test_data = '/test, /sp-calendar-pro, cart, /wp-login.php';
 

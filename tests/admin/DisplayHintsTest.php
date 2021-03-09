@@ -15,8 +15,8 @@ final class DisplayHintsTest extends TestCase {
 
 		$all_hints = \PPRH\Utils::get_all_hints();
 
-		$display_hints_1 = new \PPRH\DisplayHints($all_hints, true);
-		$display_hints_2 = new \PPRH\DisplayHints($all_hints, false);
+		$display_hints_1 = new \PPRH\DisplayHints(true, $all_hints);
+		$display_hints_2 = new \PPRH\DisplayHints(false, $all_hints);
 
 		$test_1 = array('post_id' => 'global');
 		$actual_1 = $display_hints_1->on_post_page_and_global_hint( $test_1 );

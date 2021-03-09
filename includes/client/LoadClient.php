@@ -8,7 +8,24 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class LoadClient {
 
-//	public function __construct() {}
+	public $all_hints = array();
+
+	public function __construct( $all_hints ) {
+		$this->all_hints = $all_hints;
+	}
+
+	public function init() {
+		include_once PPRH_ABS_DIR . 'includes/client/SendHints.php';
+
+		$this->verify_to_load_fp();
+
+		$send_hints = new SendHints();
+		$send_hints->init($this->all_hints);
+
+		if ( 'true' === get_option( 'pprh_disable_wp_hints' ) ) {
+			remove_action( 'wp_head', 'wp_resource_hints', 2 );
+		}
+	}
 
 	public function verify_to_load_fp() {
 		$do_not_load_flying_pages = ( 'false' === get_option( 'pprh_prefetch_enabled' ) );

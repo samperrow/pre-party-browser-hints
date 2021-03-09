@@ -6,32 +6,32 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class LoadAdmin {
+class Dashboard {
 
-    public $on_pprh_admin = false;
+	public $on_pprh_admin = false;
 
-    public $all_hints = array();
+	public $all_hints = array();
 
 	public function __construct( $all_hints, $on_pprh_admin ) {
-        $this->on_pprh_admin = $on_pprh_admin;
-        $this->all_hints = $all_hints;
+		$this->all_hints = $all_hints;
+		$this->on_pprh_admin = $on_pprh_admin;
 	}
 
 	public function load_plugin_admin_files() {
-		include_once PPRH_ABS_DIR . 'includes/views/InsertHints.php';
-        include_once PPRH_ABS_DIR . 'includes/views/Settings.php';
-		include_once PPRH_ABS_DIR . 'includes/views/settings/GeneralSettings.php';
-		include_once PPRH_ABS_DIR . 'includes/views/settings/PreconnectSettings.php';
-		include_once PPRH_ABS_DIR . 'includes/views/settings/PrefetchSettings.php';
-		include_once PPRH_ABS_DIR . 'includes/views/HintInfo.php';
-		include_once PPRH_ABS_DIR . 'includes/views/Upgrade.php';
+		include_once PPRH_ABS_DIR . 'includes/admin/views/InsertHints.php';
+		include_once PPRH_ABS_DIR . 'includes/admin/views/Settings.php';
+		include_once PPRH_ABS_DIR . 'includes/admin/views/settings/GeneralSettings.php';
+		include_once PPRH_ABS_DIR . 'includes/admin/views/settings/PreconnectSettings.php';
+		include_once PPRH_ABS_DIR . 'includes/admin/views/settings/PrefetchSettings.php';
+		include_once PPRH_ABS_DIR . 'includes/admin/views/HintInfo.php';
+		include_once PPRH_ABS_DIR . 'includes/admin/views/Upgrade.php';
 		do_action( 'pprh_la_load_view_files' );
 	}
 
 	public function show_plugin_dashboard() {
-	    if ( ! $this->on_pprh_admin ) {
-	        return;
-        }
+		if ( ! $this->on_pprh_admin ) {
+			return;
+		}
 
 		echo '<div id="pprh-wrapper" class="wrap"><h2>';
 		esc_html_e( 'Pre* Party Plugin Settings', 'pprh' );
@@ -50,7 +50,7 @@ class LoadAdmin {
 
 		$this->show_footer();
 		echo '</div></div>';
-    }
+	}
 
 
 	public function show_admin_tabs() {

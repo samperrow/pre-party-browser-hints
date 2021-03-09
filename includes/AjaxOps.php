@@ -26,7 +26,7 @@ class AjaxOps {
 				if ( is_object( $result ) ) {
 					$this->all_hints = Utils::get_all_hints();
 					$on_pprh_admin = Utils::on_pprh_admin();
-					$display_hints = new DisplayHints( $this->all_hints, $on_pprh_admin );
+					$display_hints = new DisplayHints( $on_pprh_admin, $this->all_hints );
 					$json = $display_hints->ajax_response( $result, $this->all_hints );
 
 					if ( defined( 'PPRH_TESTING' ) && PPRH_TESTING ) {

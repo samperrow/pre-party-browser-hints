@@ -241,10 +241,7 @@ class CreateHintsUtilTest extends TestCase {
 		$expected = $wpdb->get_results(
 			$wpdb->prepare(
 				"SELECT * FROM $table WHERE url = %s and hint_type = %s AND (post_id = %s OR post_id = %s)",
-				$test_hint['url'],
-				$test_hint['hint_type'],
-				'global',
-				$test_hint['post_id']
+				array( $test_hint['url'], $test_hint['hint_type'], 'global', $test_hint['post_id'] )
 			), ARRAY_A
 		);
 

@@ -103,8 +103,16 @@ class DAO {
 	public function delete_hint( $hint_ids ) {
 		global $wpdb;
 		$table = PPRH_DB_TABLE;
-		$wpdb->query( "DELETE FROM $table WHERE id IN ($hint_ids)" );
-		return $this->create_db_result( $wpdb->result, $wpdb->insert_id, $wpdb->last_error, 'delete', null );
+		$hint_id_exists = preg_match('/\d/', $hint_ids );
+
+		if ( $hint_id_exists > 0 ) {
+			$wpdb->query( "DELETE FROM $table WHERE id IN ($hint_ids)" );
+			return $this->create_db_result( $wpdb->result, $wpdb->insert_id, $wpdb->last_error, 'delete', null );
+		}
+
+		else {
+			return $this->create_db_result( false, null, 'No hint IDs to delete.', 'delete', null );
+		}
 	}
 
 

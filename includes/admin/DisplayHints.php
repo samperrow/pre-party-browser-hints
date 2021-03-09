@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 if ( ! class_exists( WP_List_Table::class ) ) {
-	require_once PPRH_ABS_DIR . 'includes/wp-list-table.php';
+	require_once PPRH_ABS_DIR . 'includes/admin/wp-list-table.php';
 }
 
 class DisplayHints extends WP_List_Table {
@@ -17,7 +17,7 @@ class DisplayHints extends WP_List_Table {
 	public $table;
 	public $items;
 
-	public function __construct( $all_hints, $on_pprh_admin ) {
+	public function __construct( $on_pprh_admin, $all_hints = null ) {
 		parent::__construct( array(
             'ajax'     => true,
 			'plural'   => 'urls',
@@ -27,6 +27,11 @@ class DisplayHints extends WP_List_Table {
 		) );
 
 		if ( ! wp_doing_ajax() ) {
+
+			if ( false === $all_hints ) {
+			    $all_hints = Utils::get_all_hints();
+            }
+
 			$this->prepare_items( $all_hints );
 			$this->display();
 		}

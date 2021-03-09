@@ -322,32 +322,32 @@ class PreconnectsTest extends TestCase {
 	}
 
 
-	public function test_enqueue_scripts() {
-		global $wp_scripts;
-		$preconnects_1 = new \PPRH\Preconnects();
-		$preconnects_1->is_admin = true;
-		$actual_1 = $preconnects_1->enqueue_scripts();
-		$this->assertEquals( false, $actual_1);
-
-		$preconnects_2 = new \PPRH\Preconnects();
-		$preconnects_2->is_admin = false;
-		$preconnects_2->enqueue_scripts();
-		$actual_scripts = array();
-
-		foreach( $wp_scripts->queue as $script ) {
-			$actual_scripts[] =  $wp_scripts->registered[$script]->handle;
-		}
-
-		$expected_scripts = array();
-
-		if ( PPRH_IS_ADMIN ) {
-			$expected_scripts = array( 'thickbox', 'pprh_admin_js' );
-		} else {
-			$expected_scripts[] = 'pprh-find-domain-names';
-		}
-
-		$this->assertEquals( $expected_scripts, $actual_scripts);
-	}
+//	public function test_enqueue_scripts() {
+//		global $wp_scripts;
+//		$preconnects_1 = new \PPRH\Preconnects();
+//		$preconnects_1->is_admin = true;
+//		$actual_1 = $preconnects_1->enqueue_scripts();
+//		$this->assertEquals( false, $actual_1);
+//
+//		$preconnects_2 = new \PPRH\Preconnects();
+//		$preconnects_2->is_admin = false;
+//		$preconnects_2->enqueue_scripts();
+//		$actual_scripts = array();
+//
+//		foreach( $wp_scripts->queue as $script ) {
+//			$actual_scripts[] =  $wp_scripts->registered[$script]->handle;
+//		}
+//
+//		$expected_scripts = array();
+//
+//		if ( PPRH_IS_ADMIN ) {
+//			$expected_scripts = array( 'thickbox', 'pprh_admin_js' );
+//		} else {
+//			$expected_scripts[] = 'pprh-find-domain-names';
+//		}
+//
+//		$this->assertEquals( $expected_scripts, $actual_scripts);
+//	}
 
 	public function test_create_js_object() {
 		if ( PPRH_IS_ADMIN ) return;

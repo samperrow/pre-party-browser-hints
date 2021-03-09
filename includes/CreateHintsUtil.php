@@ -56,9 +56,11 @@ class CreateHintsUtil extends CreateHints {
 		$this->new_pprh_hint = $new_pprh_hint;
 		$all_hints = \PPRH\Utils::get_all_hints();
 
-		return array_filter( $all_hints, function( $hint ) {
-			return ( $this->new_pprh_hint['url'] === $hint['url'] && $this->new_pprh_hint['hint_type'] === $hint['hint_type']  );
+		$dups = array_filter( $all_hints, function( $hint ) {
+			return ( ( $this->new_pprh_hint['url'] === $hint['url'] ) && ( $this->new_pprh_hint['hint_type'] === $hint['hint_type'] ) );
 		});
+
+		return array_values( $dups );		// re-index array so the first value has an index of 0.
 	}
 
 	// tested

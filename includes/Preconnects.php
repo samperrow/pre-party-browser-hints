@@ -24,7 +24,6 @@ class Preconnects {
 				'preconnects_set' => get_option( 'pprh_preconnect_set' )
 			)
 		);
-
 	}
 
 	public function init_controller() {
@@ -150,15 +149,9 @@ class Preconnects {
 			}
 		}
 
-		$updated = apply_filters( 'pprh_preconnects_update_options', $raw_hint_data );
-		if ( is_null( $updated ) ) {
-			$this->update_options();
-		}
-
+		$this->update_options( $raw_hint_data );
 		return true;
 	}
-
-
 
 	public function process_hints( $hint_data ) {
 		$create_hints_util = new CreateHintsUtil();
@@ -188,8 +181,12 @@ class Preconnects {
 		return $db_result;
 	}
 
-	private function update_options() {
-		update_option( 'pprh_preconnect_set', 'true' );
+	private function update_options( $raw_hint_data ) {
+		$updated = apply_filters( 'pprh_preconnects_update_options', $raw_hint_data );
+
+		if ( is_array( $updated ) ) {
+			update_option( 'pprh_preconnect_set', 'true' );
+		}
 	}
 
 }
