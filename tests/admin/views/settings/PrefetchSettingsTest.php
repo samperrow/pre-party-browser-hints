@@ -6,7 +6,7 @@ use PHPUnit\Framework\TestCase;
 class PrefetchSettingsTest extends TestCase {
 
 	public function test_get_each_keyword():void {
-		if ( ! PPRH_IS_ADMIN ) return;
+		if ( ! WP_ADMIN ) return;
 
 		$prefetch_settings = new \PPRH\PrefetchSettings();
 		$keywords = array( 'testeroo/asdf', 'blah', 'wp-login.php', 'cart', '' );

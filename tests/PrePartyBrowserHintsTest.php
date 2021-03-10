@@ -35,7 +35,7 @@ final class PrePartyBrowserHintsTest extends TestCase {
 
 
 	public function test_Load_dashboard():void {
-		if ( ! PPRH_IS_ADMIN ) return;
+		if ( ! WP_ADMIN ) return;
 
 		$expected = class_exists( \PPRH\LoadAdmin::class );
 		$actual = current_user_can( 'manage_options' );
@@ -43,7 +43,7 @@ final class PrePartyBrowserHintsTest extends TestCase {
 	}
 
 	public function test_check_to_upgrade():void {
-		$desired_version = '1.8.0';
+		$desired_version = '1.7.5';
 		$option_name = 'pprh_version';
 		$current_version = get_option( $option_name );
 		update_option( $option_name, $desired_version );

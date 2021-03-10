@@ -70,10 +70,6 @@ class SendHints {
 
 		foreach ( $hints as $key => $val ) {
 			$attrs = $this->get_attrs( $val );
-//			$attrs .= $this->add_attr( 'as', $val['as_attr'] );
-//			$attrs .= $this->add_attr( 'type', $val['type_attr'] );
-//			$attrs .= $this->add_attr( 'crossorigin', trim( $val['crossorigin'] ) );
-
 			$str = sprintf( '<%s>; rel=%s;%s', $val['url'], $val['hint_type'], $attrs );
 			$str = rtrim( $str, ';' );
 			$output .= $str . ', ';
@@ -88,28 +84,32 @@ class SendHints {
 		$attrs = '';
 
 		if ( ! empty( $hint['as_attr'] ) ) {
-			$attrs .= $this->add_attr( 'as', $hint['as_attr'] );
+			$attr = Utils::clean_hint_attr( $hint['as_attr'] );
+			$attrs .= $this->add_attr( 'as', $attr );
 		}
 
 		if ( ! empty( $hint['type_attr'] ) ) {
-			$attrs .= $this->add_attr( 'type', $hint['type_attr'] );
+			$attr = Utils::clean_hint_attr( $hint['type_attr'] );
+			$attrs .= $this->add_attr( 'type', $attr );
+		}
+
+		if ( ! empty( $hint['media'] ) ) {
+			$attr = Utils::clean_url( $hint['media'] );
+			$attrs .= $this->add_attr( 'media', $attr );
 		}
 
 		if ( ! empty( $hint['crossorigin'] ) ) {
-			$attrs .= $this->add_attr( 'crossorigin', trim( $hint['crossorigin'] ) );
+			$attr = Utils::clean_hint_attr( $hint['crossorigin'] );
+			$attrs .= $this->add_attr( 'crossorigin', $attr );
 		}
 
 		return $attrs;
 	}
 
 
-	private function add_attr( $name, $val ) {
-		if ( ! empty( $val ) ) {
-			$attr = Utils::clean_hint_attr( $val );
-			$attr = ( 'true' === $this->send_hints_in_html ) ? "\"$attr\"" : "$attr;";
-			return ' ' . ( ( 'crossorigin' === $name ) ? $name : "$name=" . $attr );
-		}
-		return '';
+	private function add_attr( $name, $attr_value ) {
+		$attr = ( 'true' === $this->send_hints_in_html ) ? "\"$attr_value\"" : "$attr_value;";
+		return ' ' . ( ( 'crossorigin' === $name ) ? $name : "$name=" . $attr );
 	}
 
 }

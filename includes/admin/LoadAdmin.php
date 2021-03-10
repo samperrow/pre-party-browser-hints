@@ -8,7 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class LoadAdmin {
 
-    public $all_hints = array();
+	public $all_hints = array();
 
     public function __construct( $all_hints ) {
         $this->all_hints = $all_hints;
@@ -47,7 +47,7 @@ class LoadAdmin {
 		);
 
 		add_action( "load-{$settings_page}", array( $this, 'screen_option' ) );
-		add_action( "load-{$settings_page}", array( $this, 'check_to_upgrade' ) );
+//		add_action( "load-{$settings_page}", array( $this, 'check_to_upgrade' ) );
 	}
 
 	public function load_dashboard() {
@@ -58,9 +58,9 @@ class LoadAdmin {
 		$on_pprh_admin = Utils::on_pprh_admin();
 		include_once PPRH_ABS_DIR . 'includes/admin/Dashboard.php';
 
-		$load_admin = new Dashboard( $this->all_hints, $on_pprh_admin );
-		$load_admin->load_plugin_admin_files();
-		$load_admin->show_plugin_dashboard();
+		$dashboard = new Dashboard( $this->all_hints, $on_pprh_admin );
+		$dashboard->load_plugin_admin_files();
+		$dashboard->show_plugin_dashboard();
 	}
 
 	public function screen_option() {
@@ -77,24 +77,7 @@ class LoadAdmin {
 		return ( 'pprh_per_page' === $option ) ? $value : $status;
 	}
 
-	public function check_to_upgrade() {
-		$desired_version = '1.8.0';
-		$current_version = get_option( 'pprh_version' );
 
-		if ( empty( $current_version ) || version_compare( $current_version, $desired_version ) < 0 ) {
-//			$this->activate_plugin();
-			update_option( 'pprh_version', $desired_version );
-			add_action( 'admin_notices', array( $this, 'upgrade_notice' ) );
-		}
-	}
-
-	public function upgrade_notice() {
-		?>
-        <div class="notice notice-info is-dismissible">
-            <p><?php _e('1.7.4.2 update info: ' ); ?></p>
-        </div>
-		<?php
-	}
 
 	// Register and call the CSS and JS we need only on the needed page.
 	public function register_admin_files( $hook ) {
@@ -115,11 +98,7 @@ class LoadAdmin {
 		}
 	}
 
-	public function activate_plugin() {
-		include_once PPRH_ABS_DIR . 'includes/admin/ActivatePlugin.php';
-		$activate_plugin = new ActivatePlugin();
-		$activate_plugin->init();
-	}
+
 
 
 }

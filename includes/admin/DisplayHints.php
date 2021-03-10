@@ -62,6 +62,7 @@ class DisplayHints extends WP_List_Table {
             'as_attr'     => __('As Attr', 'pprh'),
             'type_attr'   => __('Type Attr', 'pprh'),
             'crossorigin' => __('Crossorigin', 'pprh'),
+            'media'       => __('Media', 'pprh'),
             'status'      => __('Status', 'pprh'),
             'created_by'  => __('Created By', 'pprh'),
         );
@@ -76,6 +77,7 @@ class DisplayHints extends WP_List_Table {
             'as_attr'     => array('as_attr', false),
             'type_attr'   => array('type_attr', false),
             'crossorigin' => array('crossorigin', false),
+            'media'       => array( 'media', false ),
             'status'      => array('status', false),
             'created_by'  => array('created_by', false)
         );
@@ -85,14 +87,14 @@ class DisplayHints extends WP_List_Table {
 
 	public function get_bulk_actions() {
 		return array(
-            'delete'   => __( 'Delete', 'pprh' ),
+            'delete'  => __( 'Delete', 'pprh' ),
             'enable'  => __( 'Enable', 'pprh' ),
             'disable' => __( 'Disable', 'pprh' )
         );
 	}
 
 	public function prepare_items( $all_hints ) {
-		$dao = new DAO();
+//		$dao = new DAO();
 		$this->hints_per_page = $this->set_hints_per_page();
 		$columns = $this->get_columns();
 		$sortable = $this->get_sortable_columns();

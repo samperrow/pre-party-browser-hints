@@ -190,14 +190,15 @@ final class UtilsTest extends TestCase {
 	}
 
 	public function test_create_hint_array():void {
-		$expected = TestUtils::create_hint_array( 'test.com', 'preconnect', 'audio', 'font/woff2', 'crossorigin' );
+		$expected = TestUtils::create_hint_array( 'test.com', 'preconnect', 'audio', 'font/woff2', 'crossorigin', 'screen' );
 
 		$test1 = array(
 			'url'          => 'test.com',
 			'hint_type'    => 'preconnect',
 			'as_attr'      => 'audio',
 			'type_attr'    => 'font/woff2',
-			'crossorigin'  => 'crossorigin'
+			'crossorigin'  => 'crossorigin',
+			'media'        => 'screen'
 		);
 
 		$actual = apply_filters( 'pprh_ch_append_hint', $test1, array() );
@@ -248,7 +249,7 @@ final class UtilsTest extends TestCase {
 	}
 
 	public function test_on_pprh_admin() {
-		if ( PPRH_IS_ADMIN ) {
+		if ( WP_ADMIN ) {
 			if ( wp_doing_ajax() ) {
 				$_SERVER['HTTP_REFERER'] = 'pprh-plugin-settings';
 				$actual_1 = \PPRH\Utils::on_pprh_admin();

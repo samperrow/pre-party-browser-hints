@@ -7,7 +7,7 @@ use PHPUnit\Framework\TestCase;
 final class LoadAdminTest extends TestCase {
 
 	public function test_register_admin_files():void {
-		if ( ! PPRH_IS_ADMIN ) return;
+		if ( ! WP_ADMIN ) return;
 
 		global $wp_scripts;
 		$load_admin = new \PPRH\LoadAdmin( false, true);

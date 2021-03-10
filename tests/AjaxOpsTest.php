@@ -10,7 +10,7 @@ if (!defined('ABSPATH')) {
 final class AjaxOpsTest extends TestCase {
 
 	public function test_pprh_update_hints():void {
-		if ( ! PPRH_IS_ADMIN || ! wp_doing_ajax() ) {
+		if ( ! WP_ADMIN || ! wp_doing_ajax() ) {
 			return;
 		}
 		$dao = new \PPRH\DAO();

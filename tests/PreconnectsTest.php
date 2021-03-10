@@ -79,7 +79,7 @@ class PreconnectsTest extends TestCase {
 		update_post_meta( $post_id, 'pprh_preconnect_post_do_reset', 'false' );
 
 		$config = array(
-			'is_admin' => PPRH_IS_ADMIN,
+			'is_admin' => WP_ADMIN,
 			'reset_data' => array(
 				'autoload'        => $autoload,
 				'allow_unauth'    => $allow_unauth,
@@ -122,7 +122,7 @@ class PreconnectsTest extends TestCase {
 		$expected_1 = ( 'true' === get_option( 'pprh_preconnect_pro_reset_globals' ) );
 
 		$expected_config = array(
-			'is_admin' => PPRH_IS_ADMIN,
+			'is_admin' => WP_ADMIN,
 			'reset_data' => array(
 				'autoload'        => get_option( 'pprh_preconnect_autoload' ),
 				'allow_unauth'    => get_option( 'pprh_preconnect_allow_unauth' ),
@@ -340,7 +340,7 @@ class PreconnectsTest extends TestCase {
 //
 //		$expected_scripts = array();
 //
-//		if ( PPRH_IS_ADMIN ) {
+//		if ( WP_ADMIN ) {
 //			$expected_scripts = array( 'thickbox', 'pprh_admin_js' );
 //		} else {
 //			$expected_scripts[] = 'pprh-find-domain-names';
@@ -350,7 +350,7 @@ class PreconnectsTest extends TestCase {
 //	}
 
 	public function test_create_js_object() {
-		if ( PPRH_IS_ADMIN ) return;
+		if ( WP_ADMIN ) return;
 
 		$preconnects = new \PPRH\Preconnects();
 
@@ -509,7 +509,7 @@ class PreconnectsTest extends TestCase {
 
 
 	public function test_pprh_post_domain_names() {
-		if ( PPRH_IS_ADMIN || ! wp_doing_ajax() ) {
+		if ( WP_ADMIN || ! wp_doing_ajax() ) {
 			return;
 		}
 

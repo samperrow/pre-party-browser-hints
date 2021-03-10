@@ -44,6 +44,7 @@ class NewHint {
 		$this->enter_url();
 		$this->show_pp_radio_options();
 		$this->set_attrs();
+		$this->set_media_attr();
 		do_action( 'pprh_nh_get_home_page_options' );
 	}
 
@@ -143,8 +144,7 @@ class NewHint {
 				<span class="pprh-help-tip-hint">
 					<span><?php _e( 'For various reasons, font files (and others) need to be loaded with crossorigin. <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Preloading_content#Cross-origin_fetches">Source: Mozilla</a>', 'pprh' ); ?></span>
 				</span>
-                <label>
-					<?php esc_html_e( 'Crossorigin?', 'pprh' ); ?>
+                <label><?php esc_html_e( 'Crossorigin?', 'pprh' ); ?>
                     <input class="widefat pprh_crossorigin" value="crossorigin" type="checkbox" name="crossorigin"/>
                 </label>
             </td>
@@ -159,14 +159,18 @@ class NewHint {
                 <label>
                     <select class="pprh_as_attr" name="as_attr">
                         <option selected label=" "></option>
+                        <option value="audio">audio</option>
+                        <option value="document">document</option>
+                        <option value="embed">embed</option>
+                        <option value="fetch">fetch</option>
+                        <option value="image">image</option>
                         <option value="font">font</option>
+                        <option value="object">object</option>
                         <option value="script">script</option>
                         <option value="style">style</option>
-                        <option value="audio">audio</option>
-                        <option value="video">video</option>
-                        <option value="image">image</option>
                         <option value="track">track</option>
-                        <option value="embed">embed</option>
+                        <option value="video">video</option>
+                        <option value="worker">worker</option>
                     </select>
                 </label>
             </td>
@@ -183,6 +187,8 @@ class NewHint {
                         <option value="font/woff2">font/woff2</option>
                         <option value="font/ttf">font/ttf</option>
                         <option value="font/eot">font/eot</option>
+                        <option value="text/css">text/css</option>
+                        <option value="text/html">text/html</option>
                     </select>
                 </label>
             </td>
@@ -190,4 +196,24 @@ class NewHint {
         </tr>
 		<?php
 	}
+
+	protected function set_media_attr() {
+	    ?>
+        <tr>
+
+            <td colspan="1">
+				<p><?php esc_html_e( 'Media Attribute', 'pprh' ); ?>
+                    <span class="pprh-help-tip-hint">
+                        <span><?php _e( 'Specify the media attribute. This can be used to allow hints to only load on certain devices, screen dimensions, and more. <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Media_Queries/Using_media_queries">https://developer.mozilla.org/en-US/docs/Web/CSS/Media_Queries/Using_media_queries</a>', 'pprh' ); ?></span>
+                    </span>
+                </p>
+            </td>
+
+            <td colspan="4">
+                <input placeholder="(max-width: 600px), for example" class="widefat pprh_media" value="" type="text" name="media"/>
+            </td>
+
+        </tr>
+	    <?php
+    }
 }

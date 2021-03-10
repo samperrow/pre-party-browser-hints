@@ -50,6 +50,7 @@ class DAO {
 				'type_attr'    => $new_hint['type_attr'],
 				'crossorigin'  => $new_hint['crossorigin'],
 				'created_by'   => $current_user,
+				'media'        => $new_hint['media']
 			)
 		);
 
@@ -77,6 +78,7 @@ class DAO {
 				'as_attr'     => $new_hint['as_attr'],
 				'type_attr'   => $new_hint['type_attr'],
 				'crossorigin' => $new_hint['crossorigin'],
+				'media'       => $new_hint['media']
 			),
 			array(
 				'id' => $hint_id,
@@ -184,6 +186,7 @@ class DAO {
             as_attr VARCHAR(55) DEFAULT '',
             type_attr VARCHAR(55) DEFAULT '',
             crossorigin VARCHAR(55) DEFAULT '',
+            media VARCHAR(255) DEFAULT '',
             created_by VARCHAR(55) DEFAULT '' NOT NULL,
             PRIMARY KEY  (id)
         ) $charset;";

@@ -6,7 +6,7 @@ use PHPUnit\Framework\TestCase;
 class PreconnectSettingsTest extends TestCase {
 
 	public function test_constructor() {
-		if ( PPRH_IS_ADMIN ) {
+		if ( WP_ADMIN ) {
 			$this->eval_load_reset_settings();
 		}
 	}

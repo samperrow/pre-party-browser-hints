@@ -19,7 +19,6 @@ class ActivatePlugin {
 		$json = $this->update_prefetch_ignoreKeywords();
 		update_option( 'pprh_prefetch_ignoreKeywords', $json );
 
-
 		if ( 'activate_pre-party-browser-hints/pre-party-browser-hints.php' === current_action() ) {
 			$this->setup_tables();
 			$this->plugin_activated = true;

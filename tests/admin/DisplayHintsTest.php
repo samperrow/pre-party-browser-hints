@@ -11,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 final class DisplayHintsTest extends TestCase {
 
 	public function test_on_post_page_and_global_hint():void {
-		if ( ! PPRH_IS_ADMIN ) return;
+		if ( ! WP_ADMIN ) return;
 
 		$all_hints = \PPRH\Utils::get_all_hints();
 

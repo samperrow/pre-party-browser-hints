@@ -130,6 +130,7 @@
 				crossorigin: elems.crossorigin.is(':checked') ? 'crossorigin' : '',
 				as_attr: elems.as_attr.val(),
 				type_attr: elems.type_attr.val(),
+				media: elems.media.val(),
 				action: operation,
 				hint_ids: (operation === 'update') ? tableID.split('pprh-edit-')[1] : []
 			};
@@ -161,6 +162,7 @@
 				crossorigin: tbody.find('input.pprh_crossorigin'),
 				as_attr: tbody.find('select.pprh_as_attr'),
 				type_attr: tbody.find('select.pprh_type_attr'),
+				media: tbody.find('input.pprh_media')
 			};
 		}
 
@@ -291,7 +293,8 @@
 			}
 
 			elems.as_attr.val(data['as_attr'] ? data['as_attr'] : '');
-			elems.type_attr.val(data['type_attr'] ? data['type_attr'] : '')
+			elems.type_attr.val(data['type_attr'] ? data['type_attr'] : '');
+			elems.media.val(data['media'] ? data['media'] : '');
 		}
 
 		// bulk deletes, enables/disables.

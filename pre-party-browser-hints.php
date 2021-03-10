@@ -26,7 +26,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-new Pre_Party_Browser_Hints();
+$pprh_load = new Pre_Party_Browser_Hints();
+
+register_activation_hook( __FILE__, array( $pprh_load, 'activate_plugin' ) );
+add_action( 'wpmu_new_blog', array( $pprh_load, 'activate_plugin' ) );
 
 class Pre_Party_Browser_Hints {
 
@@ -64,8 +67,7 @@ class Pre_Party_Browser_Hints {
 		$load_admin = new LoadAdmin($this->all_hints);
 		$load_admin->init();
 
-		register_activation_hook( __FILE__, array( $load_admin, 'activate_plugin' ) );
-		add_action( 'wpmu_new_blog', array( $load_admin, 'activate_plugin' ) );
+		$this->check_to_upgrade();
 	}
 
     public function load_client() {
@@ -100,6 +102,37 @@ class Pre_Party_Browser_Hints {
 		include_once 'includes/admin/NewHint.php';
 	}
 
+	public function check_to_upgrade() {
+		$desired_version = '1.7.5';
+		$current_version = get_option( 'pprh_version' );
+
+		if ( empty( $current_version ) || version_compare( $current_version, $desired_version ) < 0 ) {
+			$this->activate_plugin();
+			update_option( 'pprh_version', $desired_version );
+			add_action( 'admin_notices', array( $this, 'upgrade_notice' ) );
+		}
+	}
+
+	public function upgrade_notice() {
+		?>
+		<div class="notice notice-info is-dismissible">
+			<p><?php _e('1.7.4.2 update info: ' ); ?></p>
+		</div>
+		<?php
+	}
+
+	public function activate_plugin() {
+		if ( ! class_exists( \PPRH\Utils::class ) ) {
+			include_once 'includes/Utils.php';
+			include_once 'includes/DAO.php';
+		}
+
+		$this->create_constants();
+
+		include_once 'includes/admin/ActivatePlugin.php';
+		$activate_plugin = new ActivatePlugin();
+		$activate_plugin->init();
+	}
 
 
 }

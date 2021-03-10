@@ -10,9 +10,7 @@ class CreateHints {
 
 //	public $result = array();
 
-//	public function __construct() {
-//		include_once PPRH_ABS_DIR . 'includes/CreateHintsUtil.php';
-//	}
+//	public function __construct() {}
 
 	public function create_hint( $raw_hint ) {
 		if ( empty( $raw_hint['url'] ) || empty( $raw_hint['hint_type'] ) ) {
@@ -29,6 +27,7 @@ class CreateHints {
 			'hint_type'    => $hint_type,
 			'type_attr'    => $this->set_type_attr( $raw_hint, $file_type ),
 			'crossorigin'  => $this->set_crossorigin( $raw_hint, $file_type ),
+			'media'        => $this->set_media( $raw_hint )
 		);
 
 		return apply_filters( 'pprh_ch_append_hint', $new_hint, $raw_hint );
@@ -79,6 +78,7 @@ class CreateHints {
 		$as_attr = ( ! empty( $hint['as_attr'] ) ? Utils::clean_hint_attr( $hint['as_attr'] ) : '' );
 		$media_types = array(
 			'.mp3'   => 'audio',
+			'.html'  => 'document',
 			'.swf'   => 'embed',
 			'.woff'  => 'font',
 			'.woff2' => 'font',
@@ -104,10 +104,38 @@ class CreateHints {
 	public function set_type_attr( $hint, $file_type ) {
 		$type_attr = ( ! empty( $hint['type_attr'] ) ) ? $hint['type_attr'] : '';
 		$mimes = array(
-			'.woff'  => 'font/woff',
-			'.woff2' => 'font/woff2',
-			'.ttf'   => 'font/ttf',
-			'.eot'   => 'font/eot',
+			'.aac'    => 'audio/aac',
+			'.oga'    => 'audio/ogg',
+			'.opus'   => 'audio/opus',
+			'.weba'   => 'audio/webm',
+			'.webm'   => 'audio/webm',
+			'.epub'   => 'application/epub+zip',
+			'.json'   => 'application/json',
+			'.jsonld' => 'application/ld+json',
+			'.bin'    => 'application/octet-stream',
+			'.ogx'    => 'application/ogg',
+			'.pdf'    => 'application/pdf',
+			'.bmp'    => 'image/bmp',
+			'.jpg'    => 'image/jpeg',
+			'.jpeg'   => 'image/jpeg',
+			'.png'    => 'image/png',
+			'.tif'    => 'image/tiff',
+			'.tiff'   => 'image/tiff',
+			'.svg'    => 'image/svg+xml',
+			'.ico'    => 'image/vnd.microsoft.icon',
+			'.woff'   => 'font/woff',
+			'.woff2'  => 'font/woff2',
+			'.ttf'    => 'font/ttf',
+			'.eot'    => 'font/eot',
+			'.otf'    => 'font/otf',
+			'.css'    => 'text/css',
+			'.htm'    => 'text/html',
+			'.html'   => 'text/html',
+			'.txt'    => 'text/plain',
+			'.mpeg'   => 'video/mpeg',
+			'.ogv'    => 'video/ogg',
+			'.webp'   => 'video/webm',
+			'.avi'    => 'video/x-msvideo'
 		);
 
 		return ( ! empty( $type_attr ) ) ? Utils::clean_hint_attr( $type_attr ) : $this->get_file_type_mime( $mimes, $file_type );
@@ -120,6 +148,10 @@ class CreateHints {
 			}
 		}
 		return '';
+	}
+
+	protected function set_media( $raw_hint ) {
+		return ( ! empty( $raw_hint['media'] ) ? Utils::clean_url( $raw_hint['media'] ) : '' );
 	}
 
 }
