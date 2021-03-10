@@ -15,9 +15,9 @@ class PrefetchSettings {
 	public $prefetch_max_prefetches;
 
 	public function get_each_keyword( $keywords ) {
-//	    if ( is_null( $keywords ) ) {
-//	        return '';
-//        }
+	    if ( is_null( $keywords ) ) {
+	        return;
+        }
 
 	    $str = '';
 	    $count = count( $keywords );
