@@ -108,11 +108,12 @@ class SendHints {
 
 
 	private function add_attr( $name, $attr_value ) {
-		$attr = ( 'true' === $this->send_hints_in_html ) ? "\"$attr_value\"" : "$attr_value;";
-
-		return " $name=" . $attr;
-
-//		return ' ' . ( ( 'crossorigin' === $name ) ? $name : "$name=" . $attr );
+		if ( 'crossorigin' === $name ) {
+			return ' ' . $name;
+		} else {
+			$attr = ( 'true' === $this->send_hints_in_html ) ? "\"$attr_value\"" : "$attr_value;";
+			return ' ' .  "$name=" . $attr;
+		}
 	}
 
 }

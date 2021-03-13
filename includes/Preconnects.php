@@ -154,13 +154,13 @@ class Preconnects {
 	}
 
 	public function process_hints( $hint_data ) {
-		$create_hints_util = new CreateHintsUtil();
+		$create_hints = new CreateHints();
 		$new_hints = array();
 
 		foreach ( $hint_data['hints'] as $url ) {
 			$hint_arr = $hint_data;
 			$hint_arr['url'] = $url;
-			$hint = $create_hints_util->new_hint_controller( $hint_arr );
+			$hint = $create_hints->new_hint_controller( $hint_arr );
 
 			if ( is_array( $hint ) ) {
 				$new_hints[] = $hint;

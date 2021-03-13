@@ -146,7 +146,7 @@ class NewHint {
                             'pprh' ); ?></span>
 				</span>
                 <label><?php esc_html_e( 'Crossorigin?', 'pprh' ); ?>
-                    <input class="widefat pprh_crossorigin" value="crossorigin" type="checkbox" name="crossorigin"/>
+                    <input class="widefat pprh_crossorigin" value="crossorigin" type="checkbox" name="crossorigin" disabled="true"/>
                 </label>
             </td>
 
@@ -211,7 +211,7 @@ class NewHint {
             </td>
 
             <td colspan="4">
-                <input placeholder="(max-width: 600px), for example" class="widefat pprh_media" value="" type="text" name="media"/>
+                <input placeholder="" class="widefat pprh_media" value="" type="text" name="media" disabled="true"/>
             </td>
 
         </tr>

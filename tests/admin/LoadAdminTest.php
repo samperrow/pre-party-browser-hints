@@ -18,7 +18,7 @@ final class LoadAdminTest extends TestCase {
 			$actual_scripts[] =  $wp_scripts->registered[$script]->handle;
 		}
 
-		$expected_scripts = array( 'thickbox', 'pprh_admin_js' );
+		$expected_scripts = array( 'thickbox', 'pprh_create_hints_js', 'pprh_admin_js' );
 		$this->assertEquals( $expected_scripts, $actual_scripts);
 	}
 

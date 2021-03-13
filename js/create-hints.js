@@ -12,10 +12,10 @@
         var obj = {
             url:         urlValue,
             hint_type:   hintType,
-            media:       getAttr(data.media),
+            media:       ('preload' === hintType) ? getAttr(data.media) : '',
             as_attr:     getAttr(data.as_attr, mimeTypeValues),
             type_attr:   getAttr(data.type_attr, mimeTypeValues),
-            crossorigin: getCrossorigin(data.crossorigin, urlValue, fileType),
+            crossorigin: getCrossorigin(hintType, data.crossorigin, urlValue, fileType),
         };
 
         if (typeof pprhProAdminJS === "object") {
@@ -61,9 +61,11 @@
         return "." + url.split('.').pop().split(/\W/)[0];
     }
 
-    function getCrossorigin(crossoriginElem, urlValue, fileType) {
-        if ( 'crossorigin' === crossoriginElem || /fonts.(googleapis|gstatic|cdnfonts).com/i.test(urlValue) || /(\.woff|\.woff2|\.ttf|\.eot)/i.test(fileType)) {
-            return 'crossorigin';
+    function getCrossorigin(hintType, crossoriginElem, urlValue, fileType) {
+        if ( 'preconnect' === hintType ) {
+            if ( true === crossoriginElem || /fonts.(googleapis|gstatic|cdnfonts).com/i.test(urlValue) || /(\.woff|\.woff2|\.ttf|\.eot)/i.test(fileType)) {
+                return 'crossorigin';
+            }
         }
 
         return '';

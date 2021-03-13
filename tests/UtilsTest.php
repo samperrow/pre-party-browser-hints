@@ -61,7 +61,7 @@ final class UtilsTest extends TestCase {
 //		$this->assertEquals( $str1, $test1 );
 //		$this->assertEquals( 'https://scripttest.comscript', $test2 );
 //	}
-//
+
 	public function test_clean_hint_attr():void {
 		$str1 = 'font/woff2';
 		$str2 = 'f<\/asdlfkj43*#t935u23" asdflkj3';
@@ -156,17 +156,6 @@ final class UtilsTest extends TestCase {
 //	}
 
 
-	public function test_create_pprh_hint_success():void {
-		$create_hints = new \PPRH\CreateHints();
-		$raw_data1 = TestUtils::create_hint_array( 'test.com', 'dns-prefetch' );
-		$actual_raw = $create_hints->create_hint( $raw_data1 );
-		$expected = TestUtils::create_hint_array( '//test.com', 'dns-prefetch' );
-
-		$actual = apply_filters( 'pprh_ch_append_hint', $actual_raw, $raw_data1 );
-
-		$this->assertEquals( $expected, $actual );
-	}
-
 	public function test_create_pprh_hint_fail():void {
 		$create_hints = new \PPRH\CreateHints();
 		$raw_data1 = TestUtils::create_hint_array( '', '' );
@@ -176,13 +165,13 @@ final class UtilsTest extends TestCase {
 
 	public function test_create_pprh_hint_dup_hints():void {
 		$dao = new \PPRH\DAO();
-		$create_hints_util = new \PPRH\CreateHintsUtil();
+		$create_hints = new \PPRH\CreateHints();
 		$data1 = TestUtils::create_hint_array( 'blah.com', 'preconnect' );
-		$hint1 = $create_hints_util->create_hint($data1);
+		$hint1 = $create_hints->create_hint($data1);
 
 		$actual1 = $dao->insert_hint( $hint1 );
 
-		$hint2 = $create_hints_util->new_hint_controller( $hint1 );
+		$hint2 = $create_hints->new_hint_controller( $hint1 );
 
 		$this->assertEquals( true, $actual1->db_result['success'] );
 		$this->assertEquals( false, $hint2->db_result['success'] );

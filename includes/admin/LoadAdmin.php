@@ -91,7 +91,7 @@ class LoadAdmin {
 
 			wp_register_script( 'pprh_create_hints_js', PPRH_REL_DIR . 'js/create-hints.js', array( 'jquery' ), PPRH_VERSION, true );
 
-			wp_register_script( 'pprh_admin_js', PPRH_REL_DIR . 'js/admin.js', array( 'jquery', 'pprh_create_hints_js' ), PPRH_VERSION, true );
+			wp_register_script( 'pprh_admin_js', PPRH_REL_DIR . 'js/admin.js', array( 'jquery', 'pprh_create_hints_js' ), null, true );
 			wp_localize_script( 'pprh_admin_js', 'pprh_data', $ajax_data );
 
 //			wp_localize_script( 'pprh_create_hints_js', 'pprh_data', $ajax_data );
