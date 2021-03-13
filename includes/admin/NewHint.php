@@ -142,7 +142,8 @@ class NewHint {
 
             <td colspan="1">
 				<span class="pprh-help-tip-hint">
-					<span><?php _e( 'For various reasons, font files (and others) need to be loaded with crossorigin. <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Preloading_content#Cross-origin_fetches">Source: Mozilla</a>', 'pprh' ); ?></span>
+					<span><?php _e( 'For various reasons, font files (and others) need to be loaded with the crossorigin attribute. Crossorigin only applies to preconnect hints!<a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Preloading_content#Cross-origin_fetches">Source: Mozilla</a>',
+                            'pprh' ); ?></span>
 				</span>
                 <label><?php esc_html_e( 'Crossorigin?', 'pprh' ); ?>
                     <input class="widefat pprh_crossorigin" value="crossorigin" type="checkbox" name="crossorigin"/>
@@ -175,7 +176,7 @@ class NewHint {
                 </label>
             </td>
 
-            <td colspan="2" class="text-center">
+            <td colspan="2">
 				<span class="pprh-help-tip-hint">
 					<span><?php _e( '&lt;link&gt; elements can accept a type attribute, which contains the MIME type of the resource the element points to. This is especially useful when preloading resources — the browser will use the type attribute value to work out if it supports that resource, and will only download it if so, ignoring it if not. <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Preloading_content#Including_a_MIME_type">Source: Mozilla</a>. (This attribute will attempt to be added automatically.)', 'pprh' ); ?></span>
 				</span>

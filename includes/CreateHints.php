@@ -23,8 +23,8 @@ class CreateHints {
 
 		$new_hint = array(
 			'url'          => $url,
-			'as_attr'      => $this->set_as_attr( $raw_hint, $file_type ),
 			'hint_type'    => $hint_type,
+			'as_attr'      => $this->set_as_attr( $raw_hint, $file_type ),
 			'type_attr'    => $this->set_type_attr( $raw_hint, $file_type ),
 			'crossorigin'  => $this->set_crossorigin( $raw_hint, $file_type ),
 			'media'        => $this->set_media( $raw_hint )
@@ -123,6 +123,7 @@ class CreateHints {
 			'.tiff'   => 'image/tiff',
 			'.svg'    => 'image/svg+xml',
 			'.ico'    => 'image/vnd.microsoft.icon',
+			'.webp'   => 'image/webp',
 			'.woff'   => 'font/woff',
 			'.woff2'  => 'font/woff2',
 			'.ttf'    => 'font/ttf',
@@ -134,7 +135,6 @@ class CreateHints {
 			'.txt'    => 'text/plain',
 			'.mpeg'   => 'video/mpeg',
 			'.ogv'    => 'video/ogg',
-			'.webp'   => 'video/webm',
 			'.avi'    => 'video/x-msvideo'
 		);
 

@@ -100,9 +100,55 @@
 			});
 		}
 
+		function prepareHint(tableId, operation) {
+			var table = jQuery('#' + tableId);
+			var rawData = configForHint(table);
+
+			if (typeof rawData === "object") {
+				var hint = pprhCreateHint.CreateHint(rawData);
+				hint.action = operation;
+				hint.hint_ids = (operation === 'update') ? tableId.split('pprh-edit-')[1] : [];
+				return createAjaxReq(hint, 'pprh_update_hints', pprh_data.nonce);
+			}
+		}
+
 		$('input#pprhSubmitHints').on("click", function (e) {
-			createHint(e, 'pprh-enter-data', 'create');
+			prepareHint('pprh-enter-data', 'create');
 		});
+
+		function configForHint(table) {
+			var elems = getRowElems(table);
+
+			var rawData = {
+				url:         elems.url.val(),
+				hint_type:   elems.hint_type.find('input:checked').val(),
+				media:       elems.media.val(),
+				as_attr:     elems.as_attr.val(),
+				type_attr:   elems.type_attr.val(),
+				crossorigin: elems.crossorigin.val(),
+			}
+
+			if (rawData.url.length === 0 || !rawData.hint_type) {
+				window.alert('Please enter a proper URL and hint type.');
+			} else if (rawData.hint_type === 'preload' && !rawData.as_attr) {
+				window.alert("You must specify an 'as' attribute when using preload hints.");
+			} else {
+				return rawData;
+			}
+		}
+
+		function getRowElems(table) {
+			var tbody = table.find('tbody');
+			return {
+				url:         tbody.find('input.pprh_url'),
+				hint_type:   tbody.find('tr.pprhHintTypes'),
+				crossorigin: tbody.find('input.pprh_crossorigin'),
+				as_attr:     tbody.find('select.pprh_as_attr'),
+				type_attr:   tbody.find('select.pprh_type_attr'),
+				media:       tbody.find('input.pprh_media')
+			};
+		}
+
 
 		function getUrlValue() {
 			var val = '';
@@ -118,53 +164,6 @@
 			return val;
 		}
 
-		function createHintObj(tableID, operation) {
-			var table = $('table#' + tableID);
-			var elems = getRowElems(table);
-			var hint_url = elems.url.val().replace(/'|"/g, '');
-			var hintType = elems.hint_type.find('input:checked').val()
-
-			var obj =  {
-				url: hint_url,
-				hint_type: hintType,
-				crossorigin: elems.crossorigin.is(':checked') ? 'crossorigin' : '',
-				as_attr: elems.as_attr.val(),
-				type_attr: elems.type_attr.val(),
-				media: elems.media.val(),
-				action: operation,
-				hint_ids: (operation === 'update') ? tableID.split('pprh-edit-')[1] : []
-			};
-
-			if (typeof pprhAdminJS.pprhProAdminJS === "object") {
-				obj.post_id = pprhAdminJS.pprhProAdminJS.GetPostId();
-			}
-
-			return obj;
-		}
-
-		function createHint(e, tableID, operation) {
-			var hintObj = createHintObj(tableID, operation);
-
-			if (hintObj.url.length === 0 || !hintObj.hint_type) {
-				window.alert('Please enter a proper URL and hint type.');
-			} else if (hintObj.hint_type === 'preload' && !hintObj.as_attr) {
-				window.alert("You must specify an 'as' attribute when using preload hints.");
-			} else {
-				createAjaxReq(hintObj);
-			}
-		}
-
-		function getRowElems(table) {
-			var tbody = table.find('tbody');
-			return {
-				url: tbody.find('input.pprh_url'),
-				hint_type: tbody.find('tr.pprhHintTypes'),
-				crossorigin: tbody.find('input.pprh_crossorigin'),
-				as_attr: tbody.find('select.pprh_as_attr'),
-				type_attr: tbody.find('select.pprh_type_attr'),
-				media: tbody.find('input.pprh_media')
-			};
-		}
 
 		function addDeleteHintListener() {
 			$('span.delete').on('click', function (e) {
@@ -274,7 +273,7 @@
 				});
 
 				$('tr.pprh-row.edit.' + hintID).find('button.pprh-update').on('click', function (e) {
-					createHint(e, 'pprh-edit-' + hintID, 'update');
+					prepareHint('pprh-edit-' + hintID, 'update');
 				});
 			});
 		}
@@ -352,7 +351,6 @@
 		return {
 			CreateAjaxReq: createAjaxReq,
 			UpdateAdminNotice: updateAdminNotice,
-			CreateHintObj: createHintObj,
 		}
 
 	}));

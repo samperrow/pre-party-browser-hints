@@ -1,0 +1,6 @@
+{
+  "name": "pre-party-resource-hints",
+  "jest": {
+    "verbose": true
+  }
+}
