@@ -10,8 +10,8 @@ class LoadAdmin {
 
 	public $all_hints = array();
 
-    public function __construct( $all_hints ) {
-        $this->all_hints = $all_hints;
+    public function __construct() {
+//        $this->all_hints = $all_hints;
 	}
 
 	public function init() {
@@ -58,7 +58,7 @@ class LoadAdmin {
 		$on_pprh_admin = Utils::on_pprh_admin();
 		include_once PPRH_ABS_DIR . 'includes/admin/Dashboard.php';
 
-		$dashboard = new Dashboard( $this->all_hints, $on_pprh_admin );
+		$dashboard = new Dashboard( $on_pprh_admin );
 		$dashboard->load_plugin_admin_files();
 		$dashboard->show_plugin_dashboard();
 	}

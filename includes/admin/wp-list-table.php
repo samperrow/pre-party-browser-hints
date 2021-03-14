@@ -269,7 +269,7 @@ class WP_List_Table {
 	 * @since 3.1.0
 	 * @abstract
 	 */
-	public function prepare_items( $all_hints ) {
+	public function prepare_items() {
 		die( 'function WP_List_Table::prepare_items() must be over-ridden in a sub-class.' );
 	}
 
@@ -1350,10 +1350,11 @@ class WP_List_Table {
      * Handle an incoming ajax request (called from admin-ajax.php)
      *
      * @param $results
+     * @param $all_hints - custom
      * @since 3.1.0
      */
-	public function ajax_response( $results, $all_hints ) {
-		$this->prepare_items( $all_hints );
+	public function ajax_response($results) {
+		$this->prepare_items();
 
 		ob_start();
 		if ( ! empty( $_REQUEST['no_placeholder'] ) ) {

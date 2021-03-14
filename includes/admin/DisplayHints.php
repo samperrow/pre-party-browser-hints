@@ -17,7 +17,9 @@ class DisplayHints extends WP_List_Table {
 	public $table;
 	public $items;
 
-	public function __construct( $on_pprh_admin, $all_hints = null ) {
+	public $all_hints;
+
+	public function __construct( $on_pprh_admin, $all_hints = false ) {
 		parent::__construct( array(
             'ajax'     => true,
 			'plural'   => 'urls',
@@ -26,13 +28,13 @@ class DisplayHints extends WP_List_Table {
             'on_pprh_admin' => $on_pprh_admin
 		) );
 
+		if ( false === $all_hints ) {
+			$all_hints = Utils::get_all_hints();
+		}
+		$this->all_hints = $all_hints;
+
 		if ( ! wp_doing_ajax() ) {
-
-			if ( false === $all_hints ) {
-			    $all_hints = Utils::get_all_hints();
-            }
-
-			$this->prepare_items( $all_hints );
+			$this->prepare_items();
 			$this->display();
 		}
 	}
@@ -93,22 +95,18 @@ class DisplayHints extends WP_List_Table {
         );
 	}
 
-	public function prepare_items( $all_hints ) {
-//		$dao = new DAO();
+	public function prepare_items() {
 		$this->hints_per_page = $this->set_hints_per_page();
 		$columns = $this->get_columns();
 		$sortable = $this->get_sortable_columns();
 		$this->_column_headers = array( $columns, array(), $sortable );
-
-//		$data = $dao->get_hints_ordered( null );
-        $data = $all_hints;
 		$current_page = $this->get_pagenum();
-		$this->items = array_slice( $data, ( ( $current_page - 1 ) * $this->hints_per_page ), $this->hints_per_page );
-		$total_items = count( $data );
+		$this->items = array_slice( $this->all_hints, ( ( $current_page - 1 ) * $this->hints_per_page ), $this->hints_per_page );
+		$total_items = count( $this->all_hints );
 
 		$this->set_pagination_args(
             array(
-				'order'       => ! empty( $_REQUEST['order'] ) && '' !== $_REQUEST['order'] ? $_REQUEST['order'] : 'asc',
+				'order'       => ! empty( $_REQUEST['order'] )   && '' !== $_REQUEST['order']   ? $_REQUEST['order']   : 'asc',
 				'orderby'     => ! empty( $_REQUEST['orderby'] ) && '' !== $_REQUEST['orderby'] ? $_REQUEST['orderby'] : 'title',
 				'per_page'    => $this->hints_per_page,
 				'total_items' => $total_items,

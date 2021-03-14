@@ -10,10 +10,10 @@ class Dashboard {
 
 	public $on_pprh_admin = false;
 
-	public $all_hints = array();
+//	public $all_hints = array();
 
-	public function __construct( $all_hints, $on_pprh_admin ) {
-		$this->all_hints = $all_hints;
+	public function __construct( $on_pprh_admin ) {
+//		$this->all_hints = $all_hints;
 		$this->on_pprh_admin = $on_pprh_admin;
 	}
 
@@ -41,7 +41,7 @@ class Dashboard {
 		$this->show_admin_tabs();
 
 		echo '<div class="pprh-box">';
-		new InsertHints( $this->all_hints, $this->on_pprh_admin );
+		new InsertHints( $this->on_pprh_admin );
 		new Settings( $this->on_pprh_admin );
 		new HintInfo();
 		new Upgrade();

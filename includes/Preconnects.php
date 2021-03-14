@@ -12,9 +12,13 @@ class Preconnects {
 
 	public $config;
 
+	public $testing = false;
+
 	// tested
 	public function __construct() {
 		add_action( 'wp_loaded', array( $this, 'init_controller' ), 10, 0 );
+
+		$this->testing = ( defined( 'PPRH_TESTING' ) && PPRH_TESTING );
 
 		$this->config = array(
 			'is_admin' => is_admin(),
@@ -129,22 +133,28 @@ class Preconnects {
 	public function pprh_post_domain_names() {
 		if ( isset( $_POST['pprh_data'] ) && wp_doing_ajax() ) {
 			check_ajax_referer('pprh_ajax_nonce', 'nonce');
-			$this->do_ajax_callback();
-		}
-		wp_die();
-	}
+			$allow_unauth = $this->config['reset_data']['allow_unauth'];
 
-	public function do_ajax_callback() {
-		if ( ! $this->allow_unauth_users( $this->config['reset_data']['allow_unauth'] ) ) {
+			if ( $this->allow_unauth_users( $allow_unauth ) ) {
+				$this->do_ajax_callback( $_POST['pprh_data'] );
+				return true;
+			}
+
 			return false;
 		}
 
-		$raw_hint_data = json_decode( wp_unslash( $_POST['pprh_data'] ), true );
+		if ( ! $this->testing ) {
+			wp_die();
+		}
+	}
+
+	public function do_ajax_callback( $pprh_data ) {
+		$raw_hint_data = json_decode( wp_unslash( $pprh_data ), true );
 
 		if ( count( $raw_hint_data['hints'] ) > 0 ) {
 			$new_hints = $this->process_hints( $raw_hint_data );
 
-			if ( count( $new_hints ) > 0 ) {
+			if ( count( $new_hints ) > 0 && ! $this->testing ) {
 				$this->insert_hints_to_db( $new_hints );
 			}
 		}

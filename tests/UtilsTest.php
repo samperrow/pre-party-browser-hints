@@ -239,7 +239,10 @@ final class UtilsTest extends TestCase {
 
 	public function test_on_pprh_admin() {
 		if ( WP_ADMIN ) {
+//			$_SERVER['PHP_SELF'] = '/Users/samperrow/repos/WordPress/wp-admin/admin.php';
+
 			if ( wp_doing_ajax() ) {
+
 				$_SERVER['HTTP_REFERER'] = 'pprh-plugin-settings';
 				$actual_1 = \PPRH\Utils::on_pprh_admin();
 

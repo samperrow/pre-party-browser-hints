@@ -8,37 +8,48 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class AjaxOps {
 
-	public $all_hints = array();
+//	public $all_hints = array();
+
+	public $testing = false;
 
 	public function __construct() {
 		add_action( 'wp_ajax_pprh_update_hints', array( $this, 'pprh_update_hints' ) );
-    }
+		$this->testing = ( defined( 'PPRH_TESTING' ) && PPRH_TESTING );
+	}
 
 	public function pprh_update_hints() {
 		if ( isset( $_POST['pprh_data'] ) && wp_doing_ajax() ) {
 			check_ajax_referer( 'pprh_table_nonce', 'nonce' );
-			$data = json_decode( wp_unslash( $_POST['pprh_data'] ), true );
+			$this->init( $_POST['pprh_data'] );
+			return true;
+		}
 
-			if ( is_array( $data ) ) {
-				$action = $data['action'];
-				$result = $this->handle_action( $data, $action );
+		if ( ! $this->testing ) {
+			wp_die();
+		}
+	}
 
-				if ( is_object( $result ) ) {
-					$this->all_hints = Utils::get_all_hints();
-					$on_pprh_admin = Utils::on_pprh_admin();
-					$display_hints = new DisplayHints( $on_pprh_admin, $this->all_hints );
-					$json = $display_hints->ajax_response( $result, $this->all_hints );
+	public function init( $pprh_data ) {
+		$data = json_decode( wp_unslash( $pprh_data ), true );
 
-					if ( defined( 'PPRH_TESTING' ) && PPRH_TESTING ) {
-						return $json;
-					}
+		if ( is_array( $data ) ) {
+			$action = $data['action'];
+			$result = $this->handle_action( $data, $action );
 
-					die( $json );
+			if ( is_object( $result ) ) {
+				$on_pprh_admin = Utils::on_pprh_admin();
+				$display_hints = new DisplayHints( $on_pprh_admin, false );
+				$json = $display_hints->ajax_response( $result );
+
+				if ( defined( 'PPRH_TESTING' ) && PPRH_TESTING ) {
+					return $json;
 				}
+
+				wp_die( $json );
 			}
 		}
-		wp_die();
 	}
+
 
 	public function handle_action( $data, $action ) {
 		$dao = new DAO();

@@ -10,7 +10,8 @@ final class LoadAdminTest extends TestCase {
 		if ( ! WP_ADMIN ) return;
 
 		global $wp_scripts;
-		$load_admin = new \PPRH\LoadAdmin( false, true);
+		$load_admin = new \PPRH\LoadAdmin( false );
+		$expected_scripts = array();
 		$load_admin->register_admin_files( 'toplevel_page_pprh-plugin-settings' );
 		$actual_scripts = array();
 
@@ -18,7 +19,13 @@ final class LoadAdminTest extends TestCase {
 			$actual_scripts[] =  $wp_scripts->registered[$script]->handle;
 		}
 
-		$expected_scripts = array( 'thickbox', 'pprh_create_hints_js', 'pprh_admin_js' );
+		if ( WP_ADMIN && DOING_AJAX ) {
+			$expected_scripts[] = 'thickbox';
+		}
+
+		$expected_scripts[] = 'pprh_create_hints_js';
+		$expected_scripts[] = 'pprh_admin_js';
+
 		$this->assertEquals( $expected_scripts, $actual_scripts);
 	}
 

@@ -513,19 +513,9 @@ class PreconnectsTest extends TestCase {
 			return;
 		}
 
-		$dao = new \PPRH\DAO();
+//		$dao = new \PPRH\DAO();
 		$preconnects = new \PPRH\Preconnects();
-
-		$_SERVER['HTTP_HOST'] = 'sphacks.local';
-		$_SERVER['HTTP_REFERER'] = 'sphacks.local';
-		$token = wp_get_session_token();
-		$i     = wp_nonce_tick();
-		$user  = wp_get_current_user();
-		$uid   = (int) $user->ID;
-		$action = 'pprh_ajax_nonce';
-
-		// Nonce generated 0-12 hours ago.
-		$expected_nonce = substr( wp_hash( $i . '|' . $action . '|' . $uid . '|' . $token, 'nonce' ), -12, 10 );
+		$expected_nonce = TestUtils::create_nonce( 'pprh_ajax_nonce' );
 
 		$url1 = 'https://fonts.gstaticTest.com';
 		$url2 = 'https://fonts.gstaticTest2.net';
@@ -539,14 +529,7 @@ class PreconnectsTest extends TestCase {
 
 		$actual = $preconnects->pprh_post_domain_names();
 
-		if ( false === $actual ) {						// user is not logged in and is not allowed to create auto prec hints.
-			$this->assertEquals( false, $actual );
-		} else {
-			$dao->delete_hint( $actual[0]->db_result['hint_id'] );
-			$dao->delete_hint( $actual[1]->db_result['hint_id'] );
-			$actual_result = ( is_array($actual) && is_object( $actual[0] ) );
-			$this->assertEquals( true, $actual_result );
-		}
+		$this->assertEquals( true, $actual );
 
 	}
 

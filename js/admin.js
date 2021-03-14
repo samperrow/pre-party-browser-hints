@@ -101,7 +101,7 @@
 	toggleDisallowedElems();
 	function toggleDisallowedElems() {
 		var hintTypeElems = $('input[name="hint_type"]');
-		
+
 		$.each(hintTypeElems, function(item) {
 			$(this).on('click', function() {
 				var hintType = $(this).val();
