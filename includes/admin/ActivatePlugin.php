@@ -21,6 +21,9 @@ class ActivatePlugin {
 
 		if ( 'activate_pre-party-browser-hints/pre-party-browser-hints.php' === current_action() ) {
 			$this->setup_tables();
+			$this->drop_columns();
+			update_option( 'pprh_version', $desired_version );
+			add_action( 'admin_notices', array( $this, 'upgrade_notice' ) );
 			$this->plugin_activated = true;
 		}
 	}
@@ -86,6 +89,21 @@ class ActivatePlugin {
 		foreach ( $pprh_tables as $pprh_table ) {
 			$dao->create_table( $pprh_table );
 		}
+	}
+
+	public function drop_columns() {
+		global $wpdb;
+		$table = PPRH_DB_TABLE;
+
+		$wpdb->query( "ALTER TABLE $table DROP COLUMN auto_created" );
+	}
+
+	public function upgrade_notice() {
+		?>
+		<div class="notice notice-info is-dismissible">
+			<p><?php _e('1.7.5 update info: ' ); ?></p>
+		</div>
+		<?php
 	}
 
 }

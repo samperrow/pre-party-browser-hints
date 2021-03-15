@@ -60,6 +60,9 @@ class Pre_Party_Browser_Hints {
 		// this needs to be loaded front end and back end bc Ajax needs to be able to communicate between the two.
 		include_once PPRH_ABS_DIR . 'includes/Preconnects.php';
 		$preconnects = new Preconnects();
+
+		include_once 'Updater.php';
+		new Updater();
     }
 
 	public function load_admin() {
@@ -67,7 +70,7 @@ class Pre_Party_Browser_Hints {
 		$load_admin = new LoadAdmin();
 		$load_admin->init();
 
-		$this->check_to_upgrade();
+//		$this->check_to_upgrade();
 	}
 
     public function load_client() {
@@ -107,18 +110,10 @@ class Pre_Party_Browser_Hints {
 
 		if ( empty( $current_version ) || version_compare( $current_version, $desired_version ) < 0 ) {
 			$this->activate_plugin();
-			update_option( 'pprh_version', $desired_version );
-			add_action( 'admin_notices', array( $this, 'upgrade_notice' ) );
 		}
 	}
 
-	public function upgrade_notice() {
-		?>
-		<div class="notice notice-info is-dismissible">
-			<p><?php _e('1.7.4.2 update info: ' ); ?></p>
-		</div>
-		<?php
-	}
+
 
 	public function activate_plugin() {
 		if ( ! class_exists( \PPRH\Utils::class ) ) {
