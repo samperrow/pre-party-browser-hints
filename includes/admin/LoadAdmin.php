@@ -30,9 +30,6 @@ class LoadAdmin {
 		include_once PPRH_ABS_DIR . 'includes/AjaxOps.php';
 		new AjaxOps();
 
-		include_once PPRH_ABS_DIR . 'Updater.php';
-		new Updater();
-
 		do_action( 'pprh_pro_load_admin' );
     }
 

@@ -60,6 +60,9 @@ class Pre_Party_Browser_Hints {
 		// this needs to be loaded front end and back end bc Ajax needs to be able to communicate between the two.
 		include_once PPRH_ABS_DIR . 'includes/Preconnects.php';
 		$preconnects = new Preconnects();
+
+		include_once 'Updater.php';
+		new Updater();
     }
 
 	public function load_admin() {
@@ -102,7 +105,7 @@ class Pre_Party_Browser_Hints {
 	}
 
 	public function check_to_upgrade() {
-		$desired_version = '1.7.5';
+		$desired_version = '1.7.4.3';
 		$current_version = get_option( 'pprh_version' );
 
 		if ( empty( $current_version ) || version_compare( $current_version, $desired_version ) < 0 ) {
