@@ -18,6 +18,8 @@ class Updater {
 		$this->api_endpoint = 'https://sphacks.io/wp-content/pprh/free/update-pprh-free.json';
 		$this->plugin_file = 'pre-party-browser-hints/pre-party-browser-hints.php';
 		$this->plugin_version = PPRH_VERSION;
+
+		add_filter( 'pre_set_site_transient_update_plugins', array( $this, 'check_for_update' ) );
 	}
 
 	public function check_for_update( $transient ) {
