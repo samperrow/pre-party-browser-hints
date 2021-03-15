@@ -10,9 +10,7 @@ class LoadAdmin {
 
 	public $all_hints = array();
 
-    public function __construct() {
-//        $this->all_hints = $all_hints;
-	}
+//    public function __construct() {}
 
 	public function init() {
 		$utils = new Utils();
@@ -31,6 +29,9 @@ class LoadAdmin {
 		include_once PPRH_ABS_DIR . 'includes/admin/DisplayHints.php';
 		include_once PPRH_ABS_DIR . 'includes/AjaxOps.php';
 		new AjaxOps();
+
+		include_once PPRH_ABS_DIR . 'Updater.php';
+		new Updater();
 
 		do_action( 'pprh_pro_load_admin' );
     }

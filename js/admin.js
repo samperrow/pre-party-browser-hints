@@ -98,7 +98,6 @@
 		});
 	}
 
-	// toggleDisallowedElems();
 	function toggleDisallowedElems() {
 		var hintTypeElems = $('input[name="hint_type"]');
 
@@ -113,11 +112,11 @@
 					xoriginElem.prop('disabled', false);
 					mediaElem.prop('disabled', true);
 				} else if ('preload' === hintType) {
+					xoriginElem.prop('disabled', true);
 					mediaElem.prop('disabled', false);
-					xoriginElem.prop('disabled', true);
 				} else {
-					mediaElem.prop('disabled', true);
 					xoriginElem.prop('disabled', true);
+					mediaElem.prop('disabled', true);
 				}
 
 			});

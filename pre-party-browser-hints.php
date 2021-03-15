@@ -64,7 +64,7 @@ class Pre_Party_Browser_Hints {
 
 	public function load_admin() {
 		include_once PPRH_ABS_DIR . 'includes/admin/LoadAdmin.php';
-		$load_admin = new LoadAdmin($this->all_hints);
+		$load_admin = new LoadAdmin();
 		$load_admin->init();
 
 		$this->check_to_upgrade();
