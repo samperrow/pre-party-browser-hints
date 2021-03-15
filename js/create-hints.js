@@ -35,7 +35,11 @@
             url = getDomain(url);
         }
 
-        return url;
+        return sanitizeURL(url);
+    }
+
+    function sanitizeURL(url) {
+        return url.replace(/[\[\]\{\}\<\>\'\"\\(\)\*\+\\^\$\|]/g, '');
     }
 
     // tested

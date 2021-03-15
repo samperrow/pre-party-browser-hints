@@ -98,7 +98,7 @@
 		});
 	}
 
-	toggleDisallowedElems();
+	// toggleDisallowedElems();
 	function toggleDisallowedElems() {
 		var hintTypeElems = $('input[name="hint_type"]');
 
@@ -238,7 +238,7 @@
 							return;
 						}
 					}
-					console.error(response);
+					// console.error(response);
 				}
 			}
 		};
@@ -247,6 +247,7 @@
 	function addEventListeners() {
 		addDeleteHintListener();
 		addEditRowEventListener();
+		toggleDisallowedElems();
 	}
 
 	function clearHintTable() {

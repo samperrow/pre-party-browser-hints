@@ -41,7 +41,7 @@ class AjaxOps {
 				$display_hints = new DisplayHints( $on_pprh_admin, false );
 				$json = $display_hints->ajax_response( $result );
 
-				if ( defined( 'PPRH_TESTING' ) && PPRH_TESTING ) {
+				if ( $this->testing ) {
 					return $json;
 				}
 

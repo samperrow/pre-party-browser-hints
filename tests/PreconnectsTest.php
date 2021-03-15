@@ -554,15 +554,16 @@ class PreconnectsTest extends TestCase {
 
 	public function test_process_hints() {
 		$preconnects = new \PPRH\Preconnects();
-		$url1 = 'https://test-process-hints.com';
-		$url2 = 'https://test-process-hints.net';
+
+		$hint_1 = TestUtils::create_hint_array( 'https://test-process-hints.com', 'preconnect' );
+		$hint_2 = TestUtils::create_hint_array( 'https://test-process-hints.net', 'preconnect' );
 
 		$test_data = $preconnects->create_js_object();
-		$test_data['hints'] = array( $url1, $url2 );
+		$test_data['hints'] = array( $hint_1, $hint_2 );
 
-		$result_arr = $preconnects->process_hints( $test_data );
+		$actual_arr = $preconnects->process_hints( $test_data );
 
-		$this->assertEquals( count( $test_data['hints'] ), count( $result_arr ) );
+		$this->assertEquals( count( $test_data['hints'] ), count( $actual_arr ) );
 	}
 
 }

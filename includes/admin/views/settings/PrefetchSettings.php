@@ -36,7 +36,17 @@ class PrefetchSettings {
 	}
 
 	public function turn_textarea_to_json( $text ) {
-		$str = str_replace( "\r\n", ', ', $text );
+		$text = trim($text);
+		$arr = array();
+		$text_arr = explode( "\r\n", $text );
+
+		foreach ( $text_arr as $str ) {
+		    if ( '' !== $str ) {
+		        $arr[] = $str;
+            }
+        }
+
+		$str = implode( ', ', $arr );
 		return Utils::json_to_array( $str );
 	}
 

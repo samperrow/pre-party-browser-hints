@@ -97,8 +97,11 @@ class Preconnects {
 		}
 
 		$js_object = $this->create_js_object();
+
+		wp_register_script( 'pprh_create_hints_js', PPRH_REL_DIR . 'js/create-hints.js', null, PPRH_VERSION, true );
 		wp_register_script( 'pprh-find-domain-names', PPRH_REL_DIR . 'js/find-external-domains.js', null, PPRH_VERSION, true );
 		wp_localize_script( 'pprh-find-domain-names', 'pprh_data', $js_object );
+		wp_enqueue_script( 'pprh_create_hints_js' );
 		wp_enqueue_script( 'pprh-find-domain-names' );
 	}
 
@@ -167,10 +170,8 @@ class Preconnects {
 		$create_hints = new CreateHints();
 		$new_hints = array();
 
-		foreach ( $hint_data['hints'] as $url ) {
-			$hint_arr = $hint_data;
-			$hint_arr['url'] = $url;
-			$hint = $create_hints->new_hint_controller( $hint_arr );
+		foreach ( $hint_data['hints'] as $new_hint ) {
+			$hint = $create_hints->new_hint_controller( $new_hint );
 
 			if ( is_array( $hint ) ) {
 				$new_hints[] = $hint;
