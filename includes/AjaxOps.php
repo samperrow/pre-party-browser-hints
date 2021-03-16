@@ -76,12 +76,13 @@ class AjaxOps {
 	protected function create_update_hint( $data, $action ) {
 		$dao = new DAO();
 		$create_hints = new CreateHints();
+		$pprh_hint = $create_hints->new_hint_controller( $data );
 
-		if ( 'create' === $action ) {
-			$pprh_hint = $create_hints->new_hint_controller( $data );
+		if ( ! is_array( $pprh_hint ) ) {
+			$response = $pprh_hint;
+		} elseif ( 'create' === $action ) {
 			$response = $dao->insert_hint( $pprh_hint );
 		} else {
-			$pprh_hint = $create_hints->create_hint( $data );
 			$response = $dao->update_hint( $pprh_hint, $data['hint_ids'] );
 		}
 
