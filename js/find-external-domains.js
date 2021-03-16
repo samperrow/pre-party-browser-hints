@@ -13,33 +13,40 @@
         return (domain !== host && pprh_data.hints.indexOf(domain) === -1 && !/\.gravatar\.com/.test(domain) && domain !== altDomain);
     }
 
-    function sanitizeURL() {
-        return this.replace(/[\[\]\{\}\<\>\'\"\\(\)\*\+\\^\$\|]/g, '');
-    }
+    // function sanitizeURL() {
+    //     return this.replace(/[\[\]\{\}\<\>\'\"\\(\)\*\+\\^\$\|]/g, '');
+    // }
 
-    function getDomain(url) {
-        if (typeof window.URL === "function") {
-            return new URL(url.name).origin;
-        } else {
-            var newStr = item.name.split('/');
-            return newStr[0] + '//' + newStr[2];
-        }
-    }
+    // function getDomain(url) {
+    //     if (typeof window.URL === "function") {
+    //         return new URL(url.name).origin;
+    //     } else {
+    //         var newStr = item.name.split('/');
+    //         return newStr[0] + '//' + newStr[2];
+    //     }
+    // }
 
     function findResourceSources() {
         var resources = window.performance.getEntriesByType('resource');
 
         resources.forEach(function(item) {
-            var domain = getDomain(item);
+            var hintObj = {
+                url: item.name,
+                hint_type: pprh_data.hint_type,
+            };
+
+            var hint = pprhCreateHint.CreateHint(hintObj);
+            var domain = pprhCreateHint.GetDomain(hint.url);
 
             if (isValidHintDomain(domain)) {
-                pprh_data.hints.push(sanitizeURL.call(domain));
+                pprh_data.hints.push(hint);
             }
         });
     }
 
     function fireAjax() {
         findResourceSources();
+
         var json = JSON.stringify(pprh_data);
         var xhr = new XMLHttpRequest();
         var url = pprh_data.admin_url;

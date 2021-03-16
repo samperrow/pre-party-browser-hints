@@ -13,13 +13,6 @@ function flyingPages() {
     const toPrefetch = new Set();
     const alreadyPrefetched = new Set();
 
-    var fp_data = {
-        maxRPS: Number(pprh_fp_data.maxRPS),
-        delay: Number(pprh_fp_data.delay),
-        hoverDelay: Number(pprh_fp_data.hoverDelay),
-        ignoreKeywords: pprh_fp_data.ignoreKeywords.replace(/\s/g, '').split(','),
-    };
-
     // Check browser support for native 'prefetch'
     const prefetcher = document.createElement("link");
     const isSupported =
@@ -28,6 +21,17 @@ function flyingPages() {
         prefetcher.relList.supports("prefetch") &&
         window.IntersectionObserver &&
         "isIntersecting" in IntersectionObserverEntry.prototype;
+
+    var fp_data = {
+        maxRPS: Number(pprh_fp_data.maxRPS),
+        delay: Number(pprh_fp_data.delay),
+        hoverDelay: Number(pprh_fp_data.hoverDelay),
+        ignoreKeywords: pprh_fp_data.ignoreKeywords.replace(/\s/g, '').split(','),
+        debug: 'true' === pprh_fp_data.debug,
+        maxPrefetches: Number(pprh_fp_data.maxPrefetches)
+    };
+
+    var prefetchCount = 0;
 
     // Checks if user is on slow connection or has enabled data saver
     const isSlowConnection = navigator.connection && (navigator.connection.saveData || (navigator.connection.effectiveType || "").includes("2g"));
@@ -44,6 +48,9 @@ function flyingPages() {
             link.onload = resolve;
             link.onerror = reject;
             document.head.appendChild(link);
+            if (fp_data.debug) {
+                console.log(link);
+            }
         });
 
     // Prefetch pages with a timeout
@@ -55,20 +62,30 @@ function flyingPages() {
     };
 
     const addUrlToQueue = (url, processImmediately = false) => {
-        if (alreadyPrefetched.has(url) || toPrefetch.has(url)) return;
-
-        // Prevent prefetching 3rd party domains
         const origin = window.location.origin;
-        if (url.substring(0, origin.length) !== origin) return;
 
+        // Prevent prefetching 3rd party domain
         // Prevent current page from prefetching
-        if (window.location.href === url) return;
+        if ( (alreadyPrefetched.has(url) || toPrefetch.has(url) )
+            || (prefetchCount >= fp_data.maxPrefetches && ! processImmediately)
+            || (url.substring(0, origin.length) !== origin)
+            || (window.location.href === url) ) {
+            return;
+        }
 
         // Ignore keywords in the array, if matched to the url
         for (let i = 0; i < fp_data.ignoreKeywords.length; i++) {
             var keyword = fp_data.ignoreKeywords[i];
             if (keyword.length > 0 && url.includes(keyword)) {
                 return;
+            }
+
+            // wildcard check
+            else if (keyword.indexOf("*") === (keyword.length - 1) ) {
+                let wildcard = keyword.replace("*", "");
+                if ( url.indexOf(wildcard) >= 0) {
+                    return;
+                }
             }
         }
 
@@ -77,6 +94,8 @@ function flyingPages() {
             prefetchWithTimeout(url);
             alreadyPrefetched.add(url);
         } else toPrefetch.add(url);
+
+        prefetchCount++;
     };
 
     // Observe the links in viewport, add url to queue if found intersecting

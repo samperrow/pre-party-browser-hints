@@ -4,27 +4,36 @@ div#pprh-wrapper {
         font-size: 23px;
     }
 
+    h3 {
+        font-size: 1.4em;
+    }
+
     .text-center {
         text-align: center;
     }
 
     div.pprh-content {
-        min-height: 60vh;
         display: none;
 
         &.active {
             display: block;
         }
+
+        table.pprh-post-table tbody tr td div.global-hint {
+            visibility: hidden;
+            height: 19.5px;
+        }
+    }
+
+    div.pprh-box {
+        margin-top: 20px;
     }
 
     div#pprh-settings {
-        max-width: 800px;
-
         > h2 > a:hover {
             cursor: pointer;
         }
     }
-
 
     div#pprhNotice {
         margin: 5px 0;
@@ -38,8 +47,12 @@ div#pprh-wrapper {
         }
     }
 
-    div.row-actions span:hover {
-        cursor: pointer
+    div.row-actions {
+        min-height: 21px;
+
+        span:hover {
+            cursor: pointer
+        }
     }
 
     div.inside tr.pprhGlobalPostPage span.delete a {
@@ -47,6 +60,10 @@ div#pprh-wrapper {
     }
 
     tr.pprh-row {
+
+        button.pprh-cancel {
+            margin: 0 40px 0 0;
+        }
 
         &.edit {
             display: none;
@@ -78,8 +95,20 @@ div#pprh-wrapper {
     }
 
     table#pprh-enter-data {
+        thead tr th {
+            text-align: center;
+            font-size: 23px;
+            font-weight: 600;
+            padding: 15px 0;
+        }
+
         tbody tr td {
             text-align: center
+        }
+
+        tfoot tr td {
+            text-align: center;
+            padding: 20px 0;
         }
 
         &.widefat {
@@ -91,19 +120,9 @@ div#pprh-wrapper {
         }
     }
 
-
     table.pprh-settings-table {
         font-size: 14px;
         text-align: left;
-        padding: 15px 0;
-
-        &.active {
-            display: block;
-        }
-
-        &.hidden {
-            display: none;
-        }
 
         tbody tr td {
             margin-bottom: 9px;
@@ -188,14 +207,12 @@ div#pprh-wrapper {
     .pprh-admin-pic {
         display: block;
         margin: 0 auto;
-        max-width: 95%;
         height: auto;
-        border: 2px solid #bbb
     }
 
     div.pprh-code-block {
         margin: 0 auto;
-        width: 650px;
+        //width: 650px;
         max-width: 95%
     }
 
@@ -208,3 +225,13 @@ div#pprh-wrapper {
     }
 }
 
+div#TB_ajaxContent {
+    div#asdf table tbody tr {
+        height: 130px;
+
+        td {
+            text-align: center;
+        }
+    }
+
+}
