@@ -16,6 +16,7 @@ function pprh_uninstall_plugin() {
 	delete_option( 'pprh_prefetch_maxRPS' );
 	delete_option( 'pprh_prefetch_hoverDelay' );
 	delete_option( 'pprh_prefetch_max_prefetches' );
+	delete_option( 'pprh_prefetch_disableForLoggedInUsers' );
 
 	delete_option( 'pprh_preconnect_allow_unauth' );
 	delete_option( 'pprh_preconnect_autoload' );

@@ -8,8 +8,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class AjaxOps {
 
-//	public $all_hints = array();
-
 	public $testing = false;
 
 	public function __construct() {

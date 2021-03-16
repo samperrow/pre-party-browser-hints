@@ -10,7 +10,9 @@
 
 	if (/pprh-plugin-settings/.test(currentURL)) {
 		var emailSubmitBtn = document.getElementById('pprhSubmit');
-		emailSubmitBtn.addEventListener("click", emailValidate);
+		if (null !== emailSubmitBtn) {
+			emailSubmitBtn.addEventListener("click", emailValidate);
+		}
 	}
 	// else if ( /post\.php/.test(currentURL))  {
 	// 	if (typeof checkoutModal === "object") {

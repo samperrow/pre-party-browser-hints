@@ -10,10 +10,7 @@ class Dashboard {
 
 	public $on_pprh_admin = false;
 
-//	public $all_hints = array();
-
 	public function __construct( $on_pprh_admin ) {
-//		$this->all_hints = $all_hints;
 		$this->on_pprh_admin = $on_pprh_admin;
 	}
 

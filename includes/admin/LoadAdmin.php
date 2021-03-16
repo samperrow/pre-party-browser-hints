@@ -31,8 +31,7 @@ class LoadAdmin {
 		new AjaxOps();
 
 		do_action( 'pprh_pro_load_admin' );
-    }
-
+	}
 
 	public function load_admin_menu() {
 		$settings_page = add_menu_page(
@@ -45,7 +44,24 @@ class LoadAdmin {
 		);
 
 		add_action( "load-{$settings_page}", array( $this, 'screen_option' ) );
-//		add_action( "load-{$settings_page}", array( $this, 'check_to_upgrade' ) );
+		add_action( "load-{$settings_page}", array( $this, 'show_upgrade_notice' ) );
+	}
+
+	public function show_upgrade_notice() {
+		$current_version = get_option( 'pprh_version' );
+
+		if ( '1.7.5' !== $current_version ) {
+		    add_action( 'admin_notices', array( $this, 'upgrade_notice' ) );
+	    	update_option( 'pprh_version', '1.7.5' );
+		}
+	}
+
+	public function upgrade_notice() {
+		?>
+        <div class="notice notice-info is-dismissible">
+            <p><?php _e('1.7.5 Update: Added \'Media\' attribute (for preload hints), improved UI on Settings page, and numerous other improvements.' ); ?></p>
+        </div>
+		<?php
 	}
 
 	public function load_dashboard() {
@@ -75,8 +91,6 @@ class LoadAdmin {
 		return ( 'pprh_per_page' === $option ) ? $value : $status;
 	}
 
-
-
 	// Register and call the CSS and JS we need only on the needed page.
 	public function register_admin_files( $hook ) {
 		$str = apply_filters( 'pprh_la_load_scripts', 'toplevel_page_pprh-plugin-settings' );
@@ -100,8 +114,5 @@ class LoadAdmin {
 //			do_action( 'pprh_register_admin_files' );
 		}
 	}
-
-
-
 
 }
