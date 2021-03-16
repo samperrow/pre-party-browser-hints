@@ -19,13 +19,9 @@ class ActivatePlugin {
 		$json = $this->update_prefetch_ignoreKeywords();
 		update_option( 'pprh_prefetch_ignoreKeywords', $json );
 
-		if ( 'activate_pre-party-browser-hints/pre-party-browser-hints.php' === current_action() ) {
-			$this->setup_tables();
-			$this->drop_columns();
-			update_option( 'pprh_version', $desired_version );
-			add_action( 'admin_notices', array( $this, 'upgrade_notice' ) );
-			$this->plugin_activated = true;
-		}
+		$this->setup_tables();
+		$this->drop_columns();
+		$this->plugin_activated = true;
 	}
 
 	private function add_options() {
@@ -95,15 +91,11 @@ class ActivatePlugin {
 		global $wpdb;
 		$table = PPRH_DB_TABLE;
 
-		$wpdb->query( "ALTER TABLE $table DROP COLUMN auto_created" );
-	}
+		$column = $wpdb->get_results( "SHOW COLUMNS FROM $table LIKE 'auto_created'", ARRAY_A );
 
-	public function upgrade_notice() {
-		?>
-		<div class="notice notice-info is-dismissible">
-			<p><?php _e('1.7.5 update info: ' ); ?></p>
-		</div>
-		<?php
+		if ( count( $column ) > 0 ) {
+			$wpdb->query( "ALTER TABLE $table DROP COLUMN auto_created" );
+		}
 	}
 
 }

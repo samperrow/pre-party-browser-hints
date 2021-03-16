@@ -13,7 +13,7 @@
  * Text Domain:       pprh
  * Domain Path:       /languages
  *
- * last edited December 23, 2020
+ * last edited March 15, 2021
  *
  * Copyright 2016  Sam Perrow  (email : sam.perrow399@gmail.com)
  *
@@ -60,17 +60,14 @@ class Pre_Party_Browser_Hints {
 		// this needs to be loaded front end and back end bc Ajax needs to be able to communicate between the two.
 		include_once PPRH_ABS_DIR . 'includes/Preconnects.php';
 		$preconnects = new Preconnects();
-
-		include_once 'Updater.php';
-		new Updater();
-    }
+	}
 
 	public function load_admin() {
 		include_once PPRH_ABS_DIR . 'includes/admin/LoadAdmin.php';
 		$load_admin = new LoadAdmin();
 		$load_admin->init();
 
-//		$this->check_to_upgrade();
+		$this->check_to_upgrade();
 	}
 
     public function load_client() {
@@ -93,7 +90,7 @@ class Pre_Party_Browser_Hints {
 			define( 'PPRH_HOME_URL', admin_url() . 'admin.php?page=pprh-plugin-setttings' );
 
 			define( 'PPRH_PRO_PLUGIN_ACTIVE', $pprh_pro_active );
-			define( 'PPRH_DEBUG', true );
+			define( 'PPRH_DEBUG', false );
         }
 	}
 
@@ -105,15 +102,13 @@ class Pre_Party_Browser_Hints {
 	}
 
 	public function check_to_upgrade() {
-		$desired_version = '1.7.4.3';
+		$desired_version = '1.7.5';
 		$current_version = get_option( 'pprh_version' );
 
-		if ( empty( $current_version ) || version_compare( $current_version, $desired_version ) < 0 ) {
+		if ( $desired_version !== $current_version ) {
 			$this->activate_plugin();
 		}
 	}
-
-
 
 	public function activate_plugin() {
 		if ( ! class_exists( \PPRH\Utils::class ) ) {
