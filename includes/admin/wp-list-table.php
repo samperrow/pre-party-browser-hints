@@ -1285,7 +1285,7 @@ class WP_List_Table {
 	 */
 	protected function single_row_columns( $item ) {
 		list( $columns, $hidden, $primary ) = $this->get_column_info();
-		$global_hint_alert = $this->on_post_page_and_global_hint( $item );
+//		$global_hint_alert = $this->on_post_page_and_global_hint( $item );
 
 		foreach ( $columns as $column_name => $column_display_name ) {
 			$classes = "$column_name column-$column_name";
@@ -1307,21 +1307,22 @@ class WP_List_Table {
 			if ( 'cb' === $column_name ) {
 				echo '<th scope="row" class="check-column">';
 
-				if ($global_hint_alert) {
-					$this->global_hint_alert();
-				} else {
+//				if ($global_hint_alert) {
+//					$this->global_hint_alert();
+//				} else {
 					echo $this->column_cb( $item );
-				}
+//				}
 				echo '</th>';
 			} elseif ( method_exists( $this, '_column_' . $column_name ) ) {
 				echo $this->{'_column_' . $column_name}($item, $classes, $data, $primary);
 			} elseif ( method_exists( $this, 'column_' . $column_name ) ) {
 				echo "<td $attributes>";
 				if ( 'url' === $column_name ) {
-					if ($global_hint_alert) {
-					    $item['id'] = '';
-					}
-				    echo $this->{'column_' . $column_name}($item, $global_hint_alert);
+//					if ($global_hint_alert) {
+//					    $item['id'] = '';
+//					}
+//				    echo $this->{'column_' . $column_name}($item, $global_hint_alert);
+					echo $this->{'column_' . $column_name}($item);
 				}
 				echo '</td>';
 			} else {

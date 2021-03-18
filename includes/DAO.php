@@ -110,15 +110,10 @@ class DAO {
 		if ( $hint_id_exists > 0 ) {
 			$wpdb->query( "DELETE FROM $table WHERE id IN ($hint_ids)" );
 			return $this->create_db_result( $wpdb->result, $wpdb->insert_id, $wpdb->last_error, 'delete', null );
-		}
-
-		else {
+		} else {
 			return $this->create_db_result( false, null, 'No hint IDs to delete.', 'delete', null );
 		}
 	}
-
-
-
 
 
 
@@ -130,15 +125,15 @@ class DAO {
 	}
 
 
-	public function get_hints_ordered( $query = null ) {
+	public function get_hints_ordered() {
 		global $wpdb;
 		$table = PPRH_DB_TABLE;
 		$sql = "SELECT * FROM $table";
 
-
-		if ( PPRH_PRO_PLUGIN_ACTIVE ) {
-			$sql .= apply_filters( 'pprh_dh_append_sql', $sql );
-		} elseif ( ! empty( $_REQUEST['orderby'] ) ) {
+//		if ( PPRH_PRO_PLUGIN_ACTIVE ) {
+//			$sql .= apply_filters( 'pprh_dh_append_sql', $sql );
+//		} else
+		if ( ! empty( $_REQUEST['orderby'] ) ) {
 			$sql .= ' ORDER BY ' . esc_sql( $_REQUEST['orderby'] );
 			$sql .= ! empty( $_REQUEST['order'] ) ? ' ' . esc_sql( $_REQUEST['order'] ) : ' ASC';
 		} else {
