@@ -59,32 +59,32 @@ class DisplayHints extends WP_List_Table {
 	public function get_columns() {
 		$arr = array(
             'cb'          => '<input type="checkbox" />',
-            'url'         => __('URL', 'pprh'),
-            'hint_type'   => __('Hint Type', 'pprh'),
-            'as_attr'     => __('As Attr', 'pprh'),
-            'type_attr'   => __('Type Attr', 'pprh'),
-            'crossorigin' => __('Crossorigin', 'pprh'),
-            'media'       => __('Media', 'pprh'),
-            'status'      => __('Status', 'pprh'),
-            'created_by'  => __('Created By', 'pprh'),
+            'url'         => __( 'URL', 'pprh' ),
+            'hint_type'   => __( 'Hint Type', 'pprh' ),
+            'as_attr'     => __( 'As Attr', 'pprh' ),
+            'type_attr'   => __( 'Type Attr', 'pprh' ),
+            'crossorigin' => __( 'Crossorigin', 'pprh' ),
+            'media'       => __( 'Media', 'pprh' ),
+            'status'      => __( 'Status', 'pprh' ),
+            'created_by'  => __( 'Created By', 'pprh' ),
         );
 
-		return apply_filters('pprh_dh_get_columns', $arr);
+		return apply_filters( 'pprh_dh_get_columns', $arr );
 	}
 
 	public function get_sortable_columns() {
 		$arr = array(
-            'url'         => array('url', true),
-            'hint_type'   => array('hint_type', false),
-            'as_attr'     => array('as_attr', false),
-            'type_attr'   => array('type_attr', false),
-            'crossorigin' => array('crossorigin', false),
+            'url'         => array( 'url', true ),
+            'hint_type'   => array( 'hint_type', false ),
+            'as_attr'     => array( 'as_attr', false ),
+            'type_attr'   => array( 'type_attr', false ),
+            'crossorigin' => array( 'crossorigin', false ),
             'media'       => array( 'media', false ),
-            'status'      => array('status', false),
-            'created_by'  => array('created_by', false)
+            'status'      => array( 'status', false ),
+            'created_by'  => array( 'created_by', false )
         );
 
-		return apply_filters('pprh_dh_get_sortortable_columns', $arr);
+		return apply_filters( 'pprh_dh_get_sortortable_columns', $arr );
 	}
 
 	public function get_bulk_actions() {

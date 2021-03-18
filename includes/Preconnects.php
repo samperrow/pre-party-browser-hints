@@ -37,7 +37,7 @@ class Preconnects {
 
 	// tested
 	public function initialize( $args ) {
-		$perform_reset = $this->check_to_perform_reset( $args['reset_data'] );
+		$perform_reset = $this->do_reset( $args['reset_data'] );
 		$allow_unauth = $args['reset_data']['allow_unauth'];
 		$this->load_ajax_actions( $allow_unauth );
 
@@ -51,15 +51,16 @@ class Preconnects {
 	}
 
 	// tested
-	public function check_to_perform_reset( $reset_data ) {
-		if ( empty( $reset_data['reset_pro'] ) || null === $reset_data['reset_pro'] ) {
-			$perform_reset = $this->perform_free_reset( $reset_data );
-		} else {
-			$perform_reset = $this->perform_pro_reset( $reset_data['reset_pro'] );
-		}
+//	public function check_to_perform_reset( $reset_data ) {
+//		if ( empty( $reset_data['reset_pro'] ) || null === $reset_data['reset_pro'] ) {
+//			$perform_reset = $this->perform_free_reset( $reset_data );
+//		}
+//		else {
+//			$perform_reset = $this->perform_pro_reset( $reset_data['reset_pro'] );
+//		}
 
-		return $perform_reset;
-	}
+//		return $perform_reset;
+//	}
 
 	// tested
 	public function check_to_enqueue_scripts( $allow_unauth_users ) {
@@ -71,14 +72,14 @@ class Preconnects {
 	}
 
 	// tested
-	public function perform_free_reset( $reset_data ) {
+	public function do_reset( $reset_data ) {
 		return ( 'true' === $reset_data['autoload'] && 'false' === $reset_data['preconnects_set'] );
 	}
 
 	// tested
-	public function perform_pro_reset( $reset_pro ) {
-		return ( ! empty( $reset_pro ) && $reset_pro['perform_reset'] );
-	}
+//	public function perform_pro_reset( $reset_pro ) {
+//		return ( ! empty( $reset_pro ) && $reset_pro['perform_reset'] );
+//	}
 
 	// tested
 	public function load_ajax_actions( $allow_unauth ) {
