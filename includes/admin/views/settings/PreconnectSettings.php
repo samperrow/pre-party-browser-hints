@@ -74,7 +74,7 @@ class PreconnectSettings {
 						</td>
 					</tr>
 
-					<?php // $this->load_reset_settings(); ?>
+					<?php apply_filters( 'pprh_sc_load_reset_settings', $this->on_pprh_admin ); ?>
 
 					</tbody>
 				</table>
@@ -84,5 +84,3 @@ class PreconnectSettings {
 	}
 
 }
-
-

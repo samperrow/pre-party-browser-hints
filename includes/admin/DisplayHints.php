@@ -28,11 +28,6 @@ class DisplayHints extends WP_List_Table {
             'on_pprh_admin' => $on_pprh_admin
 		) );
 
-//		if ( false === $all_hints ) {
-//			$all_hints = Utils::get_all_hints();
-//		}
-//		$this->all_hints = $all_hints;
-
 		if ( ! wp_doing_ajax() ) {
 			$this->prepare_items();
 			$this->display();
@@ -76,10 +71,6 @@ class DisplayHints extends WP_List_Table {
 		$arr = array(
             'url'         => array( 'url', true ),
             'hint_type'   => array( 'hint_type', false ),
-            'as_attr'     => array( 'as_attr', false ),
-            'type_attr'   => array( 'type_attr', false ),
-            'crossorigin' => array( 'crossorigin', false ),
-            'media'       => array( 'media', false ),
             'status'      => array( 'status', false ),
             'created_by'  => array( 'created_by', false )
         );
@@ -102,14 +93,17 @@ class DisplayHints extends WP_List_Table {
 		$sortable = $this->get_sortable_columns();
 		$this->_column_headers = array( $columns, array(), $sortable );
 		$current_page = $this->get_pagenum();
-		$hints = $dao->get_hints_ordered();
-		$this->items = array_slice( $hints, ( ( $current_page - 1 ) * $this->hints_per_page ), $this->hints_per_page );
+
+		$query_code = ( ! empty( $_REQUEST['orderby'] ) ? 2 : 3 );
+
+		$hints = $dao->get_all_hints( $query_code );
+
+
+        $this->items = array_slice( $hints, ( ( $current_page - 1 ) * $this->hints_per_page ), $this->hints_per_page );
 		$total_items = count( $hints );
 
 		$this->set_pagination_args(
             array(
-				'order'       => ! empty( $_REQUEST['order'] )   && '' !== $_REQUEST['order']   ? $_REQUEST['order']   : 'asc',
-				'orderby'     => ! empty( $_REQUEST['orderby'] ) && '' !== $_REQUEST['orderby'] ? $_REQUEST['orderby'] : 'title',
 				'per_page'    => $this->hints_per_page,
 				'total_items' => $total_items,
 				'total_pages' => ceil( $total_items / $this->hints_per_page ),
@@ -185,9 +179,9 @@ class DisplayHints extends WP_List_Table {
 		<?php
 	}
 
-//	public function on_post_page_and_global_hint( $item ) {
-//		return ( ! empty( $item['post_id'] ) && 'global' === $item['post_id'] && PPRH_PRO_PLUGIN_ACTIVE && ! $this->_args['on_pprh_admin'] );
-//	}
+	public function on_post_page_and_global_hint( $item ) {
+		return ( ! empty( $item['post_id'] ) && 'global' === $item['post_id'] && PPRH_PRO_PLUGIN_ACTIVE && ! $this->_args['on_pprh_admin'] );
+	}
 
 
 }

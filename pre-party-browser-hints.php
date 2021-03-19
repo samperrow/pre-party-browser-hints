@@ -47,10 +47,6 @@ class Pre_Party_Browser_Hints {
 			apply_filters( 'wp_doing_ajax', defined( 'DOING_AJAX' ) && DOING_AJAX );
 		}
 
-		if ( ! wp_doing_ajax() ) {
-			$this->all_hints = Utils::get_all_hints();
-        }
-
 		if ( is_admin() ) {
 			add_action( 'wp_loaded', array( $this, 'load_admin' ) );
 		} else {
@@ -72,7 +68,7 @@ class Pre_Party_Browser_Hints {
 
     public function load_client() {
 		include_once PPRH_ABS_DIR . 'includes/client/LoadClient.php';
-		$load_client = new LoadClient($this->all_hints);
+		$load_client = new LoadClient();
         $load_client->init();
     }
 
@@ -98,7 +94,6 @@ class Pre_Party_Browser_Hints {
 		include_once 'includes/Utils.php';
 		include_once 'includes/DAO.php';
 		include_once 'includes/CreateHints.php';
-		include_once 'includes/admin/NewHint.php';
 	}
 
 	public function check_to_upgrade() {

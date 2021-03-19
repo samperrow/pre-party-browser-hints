@@ -8,8 +8,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class LoadAdmin {
 
-	public $all_hints = array();
-
 //    public function __construct() {}
 
 	public function init() {
@@ -26,6 +24,7 @@ class LoadAdmin {
 		load_plugin_textdomain( 'pprh', false, PPRH_REL_DIR . 'languages' );
 		add_action( 'pprh_load_dashboard', array( $this, 'load_dashboard' ) );
 
+		include_once PPRH_ABS_DIR . 'includes/admin/NewHint.php';
 		include_once PPRH_ABS_DIR . 'includes/admin/DisplayHints.php';
 		include_once PPRH_ABS_DIR . 'includes/AjaxOps.php';
 		new AjaxOps();
@@ -111,7 +110,6 @@ class LoadAdmin {
 			wp_enqueue_script( 'pprh_create_hints_js' );
 			wp_enqueue_script( 'pprh_admin_js' );
 			wp_enqueue_style( 'pprh_styles_css' );
-//			do_action( 'pprh_register_admin_files' );
 		}
 	}
 

@@ -13,8 +13,6 @@ final class DisplayHintsTest extends TestCase {
 	public function test_on_post_page_and_global_hint():void {
 		if ( ! WP_ADMIN ) return;
 
-		$all_hints = \PPRH\Utils::get_all_hints();
-
 		$display_hints_1 = new \PPRH\DisplayHints(true );
 		$display_hints_2 = new \PPRH\DisplayHints(false );
 
