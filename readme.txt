@@ -79,7 +79,7 @@ To activate the preloaded resource, you must call that file in HTML as you would
 
 
 == Changelog ==
-1. Most recent update: March 15, 2021.
+1. Most recent update: March 18, 2021.
 2. Version 1.7.5
 
 March 15, 2021:

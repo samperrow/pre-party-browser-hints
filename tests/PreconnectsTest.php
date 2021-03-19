@@ -1,7 +1,6 @@
 <?php
 
 declare(strict_types=1);
-<<<<<<< HEAD
 use PHPUnit\Framework\TestCase;
 
 class PreconnectsTest extends TestCase {
@@ -69,6 +68,10 @@ class PreconnectsTest extends TestCase {
 //	}
 
 	public function test_entire_preconnect_class_pro(): void {
+		if ( ! \PPRH\Utils::pprh_is_plugin_active() ) {
+			return;
+		}
+
 		$preconnects = new \PPRH\Preconnects();
 		$autoload = 'true';
 		$allow_unauth = 'true';
@@ -108,7 +111,7 @@ class PreconnectsTest extends TestCase {
 	}
 
 	public function test_initialize() {
-		if (defined('PPRH_PRO_PLUGIN_ACTIVE') && PPRH_PRO_PLUGIN_ACTIVE) {
+		if ( defined( 'PPRH_PRO_PLUGIN_ACTIVE' ) && PPRH_PRO_PLUGIN_ACTIVE ) {
 			$this->eval_pro_initialize();
 		} else {
 			$this->eval_free_initialize();
@@ -128,13 +131,12 @@ class PreconnectsTest extends TestCase {
 				'autoload'        => get_option( 'pprh_preconnect_autoload' ),
 				'allow_unauth'    => get_option( 'pprh_preconnect_allow_unauth' ),
 				'preconnects_set' => get_option( 'pprh_preconnect_set' ),
-				'reset_pro' => apply_filters( 'pprh_preconnects_do_reset_init', null )
+				'reset_pro'       => apply_filters( 'pprh_preconnects_do_reset_init', null )
 			)
 		);
 
 		$this->assertEquals($expected_1, $actual_1);
 		$this->assertEquals($expected_config, $preconnects_1->config);
-
 	}
 
 	public function eval_free_initialize() {
@@ -157,66 +159,66 @@ class PreconnectsTest extends TestCase {
 		$this->assertEquals(true, $actual_3);
 	}
 
-	public function test_check_to_perform_reset():void {
-		$preconnects = new \PPRH\Preconnects();
-
-		$reset_data_1 = array(
-			'autoload'        => 'true',
-			'allow_unauth'    => 'true',
-			'preconnects_set' => 'true',
-			'reset_pro'       => null
-		);
-
-		$reset_data_2 = array(
-			'autoload'        => 'true',
-			'allow_unauth'    => 'true',
-			'preconnects_set' => 'false',
-			'reset_pro'       => null
-		);
-
-		$reset_data_3 = array(
-			'autoload'        => 'true',
-			'allow_unauth'    => 'true',
-			'preconnects_set' => 'true',
-			'reset_pro'       => array(
-				'perform_reset' => false,
-			)
-		);
-
-		$actual_1 = $preconnects->check_to_perform_reset( $reset_data_1 );
-		$actual_2 = $preconnects->check_to_perform_reset( $reset_data_2 );
-		$actual_3 = $preconnects->check_to_perform_reset( $reset_data_3 );
-
-		$this->assertEquals(false, $actual_1);
-		$this->assertEquals(true, $actual_2);
-		$this->assertEquals(false, $actual_3);
-
-		if ( defined( 'PPRH_PRO_PLUGIN_ACTIVE' ) && PPRH_PRO_PLUGIN_ACTIVE ) {
-			$reset_data_4 = array(
-				'autoload'        => 'true',
-				'allow_unauth'    => 'true',
-				'preconnects_set' => 'true',
-				'reset_pro'       => array(
-					'perform_reset' => true,
-				)
-			);
-
-			$reset_data_5 = array(
-				'autoload'        => 'true',
-				'allow_unauth'    => 'true',
-				'preconnects_set' => 'true',
-				'reset_pro'       => array(
-					'perform_reset' => false,
-				)
-			);
-
-			$actual_4 = $preconnects->check_to_perform_reset( $reset_data_4 );
-			$actual_5 = $preconnects->check_to_perform_reset( $reset_data_5 );
-
-			$this->assertEquals(true, $actual_4);
-			$this->assertEquals(false, $actual_5);
-		}
-	}
+//	public function test_check_to_perform_reset():void {
+//		$preconnects = new \PPRH\Preconnects();
+//
+//		$reset_data_1 = array(
+//			'autoload'        => 'true',
+//			'allow_unauth'    => 'true',
+//			'preconnects_set' => 'true',
+//			'reset_pro'       => null
+//		);
+//
+//		$reset_data_2 = array(
+//			'autoload'        => 'true',
+//			'allow_unauth'    => 'true',
+//			'preconnects_set' => 'false',
+//			'reset_pro'       => null
+//		);
+//
+//		$reset_data_3 = array(
+//			'autoload'        => 'true',
+//			'allow_unauth'    => 'true',
+//			'preconnects_set' => 'true',
+//			'reset_pro'       => array(
+//				'perform_reset' => false,
+//			)
+//		);
+//
+//		$actual_1 = $preconnects->check_to_perform_reset( $reset_data_1 );
+//		$actual_2 = $preconnects->check_to_perform_reset( $reset_data_2 );
+//		$actual_3 = $preconnects->check_to_perform_reset( $reset_data_3 );
+//
+//		$this->assertEquals(false, $actual_1);
+//		$this->assertEquals(true, $actual_2);
+//		$this->assertEquals(false, $actual_3);
+//
+//		if ( defined( 'PPRH_PRO_PLUGIN_ACTIVE' ) && PPRH_PRO_PLUGIN_ACTIVE ) {
+//			$reset_data_4 = array(
+//				'autoload'        => 'true',
+//				'allow_unauth'    => 'true',
+//				'preconnects_set' => 'true',
+//				'reset_pro'       => array(
+//					'perform_reset' => true,
+//				)
+//			);
+//
+//			$reset_data_5 = array(
+//				'autoload'        => 'true',
+//				'allow_unauth'    => 'true',
+//				'preconnects_set' => 'true',
+//				'reset_pro'       => array(
+//					'perform_reset' => false,
+//				)
+//			);
+//
+//			$actual_4 = $preconnects->check_to_perform_reset( $reset_data_4 );
+//			$actual_5 = $preconnects->check_to_perform_reset( $reset_data_5 );
+//
+//			$this->assertEquals(true, $actual_4);
+//			$this->assertEquals(false, $actual_5);
+//		}
+//	}
 
 	public function test_check_to_enqueue_scripts():void {
 		$preconnects = new \PPRH\Preconnects();
@@ -231,41 +233,45 @@ class PreconnectsTest extends TestCase {
 		$this->assertEquals(false, $actual_2);
 	}
 
-	public function test_perform_free_reset():void {
-		$preconnects = new \PPRH\Preconnects();
-
-		$test_1 = array(
-			'autoload'        => 'true',
-			'preconnects_set' => 'true'
-		);
-
-		$test_2 = array(
-			'autoload'        => 'true',
-			'preconnects_set' => 'false'
-		);
-
-		$test_3 = array(
-			'autoload'        => 'false',
-			'preconnects_set' => 'true'
-		);
-
-		$test_4 = array(
-			'autoload'        => 'false',
-			'preconnects_set' => 'false'
-		);
-
-		$actual_1 = $preconnects->perform_free_reset($test_1);
-		$actual_2 = $preconnects->perform_free_reset($test_2);
-		$actual_3 = $preconnects->perform_free_reset($test_3);
-		$actual_4 = $preconnects->perform_free_reset($test_4);
-
-		$this->assertEquals(false, $actual_1);
-		$this->assertEquals(true, $actual_2);
-		$this->assertEquals(false, $actual_3);
-		$this->assertEquals(false, $actual_4);
-	}
+//	public function test_perform_free_reset():void {
+//		$preconnects = new \PPRH\Preconnects();
+//
+//		$test_1 = array(
+//			'autoload'        => 'true',
+//			'preconnects_set' => 'true'
+//		);
+//
+//		$test_2 = array(
+//			'autoload'        => 'true',
+//			'preconnects_set' => 'false'
+//		);
+//
+//		$test_3 = array(
+//			'autoload'        => 'false',
+//			'preconnects_set' => 'true'
+//		);
+//
+//		$test_4 = array(
+//			'autoload'        => 'false',
+//			'preconnects_set' => 'false'
+//		);
+//
+//		$actual_1 = $preconnects->perform_free_reset($test_1);
+//		$actual_2 = $preconnects->perform_free_reset($test_2);
+//		$actual_3 = $preconnects->perform_free_reset($test_3);
+//		$actual_4 = $preconnects->perform_free_reset($test_4);
+//
+//		$this->assertEquals(false, $actual_1);
+//		$this->assertEquals(true, $actual_2);
+//		$this->assertEquals(false, $actual_3);
+//		$this->assertEquals(false, $actual_4);
+//	}
 
 	public function test_perform_pro_reset():void {
+		if ( ! \PPRH\Utils::pprh_is_plugin_active() ) {
+			return;
+		}
+
 		$preconnects = new \PPRH\Preconnects();
 		$reset_pro_1 = null;
 		$reset_pro_2 = false;
@@ -356,16 +362,16 @@ class PreconnectsTest extends TestCase {
 		$preconnects = new \PPRH\Preconnects();
 
 		$expected_arr_1 = array(
-			'hints'         => array(),
-			'nonce'         => wp_create_nonce( 'pprh_ajax_nonce' ),
-			'admin_url'     => admin_url() . 'admin-ajax.php',
-			'start_time'    => time(),
-			'hint_type' => 'preconnect'
+			'hints'      => array(),
+			'nonce'      => wp_create_nonce( 'pprh_ajax_nonce' ),
+			'admin_url'  => admin_url() . 'admin-ajax.php',
+			'start_time' => time(),
+			'hint_type'  => 'preconnect'
 		);
 
 
 		if ( \PPRH\Utils::pprh_is_plugin_active() ) {
-			$expected_arr_1['post_id'] = '';
+			$expected_arr_1['post_id'] = '2328';
 			$expected_arr_1['reset_globals'] = 'false';
 			$preconnects->config['reset_data']['reset_pro'] = apply_filters( 'pprh_preconnects_do_reset_init', null );
 		}
@@ -375,7 +381,7 @@ class PreconnectsTest extends TestCase {
 
 
 		$preconnects->config['reset_data']['reset_pro'] = array(
-			'post_id'  => '100',
+			'post_id' => '100',
 		);
 
 		$expected_object_2 = apply_filters( 'pprh_preconnects_append_hint_object', $expected_arr_1, $preconnects->config['reset_data']['reset_pro'] );
@@ -567,16 +573,6 @@ class PreconnectsTest extends TestCase {
 		$this->assertEquals( count( $test_data['hints'] ), count( $actual_arr ) );
 	}
 
-}
-=======
-
-use PPRH\Preconnects;
-use PHPUnit\Framework\TestCase;
-
-final class PreconnectsTest extends TestCase {
-
-//	public function __construct() {}
-
 	public function test_PreconnectDoesNotLoad (): void {
 		update_option('pprh_preconnect_autoload', 'true');
 		update_option('pprh_preconnect_set', 'true');
@@ -586,65 +582,5 @@ final class PreconnectsTest extends TestCase {
 		$this->assertEquals(false, $wp_loaded);
 	}
 
-	public function test_PreconnectsDoesLoad (): void {
-		update_option('pprh_preconnect_autoload', 'true');
-		update_option('pprh_preconnect_set', 'false');
-
-		$prec = new \PPRH\Preconnects();
-		$wp_loaded = has_action( 'wp_loaded', array( $prec, 'initialize' ) );
-		$this->assertEquals(true, $wp_loaded);
-	}
-
-	public function test_load_preconnects_only_for_logged_in_users(): void {
-		update_option('pprh_preconnect_autoload', 'true');
-		update_option('pprh_preconnect_set', 'false');
-		update_option( 'pprh_preconnect_allow_unauth', 'false' );
-
-		remove_action( 'wp_ajax_pprh_post_domain_names', array(Preconnects::class, 'pprh_post_domain_names' ) );
-		remove_action( 'wp_ajax_nopriv_pprh_post_domain_names', array( Preconnects::class, 'pprh_post_domain_names' ) );
-
-		$prec = new \PPRH\Preconnects();
-		$prec->initialize();
-
-		$loaded_ajax = has_action( 'wp_ajax_pprh_post_domain_names' );
-		$stop_load_ajax_for_all = has_action( 'wp_ajax_nopriv_pprh_post_domain_names' );
-
-		$this->assertEquals(true, $loaded_ajax);
-		$this->assertEquals(false, $stop_load_ajax_for_all);
-
-		remove_action( 'wp_ajax_pprh_post_domain_names', array(Preconnects::class, 'pprh_post_domain_names' ) );
-		remove_action( 'wp_ajax_nopriv_pprh_post_domain_names', array(Preconnects::class, 'pprh_post_domain_names' ) );
-	}
-
-//	public function test_load_preconnects_for_all_users(): void {
-//		update_option('pprh_preconnect_autoload', 'true');
-//		update_option('pprh_preconnect_set', 'false');
-//		update_option( 'pprh_preconnect_allow_unauth', 'true' );
-//
-//		remove_action( 'wp_ajax_pprh_post_domain_names', array(Preconnects::class, 'pprh_post_domain_names' ) );
-//		remove_action( 'wp_ajax_nopriv_pprh_post_domain_names', array( Preconnects::class, 'pprh_post_domain_names' ) );
-//
-//		$prec = new \PPRH\Preconnects();
-//		$prec->initialize();
-//
-//		$loaded_ajax = has_action( 'wp_ajax_pprh_post_domain_names' );
-//		$stop_load_ajax_for_all = has_action( 'wp_ajax_nopriv_pprh_post_domain_names' );
-//
-//		$this->assertEquals(true, $loaded_ajax);
-//		$this->assertEquals(true, $stop_load_ajax_for_all);
-//
-//		remove_action( 'wp_ajax_pprh_post_domain_names', array(Preconnects::class, 'pprh_post_domain_names' ) );
-//		remove_action( 'wp_ajax_nopriv_pprh_post_domain_names', array( Preconnects::class, 'pprh_post_domain_names' ) );
-//	}
-
-
-
-//	public function test_pprh_post_domain_names(): void {}
-
-
-//	public function test_create_hint(): void {}
-
-//	public function test_update_options(): void {}
-
+	
 }
->>>>>>> master

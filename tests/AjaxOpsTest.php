@@ -7,12 +7,12 @@ if (!defined('ABSPATH')) {
 	exit;
 }
 
-final class AjaxOpsTest extends TestCase{
+final class AjaxOpsTest extends TestCase {
 
 	public function test_pprh_update_hints(): void {
-		if ( ! WP_ADMIN ) return;
+		if ( ! WP_ADMIN || ! wp_doing_ajax() ) return;
 
-		$expected = wp_doing_ajax();
+		$expected = true;
 		$ajax_ops = new \PPRH\AjaxOps();
 		$expected_nonce = TestUtils::create_nonce('pprh_table_nonce');
 		$_POST['pprh_data'] = '{"url":"tester","hint_type":"dns-prefetch","action":"create","hint_ids":null"}';

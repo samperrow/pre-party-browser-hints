@@ -20,16 +20,14 @@ final class PrePartyBrowserHintsTest extends TestCase {
 		$this->assertEquals( PPRH_HOME_URL, $home_url );
 	}
 
-	public function test_Load_common_files():void {
+	public function test_load_common_files():void {
 		$utils = class_exists(\PPRH\Utils::class);
 		$dao = class_exists( \PPRH\DAO::class );
 		$create_hints = class_exists( \PPRH\CreateHints::class );
-		$new_hint = class_exists( \PPRH\NewHint::class );
 
 		$this->assertEquals( true, $utils );
 		$this->assertEquals( true, $dao );
 		$this->assertEquals( true, $create_hints );
-		$this->assertEquals( true, $new_hint );
 	}
 
 

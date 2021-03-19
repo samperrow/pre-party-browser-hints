@@ -17,9 +17,9 @@ class DisplayHints extends WP_List_Table {
 	public $table;
 	public $items;
 
-	public $all_hints;
+//	public $all_hints;
 
-	public function __construct( $on_pprh_admin, $all_hints = false ) {
+	public function __construct( $on_pprh_admin ) {
 		parent::__construct( array(
             'ajax'     => true,
 			'plural'   => 'urls',
@@ -27,11 +27,6 @@ class DisplayHints extends WP_List_Table {
 			'singular' => 'url',
             'on_pprh_admin' => $on_pprh_admin
 		) );
-
-		if ( false === $all_hints ) {
-			$all_hints = Utils::get_all_hints();
-		}
-		$this->all_hints = $all_hints;
 
 		if ( ! wp_doing_ajax() ) {
 			$this->prepare_items();
@@ -59,32 +54,28 @@ class DisplayHints extends WP_List_Table {
 	public function get_columns() {
 		$arr = array(
             'cb'          => '<input type="checkbox" />',
-            'url'         => __('URL', 'pprh'),
-            'hint_type'   => __('Hint Type', 'pprh'),
-            'as_attr'     => __('As Attr', 'pprh'),
-            'type_attr'   => __('Type Attr', 'pprh'),
-            'crossorigin' => __('Crossorigin', 'pprh'),
-            'media'       => __('Media', 'pprh'),
-            'status'      => __('Status', 'pprh'),
-            'created_by'  => __('Created By', 'pprh'),
+            'url'         => __( 'URL', 'pprh' ),
+            'hint_type'   => __( 'Hint Type', 'pprh' ),
+            'as_attr'     => __( 'As Attr', 'pprh' ),
+            'type_attr'   => __( 'Type Attr', 'pprh' ),
+            'crossorigin' => __( 'Crossorigin', 'pprh' ),
+            'media'       => __( 'Media', 'pprh' ),
+            'status'      => __( 'Status', 'pprh' ),
+            'created_by'  => __( 'Created By', 'pprh' ),
         );
 
-		return apply_filters('pprh_dh_get_columns', $arr);
+		return apply_filters( 'pprh_dh_get_columns', $arr );
 	}
 
 	public function get_sortable_columns() {
 		$arr = array(
-            'url'         => array('url', true),
-            'hint_type'   => array('hint_type', false),
-            'as_attr'     => array('as_attr', false),
-            'type_attr'   => array('type_attr', false),
-            'crossorigin' => array('crossorigin', false),
-            'media'       => array( 'media', false ),
-            'status'      => array('status', false),
-            'created_by'  => array('created_by', false)
+            'url'         => array( 'url', true ),
+            'hint_type'   => array( 'hint_type', false ),
+            'status'      => array( 'status', false ),
+            'created_by'  => array( 'created_by', false )
         );
 
-		return apply_filters('pprh_dh_get_sortortable_columns', $arr);
+		return apply_filters( 'pprh_dh_get_sortortable_columns', $arr );
 	}
 
 	public function get_bulk_actions() {
@@ -96,18 +87,23 @@ class DisplayHints extends WP_List_Table {
 	}
 
 	public function prepare_items() {
+	    $dao = new DAO();
 		$this->hints_per_page = $this->set_hints_per_page();
 		$columns = $this->get_columns();
 		$sortable = $this->get_sortable_columns();
 		$this->_column_headers = array( $columns, array(), $sortable );
 		$current_page = $this->get_pagenum();
-		$this->items = array_slice( $this->all_hints, ( ( $current_page - 1 ) * $this->hints_per_page ), $this->hints_per_page );
-		$total_items = count( $this->all_hints );
+
+		$query_code = ( ! empty( $_REQUEST['orderby'] ) ? 2 : 3 );
+
+		$hints = $dao->get_all_hints( $query_code );
+
+
+        $this->items = array_slice( $hints, ( ( $current_page - 1 ) * $this->hints_per_page ), $this->hints_per_page );
+		$total_items = count( $hints );
 
 		$this->set_pagination_args(
             array(
-				'order'       => ! empty( $_REQUEST['order'] )   && '' !== $_REQUEST['order']   ? $_REQUEST['order']   : 'asc',
-				'orderby'     => ! empty( $_REQUEST['orderby'] ) && '' !== $_REQUEST['orderby'] ? $_REQUEST['orderby'] : 'title',
 				'per_page'    => $this->hints_per_page,
 				'total_items' => $total_items,
 				'total_pages' => ceil( $total_items / $this->hints_per_page ),

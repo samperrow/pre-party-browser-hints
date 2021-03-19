@@ -14,19 +14,18 @@ class SendHints {
 
 	protected $send_hints_in_html = '';
 
-	public function init( $all_hints ) {
-		$hints = $this->filter_hints( $all_hints );
+	public function init( $enabled_hints ) {
 		$this->send_hints_in_html = get_option( 'pprh_html_head' );
 
-		if ( ! is_array( $hints ) || count( $hints ) === 0 ) {
+		if ( ! is_array( $enabled_hints ) || count( $enabled_hints ) === 0 ) {
 			return false;
 		}
 
 		if ( 'false' === $this->send_hints_in_html && ! headers_sent() ) {
-			$this->hint_str = $this->send_in_http_header( $hints );
+			$this->hint_str = $this->send_in_http_header( $enabled_hints );
 			add_action( 'send_headers', array( $this, 'send_header' ), 1, 0 );
 		} else {
-			$this->hint_str = $this->send_to_html_head( $hints );
+			$this->hint_str = $this->send_to_html_head( $enabled_hints );
 			add_action( 'wp_head', array( $this, 'send_html_head' ), 1, 0 );
 		}
 
@@ -39,18 +38,6 @@ class SendHints {
 
 	public function send_html_head() {
 		echo $this->hint_str;
-	}
-
-	public function filter_hints( $all_hints ) {
-		$hints = array();
-
-		foreach( $all_hints as $hint ) {
-			if ( ! empty( $hint['status'] ) && 'enabled' === $hint['status'] ) {
-				$hints[] = $hint;
-			}
-		}
-
-		return $hints;
 	}
 
 	public function send_to_html_head( $hints ) {

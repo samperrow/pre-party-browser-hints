@@ -53,8 +53,9 @@ class Preconnects {
 	// tested
 	public function check_to_perform_reset( $reset_data ) {
 		if ( empty( $reset_data['reset_pro'] ) || null === $reset_data['reset_pro'] ) {
-			$perform_reset = $this->perform_free_reset( $reset_data );
-		} else {
+			$perform_reset = $this->perform_reset( $reset_data );
+		}
+		else {
 			$perform_reset = $this->perform_pro_reset( $reset_data['reset_pro'] );
 		}
 
@@ -71,7 +72,7 @@ class Preconnects {
 	}
 
 	// tested
-	public function perform_free_reset( $reset_data ) {
+	public function perform_reset( $reset_data ) {
 		return ( 'true' === $reset_data['autoload'] && 'false' === $reset_data['preconnects_set'] );
 	}
 

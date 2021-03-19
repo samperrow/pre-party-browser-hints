@@ -1,7 +1,69 @@
 == Changelog ==
 
-1. Most recent update: February 2, 2020.
-2. Version 1.6.45
+1. Most recent update: March 18, 2021.
+2. Version 1.7.5
+
+March 15, 2021:
+1) added 'Media' attribute/column field (for preload hints).
+2) organized/cleaned up Settings page UI.
+3) organized architecture of codebase, incoorporated lots of unit tests.
+
+December 23, 2020:
+1) fixed issue with creating hints, and made the hint creation process more uniform.
+2) added support for the ".webm" video type
+3) improved testing, error handling, a few other architectural adjustments.
+
+December 13, 2020:
+1) Updated/simplified class names and removed/added some classes
+2) Organized architecture
+3) added the ability to automatically prefetch hints (thanks to Gijo Varghese, who allowed me to borrow his Flying Pages
+   JS script)
+4) ensured compatibility with WP 5.6
+
+December 13, 2020:
+1) Updated/simplified class names and removed/added some classes
+2) Organized architecture
+3) added the ability to automatically prefetch hints (thanks to Gijo Varghese, who allowed me to borrow his Flying Pages
+   JS script)
+4) ensured compatibility with WP 5.6
+
+November 29, 2020:
+1) Ensured compatibility with WP 5.6.
+2) Added automatic preload hint creation upon hover on front end.
+3) Put all database calls into a single file for better organization, testing abilities (DAO model)
+4) cleaned up/organized other parts of plugin.
+
+September 27, 2020:
+1) Added more information about how the "auto-preconnect" feature works.
+2) Cleaned up and added better management of hint creation/update/deletions.
+3) Removed some unneeded code.
+
+September 5, 2020:
+1) Modified how auto-preconnect hints are sent by requiring that they be used within six hours of their initiation.
+   Sometimes that file gets cached, and its filename changes by other plugins, and constantly fires requests.
+2) Made minor changes to HTML on pages and file paths.
+
+August 3, 2020:
+1) tested WP 5.5 compatbility
+2) corrected bug with updating hints
+3) simplified the sending of and creation of frontend hints
+4) Adjusted translations
+
+July 7, 2020:
+1) Replaced hardcoded "wp-admin" URL's with dynamic ones.
+
+June 4, 2020:
+1) Fixed plugin compatibility issue.
+
+June 3, 2020:
+1) added ability to edit existing hints inline asynchronously.
+2) adding, updating, and deleting hints is now 100% ajax driven.
+3) navigating between tabs will toggle that content's display, instead of including each tab file.
+4) various other improvements to code to improve functionality.
+
+April 15, 2020:
+1) fixed URL encoding issue.
+2) plugin update issue.
 
 February 2, 2020:
 1) added warning when a cache plugin is active and users choose HTTP header option to let them know to clear cache.
@@ -51,7 +113,7 @@ June 29, 2018:
 
 April 27, 2018:
 1) fixed bug preventing users from deleting or updating resource hint statuses.
-2) fixed bug some users could notice upon installation/reactivation in the admin.php file. 
+2) fixed bug some users could notice upon installation/reactivation in the admin.php file.
 
 April 14, 2018:
 1) Fixed some UI issues on admin page (URL input field not taking up max space, jQuery sometimes not loading).

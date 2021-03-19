@@ -105,9 +105,9 @@ class Utils {
 	    }
 	}
 
-	public static function get_all_hints() {
+	public static function get_all_hints( $query_code ) {
 		$dao = new DAO();
-		return $dao->get_all_hints();
+		return $dao->get_all_hints( $query_code );
 	}
 
 }
