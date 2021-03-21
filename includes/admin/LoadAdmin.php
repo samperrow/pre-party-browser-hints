@@ -24,7 +24,6 @@ class LoadAdmin {
 		add_action( 'admin_enqueue_scripts', array( $this, 'register_admin_files' ) );
 		add_filter( 'set-screen-option', array( $this, 'pprh_set_screen_option' ), 10, 3 );
 		load_plugin_textdomain( 'pprh', false, PPRH_REL_DIR . 'languages' );
-		add_action( 'pprh_load_dashboard', array( $this, 'load_dashboard' ) );
 
 		include_once PPRH_ABS_DIR . 'includes/admin/DisplayHints.php';
 		include_once PPRH_ABS_DIR . 'includes/AjaxOps.php';

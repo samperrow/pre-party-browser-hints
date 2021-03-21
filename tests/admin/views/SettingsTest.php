@@ -1,8 +1,6 @@
 <?php
 
-namespace tabs;
-
-use PPRH\Settings;
+declare(strict_types=1);
 use PHPUnit\Framework\TestCase;
 
 //class SettingsTest extends TestCase {
