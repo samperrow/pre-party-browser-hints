@@ -238,8 +238,9 @@
 							addEventListeners();
 							return;
 						}
+					} else {
+						console.error(response);
 					}
-					// console.error(response);
 				}
 			}
 		};

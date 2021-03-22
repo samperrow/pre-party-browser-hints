@@ -184,12 +184,12 @@ class NewHint {
                 <label>
                     <select class="pprh_type_attr" name="type_attr">
                         <option selected label=" "></option>
-                        <option value="font/woff">font/woff</option>
-                        <option value="font/woff2">font/woff2</option>
-                        <option value="font/ttf">font/ttf</option>
-                        <option value="font/eot">font/eot</option>
                         <option value="text/css">text/css</option>
                         <option value="text/html">text/html</option>
+                        <option value="font/eot">font/eot</option>
+                        <option value="font/ttf">font/ttf</option>
+                        <option value="font/woff">font/woff</option>
+                        <option value="font/woff2">font/woff2</option>
                     </select>
                 </label>
             </td>

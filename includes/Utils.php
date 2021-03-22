@@ -53,7 +53,9 @@ class Utils {
 	public static function array_into_csv( $hint_ids ) {
 		if ( is_array( $hint_ids ) && count( $hint_ids ) > 0 ) {
 			return implode( ',', array_map( 'absint', $hint_ids ) );
-		} elseif ( (int) $hint_ids > 0 ) {
+		}
+
+		if ( (int) $hint_ids > 0 ) {
 			return $hint_ids;
 		}
 

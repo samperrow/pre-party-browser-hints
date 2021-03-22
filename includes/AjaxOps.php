@@ -18,7 +18,8 @@ class AjaxOps {
 	public function pprh_update_hints() {
 		if ( isset( $_POST['pprh_data'] ) && wp_doing_ajax() ) {
 			check_ajax_referer( 'pprh_table_nonce', 'nonce' );
-			$this->init( $_POST['pprh_data'] );
+			$pprh_data = json_decode( wp_unslash( $_POST['pprh_data'] ), true );
+			$this->init( $pprh_data );
 			return true;
 		}
 
@@ -28,18 +29,16 @@ class AjaxOps {
 	}
 
 	public function init( $pprh_data ) {
-		$data = json_decode( wp_unslash( $pprh_data ), true );
+		if ( is_array( $pprh_data ) ) {
+			$db_result = $this->handle_action( $pprh_data );
 
-		if ( is_array( $data ) ) {
-			$result = $this->handle_action( $data );
-
-			if ( is_object( $result ) ) {
+			if ( is_object( $db_result ) ) {
 				$on_pprh_admin = Utils::on_pprh_admin();
 				$display_hints = new DisplayHints( $on_pprh_admin, false );
-				$json = $display_hints->ajax_response( $result );
+				$json = $display_hints->ajax_response( $db_result );
 
 				if ( $this->testing ) {
-					return $result;
+					return $db_result;
 				}
 
 				wp_die( $json );
@@ -48,7 +47,7 @@ class AjaxOps {
 	}
 
 
-	public function handle_action( $data ) {
+	private function handle_action( $data ) {
 		$dao_ctrl = new DAOController();
 		$result = $dao_ctrl->hint_controller( $data );
 

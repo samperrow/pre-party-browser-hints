@@ -13,7 +13,7 @@ if ( ! class_exists( DAO::class ) ) {
 class DAOController extends DAO {
 
 
-
+	// tested
 	public function hint_controller( $raw_data ) {
 		$create_hints = new CreateHints();
 		$ctrl_data = array( 'op_code' => $raw_data['op_code'] );
