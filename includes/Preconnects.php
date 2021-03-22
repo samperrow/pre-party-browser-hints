@@ -50,8 +50,7 @@ class Preconnects {
 		return true;
 	}
 
-	// tested
-	public function check_to_perform_reset( $reset_data ) {
+	private function check_to_perform_reset( $reset_data ) {
 		if ( empty( $reset_data['reset_pro'] ) || null === $reset_data['reset_pro'] ) {
 			$perform_reset = $this->perform_free_reset( $reset_data );
 		} else {
@@ -70,13 +69,11 @@ class Preconnects {
 		return $allow_unauth_users;
 	}
 
-	// tested
-	public function perform_free_reset( $reset_data ) {
+	private function perform_free_reset( $reset_data ) {
 		return ( 'true' === $reset_data['autoload'] && 'false' === $reset_data['preconnects_set'] );
 	}
 
-	// tested
-	public function perform_pro_reset( $reset_pro ) {
+	private function perform_pro_reset( $reset_pro ) {
 		return ( ! empty( $reset_pro ) && $reset_pro['perform_reset'] );
 	}
 
@@ -133,6 +130,9 @@ class Preconnects {
 		return ( $allow_unauth_bool || $user_logged_in );
 	}
 
+
+
+
 	public function pprh_post_domain_names() {
 		if ( isset( $_POST['pprh_data'] ) && wp_doing_ajax() ) {
 			check_ajax_referer('pprh_ajax_nonce', 'nonce');
@@ -151,45 +151,35 @@ class Preconnects {
 		}
 	}
 
+
+
+
 	public function do_ajax_callback( $pprh_data ) {
 		$raw_hint_data = json_decode( wp_unslash( $pprh_data ), true );
+		$results = array();
 
 		if ( count( $raw_hint_data['hints'] ) > 0 ) {
-			$new_hints = $this->process_hints( $raw_hint_data );
-
-			if ( count( $new_hints ) > 0 && ! $this->testing ) {
-				$this->insert_hints_to_db( $new_hints );
-			}
+			$results = $this->process_hints( $raw_hint_data );
 		}
 
 		$this->update_options( $raw_hint_data );
-		return true;
+		return $results;
 	}
 
 	public function process_hints( $hint_data ) {
-		$create_hints = new CreateHints();
-		$new_hints = array();
+		$dao_ctrl = new DAOController();
+		$results = array();
 
 		foreach ( $hint_data['hints'] as $new_hint ) {
-			$hint = $create_hints->new_hint_controller( $new_hint );
+			$new_hint['op_code'] = 0;
+			$result = $dao_ctrl->hint_controller( $new_hint );
 
-			if ( is_array( $hint ) ) {
-				$new_hints[] = $hint;
+			if ( is_object( $result ) ) {
+				$results[] = $result;
 			}
 		}
 
-		return $new_hints;
-	}
-
-	public function insert_hints_to_db( $hint_arr ) {
-		$dao = new DAO();
-		$db_result = array();
-
-		foreach( $hint_arr as $hint ) {
-			$db_result[] = $dao->insert_hint( $hint );
-		}
-
-		return $db_result;
+		return $results;
 	}
 
 	private function update_options( $raw_hint_data ) {

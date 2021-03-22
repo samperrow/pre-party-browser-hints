@@ -210,7 +210,7 @@ final class UtilsTest extends TestCase {
 			)
 		);
 
-		$test1 = $dao->create_db_result( true, '', '', 'create', null );
+		$test1 = $dao->create_db_result( true, '', '', 0, null );
 
 		$this->assertEquals( $expected, $test1 );
 	}

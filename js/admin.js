@@ -131,14 +131,14 @@
 
 		if (typeof rawData === "object") {
 			var hint = pprhCreateHint.CreateHint(rawData);
-			hint.action = operation;
-			hint.hint_ids = (operation === 'update') ? tableId.split('pprh-edit-')[1] : [];
+			hint.op_code = operation;
+			hint.hint_ids = (operation === 1) ? tableId.split('pprh-edit-')[1] : [];
 			return createAjaxReq(hint, 'pprh_update_hints', pprh_data.nonce);
 		}
 	}
 
 	$('input#pprhSubmitHints').on("click", function (e) {
-		prepareHint('pprh-enter-data', 'create');
+		prepareHint('pprh-enter-data', 0);
 	});
 
 	function configForHint(table) {
@@ -199,7 +199,7 @@
 				var hintID = e.target.id.split('pprh-delete-hint-')[1];
 				return createAjaxReq({
 					hint_ids: [hintID],
-					action: 'delete',
+					op_code: 2,
 				});
 			}
 		});
@@ -300,7 +300,7 @@
 			});
 
 			$('tr.pprh-row.edit.' + hintID).find('button.pprh-update').on('click', function (e) {
-				prepareHint('pprh-edit-' + hintID, 'update');
+				prepareHint('pprh-edit-' + hintID, 1);
 			});
 		});
 	}
@@ -330,6 +330,7 @@
 		e.preventDefault();
 		var idArr = [];
 		var op = $(e.currentTarget).prev().val();
+		var opCode = ( 'delete' === op ) ? 2 : ( 'enable' === op ) ? 3 : ('disable' === op) ? 4 : 5;
 		var checkboxes = $('table.pprh-post-table tbody th.check-column input:checkbox');
 
 		$.each(checkboxes, function () {
@@ -340,7 +341,7 @@
 
 		if (idArr.length > 0) {
 			return createAjaxReq({
-				action: op,
+				op_code: opCode,
 				hint_ids: idArr,
 			});
 		} else {

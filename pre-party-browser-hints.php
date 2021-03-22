@@ -96,7 +96,7 @@ class Pre_Party_Browser_Hints {
 
 	public function load_common_files() {
 		include_once 'includes/Utils.php';
-		include_once 'includes/DAO.php';
+		include_once 'includes/DAOController.php';
 		include_once 'includes/CreateHints.php';
 		include_once 'includes/admin/NewHint.php';
 	}
@@ -113,7 +113,7 @@ class Pre_Party_Browser_Hints {
 	public function activate_plugin() {
 		if ( ! class_exists( \PPRH\Utils::class ) ) {
 			include_once 'includes/Utils.php';
-			include_once 'includes/DAO.php';
+			include_once 'includes/DAOController.php';
 		}
 
 		$this->create_constants();

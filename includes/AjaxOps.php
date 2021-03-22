@@ -31,8 +31,7 @@ class AjaxOps {
 		$data = json_decode( wp_unslash( $pprh_data ), true );
 
 		if ( is_array( $data ) ) {
-			$action = $data['action'];
-			$result = $this->handle_action( $data, $action );
+			$result = $this->handle_action( $data );
 
 			if ( is_object( $result ) ) {
 				$on_pprh_admin = Utils::on_pprh_admin();
@@ -40,7 +39,7 @@ class AjaxOps {
 				$json = $display_hints->ajax_response( $result );
 
 				if ( $this->testing ) {
-					return $json;
+					return $result;
 				}
 
 				wp_die( $json );
@@ -49,17 +48,9 @@ class AjaxOps {
 	}
 
 
-	public function handle_action( $data, $action ) {
-		$dao = new DAO();
-		$concat_ids = Utils::array_into_csv( $data['hint_ids'] );
-
-		if ( preg_match( '/create|update/', $action ) ) {
-			$result = $this->create_update_hint( $data, $action );
-		} elseif ( preg_match( '/enable|disable/', $action ) ) {
-			$result = $dao->bulk_update( $concat_ids, $action );
-		} elseif ( 'delete' === $action ) {
-			$result = $dao->delete_hint( $concat_ids );
-		}
+	public function handle_action( $data ) {
+		$dao_ctrl = new DAOController();
+		$result = $dao_ctrl->hint_controller( $data );
 
 //		TODO
 //		elseif ( 'reset_single_post_preconnects' === $action ) {
@@ -72,22 +63,5 @@ class AjaxOps {
 		// TODO: if error, return generic error msg if no error from db is there.
 		return ( is_object( $result ) ? $result : false );
 	}
-
-	protected function create_update_hint( $data, $action ) {
-		$dao = new DAO();
-		$create_hints = new CreateHints();
-		$pprh_hint = $create_hints->new_hint_controller( $data );
-
-		if ( ! is_array( $pprh_hint ) ) {
-			$response = $pprh_hint;
-		} elseif ( 'create' === $action ) {
-			$response = $dao->insert_hint( $pprh_hint );
-		} else {
-			$response = $dao->update_hint( $pprh_hint, $data['hint_ids'] );
-		}
-
-		return $response;
-	}
-
 
 }

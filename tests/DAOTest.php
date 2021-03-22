@@ -1,18 +1,13 @@
 <?php
 
 declare(strict_types=1);
-
 use PHPUnit\Framework\TestCase;
-use PPRH\Create_Hints;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
 final class DAOTest extends TestCase {
-
-//	public $url = '';
-
 
 	public function test_create_hint(): int {
 		$dao = new PPRH\DAO();
@@ -23,7 +18,7 @@ final class DAOTest extends TestCase {
 
 		$create_hint = $dao->insert_hint($new_hint);
 		$hint_id = $create_hint->db_result['hint_id'];
-		$expected = $dao->create_db_result( true, $hint_id, '', 'create', $new_hint );
+		$expected = $dao->create_db_result( true, $hint_id, '', 0, $new_hint );
 		$this->assertEquals($expected, $create_hint);
 		return $hint_id;
 	}
@@ -36,7 +31,7 @@ final class DAOTest extends TestCase {
 		$new_hint = TestUtils::create_hint_array( 'https://www.asdf2.com/foozball/blah.css', 'dns-prefetch', 'font', 'font/woff2', '');
 
 		$result = $dao->update_hint( $new_hint, $hint_id );
-		$expected = $dao->create_db_result( true, $hint_id, '', 'update', $new_hint );
+		$expected = $dao->create_db_result( true, $hint_id, '', 1, $new_hint );
 		$this->assertEquals($expected, $result);
 	}
 
@@ -46,9 +41,9 @@ final class DAOTest extends TestCase {
 	public function test_bulk_update( int $hint_ids ): void {
 		$hint_id_str = (string) $hint_ids;
 		$dao = new \PPRH\DAO();
-		$action = 'disabled';
-		$result = $dao->bulk_update( $hint_id_str, $action );
-		$expected = $dao->create_db_result( true, $hint_id_str, '',$action, null );
+//		$action = 'disabled';
+		$result = $dao->bulk_update( $hint_id_str, 4 );
+		$expected = $dao->create_db_result( true, $hint_id_str, '', 4, null );
 		$this->assertEquals($expected, $result);
 	}
 
@@ -59,7 +54,7 @@ final class DAOTest extends TestCase {
 		$hint_id_str = (string) $hint_ids;
 		$dao = new \PPRH\DAO();
 		$result = $dao->delete_hint( $hint_id_str );
-		$expected = $dao->create_db_result( true, $hint_id_str, '', 'delete', null );
+		$expected = $dao->create_db_result( true, $hint_id_str, '', 2, null );
 		$this->assertEquals($expected, $result);
 	}
 

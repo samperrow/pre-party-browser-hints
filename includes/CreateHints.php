@@ -43,7 +43,7 @@ class CreateHints {
 			return $pprh_hint;
 		}
 
-		return $dao->create_db_result( false, '', 'Failed to create hint.', 'create', null );
+		return $dao->create_db_result( false, '', 'Failed to create hint.', 0, null );
 	}
 
 	// tested
@@ -56,7 +56,7 @@ class CreateHints {
 			$dups = $this->resolve_duplicate_hints( $pprh_hint );
 
 			if ( ! $dups ) {
-				return $dao->create_db_result( false, '', 'A duplicate hint already exists!', 'create', null );
+				return $dao->create_db_result( false, '', 'A duplicate hint already exists!', 0, null );
 			}
 		}
 
