@@ -13,7 +13,7 @@
  * Text Domain:       pprh
  * Domain Path:       /languages
  *
- * last edited March 21, 2021
+ * last edited March 23, 2021
  *
  * Copyright 2016  Sam Perrow  (email : sam.perrow399@gmail.com)
  *
@@ -32,8 +32,6 @@ register_activation_hook( __FILE__, array( $pprh_load, 'activate_plugin' ) );
 add_action( 'wpmu_new_blog', array( $pprh_load, 'activate_plugin' ) );
 
 class Pre_Party_Browser_Hints {
-
-//    public $all_hints = array();
 
 	public function __construct() {
 	    add_action( 'init', array( $this, 'load_plugin' ) );
@@ -98,7 +96,7 @@ class Pre_Party_Browser_Hints {
 	}
 
 	public function check_to_upgrade() {
-		$desired_version = '1.7.5';
+		$desired_version = '1.7.5.1';
 		$current_version = get_option( 'pprh_version' );
 
 		if ( $desired_version !== $current_version ) {

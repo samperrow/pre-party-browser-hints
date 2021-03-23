@@ -10,8 +10,6 @@ class LoadAdmin {
 
 	public $all_hints = array();
 
-//    public function __construct() {}
-
 	public function init() {
 		$utils = new Utils();
 		$on_pprh_page = $utils->on_pprh_page();
@@ -49,16 +47,16 @@ class LoadAdmin {
 	public function show_upgrade_notice() {
 		$current_version = get_option( 'pprh_version' );
 
-		if ( '1.7.5' !== $current_version ) {
+		if ( '1.7.5.1' !== $current_version ) {
 		    add_action( 'admin_notices', array( $this, 'upgrade_notice' ) );
-	    	update_option( 'pprh_version', '1.7.5' );
+	    	update_option( 'pprh_version', '1.7.5.1' );
 		}
 	}
 
 	public function upgrade_notice() {
 		?>
         <div class="notice notice-info is-dismissible">
-            <p><?php _e('1.7.5 Update: Added \'Media\' attribute (for preload hints), improved UI on Settings page, and numerous other improvements.' ); ?></p>
+            <p><?php _e('1.7.5.1 Update: Replaced missing "Reset" button for auto-preconnect hints (Settings -> Auto Preconnect Settings).' ); ?></p>
         </div>
 		<?php
 	}

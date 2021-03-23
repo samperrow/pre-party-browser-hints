@@ -79,8 +79,12 @@ To activate the preloaded resource, you must call that file in HTML as you would
 
 
 == Changelog ==
-1. Most recent update: March 15, 2021.
-2. Version 1.7.5
+1. Most recent update: March 23, 2021.
+2. Version 1.7.5.1
+
+March 23, 2021:
+1) replaced missing "Reset" button for auto-preconnect hints.
+2) optimized CRUD operations for db table.
 
 March 15, 2021:
 1) added 'Media' attribute/column field (for preload hints).

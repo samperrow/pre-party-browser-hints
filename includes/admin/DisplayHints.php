@@ -109,7 +109,7 @@ class DisplayHints extends WP_List_Table {
 		$screen = get_current_screen();
 		$option = 'pprh_per_page';
 		$hints_per_page_meta = (int) get_user_meta( $user, $option, true );
-		return ( null !== $screen && ( empty ( $hints_per_page_meta) || $hints_per_page_meta < 1 ) ) ? $screen->get_option( 'per_page', 'default' ) : 10;
+		return ( null !== $screen && ( ! empty ( $hints_per_page_meta) || $hints_per_page_meta < 1 ) ) ? $hints_per_page_meta : 10;
     }
 
 	public function no_items() {
