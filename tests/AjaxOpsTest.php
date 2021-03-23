@@ -8,10 +8,20 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 final class AjaxOpsTest extends TestCase {
-
-	public function test_pprh_update_hints(): void {
+	
+	public function test_start() {
 		if ( ! WP_ADMIN ) return;
 
+		$this->eval_pprh_update_hints();
+		$this->eval_init_1();
+		$this->eval_init_2();
+		$this->eval_init_3();
+		$this->eval_init_4();
+		$this->eval_init_5();
+
+	}
+
+	public function eval_pprh_update_hints(): void {
 		$expected = wp_doing_ajax();
 		$ajax_ops = new \PPRH\AjaxOps();
 		$expected_nonce = TestUtils::create_nonce('pprh_table_nonce');
@@ -24,7 +34,7 @@ final class AjaxOpsTest extends TestCase {
 
 	// also need to verify update, delete, enable, disable, bulk operations work properly.
 
-	public function test_init_1():void {
+	public function eval_init_1():void {
 		$ajax_ops = new \PPRH\AjaxOps();
 		$dao_ctrl = new \PPRH\DAOController();
 
@@ -36,7 +46,7 @@ final class AjaxOpsTest extends TestCase {
 		$this->assertEquals($expected, $actual);
 	}
 
-	public function test_init_2():void {
+	public function eval_init_2():void {
 		$ajax_ops = new \PPRH\AjaxOps();
 		$dao_ctrl = new \PPRH\DAOController();
 
@@ -48,7 +58,7 @@ final class AjaxOpsTest extends TestCase {
 		$this->assertEquals($expected, $actual);
 	}
 
-	public function test_init_3():void {
+	public function eval_init_3():void {
 		$ajax_ops = new \PPRH\AjaxOps();
 		$dao_ctrl = new \PPRH\DAOController();
 
@@ -62,7 +72,7 @@ final class AjaxOpsTest extends TestCase {
 		$this->assertEquals($expected, $actual);
 	}
 
-	public function test_init_4():void {
+	public function eval_init_4():void {
 		$ajax_ops = new \PPRH\AjaxOps();
 		$dao_ctrl = new \PPRH\DAOController();
 
@@ -76,7 +86,7 @@ final class AjaxOpsTest extends TestCase {
 		$this->assertEquals($expected, $actual);
 	}
 
-	public function test_init_5():void {
+	public function eval_init_5():void {
 		$ajax_ops = new \PPRH\AjaxOps();
 		$dao_ctrl = new \PPRH\DAOController();
 

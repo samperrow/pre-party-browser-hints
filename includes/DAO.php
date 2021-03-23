@@ -137,34 +137,37 @@ class DAO {
 
 
 
-
-
-
-
-	public function get_all_hints() {
-		global $wpdb;
-		$table = PPRH_DB_TABLE;
-		$sql = "SELECT * FROM $table";
-		return $wpdb->get_results( $sql, ARRAY_A );
-	}
-
-
-	public function get_hints_ordered( $query = null ) {
+	public function get_all_hints( $query_code = null ) {
 		global $wpdb;
 		$table = PPRH_DB_TABLE;
 		$sql = "SELECT * FROM $table";
 
+		$query = $this->parse_query_code( $sql, $query_code );
 
-		if ( PPRH_PRO_PLUGIN_ACTIVE ) {
-			$sql .= apply_filters( 'pprh_dh_append_sql', $sql );
-		} elseif ( ! empty( $_REQUEST['orderby'] ) ) {
-			$sql .= ' ORDER BY ' . esc_sql( $_REQUEST['orderby'] );
-			$sql .= ! empty( $_REQUEST['order'] ) ? ' ' . esc_sql( $_REQUEST['order'] ) : ' ASC';
+		if ( ! empty( $query['args'] ) ) {
+			$prepared_stmt = $wpdb->prepare( $query['sql'], $query['args'] );
+			$results = $wpdb->get_results( $prepared_stmt, ARRAY_A );
 		} else {
-			$sql .= ' ORDER BY url ASC';
+			$results = $wpdb->get_results( $query['sql'], ARRAY_A );
 		}
 
-		return $wpdb->get_results( $sql, ARRAY_A );
+		return $results;
+	}
+
+	private function parse_query_code( $sql, $query_code ) {
+		$query = array( 'sql' => $sql );
+
+		if ( 1 === $query_code ) {
+			$query['sql'] .= ' WHERE status = %s';
+			$query['args'] = array( 'enabled' );
+		} elseif ( 2 === $query_code ) {
+			$query['sql'] .= ' ORDER BY ' . esc_sql( $_REQUEST['orderby'] );
+			$query['sql'] .= ! empty( $_REQUEST['order'] ) ? ' ' . esc_sql( $_REQUEST['order'] ) : ' ASC';
+		} elseif ( 3 === $query_code ) {
+			$query['sql'] .= ' ORDER BY url ASC';
+		}
+
+		return $query;
 	}
 
 

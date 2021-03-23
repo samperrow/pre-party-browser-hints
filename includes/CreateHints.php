@@ -65,7 +65,7 @@ class CreateHints {
 
 	public function get_duplicate_hints( $new_pprh_hint ) {
 		$this->new_pprh_hint = $new_pprh_hint;
-		$all_hints = \PPRH\Utils::get_all_hints();
+		$all_hints = \PPRH\Utils::get_all_hints(0);
 
 		$dups = array_filter( $all_hints, function( $hint ) {
 			return ( ( $this->new_pprh_hint['url'] === $hint['url'] ) && ( $this->new_pprh_hint['hint_type'] === $hint['hint_type'] ) );

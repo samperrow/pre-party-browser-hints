@@ -33,7 +33,7 @@ add_action( 'wpmu_new_blog', array( $pprh_load, 'activate_plugin' ) );
 
 class Pre_Party_Browser_Hints {
 
-    public $all_hints = array();
+//    public $all_hints = array();
 
 	public function __construct() {
 	    add_action( 'init', array( $this, 'load_plugin' ) );
@@ -46,10 +46,6 @@ class Pre_Party_Browser_Hints {
 		if ( ! function_exists( 'wp_doing_ajax' ) ) {
 			apply_filters( 'wp_doing_ajax', defined( 'DOING_AJAX' ) && DOING_AJAX );
 		}
-
-		if ( ! wp_doing_ajax() ) {
-			$this->all_hints = Utils::get_all_hints();
-        }
 
 		if ( is_admin() ) {
 			add_action( 'wp_loaded', array( $this, 'load_admin' ) );
@@ -72,7 +68,7 @@ class Pre_Party_Browser_Hints {
 
     public function load_client() {
 		include_once PPRH_ABS_DIR . 'includes/client/LoadClient.php';
-		$load_client = new LoadClient($this->all_hints);
+		$load_client = new LoadClient();
         $load_client->init();
     }
 

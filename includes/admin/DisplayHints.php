@@ -17,9 +17,7 @@ class DisplayHints extends WP_List_Table {
 	public $table;
 	public $items;
 
-	public $all_hints;
-
-	public function __construct( $on_pprh_admin, $all_hints = false ) {
+	public function __construct( $on_pprh_admin ) {
 		parent::__construct( array(
             'ajax'     => true,
 			'plural'   => 'urls',
@@ -27,11 +25,6 @@ class DisplayHints extends WP_List_Table {
 			'singular' => 'url',
             'on_pprh_admin' => $on_pprh_admin
 		) );
-
-		if ( false === $all_hints ) {
-			$all_hints = Utils::get_all_hints();
-		}
-		$this->all_hints = $all_hints;
 
 		if ( ! wp_doing_ajax() ) {
 			$this->prepare_items();
@@ -76,10 +69,6 @@ class DisplayHints extends WP_List_Table {
 		$arr = array(
             'url'         => array('url', true),
             'hint_type'   => array('hint_type', false),
-            'as_attr'     => array('as_attr', false),
-            'type_attr'   => array('type_attr', false),
-            'crossorigin' => array('crossorigin', false),
-            'media'       => array( 'media', false ),
             'status'      => array('status', false),
             'created_by'  => array('created_by', false)
         );
@@ -101,13 +90,13 @@ class DisplayHints extends WP_List_Table {
 		$sortable = $this->get_sortable_columns();
 		$this->_column_headers = array( $columns, array(), $sortable );
 		$current_page = $this->get_pagenum();
-		$this->items = array_slice( $this->all_hints, ( ( $current_page - 1 ) * $this->hints_per_page ), $this->hints_per_page );
-		$total_items = count( $this->all_hints );
+		$query_code = ( ! empty( $_REQUEST['orderby'] ) ? 2 : 3 );
+		$all_hints = Utils::get_all_hints( $query_code );
+		$this->items = array_slice( $all_hints, ( ( $current_page - 1 ) * $this->hints_per_page ), $this->hints_per_page );
+		$total_items = count( $all_hints );
 
 		$this->set_pagination_args(
             array(
-				'order'       => ! empty( $_REQUEST['order'] )   && '' !== $_REQUEST['order']   ? $_REQUEST['order']   : 'asc',
-				'orderby'     => ! empty( $_REQUEST['orderby'] ) && '' !== $_REQUEST['orderby'] ? $_REQUEST['orderby'] : 'title',
 				'per_page'    => $this->hints_per_page,
 				'total_items' => $total_items,
 				'total_pages' => ceil( $total_items / $this->hints_per_page ),
@@ -119,10 +108,8 @@ class DisplayHints extends WP_List_Table {
 		$user = get_current_user_id();
 		$screen = get_current_screen();
 		$option = 'pprh_per_page';
-		$hints_per_page = (int) get_user_meta( $user, $option, true );
-		$hints_per_page = ( null !== $screen && ( empty ( $hints_per_page) || $hints_per_page < 1 ) )
-            ? $screen->get_option( 'per_page', 'default' ) : 10;
-		return $hints_per_page;
+		$hints_per_page_meta = (int) get_user_meta( $user, $option, true );
+		return ( null !== $screen && ( empty ( $hints_per_page_meta) || $hints_per_page_meta < 1 ) ) ? $screen->get_option( 'per_page', 'default' ) : 10;
     }
 
 	public function no_items() {
