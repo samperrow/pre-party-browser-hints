@@ -70,7 +70,7 @@ class Preconnects {
 		return $allow_unauth_users;
 	}
 
-	private function perform_free_reset( $reset_data ) {
+	private function perform_reset( $reset_data ) {
 		return ( 'true' === $reset_data['autoload'] && 'false' === $reset_data['preconnects_set'] );
 	}
 
