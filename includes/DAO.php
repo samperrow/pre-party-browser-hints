@@ -170,22 +170,6 @@ class DAO {
 		return $query;
 	}
 
-	public function parse_query_code( $sql, $query_code ) {
-
-		$query = array( 'sql' => $sql );
-
-		if ( 1 === $query_code ) {
-			$query['sql'] .= ' WHERE status = %s';
-			$query['args'] = array( 'enabled' );
-		} elseif ( 2 === $query_code ) {
-			$query['sql'] .= ' ORDER BY ' . esc_sql( $_REQUEST['orderby'] );
-			$query['sql'] .= ! empty( $_REQUEST['order'] ) ? ' ' . esc_sql( $_REQUEST['order'] ) : ' ASC';
-		} elseif ( 3 === $query_code ) {
-			$query['sql'] .= ' ORDER BY url ASC';
-		}
-
-		return $query;
-	}
 
 	public function get_multisite_tables() {
 		global $wpdb;
