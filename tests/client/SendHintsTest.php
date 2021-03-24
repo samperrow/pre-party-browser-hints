@@ -42,7 +42,7 @@ class SendHintsTest extends TestCase {
 			$actual_4 = has_action( 'wp_head', array( $send_hints, 'send_html_head' ) );
 		}
 
-		$this->assertEquals( false, $actual_1 );
+		$this->assertEquals( true, $actual_1 );
 		$this->assertEquals( true, $actual_2 );
 		$this->assertEquals( false, $actual_3 );
 		$this->assertEquals( true, $actual_4 );

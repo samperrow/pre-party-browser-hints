@@ -47,7 +47,7 @@ class ActivatePlugin {
 			add_option('pprh_preconnect_allow_unauth', $preconnect_allow_unauth, '', 'yes');
 			delete_option('pprh_allow_unauth');
 		} else {
-			add_option('pprh_preconnect_allow_unauth', 'true', '', 'yes');
+			add_option('pprh_preconnect_allow_unauth', 'false', '', 'yes');
 		}
 
 		if ( ! empty( $preconnect_autoload ) ) {

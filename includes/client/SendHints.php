@@ -14,10 +14,12 @@ class SendHints {
 
 	protected $send_hints_in_html = '';
 
-	public function init( $enabled_hints ) {
+	public function __construct() {
 		$this->send_hints_in_html = get_option( 'pprh_html_head' );
+	}
 
-		if ( ! is_array( $enabled_hints ) || count( $enabled_hints ) === 0 ) {
+	public function init( $hints ) {
+		if ( ! is_array( $hints ) || count( $hints ) === 0 ) {
 			return false;
 		}
 
@@ -46,7 +48,7 @@ class SendHints {
 		foreach ( $hints as $key => $val ) {
 			$attrs = $this->get_attrs( $val );
 
-			$str .= sprintf( '<link href="%s" rel="%s"%s>', $val['url'], $val['hint_type'], $attrs );
+			$str .= sprintf( '<link href="%1$s" rel="%2$s"%3$s>', $val['url'], $val['hint_type'], $attrs );
 		}
 
 		return $str;
@@ -63,8 +65,7 @@ class SendHints {
 		}
 
 		$output = rtrim( $output, ';, ' );
-		$header_str = 'Link: ' . $output;
-		return $header_str;
+		return 'Link: ' . $output;
 	}
 
 	public function get_attrs($hint) {
@@ -96,11 +97,13 @@ class SendHints {
 
 	private function add_attr( $name, $attr_value ) {
 		if ( 'crossorigin' === $name ) {
-			return ' ' . $name;
+			$str = ' ' . $name;
 		} else {
 			$attr = ( 'true' === $this->send_hints_in_html ) ? "\"$attr_value\"" : "$attr_value;";
-			return ' ' .  "$name=" . $attr;
+			$str = ' ' .  "$name=" . $attr;
 		}
+
+		return $str;
 	}
 
 }

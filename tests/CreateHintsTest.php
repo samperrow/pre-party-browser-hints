@@ -49,7 +49,7 @@ final class CreateHintsTest extends TestCase {
 		$create_hints = new \PPRH\CreateHints();
 		$actual = $create_hints->new_hint_controller( $hint_2 );
 
-		$expected = $dao->create_db_result( false, '', 'A duplicate hint already exists!', 'create', null );
+		$expected = $dao->create_db_result( false, '', 'A duplicate hint already exists!', 0, null );
 
 		// attempt to create post hint when global hint is already in place should fail.
 		$this->assertEquals( $expected, $actual );
@@ -71,7 +71,7 @@ final class CreateHintsTest extends TestCase {
 		$create_hints = new \PPRH\CreateHints();
 		$actual = $create_hints->new_hint_controller( $hint_2 );
 
-		$expected = $dao->create_db_result( false, '', 'A duplicate hint already exists!', 'create', null );
+		$expected = $dao->create_db_result( false, '', 'A duplicate hint already exists!', 0, null );
 
 		// attempt to create post hint when global hint is already in place should fail.
 		$this->assertEquals( $expected, $actual );
@@ -110,7 +110,7 @@ final class CreateHintsTest extends TestCase {
 
 		$create_hints = new \PPRH\CreateHints();
 		$actual = $create_hints->new_hint_controller( $dummy_hint );
-		$expected = $dao->create_db_result( false, '', 'A duplicate hint already exists!', 'create', null );
+		$expected = $dao->create_db_result( false, '', 'A duplicate hint already exists!', 0, null );
 
 
 		$this->assertEquals( $expected, $actual );
@@ -173,7 +173,7 @@ final class CreateHintsTest extends TestCase {
 
 		$create_hints = new \PPRH\CreateHints();
 		$dup_hint_error = $create_hints->new_hint_controller( $dup_hint );
-		$expected = $dao->create_db_result( false, '', $error, 'create', null );
+		$expected = $dao->create_db_result( false, '', $error, 0, null );
 
 		$this->assertEquals( $expected, $dup_hint_error );
 		$dao->delete_hint( $dummy_hint_result->db_result['hint_id'] );

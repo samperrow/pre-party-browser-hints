@@ -30,7 +30,7 @@ class Settings {
                     wp_nonce_field( 'pprh_save_admin_options', 'pprh_admin_options_nonce' );
                     $this->save_user_options();
 
-                    if ($this->on_pprh_admin) {
+                    if ( $this->on_pprh_admin ) {
 						$this->general_settings->show_settings();
 						$this->preconnect_settings->show_settings();
 						$this->prefetch_settings->show_settings();

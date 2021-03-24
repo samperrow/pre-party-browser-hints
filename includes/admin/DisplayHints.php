@@ -17,8 +17,6 @@ class DisplayHints extends WP_List_Table {
 	public $table;
 	public $items;
 
-//	public $all_hints;
-
 	public function __construct( $on_pprh_admin ) {
 		parent::__construct( array(
             'ajax'     => true,
@@ -69,10 +67,10 @@ class DisplayHints extends WP_List_Table {
 
 	public function get_sortable_columns() {
 		$arr = array(
-            'url'         => array( 'url', true ),
-            'hint_type'   => array( 'hint_type', false ),
-            'status'      => array( 'status', false ),
-            'created_by'  => array( 'created_by', false )
+            'url'         => array('url', true),
+            'hint_type'   => array('hint_type', false),
+            'status'      => array('status', false),
+            'created_by'  => array('created_by', false)
         );
 
 		return apply_filters( 'pprh_dh_get_sortortable_columns', $arr );
@@ -93,14 +91,10 @@ class DisplayHints extends WP_List_Table {
 		$sortable = $this->get_sortable_columns();
 		$this->_column_headers = array( $columns, array(), $sortable );
 		$current_page = $this->get_pagenum();
-
 		$query_code = ( ! empty( $_REQUEST['orderby'] ) ? 2 : 3 );
-
-		$hints = $dao->get_all_hints( $query_code );
-
-
-        $this->items = array_slice( $hints, ( ( $current_page - 1 ) * $this->hints_per_page ), $this->hints_per_page );
-		$total_items = count( $hints );
+		$all_hints = Utils::get_all_hints( $query_code );
+		$this->items = array_slice( $all_hints, ( ( $current_page - 1 ) * $this->hints_per_page ), $this->hints_per_page );
+		$total_items = count( $all_hints );
 
 		$this->set_pagination_args(
             array(
@@ -115,10 +109,8 @@ class DisplayHints extends WP_List_Table {
 		$user = get_current_user_id();
 		$screen = get_current_screen();
 		$option = 'pprh_per_page';
-		$hints_per_page = (int) get_user_meta( $user, $option, true );
-		$hints_per_page = ( null !== $screen && ( empty ( $hints_per_page) || $hints_per_page < 1 ) )
-            ? $screen->get_option( 'per_page', 'default' ) : 10;
-		return $hints_per_page;
+		$hints_per_page_meta = (int) get_user_meta( $user, $option, true );
+		return ( null !== $screen && ( ! empty ( $hints_per_page_meta) && $hints_per_page_meta > 0 ) ) ? $hints_per_page_meta : 10;
     }
 
 	public function no_items() {

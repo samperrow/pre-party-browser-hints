@@ -8,7 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class LoadAdmin {
 
-//    public function __construct() {}
+	public $all_hints = array();
 
 	public function init() {
 		$utils = new Utils();
@@ -22,7 +22,6 @@ class LoadAdmin {
 		add_action( 'admin_enqueue_scripts', array( $this, 'register_admin_files' ) );
 		add_filter( 'set-screen-option', array( $this, 'pprh_set_screen_option' ), 10, 3 );
 		load_plugin_textdomain( 'pprh', false, PPRH_REL_DIR . 'languages' );
-		add_action( 'pprh_load_dashboard', array( $this, 'load_dashboard' ) );
 
 		include_once PPRH_ABS_DIR . 'includes/admin/NewHint.php';
 		include_once PPRH_ABS_DIR . 'includes/admin/DisplayHints.php';
@@ -49,16 +48,16 @@ class LoadAdmin {
 	public function show_upgrade_notice() {
 		$current_version = get_option( 'pprh_version' );
 
-		if ( '1.7.5' !== $current_version ) {
+		if ( '1.7.5.1' !== $current_version ) {
 		    add_action( 'admin_notices', array( $this, 'upgrade_notice' ) );
-	    	update_option( 'pprh_version', '1.7.5' );
+	    	update_option( 'pprh_version', '1.7.5.1' );
 		}
 	}
 
 	public function upgrade_notice() {
 		?>
         <div class="notice notice-info is-dismissible">
-            <p><?php _e('1.7.5 Update: Added \'Media\' attribute (for preload hints), improved UI on Settings page, and numerous other improvements.' ); ?></p>
+            <p><?php _e('1.7.5.1 Update: Replaced missing "Reset" button for auto-preconnect hints (Settings -> Auto Preconnect Settings).' ); ?></p>
         </div>
 		<?php
 	}

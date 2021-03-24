@@ -159,67 +159,6 @@ class PreconnectsTest extends TestCase {
 		$this->assertEquals(true, $actual_3);
 	}
 
-//	public function test_check_to_perform_reset():void {
-//		$preconnects = new \PPRH\Preconnects();
-//
-//		$reset_data_1 = array(
-//			'autoload'        => 'true',
-//			'allow_unauth'    => 'true',
-//			'preconnects_set' => 'true',
-//			'reset_pro'       => null
-//		);
-//
-//		$reset_data_2 = array(
-//			'autoload'        => 'true',
-//			'allow_unauth'    => 'true',
-//			'preconnects_set' => 'false',
-//			'reset_pro'       => null
-//		);
-//
-//		$reset_data_3 = array(
-//			'autoload'        => 'true',
-//			'allow_unauth'    => 'true',
-//			'preconnects_set' => 'true',
-//			'reset_pro'       => array(
-//				'perform_reset' => false,
-//			)
-//		);
-//
-//		$actual_1 = $preconnects->check_to_perform_reset( $reset_data_1 );
-//		$actual_2 = $preconnects->check_to_perform_reset( $reset_data_2 );
-//		$actual_3 = $preconnects->check_to_perform_reset( $reset_data_3 );
-//
-//		$this->assertEquals(false, $actual_1);
-//		$this->assertEquals(true, $actual_2);
-//		$this->assertEquals(false, $actual_3);
-//
-//		if ( defined( 'PPRH_PRO_PLUGIN_ACTIVE' ) && PPRH_PRO_PLUGIN_ACTIVE ) {
-//			$reset_data_4 = array(
-//				'autoload'        => 'true',
-//				'allow_unauth'    => 'true',
-//				'preconnects_set' => 'true',
-//				'reset_pro'       => array(
-//					'perform_reset' => true,
-//				)
-//			);
-//
-//			$reset_data_5 = array(
-//				'autoload'        => 'true',
-//				'allow_unauth'    => 'true',
-//				'preconnects_set' => 'true',
-//				'reset_pro'       => array(
-//					'perform_reset' => false,
-//				)
-//			);
-//
-//			$actual_4 = $preconnects->check_to_perform_reset( $reset_data_4 );
-//			$actual_5 = $preconnects->check_to_perform_reset( $reset_data_5 );
-//
-//			$this->assertEquals(true, $actual_4);
-//			$this->assertEquals(false, $actual_5);
-//		}
-//	}
-
 	public function test_check_to_enqueue_scripts():void {
 		$preconnects = new \PPRH\Preconnects();
 
@@ -233,65 +172,6 @@ class PreconnectsTest extends TestCase {
 		$this->assertEquals(false, $actual_2);
 	}
 
-//	public function test_perform_free_reset():void {
-//		$preconnects = new \PPRH\Preconnects();
-//
-//		$test_1 = array(
-//			'autoload'        => 'true',
-//			'preconnects_set' => 'true'
-//		);
-//
-//		$test_2 = array(
-//			'autoload'        => 'true',
-//			'preconnects_set' => 'false'
-//		);
-//
-//		$test_3 = array(
-//			'autoload'        => 'false',
-//			'preconnects_set' => 'true'
-//		);
-//
-//		$test_4 = array(
-//			'autoload'        => 'false',
-//			'preconnects_set' => 'false'
-//		);
-//
-//		$actual_1 = $preconnects->perform_free_reset($test_1);
-//		$actual_2 = $preconnects->perform_free_reset($test_2);
-//		$actual_3 = $preconnects->perform_free_reset($test_3);
-//		$actual_4 = $preconnects->perform_free_reset($test_4);
-//
-//		$this->assertEquals(false, $actual_1);
-//		$this->assertEquals(true, $actual_2);
-//		$this->assertEquals(false, $actual_3);
-//		$this->assertEquals(false, $actual_4);
-//	}
-
-	public function test_perform_pro_reset():void {
-		if ( ! \PPRH\Utils::pprh_is_plugin_active() ) {
-			return;
-		}
-
-		$preconnects = new \PPRH\Preconnects();
-		$reset_pro_1 = null;
-		$reset_pro_2 = false;
-		$reset_pro_3 = array(
-			'perform_reset' => false
-		);
-		$reset_pro_4 = array(
-			'perform_reset' => true
-		);
-
-		$actual_1 = $preconnects->perform_pro_reset($reset_pro_1);
-		$actual_2 = $preconnects->perform_pro_reset($reset_pro_2);
-		$actual_3 = $preconnects->perform_pro_reset($reset_pro_3);
-		$actual_4 = $preconnects->perform_pro_reset($reset_pro_4);
-
-		$this->assertEquals(false, $actual_1);
-		$this->assertEquals(false, $actual_2);
-		$this->assertEquals(false, $actual_3);
-		$this->assertEquals(true, $actual_4);
-	}
 
 	public function test_filters_work() {
 		$actual_reset_pro = apply_filters('pprh_preconnects_do_reset_init', null);
@@ -520,24 +400,21 @@ class PreconnectsTest extends TestCase {
 			return;
 		}
 
-//		$dao = new \PPRH\DAO();
 		$preconnects = new \PPRH\Preconnects();
 		$expected_nonce = TestUtils::create_nonce( 'pprh_ajax_nonce' );
 
-		$url1 = 'https://fonts.gstaticTest.com';
-		$url2 = 'https://fonts.gstaticTest2.net';
+		$hint_1 = TestUtils::create_hint_array( 'https://fonts.gstaticTest.com', 'preconnect' );
+		$hint_2 = TestUtils::create_hint_array( 'https://fonts.gstaticTest2.com', 'preconnect' );
 
 		$test_data = $preconnects->create_js_object();
-		$test_data['hints'] = array( $url1, $url2 );
+		$test_data['hints'] = array( $hint_1, $hint_2 );
 
 		$_POST['pprh_data'] = json_encode( $test_data );
 		$_REQUEST['_ajax_nonce'] = $expected_nonce;
 		$_POST['action'] = 'pprh_post_domain_names';
 
 		$actual = $preconnects->pprh_post_domain_names();
-
 		$this->assertEquals( true, $actual );
-
 	}
 
 //	public function test_do_ajax_callback():void {
@@ -563,24 +440,14 @@ class PreconnectsTest extends TestCase {
 		$preconnects = new \PPRH\Preconnects();
 
 		$hint_1 = TestUtils::create_hint_array( 'https://test-process-hints.com', 'preconnect' );
-		$hint_2 = TestUtils::create_hint_array( 'https://test-process-hints.net', 'preconnect' );
+//		$hint_2 = TestUtils::create_hint_array( 'https://test-process-hints.net', 'preconnect' );
+//		$hint_3 = TestUtils::create_hint_array( 'https://test-process-hints.com', '' );
 
-		$test_data = $preconnects->create_js_object();
-		$test_data['hints'] = array( $hint_1, $hint_2 );
+		$test_data = array();
+		$test_data['hints'] = array( $hint_1 );
 
-		$actual_arr = $preconnects->process_hints( $test_data );
-
-		$this->assertEquals( count( $test_data['hints'] ), count( $actual_arr ) );
+		$actual = $preconnects->process_hints( $test_data );
+		$this->assertEquals( true, $actual[0]->db_result['success'] );
 	}
 
-	public function test_PreconnectDoesNotLoad (): void {
-		update_option('pprh_preconnect_autoload', 'true');
-		update_option('pprh_preconnect_set', 'true');
-
-		$prec = new \PPRH\Preconnects();
-		$wp_loaded = has_action( 'wp_loaded', array( $prec, 'initialize' ) );
-		$this->assertEquals(false, $wp_loaded);
-	}
-
-	
 }

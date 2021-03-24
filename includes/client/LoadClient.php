@@ -8,8 +8,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class LoadClient {
 
-	public $all_hints = array();
-
 	public function init() {
 		include_once PPRH_ABS_DIR . 'includes/client/SendHints.php';
 
@@ -18,7 +16,7 @@ class LoadClient {
 		$enabled_hints = Utils::get_all_hints( 1 );
 
 		$send_hints = new SendHints();
-		$send_hints->init( $enabled_hints );
+		$send_hints->init($enabled_hints);
 
 		if ( 'true' === get_option( 'pprh_disable_wp_hints' ) ) {
 			remove_action( 'wp_head', 'wp_resource_hints', 2 );

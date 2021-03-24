@@ -27,10 +27,6 @@ class PreconnectSettings {
 		update_option('pprh_preconnect_autoload', $options['autoload_preconnects']);
 		update_option('pprh_preconnect_allow_unauth', $options['allow_unauth']);
 		update_option('pprh_preconnect_set', $options['preconnect_set']);
-
-//		if (isset($_POST['pprh_preconnect_set'])) {
-//			update_option('pprh_preconnect_set', 'false');
-//		}
     }
 
 	public function show_settings() {

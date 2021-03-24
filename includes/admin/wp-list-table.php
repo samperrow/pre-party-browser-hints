@@ -1154,6 +1154,10 @@ class WP_List_Table {
 	 * @since 3.1.0
 	 */
 	public function display() {
+		if ( defined( 'PPRH_TESTING' ) && PPRH_TESTING ) {
+			return;
+		}
+
 		wp_nonce_field( 'ajax-custom-list-nonce', '_ajax_custom_list_nonce' );
 		$singular = $this->_args['singular'];
 		$this->display_tablenav( 'top' );
