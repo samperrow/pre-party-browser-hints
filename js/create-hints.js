@@ -154,6 +154,6 @@
 }));
 
 
-if (! /sphacks.local/g.test(document.location.href)) {
-    module.exports = this.pprhCreateHint;
-}
+// if (! /sphacks.local/g.test(document.location.href)) {
+//     module.exports = this.pprhCreateHint;
+// }
