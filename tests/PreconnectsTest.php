@@ -68,6 +68,10 @@ class PreconnectsTest extends TestCase {
 //	}
 
 	public function test_entire_preconnect_class_pro(): void {
+		if ( ! \PPRH\Utils::pprh_is_plugin_active() ) {
+			return;
+		}
+
 		$preconnects = new \PPRH\Preconnects();
 		$autoload = 'true';
 		$allow_unauth = 'true';
@@ -107,7 +111,7 @@ class PreconnectsTest extends TestCase {
 	}
 
 	public function test_initialize() {
-		if (defined('PPRH_PRO_PLUGIN_ACTIVE') && PPRH_PRO_PLUGIN_ACTIVE) {
+		if ( defined( 'PPRH_PRO_PLUGIN_ACTIVE' ) && PPRH_PRO_PLUGIN_ACTIVE ) {
 			$this->eval_pro_initialize();
 		} else {
 			$this->eval_free_initialize();
@@ -127,13 +131,12 @@ class PreconnectsTest extends TestCase {
 				'autoload'        => get_option( 'pprh_preconnect_autoload' ),
 				'allow_unauth'    => get_option( 'pprh_preconnect_allow_unauth' ),
 				'preconnects_set' => get_option( 'pprh_preconnect_set' ),
-				'reset_pro' => apply_filters( 'pprh_preconnects_do_reset_init', null )
+				'reset_pro'       => apply_filters( 'pprh_preconnects_do_reset_init', null )
 			)
 		);
 
 		$this->assertEquals($expected_1, $actual_1);
 		$this->assertEquals($expected_config, $preconnects_1->config);
-
 	}
 
 	public function eval_free_initialize() {
@@ -239,16 +242,16 @@ class PreconnectsTest extends TestCase {
 		$preconnects = new \PPRH\Preconnects();
 
 		$expected_arr_1 = array(
-			'hints'         => array(),
-			'nonce'         => wp_create_nonce( 'pprh_ajax_nonce' ),
-			'admin_url'     => admin_url() . 'admin-ajax.php',
-			'start_time'    => time(),
-			'hint_type' => 'preconnect'
+			'hints'      => array(),
+			'nonce'      => wp_create_nonce( 'pprh_ajax_nonce' ),
+			'admin_url'  => admin_url() . 'admin-ajax.php',
+			'start_time' => time(),
+			'hint_type'  => 'preconnect'
 		);
 
 
 		if ( \PPRH\Utils::pprh_is_plugin_active() ) {
-			$expected_arr_1['post_id'] = '';
+			$expected_arr_1['post_id'] = '2328';
 			$expected_arr_1['reset_globals'] = 'false';
 			$preconnects->config['reset_data']['reset_pro'] = apply_filters( 'pprh_preconnects_do_reset_init', null );
 		}
@@ -258,7 +261,7 @@ class PreconnectsTest extends TestCase {
 
 
 		$preconnects->config['reset_data']['reset_pro'] = array(
-			'post_id'  => '100',
+			'post_id' => '100',
 		);
 
 		$expected_object_2 = apply_filters( 'pprh_preconnects_append_hint_object', $expected_arr_1, $preconnects->config['reset_data']['reset_pro'] );

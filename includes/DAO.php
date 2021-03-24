@@ -84,6 +84,7 @@ class DAO {
 	public function update_hint( $new_hint, $hint_id ) {
 		global $wpdb;
 		$hint_id = (int) $hint_id;
+		$current_user = wp_get_current_user()->display_name;
 
 		$wpdb->update(
 			PPRH_DB_TABLE,
@@ -93,7 +94,8 @@ class DAO {
 				'as_attr'     => $new_hint['as_attr'],
 				'type_attr'   => $new_hint['type_attr'],
 				'crossorigin' => $new_hint['crossorigin'],
-				'media'       => $new_hint['media']
+				'media'       => $new_hint['media'],
+				'created_by'  => $current_user,
 			),
 			array(
 				'id' => $hint_id,
@@ -135,8 +137,6 @@ class DAO {
 	}
 
 
-
-
 	public function get_all_hints( $query_code = null ) {
 		global $wpdb;
 		$table = PPRH_DB_TABLE;
@@ -170,9 +170,22 @@ class DAO {
 		return $query;
 	}
 
+	public function parse_query_code( $sql, $query_code ) {
 
+		$query = array( 'sql' => $sql );
 
+		if ( 1 === $query_code ) {
+			$query['sql'] .= ' WHERE status = %s';
+			$query['args'] = array( 'enabled' );
+		} elseif ( 2 === $query_code ) {
+			$query['sql'] .= ' ORDER BY ' . esc_sql( $_REQUEST['orderby'] );
+			$query['sql'] .= ! empty( $_REQUEST['order'] ) ? ' ' . esc_sql( $_REQUEST['order'] ) : ' ASC';
+		} elseif ( 3 === $query_code ) {
+			$query['sql'] .= ' ORDER BY url ASC';
+		}
 
+		return $query;
+	}
 
 	public function get_multisite_tables() {
 		global $wpdb;

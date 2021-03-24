@@ -52,8 +52,9 @@ class Preconnects {
 
 	private function check_to_perform_reset( $reset_data ) {
 		if ( empty( $reset_data['reset_pro'] ) || null === $reset_data['reset_pro'] ) {
-			$perform_reset = $this->perform_free_reset( $reset_data );
-		} else {
+			$perform_reset = $this->perform_reset( $reset_data );
+		}
+		else {
 			$perform_reset = $this->perform_pro_reset( $reset_data['reset_pro'] );
 		}
 

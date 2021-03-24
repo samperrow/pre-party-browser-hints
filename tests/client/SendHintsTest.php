@@ -22,9 +22,7 @@ class SendHintsTest extends TestCase {
 
 		$send_hints = new \PPRH\SendHints();
 
-		$hints_1 = array(
-			array('url' => 'https://asdf.com', 'hint_type' => 'preconnect', 'status' => 'disabled' ),
-		);
+		$hints_1 = array();
 
 		$hints_2 = array(
 			array('url' => 'https://asdf.com', 'hint_type' => 'preconnect', 'status' => 'enabled' ),

@@ -23,6 +23,7 @@ class LoadAdmin {
 		add_filter( 'set-screen-option', array( $this, 'pprh_set_screen_option' ), 10, 3 );
 		load_plugin_textdomain( 'pprh', false, PPRH_REL_DIR . 'languages' );
 
+		include_once PPRH_ABS_DIR . 'includes/admin/NewHint.php';
 		include_once PPRH_ABS_DIR . 'includes/admin/DisplayHints.php';
 		include_once PPRH_ABS_DIR . 'includes/AjaxOps.php';
 		new AjaxOps();
@@ -108,7 +109,6 @@ class LoadAdmin {
 			wp_enqueue_script( 'pprh_create_hints_js' );
 			wp_enqueue_script( 'pprh_admin_js' );
 			wp_enqueue_style( 'pprh_styles_css' );
-//			do_action( 'pprh_register_admin_files' );
 		}
 	}
 

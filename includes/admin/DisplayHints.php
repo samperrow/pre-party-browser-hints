@@ -52,17 +52,17 @@ class DisplayHints extends WP_List_Table {
 	public function get_columns() {
 		$arr = array(
             'cb'          => '<input type="checkbox" />',
-            'url'         => __('URL', 'pprh'),
-            'hint_type'   => __('Hint Type', 'pprh'),
-            'as_attr'     => __('As Attr', 'pprh'),
-            'type_attr'   => __('Type Attr', 'pprh'),
-            'crossorigin' => __('Crossorigin', 'pprh'),
-            'media'       => __('Media', 'pprh'),
-            'status'      => __('Status', 'pprh'),
-            'created_by'  => __('Created By', 'pprh'),
+            'url'         => __( 'URL', 'pprh' ),
+            'hint_type'   => __( 'Hint Type', 'pprh' ),
+            'as_attr'     => __( 'As Attr', 'pprh' ),
+            'type_attr'   => __( 'Type Attr', 'pprh' ),
+            'crossorigin' => __( 'Crossorigin', 'pprh' ),
+            'media'       => __( 'Media', 'pprh' ),
+            'status'      => __( 'Status', 'pprh' ),
+            'created_by'  => __( 'Created By', 'pprh' ),
         );
 
-		return apply_filters('pprh_dh_get_columns', $arr);
+		return apply_filters( 'pprh_dh_get_columns', $arr );
 	}
 
 	public function get_sortable_columns() {
@@ -73,7 +73,7 @@ class DisplayHints extends WP_List_Table {
             'created_by'  => array('created_by', false)
         );
 
-		return apply_filters('pprh_dh_get_sortortable_columns', $arr);
+		return apply_filters( 'pprh_dh_get_sortortable_columns', $arr );
 	}
 
 	public function get_bulk_actions() {
@@ -85,6 +85,7 @@ class DisplayHints extends WP_List_Table {
 	}
 
 	public function prepare_items() {
+	    $dao = new DAO();
 		$this->hints_per_page = $this->set_hints_per_page();
 		$columns = $this->get_columns();
 		$sortable = $this->get_sortable_columns();

@@ -92,7 +92,6 @@ class Pre_Party_Browser_Hints {
 		include_once 'includes/Utils.php';
 		include_once 'includes/DAOController.php';
 		include_once 'includes/CreateHints.php';
-		include_once 'includes/admin/NewHint.php';
 	}
 
 	public function check_to_upgrade() {

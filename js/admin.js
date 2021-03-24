@@ -276,6 +276,7 @@
 	// TODO: remove previous notices which have a different status. i.e- removing an 'error' box after a successful notice
 	function updateAdminNotice(response) {
 		response = verifyResponse(response);
+		adminNoticeElem.classList.remove('notice-');
 		adminNoticeElem.classList.add('notice-' + response.status);
 		adminNoticeElem.classList.add('active');
 		adminNoticeElem.getElementsByTagName('p')[0].innerText = response.msg;
