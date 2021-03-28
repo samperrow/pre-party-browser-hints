@@ -84,7 +84,7 @@ To activate the preloaded resource, you must call that file in HTML as you would
 
 March 27, 2021:
 1) fixed issue updating hints.
-2) fixed issue with typ_attr not saving properly.
+2) fixed issue with type_attr not saving properly.
 
 March 23, 2021:
 1) replaced missing "Reset" button for auto-preconnect hints.

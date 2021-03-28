@@ -60,8 +60,7 @@ class Pre_Party_Browser_Hints {
 		include_once PPRH_ABS_DIR . 'includes/admin/LoadAdmin.php';
 		$load_admin = new LoadAdmin();
 		$load_admin->init();
-
-		$this->check_to_upgrade();
+		$this->check_to_upgrade( '1.7.5.3' );
 	}
 
     public function load_client() {
@@ -94,12 +93,20 @@ class Pre_Party_Browser_Hints {
 		include_once 'includes/CreateHints.php';
 	}
 
-	public function check_to_upgrade() {
-		$desired_version = '1.7.5.3';
-
-		if ( $desired_version !== PPRH_VERSION ) {
+	public function check_to_upgrade( $new_version ) {
+		if ( $new_version !== PPRH_VERSION ) {
 			$this->activate_plugin();
+			update_option( 'pprh_version', $new_version );
+			add_action( 'admin_notices', array( $this, 'upgrade_notice' ) );
 		}
+	}
+
+	public function upgrade_notice() {
+		?>
+		<div class="notice notice-info is-dismissible">
+			<p><?php _e('Upgrade Notes: Fixed issue preventing hints from being updated, and fixed problem with the \'type\' attribute not saving properly.' ); ?></p>
+		</div>
+		<?php
 	}
 
 	public function activate_plugin() {

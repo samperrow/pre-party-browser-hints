@@ -42,12 +42,12 @@ final class PrePartyBrowserHintsTest extends TestCase {
 
 	public function test_check_to_upgrade():void {
 		$pprh = new \PPRH\Pre_Party_Browser_Hints();
-		$pprh->check_to_upgrade();
-		$desired_version = '1.7.5.3';
+		$new_version = '1.7.5.3';
+		$pprh->check_to_upgrade( $new_version );
 		$activate_plugin = class_exists(\PPRH\ActivatePlugin::class );
 
-		$expected_true = $desired_version !== PPRH_VERSION;
-		$expected_false = $desired_version === PPRH_VERSION;
+		$expected_true = $new_version !== PPRH_VERSION;
+		$expected_false = $new_version === PPRH_VERSION;
 
 		$this->assertEquals( $expected_true, $activate_plugin);
 		$this->assertEquals( $expected_false, !$activate_plugin);

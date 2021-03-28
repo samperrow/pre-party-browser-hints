@@ -10,10 +10,15 @@ class LoadAdmin {
 
 	public $all_hints = array();
 
+//	public function __construct() {
+
+//        $this->init( $on_pprh_page );
+//    }
+
 	public function init() {
+		add_action( 'admin_menu', array( $this, 'load_admin_menu' ) );
 		$utils = new Utils();
 		$on_pprh_page = $utils->on_pprh_page();
-		add_action( 'admin_menu', array( $this, 'load_admin_menu' ) );
 
 		if ( ! $on_pprh_page ) {
 			return;
@@ -42,24 +47,6 @@ class LoadAdmin {
 		);
 
 		add_action( "load-{$settings_page}", array( $this, 'screen_option' ) );
-		add_action( "load-{$settings_page}", array( $this, 'show_upgrade_notice' ) );
-	}
-
-	public function show_upgrade_notice() {
-		$current_version = get_option( 'pprh_version' );
-
-		if ( '1.7.5.1' !== $current_version ) {
-		    add_action( 'admin_notices', array( $this, 'upgrade_notice' ) );
-	    	update_option( 'pprh_version', '1.7.5.1' );
-		}
-	}
-
-	public function upgrade_notice() {
-		?>
-        <div class="notice notice-info is-dismissible">
-            <p><?php _e('1.7.5.1 Update: Replaced missing "Reset" button for auto-preconnect hints (Settings -> Auto Preconnect Settings).' ); ?></p>
-        </div>
-		<?php
 	}
 
 	public function load_dashboard() {

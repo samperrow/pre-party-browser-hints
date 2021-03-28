@@ -14,7 +14,6 @@ final class AjaxOpsTest extends TestCase {
 
 		$this->eval_pprh_update_hints();
 		$this->eval_init();
-
 	}
 
 	public function eval_pprh_update_hints(): void {

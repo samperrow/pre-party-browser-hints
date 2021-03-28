@@ -70,10 +70,7 @@ class PreconnectSettings {
 						</td>
 					</tr>
 
-					<?php
-                        $this->load_reset_settings();
-                        apply_filters( 'pprh_sc_load_reset_settings', $this->on_pprh_admin );
-                    ?>
+					<?php $this->load_reset_settings(); ?>
 
 					</tbody>
 				</table>
@@ -84,7 +81,7 @@ class PreconnectSettings {
 
 	public function load_reset_settings() {
 		if ( $this->on_pprh_admin && PPRH_PRO_PLUGIN_ACTIVE ) {
-			do_action( 'pprh_sc_show_preconnect_settings');
+			do_action( 'pprh_sc_show_preconnect_settings' );
 			return true;
 		} else { ?>
             <tr>
