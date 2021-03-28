@@ -13,9 +13,9 @@ class DAOControllerTest extends TestCase {
 		$dao_ctrl = new \PPRH\DAOController();
 
 		$raw_data_1 = array(
-			'op_code'   => 0,
 			'url'       => 'test.com',
-			'hint_type' => 'dns-prefetch',
+			'op_code'   => 0,
+			'hint_type' => 'dns-prefetch'
 		);
 
 		$actual = $dao_ctrl->hint_controller( $raw_data_1 );
@@ -27,10 +27,10 @@ class DAOControllerTest extends TestCase {
 		$dao_ctrl = new \PPRH\DAOController();
 
 		$raw_data_1 = array(
-			'op_code'   => 1,
 			'url'       => 'test2.com',
-			'hint_type' => 'dns-prefetch',
-			'hint_ids'  => ''
+			'op_code'   => 1,
+			'hint_ids'  => '',
+			'hint_type' => 'dns-prefetch'
 		);
 
 		$actual = $dao_ctrl->hint_controller( $raw_data_1 );

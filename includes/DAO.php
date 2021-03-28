@@ -81,9 +81,9 @@ class DAO {
 	}
 
 
-	public function update_hint( $new_hint, $hint_id ) {
+	public function update_hint( $new_hint, $hint_ids ) {
 		global $wpdb;
-		$hint_id = (int) $hint_id;
+		$hint_id = (int) $hint_ids;
 		$current_user = wp_get_current_user()->display_name;
 
 		$wpdb->update(
@@ -130,7 +130,7 @@ class DAO {
 
 		$wpdb->query( $wpdb->prepare(
 			"UPDATE $table SET status = %s WHERE id IN ($hint_ids)",
-			$action . 'd'
+			$action
 		) );
 
 		return $this->create_db_result( $wpdb->result, $wpdb->insert_id, $wpdb->last_error, $code, null );

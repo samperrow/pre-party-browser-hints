@@ -13,11 +13,7 @@ final class AjaxOpsTest extends TestCase {
 		if ( ! WP_ADMIN ) return;
 
 		$this->eval_pprh_update_hints();
-		$this->eval_init_1();
-		$this->eval_init_2();
-		$this->eval_init_3();
-		$this->eval_init_4();
-		$this->eval_init_5();
+		$this->eval_init();
 
 	}
 
@@ -34,71 +30,52 @@ final class AjaxOpsTest extends TestCase {
 
 	// also need to verify update, delete, enable, disable, bulk operations work properly.
 
-	public function eval_init_1():void {
+	public function eval_init():void {
 		$ajax_ops = new \PPRH\AjaxOps();
 		$dao_ctrl = new \PPRH\DAOController();
 
 		$test_data_1 = TestUtils::create_hint_array( 'https://testAjaxOps1.com', 'dns-prefetch' );
 		$test_data_1['op_code'] = 0;
+		$actual_1 = $ajax_ops->init( $test_data_1 );
+		$expected_1 = $dao_ctrl->create_db_result( true, '', '', $test_data_1['op_code'], $actual_1->new_hint );
+		$this->assertEquals($expected_1, $actual_1);
 
-		$actual = $ajax_ops->init( $test_data_1 );
-		$expected = $dao_ctrl->create_db_result( true, '', '', $test_data_1['op_code'], $actual->new_hint );
-		$this->assertEquals($expected, $actual);
-	}
 
-	public function eval_init_2():void {
-		$ajax_ops = new \PPRH\AjaxOps();
-		$dao_ctrl = new \PPRH\DAOController();
+		$test_data_2 = TestUtils::create_hint_array( 'https://testAjaxOps2.com', 'dns-prefetch' );
+		$test_data_2['op_code'] = 1;
+		$actual_2 = $ajax_ops->init( $test_data_2 );
+		$expected_2 = $dao_ctrl->create_db_result( true, '', '', $test_data_2['op_code'], $actual_2->new_hint );
+		$this->assertEquals($expected_2, $actual_2);
 
-		$test_data_1 = TestUtils::create_hint_array( 'https://testAjaxOps2.com', 'dns-prefetch' );
-		$test_data_1['op_code'] = 1;
 
-		$actual = $ajax_ops->init( $test_data_1 );
-		$expected = $dao_ctrl->create_db_result( true, '', '', $test_data_1['op_code'], $actual->new_hint );
-		$this->assertEquals($expected, $actual);
-	}
-
-	public function eval_init_3():void {
-		$ajax_ops = new \PPRH\AjaxOps();
-		$dao_ctrl = new \PPRH\DAOController();
-
-		$test_data_1 = array(
+		$test_data_3 = array(
 			'op_code'  => 2,
-			'hint_ids' => ''
+			'hint_ids' => '100'
 		);
+		$actual_3 = $ajax_ops->init( $test_data_3 );
+		$expected_3 = $dao_ctrl->create_db_result( true, '100', '', $test_data_3['op_code'], null );
+		$this->assertEquals($expected_3, $actual_3);
 
-		$actual = $ajax_ops->init( $test_data_1 );
-		$expected = $dao_ctrl->create_db_result( true, '', '', $test_data_1['op_code'], null );
-		$this->assertEquals($expected, $actual);
-	}
 
-	public function eval_init_4():void {
-		$ajax_ops = new \PPRH\AjaxOps();
-		$dao_ctrl = new \PPRH\DAOController();
-
-		$test_data_1 = array(
+		$test_data_4 = array(
 			'op_code'  => 3,
 			'hint_ids' => '100'
 		);
+		$actual_4 = $ajax_ops->init( $test_data_4 );
+		$expected_4 = $dao_ctrl->create_db_result( true, $test_data_4['hint_ids'], '', $test_data_4['op_code'], null );
+		$this->assertEquals( $expected_4, $actual_4 );
 
-		$actual = $ajax_ops->init( $test_data_1 );
-		$expected = $dao_ctrl->create_db_result( true, $test_data_1['hint_ids'], '', $test_data_1['op_code'], null );
-		$this->assertEquals($expected, $actual);
-	}
 
-	public function eval_init_5():void {
-		$ajax_ops = new \PPRH\AjaxOps();
-		$dao_ctrl = new \PPRH\DAOController();
-
-		$test_data_1 = array(
+		$test_data_5 = array(
 			'op_code'  => 4,
 			'hint_ids' => '100'
 		);
-
-		$actual = $ajax_ops->init( $test_data_1 );
-		$expected = $dao_ctrl->create_db_result( true, $test_data_1['hint_ids'], '', $test_data_1['op_code'], null );
-		$this->assertEquals($expected, $actual);
+		$actual_5 = $ajax_ops->init( $test_data_5 );
+		$expected_5 = $dao_ctrl->create_db_result( true, $test_data_5['hint_ids'], '', $test_data_5['op_code'], null );
+		$this->assertEquals( $expected_5, $actual_5 );
 	}
+
+
 
 }
 

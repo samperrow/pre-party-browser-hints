@@ -14,17 +14,22 @@ final class CreateHintsTest extends TestCase {
 	public function test_create_hint_success(): void {
 		$create_hints = new \PPRH\CreateHints();
 		$test1 = TestUtils::create_hint_array( 'https://www.espn.com', 'dns-prefetch' );
-		$test2 = TestUtils::create_hint_array( 'ht<tps://www.e>\'sp"n.com', 'dns-prefetch' );
+		$test2 = TestUtils::create_hint_array( 'ht<tps://www.e>\'sp"n.com', 'dns-prefetch', 'font', 'font/woff2', 'crossorigin', '(max-width: 600px)' );
 		$test3 = TestUtils::create_hint_array( '//espn.com', 'dns-prefetch' );
+		$test_4 = TestUtils::create_hint_array( '//espn.com', '' );
 
 		$test_hint1 = $create_hints->create_hint($test1);
 		$this->assertEquals($test_hint1, $test1);
 
-		$test_hint2 = $create_hints->create_hint($test2);
-		$this->assertEquals($test_hint2, $test1);
+		$actual_hint_2 = $create_hints->create_hint($test2);
+		$test2['url'] = 'https://www.espn.com';
+		$this->assertEquals($test2, $actual_hint_2);
 
 		$test_hint3 = $create_hints->create_hint($test3);
 		$this->assertEquals($test_hint3, $test3);
+
+		$test_hint_4 = $create_hints->create_hint($test_4);
+		$this->assertEquals(false, $test_hint_4);
 	}
 
 

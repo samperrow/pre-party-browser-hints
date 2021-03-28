@@ -21,7 +21,7 @@ class CreateHints {
 			'url'          => Utils::clean_url( $raw_hint['url'] ),
 			'hint_type'    => Utils::clean_hint_type( $raw_hint['hint_type'] ),
 			'as_attr'      => ( ! empty( $raw_hint['as_attr'] )     ? Utils::clean_hint_attr( $raw_hint['as_attr'] ) : '' ),
-			'type_attr'    => ( ! empty( $raw_hint['type_attr'] )   ? Utils::clean_hint_attr( $raw_hint['as_attr'] ) : '' ),
+			'type_attr'    => ( ! empty( $raw_hint['type_attr'] )   ? Utils::clean_hint_attr( $raw_hint['type_attr'] ) : '' ),
 			'crossorigin'  => ( ! empty( $raw_hint['crossorigin'] ) ? 'crossorigin' : '' ),
 			'media'        => ( ! empty( $raw_hint['media'] )       ? Utils::clean_url( $raw_hint['media'] ) : '' ),
 		);
@@ -37,7 +37,7 @@ class CreateHints {
 			$dups = $this->handle_duplicate_hints( $pprh_hint );
 
 			if ( is_object( $dups ) ) {
-				return $dups;
+				return $dups;						// duplicate hints exist
 			}
 
 			return $pprh_hint;
