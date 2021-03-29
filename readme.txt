@@ -79,10 +79,10 @@ To activate the preloaded resource, you must call that file in HTML as you would
 
 
 == Changelog ==
-1. Most recent update: March 27, 2021.
+1. Most recent update: March 28, 2021.
 2. Version 1.7.5.3
 
-March 27, 2021:
+March 28, 2021:
 1) fixed issue updating hints.
 2) fixed issue with type_attr not saving properly.
 

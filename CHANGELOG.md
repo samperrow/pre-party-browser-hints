@@ -1,7 +1,11 @@
 == Changelog ==
 
-1. Most recent update: March 23, 2021.
-2. Version 1.7.5.1
+1. Most recent update: March 28, 2021.
+2. Version 1.7.5.3
+
+March 28, 2021:
+1) fixed issue updating hints.
+2) fixed issue with type_attr not saving properly.
 
 March 23, 2021:
 1) replaced missing "Reset" button for auto-preconnect hints.
