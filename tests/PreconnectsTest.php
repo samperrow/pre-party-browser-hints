@@ -251,8 +251,8 @@ class PreconnectsTest extends TestCase {
 
 
 		if ( \PPRH\Utils::pprh_is_plugin_active() ) {
-			$expected_arr_1['post_id'] = '2328';
-			$expected_arr_1['reset_globals'] = 'false';
+			$expected_arr_1['post_id'] = 'global';
+			$expected_arr_1['reset_globals'] = get_option( 'pprh_preconnect_pro_reset_globals' );
 			$preconnects->config['reset_data']['reset_pro'] = apply_filters( 'pprh_preconnects_do_reset_init', null );
 		}
 
@@ -365,9 +365,9 @@ class PreconnectsTest extends TestCase {
 
 
 	public function util_load_ajax_actions( $allow_unauth ) {
-		if ( ! wp_doing_ajax() ) {
-			return;
-		}
+//		if ( ! wp_doing_ajax() ) {
+//			return;
+//		}
 		$preconnects = new \PPRH\Preconnects();
 		$preconnects->load_ajax_actions( $allow_unauth );
 		$ajax_cb = 'pprh_post_domain_names';
@@ -396,10 +396,6 @@ class PreconnectsTest extends TestCase {
 
 
 	public function test_pprh_post_domain_names() {
-		if ( WP_ADMIN || ! wp_doing_ajax() ) {
-			return;
-		}
-
 		$preconnects = new \PPRH\Preconnects();
 		$expected_nonce = TestUtils::create_nonce( 'pprh_ajax_nonce' );
 
@@ -412,9 +408,13 @@ class PreconnectsTest extends TestCase {
 		$_POST['pprh_data'] = json_encode( $test_data );
 		$_REQUEST['_ajax_nonce'] = $expected_nonce;
 		$_POST['action'] = 'pprh_post_domain_names';
-
 		$actual = $preconnects->pprh_post_domain_names();
-		$this->assertEquals( true, $actual );
+
+		if ( wp_doing_ajax() ) {
+			$this->assertEquals( true, $actual );
+		} else {
+			$this->assertEquals( null, $actual );
+		}
 	}
 
 //	public function test_do_ajax_callback():void {

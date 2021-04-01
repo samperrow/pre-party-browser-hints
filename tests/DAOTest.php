@@ -41,7 +41,6 @@ final class DAOTest extends TestCase {
 	public function test_bulk_update( int $hint_ids ): void {
 		$hint_id_str = (string) $hint_ids;
 		$dao = new \PPRH\DAO();
-//		$action = 'disabled';
 		$result = $dao->bulk_update( $hint_id_str, 4 );
 		$expected = $dao->create_db_result( true, $hint_id_str, '', 4, null );
 		$this->assertEquals($expected, $result);

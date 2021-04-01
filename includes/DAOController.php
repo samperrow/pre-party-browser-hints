@@ -27,10 +27,10 @@ class DAOController extends DAO {
 			$ctrl_data['new_hint'] = $pprh_hint;
 		}
 
-		elseif ( 2 === $raw_data['op_code'] ) {
-			$concat_ids = Utils::array_into_csv( $raw_data['hint_ids'] );
-			$ctrl_data['hint_ids'] = $concat_ids;
-		}
+//		elseif ( 2 === $raw_data['op_code'] ) {
+//			$concat_ids = Utils::array_into_csv( $raw_data['hint_ids'] );
+//			$ctrl_data['hint_ids'] = $concat_ids;
+//		}
 
 		if ( defined( 'PPRH_TESTING' ) && PPRH_TESTING ) {
 			return $this->test_db_controller( $ctrl_data );
@@ -39,6 +39,12 @@ class DAOController extends DAO {
 		return $this->db_controller( $ctrl_data );
 	}
 
+	/*
+	 * create_hint = 0
+	 * update_hint = 1
+	 * delete_hint = 2
+	 * bulk_update = 3
+	 */
 	private function db_controller( $data ) {
 		$code = $data['op_code'];
 		$db_result = $this->create_db_result( false, null, '', $code, null );
@@ -60,7 +66,9 @@ class DAOController extends DAO {
 
 		elseif ( 2 === $code ) {
 			$db_result = $this->delete_hint( $data['hint_ids'] );
-		} elseif ( 3 === $code || 4 === $code ) {
+		}
+
+		elseif ( 3 === $code || 4 === $code ) {
 			$db_result = $this->bulk_update( $data['hint_ids'], $code );
 		}
 

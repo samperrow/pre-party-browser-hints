@@ -3,7 +3,7 @@
  * Plugin Name:       Pre* Party Resource Hints
  * Plugin URI:        https://wordpress.org/plugins/pre-party-browser-hints/
  * Description:       Take advantage of the browser resource hints DNS-Prefetch, Prerender, Preconnect, Prefetch, and Preload to improve page load time.
- * Version:           1.7.5.2
+ * Version:           1.7.5.3
  * Requires at least: 4.4
  * Requires PHP:      5.6.30
  * Author:            Sam Perrow
@@ -13,7 +13,7 @@
  * Text Domain:       pprh
  * Domain Path:       /languages
  *
- * last edited March 23, 2021
+ * last edited March 27, 2021
  *
  * Copyright 2016  Sam Perrow  (email : sam.perrow399@gmail.com)
  *
@@ -60,8 +60,7 @@ class Pre_Party_Browser_Hints {
 		include_once PPRH_ABS_DIR . 'includes/admin/LoadAdmin.php';
 		$load_admin = new LoadAdmin();
 		$load_admin->init();
-
-		$this->check_to_upgrade();
+		$this->check_to_upgrade( '1.7.5.3' );
 	}
 
     public function load_client() {
@@ -94,13 +93,20 @@ class Pre_Party_Browser_Hints {
 		include_once 'includes/CreateHints.php';
 	}
 
-	public function check_to_upgrade() {
-		$desired_version = '1.7.5.1';
-		$current_version = get_option( 'pprh_version' );
-
-		if ( $desired_version !== $current_version ) {
+	public function check_to_upgrade( $new_version ) {
+		if ( $new_version !== PPRH_VERSION ) {
 			$this->activate_plugin();
+			update_option( 'pprh_version', $new_version );
+			add_action( 'admin_notices', array( $this, 'upgrade_notice' ) );
 		}
+	}
+
+	public function upgrade_notice() {
+		?>
+		<div class="notice notice-info is-dismissible">
+			<p><?php _e('Upgrade Notes: Fixed issue preventing hints from being updated, and fixed problem with the \'type\' attribute not saving properly.' ); ?></p>
+		</div>
+		<?php
 	}
 
 	public function activate_plugin() {
