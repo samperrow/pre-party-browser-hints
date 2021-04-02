@@ -8,12 +8,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class LoadAdmin {
 
-	public $all_hints = array();
-
-//	public function __construct() {
-
-//        $this->init( $on_pprh_page );
-//    }
 
 	public function init() {
 		add_action( 'admin_menu', array( $this, 'load_admin_menu' ) );

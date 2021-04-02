@@ -153,7 +153,7 @@
 
 }));
 
-
-// if (! /sphacks.local/g.test(document.location.href)) {
-//     module.exports = this.pprhCreateHint;
-// }
+// for testing
+if (typeof module === "object") {
+    module.exports = this.pprhCreateHint;
+}

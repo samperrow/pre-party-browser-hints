@@ -9,6 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 class LoadClient {
 
 	public function init() {
+		do_action( 'pprh_pro_load_client' );
 		include_once PPRH_ABS_DIR . 'includes/client/SendHints.php';
 
 		$this->verify_to_load_fp();

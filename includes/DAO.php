@@ -151,6 +151,7 @@ class DAO {
 			$results = $wpdb->get_results( $query['sql'], ARRAY_A );
 		}
 
+		$results = apply_filters( 'pprh_filter_hints', $results );
 		return $results;
 	}
 

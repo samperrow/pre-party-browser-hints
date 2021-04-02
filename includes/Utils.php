@@ -92,21 +92,25 @@ class Utils {
 	public function on_pprh_page() {
 		global $pagenow;
 		$on_pprh_admin = self::on_pprh_admin();
-		$referrer = ( ! empty( $_SERVER['HTTP_REFERER'] ) ? self::clean_url( $_SERVER['HTTP_REFERER'] ) : '' );
+		$referrer = self::get_referrer();
 		$pro_on_pprh_page = apply_filters( 'pprh_utils_pro_on_pprh_page', $pagenow, $referrer );
-		return ( $on_pprh_admin || $pro_on_pprh_page);
+		return ( $on_pprh_admin || $pro_on_pprh_page );
 	}
 
 	public static function on_pprh_admin() {
 		$pprh_page = 'pprh-plugin-settings';
 
 		if ( wp_doing_ajax() ) {
-			$referrer = ( ! empty( $_SERVER['HTTP_REFERER'] ) ? self::clean_url( $_SERVER['HTTP_REFERER'] ) : '' );
+			$referrer = self::get_referrer();
 			return ( false !== stripos( $referrer, $pprh_page ) );
 		} else {
 		    global $pagenow;
 			return ( ( isset( $_GET['page'] ) && $pprh_page === $_GET['page'] ) && 'admin.php' === $pagenow );
 	    }
+	}
+
+	public static function get_referrer() {
+		return ( ! empty( $_SERVER['HTTP_REFERER'] ) ? self::clean_url( $_SERVER['HTTP_REFERER'] ) : '' );
 	}
 
 	public static function get_all_hints( $query_code ) {

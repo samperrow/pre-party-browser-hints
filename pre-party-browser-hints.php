@@ -34,12 +34,13 @@ add_action( 'wpmu_new_blog', array( $pprh_load, 'activate_plugin' ) );
 class Pre_Party_Browser_Hints {
 
 	public function __construct() {
-	    add_action( 'init', array( $this, 'load_plugin' ) );
+	    add_action( 'init', array( $this, 'load_plugin' ), 9 );
 	}
 
 	public function load_plugin() {
 		$this->load_common_files();
 		$this->create_constants();
+		do_action( 'pprh_load_plugin' );
 
 		if ( ! function_exists( 'wp_doing_ajax' ) ) {
 			apply_filters( 'wp_doing_ajax', defined( 'DOING_AJAX' ) && DOING_AJAX );
