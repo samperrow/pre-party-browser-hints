@@ -78,6 +78,7 @@ class Preconnects {
 		return ( ! empty( $reset_pro ) && $reset_pro['perform_reset'] );
 	}
 
+	// both admin and client
 	// tested
 	public function load_ajax_actions( $allow_unauth ) {
 		$ajax_cb = 'pprh_post_domain_names';

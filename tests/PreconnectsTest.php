@@ -5,6 +5,14 @@ use PHPUnit\Framework\TestCase;
 
 class PreconnectsTest extends TestCase {
 
+	public function test_begin() {
+		if ( WP_ADMIN ) return;
+
+		$this->eval_create_js_object();
+		$this->eval_create_js_object_pro();
+
+	}
+
 	public function test_constructor():void {
 		$preconnects = new \PPRH\Preconnects();
 		$loaded = has_action( 'wp_loaded', array($preconnects, 'init_controller') );
@@ -68,7 +76,7 @@ class PreconnectsTest extends TestCase {
 //	}
 
 	public function test_entire_preconnect_class_pro(): void {
-		if ( ! \PPRH\Utils::pprh_is_plugin_active() ) {
+		if ( ! PPRH_PRO_PLUGIN_ACTIVE ) {
 			return;
 		}
 
@@ -236,9 +244,7 @@ class PreconnectsTest extends TestCase {
 //		$this->assertEquals( $expected_scripts, $actual_scripts);
 //	}
 
-	public function test_create_js_object() {
-		if ( WP_ADMIN ) return;
-
+	public function eval_create_js_object() {
 		$preconnects = new \PPRH\Preconnects();
 
 		$expected_arr_1 = array(
@@ -249,20 +255,36 @@ class PreconnectsTest extends TestCase {
 			'hint_type'  => 'preconnect'
 		);
 
+		$actual_object_1 = $preconnects->create_js_object();
+		$this->assertEquals( $expected_arr_1, $actual_object_1 );
+	}
 
-		if ( \PPRH\Utils::pprh_is_plugin_active() ) {
-			$expected_arr_1['post_id'] = 'global';
-			$expected_arr_1['reset_globals'] = get_option( 'pprh_preconnect_pro_reset_globals' );
-			$preconnects->config['reset_data']['reset_pro'] = apply_filters( 'pprh_preconnects_do_reset_init', null );
+	public function eval_create_js_object_pro() {
+		if ( ! PPRH_PRO_PLUGIN_ACTIVE ) {
+			return;
 		}
+
+		$preconnects = new \PPRH\Preconnects();
+		$reset_globals = get_option( 'pprh_preconnect_pro_reset_globals' );
+
+		$expected_arr_1 = array(
+			'hints'      => array(),
+			'nonce'      => wp_create_nonce( 'pprh_ajax_nonce' ),
+			'admin_url'  => admin_url() . 'admin-ajax.php',
+			'start_time' => time(),
+			'hint_type'  => 'preconnect',
+			'post_id'    => 'global',
+			'reset_globals' => $reset_globals
+		);
+
+		$preconnects->config['reset_data']['reset_pro'] = array(
+			'post_id'       => 'global',
+			'reset_globals' => $reset_globals
+		);
 
 		$actual_object_1 = $preconnects->create_js_object();
 		$this->assertEquals( $expected_arr_1, $actual_object_1 );
 
-
-		$preconnects->config['reset_data']['reset_pro'] = array(
-			'post_id' => '100',
-		);
 
 		$expected_object_2 = apply_filters( 'pprh_preconnects_append_hint_object', $expected_arr_1, $preconnects->config['reset_data']['reset_pro'] );
 		$actual_object_2 = $preconnects->create_js_object();

@@ -69,7 +69,7 @@ class DAO {
 			)
 		);
 
-		$args = apply_filters( 'pprh_ch_insert_hint_schema', $args, $new_hint );
+		$args = apply_filters( 'pprh_dao_insert_hint_schema', $args, $new_hint );
 
 		$wpdb->insert(
 			PPRH_DB_TABLE,
@@ -137,12 +137,9 @@ class DAO {
 	}
 
 
-	public function get_all_hints( $query_code = null ) {
+	public function get_pprh_hints( $query_code = null ) {
 		global $wpdb;
-		$table = PPRH_DB_TABLE;
-		$sql = "SELECT * FROM $table";
-
-		$query = $this->parse_query_code( $sql, $query_code );
+		$query = $this->parse_query_code( $query_code );
 
 		if ( ! empty( $query['args'] ) ) {
 			$prepared_stmt = $wpdb->prepare( $query['sql'], $query['args'] );
@@ -151,11 +148,12 @@ class DAO {
 			$results = $wpdb->get_results( $query['sql'], ARRAY_A );
 		}
 
-		$results = apply_filters( 'pprh_filter_hints', $results );
-		return $results;
+		return apply_filters( 'pprh_filter_hints', $results );
 	}
 
-	private function parse_query_code( $sql, $query_code ) {
+	private function parse_query_code( $query_code ) {
+		$table = PPRH_DB_TABLE;
+		$sql = "SELECT * FROM $table";
 		$query = array( 'sql' => $sql );
 
 		if ( 1 === $query_code ) {
@@ -164,8 +162,13 @@ class DAO {
 		} elseif ( 2 === $query_code ) {
 			$query['sql'] .= ' ORDER BY ' . esc_sql( $_REQUEST['orderby'] );
 			$query['sql'] .= ! empty( $_REQUEST['order'] ) ? ' ' . esc_sql( $_REQUEST['order'] ) : ' ASC';
-		} elseif ( 3 === $query_code ) {
-			$query['sql'] .= ' ORDER BY url ASC';
+		}
+		elseif ( 3 === $query_code ) {
+			if ( PPRH_PRO_PLUGIN_ACTIVE ) {
+				$query['sql'] = apply_filters( 'pprh_append_string', $query['sql'], ' ORDER BY post_id DESC, url ASC' );
+			} else {
+				$query['sql'] .= ' ORDER BY url ASC';
+			}
 		}
 
 		return $query;

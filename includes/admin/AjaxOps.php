@@ -33,8 +33,7 @@ class AjaxOps {
 			$db_result = $this->handle_action( $pprh_data );
 
 			if ( is_object( $db_result ) ) {
-				$on_pprh_admin = Utils::on_pprh_admin();
-				$display_hints = new DisplayHints( $on_pprh_admin );
+				$display_hints = new DisplayHints();
 				$json = $display_hints->ajax_response( $db_result );
 
 				if ( $this->testing ) {

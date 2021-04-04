@@ -9,6 +9,27 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 final class DAOTest extends TestCase {
 
+	public function test_create_db_result():void {
+		$dao = new \PPRH\DAO();
+		$result = true;
+		$new_hint = null;
+
+		$expected = (object) array(
+			'new_hint'  => $new_hint,
+			'db_result' => array(
+				'msg'        => 'Resource hint created successfully.',
+				'status'     => ( $result ) ? 'success' : 'error',
+				'success'    => $result,
+				'hint_id'    => '',
+				'last_error' => '',
+			)
+		);
+
+		$test1 = $dao->create_db_result( true, '', '', 0, null );
+
+		$this->assertEquals( $expected, $test1 );
+	}
+
 	public function test_create_hint(): int {
 		$dao = new PPRH\DAO();
 		$create_hints = new \PPRH\CreateHints();

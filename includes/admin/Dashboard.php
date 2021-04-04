@@ -15,13 +15,13 @@ class Dashboard {
 	}
 
 	public function load_plugin_admin_files() {
-		include_once PPRH_ABS_DIR . 'includes/admin/views/InsertHints.php';
-		include_once PPRH_ABS_DIR . 'includes/admin/views/Settings.php';
-		include_once PPRH_ABS_DIR . 'includes/admin/views/settings/GeneralSettings.php';
-		include_once PPRH_ABS_DIR . 'includes/admin/views/settings/PreconnectSettings.php';
-		include_once PPRH_ABS_DIR . 'includes/admin/views/settings/PrefetchSettings.php';
-		include_once PPRH_ABS_DIR . 'includes/admin/views/HintInfo.php';
-		include_once PPRH_ABS_DIR . 'includes/admin/views/Upgrade.php';
+		include_once 'views/InsertHints.php';
+		include_once 'views/Settings.php';
+		include_once 'views/settings/GeneralSettings.php';
+		include_once 'views/settings/PreconnectSettings.php';
+		include_once 'views/settings/PrefetchSettings.php';
+		include_once 'views/HintInfo.php';
+		include_once 'views/Upgrade.php';
 		do_action( 'pprh_la_load_view_files' );
 	}
 
@@ -38,7 +38,7 @@ class Dashboard {
 		$this->show_admin_tabs();
 
 		echo '<div class="pprh-box">';
-		new InsertHints( $this->on_pprh_admin );
+		new InsertHints();
 		new Settings( $this->on_pprh_admin );
 		new HintInfo();
 		new Upgrade();
