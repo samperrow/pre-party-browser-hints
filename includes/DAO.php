@@ -56,7 +56,7 @@ class DAO {
 		$current_user = wp_get_current_user()->display_name;
 
 		$args = array(
-			'types'   => array( '%s', '%s', '%s', '%s', '%s', '%s', '%s' ),
+			'types'   => array( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' ),
 			'columns' => array(
 				'url'          => $new_hint['url'],
 				'hint_type'    => $new_hint['hint_type'],

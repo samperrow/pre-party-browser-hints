@@ -144,19 +144,20 @@
 	function configForHint(table) {
 		var elems = getRowElems(table);
 		var rawHintType = elems.hint_type;
+		var hintTypeVal = rawHintType.find('input:checked').val();
 
 		var rawData = {
 			url:         elems.url.val(),
-			hint_type:   rawHintType.find('input:checked').val(),
+			hint_type:   hintTypeVal,
 			media:       elems.media.val(),
 			as_attr:     elems.as_attr.val(),
 			type_attr:   elems.type_attr.val(),
 			crossorigin: elems.crossorigin.is(':checked'),
 		}
 
-		if (rawData.url.length === 0 || !rawHintType) {
+		if (rawData.url.length === 0 || typeof hintTypeVal === "undefined") {
 			window.alert('Please enter a proper URL and hint type.');
-		} else if (rawHintType === 'preload' && !rawData.as_attr) {
+		} else if (hintTypeVal === 'preload' && !rawData.as_attr) {
 			window.alert("You must specify an 'as' attribute when using preload hints.");
 		} else {
 			return rawData;

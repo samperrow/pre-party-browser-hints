@@ -34,7 +34,7 @@ add_action( 'wpmu_new_blog', array( $pprh_load, 'activate_plugin' ) );
 class Pre_Party_Browser_Hints {
 
 	public function __construct() {
-	    add_action( 'init', array( $this, 'load_plugin' ), 9 );
+	    add_action( 'init', array( $this, 'load_plugin' ) );
 	}
 
 	public function load_plugin() {

@@ -126,7 +126,7 @@ final class CreateHintsTest extends TestCase {
 	public function test_resolve_duplicate_hints() {
 		$create_hints = new \PPRH\CreateHints();
 		$hint_1 = TestUtils::create_hint_array( 'asdf.com', 'dns-prefetch', '', '', '', 'screen' );
-		$actual_1 = $create_hints->resolve_duplicate_hints( $hint_1 );
+		$actual_1 = $create_hints->resolve_duplicate_hints( $hint_1, array() );
 		$this->assertEquals( false, $actual_1 );
 	}
 
