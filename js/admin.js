@@ -20,9 +20,24 @@
 	// 	}
 	// }
 
+	asdf();
+	function asdf() {
+		let rows = jQuery('tr.pprh-row.hint');
+
+		$.each(rows, function() {
+			// console.log($(this).attr('id'))
+			let id = $(this).attr('id').split('-')[2];
+			console.log(id);
+			putHintInfoIntoElems(id);
+			// return false;
+		});
+
+	}
 
 	addEventListeners();
 	toggleDivs();
+
+
 
 	function toggleDivs() {
 		var tabs = $('a.nav-tab');
@@ -100,29 +115,59 @@
 		});
 	}
 
+
+
+
 	function toggleDisallowedElems() {
-		var hintTypeElems = $('input[name="hint_type"]');
+		let $ = jQuery;
+		let hintTypeRows = $('tr.pprhHintTypes'); // .first().find('input[name="hint_type"]')
+		// console.log(hintTypeRows.length)
 
-		$.each(hintTypeElems, function(item) {
-			$(this).on('click', function() {
-				var hintType = $(this).val();
-				var elem = $( $(this).parentsUntil('table')[4] );
-				var xoriginElem = elem.find('input.pprh_crossorigin').first();
-				var mediaElem = elem.find('input.pprh_media').first();
+		$.each(hintTypeRows, function() {
 
-				if ('preconnect' === hintType) {
-					xoriginElem.prop('disabled', false);
-					mediaElem.prop('disabled', true);
-				} else if ('preload' === hintType) {
-					xoriginElem.prop('disabled', false);
-					mediaElem.prop('disabled', false);
-				} else {
-					xoriginElem.prop('disabled', true);
-					mediaElem.prop('disabled', true);
-				}
+			// let hintTypeRadio = $(this).find('td > div > label > input[name="hint_type"]');
+			let hintTypeRadio = $(this).find('td > div > label > input:checked');
+			// console.log(hintTypeRadio.length)
 
+			$.each(hintTypeRadio, function() {
+				console.log($(this).val());
+				// if ( hintTypeRadio.is(':checked')) {
+				// 	console.log( $(this).val() );
+				// }
 			});
+
 		});
+
+
+		// var hintTypeElems = $('input[name="hint_type"]');
+
+		// $.each(hintTypeElems, function(item) {
+		// 	tog( $(this) );
+
+			// $(this).on('click', function() {
+			// 	tog( $(this) );
+			// });
+		// });
+	}
+
+	function tog(ele) {
+		// console.log(ele)
+		var hintType = ele.val();
+		var elem = $( ele.parentsUntil('table')[4] );
+		var xoriginElem = elem.find('input.pprh_crossorigin').first();
+		var mediaElem = elem.find('input.pprh_media').first();
+
+		console.log(hintType)
+		if ('preconnect' === hintType) {
+			xoriginElem.prop('disabled', false);
+			mediaElem.prop('disabled', true);
+		} else if ('preload' === hintType) {
+			xoriginElem.prop('disabled', false);
+			mediaElem.prop('disabled', false);
+		} else {
+			xoriginElem.prop('disabled', true);
+			mediaElem.prop('disabled', true);
+		}
 	}
 
 	function prepareHint(tableId, operation) {
@@ -308,11 +353,13 @@
 		});
 	}
 
+
+
 	function putHintInfoIntoElems(hintID) {
-		var json = $('input.pprh-hint-storage.' + hintID).val();
-		var data = JSON.parse(json);
-		var table = $('table#pprh-edit-' + hintID);
-		var elems = getRowElems(table);
+		let json = $('input.pprh-hint-storage.' + hintID).val();
+		let data = JSON.parse(json);
+		let table = $('table#pprh-edit-' + hintID);
+		let elems = getRowElems(table);
 
 		elems.url.val(data.url);
 		elems.hint_type.find('input[value="' + data.hint_type + '"]').attr('checked', true);
