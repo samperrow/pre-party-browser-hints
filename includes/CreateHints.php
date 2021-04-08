@@ -32,13 +32,17 @@ class CreateHints {
 	public function new_hint_controller( $raw_hint ) {
 		$dao = new DAO();
 		$candidate_hint = $this->create_hint( $raw_hint );
-		$all_hints = \PPRH\Utils::get_pprh_hints(0);
+		$op_code = $raw_hint['op_code'];
 
-		if ( count( $all_hints ) > 0 ) {
-			$duplicate_hint_warning = $this->handle_duplicate_hints( $all_hints, $candidate_hint );
+		if ( $op_code === 0 ) {												// only need to check for duplicates when creating a hint.
+			$all_hints = \PPRH\Utils::get_pprh_hints(0);
 
-			if ( is_object( $duplicate_hint_warning ) ) {
-				return $duplicate_hint_warning;						// duplicate hints exist
+			if ( count( $all_hints ) > 0 ) {
+				$duplicate_hint_warning = $this->handle_duplicate_hints( $all_hints, $candidate_hint );
+
+				if ( is_object( $duplicate_hint_warning ) ) {
+					return $duplicate_hint_warning;						// duplicate hints exist
+				}
 			}
 		}
 

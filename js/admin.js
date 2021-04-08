@@ -114,7 +114,7 @@
 					xoriginElem.prop('disabled', false);
 					mediaElem.prop('disabled', true);
 				} else if ('preload' === hintType) {
-					xoriginElem.prop('disabled', true);
+					xoriginElem.prop('disabled', false);
 					mediaElem.prop('disabled', false);
 				} else {
 					xoriginElem.prop('disabled', true);

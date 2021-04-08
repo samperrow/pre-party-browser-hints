@@ -13,10 +13,13 @@ final class CreateHintsTest extends TestCase {
 
 	public function test_create_hint(): void {
 		$create_hints = new \PPRH\CreateHints();
+		$url_1 = 'https://sphacks.local/wp-content/themes/sphacks/images/icons/newspaper.woff?19';
+
 		$test1 = TestUtils::create_hint_array( 'https://www.espn.com', 'dns-prefetch' );
 		$test2 = TestUtils::create_hint_array( 'ht<tps://www.e>\'sp"n.com', 'dns-prefetch', 'font', 'font/woff2', 'crossorigin', '(max-width: 600px)' );
 		$test3 = TestUtils::create_hint_array( '//espn.com', 'dns-prefetch' );
 		$test_4 = TestUtils::create_hint_array( '//espn.com', '' );
+		$test_5 = TestUtils::create_hint_array( $url_1, 'preload', 'font', 'font/woff', 'crossorigin', '' );
 
 		$test_hint1 = $create_hints->create_hint($test1);
 		$this->assertEquals($test_hint1, $test1);
@@ -34,6 +37,9 @@ final class CreateHintsTest extends TestCase {
 		$data1 = TestUtils::create_hint_array( '', 'dns-prefetch' );
 		$bool1 = $create_hints->create_hint($data1);
 		$this->assertEquals(false, $bool1);
+
+		$actual_6 = $create_hints->create_hint( $test_5 );
+		$this->assertEquals( $test_5, $actual_6);
 	}
 
 
@@ -42,10 +48,16 @@ final class CreateHintsTest extends TestCase {
 		$create_hints = new \PPRH\CreateHints();
 
 		$dummy_hint = TestUtils::create_hint_array( 'https://free-hint.com', 'dns-prefetch', '', '', '', 'screen' );
+		$dummy_hint['op_code'] = 0;
 		$actual = $create_hints->create_hint( $dummy_hint );
-
 		$expected = $create_hints->new_hint_controller( $dummy_hint );
 		$this->assertEquals( $expected, $actual );
+
+
+		$dummy_hint['op_code'] = 1;
+		$actual_2 = $create_hints->create_hint( $dummy_hint );
+		$expected_2 = $create_hints->new_hint_controller( $dummy_hint );
+		$this->assertEquals( $expected_2, $actual_2 );
 	}
 
 
