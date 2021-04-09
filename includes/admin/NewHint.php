@@ -41,11 +41,13 @@ class NewHint {
 	}
 
 	public function insert_table_body() {
+	    echo '<form method="post">';
 		$this->enter_url();
 		$this->show_pp_radio_options();
 		$this->set_attrs();
 		$this->set_media_attr();
 		do_action( 'pprh_nh_get_home_page_options' );
+		echo '</form>';
 	}
 
 	protected function enter_url() {
@@ -77,7 +79,7 @@ class NewHint {
 					</span>
                     <span><?php esc_html_e( 'DNS-Prefetch' ); ?></span>
                     <label>
-                        <input name="hint_type" type="radio" value="dns-prefetch"/>
+                        <input name="hint_type" class="hint_type" type="radio" value="dns-prefetch"/>
                     </label>
                 </div>
             </td>
@@ -89,7 +91,7 @@ class NewHint {
 					</span>
                     <span><?php esc_html_e( 'Prefetch' ); ?></span>
                     <label>
-                        <input name="hint_type" type="radio" value="prefetch"/>
+                        <input name="hint_type" class="hint_type" type="radio" value="prefetch"/>
                     </label>
                 </div>
             </td>
@@ -101,7 +103,7 @@ class NewHint {
 					</span>
                     <span><?php esc_html_e( 'Prerender' ); ?></span>
                     <label>
-                        <input name="hint_type" type="radio" value="prerender"/>
+                        <input name="hint_type" class="hint_type" type="radio" value="prerender"/>
                     </label>
                 </div>
             </td>
@@ -113,7 +115,7 @@ class NewHint {
 					</span>
                     <span><?php esc_html_e( 'Preconnect' ); ?></span>
                     <label>
-                        <input name="hint_type" type="radio" value="preconnect"/>
+                        <input name="hint_type" class="hint_type" type="radio" value="preconnect"/>
                     </label>
                 </div>
             </td>
@@ -125,7 +127,7 @@ class NewHint {
 					</span>
                     <span><?php esc_html_e( 'Preload' ); ?></span>
                     <label>
-                        <input name="hint_type" type="radio" value="preload"/>
+                        <input name="hint_type" class="hint_type" type="radio" value="preload"/>
                     </label>
                 </div>
             </td>

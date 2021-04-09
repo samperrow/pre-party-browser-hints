@@ -3,45 +3,21 @@
 }(this, function() {
 
 	'use strict';
-	var $ = jQuery;
-	var currentURL = document.location.href;
-	var adminNoticeElem = document.getElementById('pprhNotice');
-	var checkoutModal = $('input#pprhOpenCheckoutModal');
+	let $ = jQuery;
+	const currentURL = document.location.href;
+	const adminNoticeElem = document.getElementById('pprhNotice');
 
 	if (/pprh-plugin-settings/.test(currentURL)) {
-		var emailSubmitBtn = document.getElementById('pprhSubmit');
+		let emailSubmitBtn = document.getElementById('pprhSubmit');
 		if (null !== emailSubmitBtn) {
 			emailSubmitBtn.addEventListener("click", emailValidate);
 		}
 	}
-	// else if ( /post\.php/.test(currentURL))  {
-	// 	if (typeof checkoutModal === "object") {
-	// 		checkoutModal.on('click', openCheckoutModal);
-	// 	}
-	// }
 
-	asdf();
-	function asdf() {
-		let rows = jQuery('tr.pprh-row.hint');
-
-		$.each(rows, function() {
-			// console.log($(this).attr('id'))
-			let id = $(this).attr('id').split('-')[2];
-			console.log(id);
-			putHintInfoIntoElems(id);
-			// return false;
-		});
-
-	}
-
-	addEventListeners();
 	toggleDivs();
-
-
-
 	function toggleDivs() {
-		var tabs = $('a.nav-tab');
-		var divs = $('div.pprh-content');
+		let tabs = $('a.nav-tab');
+		let divs = $('div.pprh-content');
 
 		tabs.first().toggleClass('nav-tab-active');
 		$("#pprh-insert-hints").toggleClass('active');
@@ -52,7 +28,7 @@
 
 		$.each(tabs, function () {
 			$(this).on('click', function (e) {
-				var className = e.currentTarget.classList[1];
+				let className = e.currentTarget.classList[1];
 				divs.removeClass('active');
 				$('div#pprh-' + className).addClass('active');
 				e.preventDefault();
@@ -65,8 +41,8 @@
 
 	$('input.pprh-reset').each(function () {
 		$(this).on('click', function (e) {
-			var text = e.target.getAttribute('data-text');
-			var res = confirm('Are you sure you want to ' + text);
+			let text = e.target.getAttribute('data-text');
+			let res = confirm('Are you sure you want to ' + text);
 
 			if (!res) {
 				e.preventDefault();
@@ -76,9 +52,9 @@
 
 	// used on all admin and modal screens w/ contact button.
 	function emailValidate(e) {
-		var emailAddr = document.getElementById("pprhEmailAddress");
-		var emailMsg = document.getElementById("pprhEmailText");
-		var emailformat = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/i;
+		let emailAddr = document.getElementById("pprhEmailAddress");
+		let emailMsg = document.getElementById("pprhEmailText");
+		let emailformat = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/i;
 
 		if (!emailformat.test(emailAddr.value) || emailMsg.value === "") {
 			e.preventDefault();
@@ -86,112 +62,14 @@
 		}
 	}
 
-	// update the hint table via ajax.
-	function updateTable(response) {
-		var table = $('table.pprh-post-table').first();
-		var table2 = document.getElementsByClassName('pprh-post-table')[0];
-		var tbody = table.find('tbody');
 
-		tbody.html('');
-
-		if (response.rows.length) {
-			tbody.html(response.rows);
-		}
-
-		if (response.pagination.bottom.length) {
-			$('.tablenav.top .tablenav-pages').html($(response.pagination.top).html());
-		}
-
-		if (response.pagination.top.length) {
-			$('.tablenav.bottom .tablenav-pages').html($(response.pagination.bottom).html());
-		}
-
-		if (response.total_pages === 1) {
-			$('div.tablenav, div.alignleft.actions.bulkactions').removeClass('no-pages');
-		}
-
-		table2.querySelectorAll(':checked').forEach(function (item) {
-			return item.checked = false;
-		});
-	}
-
-
-
-
-	function toggleDisallowedElems() {
-		let $ = jQuery;
-		let hintTypeRows = $('tr.pprhHintTypes'); // .first().find('input[name="hint_type"]')
-		// console.log(hintTypeRows.length)
-
-		$.each(hintTypeRows, function() {
-
-			// let hintTypeRadio = $(this).find('td > div > label > input[name="hint_type"]');
-			let hintTypeRadio = $(this).find('td > div > label > input:checked');
-			// console.log(hintTypeRadio.length)
-
-			$.each(hintTypeRadio, function() {
-				console.log($(this).val());
-				// if ( hintTypeRadio.is(':checked')) {
-				// 	console.log( $(this).val() );
-				// }
-			});
-
-		});
-
-
-		// var hintTypeElems = $('input[name="hint_type"]');
-
-		// $.each(hintTypeElems, function(item) {
-		// 	tog( $(this) );
-
-			// $(this).on('click', function() {
-			// 	tog( $(this) );
-			// });
-		// });
-	}
-
-	function tog(ele) {
-		// console.log(ele)
-		var hintType = ele.val();
-		var elem = $( ele.parentsUntil('table')[4] );
-		var xoriginElem = elem.find('input.pprh_crossorigin').first();
-		var mediaElem = elem.find('input.pprh_media').first();
-
-		console.log(hintType)
-		if ('preconnect' === hintType) {
-			xoriginElem.prop('disabled', false);
-			mediaElem.prop('disabled', true);
-		} else if ('preload' === hintType) {
-			xoriginElem.prop('disabled', false);
-			mediaElem.prop('disabled', false);
-		} else {
-			xoriginElem.prop('disabled', true);
-			mediaElem.prop('disabled', true);
-		}
-	}
-
-	function prepareHint(tableId, operation) {
-		var table = jQuery('#' + tableId);
-		var rawData = configForHint(table);
-
-		if (typeof rawData === "object") {
-			var hint = pprhCreateHint.CreateHint(rawData);
-			hint.op_code = operation;
-			hint.hint_ids = (operation === 1) ? tableId.split('pprh-edit-')[1] : [];
-			return createAjaxReq(hint, 'pprh_update_hints', pprh_data.nonce);
-		}
-	}
-
-	$('input#pprhSubmitHints').on("click", function (e) {
-		prepareHint('pprh-enter-data', 0);
-	});
 
 	function configForHint(table) {
-		var elems = getRowElems(table);
-		var rawHintType = elems.hint_type;
-		var hintTypeVal = rawHintType.find('input:checked').val();
+		let elems = getRowElems(table);
+		let rawHintType = elems.hint_type;
+		let hintTypeVal = rawHintType.find('input:checked').val();
 
-		var rawData = {
+		return {
 			url:         elems.url.val(),
 			hint_type:   hintTypeVal,
 			media:       elems.media.val(),
@@ -199,18 +77,44 @@
 			type_attr:   elems.type_attr.val(),
 			crossorigin: elems.crossorigin.is(':checked'),
 		}
+	}
 
-		if (rawData.url.length === 0 || typeof hintTypeVal === "undefined") {
-			window.alert('Please enter a proper URL and hint type.');
-		} else if (hintTypeVal === 'preload' && !rawData.as_attr) {
-			window.alert("You must specify an 'as' attribute when using preload hints.");
-		} else {
-			return rawData;
+	function prepareHint(tableId, operation) {
+		let table = $('#' + tableId);
+		let rawHint = configForHint(table);
+
+		if (typeof rawHint === "object") {
+			let hint = pprhCreateHint.CreateHint(rawHint);
+			let isHintValid = verifyHint(hint);
+
+			if (isHintValid) {
+				hint.op_code = operation;
+				hint.hint_ids = (operation === 1) ? tableId.split('pprh-edit-')[1] : [];
+				return createAjaxReq(hint, 'pprh_update_hints', pprh_data.nonce);
+			} else {
+				alert('Invalid hint.');
+			}
 		}
 	}
 
+	$('input#pprhSubmitHints').on("click", function (e) {
+		prepareHint('pprh-enter-data', 0);
+	});
+
+
+
+	function verifyHint(hint) {
+		if (hint.url.length === 0 || typeof hint.hint_type === "undefined") {
+			window.alert('Please enter a proper URL and hint type.');
+		} else if (hint.hint_type === 'preload' && !hint.as_attr) {
+			window.alert("You must specify an 'as' attribute when using preload hints.");
+		}
+
+		return true;
+	}
+
 	function getRowElems(table) {
-		var tbody = table.find('tbody');
+		let tbody = table.find('tbody');
 		return {
 			url:         tbody.find('input.pprh_url'),
 			hint_type:   tbody.find('tr.pprhHintTypes'),
@@ -222,84 +126,127 @@
 	}
 
 
-	function getUrlValue() {
-		var val = '';
-
-		if (currentURL.indexOf(this) > -1) {
-			try {
-				val = new URL(currentURL).searchParams.get(this);
-			} catch (e) {
-				val = currentURL.split(this + '=')[1].match(/^\d/)[0];
-			}
-		}
-
-		return val;
-	}
 
 
-	function addDeleteHintListener() {
-		$('span.delete').on('click', function (e) {
-			e.preventDefault();
 
-			if (confirm('Are you sure you want to delete this hint?')) {
-				var hintID = e.target.id.split('pprh-delete-hint-')[1];
-				return createAjaxReq({
-					hint_ids: [hintID],
-					op_code: 2,
-				});
-			}
-		});
-	}
 
-	function createAjaxReq(dataObj, callback, nonce) {
-		var xhr = new XMLHttpRequest();
-		var url = pprh_data.admin_url + 'admin-ajax.php';
-		xhr.open('POST', url, true);
-		xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
-		var json = JSON.stringify(dataObj);
-		var paginationPage = getUrlValue.call('paged');
 
-		// for testing
-		if ( ! callback ) callback = 'pprh_update_hints';
-		if ( ! nonce ) nonce = pprh_data.nonce;
 
-		var target = 'action=' + callback + '&pprh_data=' + json + '&nonce=' + nonce;
 
-		if (paginationPage.length > 0) {
-			target += '&paged=' + paginationPage;
-		}
-
-		xhr.send(target);
-
-		xhr.onreadystatechange = function () {
-			if (xhr.readyState === 4 && xhr.status === 200) {
-				if (xhr.response.length > 0) {
-					var response = JSON.parse(xhr.response);
-					clearHintTable();
-
-					if ( typeof response.result === "object") {
-						if (response.result.db_result) {
-							updateAdminNotice(response.result.db_result);
-							updateTable(response);
-							addEventListeners();
-							return;
-						}
-					} else {
-						console.error(response);
-					}
-				}
-			}
-		};
-	}
-
+	addEventListeners();
 	function addEventListeners() {
+		getHintIdsAndInsertData();
 		addDeleteHintListener();
 		addEditRowEventListener();
-		toggleDisallowedElems();
+		toggleElemIterator();
+
+		function getHintIdsAndInsertData() {
+			let editRows = $('tr.pprh-row.edit');
+
+			$.each(editRows, function() {
+				let id = $(this).attr('class').split(' ')[2];
+				putHintInfoIntoElems(id);
+			});
+		}
+
+		function addDeleteHintListener() {
+			$('span.delete').on('click', function (e) {
+				e.preventDefault();
+
+				if (confirm('Are you sure you want to delete this hint?')) {
+					let hintID = e.target.id.split('pprh-delete-hint-')[1];
+					return createAjaxReq({
+						hint_ids: [hintID],
+						op_code: 2,
+					});
+				}
+			});
+		}
+
+		function addEditRowEventListener() {
+			$('span.edit').on('click', function () {
+				let hintID = $(this).find('a').attr('id').split('pprh-edit-hint-')[1];
+				let allRows = $('tr.pprh-row');
+				allRows.removeClass('active');
+
+				let rows = $('tr.pprh-row.' + hintID);
+				rows.addClass('active');
+				putHintInfoIntoElems(hintID);
+
+				rows.find('button.button.cancel').first().on('click', function() {
+					rows.removeClass('active');
+				});
+
+				$('tr.pprh-row.edit.' + hintID).find('button.pprh-update').on('click', function(e) {
+					prepareHint('pprh-edit-' + hintID, 1);
+				});
+			});
+		}
+
+		function toggleElemIterator() {
+			let hintTypeRows = $('tr.pprhHintTypes');
+
+			$.each(hintTypeRows, function() {
+				let parentTbody = $(this).parent('tbody');
+				let hintTypeRadio = $(this).find('input.hint_type');
+
+				$.each(hintTypeRadio, function() {
+
+					$(this).on('click', function() {
+						toggleBasedOnHintType(parentTbody, $(this));
+					});
+
+					if ( $(this).is(':checked')) {
+						toggleBasedOnHintType( parentTbody, $(this) );
+					}
+				});
+			});
+		}
+
+		function toggleBasedOnHintType(parentTbody, elem) {
+			let hintType = elem.val();
+			let xoriginElem = parentTbody.find('input.pprh_crossorigin').first();
+			let mediaElem = parentTbody.find('input.pprh_media').first();
+
+			if ('preconnect' === hintType) {
+				xoriginElem.prop('disabled', false);
+				mediaElem.prop('disabled', true);
+				mediaElem.val('');
+			} else if ('preload' === hintType) {
+				xoriginElem.prop('disabled', false);
+				mediaElem.prop('disabled', false);
+			} else {
+				xoriginElem.prop('checked', false);
+				xoriginElem.prop('disabled', true);
+				mediaElem.prop('disabled', true);
+				mediaElem.val('');
+			}
+		}
+
+		function putHintInfoIntoElems(hintID) {
+			let json = $('input.pprh-hint-storage.' + hintID).val();
+			let data = JSON.parse(json);
+			let table = $('table#pprh-edit-' + hintID);
+			let elems = getRowElems(table);
+
+			elems.url.val(data.url);
+
+			let hintTypeElem = elems.hint_type.find('input[value="' + data.hint_type + '"]');
+			hintTypeElem.attr('checked', true);
+
+			if (data['crossorigin']) {
+				elems.crossorigin.attr('checked', true);
+			}
+
+			elems.as_attr.val(data['as_attr'] ? data['as_attr'] : '');
+			elems.type_attr.val(data['type_attr'] ? data['type_attr'] : '');
+			elems.media.val(data['media'] ? data['media'] : '');
+		}
 	}
 
+
 	function clearHintTable() {
-		var tbody = document.getElementById('pprh-enter-data').getElementsByTagName('tbody')[0];
+		let tbody = document.getElementById('pprh-enter-data').getElementsByTagName('tbody')[0];
 
 		tbody.querySelectorAll('select, input').forEach(function (elem) {
 			return elem[(/radio|checkbox/.test(elem.type)) ? 'checked' : 'value'] = '';
@@ -307,8 +254,8 @@
 	}
 
 	function verifyResponse(response) {
-		var status = (response.status) ? response.status : 'error';
-		var msg = (response.msg) ? response.msg : 'Error updating hint. Please contact support or try again later.';
+		let status = (response.status) ? response.status : 'error';
+		let msg = (response.msg) ? response.msg : 'Error updating hint. Please contact support or try again later.';
 
 		if ( response.last_error && response.last_error !== '' && ! response.success ) {
 			msg = response.last_error;
@@ -333,55 +280,110 @@
 		}, 10000);
 	}
 
-	function addEditRowEventListener() {
-		$('span.edit').on('click', function () {
-			var hintID = $(this).find('a').attr('id').split('pprh-edit-hint-')[1];
-			var allRows = $('tr.pprh-row');
-			allRows.removeClass('active');
-
-			var rows = $('tr.pprh-row.' + hintID);
-			rows.addClass('active');
-			putHintInfoIntoElems(hintID);
-
-			rows.find('button.button.cancel').first().on('click', function () {
-				rows.removeClass('active');
-			});
-
-			$('tr.pprh-row.edit.' + hintID).find('button.pprh-update').on('click', function (e) {
-				prepareHint('pprh-edit-' + hintID, 1);
-			});
-		});
-	}
 
 
+	// xhr object
+	function createAjaxReq(dataObj, callback, nonce) {
 
-	function putHintInfoIntoElems(hintID) {
-		let json = $('input.pprh-hint-storage.' + hintID).val();
-		let data = JSON.parse(json);
-		let table = $('table#pprh-edit-' + hintID);
-		let elems = getRowElems(table);
+		doAjax(dataObj, callback, nonce);
+		function doAjax(dataObj, callback, nonce) {
+			let xhr = new XMLHttpRequest();
+			let url = pprh_data.admin_url + 'admin-ajax.php';
+			xhr.open('POST', url, true);
+			xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+			let json = JSON.stringify(dataObj);
+			let paginationPage = getUrlValue.call('paged');
 
-		elems.url.val(data.url);
-		elems.hint_type.find('input[value="' + data.hint_type + '"]').attr('checked', true);
+			// for testing
+			if ( ! callback ) callback = 'pprh_update_hints';
+			if ( ! nonce ) nonce = pprh_data.nonce;
 
-		if (data['crossorigin']) {
-			elems.crossorigin.attr('checked', true);
+			let target = 'action=' + callback + '&pprh_data=' + json + '&nonce=' + nonce;
+
+			if (paginationPage.length > 0) {
+				target += '&paged=' + paginationPage;
+			}
+
+			xhr.send(target);
+			xhr.onreadystatechange = function() {
+				xhrResponse(xhr);
+			}
 		}
 
-		elems.as_attr.val(data['as_attr'] ? data['as_attr'] : '');
-		elems.type_attr.val(data['type_attr'] ? data['type_attr'] : '');
-		elems.media.val(data['media'] ? data['media'] : '');
+		function getUrlValue() {
+			let val = '';
+
+			if (currentURL.indexOf(this) > -1) {
+				try {
+					val = new URL(currentURL).searchParams.get(this);
+				} catch (e) {
+					val = currentURL.split(this + '=')[1].match(/^\d/)[0];
+				}
+			}
+
+			return val;
+		}
+
+		// update the hint table via ajax.
+		function updateTable(response) {
+			let table = $('table.pprh-post-table').first();
+			let postTable = document.getElementsByClassName('pprh-post-table')[0];
+			let tbody = table.find('tbody');
+
+			tbody.html('');
+
+			if (response.rows.length) {
+				tbody.html(response.rows);
+			}
+
+			if (response.pagination.bottom.length) {
+				$('.tablenav.top .tablenav-pages').html($(response.pagination.top).html());
+			}
+
+			if (response.pagination.top.length) {
+				$('.tablenav.bottom .tablenav-pages').html($(response.pagination.bottom).html());
+			}
+
+			if (response.total_pages === 1) {
+				$('div.tablenav, div.alignleft.actions.bulkactions').removeClass('no-pages');
+			}
+
+			postTable.querySelectorAll(':checked').forEach(function (item) {
+				return item.checked = false;
+			});
+		}
+
+		function xhrResponse(xhr) {
+			if (xhr.readyState === 4 && xhr.status === 200) {
+				if (xhr.response.length > 0) {
+					let response = JSON.parse(xhr.response);
+					clearHintTable();
+
+					if ( typeof response.result === "object") {
+						if (response.result.db_result) {
+							updateAdminNotice(response.result.db_result);
+							updateTable(response);
+							addEventListeners();
+							return;
+						}
+					} else {
+						console.error(response);
+					}
+				}
+			}
+		}
 	}
+
+
 
 	// bulk deletes, enables/disables.
 	$('input.pprhBulkAction').on('click', bulkUpdates);
-
 	function bulkUpdates(e) {
 		e.preventDefault();
-		var idArr = [];
-		var op = $(e.currentTarget).prev().val();
-		var opCode = ( 'delete' === op ) ? 2 : ( 'enable' === op ) ? 3 : ('disable' === op) ? 4 : 5;
-		var checkboxes = $('table.pprh-post-table tbody th.check-column input:checkbox');
+		let idArr = [];
+		let op = $(e.currentTarget).prev().val();
+		let opCode = ( 'delete' === op ) ? 2 : ( 'enable' === op ) ? 3 : ('disable' === op) ? 4 : 5;
+		let checkboxes = $('table.pprh-post-table tbody th.check-column input:checkbox');
 
 		$.each(checkboxes, function () {
 			if ($(this).is(':checked')) {
@@ -397,33 +399,6 @@
 		} else {
 			window.alert('Please select a row(s) for bulk updating.');
 		}
-	}
-
-	if (typeof checkoutModal === "object") {
-		checkoutModal.on('click', openCheckoutModal);
-	}
-
-	function licenseKeyStuff() {
-		var licKeyElem = $('input#pprhLicenseKey');
-		var activateLicBtn = $('input#pprhActivateLicense');
-		// var purchaseLic = $('input#pprhOpenCheckoutModal');
-
-		// purchaseLic.on('click', openCheckoutModal);
-
-		licKeyElem.on('keyup', function() {
-			if ( $(this).val().length === 23) {
-				activateLicBtn.addClass('button-primary');
-			}
-		});
-	}
-	licenseKeyStuff();
-
-	function openCheckoutModal() {
-		// var windowWidth = window.innerWidth;
-		// var windowHeight = window.innerHeight;
-		// var leftSpace = (windowWidth - 700) / 2;
-		// window.open( 'https://sphacks.io/checkout', '_blank', '', false );
-		window.open( 'https://sphacks.io/checkout', '_blank', 'height=850,scrollbars=yes,width=700', false );
 	}
 
 	return {
