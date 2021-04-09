@@ -16,8 +16,8 @@ class ActivatePlugin {
 	public function init() {
 		$this->add_options();
 		$this->update_option_names();
-		$json = $this->update_prefetch_ignoreKeywords();
-		update_option( 'pprh_prefetch_ignoreKeywords', $json );
+//		$json = $this->update_prefetch_ignoreKeywords();
+//		update_option( 'pprh_prefetch_ignoreKeywords', $json );
 
 		$this->setup_tables();
 		$this->drop_columns();
