@@ -13,7 +13,7 @@
  * Text Domain:       pprh
  * Domain Path:       /languages
  *
- * last edited April 8, 2021
+ * last edited April 9, 2021
  *
  * Copyright 2016  Sam Perrow  (email : sam.perrow399@gmail.com)
  *
@@ -61,7 +61,7 @@ class Pre_Party_Browser_Hints {
 		include_once 'includes/admin/LoadAdmin.php';
 		$load_admin = new LoadAdmin();
 		$load_admin->init();
-		$this->check_to_upgrade( '1.7.5.3' );
+		$this->check_to_upgrade( '1.7.5.4' );
 	}
 
     public function load_client() {
@@ -105,7 +105,7 @@ class Pre_Party_Browser_Hints {
 	public function upgrade_notice() {
 		?>
 		<div class="notice notice-info is-dismissible">
-			<p><?php _e('Upgrade Notes: Fixed issue relating to updating hints and hint verification.' ); ?></p>
+			<p><?php _e('Upgrade Notes: Fixed issue relating to hint creation (automatic attribute creation), and auto attribute disabling.' ); ?></p>
 		</div>
 		<?php
 	}
