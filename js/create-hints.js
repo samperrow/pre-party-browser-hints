@@ -136,18 +136,20 @@
         { 'fileType': '.webp',   'as': 'image',    'mimeType': 'image/webp' },
     ];
 
-    var allFns = {
-        GetUrl: getUrl,
+    let returnFns = {
+        CreateHint: createHint,
         GetDomain: getDomain,
-        GetHintType: getHintType,
-        GetCrossorigin: getCrossorigin,
-        GetFileType: getFileType,
-        GetAttr: getAttr,
-        GetFileTypeMime: getFileTypeMime,
-        CreateHint: createHint
     };
 
-    return (typeof module === "object") ? allFns : {CreateHint: createHint};
+    let allFns = returnFns;
+        allFns.GetUrl = getUrl;
+        allFns.GetHintType = getHintType;
+        allFns.GetCrossorigin = getCrossorigin;
+        allFns.GetFileType = getFileType;
+        allFns.GetAttr = getAttr;
+        allFns.GetFileTypeMime = getFileTypeMime;
+
+    return (typeof module === "object") ? allFns : returnFns;
 
 }));
 

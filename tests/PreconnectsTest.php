@@ -462,14 +462,14 @@ class PreconnectsTest extends TestCase {
 		$preconnects = new \PPRH\Preconnects();
 
 		$hint_1 = TestUtils::create_hint_array( 'https://test-process-hints.com', 'preconnect' );
-//		$hint_2 = TestUtils::create_hint_array( 'https://test-process-hints.net', 'preconnect' );
-//		$hint_3 = TestUtils::create_hint_array( 'https://test-process-hints.com', '' );
+		$hint_2 = TestUtils::create_hint_array( 'https://tester.com', 'preconnect', 'font', 'font/woff', 'crossorigin', '' );
 
 		$test_data = array();
-		$test_data['hints'] = array( $hint_1 );
+		$test_data['hints'] = array( $hint_1, $hint_2 );
+		$expected = count( $test_data['hints'] );
 
 		$actual = $preconnects->process_hints( $test_data );
-		$this->assertEquals( true, $actual[0]->db_result['success'] );
+		$this->assertEquals( $expected, count( $actual ) );
 	}
 
 }

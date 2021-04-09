@@ -51,12 +51,11 @@ class Preconnects {
 	}
 
 	private function check_to_perform_reset( $reset_data ) {
-		if ( empty( $reset_data['reset_pro'] ) || null === $reset_data['reset_pro'] ) {
+//		if ( empty( $reset_data['reset_pro'] ) || null === $reset_data['reset_pro'] ) {
 			$perform_reset = $this->perform_reset( $reset_data );
-		}
-		else {
-			$perform_reset = $this->perform_pro_reset( $reset_data['reset_pro'] );
-		}
+//		} else {
+//			$perform_reset = $this->perform_pro_reset( $reset_data['reset_pro'] );
+//		}
 
 		return $perform_reset;
 	}
@@ -165,6 +164,7 @@ class Preconnects {
 		return ( $raw_hint_count === count( $results ) );
 	}
 
+	// tested
 	public function process_hints( $hint_data ) {
 		$dao_ctrl = new DAOController();
 		$results = array();
@@ -172,7 +172,7 @@ class Preconnects {
 		foreach ( $hint_data['hints'] as $new_hint ) {
 			$new_hint['op_code'] = 0;
 
-			if ( ! empty( $hint_data['post_id'] ) ) {
+			if ( isset( $hint_data['post_id'] ) ) {
 				$new_hint['post_id'] = $hint_data['post_id'];
 			}
 
