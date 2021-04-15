@@ -16,8 +16,10 @@ class PrefetchSettings {
 
 	public function get_each_keyword( $keywords ) {
 	    if ( is_null( $keywords ) ) {
-	        return;
+	        return '';
         }
+
+		$keywords = explode( ', ', $keywords );
 
 	    $str = '';
 	    $count = count( $keywords );
@@ -35,19 +37,11 @@ class PrefetchSettings {
 		return $str;
 	}
 
-	public function turn_textarea_to_json( $text ) {
+	public function turn_textarea_to_csv( $text ) {
 		$text = trim($text);
-		$arr = array();
 		$text_arr = explode( "\r\n", $text );
-
-		foreach ( $text_arr as $str ) {
-		    if ( '' !== $str ) {
-		        $arr[] = $str;
-            }
-        }
-
-		$str = implode( ', ', $arr );
-		return Utils::json_to_array( $str );
+		$str = implode( ', ', $text_arr );
+		return $str;
 	}
 
 	public function save_options() {
@@ -55,7 +49,7 @@ class PrefetchSettings {
 			'pprh_prefetch_enabled'                 => isset( $_POST['pprh_prefetch_enabled'] )                 ? 'true' : 'false',
 			'pprh_prefetch_disableForLoggedInUsers' => isset( $_POST['pprh_prefetch_disableForLoggedInUsers'] ) ? 'true' : 'false',
 			'pprh_prefetch_delay'                   => isset( $_POST['pprh_prefetch_delay'] )                   ? Utils::strip_non_numbers( $_POST['pprh_prefetch_delay'] ) : '0',
-			'pprh_prefetch_ignoreKeywords'          => isset( $_POST['pprh_prefetch_ignoreKeywords'] )          ? $this->turn_textarea_to_json( $_POST['pprh_prefetch_ignoreKeywords'] ) : '',
+			'pprh_prefetch_ignoreKeywords'          => isset( $_POST['pprh_prefetch_ignoreKeywords'] )          ? $this->turn_textarea_to_csv( $_POST['pprh_prefetch_ignoreKeywords'] ) : '',
 			'pprh_prefetch_maxRPS'                  => isset( $_POST['pprh_prefetch_maxRPS'] )                  ? Utils::strip_non_numbers( $_POST['pprh_prefetch_maxRPS'] ) : '3',
 			'pprh_prefetch_hoverDelay'              => isset( $_POST['pprh_prefetch_hoverDelay'] )              ? Utils::strip_non_numbers( $_POST['pprh_prefetch_hoverDelay'] ) : '50',
 			'pprh_prefetch_max_prefetches'          => isset( $_POST['pprh_prefetch_max_prefetches'] )          ? Utils::strip_non_numbers( $_POST['pprh_prefetch_max_prefetches'] ) : '10',
@@ -80,16 +74,16 @@ class PrefetchSettings {
 		$this->prefetch_enabled = \PPRH\Utils::is_option_checked( 'pprh_prefetch_enabled' );
 
 		$prefetch_ignoreKeywords = get_option( 'pprh_prefetch_ignoreKeywords' );
-		$this->ignoreKeywords = json_decode( $prefetch_ignoreKeywords, true );
+		$this->ignoreKeywords = $prefetch_ignoreKeywords;
 		$this->prefetch_initialization_delay = Utils::esc_get_option( 'pprh_prefetch_delay' );
 		$this->prefetch_max_prefetches = Utils::esc_get_option( 'pprh_prefetch_max_prefetches' );
 	}
 
 	public function markup() {
 		?>
-		<div class="postbox" id="prefetch">
-			<div class="inside">
-				<h3><?php esc_html_e( 'Auto Prefetch Settings', 'pprh' ); ?>
+<!--		<div class="postbox" id="prefetch">-->
+<!--			<div class="inside">-->
+<!--				<h3>--><?php //esc_html_e( 'Auto Prefetch Settings', 'pprh' ); ?>
 					<span class="pprh-help-tip-hint">
                         <span><?php _e( 'Prefetch entire pages before the user clicks on navigation links, making them load instantly. This will create prefetch hints automatically each time a page is loaded. These hints do not get saved in the database. Special thanks to <a href="https://wpspeedmatters.com/">Gijo Varghese</a> for providing assistance with this prefetch feature.',	'pprh'	); ?></span>
                     </span>
@@ -162,8 +156,8 @@ class PrefetchSettings {
 
 					</tbody>
 				</table>
-			</div>
-		</div>
+<!--			</div>-->
+<!--		</div>-->
 
 		<?php
 		// cite https://github.com/gijo-varghese/flying-pages

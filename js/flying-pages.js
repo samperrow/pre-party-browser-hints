@@ -8,26 +8,21 @@
  * Licensed under the ISC license:
  * https://opensource.org/licenses/ISC
 */
-function flyingPages() {
+function pprhFlyingPages() {
 
     const toPrefetch = new Set();
     const alreadyPrefetched = new Set();
 
     // Check browser support for native 'prefetch'
     const prefetcher = document.createElement("link");
-    const isSupported =
-        prefetcher.relList &&
-        prefetcher.relList.supports &&
-        prefetcher.relList.supports("prefetch") &&
-        window.IntersectionObserver &&
-        "isIntersecting" in IntersectionObserverEntry.prototype;
+    const isSupported = prefetcher.relList && prefetcher.relList.supports && prefetcher.relList.supports("prefetch") && window.IntersectionObserver && "isIntersecting" in IntersectionObserverEntry.prototype;
 
     var fp_data = {
         maxRPS: Number(pprh_fp_data.maxRPS),
         delay: Number(pprh_fp_data.delay),
         hoverDelay: Number(pprh_fp_data.hoverDelay),
         ignoreKeywords: pprh_fp_data.ignoreKeywords.replace(/\s/g, '').split(','),
-        debug: 'true' === pprh_fp_data.debug,
+        debug: ('true' === pprh_fp_data.debug),
         maxPrefetches: Number(pprh_fp_data.maxPrefetches)
     };
 
@@ -40,18 +35,17 @@ function flyingPages() {
     if (isSlowConnection || !isSupported) return;
 
     // Prefetch the given url using native 'prefetch'. Fallback to 'xhr' if not supported
-    const prefetch = url =>
-        new Promise((resolve, reject) => {
-            const link = document.createElement('link');
-            link.rel = 'prefetch';
-            link.href = url;
-            link.onload = resolve;
-            link.onerror = reject;
-            document.head.appendChild(link);
-            if (fp_data.debug) {
-                console.log(link);
-            }
-        });
+    const prefetch = url => new Promise((resolve, reject) => {
+        const link = document.createElement('link');
+        link.rel = 'prefetch';
+        link.href = url;
+        link.onload = resolve;
+        link.onerror = reject;
+        document.head.appendChild(link);
+        if (fp_data.debug) {
+            console.log(link);
+        }
+    });
 
     // Prefetch pages with a timeout
     const prefetchWithTimeout = url => {
@@ -61,15 +55,14 @@ function flyingPages() {
             .finally(() => clearTimeout(timer));
     };
 
-    const addUrlToQueue = (url, processImmediately = false) => {
+    function isUrlValid(url) {
         const origin = window.location.origin;
+        const currentPage = origin + document.location.pathname;
+        return ! ((alreadyPrefetched.has(url) || toPrefetch.has(url)) || (prefetchCount >= fp_data.maxPrefetches) || (url.substring(0, origin.length) !== origin) || (currentPage === url));
+    }
 
-        // Prevent prefetching 3rd party domain
-        // Prevent current page from prefetching
-        if ( (alreadyPrefetched.has(url) || toPrefetch.has(url) )
-            || (prefetchCount >= fp_data.maxPrefetches && ! processImmediately)
-            || (url.substring(0, origin.length) !== origin)
-            || (window.location.href === url) ) {
+    const addUrlToQueue = (url, processImmediately = false) => {
+        if (!isUrlValid(url)) {
             return;
         }
 
@@ -81,9 +74,9 @@ function flyingPages() {
             }
 
             // wildcard check
-            else if (keyword.indexOf("*") === (keyword.length - 1) ) {
+            else if (keyword.indexOf("*") === (keyword.length - 1)) {
                 let wildcard = keyword.replace("*", "");
-                if ( url.indexOf(wildcard) >= 0) {
+                if (url.indexOf(wildcard) >= 0) {
                     return;
                 }
             }
@@ -109,16 +102,15 @@ function flyingPages() {
     });
 
     // Queue that process requests based on max RPS (requests per second)
-    const startQueue = () =>
-        setInterval(() => {
-            Array.from(toPrefetch)
-                .slice(0, fp_data.maxRPS)
-                .forEach(url => {
-                    prefetchWithTimeout(url);
-                    alreadyPrefetched.add(url);
-                    toPrefetch.delete(url);
-                });
-        }, 1000);
+    const startQueue = () => setInterval(() => {
+        Array.from(toPrefetch)
+            .slice(0, fp_data.maxRPS)
+            .forEach(url => {
+                prefetchWithTimeout(url);
+                alreadyPrefetched.add(url);
+                toPrefetch.delete(url);
+            });
+    }, 1000);
 
     let hoverTimer = null;
 
@@ -135,8 +127,7 @@ function flyingPages() {
     // prefetch on touchstart on mobile
     const touchStartListener = event => {
         const elm = event.target.closest("a");
-        if (elm && elm.href && !alreadyPrefetched.has(elm.href))
-            addUrlToQueue(elm.href, true);
+        if (elm && elm.href && !alreadyPrefetched.has(elm.href)) addUrlToQueue(elm.href, true);
     };
 
     // Clear timeout on mouse out if not already prefetched
@@ -148,19 +139,16 @@ function flyingPages() {
     };
 
     // Fallback for requestIdleCallback https://caniuse.com/#search=requestIdleCallback
-    const requestIdleCallback =
-        window.requestIdleCallback ||
-        function(cb) {
-            const start = Date.now();
-            return setTimeout(function() {
-                cb({
-                    didTimeout: false,
-                    timeRemaining: function() {
-                        return Math.max(0, 50 - (Date.now() - start));
-                    }
-                });
-            }, 1);
-        };
+    const requestIdleCallback = window.requestIdleCallback || function (cb) {
+        const start = Date.now();
+        return setTimeout(function () {
+            cb({
+                didTimeout: false, timeRemaining: function () {
+                    return Math.max(0, 50 - (Date.now() - start));
+                }
+            });
+        }, 1);
+    };
 
     // Stop prefetching in case server is responding slow/errors
     const stopPrefetching = () => {
@@ -180,20 +168,13 @@ function flyingPages() {
     startQueue();
 
     // Start prefetching links in viewport on idle callback, with a delay
-    requestIdleCallback(() =>
-        setTimeout(
-            () =>
-                document.querySelectorAll("a").forEach(e => linksObserver.observe(e)),
-            fp_data.delay * 1000
-        )
-    );
+    requestIdleCallback(() => setTimeout(() => document.querySelectorAll("a").forEach(e => linksObserver.observe(e)), fp_data.delay * 1000));
 
     // Add event listeners to detect mouse hover and mobile touch
-    const listenerOptions = { capture: true, passive: true };
+    const listenerOptions = {capture: true, passive: true};
     document.addEventListener("mouseover", mouseOverListener, listenerOptions);
     document.addEventListener("mouseout", mouseOutListener, listenerOptions);
     document.addEventListener("touchstart", touchStartListener, listenerOptions);
 }
 
-flyingPages();
-//
+pprhFlyingPages();

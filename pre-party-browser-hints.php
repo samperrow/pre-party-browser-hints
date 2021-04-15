@@ -61,7 +61,8 @@ class Pre_Party_Browser_Hints {
 		include_once 'includes/admin/LoadAdmin.php';
 		$load_admin = new LoadAdmin();
 		$load_admin->init();
-		$this->check_to_upgrade( '1.7.5.4' );
+        $this->check_to_upgrade( '1.7.5.4' );
+
 	}
 
     public function load_client() {
@@ -84,7 +85,7 @@ class Pre_Party_Browser_Hints {
 			define( 'PPRH_HOME_URL', admin_url() . 'admin.php?page=pprh-plugin-setttings' );
 
 			define( 'PPRH_PRO_PLUGIN_ACTIVE', $pprh_pro_active );
-			define( 'PPRH_DEBUG', false );
+			define( 'PPRH_DEBUG', true );
         }
 	}
 
@@ -96,7 +97,7 @@ class Pre_Party_Browser_Hints {
 
 	public function check_to_upgrade( $new_version ) {
 		if ( $new_version !== PPRH_VERSION ) {
-			$this->activate_plugin();
+			$this->upgrade_plugin();
 			update_option( 'pprh_version', $new_version );
 			add_action( 'admin_notices', array( $this, 'upgrade_notice' ) );
 		}
@@ -105,23 +106,31 @@ class Pre_Party_Browser_Hints {
 	public function upgrade_notice() {
 		?>
 		<div class="notice notice-info is-dismissible">
-			<p><?php _e('Upgrade Notes: Fixed issue relating to hint creation (automatic attribute creation), and auto attribute disabling.' ); ?></p>
+			<p><?php _e('Upgrade Notes: Fixed issue relating to hint creation (crossorigin attribute), automatic attribute creation, and the auto-prefetch feature.' ); ?></p>
 		</div>
 		<?php
 	}
 
-	public function activate_plugin() {
+	private function load_activate_plugin() {
 		if ( ! class_exists( \PPRH\Utils::class ) ) {
 			include_once 'includes/Utils.php';
 			include_once 'includes/DAOController.php';
 		}
 
 		$this->create_constants();
-
 		include_once 'includes/admin/ActivatePlugin.php';
-		$activate_plugin = new ActivatePlugin();
-		$activate_plugin->init();
 	}
 
+	public function upgrade_plugin() {
+		$this->load_activate_plugin();
+		$activate_plugin = new ActivatePlugin();
+		$activate_plugin->upgrade_plugin();
+	}
+
+	public function activate_plugin() {
+		$this->load_activate_plugin();
+		$activate_plugin = new ActivatePlugin();
+		$activate_plugin->activate_plugin();
+	}
 
 }

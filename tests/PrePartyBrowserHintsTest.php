@@ -33,16 +33,21 @@ final class PrePartyBrowserHintsTest extends TestCase {
 
 
 	public function test_Load_dashboard():void {
-		if ( ! WP_ADMIN ) return;
+		$load_admin = class_exists( \PPRH\LoadAdmin::class );
 
-		$expected = class_exists( \PPRH\LoadAdmin::class );
-		$actual = current_user_can( 'manage_options' );
-		$this->assertEquals( $expected, $actual );
+		if ( WP_ADMIN ) {
+			$manage_options = current_user_can( 'manage_options' );
+			$this->assertEquals( true, $load_admin );
+			$this->assertEquals( true, $manage_options );
+		} else {
+			$this->assertEquals( false, $load_admin);
+		}
+
 	}
 
 	public function test_check_to_upgrade():void {
 		$pprh = new \PPRH\Pre_Party_Browser_Hints();
-		$new_version = '1.7.5.3';
+		$new_version = '1.7.5.4';
 		$pprh->check_to_upgrade( $new_version );
 		$activate_plugin = class_exists(\PPRH\ActivatePlugin::class );
 

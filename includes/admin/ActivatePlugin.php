@@ -11,21 +11,20 @@ class ActivatePlugin {
 
 	public $plugin_activated = false;
 
-//	public function __construct() {}
-
-	public function init() {
+	public function activate_plugin() {
 		$this->add_options();
-		$this->update_option_names();
-//		$json = $this->update_prefetch_ignoreKeywords();
-//		update_option( 'pprh_prefetch_ignoreKeywords', $json );
-
 		$this->setup_tables();
 		$this->drop_columns();
 		$this->plugin_activated = true;
 	}
 
+	public function upgrade_plugin() {
+		$this->update_option_names();
+		$this->plugin_activated = true;
+	}
+
 	private function add_options() {
-		$default_prefetch_ignore_links = 'wp-admin, /wp-login.php, /cart, /checkout, add-to-cart, logout, #, ?, .png, .jpeg, .jpg, .gif, .svg, .webp';
+		$default_prefetch_ignore_links = '/wp-admin, /wp-login.php, /cart, /checkout, add-to-cart, logout, #, ?, .png, .jpeg, .jpg, .gif, .svg, .webp';
 
 		add_option( 'pprh_disable_wp_hints', 'true', '', 'yes' );
 		add_option( 'pprh_html_head', 'true', '', 'yes' );
@@ -43,21 +42,21 @@ class ActivatePlugin {
 		$preconnect_autoload = get_option( 'pprh_autoload_preconnects' );
 		$preconnects_set = get_option( 'pprh_preconnects_set' );
 
-		if ( ! empty( $preconnect_allow_unauth ) ) {
+		if ( false !== $preconnect_allow_unauth ) {
 			add_option('pprh_preconnect_allow_unauth', $preconnect_allow_unauth, '', 'yes');
 			delete_option('pprh_allow_unauth');
 		} else {
 			add_option('pprh_preconnect_allow_unauth', 'false', '', 'yes');
 		}
 
-		if ( ! empty( $preconnect_autoload ) ) {
+		if ( false !== $preconnect_autoload ) {
 			add_option('pprh_preconnect_autoload', $preconnect_autoload, '', 'yes');
 			delete_option('pprh_autoload_preconnects');
 		} else {
 			add_option( 'pprh_preconnect_autoload', 'true', '', 'yes' );
 		}
 
-		if ( ! empty( $preconnects_set ) ) {
+		if ( false !== $preconnects_set ) {
 			add_option('pprh_preconnect_set', $preconnects_set, '', 'yes');
 			delete_option('pprh_preconnects_set');
 		} else {
@@ -65,10 +64,6 @@ class ActivatePlugin {
 		}
 	}
 
-	public function update_prefetch_ignoreKeywords() {
-		$orig_ignore_keywords = get_option( 'pprh_prefetch_ignoreKeywords' );
-		return Utils::json_to_array( $orig_ignore_keywords );
-	}
 
 	// Multisite install/delete db table.
 	public function setup_tables() {

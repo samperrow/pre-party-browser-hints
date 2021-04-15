@@ -78,8 +78,9 @@ class Utils {
 	}
 
 	public static function json_to_array( $json ) {
-		$arr = explode( ', ', $json );
-		return wp_unslash( json_encode( $arr ) );
+	    $arr = json_decode( $json );
+//		$arr = explode( ', ', $json )[0];
+		return wp_unslash(  $arr );
 	}
 
 	public static function pprh_is_plugin_active() {

@@ -37,13 +37,14 @@ class Dashboard {
 		Utils::admin_notice();
 		$this->show_admin_tabs();
 
-		echo '<div class="pprh-box">';
+		echo '<div id="poststuff">';
 		new InsertHints();
 		new Settings( $this->on_pprh_admin );
 		new HintInfo();
 		new Upgrade();
 
 		do_action( 'pprh_la_load_view_classes' );
+
 
 		$this->show_footer();
 		echo '</div></div>';
