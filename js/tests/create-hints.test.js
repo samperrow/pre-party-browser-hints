@@ -216,7 +216,17 @@ test('woff2 and preload', () => {
 });
 
 
+test('flying pages wildcard ends with *', () => {
+    let keyword = '/products/*';
+    let url_1 = 'https://tester.com/asdf/products/asdfsadfsadf/w3dsgf';
+    let url_2 = 'https://tester.com/asdf/products/';
 
+    expect(CreateHintsFile.WildcardSearch(keyword, url_1))
+        .toStrictEqual(false);
+
+    expect(CreateHintsFile.WildcardSearch(keyword, url_2))
+        .toStrictEqual(true);
+});
 
 
 // const jQuery = jest.fn(() => ({

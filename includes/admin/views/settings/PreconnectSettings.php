@@ -41,9 +41,9 @@ class PreconnectSettings {
 
 	public function markup() {
 		?>
-<!--		<div class="postbox" id="preconnect">-->
-<!--			<div class="inside">-->
-<!--				<h3>--><?php //esc_html_e( 'Auto Preconnect Settings', 'pprh' ); ?>
+		<div class="postbox" id="preconnect">
+			<div class="inside">
+				<h3><?php esc_html_e( 'Auto Preconnect Settings', 'pprh' ); ?>
 					<span class="pprh-help-tip-hint">
                         <span><?php _e( 'This feature will collect the domain names of external resources used on your site, and create resource hints from those. For example, if you are using Google Fonts and Google Analytics, this feature will find the host names of these resources ("https://www.google-analytics.com", "https://fonts.gstatic.com", "https://fonts.googleapis.com"), and create resource hints for those. To initialize this, you only need to view a page on your website and this plugin will take care of the rest! It will automatically run after plugin installation, or by clicking the "Reset" button below.', 'pprh' ); ?></span>
                     </span>
@@ -74,8 +74,8 @@ class PreconnectSettings {
 
 					</tbody>
 				</table>
-<!--			</div>-->
-<!--		</div>-->
+			</div>
+		</div>
 		<?php
 	}
 

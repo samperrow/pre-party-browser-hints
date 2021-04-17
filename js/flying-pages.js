@@ -68,19 +68,21 @@ function pprhFlyingPages() {
 
         // Ignore keywords in the array, if matched to the url
         for (let i = 0; i < fp_data.ignoreKeywords.length; i++) {
-            var keyword = fp_data.ignoreKeywords[i];
+            let keyword = fp_data.ignoreKeywords[i];
             if (keyword.length > 0 && url.includes(keyword)) {
                 return;
             }
 
             // wildcard check
-            else if (keyword.indexOf("*") === (keyword.length - 1)) {
-                let wildcard = keyword.replace("*", "");
-                if (url.indexOf(wildcard) >= 0) {
-                    return;
+            else if (keyword.endsWith("*") ) {
+                let pattern = keyword.split("*")[0];
+
+                if ( url.indexOf(pattern) >= 0) {
+                    let fragment = url.split(pattern)[1];
+                    if ( "" === fragment) return;
                 }
             }
-        }
+         }
 
         // If max RPS is 0 or is on mouse hover, process immediately (without queue)
         if (processImmediately) {

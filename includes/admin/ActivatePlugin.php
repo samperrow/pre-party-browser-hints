@@ -15,6 +15,7 @@ class ActivatePlugin {
 		$this->add_options();
 		$this->setup_tables();
 		$this->drop_columns();
+		$this->update_option_names();
 		$this->plugin_activated = true;
 	}
 

@@ -30,24 +30,21 @@ class Dashboard {
 			return;
 		}
 
-		echo '<div id="pprh-wrapper" class="wrap"><h2>';
+        echo '<div id="poststuff"><h1>';
 		esc_html_e( 'Pre* Party Plugin Settings', 'pprh' );
-		echo '</h2>';
+		echo '</h1>';
 
 		Utils::admin_notice();
 		$this->show_admin_tabs();
 
-		echo '<div id="poststuff">';
 		new InsertHints();
 		new Settings( $this->on_pprh_admin );
 		new HintInfo();
 		new Upgrade();
 
 		do_action( 'pprh_la_load_view_classes' );
-
-
 		$this->show_footer();
-		echo '</div></div>';
+		echo '</div>';
 	}
 
 
@@ -61,20 +58,20 @@ class Dashboard {
 
 		$tabs = apply_filters( 'pprh_la_load_tabs', $tabs );
 
-		echo '<h2 class="nav-tab-wrapper">';
+		echo '<div class="nav-tab-wrapper" style="margin-bottom: 10px;">';
 		foreach ( $tabs as $tab => $name ) {
 			echo "<a class='nav-tab $tab' href='?page=pprh-plugin-settings'>" . $name . '</a>';
 		}
-		echo '</h2>';
+		echo '</div>';
 	}
 
 	public function show_footer() {
-		self::contact_author();
+		$this->contact_author();
 		echo '<br/>';
 		echo sprintf( 'Tip: test your website on %sWebPageTest.org%s to know which resource hints and URLs to insert.', '<a href="https://www.webpagetest.org">', '</a>' );
 	}
 
-	public static function contact_author() {
+	public function contact_author() {
 		add_thickbox();
 		?>
 

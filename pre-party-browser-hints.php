@@ -62,7 +62,6 @@ class Pre_Party_Browser_Hints {
 		$load_admin = new LoadAdmin();
 		$load_admin->init();
         $this->check_to_upgrade( '1.7.5.4' );
-
 	}
 
     public function load_client() {
@@ -83,7 +82,6 @@ class Pre_Party_Browser_Hints {
 			define( 'PPRH_ABS_DIR', WP_PLUGIN_DIR . '/pre-party-browser-hints/' );
 			define( 'PPRH_REL_DIR', plugins_url() . '/pre-party-browser-hints/' );
 			define( 'PPRH_HOME_URL', admin_url() . 'admin.php?page=pprh-plugin-setttings' );
-
 			define( 'PPRH_PRO_PLUGIN_ACTIVE', $pprh_pro_active );
 			define( 'PPRH_DEBUG', true );
         }

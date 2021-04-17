@@ -12,10 +12,6 @@ class GeneralSettings {
 
 	public $html_head = false;
 
-//	public function __construct() {
-//	    echo 'hi';
-//    }
-
 	public function save_options() {
 
 	    $options = array(
@@ -39,9 +35,9 @@ class GeneralSettings {
 
 	public function markup() {
 		?>
-<!--		<div class="postbox" id="general">-->
-<!--			<div class="inside">-->
-<!--				<h3>--><?php //esc_html_e( 'General Settings', 'pprh' ); ?><!--</h3>-->
+		<div class="postbox" id="general">
+			<div class="inside">
+				<h3><?php esc_html_e( 'General Settings', 'pprh' ); ?></h3>
 
 				<table class="form-table">
 					<tbody>
@@ -71,8 +67,8 @@ class GeneralSettings {
 
 					</tbody>
 				</table>
-<!--			</div>-->
-<!--		</div>-->
+			</div>
+		</div>
 		<?php
 //		apply_filters( 'pprh_sc_pro_settings', 'general' );
 	}

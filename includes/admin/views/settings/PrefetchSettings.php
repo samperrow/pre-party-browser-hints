@@ -81,9 +81,9 @@ class PrefetchSettings {
 
 	public function markup() {
 		?>
-<!--		<div class="postbox" id="prefetch">-->
-<!--			<div class="inside">-->
-<!--				<h3>--><?php //esc_html_e( 'Auto Prefetch Settings', 'pprh' ); ?>
+		<div class="postbox" id="prefetch">
+			<div class="inside">
+				<h3><?php esc_html_e( 'Auto Prefetch Settings', 'pprh' ); ?>
 					<span class="pprh-help-tip-hint">
                         <span><?php _e( 'Prefetch entire pages before the user clicks on navigation links, making them load instantly. This will create prefetch hints automatically each time a page is loaded. These hints do not get saved in the database. Special thanks to <a href="https://wpspeedmatters.com/">Gijo Varghese</a> for providing assistance with this prefetch feature.',	'pprh'	); ?></span>
                     </span>
@@ -156,8 +156,8 @@ class PrefetchSettings {
 
 					</tbody>
 				</table>
-<!--			</div>-->
-<!--		</div>-->
+			</div>
+		</div>
 
 		<?php
 		// cite https://github.com/gijo-varghese/flying-pages

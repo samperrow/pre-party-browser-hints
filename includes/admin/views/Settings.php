@@ -27,31 +27,23 @@ class Settings {
 	public function display_settings() {
 		?>
         <div id="pprh-settings" class="pprh-content">
-            <div id="post-body" class="metabox-holder columns-1">
-                <form method="post" action="">
-                    <?php
-                        wp_nonce_field( 'pprh_save_admin_options', 'pprh_admin_options_nonce' );
-                        $this->save_user_options();
+            <form method="post" action="">
+                <?php
+                    wp_nonce_field( 'pprh_save_admin_options', 'pprh_admin_options_nonce' );
+                    $this->save_user_options();
 
-                        if ( $this->on_pprh_admin ) {
-                            echo '<div id="postbox-container-1" class="postbox-container">';
+                    if ( $this->on_pprh_admin ) {
+						$this->general_settings->show_settings();
+						$this->preconnect_settings->show_settings();
+						$this->prefetch_settings->show_settings();
+                    }
 
-                            do_meta_boxes('pprh-plugin-settings', 'normal', null);
-
-                            echo '</div>';
-
-    //						$this->general_settings->show_settings();
-    //						$this->preconnect_settings->show_settings();
-    //						$this->prefetch_settings->show_settings();
-                        }
-
-                        do_action( 'pprh_sc_prerender_settings' );
-                    ?>
-                    <div class="text-center">
-                        <input type="submit" name="pprh_save_options" class="button button-primary" value="<?php esc_attr_e( 'Save Changes', 'pprh' ); ?>" />
-                    </div>
-                </form>
-            </div>
+                    do_action( 'pprh_sc_prerender_settings' );
+                ?>
+                <div class="text-center">
+                    <input type="submit" name="pprh_save_options" class="button button-primary" value="<?php esc_attr_e( 'Save Changes', 'pprh' ); ?>" />
+                </div>
+            </form>
         </div>
 		<?php
 	}

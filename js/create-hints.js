@@ -136,9 +136,20 @@
         { 'fileType': '.webp',   'as': 'image',    'mimeType': 'image/webp' },
     ];
 
+    function wildcardSearch(keyword, url) {
+        if (keyword.endsWith("*")) {
+            let pattern = keyword.split("*")[0];
+            let fragment = url.split(pattern)[1];
+            return ( "" !== fragment);
+        }
+
+        return true;
+    }
+
     let returnFns = {
         CreateHint: createHint,
         GetDomain: getDomain,
+        WildcardSearch: wildcardSearch
     };
 
     let allFns = returnFns;

@@ -8,10 +8,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class LoadAdmin {
 
-
 	public function init() {
 		add_action( 'admin_menu', array( $this, 'load_admin_menu' ) );
-		add_action( 'admin_init', array( $this, 'load_meta_boxes' ) );
 
 		$on_pprh_page = Utils::on_pprh_page();
 
@@ -92,37 +90,6 @@ class LoadAdmin {
 			wp_enqueue_script( 'pprh_admin_js' );
 			wp_enqueue_style( 'pprh_styles_css' );
 		}
-	}
-
-
-	public function load_meta_boxes() {
-		wp_enqueue_script( 'common' );
-		wp_enqueue_script( 'wp-lists' );
-		wp_enqueue_script( 'postbox' );
-
-		add_meta_box(
-			'pprh-general-settings-metabox',
-			__( 'General Settings', 'pprh' ),
-			array( $this, 'general_settings' ),
-			'pprh-plugin-settings',
-			'normal',
-		);
-
-		add_meta_box(
-			'pprh-preconnect-metabox',
-			__( 'Auto Preconnect Settings', 'pprh' ),
-			array( $this, 'preconnect_settings' ),
-			'pprh-plugin-settings',
-			'normal',
-		);
-
-		add_meta_box(
-			'pprh-prefetch-metabox',
-			__( 'Auto Prefetch Settings', 'pprh' ),
-			array( $this, 'prefetch_settings' ),
-			'pprh-plugin-settings',
-			'normal',
-		);
 	}
 
 	public function general_settings() {
