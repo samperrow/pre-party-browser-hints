@@ -123,7 +123,7 @@ class PrefetchSettings {
 
 						<td>
 							<textarea name="pprh_prefetch_ignoreKeywords" rows="6"><?php echo $this->get_each_keyword( $this->ignoreKeywords ); ?></textarea>
-							<p><?php esc_html_e( 'A list of keywords to ignore from prefetching. One keyword per line. You may use an astericks ("*") to implement wildcard keywords to match any link (example: "/products*"). Any links matching any of the values specified will not be prefetch.', 'pprh'); ?></p>
+							<p><?php esc_html_e( 'A list of keywords to ignore from prefetching. One keyword per line. You may use an astericks (*) after a keyword (ex: "/products*") to act as a wildcard, preventing links with that value from being prefetched.', 'pprh'); ?></p>
 						</td>
 					</tr>
 

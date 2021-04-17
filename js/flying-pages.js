@@ -8,7 +8,9 @@
  * Licensed under the ISC license:
  * https://opensource.org/licenses/ISC
 */
-function pprhFlyingPages() {
+(function (global, factory) {
+    global.pprhFlyingPages = factory();
+}(this, function() {
 
     const toPrefetch = new Set();
     const alreadyPrefetched = new Set();
@@ -17,22 +19,12 @@ function pprhFlyingPages() {
     const prefetcher = document.createElement("link");
     const isSupported = prefetcher.relList && prefetcher.relList.supports && prefetcher.relList.supports("prefetch") && window.IntersectionObserver && "isIntersecting" in IntersectionObserverEntry.prototype;
 
-    var fp_data = {
-        maxRPS: Number(pprh_fp_data.maxRPS),
-        delay: Number(pprh_fp_data.delay),
-        hoverDelay: Number(pprh_fp_data.hoverDelay),
-        ignoreKeywords: pprh_fp_data.ignoreKeywords.replace(/\s/g, '').split(','),
-        debug: ('true' === pprh_fp_data.debug),
-        maxPrefetches: Number(pprh_fp_data.maxPrefetches)
-    };
-
-    var prefetchCount = 0;
-
     // Checks if user is on slow connection or has enabled data saver
     const isSlowConnection = navigator.connection && (navigator.connection.saveData || (navigator.connection.effectiveType || "").includes("2g"));
 
-    // Don't start prefetching if user is on a slow connection or not supported
-    if (isSlowConnection || !isSupported) return;
+    var prefetchCount = 0;
+    var fp_data;
+    let hoverTimer = null;
 
     // Prefetch the given url using native 'prefetch'. Fallback to 'xhr' if not supported
     const prefetch = url => new Promise((resolve, reject) => {
@@ -42,9 +34,7 @@ function pprhFlyingPages() {
         link.onload = resolve;
         link.onerror = reject;
         document.head.appendChild(link);
-        if (fp_data.debug) {
-            console.log(link);
-        }
+        if (fp_data.debug) console.log(link);
     });
 
     // Prefetch pages with a timeout
@@ -62,15 +52,15 @@ function pprhFlyingPages() {
     }
 
     const addUrlToQueue = (url, processImmediately = false) => {
-        if (!isUrlValid(url)) {
-            return;
+        if (! isUrlValid(url)) {
+            return false;
         }
 
         // Ignore keywords in the array, if matched to the url
         for (let i = 0; i < fp_data.ignoreKeywords.length; i++) {
             let keyword = fp_data.ignoreKeywords[i];
             if (keyword.length > 0 && url.includes(keyword)) {
-                return;
+                return false;
             }
 
             // wildcard check
@@ -79,7 +69,7 @@ function pprhFlyingPages() {
 
                 if ( url.indexOf(pattern) >= 0) {
                     let fragment = url.split(pattern)[1];
-                    if ( "" === fragment) return;
+                    if ( "" !== fragment) return false;
                 }
             }
          }
@@ -88,9 +78,12 @@ function pprhFlyingPages() {
         if (processImmediately) {
             prefetchWithTimeout(url);
             alreadyPrefetched.add(url);
-        } else toPrefetch.add(url);
+        } else {
+            toPrefetch.add(url);
+        }
 
         prefetchCount++;
+        return true;
     };
 
     // Observe the links in viewport, add url to queue if found intersecting
@@ -114,7 +107,6 @@ function pprhFlyingPages() {
             });
     }, 1000);
 
-    let hoverTimer = null;
 
     // Add URL to queue on mouse hover, after timeout
     const mouseOverListener = event => {
@@ -129,7 +121,9 @@ function pprhFlyingPages() {
     // prefetch on touchstart on mobile
     const touchStartListener = event => {
         const elm = event.target.closest("a");
-        if (elm && elm.href && !alreadyPrefetched.has(elm.href)) addUrlToQueue(elm.href, true);
+        if (elm && elm.href && !alreadyPrefetched.has(elm.href)) {
+            addUrlToQueue(elm.href, true);
+        }
     };
 
     // Clear timeout on mouse out if not already prefetched
@@ -166,17 +160,55 @@ function pprhFlyingPages() {
         document.removeEventListener("touchstart", touchStartListener, true);
     };
 
-    // Start Queue
-    startQueue();
-
-    // Start prefetching links in viewport on idle callback, with a delay
-    requestIdleCallback(() => setTimeout(() => document.querySelectorAll("a").forEach(e => linksObserver.observe(e)), fp_data.delay * 1000));
 
     // Add event listeners to detect mouse hover and mobile touch
     const listenerOptions = {capture: true, passive: true};
     document.addEventListener("mouseover", mouseOverListener, listenerOptions);
     document.addEventListener("mouseout", mouseOutListener, listenerOptions);
     document.addEventListener("touchstart", touchStartListener, listenerOptions);
-}
 
-pprhFlyingPages();
+    function init() {
+        if (typeof pprh_fp_data === "undefined") {
+            pprh_fp_data = {
+                maxRPS: 3,
+                delay: 0,
+                hoverDelay: 50,
+                ignoreKeywords: '',
+                maxPrefetches: 10,
+                debug: 'true'
+            }
+        }
+
+        fp_data = {
+            maxRPS: Number(pprh_fp_data.maxRPS),
+            delay: Number(pprh_fp_data.delay),
+            hoverDelay: Number(pprh_fp_data.hoverDelay),
+            ignoreKeywords: pprh_fp_data.ignoreKeywords.replace(/\s/g, '').split(','),
+            debug: ('true' === pprh_fp_data.debug),
+            maxPrefetches: Number(pprh_fp_data.maxPrefetches)
+        };
+
+        if (! fp_data.debug) {
+            if (isSlowConnection || !isSupported) return;
+        }
+
+        // Start Queue
+        startQueue();
+
+        // Start prefetching links in viewport on idle callback, with a delay
+        requestIdleCallback(() => setTimeout(() => document.querySelectorAll("a").forEach(e => linksObserver.observe(e)), fp_data.delay * 1000));
+    }
+
+    return {
+        AddUrlToQueue: addUrlToQueue,
+        Init: init
+    }
+
+}));
+
+
+if (typeof module === "object") {
+    module.exports = this.pprhFlyingPages;
+} else {
+    pprhFlyingPages.Init();
+}
