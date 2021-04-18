@@ -1,10 +1,11 @@
 == Changelog ==
 
-1. Most recent update: April 8, 2021.
+1. Most recent update: April 18, 2021.
 2. Version 1.7.5.4
 
-April 9, 2021:
-1) Fixed issue updating hints and hint verification.
+April 18, 2021:
+1) Fixed issue updating hints, setting the proper attributes, and hint verification.
+2) Made minor changes to UI.
 
 March 28, 2021:
 1) fixed issue updating hints.

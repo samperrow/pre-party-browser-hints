@@ -35,6 +35,7 @@ class Dashboard {
 		echo '</h1>';
 
 		Utils::admin_notice();
+		do_action( 'pprh_check_to_upgrade', '1.7.5.4' );
 		$this->show_admin_tabs();
 
 		new InsertHints();

@@ -8,11 +8,40 @@
 	const adminNoticeElem = document.getElementById('pprhNotice');
 
 	if (/pprh-plugin-settings/.test(currentURL)) {
+		togglePrefetchRows();
+		toggleEmailSubmit();
+	}
+
+	function togglePrefetchRows() {
+		let prefetchEnabledCheckbox = document.getElementById('pprhPrefetchEnabled');
+		let prefetchBox = document.getElementById('prefetch');
+		let tbodyRows;
+
+		if (null !== prefetchEnabledCheckbox) {
+			tbodyRows = prefetchBox.getElementsByTagName('tr');
+			prefetchEnabledCheckbox.addEventListener('click', callback);
+		}
+
+		function callback() {
+			hideRows( (prefetchEnabledCheckbox.checked) ? 'table-row' : 'none');
+		}
+		callback();
+
+
+		function hideRows(cssValue) {
+			for (let i = 1; i < tbodyRows.length; i++) {
+				tbodyRows[i].style.display = cssValue;
+			}
+		}
+	}
+
+	function toggleEmailSubmit() {
 		let emailSubmitBtn = document.getElementById('pprhSubmit');
 		if (null !== emailSubmitBtn) {
 			emailSubmitBtn.addEventListener("click", emailValidate);
 		}
 	}
+
 
 	toggleDivs();
 	function toggleDivs() {
@@ -91,8 +120,6 @@
 				hint.op_code = operation;
 				hint.hint_ids = (operation === 1) ? tableId.split('pprh-edit-')[1] : [];
 				return createAjaxReq(hint, 'pprh_update_hints', pprh_data.nonce);
-			} else {
-				alert('Invalid hint.');
 			}
 		}
 	}
@@ -106,8 +133,10 @@
 	function verifyHint(hint) {
 		if (hint.url.length === 0 || typeof hint.hint_type === "undefined") {
 			window.alert('Please enter a proper URL and hint type.');
+			return false;
 		} else if (hint.hint_type === 'preload' && !hint.as_attr) {
 			window.alert("You must specify an 'as' attribute when using preload hints.");
+			return false;
 		}
 
 		return true;
@@ -124,13 +153,6 @@
 			media:       tbody.find('input.pprh_media')
 		};
 	}
-
-
-
-
-
-
-
 
 
 	addEventListeners();

@@ -19,7 +19,14 @@ class ActivatePlugin {
 		$this->plugin_activated = true;
 	}
 
-	public function upgrade_plugin() {
+	public function upgrade_plugin( $previous_version ) {
+		if ( '1.7.5.3' === $previous_version ) {
+			$keywords = get_option( 'pprh_prefetch_ignoreKeywords' );
+			$updated_keywords = $this->update_prefetch_keywords( $keywords );
+			$clean_keywords = Utils::clean_url( $updated_keywords );
+			update_option( 'pprh_prefetch_ignoreKeywords', $clean_keywords );
+		}
+
 		$this->update_option_names();
 		$this->plugin_activated = true;
 	}
@@ -65,32 +72,35 @@ class ActivatePlugin {
 		}
 	}
 
+	// update previous prefetch ignoreKeywords option to new format.
+	public function update_prefetch_keywords( $keywords ) {
+		$words = preg_replace( '/[\]|\[|\"\s]/', '', $keywords );
+		return preg_replace( '/,/', ', ', $words );
+	}
+
 
 	// Multisite install/delete db table.
-	public function setup_tables() {
+	private function setup_tables() {
 		$pprh_tables = array();
+		$dao = new DAO();
 
 		if ( is_multisite() ) {
-			$dao = new DAO();
 			$pprh_tables = $dao->get_multisite_tables();
 		}
 
 		$pprh_tables[] = PPRH_DB_TABLE;
-		$dao = new DAO();
 
 		foreach ( $pprh_tables as $pprh_table ) {
 			$dao->create_table( $pprh_table );
 		}
 	}
 
-	public function drop_columns() {
-		global $wpdb;
-		$table = PPRH_DB_TABLE;
-
-		$column = $wpdb->get_results( "SHOW COLUMNS FROM $table LIKE 'auto_created'", ARRAY_A );
+	private function drop_columns() {
+		$dao = new DAO();
+		$column = $dao->get_table_column();
 
 		if ( count( $column ) > 0 ) {
-			$wpdb->query( "ALTER TABLE $table DROP COLUMN auto_created" );
+			$dao->drop_table_column();
 		}
 	}
 

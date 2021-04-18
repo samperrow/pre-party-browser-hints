@@ -8,27 +8,28 @@ final class ActivatePluginTest extends TestCase {
 //	public function __construct () {
 //	}
 
-	public function test_add_options():void {
-		$this->assertEquals( true, true );
+	public function test_update_prefetch_keywords():void {
+		$pprh = new \PPRH\Pre_Party_Browser_Hints();
+		$pprh->do_upgrade();
+
+		$activate_plugin = new \PPRH\ActivatePlugin();
+
+		$keywords_1 = '["/cart","test","wp-login.php"]';
+		$keywords_2 = '["["["/cart","test","wp-login.php"]"]"]';
+		$keywords_3 = '/cart, test, wp-login.php';
+
+		$updated_keywords_1 = $activate_plugin->update_prefetch_keywords( $keywords_1 );
+		$updated_keywords_2 = $activate_plugin->update_prefetch_keywords( $keywords_2 );
+		$updated_keywords_3 = $activate_plugin->update_prefetch_keywords( $keywords_3 );
+
+		$expected_1 = '/cart, test, wp-login.php';
+		$expected_2 = '/cart, test, wp-login.php';
+		$expected_3 = '/cart, test, wp-login.php';
+
+		$this->assertEquals( $expected_1, $updated_keywords_1 );
+		$this->assertEquals( $expected_2, $updated_keywords_2 );
+		$this->assertEquals( $expected_3, $updated_keywords_3 );
 	}
-
-
-//	public function test_add_options():void {
-//		$default_prefetch_ignore_links = 'wp-admin, /wp-login.php, /cart, /checkout, add-to-cart, logout, #, ?, .png, .jpeg, .jpg, .gif, .svg, .webp';
-//
-//		$opt1 = get_option( 'pprh_disable_wp_hints' );
-//		$opt2 = get_option( 'pprh_html_head');
-//		$opt3 = get_option( 'pprh_prefetch_disableForLoggedInUsers' );
-//		$opt4 = get_option( 'pprh_prefetch_enabled' );
-//		$opt5 = get_option( 'pprh_prefetch_delay' );
-//		$opt6 = get_option( 'pprh_prefetch_ignoreKeywords');
-//		$opt7 = get_option( 'pprh_prefetch_maxRPS' );
-//		$opt8 = get_option( 'pprh_prefetch_hoverDelay');
-//
-//		$arr1 = array( $opt1, $opt2, $opt3, $opt4, $opt5, $opt6, $opt7, $opt8 );
-//		$expected = array( 'true', 'true', 'true', 'false', '0', $default_prefetch_ignore_links, '3', '50' );
-//		$this->assertEquals( $arr1, $expected );
-//	}
 
 
 }

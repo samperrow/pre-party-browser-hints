@@ -11,6 +11,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 final class UtilsTest extends TestCase {
 
+
+
+
 	public function test_strip_non_alphanums():void {
 		$str1 = '!f_a#FED__=26 5b-2tb(&YT^>"28352';
 		$str2 = 'sfjsdlfj4w9tu3wofjw93u3';

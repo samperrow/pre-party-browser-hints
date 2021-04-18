@@ -17,7 +17,7 @@ class Utils {
 		<?php
 	}
 
-	public static function strip_non_alphanums( $text ) {
+    public static function strip_non_alphanums( $text ) {
 		return preg_replace( '/[^a-z\d]/imu', '', $text );
 	}
 
@@ -77,12 +77,6 @@ class Utils {
 	    return esc_html( $value );
 	}
 
-	public static function json_to_array( $json ) {
-	    $arr = json_decode( $json );
-//		$arr = explode( ', ', $json )[0];
-		return wp_unslash(  $arr );
-	}
-
 	public static function pprh_is_plugin_active() {
 		$plugin = 'pprh-pro/pprh-pro.php';
 		$site_active = ( in_array( $plugin, (array) get_option( 'active_plugins', array() ), true ) );
@@ -123,7 +117,5 @@ class Utils {
 	public static function get_referrer() {
 		return ( ! empty( $_SERVER['HTTP_REFERER'] ) ? self::clean_url( $_SERVER['HTTP_REFERER'] ) : '' );
 	}
-
-
 
 }

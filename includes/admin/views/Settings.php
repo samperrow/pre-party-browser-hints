@@ -19,9 +19,7 @@ class Settings {
 		$this->general_settings = new GeneralSettings();
 		$this->preconnect_settings = new PreconnectSettings($on_pprh_admin);
 		$this->prefetch_settings = new PrefetchSettings();
-
 		$this->display_settings();
-
 	}
 
 	public function display_settings() {

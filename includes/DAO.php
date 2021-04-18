@@ -8,6 +8,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class DAO {
 
+	private $table;
+
+	public function __construct() {
+		$this->table = PPRH_DB_TABLE;
+	}
+
 	public function code_action_arr( $code ) {
 		$actions = array(
 			0 => array( 'create', 'created' ),
@@ -72,7 +78,7 @@ class DAO {
 		$args = apply_filters( 'pprh_dao_insert_hint_schema', $args, $new_hint );
 
 		$wpdb->insert(
-			PPRH_DB_TABLE,
+			$this->table,
 			$args['columns'],
 			$args['types']
 		);
@@ -87,7 +93,7 @@ class DAO {
 		$current_user = wp_get_current_user()->display_name;
 
 		$wpdb->update(
-			PPRH_DB_TABLE,
+			$this->table,
 			array(
 				'url'         => $new_hint['url'],
 				'hint_type'   => $new_hint['hint_type'],
@@ -109,11 +115,11 @@ class DAO {
 
 	public function delete_hint( $hint_ids ) {
 		global $wpdb;
-		$table = PPRH_DB_TABLE;
+//		$table = PPRH_DB_TABLE;
 		$hint_id_exists = preg_match('/\d/', $hint_ids );
 
 		if ( $hint_id_exists > 0 ) {
-			$wpdb->query( "DELETE FROM $table WHERE id IN ($hint_ids)" );
+			$wpdb->query( "DELETE FROM $this->table WHERE id IN ($hint_ids)" );
 			return $this->create_db_result( $wpdb->result, $wpdb->insert_id, $wpdb->last_error, 2, null );
 		}
 
@@ -124,12 +130,12 @@ class DAO {
 
 	public function bulk_update( $hint_ids, $code ) {
 		global $wpdb;
-		$table = PPRH_DB_TABLE;
+//		$table = PPRH_DB_TABLE;
 
 		$action = ( 3 === $code ) ? 'enabled' : 'disabled';
 
 		$wpdb->query( $wpdb->prepare(
-			"UPDATE $table SET status = %s WHERE id IN ($hint_ids)",
+			"UPDATE $this->table SET status = %s WHERE id IN ($hint_ids)",
 			$action
 		) );
 
@@ -152,8 +158,8 @@ class DAO {
 	}
 
 	private function parse_query_code( $query_code ) {
-		$table = PPRH_DB_TABLE;
-		$sql = "SELECT * FROM $table";
+//		$table = PPRH_DB_TABLE;
+		$sql = "SELECT * FROM $this->table";
 		$query = array( 'sql' => $sql );
 
 		if ( 1 === $query_code ) {
@@ -191,6 +197,16 @@ class DAO {
 			}
 		}
 		return $ms_table_names;
+	}
+
+	public function get_table_column() {
+		global $wpdb;
+		return $wpdb->get_results( "SHOW COLUMNS FROM $this->table LIKE 'auto_created'", ARRAY_A );
+	}
+
+	public function drop_table_column() {
+		global $wpdb;
+		$wpdb->query( "ALTER TABLE $this->table DROP COLUMN auto_created" );
 	}
 
 	public function create_table( $table_name ) {
