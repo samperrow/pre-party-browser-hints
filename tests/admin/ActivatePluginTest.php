@@ -17,18 +17,22 @@ final class ActivatePluginTest extends TestCase {
 		$keywords_1 = '["/cart","test","wp-login.php"]';
 		$keywords_2 = '["["["/cart","test","wp-login.php"]"]"]';
 		$keywords_3 = '/cart, test, wp-login.php';
+		$keywords_4 = '["["wp-admin","/wp-login.php","/cart","/checkout","add-to-cart","logout","#","?",".png",".jpeg",".jpg",".gif",".svg",".webp"]"]';
 
-		$updated_keywords_1 = $activate_plugin->update_prefetch_keywords( $keywords_1 );
-		$updated_keywords_2 = $activate_plugin->update_prefetch_keywords( $keywords_2 );
-		$updated_keywords_3 = $activate_plugin->update_prefetch_keywords( $keywords_3 );
+		$updated_keywords_1 = $activate_plugin->reformat_prefetch_keywords( $keywords_1 );
+		$updated_keywords_2 = $activate_plugin->reformat_prefetch_keywords( $keywords_2 );
+		$updated_keywords_3 = $activate_plugin->reformat_prefetch_keywords( $keywords_3 );
+		$updated_keywords_4 = $activate_plugin->reformat_prefetch_keywords( $keywords_4 );
 
 		$expected_1 = '/cart, test, wp-login.php';
 		$expected_2 = '/cart, test, wp-login.php';
 		$expected_3 = '/cart, test, wp-login.php';
+		$expected_4 = 'wp-admin, /wp-login.php, /cart, /checkout, add-to-cart, logout, #, ?, .png, .jpeg, .jpg, .gif, .svg, .webp';
 
 		$this->assertEquals( $expected_1, $updated_keywords_1 );
 		$this->assertEquals( $expected_2, $updated_keywords_2 );
 		$this->assertEquals( $expected_3, $updated_keywords_3 );
+		$this->assertEquals( $expected_4, $updated_keywords_4 );
 	}
 
 
