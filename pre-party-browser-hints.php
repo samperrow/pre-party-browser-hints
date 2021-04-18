@@ -118,17 +118,22 @@ class Pre_Party_Browser_Hints {
 		$previous_version = PPRH_VERSION;
 		$this->load_activate_plugin();
 		$activate_plugin = new ActivatePlugin();
-		$activate_plugin->upgrade_plugin( $previous_version );
-		$this->upgrade_notice();
+
+		if ( '1.7.5.3' === $previous_version ) {
+			$activate_plugin->upgrade_prefetch_keywords();
+			$this->upgrade_notice();
+		} else {
+			$activate_plugin->upgrade_plugin();
+		}
 	}
 
-	public function upgrade_notice() {
+	private function upgrade_notice() {
 		if ( defined( 'PPRH_TESTING' ) && PPRH_TESTING ) {
 			return;
 		}
 		?>
 		<div class="notice notice-info is-dismissible">
-			<p><?php _e('Upgrade Notes: Fixed issue relating to hint creation (crossorigin attribute), automatic attribute creation, and the auto-prefetch feature.' ); ?></p>
+			<p><?php _e('1.7.5.4 Upgrade Notes: Fixed issue relating to hint creation (crossorigin attribute), automatic attribute creation, and the auto-prefetch feature.' ); ?></p>
 		</div>
 		<?php
 	}

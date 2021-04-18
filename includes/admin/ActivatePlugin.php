@@ -19,14 +19,7 @@ class ActivatePlugin {
 		$this->plugin_activated = true;
 	}
 
-	public function upgrade_plugin( $previous_version ) {
-		if ( '1.7.5.3' === $previous_version ) {
-			$keywords = get_option( 'pprh_prefetch_ignoreKeywords' );
-			$updated_keywords = $this->update_prefetch_keywords( $keywords );
-			$clean_keywords = Utils::clean_url( $updated_keywords );
-			update_option( 'pprh_prefetch_ignoreKeywords', $clean_keywords );
-		}
-
+	public function upgrade_plugin() {
 		$this->update_option_names();
 		$this->plugin_activated = true;
 	}
@@ -72,8 +65,15 @@ class ActivatePlugin {
 		}
 	}
 
+	public function upgrade_prefetch_keywords() {
+		$keywords = get_option( 'pprh_prefetch_ignoreKeywords' );
+		$updated_keywords = $this->reformat_prefetch_keywords( $keywords );
+		$clean_keywords = Utils::clean_url( $updated_keywords );
+		update_option( 'pprh_prefetch_ignoreKeywords', $clean_keywords );
+	}
+
 	// update previous prefetch ignoreKeywords option to new format.
-	public function update_prefetch_keywords( $keywords ) {
+	public function reformat_prefetch_keywords( $keywords ) {
 		$words = preg_replace( '/[\]|\[|\"\s]/', '', $keywords );
 		return preg_replace( '/,/', ', ', $words );
 	}

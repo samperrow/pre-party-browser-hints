@@ -5,6 +5,10 @@ div#poststuff {
         font-weight: normal;
     }
 
+    h2 {
+        font-size: 18px;
+    }
+
     h3 {
         font-size: 1.4em;
     }
@@ -222,5 +226,9 @@ div#poststuff {
 
     #pprhContactAuthor {
         text-align: center
+    }
+
+    div#pprh-hint-info p {
+        font-size: 1.1em;
     }
 }
