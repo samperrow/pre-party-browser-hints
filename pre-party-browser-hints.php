@@ -3,7 +3,7 @@
  * Plugin Name:       Pre* Party Resource Hints
  * Plugin URI:        https://wordpress.org/plugins/pre-party-browser-hints/
  * Description:       Take advantage of the browser resource hints DNS-Prefetch, Prerender, Preconnect, Prefetch, and Preload to improve page load time.
- * Version:           1.7.5.3
+ * Version:           1.7.6.1
  * Requires at least: 4.4
  * Requires PHP:      5.6.30
  * Author:            Sam Perrow
@@ -13,7 +13,7 @@
  * Text Domain:       pprh
  * Domain Path:       /languages
  *
- * last edited March 27, 2021
+ * last edited April 18, 2021
  *
  * Copyright 2016  Sam Perrow  (email : sam.perrow399@gmail.com)
  *
@@ -40,6 +40,7 @@ class Pre_Party_Browser_Hints {
 	public function load_plugin() {
 		$this->load_common_files();
 		$this->create_constants();
+		do_action( 'pprh_load_plugin' );
 
 		if ( ! function_exists( 'wp_doing_ajax' ) ) {
 			apply_filters( 'wp_doing_ajax', defined( 'DOING_AJAX' ) && DOING_AJAX );
@@ -48,23 +49,23 @@ class Pre_Party_Browser_Hints {
 		if ( is_admin() ) {
 			add_action( 'wp_loaded', array( $this, 'load_admin' ) );
 		} else {
-			$this->load_client();
+			add_action( 'wp_loaded', array( $this, 'load_client' ) );
 		}
 
 		// this needs to be loaded front end and back end bc Ajax needs to be able to communicate between the two.
-		include_once PPRH_ABS_DIR . 'includes/Preconnects.php';
+		include_once 'includes/Preconnects.php';
 		$preconnects = new Preconnects();
 	}
 
 	public function load_admin() {
-		include_once PPRH_ABS_DIR . 'includes/admin/LoadAdmin.php';
+		include_once 'includes/admin/LoadAdmin.php';
 		$load_admin = new LoadAdmin();
 		$load_admin->init();
-		$this->check_to_upgrade( '1.7.5.3' );
+		add_action( 'pprh_check_to_upgrade', array( $this, 'check_to_upgrade' ), 10, 1 );
 	}
 
     public function load_client() {
-		include_once PPRH_ABS_DIR . 'includes/client/LoadClient.php';
+		include_once 'includes/client/LoadClient.php';
 		$load_client = new LoadClient();
         $load_client->init();
     }
@@ -81,46 +82,66 @@ class Pre_Party_Browser_Hints {
 			define( 'PPRH_ABS_DIR', WP_PLUGIN_DIR . '/pre-party-browser-hints/' );
 			define( 'PPRH_REL_DIR', plugins_url() . '/pre-party-browser-hints/' );
 			define( 'PPRH_HOME_URL', admin_url() . 'admin.php?page=pprh-plugin-setttings' );
-
 			define( 'PPRH_PRO_PLUGIN_ACTIVE', $pprh_pro_active );
-			define( 'PPRH_DEBUG', false );
+			define( 'PPRH_DEBUG', true );
         }
 	}
 
 	public function load_common_files() {
-		include_once 'includes/Utils.php';
-		include_once 'includes/DAOController.php';
-		include_once 'includes/CreateHints.php';
+		if ( ! class_exists( \PPRH\Utils::class ) ) {
+			include_once 'includes/Utils.php';
+		}
+
+		if ( ! class_exists( \PPRH\DAOController::class ) ) {
+			include_once 'includes/DAOController.php';
+		}
+
+		if ( ! class_exists( \PPRH\CreateHints::class ) ) {
+			include_once 'includes/CreateHints.php';
+		}
+	}
+
+	private function load_activate_plugin() {
+		$this->load_common_files();
+		$this->create_constants();
+		include_once 'includes/admin/ActivatePlugin.php';
 	}
 
 	public function check_to_upgrade( $new_version ) {
 		if ( $new_version !== PPRH_VERSION ) {
-			$this->activate_plugin();
+			$this->do_upgrade();
 			update_option( 'pprh_version', $new_version );
-			add_action( 'admin_notices', array( $this, 'upgrade_notice' ) );
 		}
 	}
 
-	public function upgrade_notice() {
+	public function do_upgrade() {
+		$previous_version = PPRH_VERSION;
+		$this->load_activate_plugin();
+		$activate_plugin = new ActivatePlugin();
+
+		if ( '1.7.5.3' === $previous_version ) {
+			$activate_plugin->upgrade_prefetch_keywords();
+			$this->upgrade_notice();
+		} else {
+			$activate_plugin->upgrade_plugin();
+		}
+	}
+
+	private function upgrade_notice() {
+		if ( defined( 'PPRH_TESTING' ) && PPRH_TESTING ) {
+			return;
+		}
 		?>
 		<div class="notice notice-info is-dismissible">
-			<p><?php _e('Upgrade Notes: Fixed issue preventing hints from being updated, and fixed problem with the \'type\' attribute not saving properly.' ); ?></p>
+			<p><?php _e('1.7.6 Upgrade Notes: Fixed issue relating to hint creation (crossorigin attribute), automatic attribute creation, and the auto-prefetch feature.' ); ?></p>
 		</div>
 		<?php
 	}
 
 	public function activate_plugin() {
-		if ( ! class_exists( \PPRH\Utils::class ) ) {
-			include_once 'includes/Utils.php';
-			include_once 'includes/DAOController.php';
-		}
-
-		$this->create_constants();
-
-		include_once 'includes/admin/ActivatePlugin.php';
+		$this->load_activate_plugin();
 		$activate_plugin = new ActivatePlugin();
-		$activate_plugin->init();
+		$activate_plugin->activate_plugin();
 	}
-
 
 }

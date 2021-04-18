@@ -17,7 +17,7 @@ class Utils {
 		<?php
 	}
 
-	public static function strip_non_alphanums( $text ) {
+    public static function strip_non_alphanums( $text ) {
 		return preg_replace( '/[^a-z\d]/imu', '', $text );
 	}
 
@@ -77,11 +77,6 @@ class Utils {
 	    return esc_html( $value );
 	}
 
-	public static function json_to_array( $json ) {
-		$arr = explode( ', ', $json );
-		return wp_unslash( json_encode( $arr ) );
-	}
-
 	public static function pprh_is_plugin_active() {
 		$plugin = 'pprh-pro/pprh-pro.php';
 		$site_active = ( in_array( $plugin, (array) get_option( 'active_plugins', array() ), true ) );
@@ -89,29 +84,38 @@ class Utils {
 		return ( $site_active || $network_active );
 	}
 
-	public function on_pprh_page() {
-		global $pagenow;
-		$on_pprh_admin = self::on_pprh_admin();
-		$referrer = ( ! empty( $_SERVER['HTTP_REFERER'] ) ? self::clean_url( $_SERVER['HTTP_REFERER'] ) : '' );
-		$pro_on_pprh_page = apply_filters( 'pprh_utils_pro_on_pprh_page', $pagenow, $referrer );
-		return ( $on_pprh_admin || $pro_on_pprh_page);
+	public static function get_pprh_hints( $query_code ) {
+		$dao = new DAO();
+		return $dao->get_pprh_hints( $query_code );
+	}
+
+
+
+
+
+
+
+
+	public static function on_pprh_page() {
+	    global $pagenow;
+		$referrer = self::get_referrer();
+		$pro_on_admin_post_page = apply_filters( 'pprh_utils_pro_on_admin_post_page', $pagenow, $referrer );
+		return ( self::on_pprh_admin() || $pro_on_admin_post_page);
 	}
 
 	public static function on_pprh_admin() {
 		$pprh_page = 'pprh-plugin-settings';
+		$referrer = self::get_referrer();
 
 		if ( wp_doing_ajax() ) {
-			$referrer = ( ! empty( $_SERVER['HTTP_REFERER'] ) ? self::clean_url( $_SERVER['HTTP_REFERER'] ) : '' );
 			return ( false !== stripos( $referrer, $pprh_page ) );
 		} else {
-		    global $pagenow;
-			return ( ( isset( $_GET['page'] ) && $pprh_page === $_GET['page'] ) && 'admin.php' === $pagenow );
-	    }
+			return ( isset( $_GET['page'] ) && $pprh_page === $_GET['page'] );
+		}
 	}
 
-	public static function get_all_hints( $query_code ) {
-		$dao = new DAO();
-		return $dao->get_all_hints( $query_code );
+	public static function get_referrer() {
+		return ( ! empty( $_SERVER['HTTP_REFERER'] ) ? self::clean_url( $_SERVER['HTTP_REFERER'] ) : '' );
 	}
 
 }

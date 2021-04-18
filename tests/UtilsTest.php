@@ -11,6 +11,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 final class UtilsTest extends TestCase {
 
+
+
+
 	public function test_strip_non_alphanums():void {
 		$str1 = '!f_a#FED__=26 5b-2tb(&YT^>"28352';
 		$str2 = 'sfjsdlfj4w9tu3wofjw93u3';
@@ -51,16 +54,16 @@ final class UtilsTest extends TestCase {
 		$this->assertEquals( 'https://scripttest.comscript', $test2 );
 	}
 
-//	public function test_clean_url_path():void {
-//		$str1 = 'https://www.espn.com';
-//		$str2 = 'https"://<script\>test.com<script>';
-//
-//		$test1 = PPRH\Utils::clean_url_path($str1);
-//		$test2 = PPRH\Utils::clean_url_path($str2);
-//
-//		$this->assertEquals( $str1, $test1 );
-//		$this->assertEquals( 'https://scripttest.comscript', $test2 );
-//	}
+	public function test_clean_url_path():void {
+		$str1 = 'https://www.espn.com';
+		$str2 = '/?testdsdf/blah&';
+
+		$test1 = \PPRH\Utils::clean_url_path($str1);
+		$test2 = \PPRH\Utils::clean_url_path($str2);
+
+		$this->assertEquals( $str1, $test1 );
+		$this->assertEquals( 'testdsdf/blah', $test2 );
+	}
 
 	public function test_clean_hint_attr():void {
 		$str1 = 'font/woff2';
@@ -143,80 +146,8 @@ final class UtilsTest extends TestCase {
 		delete_option( $option_name );
 	}
 
-//	public function test_on_pprh_page():void {
-//		global $pagenow;
-//		$pagenow = 'admin.php';
-//		$_GET['page'] = 'pprh-plugin-settings';
-//
-//		$test1 = \PPRH\Utils::on_pprh_page();
-//
-//		$this->assertEquals( true, $test1 );
-//	}
 
 
-	public function test_create_pprh_hint_fail():void {
-		$create_hints = new \PPRH\CreateHints();
-		$raw_data1 = TestUtils::create_hint_array( '', '' );
-		$actual = $create_hints->create_hint( $raw_data1 );
-		$this->assertEquals( false, $actual );
-	}
-
-	public function test_create_pprh_hint_dup_hints():void {
-		$dao = new \PPRH\DAO();
-		$create_hints = new \PPRH\CreateHints();
-		$data1 = TestUtils::create_hint_array( 'blah.com', 'preconnect' );
-		$hint1 = $create_hints->create_hint($data1);
-
-		$actual1 = $dao->insert_hint( $hint1 );
-
-		$hint2 = $create_hints->new_hint_controller( $hint1 );
-
-		$this->assertEquals( true, $actual1->db_result['success'] );
-		$this->assertEquals( false, $hint2->db_result['success'] );
-		$dao->delete_hint( $actual1->db_result['hint_id'] );
-	}
-
-	public function test_create_hint_array():void {
-		$expected = TestUtils::create_hint_array( 'test.com', 'preconnect', 'audio', 'font/woff2', 'crossorigin', 'screen' );
-
-		$test1 = array(
-			'url'          => 'test.com',
-			'hint_type'    => 'preconnect',
-			'as_attr'      => 'audio',
-			'type_attr'    => 'font/woff2',
-			'crossorigin'  => 'crossorigin',
-			'media'        => 'screen'
-		);
-
-		$actual = apply_filters( 'pprh_ch_append_hint', $test1, array() );
-		$this->assertEquals( $expected, $actual );
-	}
-
-	public function test_create_response():void {
-		$dao = new \PPRH\DAO();
-		$result = true;
-		$new_hint = null;
-
-		$expected = (object) array(
-			'new_hint'  => $new_hint,
-			'db_result' => array(
-				'msg'        => 'Resource hint created successfully.',
-				'status'     => ( $result ) ? 'success' : 'error',
-				'success'    => $result,
-				'hint_id'    => '',
-				'last_error' => '',
-			)
-		);
-
-		$test1 = $dao->create_db_result( true, '', '', 0, null );
-
-		$this->assertEquals( $expected, $test1 );
-	}
-
-//	public function test_db_op_success():void {
-//
-//
-//	}
 
 	public function test_esc_get_option():void {
 		$test_option_name1 = 'pprh_test_option1';

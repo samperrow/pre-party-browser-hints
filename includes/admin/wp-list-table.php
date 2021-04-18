@@ -21,6 +21,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class WP_List_Table {
 
+	public $on_pprh_admin;
+
 	/**
 	 * The current list of items.
 	 *
@@ -150,11 +152,11 @@ class WP_List_Table {
 				'singular'      => '',
 				'ajax'          => true,
 				'screen'        => null,
-                'on_pprh_admin' => $args['on_pprh_admin']
 			)
 		);
 
 		$this->screen = convert_to_screen( $args['screen'] );
+		$this->on_pprh_admin = apply_filters( 'pprh_on_pprh_admin', null );
 
 		add_filter( "manage_{$this->screen->id}_columns", array( $this, 'get_columns' ), 0 );
 
@@ -1278,7 +1280,19 @@ class WP_List_Table {
 	protected function column_default( $item, $column_name ) {}
 
 
+	public function on_post_page_and_global_hint( $item ) {
+		$global_hint = ( ! empty( $item['post_id'] ) && 'global' === $item['post_id'] );
+		$on_pprh_admin = ( PPRH_PRO_PLUGIN_ACTIVE && ! $this->on_pprh_admin );
+		return ( $global_hint && $on_pprh_admin );
+	}
 
+	protected function global_hint_alert() {
+		?>
+        <span class="pprh-help-tip-hint">
+			<span><?php esc_html_e( 'This is a global resource hint, and is used on all pages and posts. To update this hint, please do so from the main Pre* Party plugin page.', 'pprh' ); ?></span>
+		</span>
+		<?php
+	}
 
 	/**
 	 * Generates the columns for a single row of the table

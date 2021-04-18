@@ -34,9 +34,9 @@ class Settings {
 						$this->general_settings->show_settings();
 						$this->preconnect_settings->show_settings();
 						$this->prefetch_settings->show_settings();
-					}
+                    }
 
-				    do_action( 'pprh_sc_prerender_settings' );
+                    do_action( 'pprh_sc_prerender_settings' );
                 ?>
                 <div class="text-center">
                     <input type="submit" name="pprh_save_options" class="button button-primary" value="<?php esc_attr_e( 'Save Changes', 'pprh' ); ?>" />

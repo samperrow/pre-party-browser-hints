@@ -8,6 +8,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class DAO {
 
+	private $table;
+
+	public function __construct() {
+		$this->table = PPRH_DB_TABLE;
+	}
+
 	public function code_action_arr( $code ) {
 		$actions = array(
 			0 => array( 'create', 'created' ),
@@ -56,7 +62,7 @@ class DAO {
 		$current_user = wp_get_current_user()->display_name;
 
 		$args = array(
-			'types'   => array( '%s', '%s', '%s', '%s', '%s', '%s', '%s' ),
+			'types'   => array( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' ),
 			'columns' => array(
 				'url'          => $new_hint['url'],
 				'hint_type'    => $new_hint['hint_type'],
@@ -69,10 +75,10 @@ class DAO {
 			)
 		);
 
-		$args = apply_filters( 'pprh_ch_insert_hint_schema', $args, $new_hint );
+		$args = apply_filters( 'pprh_dao_insert_hint_schema', $args, $new_hint );
 
 		$wpdb->insert(
-			PPRH_DB_TABLE,
+			$this->table,
 			$args['columns'],
 			$args['types']
 		);
@@ -87,7 +93,7 @@ class DAO {
 		$current_user = wp_get_current_user()->display_name;
 
 		$wpdb->update(
-			PPRH_DB_TABLE,
+			$this->table,
 			array(
 				'url'         => $new_hint['url'],
 				'hint_type'   => $new_hint['hint_type'],
@@ -109,11 +115,11 @@ class DAO {
 
 	public function delete_hint( $hint_ids ) {
 		global $wpdb;
-		$table = PPRH_DB_TABLE;
+//		$table = PPRH_DB_TABLE;
 		$hint_id_exists = preg_match('/\d/', $hint_ids );
 
 		if ( $hint_id_exists > 0 ) {
-			$wpdb->query( "DELETE FROM $table WHERE id IN ($hint_ids)" );
+			$wpdb->query( "DELETE FROM $this->table WHERE id IN ($hint_ids)" );
 			return $this->create_db_result( $wpdb->result, $wpdb->insert_id, $wpdb->last_error, 2, null );
 		}
 
@@ -124,12 +130,12 @@ class DAO {
 
 	public function bulk_update( $hint_ids, $code ) {
 		global $wpdb;
-		$table = PPRH_DB_TABLE;
+//		$table = PPRH_DB_TABLE;
 
 		$action = ( 3 === $code ) ? 'enabled' : 'disabled';
 
 		$wpdb->query( $wpdb->prepare(
-			"UPDATE $table SET status = %s WHERE id IN ($hint_ids)",
+			"UPDATE $this->table SET status = %s WHERE id IN ($hint_ids)",
 			$action
 		) );
 
@@ -137,12 +143,9 @@ class DAO {
 	}
 
 
-	public function get_all_hints( $query_code = null ) {
+	public function get_pprh_hints( $query_code = null ) {
 		global $wpdb;
-		$table = PPRH_DB_TABLE;
-		$sql = "SELECT * FROM $table";
-
-		$query = $this->parse_query_code( $sql, $query_code );
+		$query = $this->parse_query_code( $query_code );
 
 		if ( ! empty( $query['args'] ) ) {
 			$prepared_stmt = $wpdb->prepare( $query['sql'], $query['args'] );
@@ -151,10 +154,12 @@ class DAO {
 			$results = $wpdb->get_results( $query['sql'], ARRAY_A );
 		}
 
-		return $results;
+		return apply_filters( 'pprh_filter_hints', $results );
 	}
 
-	private function parse_query_code( $sql, $query_code ) {
+	private function parse_query_code( $query_code ) {
+//		$table = PPRH_DB_TABLE;
+		$sql = "SELECT * FROM $this->table";
 		$query = array( 'sql' => $sql );
 
 		if ( 1 === $query_code ) {
@@ -163,8 +168,13 @@ class DAO {
 		} elseif ( 2 === $query_code ) {
 			$query['sql'] .= ' ORDER BY ' . esc_sql( $_REQUEST['orderby'] );
 			$query['sql'] .= ! empty( $_REQUEST['order'] ) ? ' ' . esc_sql( $_REQUEST['order'] ) : ' ASC';
-		} elseif ( 3 === $query_code ) {
-			$query['sql'] .= ' ORDER BY url ASC';
+		}
+		elseif ( 3 === $query_code ) {
+			if ( PPRH_PRO_PLUGIN_ACTIVE ) {
+				$query['sql'] = apply_filters( 'pprh_append_string', $query['sql'], ' ORDER BY post_id DESC, url ASC' );
+			} else {
+				$query['sql'] .= ' ORDER BY url ASC';
+			}
 		}
 
 		return $query;
@@ -187,6 +197,16 @@ class DAO {
 			}
 		}
 		return $ms_table_names;
+	}
+
+	public function get_table_column() {
+		global $wpdb;
+		return $wpdb->get_results( "SHOW COLUMNS FROM $this->table LIKE 'auto_created'", ARRAY_A );
+	}
+
+	public function drop_table_column() {
+		global $wpdb;
+		$wpdb->query( "ALTER TABLE $this->table DROP COLUMN auto_created" );
 	}
 
 	public function create_table( $table_name ) {

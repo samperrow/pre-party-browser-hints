@@ -9,11 +9,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 class LoadClient {
 
 	public function init() {
-		include_once PPRH_ABS_DIR . 'includes/client/SendHints.php';
+		do_action( 'pprh_pro_load_client' );
+		include_once 'SendHints.php';
 
 		$this->verify_to_load_fp();
 
-		$enabled_hints = Utils::get_all_hints( 1 );
+		$enabled_hints = Utils::get_pprh_hints( 1 );
 
 		$send_hints = new SendHints();
 		$send_hints->init($enabled_hints);

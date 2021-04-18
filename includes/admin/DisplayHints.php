@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 if ( ! class_exists( WP_List_Table::class ) ) {
-	require_once PPRH_ABS_DIR . 'includes/admin/wp-list-table.php';
+	require_once 'wp-list-table.php';
 }
 
 class DisplayHints extends WP_List_Table {
@@ -17,13 +17,13 @@ class DisplayHints extends WP_List_Table {
 	public $table;
 	public $items;
 
-	public function __construct( $on_pprh_admin ) {
+
+	public function __construct() {
 		parent::__construct( array(
             'ajax'     => true,
 			'plural'   => 'urls',
 			'screen'   => 'toplevel_page_pprh-plugin-settings',
 			'singular' => 'url',
-            'on_pprh_admin' => $on_pprh_admin
 		) );
 
 		if ( ! wp_doing_ajax() ) {
@@ -33,12 +33,11 @@ class DisplayHints extends WP_List_Table {
 	}
 
 	public function column_default( $item, $column_name ) {
-
-		if ('post_id' === $column_name) {
-            return apply_filters('pprh_dh_get_post_link', $item['post_id']);
+		if ( 'post_id' === $column_name ) {
+            return apply_filters( 'pprh_dh_get_post_link', $item['post_id'] );
         }
 
-		if ('' === $item[$column_name]) {
+		if ( '' === $item[$column_name] ) {
             return $this->set_item( $item[$column_name] );
         }
 
@@ -85,14 +84,13 @@ class DisplayHints extends WP_List_Table {
 	}
 
 	public function prepare_items() {
-	    $dao = new DAO();
 		$this->hints_per_page = $this->set_hints_per_page();
 		$columns = $this->get_columns();
 		$sortable = $this->get_sortable_columns();
 		$this->_column_headers = array( $columns, array(), $sortable );
 		$current_page = $this->get_pagenum();
 		$query_code = ( ! empty( $_REQUEST['orderby'] ) ? 2 : 3 );
-		$all_hints = Utils::get_all_hints( $query_code );
+		$all_hints = Utils::get_pprh_hints( $query_code );
 		$this->items = array_slice( $all_hints, ( ( $current_page - 1 ) * $this->hints_per_page ), $this->hints_per_page );
 		$total_items = count( $all_hints );
 
@@ -134,14 +132,6 @@ class DisplayHints extends WP_List_Table {
 		return sprintf( '<input type="checkbox" name="urlValue[]" value="%1$s"/>', $item['id'] );
 	}
 
-	protected function global_hint_alert() {
-		?>
-        <span class="pprh-help-tip-hint">
-			<span><?php esc_html_e( 'This is a global resource hint, and is used on all pages and posts. To update this hint, please do so from the main Pre* Party plugin page.', 'pprh' ); ?></span>
-		</span>
-		<?php
-	}
-
 	public function inline_edit_row( $item ) {
 		$json = json_encode( $item,true );
 		$item_id = Utils::strip_non_numbers( $item['id'] );
@@ -169,10 +159,6 @@ class DisplayHints extends WP_List_Table {
 				</td>
 		    </tr>
 		<?php
-	}
-
-	public function on_post_page_and_global_hint( $item ) {
-		return ( ! empty( $item['post_id'] ) && 'global' === $item['post_id'] && PPRH_PRO_PLUGIN_ACTIVE && ! $this->_args['on_pprh_admin'] );
 	}
 
 

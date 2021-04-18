@@ -1,7 +1,12 @@
-div#pprh-wrapper {
+div#poststuff {
+
+    h1 {
+        font-size: 23px;
+        font-weight: normal;
+    }
 
     h2 {
-        font-size: 23px;
+        font-size: 18px;
     }
 
     h3 {
@@ -212,7 +217,6 @@ div#pprh-wrapper {
 
     div.pprh-code-block {
         margin: 0 auto;
-        //width: 650px;
         max-width: 95%
     }
 
@@ -223,15 +227,8 @@ div#pprh-wrapper {
     #pprhContactAuthor {
         text-align: center
     }
-}
 
-div#TB_ajaxContent {
-    div#asdf table tbody tr {
-        height: 130px;
-
-        td {
-            text-align: center;
-        }
+    div#pprh-hint-info p {
+        font-size: 1.1em;
     }
-
 }

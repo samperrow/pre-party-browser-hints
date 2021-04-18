@@ -13,8 +13,8 @@
             url:         urlValue,
             hint_type:   hintType,
             media:       ('preload' === hintType) ? getAttr(data.media) : '',
-            as_attr:     getAttr(data.as_attr, mimeTypeValues),
-            type_attr:   getAttr(data.type_attr, mimeTypeValues),
+            as_attr:     getAttr(data.as_attr, mimeTypeValues, 'as'),
+            type_attr:   getAttr(data.type_attr, mimeTypeValues, 'mimeType'),
             crossorigin: getCrossorigin(hintType, data.crossorigin, urlValue, fileType),
         };
 
@@ -44,7 +44,7 @@
 
     // tested
     function getDomain(url) {
-        var domain = '';
+        let domain = '';
 
         if (typeof window.URL === "function" && (0 !== url.indexOf('//') )) {
             domain = new URL(url).origin;
@@ -66,15 +66,16 @@
     }
 
     function getCrossorigin(hintType, crossoriginElem, urlValue, fileType) {
-        if ( 'preconnect' === hintType ) {
-            if ( true === crossoriginElem || /fonts.(googleapis|gstatic|cdnfonts).com/i.test(urlValue) || /(\.woff|\.woff2|\.ttf|\.eot)/i.test(fileType)) {
-                return 'crossorigin';
-            }
+        if ( true === crossoriginElem
+            || ('preconnect' === hintType && /fonts.(googleapis|gstatic|cdnfonts).com/i.test(urlValue))
+            || ( 'preload' === hintType && /(\.woff|\.woff2|\.ttf|\.eot)/i.test(fileType))) {
+            return 'crossorigin';
         }
 
         return '';
     }
 
+    // tested
     function getAttr(val, mimeValues, prop) {
         if (val && val !== '') {
             return val;
@@ -86,9 +87,9 @@
 
     // tested
     function getFileTypeMime(fileType) {
-        var i = 0;
+        let i = 0;
 
-        for (i = 0; i < mimes.length; i++) {
+        for (i; i < mimes.length; i++) {
             if (mimes[i].fileType === fileType) {
                 return mimes[i];
             }
@@ -105,32 +106,27 @@
         { 'fileType': '.ogx',    'as': '',         'mimeType': 'application/ogg' },
         { 'fileType': '.pdf',    'as': '',         'mimeType': 'application/pdf' },
         { 'fileType': '.swf',    'as': 'embed',    'mimeType': 'application/x-shockwave-flash' },
-
         { 'fileType': '.aac',    'as': 'audio',    'mimeType': 'audio/aac' },
         { 'fileType': '.mp3',    'as': 'audio',    'mimeType': 'audio/mpeg' },
         { 'fileType': '.mpeg',   'as': 'audio',    'mimeType': 'audio/mpeg' },
         { 'fileType': '.oga',    'as': '',         'mimeType': 'audio/ogg' },
         { 'fileType': '.opus',   'as': '',         'mimeType': 'audio/opus' },
         { 'fileType': '.weba',   'as': 'audio',    'mimeType': 'audio/webm' },
-
         { 'fileType': '.eot',    'as': 'font',     'mimeType': 'font/eot' },
         { 'fileType': '.otf',    'as': 'font',     'mimeType': 'font/otf' },
         { 'fileType': '.ttf',    'as': 'font',     'mimeType': 'font/ttf' },
         { 'fileType': '.woff',   'as': 'font',     'mimeType': 'font/woff' },
         { 'fileType': '.woff2',  'as': 'font',     'mimeType': 'font/woff2' },
-
         { 'fileType': '.css',    'as': 'style',    'mimeType': 'text/css' },
         { 'fileType': '.htm',    'as': 'document', 'mimeType': 'text/html' },
         { 'fileType': '.html',   'as': 'document', 'mimeType': 'text/html' },
         { 'fileType': '.js',     'as': 'script',   'mimeType': 'text/javascript' },
         { 'fileType': '.txt',    'as': '',         'mimeType': 'text/plain' },
         { 'fileType': '.vtt',    'as': 'track',    'mimeType': 'text/vtt' },
-
         { 'fileType': '.mp4',    'as': 'video',    'mimeType': 'video/mp4' },
         { 'fileType': '.ogv',    'as': 'video',    'mimeType': 'video/ogg' },
         { 'fileType': '.webm',   'as': 'video',    'mimeType': 'video/webm' },
         { 'fileType': '.avi',    'as': 'video',    'mimeType': 'video/x-msvideo' },
-
         { 'fileType': '.bmp',    'as': 'image',    'mimeType': 'image/bmp' },
         { 'fileType': '.jpg',    'as': 'image',    'mimeType': 'image/jpeg' },
         { 'fileType': '.jpeg',   'as': 'image',    'mimeType': 'image/jpeg' },
@@ -140,20 +136,35 @@
         { 'fileType': '.webp',   'as': 'image',    'mimeType': 'image/webp' },
     ];
 
+    function wildcardSearch(keyword, url) {
+        if (keyword.endsWith("*")) {
+            let pattern = keyword.split("*")[0];
+            let fragment = url.split(pattern)[1];
+            return ( "" !== fragment);
+        }
 
-    return {
-        GetUrl: getUrl,
+        return true;
+    }
+
+    let returnFns = {
+        CreateHint: createHint,
         GetDomain: getDomain,
-        GetHintType: getHintType,
-        GetFileType: getFileType,
-        GetAttr: getAttr,
-        GetFileTypeMime: getFileTypeMime,
-        CreateHint: createHint
+        WildcardSearch: wildcardSearch
     };
+
+    let allFns = returnFns;
+        allFns.GetUrl = getUrl;
+        allFns.GetHintType = getHintType;
+        allFns.GetCrossorigin = getCrossorigin;
+        allFns.GetFileType = getFileType;
+        allFns.GetAttr = getAttr;
+        allFns.GetFileTypeMime = getFileTypeMime;
+
+    return (typeof module === "object") ? allFns : returnFns;
 
 }));
 
-
-// if (! /sphacks.local/g.test(document.location.href)) {
-//     module.exports = this.pprhCreateHint;
-// }
+// for testing
+if (typeof module === "object") {
+    module.exports = this.pprhCreateHint;
+}

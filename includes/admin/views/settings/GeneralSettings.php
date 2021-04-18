@@ -12,8 +12,6 @@ class GeneralSettings {
 
 	public $html_head = false;
 
-//	public function __construct() {}
-
 	public function save_options() {
 
 	    $options = array(

@@ -16,8 +16,10 @@ class PrefetchSettings {
 
 	public function get_each_keyword( $keywords ) {
 	    if ( is_null( $keywords ) ) {
-	        return;
+	        return '';
         }
+
+		$keywords = explode( ', ', $keywords );
 
 	    $str = '';
 	    $count = count( $keywords );
@@ -35,19 +37,11 @@ class PrefetchSettings {
 		return $str;
 	}
 
-	public function turn_textarea_to_json( $text ) {
+	public function turn_textarea_to_csv( $text ) {
 		$text = trim($text);
-		$arr = array();
 		$text_arr = explode( "\r\n", $text );
-
-		foreach ( $text_arr as $str ) {
-		    if ( '' !== $str ) {
-		        $arr[] = $str;
-            }
-        }
-
-		$str = implode( ', ', $arr );
-		return Utils::json_to_array( $str );
+		$str = implode( ', ', $text_arr );
+		return $str;
 	}
 
 	public function save_options() {
@@ -55,7 +49,7 @@ class PrefetchSettings {
 			'pprh_prefetch_enabled'                 => isset( $_POST['pprh_prefetch_enabled'] )                 ? 'true' : 'false',
 			'pprh_prefetch_disableForLoggedInUsers' => isset( $_POST['pprh_prefetch_disableForLoggedInUsers'] ) ? 'true' : 'false',
 			'pprh_prefetch_delay'                   => isset( $_POST['pprh_prefetch_delay'] )                   ? Utils::strip_non_numbers( $_POST['pprh_prefetch_delay'] ) : '0',
-			'pprh_prefetch_ignoreKeywords'          => isset( $_POST['pprh_prefetch_ignoreKeywords'] )          ? $this->turn_textarea_to_json( $_POST['pprh_prefetch_ignoreKeywords'] ) : '',
+			'pprh_prefetch_ignoreKeywords'          => isset( $_POST['pprh_prefetch_ignoreKeywords'] )          ? $this->turn_textarea_to_csv( $_POST['pprh_prefetch_ignoreKeywords'] ) : '',
 			'pprh_prefetch_maxRPS'                  => isset( $_POST['pprh_prefetch_maxRPS'] )                  ? Utils::strip_non_numbers( $_POST['pprh_prefetch_maxRPS'] ) : '3',
 			'pprh_prefetch_hoverDelay'              => isset( $_POST['pprh_prefetch_hoverDelay'] )              ? Utils::strip_non_numbers( $_POST['pprh_prefetch_hoverDelay'] ) : '50',
 			'pprh_prefetch_max_prefetches'          => isset( $_POST['pprh_prefetch_max_prefetches'] )          ? Utils::strip_non_numbers( $_POST['pprh_prefetch_max_prefetches'] ) : '10',
@@ -80,7 +74,7 @@ class PrefetchSettings {
 		$this->prefetch_enabled = \PPRH\Utils::is_option_checked( 'pprh_prefetch_enabled' );
 
 		$prefetch_ignoreKeywords = get_option( 'pprh_prefetch_ignoreKeywords' );
-		$this->ignoreKeywords = json_decode( $prefetch_ignoreKeywords, true );
+		$this->ignoreKeywords = $prefetch_ignoreKeywords;
 		$this->prefetch_initialization_delay = Utils::esc_get_option( 'pprh_prefetch_delay' );
 		$this->prefetch_max_prefetches = Utils::esc_get_option( 'pprh_prefetch_max_prefetches' );
 	}
@@ -97,68 +91,68 @@ class PrefetchSettings {
 
 				<table class="form-table">
 					<tbody>
-					<tr>
-						<th><?php esc_html_e( 'Enable this feature? (This allows for navigation links to be automatically prefetched while in viewport.)', 'pprh' ); ?></th>
+                        <tr>
+                            <th><?php esc_html_e( 'Enable this feature? (This allows for navigation links to be automatically prefetched while in viewport.)', 'pprh' ); ?></th>
 
-						<td>
-							<input type="checkbox" name="pprh_prefetch_enabled" value="true" <?php echo $this->prefetch_enabled; ?>/>
-							<p><?php esc_html_e( 'When navigation (anchor) links are being moused over, this feature will initiate a prefetch request for the URL in the link. Select No (default) to disable this feature.', 'pprh' ); ?></p>
-						</td>
-					</tr>
+                            <td>
+                                <input type="checkbox" name="pprh_prefetch_enabled" id="pprhPrefetchEnabled" value="true" <?php echo $this->prefetch_enabled; ?>/>
+                                <p><?php esc_html_e( 'When navigation (anchor) links are being moused over, this feature will initiate a prefetch request for the URL in the link. Select No (default) to disable this feature.', 'pprh' ); ?></p>
+                            </td>
+                        </tr>
 
-					<tr>
-						<th scope="row"><?php esc_html_e( 'Disable prefetching for logged in users?', 'pprh' ); ?></th>
+                        <tr>
+                            <th scope="row"><?php esc_html_e( 'Disable prefetching for logged in users?', 'pprh' ); ?></th>
 
-						<td>
-							<input type="checkbox" name="pprh_prefetch_disableForLoggedInUsers" value="true" <?php echo $this->prefetch_disableForLoggedInUsers; ?>/>
-							<p><?php esc_html_e( 'It usually is not necessary for logged in users to prefetch content. This will save some server resources.', 'pprh' ); ?></p>
-						</td>
-					</tr>
+                            <td>
+                                <input type="checkbox" name="pprh_prefetch_disableForLoggedInUsers" value="true" <?php echo $this->prefetch_disableForLoggedInUsers; ?>/>
+                                <p><?php esc_html_e( 'It usually is not necessary for logged in users to prefetch content. This will save some server resources.', 'pprh' ); ?></p>
+                            </td>
+                        </tr>
 
-					<tr>
-						<th><?php esc_html_e( 'Prefetch initiation delay (seconds):', 'pprh' ); ?></th>
+                        <tr>
+                            <th><?php esc_html_e( 'Prefetch initiation delay (seconds):', 'pprh' ); ?></th>
 
-						<td>
-							<input type="number" step="1" min="0" max="30" name="pprh_prefetch_delay" value="<?php echo $this->prefetch_initialization_delay; ?>">
-							<p><?php esc_html_e( 'Start prefetching after a short delay. Will be started when the browser becomes idle. Default is 0 seconds.', 'pprh' ); ?></p>
-						</td>
-					</tr>
+                            <td>
+                                <input type="number" step="1" min="0" max="30" name="pprh_prefetch_delay" value="<?php echo $this->prefetch_initialization_delay; ?>">
+                                <p><?php esc_html_e( 'Start prefetching after a short delay. Will be started when the browser becomes idle. Default is 0 seconds.', 'pprh' ); ?></p>
+                            </td>
+                        </tr>
 
-					<tr>
-						<th><?php esc_html_e( 'Ignore these keywords:', 'pprh' ); ?></th>
+                        <tr>
+                            <th><?php esc_html_e( 'Ignore these keywords:', 'pprh' ); ?></th>
 
-						<td>
-							<textarea name="pprh_prefetch_ignoreKeywords" rows="6"><?php echo $this->get_each_keyword( $this->ignoreKeywords ); ?></textarea>
-							<p><?php esc_html_e( 'A list of keywords to ignore from prefetching. One keyword per line. You may use an astericks ("*") to implement wildcard keywords to match any link (example: "/products*"). Any links matching any of the values specified will not be prefetch.', 'pprh'); ?></p>
-						</td>
-					</tr>
+                            <td>
+                                <textarea name="pprh_prefetch_ignoreKeywords" rows="6"><?php echo $this->get_each_keyword( $this->ignoreKeywords ); ?></textarea>
+                                <p><?php esc_html_e( 'A list of keywords to ignore from prefetching. One keyword per line. You may use an astericks (*) after a keyword (ex: "/products*") to act as a wildcard, preventing links with that value from being prefetched.', 'pprh'); ?></p>
+                            </td>
+                        </tr>
 
-					<tr>
-						<th><?php esc_html_e( 'Maximum requests per second:', 'pprh' ); ?></th>
+                        <tr>
+                            <th><?php esc_html_e( 'Maximum requests per second:', 'pprh' ); ?></th>
 
-						<td>
-							<input type="number" step="1" min="1" max="100" name="pprh_prefetch_maxRPS" value="<?php echo Utils::esc_get_option( 'pprh_prefetch_maxRPS' );; ?>">
-							<p><?php esc_html_e( 'Number of prefetch hints that can be created per second. Default is 3 per second.', 'pprh' ); ?></p>
-						</td>
-					</tr>
+                            <td>
+                                <input type="number" step="1" min="1" max="100" name="pprh_prefetch_maxRPS" value="<?php echo Utils::esc_get_option( 'pprh_prefetch_maxRPS' );; ?>">
+                                <p><?php esc_html_e( 'Number of prefetch hints that can be created per second. Default is 3 per second.', 'pprh' ); ?></p>
+                            </td>
+                        </tr>
 
-					<tr>
-						<th><?php esc_html_e( 'Delay in prefetching links on mouse hover (milliseconds)', 'pprh' ); ?></th>
+                        <tr>
+                            <th><?php esc_html_e( 'Delay in prefetching links on mouse hover (milliseconds)', 'pprh' ); ?></th>
 
-						<td>
-							<input type="number" step="50" min="0" max="1000" name="pprh_prefetch_hoverDelay" value="<?php echo Utils::esc_get_option( 'pprh_prefetch_hoverDelay' );; ?>">
-							<p><?php esc_html_e( 'Set a short pause after the mouse hovers over a link before the prefetch hint is created. Default is 50 milliseconds.', 'pprh' ); ?></p>
-						</td>
-					</tr>
+                            <td>
+                                <input type="number" step="50" min="0" max="1000" name="pprh_prefetch_hoverDelay" value="<?php echo Utils::esc_get_option( 'pprh_prefetch_hoverDelay' );; ?>">
+                                <p><?php esc_html_e( 'Set a short pause after the mouse hovers over a link before the prefetch hint is created. Default is 50 milliseconds.', 'pprh' ); ?></p>
+                            </td>
+                        </tr>
 
-                    <tr>
-                        <th><?php esc_html_e( 'Maximum number of prefetch hints loaded? (Excluding mouse hover or touch events)', 'pprh' ); ?></th>
+                        <tr>
+                            <th><?php esc_html_e( 'Maximum number of prefetch hints loaded? (Excluding mouse hover or touch events)', 'pprh' ); ?></th>
 
-                        <td>
-                            <input type="number" step="1" min="1" max="100" name="pprh_prefetch_max_prefetches" value="<?php echo $this->prefetch_max_prefetches; ?>">
-                            <p><?php esc_html_e( 'Set the maximum number of prefetch hints you would like to be loaded. This can save some server resources. Default is 10.', 'pprh' ); ?></p>
-                        </td>
-                    </tr>
+                            <td>
+                                <input type="number" step="1" min="1" max="100" name="pprh_prefetch_max_prefetches" value="<?php echo $this->prefetch_max_prefetches; ?>">
+                                <p><?php esc_html_e( 'Set the maximum number of prefetch hints you would like to be loaded. This can save some server resources. Default is 10.', 'pprh' ); ?></p>
+                            </td>
+                        </tr>
 
 					</tbody>
 				</table>

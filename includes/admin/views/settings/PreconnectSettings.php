@@ -53,7 +53,7 @@ class PreconnectSettings {
 					<tbody>
 
 					<tr>
-						<th><?php esc_html_e( 'Automatically set preconnect hints?', 'pprh' ); ?></th>
+						<th><?php esc_html_e( 'Enable this feature? (This allows preconnect hints to be automatically created.)', 'pprh' ); ?></th>
 
 						<td>
 							<input type="checkbox" name="pprh_preconnect_autoload_preconnects" value="true" <?php echo $this->autoload; ?>/>

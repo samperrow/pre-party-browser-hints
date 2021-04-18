@@ -51,12 +51,11 @@ class Preconnects {
 	}
 
 	private function check_to_perform_reset( $reset_data ) {
-		if ( empty( $reset_data['reset_pro'] ) || null === $reset_data['reset_pro'] ) {
+//		if ( empty( $reset_data['reset_pro'] ) || null === $reset_data['reset_pro'] ) {
 			$perform_reset = $this->perform_reset( $reset_data );
-		}
-		else {
-			$perform_reset = $this->perform_pro_reset( $reset_data['reset_pro'] );
-		}
+//		} else {
+//			$perform_reset = $this->perform_pro_reset( $reset_data['reset_pro'] );
+//		}
 
 		return $perform_reset;
 	}
@@ -78,6 +77,7 @@ class Preconnects {
 		return ( ! empty( $reset_pro ) && $reset_pro['perform_reset'] );
 	}
 
+	// both admin and client
 	// tested
 	public function load_ajax_actions( $allow_unauth ) {
 		$ajax_cb = 'pprh_post_domain_names';
@@ -140,8 +140,7 @@ class Preconnects {
 			$allow_unauth = $this->config['reset_data']['allow_unauth'];
 
 			if ( $this->allow_unauth_users( $allow_unauth ) ) {
-				$this->do_ajax_callback( $_POST['pprh_data'] );
-				return true;
+				return $this->do_ajax_callback( $_POST['pprh_data'] );
 			}
 
 			return false;
@@ -152,27 +151,31 @@ class Preconnects {
 		}
 	}
 
-
-
-
-	public function do_ajax_callback( $pprh_data ) {
+	private function do_ajax_callback( $pprh_data ) {
 		$raw_hint_data = json_decode( wp_unslash( $pprh_data ), true );
 		$results = array();
+		$raw_hint_count = count( $raw_hint_data['hints'] );
 
-		if ( count( $raw_hint_data['hints'] ) > 0 ) {
+		if ( $raw_hint_count > 0 ) {
 			$results = $this->process_hints( $raw_hint_data );
 		}
 
 		$this->update_options( $raw_hint_data );
-		return $results;
+		return ( $raw_hint_count === count( $results ) );
 	}
 
+	// tested
 	public function process_hints( $hint_data ) {
 		$dao_ctrl = new DAOController();
 		$results = array();
 
 		foreach ( $hint_data['hints'] as $new_hint ) {
 			$new_hint['op_code'] = 0;
+
+			if ( isset( $hint_data['post_id'] ) ) {
+				$new_hint['post_id'] = $hint_data['post_id'];
+			}
+
 			$result = $dao_ctrl->hint_controller( $new_hint );
 
 			if ( is_object( $result ) ) {

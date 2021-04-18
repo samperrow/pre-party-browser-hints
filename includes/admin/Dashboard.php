@@ -15,13 +15,13 @@ class Dashboard {
 	}
 
 	public function load_plugin_admin_files() {
-		include_once PPRH_ABS_DIR . 'includes/admin/views/InsertHints.php';
-		include_once PPRH_ABS_DIR . 'includes/admin/views/Settings.php';
-		include_once PPRH_ABS_DIR . 'includes/admin/views/settings/GeneralSettings.php';
-		include_once PPRH_ABS_DIR . 'includes/admin/views/settings/PreconnectSettings.php';
-		include_once PPRH_ABS_DIR . 'includes/admin/views/settings/PrefetchSettings.php';
-		include_once PPRH_ABS_DIR . 'includes/admin/views/HintInfo.php';
-		include_once PPRH_ABS_DIR . 'includes/admin/views/Upgrade.php';
+		include_once 'views/InsertHints.php';
+		include_once 'views/Settings.php';
+		include_once 'views/settings/GeneralSettings.php';
+		include_once 'views/settings/PreconnectSettings.php';
+		include_once 'views/settings/PrefetchSettings.php';
+		include_once 'views/HintInfo.php';
+		include_once 'views/Upgrade.php';
 		do_action( 'pprh_la_load_view_files' );
 	}
 
@@ -30,23 +30,22 @@ class Dashboard {
 			return;
 		}
 
-		echo '<div id="pprh-wrapper" class="wrap"><h2>';
+        echo '<div id="poststuff"><h1>';
 		esc_html_e( 'Pre* Party Plugin Settings', 'pprh' );
-		echo '</h2>';
+		echo '</h1>';
 
 		Utils::admin_notice();
+		do_action( 'pprh_check_to_upgrade', '1.7.6' );
 		$this->show_admin_tabs();
 
-		echo '<div class="pprh-box">';
-		new InsertHints( $this->on_pprh_admin );
+		new InsertHints();
 		new Settings( $this->on_pprh_admin );
 		new HintInfo();
 		new Upgrade();
 
 		do_action( 'pprh_la_load_view_classes' );
-
 		$this->show_footer();
-		echo '</div></div>';
+		echo '</div>';
 	}
 
 
@@ -60,20 +59,20 @@ class Dashboard {
 
 		$tabs = apply_filters( 'pprh_la_load_tabs', $tabs );
 
-		echo '<h2 class="nav-tab-wrapper">';
+		echo '<div class="nav-tab-wrapper" style="margin-bottom: 10px;">';
 		foreach ( $tabs as $tab => $name ) {
 			echo "<a class='nav-tab $tab' href='?page=pprh-plugin-settings'>" . $name . '</a>';
 		}
-		echo '</h2>';
+		echo '</div>';
 	}
 
 	public function show_footer() {
-		self::contact_author();
+		$this->contact_author();
 		echo '<br/>';
 		echo sprintf( 'Tip: test your website on %sWebPageTest.org%s to know which resource hints and URLs to insert.', '<a href="https://www.webpagetest.org">', '</a>' );
 	}
 
-	public static function contact_author() {
+	public function contact_author() {
 		add_thickbox();
 		?>
 

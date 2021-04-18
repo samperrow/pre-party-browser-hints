@@ -10,7 +10,7 @@ class CreateHints {
 
 //	public function __construct() {}
 
-	public $duplicate_hints = array();
+//	public $duplicate_hints = array();
 
 	public function create_hint( $raw_hint ) {
 		if ( empty( $raw_hint['url'] ) || empty( $raw_hint['hint_type'] ) ) {
@@ -31,31 +31,36 @@ class CreateHints {
 
 	public function new_hint_controller( $raw_hint ) {
 		$dao = new DAO();
-		$pprh_hint = $this->create_hint( $raw_hint );
+		$candidate_hint = $this->create_hint( $raw_hint );
+		$op_code = $raw_hint['op_code'];
 
-		if ( is_array( $pprh_hint ) ) {
-			$dups = $this->handle_duplicate_hints( $pprh_hint );
+		if ( $op_code === 0 ) {												// only need to check for duplicates when creating a hint.
+			$all_hints = \PPRH\Utils::get_pprh_hints(0);
 
-			if ( is_object( $dups ) ) {
-				return $dups;						// duplicate hints exist
+			if ( count( $all_hints ) > 0 ) {
+				$duplicate_hint_warning = $this->handle_duplicate_hints( $all_hints, $candidate_hint );
+
+				if ( is_object( $duplicate_hint_warning ) ) {
+					return $duplicate_hint_warning;						// duplicate hints exist
+				}
 			}
-
-			return $pprh_hint;
 		}
 
-		return $dao->create_db_result( false, '', 'Failed to create hint.', 0, null );
+		return ( is_array( $candidate_hint ) )
+			? $candidate_hint
+			: $dao->create_db_result( false, '', 'Failed to create hint.', 0, null );
 	}
 
 	// tested
-	public function handle_duplicate_hints( $pprh_hint ) {
-		$dao = new DAO();
-		$this->duplicate_hints = $this->get_duplicate_hints( $pprh_hint );
-		$duplicate_hints_exist = $this->duplicate_hints_exist( $this->duplicate_hints );
+	public function handle_duplicate_hints( $all_hints, $candidate_hint ) {
+		$duplicate_hints = $this->get_duplicate_hints( $all_hints, $candidate_hint );
+		$duplicate_hints_exist = $this->duplicate_hints_exist( $duplicate_hints );
 
 		if ( $duplicate_hints_exist ) {
-			$dups = $this->resolve_duplicate_hints( $pprh_hint );
+			$resolved = $this->resolve_duplicate_hints( $duplicate_hints, $candidate_hint );
 
-			if ( ! $dups ) {
+			if ( false === $resolved ) {
+				$dao = new DAO();
 				return $dao->create_db_result( false, '', 'A duplicate hint already exists!', 0, null );
 			}
 		}
@@ -63,13 +68,17 @@ class CreateHints {
 		return true;
 	}
 
-	public function get_duplicate_hints( $new_pprh_hint ) {
-		$this->new_pprh_hint = $new_pprh_hint;
-		$all_hints = \PPRH\Utils::get_all_hints(0);
+	// tested
+	public function get_duplicate_hints( $all_hints, $candidate_hint ) {
+		$dups = array();
 
-		$dups = array_filter( $all_hints, function( $hint ) {
-			return ( ( $this->new_pprh_hint['url'] === $hint['url'] ) && ( $this->new_pprh_hint['hint_type'] === $hint['hint_type'] ) );
-		});
+		foreach ( $all_hints as $hint ) {
+			if ( $hint['url'] === $candidate_hint['url'] && $hint['hint_type'] === $candidate_hint['hint_type'] ) {
+				$dups[] = $hint;
+			}
+		}
+
+		$dups = apply_filters( 'pprh_filter_duplicate_hints', $dups, $candidate_hint );
 
 		return array_values( $dups );		// re-index array so the first value has an index of 0.
 	}
@@ -80,19 +89,9 @@ class CreateHints {
 	}
 
 
-	public function resolve_duplicate_hints( $pprh_hint ) {
-
-		if ( ! empty( $pprh_hint['post_id'] ) ) {
-			$clear_duplicate_nonglobals = get_option( 'pprh_pro_clear_dup_nonglobals' );
-
-			if ( 'global' === $pprh_hint['post_id'] ) {
-				apply_filters('pprh_ch_resolve_duplicate_hints', $this->duplicate_hints);
-				return true;
-
-			} elseif ( 'true' === $clear_duplicate_nonglobals ) {
-				apply_filters( 'pprh_ch_excessive_dup_hints_exist', $this->duplicate_hints );
-			}
-
+	public function resolve_duplicate_hints( $duplicate_hints, $candidate_hint ) {
+		if ( ! empty( $candidate_hint['post_id'] ) && count( $duplicate_hints ) > 0 ) {
+			return apply_filters( 'pprh_ch_resolve_duplicate_hints', $duplicate_hints, $candidate_hint );
 		}
 
 		return false;

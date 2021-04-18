@@ -8,17 +8,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class LoadAdmin {
 
-	public $all_hints = array();
-
-//	public function __construct() {
-
-//        $this->init( $on_pprh_page );
-//    }
-
 	public function init() {
 		add_action( 'admin_menu', array( $this, 'load_admin_menu' ) );
-		$utils = new Utils();
-		$on_pprh_page = $utils->on_pprh_page();
+
+		$on_pprh_page = Utils::on_pprh_page();
 
 		if ( ! $on_pprh_page ) {
 			return;
@@ -28,9 +21,9 @@ class LoadAdmin {
 		add_filter( 'set-screen-option', array( $this, 'pprh_set_screen_option' ), 10, 3 );
 		load_plugin_textdomain( 'pprh', false, PPRH_REL_DIR . 'languages' );
 
-		include_once PPRH_ABS_DIR . 'includes/admin/NewHint.php';
-		include_once PPRH_ABS_DIR . 'includes/admin/DisplayHints.php';
-		include_once PPRH_ABS_DIR . 'includes/AjaxOps.php';
+		include_once 'NewHint.php';
+		include_once 'DisplayHints.php';
+		include_once 'AjaxOps.php';
 		new AjaxOps();
 
 		do_action( 'pprh_pro_load_admin' );
@@ -55,7 +48,7 @@ class LoadAdmin {
 		}
 
 		$on_pprh_admin = Utils::on_pprh_admin();
-		include_once PPRH_ABS_DIR . 'includes/admin/Dashboard.php';
+		include_once 'Dashboard.php';
 
 		$dashboard = new Dashboard( $on_pprh_admin );
 		$dashboard->load_plugin_admin_files();
@@ -78,7 +71,7 @@ class LoadAdmin {
 
 	// Register and call the CSS and JS we need only on the needed page.
 	public function register_admin_files( $hook ) {
-		$str = apply_filters( 'pprh_la_load_scripts', 'toplevel_page_pprh-plugin-settings' );
+		$str = apply_filters( 'pprh_append_string', 'toplevel_page_pprh-plugin-settings', '|post.php' );
 
 		if ( strpos( $str, $hook, 0 ) !== false ) {
 			$ajax_data = array(
@@ -97,6 +90,21 @@ class LoadAdmin {
 			wp_enqueue_script( 'pprh_admin_js' );
 			wp_enqueue_style( 'pprh_styles_css' );
 		}
+	}
+
+	public function general_settings() {
+		$general_settings = new GeneralSettings();
+		$general_settings->show_settings();
+	}
+
+	public function preconnect_settings() {
+		$general_settings = new PreconnectSettings(true);
+		$general_settings->show_settings();
+	}
+
+	public function prefetch_settings() {
+		$general_settings = new PrefetchSettings();
+		$general_settings->show_settings();
 	}
 
 }

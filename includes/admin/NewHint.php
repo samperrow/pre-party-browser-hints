@@ -41,11 +41,13 @@ class NewHint {
 	}
 
 	public function insert_table_body() {
+	    echo '<form method="post">';
 		$this->enter_url();
 		$this->show_pp_radio_options();
 		$this->set_attrs();
 		$this->set_media_attr();
 		do_action( 'pprh_nh_get_home_page_options' );
+		echo '</form>';
 	}
 
 	protected function enter_url() {
@@ -77,7 +79,7 @@ class NewHint {
 					</span>
                     <span><?php esc_html_e( 'DNS-Prefetch' ); ?></span>
                     <label>
-                        <input name="hint_type" type="radio" value="dns-prefetch"/>
+                        <input name="hint_type" class="hint_type" type="radio" value="dns-prefetch"/>
                     </label>
                 </div>
             </td>
@@ -89,7 +91,7 @@ class NewHint {
 					</span>
                     <span><?php esc_html_e( 'Prefetch' ); ?></span>
                     <label>
-                        <input name="hint_type" type="radio" value="prefetch"/>
+                        <input name="hint_type" class="hint_type" type="radio" value="prefetch"/>
                     </label>
                 </div>
             </td>
@@ -101,7 +103,7 @@ class NewHint {
 					</span>
                     <span><?php esc_html_e( 'Prerender' ); ?></span>
                     <label>
-                        <input name="hint_type" type="radio" value="prerender"/>
+                        <input name="hint_type" class="hint_type" type="radio" value="prerender"/>
                     </label>
                 </div>
             </td>
@@ -113,7 +115,7 @@ class NewHint {
 					</span>
                     <span><?php esc_html_e( 'Preconnect' ); ?></span>
                     <label>
-                        <input name="hint_type" type="radio" value="preconnect"/>
+                        <input name="hint_type" class="hint_type" type="radio" value="preconnect"/>
                     </label>
                 </div>
             </td>
@@ -125,7 +127,7 @@ class NewHint {
 					</span>
                     <span><?php esc_html_e( 'Preload' ); ?></span>
                     <label>
-                        <input name="hint_type" type="radio" value="preload"/>
+                        <input name="hint_type" class="hint_type" type="radio" value="preload"/>
                     </label>
                 </div>
             </td>
@@ -156,7 +158,7 @@ class NewHint {
 						<?php _e( "Setting this attribute allows the browser to more accurately: <br/> 1) prioritize resource loading <br/>2) store in browser cache <br/>3) apply the correct headers. <a href='https://developer.mozilla.org/en-US/docs/Web/HTML/Preloading_content#The_basics'>Source: Mozilla</a>", 'pprh' ); ?>
 					</span>
 				</span>
-                <span><?php esc_html_e( 'as ', 'pprh' ); ?></span>
+                <span><?php esc_html_e( 'as:', 'pprh' ); ?></span>
                 <label>
                     <select class="pprh_as_attr" name="as_attr">
                         <option selected label=" "></option>
@@ -180,7 +182,7 @@ class NewHint {
 				<span class="pprh-help-tip-hint">
 					<span><?php _e( '&lt;link&gt; elements can accept a type attribute, which contains the MIME type of the resource the element points to. This is especially useful when preloading resources — the browser will use the type attribute value to work out if it supports that resource, and will only download it if so, ignoring it if not. <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Preloading_content#Including_a_MIME_type">Source: Mozilla</a>. (This attribute will attempt to be added automatically.)', 'pprh' ); ?></span>
 				</span>
-                <span><?php esc_html_e( 'type ', 'pprh' ); ?></span>
+                <span><?php esc_html_e( 'Mime Type:', 'pprh' ); ?></span>
                 <label>
                     <select class="pprh_type_attr" name="type_attr">
                         <option selected label=" "></option>
