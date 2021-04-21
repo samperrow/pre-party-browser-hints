@@ -19,9 +19,8 @@ class LoadClient {
 		$send_hints = new SendHints();
 		$send_hints->init($enabled_hints);
 
-		if ( 'true' === get_option( 'pprh_disable_wp_hints' ) ) {
-			remove_action( 'wp_head', 'wp_resource_hints', 2 );
-		}
+		$disable_wp_hints = get_option( 'pprh_disable_wp_hints' );
+		$this->disable_wp_hints( $disable_wp_hints );
 	}
 
 	public function verify_to_load_fp() {
@@ -35,6 +34,14 @@ class LoadClient {
 
 		add_action( 'wp_enqueue_scripts', array( $this, 'load_flying_pages' ) );
 	}
+
+	private function disable_wp_hints( $disable_wp_hints ) {
+		if ( 'true' === $disable_wp_hints ) {
+			remove_action( 'wp_head', 'wp_resource_hints', 2 );
+		}
+	}
+
+
 
 	public function load_flying_pages() {
 		$debug = ( defined( 'PPRH_DEBUG' ) && PPRH_DEBUG );
