@@ -124,7 +124,6 @@ class PreconnectsTest extends TestCase {
 		} else {
 			$this->eval_free_initialize();
 		}
-
 	}
 
 	public function eval_pro_initialize() {

@@ -11,7 +11,10 @@ final class LoadClientTest extends TestCase {
 
 
 
-	public function test_verify_to_load_fp():void {
+	public function test_init():void {
+		if ( WP_ADMIN ) return;
+
+		$load_client = new \PPRH\LoadClient();
 
 
 	}
