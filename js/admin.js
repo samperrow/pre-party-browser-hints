@@ -160,7 +160,7 @@
 		getHintIdsAndInsertData();
 		addDeleteHintListener();
 		addEditRowEventListener();
-		toggleElemIterator();
+		// toggleElemIterator();
 
 		function getHintIdsAndInsertData() {
 			let editRows = $('tr.pprh-row.edit');
@@ -168,6 +168,7 @@
 			$.each(editRows, function() {
 				let id = $(this).attr('class').split(' ')[2];
 				putHintInfoIntoElems(id);
+				toggleElemIterator($(this));
 			});
 		}
 
@@ -205,23 +206,18 @@
 			});
 		}
 
-		function toggleElemIterator() {
-			let hintTypeRows = $('tr.pprhHintTypes');
+		function toggleElemIterator(editRow) {
+			let hintTypeRadios = editRow.find('tr.pprhHintTypes input.hint_type');
+			let parentTbody = editRow.find('tbody');
 
-			$.each(hintTypeRows, function() {
-				let parentTbody = $(this).parent('tbody');
-				let hintTypeRadio = $(this).find('input.hint_type');
-
-				$.each(hintTypeRadio, function() {
-
-					$(this).on('click', function() {
-						toggleBasedOnHintType(parentTbody, $(this));
-					});
-
-					if ( $(this).is(':checked')) {
-						toggleBasedOnHintType( parentTbody, $(this) );
-					}
+			$.each(hintTypeRadios, function() {
+				$(this).on('click', function() {
+					toggleBasedOnHintType(parentTbody, $(this));
 				});
+
+				if ( $(this).is(':checked')) {
+					toggleBasedOnHintType( parentTbody, $(this) );
+				}
 			});
 		}
 
@@ -253,8 +249,9 @@
 
 			elems.url.val(data.url);
 
-			let hintTypeElem = elems.hint_type.find('input[value="' + data.hint_type + '"]');
-			hintTypeElem.attr('checked', true);
+			let hintTypeElem = elems.hint_type.find('input[value="' + data.hint_type + '"]').first();
+			// hintTypeElem.attr('checked', true);
+			hintTypeElem[0].checked = true;
 
 			if (data['crossorigin']) {
 				elems.crossorigin.attr('checked', true);
@@ -429,4 +426,3 @@
 	}
 
 }));
-
