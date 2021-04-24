@@ -132,7 +132,6 @@ class NewHint {
                 </div>
             </td>
 
-
         </tr>
 
 		<?php
@@ -144,7 +143,7 @@ class NewHint {
 
             <td colspan="1">
 				<span class="pprh-help-tip-hint">
-					<span><?php _e( 'For various reasons, font files (and others) need to be loaded with the crossorigin attribute. Crossorigin only applies to preconnect hints!<a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Preloading_content#Cross-origin_fetches">Source: Mozilla</a>',
+					<span><?php _e( 'Crossorigin applies to preconnect and preload hints only. For various reasons, font files (and others) need to be loaded with the crossorigin attribute.<a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Preloading_content#Cross-origin_fetches">Source: Mozilla</a>',
                             'pprh' ); ?></span>
 				</span>
                 <label><?php esc_html_e( 'Crossorigin?', 'pprh' ); ?>
@@ -207,7 +206,7 @@ class NewHint {
             <td colspan="1">
 				<p><?php esc_html_e( 'Media Attribute', 'pprh' ); ?>
                     <span class="pprh-help-tip-hint">
-                        <span><?php _e( 'Specify the media attribute. This can be used to allow hints to only load on certain devices, screen dimensions, and more. <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Media_Queries/Using_media_queries">https://developer.mozilla.org/en-US/docs/Web/CSS/Media_Queries/Using_media_queries</a>', 'pprh' ); ?></span>
+                        <span><?php _e( 'This applies only to the preload resource hint. This can be used to allow hints to only load on certain devices, screen dimensions, and more. <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Media_Queries/Using_media_queries">https://developer.mozilla.org/en-US/docs/Web/CSS/Media_Queries/Using_media_queries</a>', 'pprh' ); ?></span>
                     </span>
                 </p>
             </td>
