@@ -438,7 +438,6 @@
 }));
 
 // for testing
-if (typeof module === "object") {
-	module.exports = this.pprhAdminJS;
-}
-
+// if (typeof module === "object") {
+// 	module.exports = this.pprhAdminJS;
+// }
