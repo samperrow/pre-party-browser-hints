@@ -155,12 +155,54 @@
 	}
 
 
+	function toggleElemIterator(editRow) {
+		if (typeof editRow === "undefined") {
+			editRow = $('table#pprh-enter-data');
+		}
+
+		let hintTypeRadios = editRow.find('tr.pprhHintTypes input.hint_type');
+		let parentTbody = editRow.find('tbody');
+
+		$.each(hintTypeRadios, function () {
+			$(this).on('click', function () {
+				toggleBasedOnHintType(parentTbody, $(this));
+			});
+
+			if ($(this).is(':checked')) {
+				toggleBasedOnHintType(parentTbody, $(this));
+			}
+		});
+
+		function toggleBasedOnHintType(parentTbody, elem) {
+			let hintType = elem.val();
+			let xoriginElem = parentTbody.find('input.pprh_crossorigin').first();
+			let mediaElem = parentTbody.find('input.pprh_media').first();
+
+			if ('preconnect' === hintType) {
+				xoriginElem.prop('disabled', false);
+				mediaElem.prop('disabled', true);
+				mediaElem.val('');
+			} else if ('preload' === hintType) {
+				xoriginElem.prop('disabled', false);
+				mediaElem.prop('disabled', false);
+			} else {
+				xoriginElem.prop('checked', false);
+				xoriginElem.prop('disabled', true);
+				mediaElem.prop('disabled', true);
+				mediaElem.val('');
+			}
+		}
+
+	}
+
+
 	addEventListeners();
+	toggleElemIterator();
+
 	function addEventListeners() {
 		getHintIdsAndInsertData();
 		addDeleteHintListener();
 		addEditRowEventListener();
-		// toggleElemIterator();
 
 		function getHintIdsAndInsertData() {
 			let editRows = $('tr.pprh-row.edit');
@@ -206,40 +248,8 @@
 			});
 		}
 
-		function toggleElemIterator(editRow) {
-			let hintTypeRadios = editRow.find('tr.pprhHintTypes input.hint_type');
-			let parentTbody = editRow.find('tbody');
 
-			$.each(hintTypeRadios, function() {
-				$(this).on('click', function() {
-					toggleBasedOnHintType(parentTbody, $(this));
-				});
 
-				if ( $(this).is(':checked')) {
-					toggleBasedOnHintType( parentTbody, $(this) );
-				}
-			});
-		}
-
-		function toggleBasedOnHintType(parentTbody, elem) {
-			let hintType = elem.val();
-			let xoriginElem = parentTbody.find('input.pprh_crossorigin').first();
-			let mediaElem = parentTbody.find('input.pprh_media').first();
-
-			if ('preconnect' === hintType) {
-				xoriginElem.prop('disabled', false);
-				mediaElem.prop('disabled', true);
-				mediaElem.val('');
-			} else if ('preload' === hintType) {
-				xoriginElem.prop('disabled', false);
-				mediaElem.prop('disabled', false);
-			} else {
-				xoriginElem.prop('checked', false);
-				xoriginElem.prop('disabled', true);
-				mediaElem.prop('disabled', true);
-				mediaElem.val('');
-			}
-		}
 
 		function putHintInfoIntoElems(hintID) {
 			let json = $('input.pprh-hint-storage.' + hintID).val();
@@ -426,3 +436,9 @@
 	}
 
 }));
+
+// for testing
+if (typeof module === "object") {
+	module.exports = this.pprhAdminJS;
+}
+
