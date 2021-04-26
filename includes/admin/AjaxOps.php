@@ -52,7 +52,7 @@ class AjaxOps {
 
 //		TODO
 		if ( isset( $data['action'] ) && 'reset_single_post_preconnects' === $data['action'] ) {
-			$result = apply_filters( 'pprh_reset_single_post_preconnect', $data );
+			$result = apply_filters( 'pprh_reset_single_post_preconnect', null );
 		}
 //		elseif ( 'reset_single_post_prerender' === $action ) {
 //			$result = apply_filters( 'pprh_reset_single_post_prerender', $data );

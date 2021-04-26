@@ -27,34 +27,30 @@ class DAO {
 	}
 
 	// db results
-	public function create_db_result( $result, $hint_id, $last_error, $action_code = '', $new_hint = null ) {
+	public function create_db_result( $result, $hint_id, $msg, $action_code = '', $new_hint = null ) {
 		return (object) array(
 			'new_hint'  => $new_hint,
 			'db_result' => array(
-				'msg'        => $this->create_msg( $result, $last_error, $action_code ),
+				'msg'        => $this->create_msg( $result, $msg, $action_code ),
 				'status'     => ( $result ) ? 'success' : 'error',
 				'hint_id'    => $hint_id,
 				'success'    => $result,
-				'last_error' => $last_error
+				'last_error' => $msg
 			)
 		);
 	}
 
-	public function create_msg( $result, $last_error, $action_code )  {
+	public function create_msg( $result, $msg, $action_code )  {
 		$actions = $this->code_action_arr( $action_code );
 
-		if ( $result ) {
-			$msg = "Resource hint $actions[1] successfully.";
-		} elseif ( '' !== $last_error ) {
-			$msg = $last_error;
+		if ( '' !== $msg ) {
+			return $msg;
+		} elseif ( $result ) {
+			return "Resource hint $actions[1] successfully.";
 		} else {
-			$msg = "Failed to $actions[0] hint.";
+			return "Failed to $actions[0] hint.";
 		}
-
-		return $msg;
 	}
-
-
 
 
 	public function insert_hint( $new_hint ) {
@@ -115,23 +111,18 @@ class DAO {
 
 	public function delete_hint( $hint_ids ) {
 		global $wpdb;
-//		$table = PPRH_DB_TABLE;
 		$hint_id_exists = preg_match('/\d/', $hint_ids );
 
 		if ( $hint_id_exists > 0 ) {
 			$wpdb->query( "DELETE FROM $this->table WHERE id IN ($hint_ids)" );
 			return $this->create_db_result( $wpdb->result, $wpdb->insert_id, $wpdb->last_error, 2, null );
-		}
-
-		else {
+		} else {
 			return $this->create_db_result( false, null, 'No hint IDs to delete.', 2, null );
 		}
 	}
 
 	public function bulk_update( $hint_ids, $code ) {
 		global $wpdb;
-//		$table = PPRH_DB_TABLE;
-
 		$action = ( 3 === $code ) ? 'enabled' : 'disabled';
 
 		$wpdb->query( $wpdb->prepare(
@@ -158,7 +149,6 @@ class DAO {
 	}
 
 	private function parse_query_code( $query_code ) {
-//		$table = PPRH_DB_TABLE;
 		$sql = "SELECT * FROM $this->table";
 		$query = array( 'sql' => $sql );
 
