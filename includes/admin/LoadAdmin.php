@@ -10,6 +10,7 @@ class LoadAdmin {
 
 	public function init() {
 		add_action( 'admin_menu', array( $this, 'load_admin_menu' ) );
+		add_action( 'admin_init', array( $this, 'meta_boxes' ) );
 
 		$on_pprh_page = Utils::on_pprh_page();
 
@@ -89,22 +90,50 @@ class LoadAdmin {
 			wp_enqueue_script( 'pprh_create_hints_js' );
 			wp_enqueue_script( 'pprh_admin_js' );
 			wp_enqueue_style( 'pprh_styles_css' );
+
+			// needed for metaboxes
+			wp_enqueue_script( 'post' );
 		}
 	}
 
-	public function general_settings() {
+	public function meta_boxes() {
+		include_once 'views/settings/GeneralSettings.php';
+		include_once 'views/settings/PreconnectSettings.php';
+		include_once 'views/settings/PrefetchSettings.php';
+
 		$general_settings = new GeneralSettings();
-		$general_settings->show_settings();
+		$preconnect_settings = new PreconnectSettings(true);
+		$prefetch_settings = new PrefetchSettings();
+
+		add_meta_box(
+			'pprh_general_settings_metabox',
+			'General Settings',
+			array( $general_settings, 'show_settings' ),
+			'toplevel_page_pprh-plugin-settings',
+			'normal',
+			'low'
+		);
+
+		add_meta_box(
+			'pprh_preconnect_settings_metabox',
+			'Auto Preconnect Settings',
+			array( $preconnect_settings, 'show_settings' ),
+			'toplevel_page_pprh-plugin-settings',
+			'normal',
+			'low'
+		);
+
+		add_meta_box(
+			'pprh_prefetch_settings_metabox',
+			'Auto Prefetch Settings',
+			array( $prefetch_settings, 'show_settings' ),
+			'toplevel_page_pprh-plugin-settings',
+			'normal',
+			'low'
+		);
+
+		do_action( 'pprh_add_prerender_metabox' );
 	}
 
-	public function preconnect_settings() {
-		$general_settings = new PreconnectSettings(true);
-		$general_settings->show_settings();
-	}
-
-	public function prefetch_settings() {
-		$general_settings = new PrefetchSettings();
-		$general_settings->show_settings();
-	}
 
 }

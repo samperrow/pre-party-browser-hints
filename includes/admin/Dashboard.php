@@ -17,9 +17,9 @@ class Dashboard {
 	public function load_plugin_admin_files() {
 		include_once 'views/InsertHints.php';
 		include_once 'views/Settings.php';
-		include_once 'views/settings/GeneralSettings.php';
-		include_once 'views/settings/PreconnectSettings.php';
-		include_once 'views/settings/PrefetchSettings.php';
+//		include_once 'views/settings/GeneralSettings.php';
+//		include_once 'views/settings/PreconnectSettings.php';
+//		include_once 'views/settings/PrefetchSettings.php';
 		include_once 'views/HintInfo.php';
 		include_once 'views/Upgrade.php';
 		do_action( 'pprh_la_load_view_files' );
@@ -30,7 +30,7 @@ class Dashboard {
 			return;
 		}
 
-        echo '<div id="poststuff"><h1>';
+		echo '<div id="poststuff"><h1>';
 		esc_html_e( 'Pre* Party Plugin Settings', 'pprh' );
 		echo '</h1>';
 

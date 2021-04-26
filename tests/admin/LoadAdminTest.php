@@ -11,7 +11,6 @@ final class LoadAdminTest extends TestCase {
 
 		global $wp_scripts;
 		$load_admin = new \PPRH\LoadAdmin( false );
-		$expected_scripts = array();
 		$load_admin->register_admin_files( 'toplevel_page_pprh-plugin-settings' );
 		$actual_scripts = array();
 
@@ -23,8 +22,7 @@ final class LoadAdminTest extends TestCase {
 //			$expected_scripts[] = 'thickbox';
 //		}
 
-		$expected_scripts[] = 'pprh_create_hints_js';
-		$expected_scripts[] = 'pprh_admin_js';
+		$expected_scripts = array( 'pprh_create_hints_js', 'pprh_admin_js', 'post' );
 
 		$this->assertEquals( $expected_scripts, $actual_scripts);
 	}

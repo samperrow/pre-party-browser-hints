@@ -90,7 +90,7 @@ class CreateHints {
 
 
 	public function resolve_duplicate_hints( $duplicate_hints, $candidate_hint ) {
-		if ( ! empty( $candidate_hint['post_id'] ) && count( $duplicate_hints ) > 0 ) {
+		if ( isset( $candidate_hint['post_id'] ) && count( $duplicate_hints ) > 0 ) {
 			return apply_filters( 'pprh_ch_resolve_duplicate_hints', $duplicate_hints, $candidate_hint );
 		}
 

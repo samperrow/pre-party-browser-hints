@@ -8,8 +8,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class Preconnects {
 
-	public $is_admin;
-
 	public $config;
 
 	public $testing = false;
@@ -19,27 +17,38 @@ class Preconnects {
 		add_action( 'wp_loaded', array( $this, 'init_controller' ), 10, 0 );
 
 		$this->testing = ( defined( 'PPRH_TESTING' ) && PPRH_TESTING );
+		$autoload = get_option( 'pprh_preconnect_autoload' );
+		$allow_unauth = get_option( 'pprh_preconnect_allow_unauth' );
+		$preconnects_set = get_option( 'pprh_preconnect_set' );
 
-		$this->config = array(
-			'is_admin' => is_admin(),
-			'reset_data' => array(
-				'autoload'        => get_option( 'pprh_preconnect_autoload' ),
-				'allow_unauth'    => get_option( 'pprh_preconnect_allow_unauth' ),
-				'preconnects_set' => get_option( 'pprh_preconnect_set' )
-			)
+		$this->config = $this->get_config( $autoload, $allow_unauth, $preconnects_set );
+	}
+
+	public function get_config( $autoload, $allow_unauth, $preconnects_set ) {
+		return array(
+			'autoload'        => ( 'true' === $autoload ),
+			'allow_unauth'    => ( 'true' === $allow_unauth ),
+			'preconnects_set' => ( 'true' === $preconnects_set )
 		);
 	}
 
+
+
 	public function init_controller() {
-		$this->config['reset_data']['reset_pro'] = apply_filters( 'pprh_preconnects_do_reset_init', null );
+		$this->config['reset_pro'] = apply_filters( 'pprh_preconnects_do_reset_init', null );
 		return $this->initialize( $this->config );
 	}
 
 	// tested
 	public function initialize( $args ) {
-		$perform_reset = $this->check_to_perform_reset( $args['reset_data'] );
-		$allow_unauth = $args['reset_data']['allow_unauth'];
+		$allow_unauth = $args['allow_unauth'];
 		$this->load_ajax_actions( $allow_unauth );
+
+		if ( is_admin() && ! $this->testing ) {
+			return false;
+		}
+
+		$perform_reset = $this->check_to_perform_reset( $args );
 
 		if ( false === $perform_reset ) {
 			return false;
@@ -54,7 +63,7 @@ class Preconnects {
 		if ( empty( $reset_data['reset_pro'] ) || null === $reset_data['reset_pro'] ) {
 			$perform_reset = $this->perform_reset( $reset_data );
 		} else {
-			$perform_reset = $this->perform_pro_reset( $reset_data['reset_pro'] );
+			$perform_reset = $reset_data['reset_pro'];
 		}
 
 		return $perform_reset;
@@ -70,11 +79,7 @@ class Preconnects {
 	}
 
 	private function perform_reset( $reset_data ) {
-		return ( 'true' === $reset_data['autoload'] && 'false' === $reset_data['preconnects_set'] );
-	}
-
-	private function perform_pro_reset( $reset_pro ) {
-		return ( ! empty( $reset_pro ) && $reset_pro['perform_reset'] );
+		return ( $reset_data['autoload'] && ! $reset_data['preconnects_set'] );
 	}
 
 	// both admin and client
@@ -82,7 +87,7 @@ class Preconnects {
 	public function load_ajax_actions( $allow_unauth ) {
 		$ajax_cb = 'pprh_post_domain_names';
 
-		if ( 'true' === $allow_unauth ) {
+		if ( $allow_unauth ) {
 			add_action( "wp_ajax_nopriv_{$ajax_cb}", array( $this, $ajax_cb ) );		// not logged in
 		}
 		add_action( "wp_ajax_{$ajax_cb}", array( $this, $ajax_cb ) );					// for logged in users
@@ -90,8 +95,8 @@ class Preconnects {
 
 	// tested
 	public function enqueue_scripts() {
-		if ( $this->config['is_admin'] ) {
-			return false;
+		if (  is_admin() ) {
+			return;
 		}
 
 		$js_object = $this->create_js_object();
@@ -113,8 +118,8 @@ class Preconnects {
 			'start_time' => time()
 		);
 
-		if ( ! empty( $this->config['reset_data']['reset_pro'] ) ) {
-			$js_arr = apply_filters( 'pprh_preconnects_append_hint_object', $js_arr, $this->config['reset_data']['reset_pro'] );
+		if ( isset( $this->config['reset_pro'] ) ) {
+			$js_arr = apply_filters( 'pprh_preconnects_append_hint_object', $js_arr );
 		}
 
 		return $js_arr;
@@ -122,12 +127,12 @@ class Preconnects {
 
 	// tested
 	// Returns false if the user is not logged in, and the admin chooses not to allow unauthenticated users from settings hints.
-	public function allow_unauth_users( $allow_unauth = 'true', $user_logged_in = null ) {
+	public function allow_unauth_users( $allow_unauth = true, $user_logged_in = null ) {
 		if ( null === $user_logged_in ) {
 			$user_logged_in = is_user_logged_in();
 		}
 
-		$allow_unauth_bool = ( 'true' === $allow_unauth );
+		$allow_unauth_bool = ( $allow_unauth );
 		return ( $allow_unauth_bool || $user_logged_in );
 	}
 
@@ -137,7 +142,7 @@ class Preconnects {
 	public function pprh_post_domain_names() {
 		if ( isset( $_POST['pprh_data'] ) && wp_doing_ajax() ) {
 			check_ajax_referer('pprh_ajax_nonce', 'nonce');
-			$allow_unauth = $this->config['reset_data']['allow_unauth'];
+			$allow_unauth = $this->config['allow_unauth'];
 
 			if ( $this->allow_unauth_users( $allow_unauth ) ) {
 				return $this->do_ajax_callback( $_POST['pprh_data'] );

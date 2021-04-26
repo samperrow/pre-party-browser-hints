@@ -15,7 +15,7 @@ class Settings {
 	protected $on_pprh_admin = false;
 
 	public function __construct($on_pprh_admin = true) {
-        $this->on_pprh_admin = $on_pprh_admin;
+		$this->on_pprh_admin = $on_pprh_admin;
 		$this->general_settings = new GeneralSettings();
 		$this->preconnect_settings = new PreconnectSettings($on_pprh_admin);
 		$this->prefetch_settings = new PrefetchSettings();
@@ -31,12 +31,10 @@ class Settings {
                     $this->save_user_options();
 
                     if ( $this->on_pprh_admin ) {
-						$this->general_settings->show_settings();
-						$this->preconnect_settings->show_settings();
-						$this->prefetch_settings->show_settings();
-                    }
+						wp_nonce_field( 'closedpostboxes', 'closedpostboxesnonce', false );
+						do_meta_boxes( 'toplevel_page_pprh-plugin-settings', 'normal', null );
+					}
 
-                    do_action( 'pprh_sc_prerender_settings' );
                 ?>
                 <div class="text-center">
                     <input type="submit" name="pprh_save_options" class="button button-primary" value="<?php esc_attr_e( 'Save Changes', 'pprh' ); ?>" />
@@ -48,9 +46,9 @@ class Settings {
 
 	public function save_user_options() {
 	    if ( ( isset( $_POST['pprh_save_options'] ) || isset( $_POST['pprh_preconnect_set'] ) ) && check_admin_referer( 'pprh_save_admin_options', 'pprh_admin_options_nonce' ) ) {
-			$this->general_settings->save_options();
-			$this->preconnect_settings->save_options();
-			$this->prefetch_settings->save_options();
+			GeneralSettings::save_options();
+			PreconnectSettings::save_options();
+			PrefetchSettings::save_options();
 		}
 
 		do_action( 'pprh_sc_save_settings' );

@@ -51,9 +51,9 @@ class AjaxOps {
 		$result = $dao_ctrl->hint_controller( $data );
 
 //		TODO
-//		elseif ( 'reset_single_post_preconnects' === $action ) {
-//			$result = apply_filters( 'pprh_reset_single_post_preconnect', $data );
-//		}
+		if ( isset( $data['action'] ) && 'reset_single_post_preconnects' === $data['action'] ) {
+			$result = apply_filters( 'pprh_reset_single_post_preconnect', $data );
+		}
 //		elseif ( 'reset_single_post_prerender' === $action ) {
 //			$result = apply_filters( 'pprh_reset_single_post_prerender', $data );
 //		}
