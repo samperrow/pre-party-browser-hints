@@ -10,7 +10,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 final class CreateHintsTest extends TestCase {
 
 
-
+	/**
+	 * @covers \PPRH\CreateHints::create_hint
+	 */
 	public function test_create_hint(): void {
 		$create_hints = new \PPRH\CreateHints();
 		$url_1 = 'https://sphacks.local/wp-content/themes/sphacks/images/icons/newspaper.woff?19';
