@@ -24,24 +24,24 @@ final class CreateHintsTest extends TestCase {
 		$test_5 = TestUtils::create_hint_array( $url_1, 'preload', 'font', 'font/woff', 'crossorigin', '' );
 
 		$test_hint1 = $create_hints->create_hint($test1);
-		$this->assertEquals($test_hint1, $test1);
+		self::assertEquals($test_hint1, $test1);
 
 		$actual_hint_2 = $create_hints->create_hint($test2);
 		$test2['url'] = 'https://www.espn.com';
-		$this->assertEquals($test2, $actual_hint_2);
+		self::assertEquals($test2, $actual_hint_2);
 
 		$test_hint3 = $create_hints->create_hint($test3);
-		$this->assertEquals($test_hint3, $test3);
+		self::assertEquals($test_hint3, $test3);
 
 		$test_hint_4 = $create_hints->create_hint($test_4);
-		$this->assertEquals(false, $test_hint_4);
+		self::assertEquals(false, $test_hint_4);
 
 		$data1 = TestUtils::create_hint_array( '', 'dns-prefetch' );
 		$bool1 = $create_hints->create_hint($data1);
-		$this->assertEquals(false, $bool1);
+		self::assertEquals(false, $bool1);
 
 		$actual_6 = $create_hints->create_hint( $test_5 );
-		$this->assertEquals( $test_5, $actual_6);
+		self::assertEquals( $test_5, $actual_6);
 	}
 
 
@@ -53,13 +53,13 @@ final class CreateHintsTest extends TestCase {
 		$dummy_hint['op_code'] = 0;
 		$actual = $create_hints->create_hint( $dummy_hint );
 		$expected = $create_hints->new_hint_controller( $dummy_hint );
-		$this->assertEquals( $expected, $actual );
+		self::assertEquals( $expected, $actual );
 
 
 		$dummy_hint['op_code'] = 1;
 		$actual_2 = $create_hints->create_hint( $dummy_hint );
 		$expected_2 = $create_hints->new_hint_controller( $dummy_hint );
-		$this->assertEquals( $expected_2, $actual_2 );
+		self::assertEquals( $expected_2, $actual_2 );
 	}
 
 
@@ -79,8 +79,8 @@ final class CreateHintsTest extends TestCase {
 		$actual_1 = $create_hints->duplicate_hints_exist( $dup_hints );
 		$actual_2 = $create_hints->duplicate_hints_exist( array() );
 
-		$this->assertEquals( true, $actual_1 );
-		$this->assertEquals( false, $actual_2 );
+		self::assertEquals( true, $actual_1 );
+		self::assertEquals( false, $actual_2 );
 	}
 
 
@@ -93,7 +93,7 @@ final class CreateHintsTest extends TestCase {
 		$create_hints = new \PPRH\CreateHints();
 		$raw_data1 = TestUtils::create_hint_array( '', '' );
 		$actual = $create_hints->create_hint( $raw_data1 );
-		$this->assertEquals( false, $actual );
+		self::assertEquals( false, $actual );
 	}
 
 	public function test_handle_duplicate_hints():void {
@@ -110,12 +110,12 @@ final class CreateHintsTest extends TestCase {
 
 		$actual_1 = $create_hints->handle_duplicate_hints( $all_hints, $candidate_hint );
 		$expected_1 = $dao->create_db_result( false, '', 'A duplicate hint already exists!', 0, null );
-		$this->assertEquals( $expected_1, $actual_1 );
+		self::assertEquals( $expected_1, $actual_1 );
 
 		$candidate_hint = TestUtils::create_hint_array( 'https://new-unique-hint.com', 'preconnect', '', '', '', '' );
 
 		$actual_2 = $create_hints->handle_duplicate_hints( $all_hints, $candidate_hint );
-		$this->assertEquals( true, $actual_2 );
+		self::assertEquals( true, $actual_2 );
 	}
 
 	public function test_get_duplicate_hints():void {
@@ -132,7 +132,7 @@ final class CreateHintsTest extends TestCase {
 		$actual = $create_hints->get_duplicate_hints( $all_hints, $new_hint );
 		$expected = array( $test_hint_1, $test_hint_3 );
 
-		$this->assertEquals( $expected, $actual );
+		self::assertEquals( $expected, $actual );
 	}
 
 
@@ -141,7 +141,7 @@ final class CreateHintsTest extends TestCase {
 		$create_hints = new \PPRH\CreateHints();
 		$hint_1 = TestUtils::create_hint_array( 'asdf.com', 'dns-prefetch', '', '', '', 'screen' );
 		$actual_1 = $create_hints->resolve_duplicate_hints( $hint_1, array() );
-		$this->assertEquals( false, $actual_1 );
+		self::assertEquals( false, $actual_1 );
 	}
 
 }
