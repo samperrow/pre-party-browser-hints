@@ -74,7 +74,7 @@ class Pre_Party_Browser_Hints {
 	public function create_constants() {
 		global $wpdb;
 		$table = $wpdb->prefix . 'pprh_table';
-		$plugin_version = get_option( 'pprh_version' );
+		$plugin_version = get_option( 'pprh_version', '1.7.7' );
 		$pprh_pro_active = Utils::pprh_is_plugin_active();
 
 		if ( ! defined( 'PPRH_VERSION' ) ) {
