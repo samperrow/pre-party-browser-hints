@@ -36,9 +36,9 @@ class Upgrade {
 			** youtube video here of difference **
 
 
-			<div style="text-align: center; margin-top: 20px;">
-				<input style="padding: 10px 30px; font-size: 22px " id="pprhOpenCheckoutModal" type="button" class="button button-primary" value="Upgrade to Pro Now!"/>
-			</div>
+<!--			<div style="text-align: center; margin-top: 20px;">-->
+<!--				<input style="padding: 10px 30px; font-size: 22px " id="pprhOpenCheckoutModal" type="button" class="button button-primary" value="Upgrade to Pro Now!"/>-->
+<!--			</div>-->
 
 
 		</div>
