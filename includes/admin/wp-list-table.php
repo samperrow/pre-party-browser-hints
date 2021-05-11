@@ -156,7 +156,7 @@ class WP_List_Table {
 		);
 
 		$this->screen = convert_to_screen( $args['screen'] );
-		$this->on_pprh_admin = apply_filters( 'pprh_on_pprh_admin', null );
+		$this->on_pprh_admin = apply_filters( 'pprh_on_pprh_admin', true );
 
 		add_filter( "manage_{$this->screen->id}_columns", array( $this, 'get_columns' ), 0 );
 
@@ -1282,7 +1282,7 @@ class WP_List_Table {
 
 	public function on_post_page_and_global_hint( $item ) {
 		$global_hint = ( ! empty( $item['post_id'] ) && 'global' === $item['post_id'] );
-		$on_pprh_admin = ( PPRH_PRO_PLUGIN_ACTIVE && ! $this->on_pprh_admin );
+		$on_pprh_admin = ( ! $this->on_pprh_admin );
 		return ( $global_hint && $on_pprh_admin );
 	}
 
