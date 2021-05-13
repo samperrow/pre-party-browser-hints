@@ -41,6 +41,7 @@ class Pre_Party_Browser_Hints {
 	public function load_plugin() {
 		$this->load_common_files();
 		$this->create_constants();
+
 		do_action( 'pprh_load_plugin' );
 
 		if ( ! function_exists( 'wp_doing_ajax' ) ) {
@@ -74,12 +75,14 @@ class Pre_Party_Browser_Hints {
 	public function create_constants() {
 		global $wpdb;
 		$table = $wpdb->prefix . 'pprh_table';
+		$postmeta_table = $wpdb->prefix . 'postmeta';
 		$plugin_version = get_option( 'pprh_version', '1.7.7' );
 		$pprh_pro_active = Utils::pprh_is_plugin_active();
 
 		if ( ! defined( 'PPRH_VERSION' ) ) {
 			define( 'PPRH_VERSION', $plugin_version );
 			define( 'PPRH_DB_TABLE', $table );
+			define( 'PPRH_POSTMETA_TABLE', $postmeta_table );
 			define( 'PPRH_ABS_DIR', WP_PLUGIN_DIR . '/pre-party-browser-hints/' );
 			define( 'PPRH_REL_DIR', plugins_url() . '/pre-party-browser-hints/' );
 			define( 'PPRH_HOME_URL', admin_url() . 'admin.php?page=pprh-plugin-setttings' );
