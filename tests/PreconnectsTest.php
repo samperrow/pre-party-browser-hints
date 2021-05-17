@@ -25,7 +25,7 @@ class PreconnectsTest extends TestCase {
 	public function test_constructor():void {
 		$preconnects = new \PPRH\Preconnects();
 		$loaded = has_action( 'wp_loaded', array($preconnects, 'init_controller') );
-		$this->assertEquals( true, $loaded );
+		self::assertEquals( true, $loaded );
 
 		$actual_config = $preconnects->get_config( 'true', 'true', 'true' );
 		$expected_config = array(
@@ -33,7 +33,7 @@ class PreconnectsTest extends TestCase {
 			'allow_unauth'    => true,
 			'preconnects_set' => true,
 		);
-		$this->assertEquals( $expected_config, $actual_config );
+		self::assertEquals( $expected_config, $actual_config );
 	}
 
 	public function test_entire_preconnect_class(): void {
@@ -41,19 +41,19 @@ class PreconnectsTest extends TestCase {
 
 		$config_1 = $preconnects->get_config( 'true', 'true', 'true' );
 		$actual_1 = $preconnects->initialize( $config_1 );
-		$this->assertEquals( false, $actual_1 );
+		self::assertEquals( false, $actual_1 );
 
 		$config_2 = $preconnects->get_config( 'true', 'true', 'false' );
 		$actual_2 = $preconnects->initialize( $config_2 );
-		$this->assertEquals( true, $actual_2 );
+		self::assertEquals( true, $actual_2 );
 
 		$config_3 = $preconnects->get_config( 'false', 'true', 'true' );
 		$actual_3 = $preconnects->initialize( $config_3 );
-		$this->assertEquals( false, $actual_3 );
+		self::assertEquals( false, $actual_3 );
 
 		$config_4 = $preconnects->get_config( 'false', 'true', 'false' );
 		$actual_4 = $preconnects->initialize( $config_4 );
-		$this->assertEquals( false, $actual_4 );
+		self::assertEquals( false, $actual_4 );
 	}
 
 
@@ -75,9 +75,9 @@ class PreconnectsTest extends TestCase {
 		$config['preconnects_set'] = false;
 		$actual_3 = $preconnects->initialize($config);
 
-		$this->assertEquals(false, $actual_1);
-		$this->assertEquals(false, $actual_2);
-		$this->assertEquals(true, $actual_3);
+		self::assertEquals(false, $actual_1);
+		self::assertEquals(false, $actual_2);
+		self::assertEquals(true, $actual_3);
 	}
 
 
@@ -91,10 +91,10 @@ class PreconnectsTest extends TestCase {
 		$actual_2 = $preconnects->check_to_enqueue_scripts(false);
 
 		$scripts_enqueued = has_action( 'wp_enqueue_scripts', array($preconnects, 'enqueue_scripts') );
-		$this->assertEquals(true, $scripts_enqueued);
+		self::assertEquals(true, $scripts_enqueued);
 
-		$this->assertEquals(true, $actual_1);
-		$this->assertEquals(false, $actual_2);
+		self::assertEquals(true, $actual_1);
+		self::assertEquals(false, $actual_2);
 	}
 
 
@@ -104,21 +104,21 @@ class PreconnectsTest extends TestCase {
 
 		$wp_ajax_nopriv_added_1 = has_action( "wp_ajax_nopriv_$ajax_cb", array($preconnects, $ajax_cb) );
 		$wp_ajax_added_1 = has_action( "wp_ajax_$ajax_cb", array($preconnects, $ajax_cb) );
-		$this->assertEquals(false, $wp_ajax_nopriv_added_1);
-		$this->assertEquals(false, $wp_ajax_added_1);
+		self::assertEquals(false, $wp_ajax_nopriv_added_1);
+		self::assertEquals(false, $wp_ajax_added_1);
 
 
 		$preconnects->load_ajax_actions( false );
 		$wp_ajax_nopriv_added_2 = has_action( "wp_ajax_nopriv_$ajax_cb", array($preconnects, $ajax_cb) );
 		$wp_ajax_added_2 = has_action( "wp_ajax_$ajax_cb", array($preconnects, $ajax_cb) );
-		$this->assertEquals(false, $wp_ajax_nopriv_added_2);
-		$this->assertEquals(true, $wp_ajax_added_2);
+		self::assertEquals(false, $wp_ajax_nopriv_added_2);
+		self::assertEquals(true, $wp_ajax_added_2);
 
 		$preconnects->load_ajax_actions( true );
 		$wp_ajax_nopriv_added_3 = has_action( "wp_ajax_nopriv_$ajax_cb", array($preconnects, $ajax_cb) );
 		$wp_ajax_added_3 = has_action( "wp_ajax_$ajax_cb", array($preconnects, $ajax_cb) );
-		$this->assertEquals(true, $wp_ajax_nopriv_added_3);
-		$this->assertEquals(true, $wp_ajax_added_3);
+		self::assertEquals(true, $wp_ajax_nopriv_added_3);
+		self::assertEquals(true, $wp_ajax_added_3);
 	}
 
 
@@ -127,7 +127,7 @@ class PreconnectsTest extends TestCase {
 //		$preconnects_1 = new \PPRH\Preconnects();
 //		$preconnects_1->is_admin = true;
 //		$actual_1 = $preconnects_1->enqueue_scripts();
-//		$this->assertEquals( false, $actual_1);
+//		self::assertEquals( false, $actual_1);
 //
 //		$preconnects_2 = new \PPRH\Preconnects();
 //		$preconnects_2->is_admin = false;
@@ -146,7 +146,7 @@ class PreconnectsTest extends TestCase {
 //			$expected_scripts[] = 'pprh-find-domain-names';
 //		}
 //
-//		$this->assertEquals( $expected_scripts, $actual_scripts);
+//		self::assertEquals( $expected_scripts, $actual_scripts);
 //	}
 
 	public function eval_create_js_object() {
@@ -161,7 +161,7 @@ class PreconnectsTest extends TestCase {
 		);
 
 		$actual_object_1 = $preconnects->create_js_object();
-		$this->assertEquals( $expected_arr_1, $actual_object_1 );
+		self::assertEquals( $expected_arr_1, $actual_object_1 );
 	}
 
 
@@ -173,10 +173,10 @@ class PreconnectsTest extends TestCase {
 		$expected_3 = $preconnects->allow_unauth_users( false, true );
 		$expected_4 = $preconnects->allow_unauth_users( false, false );
 
-		$this->assertEquals( true, $expected_1 );
-		$this->assertEquals( true, $expected_2 );
-		$this->assertEquals( true, $expected_3 );
-		$this->assertEquals( false, $expected_4 );
+		self::assertEquals( true, $expected_1 );
+		self::assertEquals( true, $expected_2 );
+		self::assertEquals( true, $expected_3 );
+		self::assertEquals( false, $expected_4 );
 	}
 
 
@@ -191,15 +191,15 @@ class PreconnectsTest extends TestCase {
 //		update_option( $autoload_option, 'true' );
 //		update_option( $set, 'false' );
 //		$load_preconnects = $preconnects->load_auto_preconnects(null);
-//		$this->assertEquals( true, $load_preconnects );
+//		self::assertEquals( true, $load_preconnects );
 //
 //		update_option( $autoload_option, 'false' );
 //		$load_preconnects2 = $preconnects->load_auto_preconnects(null);
-//		$this->assertEquals( false, $load_preconnects2 );
+//		self::assertEquals( false, $load_preconnects2 );
 //
 //		update_option( $set, 'true' );
 //		$load_preconnects3 = $preconnects->load_auto_preconnects(null);
-//		$this->assertEquals( false, $load_preconnects3 );
+//		self::assertEquals( false, $load_preconnects3 );
 //
 //		update_option( $autoload_option, $autoload_initial );
 //		update_option( $set, $preconnects_set_initial );
@@ -223,13 +223,13 @@ class PreconnectsTest extends TestCase {
 	// tests that only logged in users will load the preconnect ajax actions
 //	public function _load_ajax_actions1() {
 //		$ajax_actions = $this->util_load_ajax_actions( 'false' );
-//		$this->assertEquals( array( 10, false ), $ajax_actions );
+//		self::assertEquals( array( 10, false ), $ajax_actions );
 //	}
 
 //	// tests that all users will load the preconnect ajax actions
 //	public function _load_ajax_actions2() {
 //		$ajax_actions = $this->util_load_ajax_actions( 'true' );
-//		$this->assertEquals( array( 10, true ), $ajax_actions );
+//		self::assertEquals( array( 10, true ), $ajax_actions );
 //	}
 
 
@@ -250,9 +250,9 @@ class PreconnectsTest extends TestCase {
 		$actual = $preconnects->pprh_post_domain_names();
 
 		if ( wp_doing_ajax() ) {
-			$this->assertEquals( true, $actual );
+			self::assertEquals( true, $actual );
 		} else {
-			$this->assertEquals( null, $actual );
+			self::assertEquals( null, $actual );
 		}
 	}
 
@@ -269,7 +269,7 @@ class PreconnectsTest extends TestCase {
 		$expected = count( $test_data['hints'] );
 
 		$actual = $preconnects->process_hints( $test_data );
-		$this->assertEquals( $expected, count( $actual ) );
+		self::assertEquals( $expected, count( $actual ) );
 	}
 
 }

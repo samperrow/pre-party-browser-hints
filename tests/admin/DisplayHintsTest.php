@@ -36,11 +36,11 @@ final class DisplayHintsTest extends TestCase {
 		$test_4 = array('url' => 'http://espn.com');
 		$actual_4 = $wp_list_table->on_post_page_and_global_hint( $test_4 );
 
-		$this->assertEquals( false, $actual_1 );
-		$this->assertEquals( false, $actual_2 );
+		self::assertEquals( false, $actual_1 );
+		self::assertEquals( false, $actual_2 );
 
-		$this->assertEquals( false, $actual_3 );
-		$this->assertEquals( false, $actual_4 );
+		self::assertEquals( false, $actual_3 );
+		self::assertEquals( false, $actual_4 );
 
 		if ( PPRH_PRO_PLUGIN_ACTIVE )  {
 			$test_5 = array('post_id' => 'global');
@@ -50,13 +50,13 @@ final class DisplayHintsTest extends TestCase {
 			$wp_list_table->on_pprh_admin = true;
 			$actual_6 = $wp_list_table->on_post_page_and_global_hint( $test_5 );
 
-			$this->assertEquals( true, $actual_5 );
-			$this->assertEquals( false, $actual_6 );
+			self::assertEquals( true, $actual_5 );
+			self::assertEquals( false, $actual_6 );
 		} else {
 			$test_3 = array('post_id' => '');
 			$wp_list_table->on_pprh_admin = false;
 			$actual_3 = $wp_list_table->on_post_page_and_global_hint( $test_3 );
-			$this->assertEquals( false, $actual_3 );
+			self::assertEquals( false, $actual_3 );
 		}
 	}
 
@@ -65,16 +65,16 @@ final class DisplayHintsTest extends TestCase {
 //
 //		$actual1 = $display_hints->on_post_page_and_global_hint( array( 'post_id' => '2128' ) );
 //		$actual2 = $display_hints->on_post_page_and_global_hint( array( 'post_id' => 'global' ) );
-//		$this->assertEquals( false, $actual1 );
-//		$this->assertEquals( false, $actual2 );
+//		self::assertEquals( false, $actual1 );
+//		self::assertEquals( false, $actual2 );
 //
 //		$display_hints2 = new \PPRH\DisplayHints();
 ////		$actual3 = $display_hints2->on_post_page_and_global_hint( array( 'post_id' => 'global' ) );
 //
 //		$actual4 = $display_hints2->on_post_page_and_global_hint( array( 'post_id' => '2128' ) );
 //
-////		$this->assertEquals( true, $actual3 );
-//		$this->assertEquals( false, $actual4 );
+////		self::assertEquals( true, $actual3 );
+//		self::assertEquals( false, $actual4 );
 //	}
 
 }

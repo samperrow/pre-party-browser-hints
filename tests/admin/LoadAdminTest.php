@@ -24,7 +24,7 @@ final class LoadAdminTest extends TestCase {
 
 		$expected_scripts = array( 'pprh_create_hints_js', 'pprh_admin_js', 'post' );
 
-		$this->assertEquals( $expected_scripts, $actual_scripts);
+		self::assertEquals( $expected_scripts, $actual_scripts);
 	}
 
 }

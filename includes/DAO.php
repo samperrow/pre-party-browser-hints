@@ -55,7 +55,10 @@ class DAO {
 
 	public function insert_hint( $new_hint ) {
 		global $wpdb;
-		$current_user = wp_get_current_user()->display_name;
+
+		if ( ! is_array( $new_hint ) )  {
+			return;
+		}
 
 		$args = array(
 			'types'   => array( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' ),
@@ -66,7 +69,7 @@ class DAO {
 				'as_attr'      => $new_hint['as_attr'],
 				'type_attr'    => $new_hint['type_attr'],
 				'crossorigin'  => $new_hint['crossorigin'],
-				'created_by'   => $current_user,
+				'created_by'   => $new_hint['current_user'],
 				'media'        => $new_hint['media']
 			)
 		);
@@ -161,7 +164,8 @@ class DAO {
 		}
 		elseif ( 3 === $query_code ) {
 			if ( PPRH_PRO_PLUGIN_ACTIVE ) {
-				$query['sql'] = apply_filters( 'pprh_append_string', $query['sql'], ' ORDER BY post_id DESC, url ASC' );
+//				$query['sql'] = apply_filters( 'pprh_append_string', $query['sql'], ' ORDER BY post_id DESC, url ASC' );
+				$query['sql'] .= ' ORDER BY post_id DESC, url ASC';
 			} else {
 				$query['sql'] .= ' ORDER BY url ASC';
 			}

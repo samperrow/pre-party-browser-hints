@@ -84,14 +84,14 @@ class PrefetchSettings {
 <!--            <span>--><?php //_e( 'Prefetch entire pages before the user clicks on navigation links, making them load instantly. This will create prefetch hints automatically each time a page is loaded. These hints do not get saved in the database. Special thanks to <a href="https://wpspeedmatters.com/">Gijo Varghese</a> for providing assistance with this prefetch feature.', 'pprh'); ?><!--</span>-->
 <!--        </span>-->
 
-        <table id="prefetch" class="form-table">
+        <table class="form-table">
 
             <tbody>
 
                 <tr>
                     <th><?php esc_html_e( 'Enable this feature? (This allows for navigation links to be automatically prefetched while in viewport.)', 'pprh' ); ?></th>
                     <td>
-                        <input type="checkbox" name="pprh_prefetch_enabled" id="pprhPrefetchEnabled" value="true" <?php echo $this->prefetch_enabled; ?>/>
+                        <input type="checkbox" name="pprh_prefetch_enabled" class="toggleMetaBox" value="true" <?php echo $this->prefetch_enabled; ?>/>
                         <p><?php esc_html_e( 'When navigation (anchor) links are being moused over, this feature will initiate a prefetch request for the URL in the link. Select No (default) to disable this feature.', 'pprh' ); ?></p>
                     </td>
                 </tr>

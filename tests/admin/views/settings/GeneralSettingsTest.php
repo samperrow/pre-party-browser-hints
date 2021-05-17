@@ -12,7 +12,7 @@ use PHPUnit\Framework\TestCase;
 //		$general_settings->set_values();
 //		$actual = \PPRH\Utils::is_option_checked( 'pprh_disable_wp_hints' );
 //
-//		$this->assertEquals($actual, $general_settings->disable_wp_hints);
+//		self::assertEquals($actual, $general_settings->disable_wp_hints);
 //
 //	}
 
@@ -38,7 +38,7 @@ use PHPUnit\Framework\TestCase;
 //		$general_settings = new \PPRH\GeneralSettings();
 //		$_POST[$option_name] = $test_value;
 //		$general_settings->save_options();
-//		$this->assertEquals(get_option( $option_name ), $test_value );
+//		self::assertEquals(get_option( $option_name ), $test_value );
 //	}
 
 

@@ -17,7 +17,7 @@ use PHPUnit\Framework\TestCase;
 //		$is_pro_loaded = $preconnect_settings->load_reset_settings();
 //
 //		$expected = ( $on_pprh_admin && PPRH_PRO_PLUGIN_ACTIVE );
-//		$this->assertEquals( $expected, $is_pro_loaded );
+//		self::assertEquals( $expected, $is_pro_loaded );
 //	}
 //
 //}

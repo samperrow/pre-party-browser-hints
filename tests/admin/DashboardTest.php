@@ -6,7 +6,7 @@
 //class DashboardTest extends TestCase {
 //
 //	public function test_():void {
-//		$this->assertEquals( true, true);
+//		self::assertEquals( true, true);
 //	}
 //
 //

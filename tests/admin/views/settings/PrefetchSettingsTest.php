@@ -13,7 +13,7 @@ use PHPUnit\Framework\TestCase;
 //
 //		$actual = $prefetch_settings->get_each_keyword( $keywords );
 //		$expected = "testeroo/asdf\nblah\nwp-login.php\ncart\n";
-//		$this->assertEquals( $expected, $actual );
+//		self::assertEquals( $expected, $actual );
 //	}
 
 //	public function test_turn_textarea_to_json():void {

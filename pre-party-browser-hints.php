@@ -78,6 +78,7 @@ class Pre_Party_Browser_Hints {
 		$postmeta_table = $wpdb->prefix . 'postmeta';
 		$plugin_version = get_option( 'pprh_version', '1.7.7' );
 		$pprh_pro_active = Utils::pprh_is_plugin_active();
+        $site_url = get_option( 'siteurl' );
 
 		if ( ! defined( 'PPRH_VERSION' ) ) {
 			define( 'PPRH_VERSION', $plugin_version );
@@ -87,6 +88,7 @@ class Pre_Party_Browser_Hints {
 			define( 'PPRH_REL_DIR', plugins_url() . '/pre-party-browser-hints/' );
 			define( 'PPRH_HOME_URL', admin_url() . 'admin.php?page=pprh-plugin-setttings' );
 			define( 'PPRH_PRO_PLUGIN_ACTIVE', $pprh_pro_active );
+			define( 'PPRH_SITE_URL', $site_url );
 			define( 'PPRH_DEBUG', true );
         }
 	}

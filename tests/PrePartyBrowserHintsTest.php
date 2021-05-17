@@ -13,11 +13,11 @@ final class PrePartyBrowserHintsTest extends TestCase {
 		$home_url = admin_url() . 'admin.php?page=pprh-plugin-setttings';
 		$version = get_option( 'pprh_version' );
 
-		$this->assertEquals( PPRH_VERSION, $version );
-		$this->assertEquals( PPRH_DB_TABLE, $table );
-		$this->assertEquals( PPRH_ABS_DIR, $abs_dir );
-		$this->assertEquals( PPRH_REL_DIR, $rel_dir );
-		$this->assertEquals( PPRH_HOME_URL, $home_url );
+		self::assertEquals( PPRH_VERSION, $version );
+		self::assertEquals( PPRH_DB_TABLE, $table );
+		self::assertEquals( PPRH_ABS_DIR, $abs_dir );
+		self::assertEquals( PPRH_REL_DIR, $rel_dir );
+		self::assertEquals( PPRH_HOME_URL, $home_url );
 	}
 
 	public function test_load_common_files():void {
@@ -25,9 +25,9 @@ final class PrePartyBrowserHintsTest extends TestCase {
 		$dao = class_exists( \PPRH\DAO::class );
 		$create_hints = class_exists( \PPRH\CreateHints::class );
 
-		$this->assertEquals( true, $utils );
-		$this->assertEquals( true, $dao );
-		$this->assertEquals( true, $create_hints );
+		self::assertEquals( true, $utils );
+		self::assertEquals( true, $dao );
+		self::assertEquals( true, $create_hints );
 	}
 
 
@@ -37,10 +37,10 @@ final class PrePartyBrowserHintsTest extends TestCase {
 
 		if ( WP_ADMIN ) {
 			$manage_options = current_user_can( 'manage_options' );
-			$this->assertEquals( true, $load_admin );
-			$this->assertEquals( true, $manage_options );
+			self::assertEquals( true, $load_admin );
+			self::assertEquals( true, $manage_options );
 		} else {
-			$this->assertEquals( false, $load_admin);
+			self::assertEquals( false, $load_admin);
 		}
 
 	}

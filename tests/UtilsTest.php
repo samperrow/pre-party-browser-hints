@@ -21,15 +21,15 @@ final class UtilsTest extends TestCase {
 		$test1 = \PPRH\Utils::strip_non_alphanums($str1);
 		$test2 = \PPRH\Utils::strip_non_alphanums($str2);
 
-		$this->assertEquals( 'faFED265b2tbYT28352', $test1 );
-		$this->assertEquals( $str2, $test2 );
+		self::assertEquals( 'faFED265b2tbYT28352', $test1 );
+		self::assertEquals( $str2, $test2 );
 	}
 
 	public function test_strip_non_numbers():void {
 		$str1 = '!f_a#FED__=26 5b-2tb(&YT^>"28352';
 		$test1 = \PPRH\Utils::strip_non_numbers($str1);
 
-		$this->assertEquals( '265228352', $test1 );
+		self::assertEquals( '265228352', $test1 );
 	}
 
 	public function test_clean_hint_type():void {
@@ -39,8 +39,8 @@ final class UtilsTest extends TestCase {
 		$test1 = \PPRH\Utils::clean_hint_type($str1);
 		$test2 = \PPRH\Utils::clean_hint_type($str2);
 
-		$this->assertEquals( $str1, $test1 );
-		$this->assertEquals( 'preconnect', $test2 );
+		self::assertEquals( $str1, $test1 );
+		self::assertEquals( 'preconnect', $test2 );
 	}
 
 	public function test_clean_url():void {
@@ -50,8 +50,8 @@ final class UtilsTest extends TestCase {
 		$test1 = \PPRH\Utils::clean_url($str1);
 		$test2 = \PPRH\Utils::clean_url($str2);
 
-		$this->assertEquals( $str1, $test1 );
-		$this->assertEquals( 'https://scripttest.comscript', $test2 );
+		self::assertEquals( $str1, $test1 );
+		self::assertEquals( 'https://scripttest.comscript', $test2 );
 	}
 
 	public function test_clean_url_path():void {
@@ -61,8 +61,8 @@ final class UtilsTest extends TestCase {
 		$test1 = \PPRH\Utils::clean_url_path($str1);
 		$test2 = \PPRH\Utils::clean_url_path($str2);
 
-		$this->assertEquals( $str1, $test1 );
-		$this->assertEquals( 'testdsdf/blah', $test2 );
+		self::assertEquals( $str1, $test1 );
+		self::assertEquals( 'testdsdf/blah', $test2 );
 	}
 
 	public function test_clean_hint_attr():void {
@@ -72,8 +72,8 @@ final class UtilsTest extends TestCase {
 		$test1 = \PPRH\Utils::clean_hint_attr($str1);
 		$test2 = \PPRH\Utils::clean_hint_attr($str2);
 
-		$this->assertEquals( $str1, $test1 );
-		$this->assertEquals( 'f/asdlfkj43t935u23asdflkj3', $test2 );
+		self::assertEquals( $str1, $test1 );
+		self::assertEquals( 'f/asdlfkj43t935u23asdflkj3', $test2 );
 	}
 
 	public function test_get_opt_val():void {
@@ -84,8 +84,8 @@ final class UtilsTest extends TestCase {
 		$actual_test_1 = ( 'true' === $test_1 || 'false' === $test_1 );
 		$test2 = \PPRH\Utils::get_opt_val($str2);
 
-		$this->assertEquals( true, $actual_test_1 );
-		$this->assertEquals( '', $test2 );
+		self::assertEquals( true, $actual_test_1 );
+		self::assertEquals( '', $test2 );
 	}
 
 //	public function test_create_db_result():void {
@@ -93,7 +93,7 @@ final class UtilsTest extends TestCase {
 //
 //		$test1 = PPRH\Utils::create_db_result($str1);
 //
-//		$this->assertEquals( '', $test2 );
+//		self::assertEquals( '', $test2 );
 //	}
 
 //	public function test_get_wpdb_result():void {
@@ -128,8 +128,8 @@ final class UtilsTest extends TestCase {
 //		$test1 = PPRH\Utils::get_wpdb_result($wpdb1, $action1);
 //		$test2 = PPRH\Utils::get_wpdb_result($wpdb2, $action2 );
 //
-//		$this->assertEquals( $result1, $test1 );
-//		$this->assertEquals( $result2, $test2 );
+//		self::assertEquals( $result1, $test1 );
+//		self::assertEquals( $result2, $test2 );
 //	}
 
 	public function test_get_option_status():void {
@@ -137,11 +137,11 @@ final class UtilsTest extends TestCase {
 		add_option( $option_name, 'true' );
 
 		$test_1 = \PPRH\Utils::get_option_status($option_name, 'true' );
-		$this->assertEquals( 'selected=selected', $test_1 );
+		self::assertEquals( 'selected=selected', $test_1 );
 
 		update_option( $option_name, 'false' );
 		$test_2 = \PPRH\Utils::get_option_status( $option_name, 'true' );
-		$this->assertEquals( '', $test_2 );
+		self::assertEquals( '', $test_2 );
 
 		delete_option( $option_name );
 	}
@@ -159,8 +159,8 @@ final class UtilsTest extends TestCase {
 		$actual1 = \PPRH\Utils::esc_get_option( $test_option_name1 );
 		$actual2 = \PPRH\Utils::esc_get_option( $test_option_name2 );
 
-		$this->assertEquals( 'https://&lt;test.com&gt;/asdfasdf', $actual1 );
-		$this->assertEquals( 'https://test.com/asdfasdf', $actual2 );
+		self::assertEquals( 'https://&lt;test.com&gt;/asdfasdf', $actual1 );
+		self::assertEquals( 'https://test.com/asdfasdf', $actual2 );
 
 		delete_option( $test_option_name1 );
 		delete_option( $test_option_name2 );
@@ -191,14 +191,14 @@ final class UtilsTest extends TestCase {
 				$actual_3 = \PPRH\Utils::on_pprh_admin();
 			}
 
-			$this->assertEquals( true, $actual_1 );
-			$this->assertEquals( false, $actual_2 );
-			$this->assertEquals( false, $actual_3 );
+			self::assertEquals( true, $actual_1 );
+			self::assertEquals( false, $actual_2 );
+			self::assertEquals( false, $actual_3 );
 		}
 
 		else {
 			$actual_4 = \PPRH\Utils::on_pprh_admin();
-			$this->assertEquals( false, $actual_4 );
+			self::assertEquals( false, $actual_4 );
 		}
 
 	}

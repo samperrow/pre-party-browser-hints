@@ -72,7 +72,8 @@ class LoadAdmin {
 
 	// Register and call the CSS and JS we need only on the needed page.
 	public function register_admin_files( $hook ) {
-		$str = apply_filters( 'pprh_append_string', 'toplevel_page_pprh-plugin-settings', '|post.php' );
+//		$str = apply_filters( 'pprh_append_string', 'toplevel_page_pprh-plugin-settings', '|post.php' );
+		$str = 'toplevel_page_pprh-plugin-settings|post.php';
 
 		if ( strpos( $str, $hook, 0 ) !== false ) {
 			$ajax_data = array(

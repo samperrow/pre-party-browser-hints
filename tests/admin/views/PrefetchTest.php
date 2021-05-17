@@ -13,7 +13,7 @@ class PrefetchTest extends TestCase {
 
 		$actual_enabled = $this->flying_pages_loaded();
 
-		$this->assertEquals($actual_enabled, $expected);
+		self::assertEquals($actual_enabled, $expected);
 	}
 
 
@@ -37,7 +37,7 @@ class PrefetchTest extends TestCase {
 //
 //		$arr = json_decode($json, true);
 //		$string = implode( ',', $arr);
-//		$this->assertEquals(true, true);
+//		self::assertEquals(true, true);
 //	}
 
 //	public function test_disabled_for_logged_in_users(): void {
@@ -48,7 +48,7 @@ class PrefetchTest extends TestCase {
 //		$expected = ('true' === $disable_for_logged_in_users);
 //		$actual_enabled = $this->flying_pages_loaded();
 //
-//		$this->assertEquals($actual_enabled, $expected);
+//		self::assertEquals($actual_enabled, $expected);
 //	}
 
 

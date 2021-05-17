@@ -24,7 +24,7 @@ final class AjaxOpsTest extends TestCase {
 		$_POST['action'] = 'pprh_update_hints';
 		$_REQUEST['nonce'] = $expected_nonce;
 		$initiated = $ajax_ops->pprh_update_hints();
-		$this->assertEquals($expected, $initiated);
+		self::assertEquals($expected, $initiated);
 	}
 
 	// also need to verify update, delete, enable, disable, bulk operations work properly.
@@ -37,14 +37,14 @@ final class AjaxOpsTest extends TestCase {
 		$test_data_1['op_code'] = 0;
 		$actual_1 = $ajax_ops->init( $test_data_1 );
 		$expected_1 = $dao_ctrl->create_db_result( true, '', '', $test_data_1['op_code'], $actual_1->new_hint );
-		$this->assertEquals($expected_1, $actual_1);
+		self::assertEquals($expected_1, $actual_1);
 
 
 		$test_data_2 = TestUtils::create_hint_array( 'https://testAjaxOps2.com', 'dns-prefetch' );
 		$test_data_2['op_code'] = 1;
 		$actual_2 = $ajax_ops->init( $test_data_2 );
 		$expected_2 = $dao_ctrl->create_db_result( true, '', '', $test_data_2['op_code'], $actual_2->new_hint );
-		$this->assertEquals($expected_2, $actual_2);
+		self::assertEquals($expected_2, $actual_2);
 
 
 		$test_data_3 = array(
@@ -53,7 +53,7 @@ final class AjaxOpsTest extends TestCase {
 		);
 		$actual_3 = $ajax_ops->init( $test_data_3 );
 		$expected_3 = $dao_ctrl->create_db_result( true, '100', '', $test_data_3['op_code'], null );
-		$this->assertEquals($expected_3, $actual_3);
+		self::assertEquals($expected_3, $actual_3);
 
 
 		$test_data_4 = array(
@@ -62,7 +62,7 @@ final class AjaxOpsTest extends TestCase {
 		);
 		$actual_4 = $ajax_ops->init( $test_data_4 );
 		$expected_4 = $dao_ctrl->create_db_result( true, $test_data_4['hint_ids'], '', $test_data_4['op_code'], null );
-		$this->assertEquals( $expected_4, $actual_4 );
+		self::assertEquals( $expected_4, $actual_4 );
 
 
 		$test_data_5 = array(
@@ -71,7 +71,7 @@ final class AjaxOpsTest extends TestCase {
 		);
 		$actual_5 = $ajax_ops->init( $test_data_5 );
 		$expected_5 = $dao_ctrl->create_db_result( true, $test_data_5['hint_ids'], '', $test_data_5['op_code'], null );
-		$this->assertEquals( $expected_5, $actual_5 );
+		self::assertEquals( $expected_5, $actual_5 );
 	}
 
 

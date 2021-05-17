@@ -17,6 +17,8 @@ class CreateHints {
 			return false;
 		}
 
+		$current_user = wp_get_current_user()->display_name;
+
 		$new_hint = array(
 			'url'          => Utils::clean_url( $raw_hint['url'] ),
 			'hint_type'    => Utils::clean_hint_type( $raw_hint['hint_type'] ),
@@ -24,9 +26,10 @@ class CreateHints {
 			'type_attr'    => ( ! empty( $raw_hint['type_attr'] )   ? Utils::clean_hint_attr( $raw_hint['type_attr'] ) : '' ),
 			'crossorigin'  => ( ! empty( $raw_hint['crossorigin'] ) ? 'crossorigin' : '' ),
 			'media'        => ( ! empty( $raw_hint['media'] )       ? Utils::clean_url( $raw_hint['media'] ) : '' ),
+			'current_user' => ( ! empty( $current_user ) ? $current_user : '' )
 		);
 
-		return apply_filters( 'pprh_ch_append_hint', $new_hint, $raw_hint );
+		return apply_filters( 'pprh_append_hint', $new_hint, $raw_hint );
 	}
 
 	public function new_hint_controller( $raw_hint ) {
@@ -91,7 +94,7 @@ class CreateHints {
 
 	public function resolve_duplicate_hints( $duplicate_hints, $candidate_hint ) {
 		if ( isset( $candidate_hint['post_id'] ) && count( $duplicate_hints ) > 0 ) {
-			return apply_filters( 'pprh_ch_resolve_duplicate_hints', $duplicate_hints, $candidate_hint );
+			return apply_filters( 'pprh_resolve_duplicate_hints', $duplicate_hints, $candidate_hint );
 		}
 
 		return false;

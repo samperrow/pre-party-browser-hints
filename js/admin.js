@@ -8,32 +8,28 @@
 	const adminNoticeElem = document.getElementById('pprhNotice');
 
 	if (/pprh-plugin-settings/.test(currentURL)) {
-		togglePrefetchRows();
+		// togglePrefetchRows();
 		toggleEmailSubmit();
 	}
 
-	function togglePrefetchRows() {
-		let prefetchEnabledCheckbox = document.getElementById('pprhPrefetchEnabled');
-		let prefetchBox = document.getElementById('prefetch');
-		let tbodyRows;
-
-		if (null !== prefetchEnabledCheckbox) {
-			tbodyRows = prefetchBox.getElementsByTagName('tr');
-			prefetchEnabledCheckbox.addEventListener('click', callback);
-		}
-
-		function callback() {
-			hideRows( (prefetchEnabledCheckbox.checked) ? 'table-row' : 'none');
-		}
-		callback();
-
-
-		function hideRows(cssValue) {
-			for (let i = 1; i < tbodyRows.length; i++) {
-				tbodyRows[i].style.display = cssValue;
-			}
-		}
-	}
+	// function togglePrefetchRows() {
+	// 	let toggleMetas = document.getElementsByClassName('toggleMetaBox');
+	//
+	// 	for (let i = 0; i < toggleMetas.length; i++)  {
+	// 		toggleMetas[i].addEventListener('click', function() {
+	// 			let tbodyRows = this.closest('table').getElementsByTagName('tr');
+	// 			callback(this, tbodyRows);
+	// 		});
+	// 	}
+	//
+	// 	function callback(checkbox, rows) {
+	// 		let cssValue = checkbox.checked ? 'table-row' : 'none';
+	//
+	// 		for (let i = 1; i < rows.length; i++) {
+	// 			rows[i].style.display = cssValue;
+	// 		}
+	// 	}
+	// }
 
 	function toggleEmailSubmit() {
 		let emailSubmitBtn = document.getElementById('pprhSubmit');

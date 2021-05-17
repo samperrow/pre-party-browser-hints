@@ -27,7 +27,7 @@ final class DAOTest extends TestCase {
 
 		$test1 = $dao->create_db_result( true, '', '', 0, null );
 
-		$this->assertEquals( $expected, $test1 );
+		self::assertEquals( $expected, $test1 );
 	}
 
 	public function test_create_hint(): int {
@@ -40,7 +40,7 @@ final class DAOTest extends TestCase {
 		$create_hint = $dao->insert_hint($new_hint);
 		$hint_id = $create_hint->db_result['hint_id'];
 		$expected = $dao->create_db_result( true, $hint_id, '', 0, $new_hint );
-		$this->assertEquals($expected, $create_hint);
+		self::assertEquals($expected, $create_hint);
 		return $hint_id;
 	}
 
@@ -53,7 +53,7 @@ final class DAOTest extends TestCase {
 
 		$result = $dao->update_hint( $new_hint, $hint_id );
 		$expected = $dao->create_db_result( true, $hint_id, '', 1, $new_hint );
-		$this->assertEquals($expected, $result);
+		self::assertEquals($expected, $result);
 	}
 
 	/**
@@ -64,7 +64,7 @@ final class DAOTest extends TestCase {
 		$dao = new \PPRH\DAO();
 		$result = $dao->bulk_update( $hint_id_str, 4 );
 		$expected = $dao->create_db_result( true, $hint_id_str, '', 4, null );
-		$this->assertEquals($expected, $result);
+		self::assertEquals($expected, $result);
 	}
 
 	/**
@@ -75,7 +75,7 @@ final class DAOTest extends TestCase {
 		$dao = new \PPRH\DAO();
 		$result = $dao->delete_hint( $hint_id_str );
 		$expected = $dao->create_db_result( true, $hint_id_str, '', 2, null );
-		$this->assertEquals($expected, $result);
+		self::assertEquals($expected, $result);
 	}
 
 
@@ -89,17 +89,17 @@ final class DAOTest extends TestCase {
 //
 //		$expected = array_merge( array('id' => $id, 'status' => 'enabled', 'created_by' => '' ), $expected->new_hint );
 //		$actual = $dao->get_hints()['0'];
-//		$this->assertEquals($expected, $actual);
+//		self::assertEquals($expected, $actual);
 //	}
 
 //
 //	public function test_get_multisite_tables(): void {
-//		$this->assertEquals(true, true);
+//		self::assertEquals(true, true);
 //
 //	}
 //
 //	public function test_create_table(): void {
-//		$this->assertEquals(true, true);
+//		self::assertEquals(true, true);
 //
 //	}
 
