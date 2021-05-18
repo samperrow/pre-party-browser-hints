@@ -10,13 +10,9 @@ class Preconnects {
 
 	public $config;
 
-	public $testing = false;
-
 	// tested
 	public function __construct() {
 		add_action( 'wp_loaded', array( $this, 'init_controller' ), 10, 0 );
-
-		$this->testing = ( defined( 'PPRH_TESTING' ) && PPRH_TESTING );
 		$autoload = get_option( 'pprh_preconnect_autoload' );
 		$allow_unauth = get_option( 'pprh_preconnect_allow_unauth' );
 		$preconnects_set = get_option( 'pprh_preconnect_set' );
@@ -44,7 +40,7 @@ class Preconnects {
 		$allow_unauth = $args['allow_unauth'];
 		$this->load_ajax_actions( $allow_unauth );
 
-		if ( is_admin() && ! $this->testing ) {
+		if ( ! PPRH_TESTING && is_admin() ) {
 			return false;
 		}
 
@@ -151,7 +147,7 @@ class Preconnects {
 			return false;
 		}
 
-		if ( ! $this->testing ) {
+		if ( ! PPRH_TESTING ) {
 			wp_die();
 		}
 	}

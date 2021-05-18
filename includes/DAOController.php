@@ -32,7 +32,7 @@ class DAOController extends DAO {
 //			$ctrl_data['hint_ids'] = $concat_ids;
 //		}
 
-		if ( defined( 'PPRH_TESTING' ) && PPRH_TESTING ) {
+		if ( PPRH_TESTING ) {
 			return $this->test_db_controller( $ctrl_data );
 		}
 

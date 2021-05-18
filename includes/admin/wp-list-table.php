@@ -1156,7 +1156,7 @@ class WP_List_Table {
 	 * @since 3.1.0
 	 */
 	public function display() {
-		if ( defined( 'PPRH_TESTING' ) && PPRH_TESTING ) {
+		if ( PPRH_TESTING ) {
 			return;
 		}
 

@@ -8,11 +8,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class AjaxOps {
 
-	public $testing = false;
-
 	public function __construct() {
 		add_action( 'wp_ajax_pprh_update_hints', array( $this, 'pprh_update_hints' ) );
-		$this->testing = ( defined( 'PPRH_TESTING' ) && PPRH_TESTING );
 	}
 
 	public function pprh_update_hints() {
@@ -23,7 +20,7 @@ class AjaxOps {
 			return true;
 		}
 
-		if ( ! $this->testing ) {
+		if ( ! PPRH_TESTING ) {
 			wp_die();
 		}
 	}
@@ -36,7 +33,7 @@ class AjaxOps {
 				$display_hints = new DisplayHints();
 				$json = $display_hints->ajax_response( $db_result );
 
-				if ( $this->testing ) {
+				if ( PPRH_TESTING ) {
 					return $db_result;
 				}
 

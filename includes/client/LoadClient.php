@@ -44,11 +44,11 @@ class LoadClient {
 
 
 	public function load_flying_pages() {
-		$debug = ( defined( 'PPRH_DEBUG' ) && PPRH_DEBUG );
-		$js_script_path = ($debug) ? 'js/flying-pages.js' : 'js/flying-pages.min.js';
+		$testing = PPRH_TESTING;
+		$js_script_path = ($testing) ? 'js/flying-pages.js' : 'js/flying-pages.min.js';
 
 		$fp_data = array(
-			'debug'          => ( $debug ) ? 'true' : 'false',
+			'testing'          => ( $testing ) ? 'true' : 'false',
 			'delay'          => get_option( 'pprh_prefetch_delay', 0 ),
 			'maxRPS'         => get_option( 'pprh_prefetch_maxRPS', 3 ),
 			'hoverDelay'     => get_option( 'pprh_prefetch_hoverDelay', 50 ),
