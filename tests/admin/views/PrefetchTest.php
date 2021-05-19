@@ -19,7 +19,7 @@ class PrefetchTest extends TestCase {
 
 	public function flying_pages_loaded():bool {
 		global $wp_scripts;
-		do_action('wp_enqueue_scripts');
+		\do_action('wp_enqueue_scripts');
 
 		foreach ($wp_scripts->queue as $handle) {
 			if ('pprh_prefetch_flying_pages' === $handle) {

@@ -35,23 +35,23 @@ add_action( 'wpmu_new_blog', array( $pprh_load, 'activate_plugin' ) );
 class Pre_Party_Browser_Hints {
 
 	public function __construct() {
-	    add_action( 'init', array( $this, 'load_plugin' ) );
+	    \add_action( 'init', array( $this, 'load_plugin' ) );
 	}
 
 	public function load_plugin() {
 		$this->load_common_files();
 		$this->create_constants();
 
-		do_action( 'pprh_load_plugin' );
+		\do_action( 'pprh_load_plugin' );
 
 		if ( ! function_exists( 'wp_doing_ajax' ) ) {
 			apply_filters( 'wp_doing_ajax', defined( 'DOING_AJAX' ) && DOING_AJAX );
 		}
 
 		if ( is_admin() ) {
-			add_action( 'wp_loaded', array( $this, 'load_admin' ) );
+			\add_action( 'wp_loaded', array( $this, 'load_admin' ) );
 		} else {
-			add_action( 'wp_loaded', array( $this, 'load_client' ) );
+			\add_action( 'wp_loaded', array( $this, 'load_client' ) );
 		}
 
 		// this needs to be loaded front end and back end bc Ajax needs to be able to communicate between the two.
@@ -63,7 +63,7 @@ class Pre_Party_Browser_Hints {
 		include_once 'includes/admin/LoadAdmin.php';
 		$load_admin = new LoadAdmin();
 		$load_admin->init();
-		add_action( 'pprh_check_to_upgrade', array( $this, 'check_to_upgrade' ), 10, 1 );
+		\add_action( 'pprh_check_to_upgrade', array( $this, 'check_to_upgrade' ), 10, 1 );
 	}
 
     public function load_client() {

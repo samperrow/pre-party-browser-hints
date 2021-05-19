@@ -51,7 +51,7 @@ class Settings {
 			PrefetchSettings::save_options();
 		}
 
-		do_action( 'pprh_sc_save_settings' );
+		\do_action( 'pprh_sc_save_settings' );
 	}
 
 }

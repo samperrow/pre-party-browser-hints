@@ -12,7 +12,7 @@ class Preconnects {
 
 	// tested
 	public function __construct() {
-		add_action( 'wp_loaded', array( $this, 'init_controller' ), 10, 0 );
+		\add_action( 'wp_loaded', array( $this, 'init_controller' ), 10, 0 );
 		$autoload = get_option( 'pprh_preconnect_autoload' );
 		$allow_unauth = get_option( 'pprh_preconnect_allow_unauth' );
 		$preconnects_set = get_option( 'pprh_preconnect_set' );
@@ -68,7 +68,7 @@ class Preconnects {
 	// tested
 	public function check_to_enqueue_scripts( $allow_unauth_users ) {
 		if ( $allow_unauth_users ) {
-			add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
+			\add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 		}
 
 		return $allow_unauth_users;
@@ -84,9 +84,9 @@ class Preconnects {
 		$ajax_cb = 'pprh_post_domain_names';
 
 		if ( $allow_unauth ) {
-			add_action( "wp_ajax_nopriv_{$ajax_cb}", array( $this, $ajax_cb ) );		// not logged in
+			\add_action( "wp_ajax_nopriv_{$ajax_cb}", array( $this, $ajax_cb ) );		// not logged in
 		}
-		add_action( "wp_ajax_{$ajax_cb}", array( $this, $ajax_cb ) );					// for logged in users
+		\add_action( "wp_ajax_{$ajax_cb}", array( $this, $ajax_cb ) );					// for logged in users
 	}
 
 	// tested

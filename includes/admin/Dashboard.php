@@ -22,7 +22,7 @@ class Dashboard {
 //		include_once 'views/settings/PrefetchSettings.php';
 		include_once 'views/HintInfo.php';
 		include_once 'views/Upgrade.php';
-		do_action( 'pprh_la_load_view_files' );
+		\do_action( 'pprh_la_load_view_files' );
 	}
 
 	public function show_plugin_dashboard() {
@@ -35,7 +35,7 @@ class Dashboard {
 		echo '</h1>';
 
 		Utils::admin_notice();
-		do_action( 'pprh_check_to_upgrade', '1.7.6.3' );
+		\do_action( 'pprh_check_to_upgrade', '1.7.6.3' );
 		$this->show_admin_tabs();
 
 		new InsertHints();
@@ -43,7 +43,7 @@ class Dashboard {
 		new HintInfo();
 		new Upgrade();
 
-		do_action( 'pprh_la_load_view_classes' );
+		\do_action( 'pprh_load_view_classes' );
 		$this->show_footer();
 		echo '</div>';
 	}
@@ -57,7 +57,7 @@ class Dashboard {
 //            'upgrade'      => 'Upgrade to Pro',
 		);
 
-		$tabs = apply_filters( 'pprh_la_load_tabs', $tabs );
+		$tabs = apply_filters( 'pprh_load_tabs', $tabs );
 
 		echo '<div class="nav-tab-wrapper" style="margin-bottom: 10px;">';
 		foreach ( $tabs as $tab => $name ) {

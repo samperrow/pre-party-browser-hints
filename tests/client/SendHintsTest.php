@@ -37,9 +37,9 @@ class SendHintsTest extends TestCase {
 		$send_hints_in_html = get_option( 'pprh_html_head' );
 
 		if ( 'false' === $send_hints_in_html && ! headers_sent() ) {
-			$actual_4 = has_action( 'send_headers', array( $send_hints, 'send_header' ) );
+			$actual_4 = \has_action( 'send_headers', array( $send_hints, 'send_header' ) );
 		} else {
-			$actual_4 = has_action( 'wp_head', array( $send_hints, 'send_html_head' ) );
+			$actual_4 = \has_action( 'wp_head', array( $send_hints, 'send_html_head' ) );
 		}
 
 		self::assertEquals( false, $actual_1 );

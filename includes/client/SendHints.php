@@ -25,10 +25,10 @@ class SendHints {
 
 		if ( 'false' === $this->send_hints_in_html && ! headers_sent() ) {
 			$this->hint_str = $this->send_in_http_header( $hints );
-			add_action( 'send_headers', array( $this, 'send_header' ), 1, 0 );
+			\add_action( 'send_headers', array( $this, 'send_header' ), 1, 0 );
 		} else {
 			$this->hint_str = $this->send_to_html_head( $hints );
-			add_action( 'wp_head', array( $this, 'send_html_head' ), 1, 0 );
+			\add_action( 'wp_head', array( $this, 'send_html_head' ), 1, 0 );
 		}
 
 		return true;

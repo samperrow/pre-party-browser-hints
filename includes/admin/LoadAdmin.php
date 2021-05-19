@@ -9,8 +9,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 class LoadAdmin {
 
 	public function init() {
-		add_action( 'admin_menu', array( $this, 'load_admin_menu' ) );
-		add_action( 'admin_init', array( $this, 'meta_boxes' ) );
+		\add_action( 'admin_menu', array( $this, 'load_admin_menu' ) );
+		\add_action( 'admin_init', array( $this, 'meta_boxes' ) );
 
 		$on_pprh_page = Utils::on_pprh_page();
 
@@ -18,8 +18,8 @@ class LoadAdmin {
 			return;
 		}
 
-		add_action( 'admin_enqueue_scripts', array( $this, 'register_admin_files' ) );
-		add_filter( 'set-screen-option', array( $this, 'pprh_set_screen_option' ), 10, 3 );
+		\add_action( 'admin_enqueue_scripts', array( $this, 'register_admin_files' ) );
+		\add_filter( 'set-screen-option', array( $this, 'pprh_set_screen_option' ), 10, 3 );
 		load_plugin_textdomain( 'pprh', false, PPRH_REL_DIR . 'languages' );
 
 		include_once 'NewHint.php';
@@ -27,7 +27,7 @@ class LoadAdmin {
 		include_once 'AjaxOps.php';
 		new AjaxOps();
 
-		do_action( 'pprh_pro_load_admin' );
+		\do_action( 'pprh_pro_load_admin' );
 	}
 
 	public function load_admin_menu() {
@@ -40,7 +40,7 @@ class LoadAdmin {
 			PPRH_REL_DIR . 'images/lightning.png'
 		);
 
-		add_action( "load-{$settings_page}", array( $this, 'screen_option' ) );
+		\add_action( "load-{$settings_page}", array( $this, 'screen_option' ) );
 	}
 
 	public function load_dashboard() {
@@ -75,7 +75,7 @@ class LoadAdmin {
 //		$str = apply_filters( 'pprh_append_string', 'toplevel_page_pprh-plugin-settings', '|post.php' );
 		$str = 'toplevel_page_pprh-plugin-settings|post.php';
 
-		if ( strpos( $str, $hook, 0 ) !== false ) {
+		if ( str_contains( $str, $hook ) ) {
 			$ajax_data = array(
 				'nonce'     => wp_create_nonce( 'pprh_table_nonce' ),
 				'admin_url' => admin_url()
@@ -133,7 +133,7 @@ class LoadAdmin {
 			'low'
 		);
 
-		do_action( 'pprh_add_prerender_metabox' );
+		\do_action( 'pprh_add_prerender_metabox' );
 	}
 
 

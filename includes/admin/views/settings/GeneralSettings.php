@@ -59,7 +59,7 @@ class GeneralSettings {
                 </td>
             </tr>
 
-            <?php do_action( 'pprh_sc_general_settings' ); ?>
+            <?php \do_action( 'pprh_sc_general_settings' ); ?>
 
             </tbody>
         </table>

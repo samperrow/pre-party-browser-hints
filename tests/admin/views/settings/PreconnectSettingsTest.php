@@ -7,11 +7,11 @@ use PHPUnit\Framework\TestCase;
 //
 //	public function test_constructor() {
 //		if ( WP_ADMIN ) {
-//			$this->eval_load_reset_settings();
+//			$this->test_load_reset_settings();
 //		}
 //	}
 //
-//	public function eval_load_reset_settings() {
+//	public function test_load_reset_settings() {
 //		$on_pprh_admin = false;
 //		$preconnect_settings = new \PPRH\PreconnectSettings($on_pprh_admin);
 //		$is_pro_loaded = $preconnect_settings->load_reset_settings();

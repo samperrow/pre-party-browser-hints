@@ -5,10 +5,13 @@ use PHPUnit\Framework\TestCase;
 
 class PreconnectsTest extends TestCase {
 
+	/**
+	 * @before
+	 */
 	public function test_begin() {
 		if ( WP_ADMIN ) return;
 
-		$this->eval_create_js_object();
+		$this->test_create_js_object();
 	}
 
 	public function util_create_free_config_arr( $autoload, $allow_unauth, $preconnects_set )  {
@@ -24,7 +27,7 @@ class PreconnectsTest extends TestCase {
 
 	public function test_constructor():void {
 		$preconnects = new \PPRH\Preconnects();
-		$loaded = has_action( 'wp_loaded', array($preconnects, 'init_controller') );
+		$loaded = \add_action( 'wp_loaded', array($preconnects, 'init_controller') );
 		self::assertEquals( true, $loaded );
 
 		$actual_config = $preconnects->get_config( 'true', 'true', 'true' );
@@ -90,7 +93,7 @@ class PreconnectsTest extends TestCase {
 		$actual_1 = $preconnects->check_to_enqueue_scripts(true);
 		$actual_2 = $preconnects->check_to_enqueue_scripts(false);
 
-		$scripts_enqueued = has_action( 'wp_enqueue_scripts', array($preconnects, 'enqueue_scripts') );
+		$scripts_enqueued = \add_action( 'wp_enqueue_scripts', array($preconnects, 'enqueue_scripts') );
 		self::assertEquals(true, $scripts_enqueued);
 
 		self::assertEquals(true, $actual_1);
@@ -102,21 +105,21 @@ class PreconnectsTest extends TestCase {
 		$preconnects = new \PPRH\Preconnects();
 		$ajax_cb = 'pprh_post_domain_names';
 
-		$wp_ajax_nopriv_added_1 = has_action( "wp_ajax_nopriv_$ajax_cb", array($preconnects, $ajax_cb) );
-		$wp_ajax_added_1 = has_action( "wp_ajax_$ajax_cb", array($preconnects, $ajax_cb) );
+		$wp_ajax_nopriv_added_1 = \has_action( "wp_ajax_nopriv_$ajax_cb", array($preconnects, $ajax_cb) );
+		$wp_ajax_added_1 = \has_action( "wp_ajax_$ajax_cb", array($preconnects, $ajax_cb) );
 		self::assertEquals(false, $wp_ajax_nopriv_added_1);
 		self::assertEquals(false, $wp_ajax_added_1);
 
 
 		$preconnects->load_ajax_actions( false );
-		$wp_ajax_nopriv_added_2 = has_action( "wp_ajax_nopriv_$ajax_cb", array($preconnects, $ajax_cb) );
-		$wp_ajax_added_2 = has_action( "wp_ajax_$ajax_cb", array($preconnects, $ajax_cb) );
+		$wp_ajax_nopriv_added_2 = \has_action( "wp_ajax_nopriv_$ajax_cb", array($preconnects, $ajax_cb) );
+		$wp_ajax_added_2 = \has_action( "wp_ajax_$ajax_cb", array($preconnects, $ajax_cb) );
 		self::assertEquals(false, $wp_ajax_nopriv_added_2);
 		self::assertEquals(true, $wp_ajax_added_2);
 
 		$preconnects->load_ajax_actions( true );
-		$wp_ajax_nopriv_added_3 = has_action( "wp_ajax_nopriv_$ajax_cb", array($preconnects, $ajax_cb) );
-		$wp_ajax_added_3 = has_action( "wp_ajax_$ajax_cb", array($preconnects, $ajax_cb) );
+		$wp_ajax_nopriv_added_3 = \has_action( "wp_ajax_nopriv_$ajax_cb", array($preconnects, $ajax_cb) );
+		$wp_ajax_added_3 = \has_action( "wp_ajax_$ajax_cb", array($preconnects, $ajax_cb) );
 		self::assertEquals(true, $wp_ajax_nopriv_added_3);
 		self::assertEquals(true, $wp_ajax_added_3);
 	}
@@ -149,7 +152,7 @@ class PreconnectsTest extends TestCase {
 //		self::assertEquals( $expected_scripts, $actual_scripts);
 //	}
 
-	public function eval_create_js_object() {
+	public function test_create_js_object() {
 		$preconnects = new \PPRH\Preconnects();
 
 		$expected_arr_1 = array(
@@ -211,8 +214,8 @@ class PreconnectsTest extends TestCase {
 		$preconnects->load_ajax_actions( $allow_unauth );
 		$ajax_cb = 'pprh_post_domain_names';
 
-		$ajax_cb_loaded = has_action( "wp_ajax_$ajax_cb", array($preconnects, $ajax_cb) );
-		$ajax_cb_nopriv_loaded = has_action( "wp_ajax_nopriv_$ajax_cb", array($preconnects, $ajax_cb) );
+		$ajax_cb_loaded = \has_action( "wp_ajax_$ajax_cb", array($preconnects, $ajax_cb) );
+		$ajax_cb_nopriv_loaded = \has_action( "wp_ajax_nopriv_$ajax_cb", array($preconnects, $ajax_cb) );
 
 		return array(
 			$ajax_cb_loaded,

@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 class LoadClient {
 
 	public function init() {
-		do_action( 'pprh_pro_load_client' );
+		\do_action( 'pprh_pro_load_client' );
 		include_once 'SendHints.php';
 
 		$this->verify_to_load_fp();
@@ -32,7 +32,7 @@ class LoadClient {
 			return;
 		}
 
-		add_action( 'wp_enqueue_scripts', array( $this, 'load_flying_pages' ) );
+		\add_action( 'wp_enqueue_scripts', array( $this, 'load_flying_pages' ) );
 	}
 
 	private function disable_wp_hints( $disable_wp_hints ) {

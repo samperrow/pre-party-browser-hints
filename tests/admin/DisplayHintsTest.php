@@ -60,7 +60,7 @@ final class DisplayHintsTest extends TestCase {
 		}
 	}
 
-//	public function eval_dh_on_posts_page_and_global() {
+//	public function test_dh_on_posts_page_and_global() {
 //		$display_hints = new \PPRH\DisplayHints();
 //
 //		$actual1 = $display_hints->on_post_page_and_global_hint( array( 'post_id' => '2128' ) );

@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 class AjaxOps {
 
 	public function __construct() {
-		add_action( 'wp_ajax_pprh_update_hints', array( $this, 'pprh_update_hints' ) );
+		\add_action( 'wp_ajax_pprh_update_hints', array( $this, 'pprh_update_hints' ) );
 	}
 
 	public function pprh_update_hints() {

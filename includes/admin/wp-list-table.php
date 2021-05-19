@@ -158,7 +158,7 @@ class WP_List_Table {
 		$this->screen = convert_to_screen( $args['screen'] );
 		$this->on_pprh_admin = apply_filters( 'pprh_on_pprh_admin', true );
 
-		add_filter( "manage_{$this->screen->id}_columns", array( $this, 'get_columns' ), 0 );
+		\add_filter( "manage_{$this->screen->id}_columns", array( $this, 'get_columns' ), 0 );
 
 		if ( ! $args['plural'] ) {
 			$args['plural'] = $this->screen->base;
@@ -170,7 +170,7 @@ class WP_List_Table {
 		$this->_args = $args;
 
 		if ( $args['ajax'] ) {
-			add_action( 'admin_footer', array( $this, '_js_vars' ) );
+			\add_action( 'admin_footer', array( $this, '_js_vars' ) );
 		}
 
 		if ( empty( $this->modes ) ) {
