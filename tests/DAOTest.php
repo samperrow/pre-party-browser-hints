@@ -25,7 +25,7 @@ final class DAOTest extends TestCase {
 			)
 		);
 
-		$test1 = $dao->create_db_result( true, '', '', 0, null );
+		$test1 = \PPRH\DAO::create_db_result( true, '', '', 0, null );
 
 		self::assertEquals( $expected, $test1 );
 	}
@@ -39,7 +39,7 @@ final class DAOTest extends TestCase {
 
 		$create_hint = $dao->insert_hint($new_hint);
 		$hint_id = $create_hint->db_result['hint_id'];
-		$expected = $dao->create_db_result( true, $hint_id, '', 0, $new_hint );
+		$expected = \PPRH\DAO::create_db_result( true, $hint_id, '', 0, $new_hint );
 		self::assertEquals($expected, $create_hint);
 		return $hint_id;
 	}
@@ -52,7 +52,7 @@ final class DAOTest extends TestCase {
 		$new_hint = TestUtils::create_hint_array( 'https://www.asdf2.com/foozball/blah.css', 'dns-prefetch', 'font', 'font/woff2', '');
 
 		$result = $dao->update_hint( $new_hint, $hint_id );
-		$expected = $dao->create_db_result( true, $hint_id, '', 1, $new_hint );
+		$expected = \PPRH\DAO::create_db_result( true, $hint_id, '', 1, $new_hint );
 		self::assertEquals($expected, $result);
 	}
 
@@ -63,7 +63,7 @@ final class DAOTest extends TestCase {
 		$hint_id_str = (string) $hint_ids;
 		$dao = new \PPRH\DAO();
 		$result = $dao->bulk_update( $hint_id_str, 4 );
-		$expected = $dao->create_db_result( true, $hint_id_str, '', 4, null );
+		$expected = \PPRH\DAO::create_db_result( true, $hint_id_str, '', 4, null );
 		self::assertEquals($expected, $result);
 	}
 
@@ -74,7 +74,7 @@ final class DAOTest extends TestCase {
 		$hint_id_str = (string) $hint_ids;
 		$dao = new \PPRH\DAO();
 		$result = $dao->delete_hint( $hint_id_str );
-		$expected = $dao->create_db_result( true, $hint_id_str, '', 2, null );
+		$expected = \PPRH\DAO::create_db_result( true, $hint_id_str, '', 2, null );
 		self::assertEquals($expected, $result);
 	}
 

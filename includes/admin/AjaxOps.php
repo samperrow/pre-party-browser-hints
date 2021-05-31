@@ -16,12 +16,13 @@ class AjaxOps {
 		if ( isset( $_POST['pprh_data'] ) && wp_doing_ajax() ) {
 			check_ajax_referer( 'pprh_table_nonce', 'nonce' );
 			$pprh_data = json_decode( wp_unslash( $_POST['pprh_data'] ), true );
-			$this->init( $pprh_data );
-			return true;
-		}
+			$json = $this->init( $pprh_data );
 
-		if ( ! PPRH_TESTING ) {
-			wp_die();
+			if ( PPRH_TESTING ) {
+				return true;
+			} else {
+				wp_die( $json );
+			}
 		}
 	}
 
@@ -32,16 +33,16 @@ class AjaxOps {
 			if ( is_object( $db_result ) ) {
 				$display_hints = new DisplayHints();
 				$json = $display_hints->ajax_response( $db_result );
-
-				if ( PPRH_TESTING ) {
-					return $db_result;
-				}
-
-				wp_die( $json );
+				return $this->return_values( $json, $db_result );
 			}
 		}
+
+		return false;
 	}
 
+	private function return_values( $json, $db_result ) {
+		return ( PPRH_TESTING ) ? $db_result : $json;
+	}
 
 	private function handle_action( $data ) {
 		$dao_ctrl = new DAOController();

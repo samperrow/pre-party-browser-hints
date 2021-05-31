@@ -47,7 +47,7 @@ class DAOController extends DAO {
 	 */
 	private function db_controller( $data ) {
 		$code = $data['op_code'];
-		$db_result = $this->create_db_result( false, null, '', $code, null );
+		$db_result = self::create_db_result( false, null, '', $code, null );
 
 		if ( ! empty( $data['new_hint'] ) ) {
 			$new_hint = $data['new_hint'];
@@ -78,9 +78,9 @@ class DAOController extends DAO {
 
 	protected function test_db_controller( $ctrl_data ) {
 		if ( ! empty( $ctrl_data['new_hint'] ) ) {
-			$test_result = $this->create_db_result( true, '', '', $ctrl_data['op_code'], $ctrl_data['new_hint'] );
+			$test_result = self::create_db_result( true, '', '', $ctrl_data['op_code'], $ctrl_data['new_hint'] );
 		} else {
-			$test_result = $this->create_db_result( true, $ctrl_data['hint_ids'], '', $ctrl_data['op_code'], null );
+			$test_result = self::create_db_result( true, $ctrl_data['hint_ids'], '', $ctrl_data['op_code'], null );
 		}
 
 		return $test_result;

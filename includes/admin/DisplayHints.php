@@ -122,7 +122,7 @@ class DisplayHints extends WP_List_Table {
 				'delete' => sprintf( '<a id="pprh-delete-hint-%1$s">%2$s</a>', $item['id'], 'Delete' ),
 			);
         } else {
-	        $actions = array('edit'   => '', 'delete' => '');
+	        $actions = array( 'edit' => '', 'delete' => '' );
         }
 
 		return sprintf( '%1$s %2$s', $item['url'], $this->row_actions( $actions ) );

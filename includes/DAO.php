@@ -14,7 +14,7 @@ class DAO {
 		$this->table = PPRH_DB_TABLE;
 	}
 
-	public function code_action_arr( $code ) {
+	public static function code_action_arr( $code ) {
 		$actions = array(
 			0 => array( 'create', 'created' ),
 			1 => array( 'update', 'updated' ),
@@ -27,11 +27,11 @@ class DAO {
 	}
 
 	// db results
-	public function create_db_result( $result, $hint_id, $msg, $action_code = '', $new_hint = null ) {
+	public static function create_db_result( $result, $hint_id, $msg, $action_code = '', $new_hint = null ) {
 		return (object) array(
 			'new_hint'  => $new_hint,
 			'db_result' => array(
-				'msg'        => $this->create_msg( $result, $msg, $action_code ),
+				'msg'        => self::create_msg( $result, $msg, $action_code ),
 				'status'     => ( $result ) ? 'success' : 'error',
 				'hint_id'    => $hint_id,
 				'success'    => $result,
@@ -40,8 +40,8 @@ class DAO {
 		);
 	}
 
-	public function create_msg( $result, $msg, $action_code )  {
-		$actions = $this->code_action_arr( $action_code );
+	public static function create_msg( $result, $msg, $action_code )  {
+		$actions = self::code_action_arr( $action_code );
 
 		if ( '' !== $msg ) {
 			return $msg;
@@ -82,7 +82,7 @@ class DAO {
 			$args['types']
 		);
 
-		return $this->create_db_result( $wpdb->result, $wpdb->insert_id, $wpdb->last_error, 0, $new_hint );
+		return self::create_db_result( $wpdb->result, $wpdb->insert_id, $wpdb->last_error, 0, $new_hint );
 	}
 
 
@@ -109,7 +109,7 @@ class DAO {
 			array( '%d' )
 		);
 
-		return $this->create_db_result( $wpdb->result, $wpdb->insert_id, $wpdb->last_error, 1, $new_hint );
+		return self::create_db_result( $wpdb->result, $wpdb->insert_id, $wpdb->last_error, 1, $new_hint );
 	}
 
 	public function delete_hint( $hint_ids ) {
@@ -118,9 +118,9 @@ class DAO {
 
 		if ( $hint_id_exists > 0 ) {
 			$wpdb->query( "DELETE FROM $this->table WHERE id IN ($hint_ids)" );
-			return $this->create_db_result( $wpdb->result, $wpdb->insert_id, $wpdb->last_error, 2, null );
+			return self::create_db_result( $wpdb->result, $wpdb->insert_id, $wpdb->last_error, 2, null );
 		} else {
-			return $this->create_db_result( false, null, 'No hint IDs to delete.', 2, null );
+			return self::create_db_result( false, null, 'No hint IDs to delete.', 2, null );
 		}
 	}
 
@@ -133,7 +133,7 @@ class DAO {
 			$action
 		) );
 
-		return $this->create_db_result( $wpdb->result, $wpdb->insert_id, $wpdb->last_error, $code, null );
+		return self::create_db_result( $wpdb->result, $wpdb->insert_id, $wpdb->last_error, $code, null );
 	}
 
 

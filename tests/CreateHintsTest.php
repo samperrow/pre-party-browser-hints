@@ -109,7 +109,7 @@ final class CreateHintsTest extends TestCase {
 		$candidate_hint = TestUtils::create_hint_array( 'https://duplicate-hints.com', 'preconnect', '', '', '', '' );
 
 		$actual_1 = $create_hints->handle_duplicate_hints( $all_hints, $candidate_hint );
-		$expected_1 = $dao->create_db_result( false, '', 'A duplicate hint already exists!', 0, null );
+		$expected_1 = \PPRH\DAO::create_db_result( false, '', 'A duplicate hint already exists!', 0, null );
 		self::assertEquals( $expected_1, $actual_1 );
 
 		$candidate_hint = TestUtils::create_hint_array( 'https://new-unique-hint.com', 'preconnect', '', '', '', '' );
