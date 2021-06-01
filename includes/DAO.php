@@ -74,7 +74,7 @@ class DAO {
 			)
 		);
 
-		$args = apply_filters( 'pprh_dao_insert_hint_schema', $args, $new_hint );
+		$args = \apply_filters( 'pprh_dao_insert_hint_schema', $args, $new_hint );
 
 		$wpdb->insert(
 			$this->table,
@@ -148,7 +148,7 @@ class DAO {
 			$results = $wpdb->get_results( $query['sql'], ARRAY_A );
 		}
 
-		return apply_filters( 'pprh_filter_hints', $results );
+		return \apply_filters( 'pprh_filter_hints', $results );
 	}
 
 	private function parse_query_code( $query_code ) {
@@ -164,8 +164,7 @@ class DAO {
 		}
 		elseif ( 3 === $query_code ) {
 			if ( PPRH_PRO_PLUGIN_ACTIVE ) {
-//				$query['sql'] = apply_filters( 'pprh_append_string', $query['sql'], ' ORDER BY post_id DESC, url ASC' );
-				$query['sql'] .= ' ORDER BY post_id DESC, url ASC';
+				$query['sql'] .= \apply_filters( 'pprh_append_sql', null );
 			} else {
 				$query['sql'] .= ' ORDER BY url ASC';
 			}

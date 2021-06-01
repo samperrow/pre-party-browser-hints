@@ -34,7 +34,7 @@ class DisplayHints extends WP_List_Table {
 
 	public function column_default( $item, $column_name ) {
 		if ( 'post_id' === $column_name ) {
-            return apply_filters( 'pprh_dh_get_post_link', $item['post_id'] );
+            return \apply_filters( 'pprh_dh_get_post_link', $item['post_id'] );
         }
 
 		if ( '' === $item[$column_name] ) {
@@ -61,7 +61,7 @@ class DisplayHints extends WP_List_Table {
             'created_by'  => __( 'Created By', 'pprh' ),
         );
 
-		return apply_filters( 'pprh_dh_get_columns', $arr );
+		return \apply_filters( 'pprh_dh_get_columns', $arr );
 	}
 
 	public function get_sortable_columns() {
@@ -72,7 +72,7 @@ class DisplayHints extends WP_List_Table {
             'created_by'  => array('created_by', false)
         );
 
-		return apply_filters( 'pprh_dh_get_sortortable_columns', $arr );
+		return \apply_filters( 'pprh_dh_get_sortortable_columns', $arr );
 	}
 
 	public function get_bulk_actions() {

@@ -409,7 +409,7 @@ class WP_List_Table {
 		 *
 		 * @param string[] $views An array of available list table views.
 		 */
-		$views = apply_filters( "views_{$this->screen->id}", $views );
+		$views = \apply_filters( "views_{$this->screen->id}", $views );
 
 		if ( empty( $views ) ) {
 			return;
@@ -457,7 +457,7 @@ class WP_List_Table {
 			 *
 			 * @param string[] $actions An array of the available bulk actions.
 			 */
-			$this->_actions = apply_filters( "bulk_actions-{$this->screen->id}", $this->_actions );
+			$this->_actions = \apply_filters( "bulk_actions-{$this->screen->id}", $this->_actions );
 			$two            = '';
 		} else {
 			$two = '2';
@@ -556,7 +556,7 @@ class WP_List_Table {
 		 * @param bool   $disable   Whether to disable the drop-down. Default false.
 		 * @param string $post_type The post type.
 		 */
-		if ( apply_filters( 'disable_months_dropdown', false, $post_type ) ) {
+		if ( \apply_filters( 'disable_months_dropdown', false, $post_type ) ) {
 			return;
 		}
 
@@ -588,7 +588,7 @@ class WP_List_Table {
 		 * @param object $months    The months drop-down query results.
 		 * @param string $post_type The post type.
 		 */
-		$months = apply_filters( 'months_dropdown_results', $months, $post_type );
+		$months = \apply_filters( 'months_dropdown_results', $months, $post_type );
 
 		$month_count = count( $months );
 
@@ -769,7 +769,7 @@ class WP_List_Table {
 		 *
 		 * @param int $per_page Number of items to be displayed. Default 20.
 		 */
-		return (int) apply_filters( (string)($option), $per_page );
+		return (int) \apply_filters( (string)($option), $per_page );
 	}
 
 	/**
@@ -993,7 +993,7 @@ class WP_List_Table {
 		 * @param string $default Column name default for the specific list table, e.g. 'name'.
 		 * @param string $context Screen ID for specific list table, e.g. 'plugins'.
 		 */
-		$column = apply_filters( 'list_table_primary_column', $default, $this->screen->id );
+		$column = \apply_filters( 'list_table_primary_column', $default, $this->screen->id );
 
 		if ( empty( $column ) || ! isset( $columns[ $column ] ) ) {
 			$column = $default;
@@ -1036,7 +1036,7 @@ class WP_List_Table {
 		 *
 		 * @param array $sortable_columns An array of sortable columns.
 		 */
-		$_sortable = apply_filters( "manage_{$this->screen->id}_sortable_columns", $sortable_columns );
+		$_sortable = \apply_filters( "manage_{$this->screen->id}_sortable_columns", $sortable_columns );
 
 		$sortable = array();
 		foreach ( $_sortable as $id => $data ) {

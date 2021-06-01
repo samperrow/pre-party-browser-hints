@@ -34,6 +34,7 @@ final class AjaxOpsTest extends TestCase {
 
 		$test_data_1 = TestUtils::create_hint_array( 'https://testAjaxOps1.com', 'dns-prefetch' );
 		$test_data_1['op_code'] = 0;
+		$test_data_1['action'] = '';
 		$actual_1 = $ajax_ops->init( $test_data_1 );
 		$expected_1 = \PPRH\DAO::create_db_result( true, '', '', $test_data_1['op_code'], $actual_1->new_hint );
 		self::assertEquals( $expected_1, $actual_1 );
@@ -41,6 +42,7 @@ final class AjaxOpsTest extends TestCase {
 
 		$test_data_2 = TestUtils::create_hint_array( 'https://testAjaxOps2.com', 'dns-prefetch' );
 		$test_data_2['op_code'] = 1;
+		$test_data_2['action'] = '';
 		$actual_2 = $ajax_ops->init( $test_data_2 );
 		$expected_2 = \PPRH\DAO::create_db_result( true, '', '', $test_data_2['op_code'], $actual_2->new_hint );
 		self::assertEquals($expected_2, $actual_2);
@@ -48,7 +50,8 @@ final class AjaxOpsTest extends TestCase {
 
 		$test_data_3 = array(
 			'op_code'  => 2,
-			'hint_ids' => '100'
+			'hint_ids' => '100',
+			'action' => ''
 		);
 		$actual_3 = $ajax_ops->init( $test_data_3 );
 		$expected_3 = \PPRH\DAO::create_db_result( true, '100', '', $test_data_3['op_code'], null );
@@ -57,7 +60,8 @@ final class AjaxOpsTest extends TestCase {
 
 		$test_data_4 = array(
 			'op_code'  => 3,
-			'hint_ids' => '100'
+			'hint_ids' => '100',
+			'action' => ''
 		);
 		$actual_4 = $ajax_ops->init( $test_data_4 );
 		$expected_4 = \PPRH\DAO::create_db_result( true, $test_data_4['hint_ids'], '', $test_data_4['op_code'], null );
@@ -66,7 +70,8 @@ final class AjaxOpsTest extends TestCase {
 
 		$test_data_5 = array(
 			'op_code'  => 4,
-			'hint_ids' => '100'
+			'hint_ids' => '100',
+			'action' => ''
 		);
 		$actual_5 = $ajax_ops->init( $test_data_5 );
 		$expected_5 = \PPRH\DAO::create_db_result( true, $test_data_5['hint_ids'], '', $test_data_5['op_code'], null );

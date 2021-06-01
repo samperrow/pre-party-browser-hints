@@ -16,9 +16,9 @@ class Settings {
 
 	public function __construct($on_pprh_admin = true) {
 		$this->on_pprh_admin = $on_pprh_admin;
-		$this->general_settings = new GeneralSettings();
-		$this->preconnect_settings = new PreconnectSettings($on_pprh_admin);
-		$this->prefetch_settings = new PrefetchSettings();
+//		$this->general_settings = new GeneralSettings();
+//		$this->preconnect_settings = new PreconnectSettings($on_pprh_admin);
+//		$this->prefetch_settings = new PrefetchSettings();
 		$this->display_settings();
 	}
 

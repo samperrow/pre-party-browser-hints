@@ -31,7 +31,7 @@ class Preconnects {
 
 
 	public function init_controller() {
-		$this->config['reset_pro'] = apply_filters( 'pprh_preconnects_do_reset_init', null );
+		$this->config['reset_pro'] = \apply_filters( 'pprh_preconnects_do_reset_init', null );
 		return $this->initialize( $this->config );
 	}
 
@@ -115,7 +115,7 @@ class Preconnects {
 		);
 
 		if ( isset( $this->config['reset_pro'] ) ) {
-			$js_arr = apply_filters( 'pprh_preconnects_append_hint_object', $js_arr );
+			$js_arr = \apply_filters( 'pprh_preconnects_append_hint_object', $js_arr );
 		}
 
 		return $js_arr;
@@ -188,7 +188,7 @@ class Preconnects {
 	}
 
 	private function update_options( $raw_hint_data ) {
-		$updated = apply_filters( 'pprh_preconnects_update_options', $raw_hint_data );
+		$updated = \apply_filters( 'pprh_preconnects_update_options', $raw_hint_data );
 
 		if ( is_array( $updated ) ) {
 			update_option( 'pprh_preconnect_set', 'true' );

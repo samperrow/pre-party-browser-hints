@@ -80,7 +80,7 @@ class Utils {
 	public static function pprh_is_plugin_active() {
 		$plugin = 'pprh-pro/pprh-pro.php';
 		$site_active = ( in_array( $plugin, (array) get_option( 'active_plugins', array() ), true ) );
-		$network_active = ( function_exists( 'is_plugin_active_for_network' ) ) ? is_plugin_active_for_network( $plugin ) : false;
+		$network_active = function_exists( 'is_plugin_active_for_network' ) && is_plugin_active_for_network( $plugin );
 		return ( $site_active || $network_active );
 	}
 
@@ -99,7 +99,7 @@ class Utils {
 	public static function on_pprh_page() {
 	    global $pagenow;
 		$referrer = self::get_referrer();
-		$pro_on_admin_post_page = apply_filters( 'pprh_utils_pro_on_admin_post_page', $pagenow, $referrer );
+		$pro_on_admin_post_page = \apply_filters( 'pprh_utils_pro_on_admin_post_page', $pagenow, $referrer );
 		return ( self::on_pprh_admin() || $pro_on_admin_post_page);
 	}
 

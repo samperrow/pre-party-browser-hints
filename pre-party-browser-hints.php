@@ -45,7 +45,7 @@ class Pre_Party_Browser_Hints {
 		\do_action( 'pprh_load_plugin' );
 
 		if ( ! function_exists( 'wp_doing_ajax' ) ) {
-			apply_filters( 'wp_doing_ajax', defined( 'DOING_AJAX' ) && DOING_AJAX );
+			\apply_filters( 'wp_doing_ajax', defined( 'DOING_AJAX' ) && DOING_AJAX );
 		}
 
 		if ( is_admin() ) {

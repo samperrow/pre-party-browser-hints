@@ -29,7 +29,7 @@ class CreateHints {
 			'current_user' => ( ! empty( $current_user ) ? $current_user : '' )
 		);
 
-		return apply_filters( 'pprh_append_hint', $new_hint, $raw_hint );
+		return \apply_filters( 'pprh_append_hint', $new_hint, $raw_hint );
 	}
 
 	public function new_hint_controller( $raw_hint ) {
@@ -81,7 +81,7 @@ class CreateHints {
 			}
 		}
 
-		$dups = apply_filters( 'pprh_filter_duplicate_hints', $dups, $candidate_hint );
+		$dups = \apply_filters( 'pprh_filter_duplicate_hints', $dups, $candidate_hint );
 
 		return array_values( $dups );		// re-index array so the first value has an index of 0.
 	}
@@ -94,7 +94,7 @@ class CreateHints {
 
 	public function resolve_duplicate_hints( $duplicate_hints, $candidate_hint ) {
 		if ( isset( $candidate_hint['post_id'] ) && count( $duplicate_hints ) > 0 ) {
-			return apply_filters( 'pprh_resolve_duplicate_hints', $duplicate_hints, $candidate_hint );
+			return \apply_filters( 'pprh_resolve_duplicate_hints', $duplicate_hints, $candidate_hint );
 		}
 
 		return false;

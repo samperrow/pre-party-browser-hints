@@ -54,7 +54,7 @@ class Dashboard {
 //            'upgrade'      => 'Upgrade to Pro',
 		);
 
-		$tabs = apply_filters( 'pprh_load_tabs', $tabs );
+		$tabs = \apply_filters( 'pprh_load_tabs', $tabs );
 
 		echo '<div class="nav-tab-wrapper" style="margin-bottom: 10px;">';
 		foreach ( $tabs as $tab => $name ) {
