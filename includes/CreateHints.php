@@ -26,14 +26,15 @@ class CreateHints {
 			'type_attr'    => ( ! empty( $raw_hint['type_attr'] )   ? Utils::clean_hint_attr( $raw_hint['type_attr'] ) : '' ),
 			'crossorigin'  => ( ! empty( $raw_hint['crossorigin'] ) ? 'crossorigin' : '' ),
 			'media'        => ( ! empty( $raw_hint['media'] )       ? Utils::clean_url( $raw_hint['media'] ) : '' ),
-			'current_user' => ( ! empty( $current_user ) ? $current_user : '' )
+			'current_user' => ( ! empty( $current_user ) ? $current_user : '' ),
+			'auto_created' => ( $raw_hint['auto_created'] ?? 0 )
 		);
 
 		return \apply_filters( 'pprh_append_hint', $new_hint, $raw_hint );
 	}
 
 	public function new_hint_controller( $raw_hint ) {
-		$dao = new DAO();
+//		$dao = new DAO();
 		$candidate_hint = $this->create_hint( $raw_hint );
 		$op_code = $raw_hint['op_code'];
 

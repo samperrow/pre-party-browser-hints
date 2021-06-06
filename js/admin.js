@@ -33,7 +33,7 @@
 
 	function toggleEmailSubmit() {
 		let emailSubmitBtn = document.getElementById('pprhSubmit');
-		if (null !== emailSubmitBtn) {
+		if (isObjectAndNotNull(emailSubmitBtn)) {
 			emailSubmitBtn.addEventListener("click", emailValidate);
 		}
 	}
@@ -108,7 +108,7 @@
 		let table = $('#' + tableId);
 		let rawHint = configForHint(table);
 
-		if (typeof rawHint === "object") {
+		if (isObjectAndNotNull(rawHint)) {
 			let hint = pprhCreateHint.CreateHint(rawHint);
 			let isHintValid = verifyHint(hint);
 
@@ -278,30 +278,16 @@
 		});
 	}
 
-	function verifyResponse(response) {
-		let status = (response.status) ? response.status : 'error';
-		let msg = (response.msg) ? response.msg : 'Error updating hint. Please contact support or try again later.';
-
-		if ( response.last_error && response.last_error !== '' && ! response.success ) {
-			msg = response.last_error;
-		}
-
-		response.msg = msg;
-		response.status = status;
-		return response;
-	}
-
 	// TODO: remove previous notices which have a different status. i.e- removing an 'error' box after a successful notice
-	function updateAdminNotice(response) {
-		response = verifyResponse(response);
+	function updateAdminNotice(msg, status) {
 		adminNoticeElem.classList.remove('notice-');
-		adminNoticeElem.classList.add('notice-' + response.status);
+		adminNoticeElem.classList.add('notice-' + status);
 		adminNoticeElem.classList.add('active');
-		adminNoticeElem.getElementsByTagName('p')[0].innerText = response.msg;
+		adminNoticeElem.getElementsByTagName('p')[0].innerText = msg;
 
 		setTimeout(function() {
 			adminNoticeElem.classList.remove('active');
-			adminNoticeElem.classList.remove('notice-' + response.status);
+			adminNoticeElem.classList.remove('notice-' + status);
 		}, 10000);
 	}
 
@@ -309,96 +295,50 @@
 
 	// xhr object
 	function createAjaxReq(dataObj, callback, nonce) {
+		let xhr = new XMLHttpRequest();
+		let url = pprh_data.admin_url + 'admin-ajax.php';
+		xhr.open('POST', url, true);
+		xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+		let json = JSON.stringify(dataObj);
+		let paginationPage = getUrlValue.call('paged');
 
-		doAjax(dataObj, callback, nonce);
-		function doAjax(dataObj, callback, nonce) {
-			let xhr = new XMLHttpRequest();
-			let url = pprh_data.admin_url + 'admin-ajax.php';
-			xhr.open('POST', url, true);
-			xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
-			let json = JSON.stringify(dataObj);
-			let paginationPage = getUrlValue.call('paged');
+		// for testing
+		if ( ! callback ) callback = 'pprh_update_hints';
+		if ( ! nonce ) nonce = pprh_data.nonce;
+		let target = 'action=' + callback + '&pprh_data=' + json + '&nonce=' + nonce;
 
-			// for testing
-			if ( ! callback ) callback = 'pprh_update_hints';
-			if ( ! nonce ) nonce = pprh_data.nonce;
-
-			let target = 'action=' + callback + '&pprh_data=' + json + '&nonce=' + nonce;
-
-			if (paginationPage.length > 0) {
-				target += '&paged=' + paginationPage;
-			}
-
-			xhr.send(target);
-			xhr.onreadystatechange = function() {
-				xhrResponse(xhr);
-			}
+		if (paginationPage.length > 0) {
+			target += '&paged=' + paginationPage;
 		}
 
-		function getUrlValue() {
-			let val = '';
-
-			if (currentURL.indexOf(this) > -1) {
-				try {
-					val = new URL(currentURL).searchParams.get(this);
-				} catch (e) {
-					val = currentURL.split(this + '=')[1].match(/^\d/)[0];
-				}
-			}
-
-			return val;
-		}
-
-		// update the hint table via ajax.
-		function updateTable(response) {
-			let table = $('table.pprh-post-table').first();
-			let postTable = document.getElementsByClassName('pprh-post-table')[0];
-			let tbody = table.find('tbody');
-
-			tbody.html('');
-
-			if (response.rows.length) {
-				tbody.html(response.rows);
-			}
-
-			if (response.pagination.bottom.length) {
-				$('.tablenav.top .tablenav-pages').html($(response.pagination.top).html());
-			}
-
-			if (response.pagination.top.length) {
-				$('.tablenav.bottom .tablenav-pages').html($(response.pagination.bottom).html());
-			}
-
-			if (response.total_pages === 1) {
-				$('div.tablenav, div.alignleft.actions.bulkactions').removeClass('no-pages');
-			}
-
-			postTable.querySelectorAll(':checked').forEach(function (item) {
-				return item.checked = false;
-			});
+		xhr.send(target);
+		xhr.onreadystatechange = function() {
+			xhrResponse(xhr);
 		}
 
 		function xhrResponse(xhr) {
-			if (xhr.readyState === 4 && xhr.status === 200) {
-				if (xhr.response.length > 0) {
+			if (xhr.readyState === 4 && xhr.status === 200 && xhr.response && xhr.response !== "0") {
+
+				if (xhr.response.indexOf('<div') === 0) {
+					logError('error');
+					return;
+				}
+			
+				try {
 					let response = JSON.parse(xhr.response);
 					clearHintTable();
-
-					if ( typeof response.result === "object") {
-						if (response.result.db_result) {
-							updateAdminNotice(response.result.db_result);
-							updateTable(response);
-							addEventListeners();
-							return;
-						}
-					} else {
-						console.error(response);
-					}
+					let msg = response.result.db_result.msg;
+					let status = response.result.db_result.status;
+					updateAdminNotice(msg, status);
+					updateTable(response);
+					addEventListeners();
+				} catch(e) {
+					logError(e);
 				}
 			}
 		}
-	}
 
+	}
 
 
 	// bulk deletes, enables/disables.
@@ -407,7 +347,7 @@
 		e.preventDefault();
 		let idArr = [];
 		let op = $(e.currentTarget).prev().val();
-		let opCode = ( 'delete' === op ) ? 2 : ( 'enable' === op ) ? 3 : ('disable' === op) ? 4 : 5;
+		let opCode = (/2|3|4/.test(op)) ? Number(op) : 5;
 		let checkboxes = $('table.pprh-post-table tbody th.check-column input:checkbox');
 
 		$.each(checkboxes, function () {
@@ -424,6 +364,60 @@
 		} else {
 			window.alert('Please select a row(s) for bulk updating.');
 		}
+	}
+
+	function logError(err) {
+		let error = (err.message) ? err.message : " Please clear your browser cache, refresh your page, or contact support to resolve the issue.";
+		let msg = "Error updating resource hint. " + error;
+		updateAdminNotice(msg, "error");
+		console.error(err);
+	}
+
+	function isObjectAndNotNull(obj) {
+		return (typeof obj === "object" && obj !== null);
+	}
+
+	function getUrlValue() {
+		let val = '';
+
+		if (currentURL.indexOf(this) > -1) {
+			try {
+				val = new URL(currentURL).searchParams.get(this);
+			} catch (e) {
+				val = currentURL.split(this + '=')[1].match(/^\d/)[0];
+			}
+		}
+
+		return val;
+	}
+
+	// update the hint table via ajax.
+	function updateTable(response) {
+		let table = $('table.pprh-post-table').first();
+		let postTable = document.getElementsByClassName('pprh-post-table')[0];
+		let tbody = table.find('tbody');
+
+		tbody.html('');
+
+		if (response.rows.length) {
+			tbody.html(response.rows);
+		}
+
+		if (response.pagination.bottom.length) {
+			$('.tablenav.top .tablenav-pages').html($(response.pagination.top).html());
+		}
+
+		if (response.pagination.top.length) {
+			$('.tablenav.bottom .tablenav-pages').html($(response.pagination.bottom).html());
+		}
+
+		if (response.total_pages === 1) {
+			$('div.tablenav, div.alignleft.actions.bulkactions').removeClass('no-pages');
+		}
+
+		postTable.querySelectorAll(':checked').forEach(function (item) {
+			return item.checked = false;
+		});
 	}
 
 	return {

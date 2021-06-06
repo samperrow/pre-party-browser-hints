@@ -77,9 +77,9 @@ class DisplayHints extends WP_List_Table {
 
 	public function get_bulk_actions() {
 		return array(
-            'delete'  => __( 'Delete', 'pprh' ),
-            'enable'  => __( 'Enable', 'pprh' ),
-            'disable' => __( 'Disable', 'pprh' )
+            '2'  => __( 'Delete', 'pprh' ),
+            '3'  => __( 'Enable', 'pprh' ),
+            '4' => __( 'Disable', 'pprh' )
         );
 	}
 

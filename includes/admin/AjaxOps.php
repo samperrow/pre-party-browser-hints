@@ -20,9 +20,9 @@ class AjaxOps {
 
 			if ( PPRH_TESTING ) {
 				return true;
-			} else {
-				wp_die( $json );
 			}
+
+			wp_die( $json );
 		}
 	}
 
@@ -53,7 +53,7 @@ class AjaxOps {
 			$result = \apply_filters( 'pprh_reset_post_preconnect', null );
 		}
 		elseif ( 'reset_single_post_prerender' === $data['action'] ) {
-			$result = \apply_filters( 'pprh_reset_single_post_prerender', $data );
+			$result = \apply_filters( 'pprh_reset_and_create_auto_prerender_hint', $data );
 		}
 
 		// TODO: if error, return generic error msg if no error from db is there.

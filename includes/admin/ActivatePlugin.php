@@ -14,7 +14,7 @@ class ActivatePlugin {
 	public function activate_plugin() {
 		$this->add_options();
 		$this->setup_tables();
-		$this->drop_columns();
+//		$this->drop_columns();
 		$this->update_option_names();
 		$this->plugin_activated = true;
 	}
@@ -95,13 +95,13 @@ class ActivatePlugin {
 		}
 	}
 
-	private function drop_columns() {
-		$dao = new DAO();
-		$column = $dao->get_table_column();
-
-		if ( count( $column ) > 0 ) {
-			$dao->drop_table_column();
-		}
-	}
+//	private function drop_columns() {
+//		$dao = new DAO();
+//		$column = $dao->get_table_column();
+//
+//		if ( count( $column ) > 0 ) {
+//			$dao->drop_table_column();
+//		}
+//	}
 
 }

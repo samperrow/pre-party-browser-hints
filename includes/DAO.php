@@ -220,6 +220,7 @@ class DAO {
             crossorigin VARCHAR(55) DEFAULT '',
             media VARCHAR(255) DEFAULT '',
             created_by VARCHAR(55) DEFAULT '' NOT NULL,
+			auto_created INT(2) DEFAULT 0 NOT NULL,
             PRIMARY KEY  (id)
         ) $charset;";
 

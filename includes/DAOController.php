@@ -16,7 +16,7 @@ class DAOController extends DAO {
 	// tested
 	public function hint_controller( $raw_data ) {
 		$create_hints = new CreateHints();
-		$ctrl_data = array( 'op_code' => $raw_data['op_code'] );
+		$ctrl_data = array( 'op_code' => (int) $raw_data['op_code'] );
 
 		if ( ! empty( $raw_data['hint_ids'] ) ) {
 			$ctrl_data['hint_ids'] = Utils::array_into_csv( $raw_data['hint_ids'] );
