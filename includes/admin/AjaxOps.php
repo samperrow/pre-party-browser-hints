@@ -48,11 +48,9 @@ class AjaxOps {
 		$dao_ctrl = new DAOController();
 		$result = $dao_ctrl->hint_controller( $data );
 
-//		TODO: create method that will handle resetting the post preconnect and prerender hint.
 		if ( isset( $data['action'] ) && 'reset_single_post_preconnects' === $data['action'] ) {
 			$result = \apply_filters( 'pprh_reset_post_preconnect', null );
-		}
-		elseif ( 'reset_single_post_prerender' === $data['action'] ) {
+		} elseif ( 'reset_single_post_prerender' === $data['action'] ) {
 			$result = \apply_filters( 'pprh_reset_and_create_auto_prerender_hint', $data );
 		}
 
