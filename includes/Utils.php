@@ -90,7 +90,10 @@ class Utils {
 	}
 
 
-
+	public static function show_notice( string $msg, bool $success ):void {
+		$class = ( $success ) ? 'success' : 'error';
+		echo sprintf( '<div id="message" class="notice notice-%1$s is-dismissible"><p>%2$s</p></div>', $class, $msg );
+	}
 
 
 
