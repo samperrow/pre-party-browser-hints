@@ -285,10 +285,18 @@
 		adminNoticeElem.classList.add('active');
 		adminNoticeElem.getElementsByTagName('p')[0].innerText = msg;
 
-		setTimeout(function() {
-			adminNoticeElem.classList.remove('active');
-			adminNoticeElem.classList.remove('notice-' + status);
-		}, 10000);
+		setAdminNoticeTimeout();
+	}
+
+	setAdminNoticeTimeout();
+	function setAdminNoticeTimeout() {
+		if ( adminNoticeElem !== null) {
+			adminNoticeElem.classList.add('active');
+
+			setTimeout(function() {
+				adminNoticeElem.classList.remove('active');
+			}, 10000);
+		}
 	}
 
 
@@ -329,7 +337,7 @@
 					clearHintTable();
 					let msg = response.result.db_result.msg;
 					let status = response.result.db_result.status;
-					updateAdminNotice(msg, status);
+					// updateAdminNotice(msg, status);
 					updateTable(response);
 					addEventListeners();
 				} catch(e) {
@@ -369,7 +377,7 @@
 	function logError(err) {
 		let error = (err.message) ? err.message : " Please clear your browser cache, refresh your page, or contact support to resolve the issue.";
 		let msg = "Error updating resource hint. " + error;
-		updateAdminNotice(msg, "error");
+		// updateAdminNotice(msg, "error");
 		console.error(err);
 	}
 

@@ -8,13 +8,18 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class Utils {
 
-	public static function admin_notice() {
-		?>
+	public static function show_notice( string $msg, bool $success ):void {
+		$class = ( $success ) ? 'success' : 'error';
+		echo sprintf( '<div id="pprhNotice" class="notice notice-%1$s is-dismissible"><p>%2$s</p></div>', $class, $msg );
+	}
+
+	public static function show_notice_2( string $msg ):void {
+        ?>
         <div id="pprhNoticeBox"></div>
         <div id="pprhNotice" class="notice is-dismissible">
-			<p></p>
-		</div>
-		<?php
+            <p><?php echo $msg; ?></p>
+        </div>
+        <?php
 	}
 
     public static function strip_non_alphanums( $text ) {
@@ -88,15 +93,6 @@ class Utils {
 		$dao = new DAO();
 		return $dao->get_pprh_hints( $query_code );
 	}
-
-
-	public static function show_notice( string $msg, bool $success ):void {
-		$class = ( $success ) ? 'success' : 'error';
-		echo sprintf( '<div id="message" class="notice notice-%1$s is-dismissible"><p>%2$s</p></div>', $class, $msg );
-	}
-
-
-
 
 
 	public static function on_pprh_page() {

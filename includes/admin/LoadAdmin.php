@@ -22,9 +22,11 @@ class LoadAdmin {
 		\add_filter( 'set-screen-option', array( $this, 'pprh_set_screen_option' ), 10, 3 );
 		load_plugin_textdomain( 'pprh', false, PPRH_REL_DIR . 'languages' );
 
-		include_once 'NewHint.php';
-		include_once 'DisplayHints.php';
-		include_once 'AjaxOps.php';
+
+		$this->load_plugin_admin_files();
+		\do_action(  'pprh_notice' );
+
+
 		new AjaxOps();
 
 		\do_action( 'pprh_pro_load_admin' );
@@ -41,7 +43,7 @@ class LoadAdmin {
 		);
 
 		\add_action( "load-{$settings_page}", array( $this, 'screen_option' ) );
-	}
+    }
 
 	public function load_dashboard() {
 		if ( ! current_user_can( 'manage_options' ) ) {
@@ -49,18 +51,36 @@ class LoadAdmin {
 		}
 
 		$on_pprh_admin = Utils::on_pprh_admin();
-		include_once 'Dashboard.php';
 
-		$dashboard = new Dashboard( $on_pprh_admin );
-		$dashboard->load_plugin_admin_files();
+		if ( ! $on_pprh_admin ) {
+			return;
+		}
+
+		$dashboard = new Dashboard();
 		$dashboard->show_plugin_dashboard();
+	}
+
+	public function load_plugin_admin_files() {
+		include_once 'NewHint.php';
+		include_once 'DisplayHints.php';
+		include_once 'AjaxOps.php';
+		include_once 'Dashboard.php';
+		include_once 'views/InsertHints.php';
+		include_once 'views/Settings.php';
+		include_once 'views/HintInfo.php';
+		include_once 'views/Upgrade.php';
+		include_once 'views/settings/GeneralSettings.php';
+		include_once 'views/settings/GeneralSettings.php';
+		include_once 'views/settings/PreconnectSettings.php';
+		include_once 'views/settings/PrefetchSettings.php';
+//		\do_action( 'pprh_la_load_view_files' );
 	}
 
 	public function screen_option() {
 		$args = array(
 			'label'   => 'Resource hints per page: ',
 			'option'  => 'pprh_per_page',
-			'default' => 10,
+			'default' => 10
 		);
 
 		add_screen_option( 'per_page', $args );
@@ -97,10 +117,6 @@ class LoadAdmin {
 	}
 
 	public function meta_boxes() {
-		include_once 'views/settings/GeneralSettings.php';
-		include_once 'views/settings/PreconnectSettings.php';
-		include_once 'views/settings/PrefetchSettings.php';
-
 		$general_settings = new GeneralSettings();
 		$preconnect_settings = new PreconnectSettings(true);
 		$prefetch_settings = new PrefetchSettings();
@@ -146,7 +162,9 @@ class LoadAdmin {
 
 	public function create_prerender_metabox() {
         $pro_loaded = \apply_filters( 'pprh_get_prerender_metabox', false );
-        if ( $pro_loaded ) return;
+        if ( $pro_loaded ) {
+            return;
+		}
 		?>
 		<div style="text-align: center;">
 			<h3><?php \esc_html_e( 'This feature is only available after upgrading to the Pro version.', 'pprh' ); ?></h3>

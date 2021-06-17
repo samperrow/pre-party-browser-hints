@@ -8,6 +8,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class AjaxOps {
 
+	public $msg = '';
+
 	public function __construct() {
 		\add_action( 'wp_ajax_pprh_update_hints', array( $this, 'pprh_update_hints' ) );
 	}
@@ -31,6 +33,14 @@ class AjaxOps {
 			$db_result = $this->handle_action( $pprh_data );
 
 			if ( is_object( $db_result ) ) {
+				$this->msg = $pprh_data['action'] ?? 'no value';
+//				\add_action( 'pprh_notice', array( $this, 'asdf' ), 10, 0 );
+
+				\add_action( 'pprh_notice', function() {
+					$msg = 'Successfully updated license info!';
+					\PPRH\Utils::show_notice( $msg, true );
+				});
+
 				$display_hints = new DisplayHints();
 				$json = $display_hints->ajax_response( $db_result );
 				return $this->return_values( $json, $db_result );
@@ -38,6 +48,10 @@ class AjaxOps {
 		}
 
 		return false;
+	}
+
+	public function asdf() {
+		\PPRH\Utils::show_notice( $this->msg, true );
 	}
 
 	private function return_values( $json, $db_result ) {
@@ -53,6 +67,8 @@ class AjaxOps {
 		} elseif ( 'reset_single_post_prerender' === $data['action'] ) {
 			$result = \apply_filters( 'pprh_reset_and_create_auto_prerender_hint', $data );
 		}
+
+
 
 		// TODO: if error, return generic error msg if no error from db is there.
 		return ( is_object( $result ) ? $result : false );
