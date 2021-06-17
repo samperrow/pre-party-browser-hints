@@ -10,25 +10,20 @@ class LoadAdmin {
 
 	public function init() {
 		\add_action( 'admin_menu', array( $this, 'load_admin_menu' ) );
-		\add_action( 'admin_init', array( $this, 'meta_boxes' ) );
-
 		$on_pprh_page = Utils::on_pprh_page();
 
 		if ( ! $on_pprh_page ) {
 			return;
 		}
-
+		
+		\add_action( 'admin_init', array( $this, 'do_meta_boxes' ) );
 		\add_action( 'admin_enqueue_scripts', array( $this, 'register_admin_files' ) );
 		\add_filter( 'set-screen-option', array( $this, 'pprh_set_screen_option' ), 10, 3 );
-		load_plugin_textdomain( 'pprh', false, PPRH_REL_DIR . 'languages' );
-
-
+		
 		$this->load_plugin_admin_files();
-		\do_action(  'pprh_notice' );
-
 
 		new AjaxOps();
-
+		\do_action(  'pprh_notice' );
 		\do_action( 'pprh_pro_load_admin' );
 	}
 
@@ -73,7 +68,6 @@ class LoadAdmin {
 		include_once 'views/settings/GeneralSettings.php';
 		include_once 'views/settings/PreconnectSettings.php';
 		include_once 'views/settings/PrefetchSettings.php';
-//		\do_action( 'pprh_la_load_view_files' );
 	}
 
 	public function screen_option() {
@@ -116,7 +110,7 @@ class LoadAdmin {
 		}
 	}
 
-	public function meta_boxes() {
+	public function do_meta_boxes() {
 		$general_settings = new GeneralSettings();
 		$preconnect_settings = new PreconnectSettings(true);
 		$prefetch_settings = new PrefetchSettings();
@@ -156,7 +150,6 @@ class LoadAdmin {
 			'normal',
 			'low'
 		);
-
 	}
 
 

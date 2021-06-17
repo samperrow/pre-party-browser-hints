@@ -42,6 +42,7 @@ class Pre_Party_Browser_Hints {
 		$this->load_common_files();
 		$this->create_constants();
 
+		\load_plugin_textdomain( 'pprh', false, PPRH_REL_DIR . 'languages' );
 		\do_action( 'pprh_load_plugin' );
 
 		if ( ! function_exists( 'wp_doing_ajax' ) ) {

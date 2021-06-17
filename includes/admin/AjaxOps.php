@@ -8,8 +8,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class AjaxOps {
 
-	public $msg = '';
-
 	public function __construct() {
 		\add_action( 'wp_ajax_pprh_update_hints', array( $this, 'pprh_update_hints' ) );
 	}
@@ -17,14 +15,18 @@ class AjaxOps {
 	public function pprh_update_hints() {
 		if ( isset( $_POST['pprh_data'] ) && wp_doing_ajax() ) {
 			check_ajax_referer( 'pprh_table_nonce', 'nonce' );
-			$pprh_data = json_decode( wp_unslash( $_POST['pprh_data'] ), true );
-			$json = $this->init( $pprh_data );
+			$pprh_data = Utils::json_to_array( $_POST['pprh_data'] );
+			$db_result = '';
+
+			if ( false !== $pprh_data ) {
+				$db_result = $this->init( $pprh_data );
+			}
 
 			if ( PPRH_TESTING ) {
 				return true;
 			}
 
-			wp_die( $json );
+			wp_die( $db_result );
 		}
 	}
 
@@ -33,14 +35,6 @@ class AjaxOps {
 			$db_result = $this->handle_action( $pprh_data );
 
 			if ( is_object( $db_result ) ) {
-				$this->msg = $pprh_data['action'] ?? 'no value';
-//				\add_action( 'pprh_notice', array( $this, 'asdf' ), 10, 0 );
-
-				\add_action( 'pprh_notice', function() {
-					$msg = 'Successfully updated license info!';
-					\PPRH\Utils::show_notice( $msg, true );
-				});
-
 				$display_hints = new DisplayHints();
 				$json = $display_hints->ajax_response( $db_result );
 				return $this->return_values( $json, $db_result );
@@ -48,10 +42,6 @@ class AjaxOps {
 		}
 
 		return false;
-	}
-
-	public function asdf() {
-		\PPRH\Utils::show_notice( $this->msg, true );
 	}
 
 	private function return_values( $json, $db_result ) {

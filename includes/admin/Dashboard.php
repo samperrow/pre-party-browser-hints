@@ -10,13 +10,21 @@ class Dashboard {
 
 //	public $on_pprh_admin = false;
 
-//	public function __construct() {}
+	public function __construct() {
+        if ( ! \has_action(  'pprh_notice' ) ) {
+			\add_action( 'pprh_notice', array( $this, 'default_admin_notice' ), 10, 0 );
+		}
+    }
+
+    public function default_admin_notice() {
+	    Utils::show_notice( '', true );
+    }
 
 	public function show_plugin_dashboard() {
 		echo '<div id="poststuff"><h1>';
 		esc_html_e( 'Pre* Party Plugin Settings', 'pprh' );
 		echo '</h1>';
-//        \do_action(  'pprh_notice' );
+        \do_action(  'pprh_notice' );
 		$this->show_admin_tabs();
 
 		new InsertHints();

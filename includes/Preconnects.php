@@ -153,7 +153,11 @@ class Preconnects {
 	}
 
 	private function do_ajax_callback( $pprh_data ) {
-		$raw_hint_data = json_decode( wp_unslash( $pprh_data ), true );
+		$raw_hint_data = Utils::json_to_array( $pprh_data );
+		if ( false === $raw_hint_data ) {
+			return;
+		}
+
 		$results = array();
 		$raw_hint_count = count( $raw_hint_data['hints'] );
 

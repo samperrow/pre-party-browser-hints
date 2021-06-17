@@ -5,7 +5,6 @@
 	'use strict';
 	let $ = jQuery;
 	const currentURL = document.location.href;
-	const adminNoticeElem = document.getElementById('pprhNotice');
 
 	if (/pprh-plugin-settings/.test(currentURL)) {
 		// togglePrefetchRows();
@@ -280,26 +279,28 @@
 
 	// TODO: remove previous notices which have a different status. i.e- removing an 'error' box after a successful notice
 	function updateAdminNotice(msg, status) {
+		let adminNoticeElem = document.getElementById('pprhNotice');
+
+		if (typeof adminNoticeElem === "undefined" || adminNoticeElem === null) {
+			let pprhNoticeBox = document.getElementById('pprhNoticeBox');
+			pprhNoticeBox.innerHTML = '<div id="pprhNotice" class="notice notice-success is-dismissible"><p></p></div>';
+			adminNoticeElem = document.getElementById('pprhNotice');
+		}
+
+		if ( '' !== msg) {
+			adminNoticeElem.classList.add('active');
+			adminNoticeElem.getElementsByTagName('p')[0].innerText = msg;
+		}
+
 		adminNoticeElem.classList.remove('notice-');
 		adminNoticeElem.classList.add('notice-' + status);
-		adminNoticeElem.classList.add('active');
-		adminNoticeElem.getElementsByTagName('p')[0].innerText = msg;
 
-		setAdminNoticeTimeout();
+		// if ( adminNoticeElem !== null) {
+		// 	setTimeout(function() {
+		// 		adminNoticeElem.classList.remove('active');
+		// 	}, 10000);
+		// }
 	}
-
-	setAdminNoticeTimeout();
-	function setAdminNoticeTimeout() {
-		if ( adminNoticeElem !== null) {
-			adminNoticeElem.classList.add('active');
-
-			setTimeout(function() {
-				adminNoticeElem.classList.remove('active');
-			}, 10000);
-		}
-	}
-
-
 
 	// xhr object
 	function createAjaxReq(dataObj, callback, nonce) {
@@ -337,7 +338,7 @@
 					clearHintTable();
 					let msg = response.result.db_result.msg;
 					let status = response.result.db_result.status;
-					// updateAdminNotice(msg, status);
+					updateAdminNotice(msg, status);
 					updateTable(response);
 					addEventListeners();
 				} catch(e) {
@@ -377,7 +378,7 @@
 	function logError(err) {
 		let error = (err.message) ? err.message : " Please clear your browser cache, refresh your page, or contact support to resolve the issue.";
 		let msg = "Error updating resource hint. " + error;
-		// updateAdminNotice(msg, "error");
+		updateAdminNotice(msg, "error");
 		console.error(err);
 	}
 

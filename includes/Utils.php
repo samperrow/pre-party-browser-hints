@@ -9,18 +9,22 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Utils {
 
 	public static function show_notice( string $msg, bool $success ):void {
-		$class = ( $success ) ? 'success' : 'error';
-		echo sprintf( '<div id="pprhNotice" class="notice notice-%1$s is-dismissible"><p>%2$s</p></div>', $class, $msg );
+		$alert = ( $success ) ? 'success' : 'error';
+		$class = ( empty( $msg ) ? '' : 'active' );
+		echo sprintf( '<div id="pprhNoticeBox"><div id="pprhNotice" class="notice notice-%1$s is-dismissible %2$s"><p>%3$s</p></div></div>', $alert, $class, $msg );
 	}
 
-	public static function show_notice_2( string $msg ):void {
-        ?>
-        <div id="pprhNoticeBox"></div>
-        <div id="pprhNotice" class="notice is-dismissible">
-            <p><?php echo $msg; ?></p>
-        </div>
-        <?php
-	}
+	public static function json_to_array( $json ) {
+		$array = false;
+
+		try {
+			$array = json_decode( wp_unslash( $json ), true, 512, JSON_THROW_ON_ERROR );
+		} catch ( \JsonException $error ) {
+			// log error..
+		}
+
+		return $array;
+    }
 
     public static function strip_non_alphanums( $text ) {
 		return preg_replace( '/[^a-z\d]/imu', '', $text );
