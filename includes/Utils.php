@@ -54,10 +54,7 @@ class Utils {
 		return ( null === $str || '' === $str );
 	}
 
-	public static function get_opt_val( $opt ) {
-		$val = get_option( $opt );
-		return ( ! empty( $val ) ) ? $val : '';
-	}
+
 
 	public static function array_into_csv( $hint_ids ) {
 		if ( is_array( $hint_ids ) && count( $hint_ids ) > 0 ) {
@@ -71,24 +68,24 @@ class Utils {
 		return false;
 	}
 
+	public static function esc_get_option( $option ) {
+		return \esc_html( \get_option( $option ) );
+	}
+
 	public static function get_option_status( $option, $val ) {
-	    $opt = get_option( $option );
-		return esc_html( $opt === $val ? 'selected=selected' : '' );
+		$value = self::esc_get_option( $option );
+		return ( ( $value === $val ) ? 'selected=selected' : '' );
 	}
 
 	public static function is_option_checked( $option ) {
-		$value = get_option( $option );
-		return esc_html( 'true' === $value ? 'checked' : '' );
-	}
-
-	public static function esc_get_option( $option ) {
-	    $value = get_option( $option );
-	    return esc_html( $value );
+		$value = self::esc_get_option( $option );
+		return ( 'true' === $value ? 'checked' : '' );
 	}
 
 	public static function pprh_is_plugin_active() {
 		$plugin = 'pprh-pro/pprh-pro.php';
-		$site_active = ( in_array( $plugin, (array) get_option( 'active_plugins', array() ), true ) );
+		$active_plugins = (array) get_option( 'active_plugins', array() );
+		$site_active = ( in_array( $plugin, $active_plugins, true ) );
 		$network_active = function_exists( 'is_plugin_active_for_network' ) && is_plugin_active_for_network( $plugin );
 		return ( $site_active || $network_active );
 	}
@@ -99,28 +96,21 @@ class Utils {
 	}
 
 
-	public static function on_pprh_page() {
-	    global $pagenow;
-		$referrer = self::get_referrer();
-		$pro_on_admin_post_page = \apply_filters( 'pprh_utils_pro_on_admin_post_page', $pagenow, $referrer );
-		return ( self::on_pprh_admin() || $pro_on_admin_post_page);
-	}
-
-	public static function on_pprh_admin() {
-		$pprh_page = 'pprh-plugin-settings';
-		$referrer = self::get_referrer();
-
-		if ( wp_doing_ajax() ) {
-			return ( false !== stripos( $referrer, $pprh_page ) );
-		} else {
-			return ( isset( $_GET['page'] ) && $pprh_page === $_GET['page'] );
-		}
-	}
-
 	public static function get_referrer() {
-		return ( ! empty( $_SERVER['HTTP_REFERER'] ) ? self::clean_url( $_SERVER['HTTP_REFERER'] ) : '' );
+		return ( isset( $_SERVER['HTTP_REFERER'] ) ? self::clean_url( $_SERVER['HTTP_REFERER'] ) : '' );
 	}
 
+	public static function on_pprh_admin_page( $doing_ajax, $referer = null ) {
+		if ( null === $referer ) {
+			$referer = self::get_referrer();
+		}
+		return ( $doing_ajax ? str_contains( $referer, PPRH_MENU_SLUG ) : ( PPRH_MENU_SLUG === ( $_GET['page'] ?? '' ) ) );
+	}
+
+}
+
+if ( ! function_exists( 'wp_doing_ajax' ) ) {
+	\apply_filters( 'wp_doing_ajax', defined( 'DOING_AJAX' ) && DOING_AJAX );
 }
 
 if ( ! function_exists( 'str_contains' ) ) {

@@ -8,31 +8,42 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class LoadAdmin {
 
-	public function init() {
-		\add_action( 'admin_menu', array( $this, 'load_admin_menu' ) );
-		$on_pprh_page = Utils::on_pprh_page();
+    public $on_pprh_admin_page = false;
 
-		if ( ! $on_pprh_page ) {
-			return;
+	public function init() {
+		$this->on_pprh_admin_page = Utils::on_pprh_admin_page( \wp_doing_ajax() );
+		$this->load_common_content();
+
+		if ( $this->on_pprh_admin_page ) {
+			$this->load_admin_screen_content();
 		}
-		
-		\add_action( 'admin_init', array( $this, 'do_meta_boxes' ) );
+	}
+
+	public function load_common_content() {
 		\add_action( 'admin_enqueue_scripts', array( $this, 'register_admin_files' ) );
 		\add_filter( 'set-screen-option', array( $this, 'pprh_set_screen_option' ), 10, 3 );
-		
-		$this->load_plugin_admin_files();
+
+		include_once 'NewHint.php';
+		include_once 'DisplayHints.php';
+		include_once 'AjaxOps.php';
+		include_once 'views/InsertHints.php';
 
 		new AjaxOps();
-		\do_action(  'pprh_notice' );
 		\do_action( 'pprh_pro_load_admin' );
 	}
+
+    public function load_admin_screen_content() {
+		\add_action( 'admin_init', array( $this, 'add_settings_meta_boxes' ) );
+		$this->load_admin_files();
+	}
+
 
 	public function load_admin_menu() {
 		$settings_page = add_menu_page(
 			'Pre* Party Settings',
 			'Pre* Party',
 			'update_plugins',
-			'pprh-plugin-settings',
+			PPRH_MENU_SLUG,
 			array( $this, 'load_dashboard' ),
 			PPRH_REL_DIR . 'images/lightning.png'
 		);
@@ -45,26 +56,17 @@ class LoadAdmin {
 			wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
 		}
 
-		$on_pprh_admin = Utils::on_pprh_admin();
-
-		if ( ! $on_pprh_admin ) {
-			return;
+		if ( $this->on_pprh_admin_page ) {
+			$dashboard = new Dashboard();
+			$dashboard->show_plugin_dashboard();
 		}
-
-		$dashboard = new Dashboard();
-		$dashboard->show_plugin_dashboard();
 	}
 
-	public function load_plugin_admin_files() {
-		include_once 'NewHint.php';
-		include_once 'DisplayHints.php';
-		include_once 'AjaxOps.php';
+	public function load_admin_files() {
 		include_once 'Dashboard.php';
-		include_once 'views/InsertHints.php';
 		include_once 'views/Settings.php';
 		include_once 'views/HintInfo.php';
 		include_once 'views/Upgrade.php';
-		include_once 'views/settings/GeneralSettings.php';
 		include_once 'views/settings/GeneralSettings.php';
 		include_once 'views/settings/PreconnectSettings.php';
 		include_once 'views/settings/PrefetchSettings.php';
@@ -110,7 +112,7 @@ class LoadAdmin {
 		}
 	}
 
-	public function do_meta_boxes() {
+	public function add_settings_meta_boxes() {
 		$general_settings = new GeneralSettings();
 		$preconnect_settings = new PreconnectSettings(true);
 		$prefetch_settings = new PrefetchSettings();

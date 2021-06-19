@@ -9,13 +9,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 final class LoadClientTest extends TestCase {
 
-
-
+	/*
+	 * @before
+	 */
 	public function test_init():void {
-		if ( WP_ADMIN ) return;
-
-		$load_client = new \PPRH\LoadClient();
-
 
 	}
 

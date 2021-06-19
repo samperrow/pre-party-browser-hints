@@ -18,8 +18,6 @@ class SendHintsTest extends TestCase {
 //	}
 
 	public function test_init():void {
-		if ( WP_ADMIN ) return;
-
 		$send_hints = new \PPRH\SendHints();
 
 		$hints_1 = array();

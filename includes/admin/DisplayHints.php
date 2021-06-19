@@ -18,7 +18,7 @@ class DisplayHints extends WP_List_Table {
 	public $items;
 
 
-	public function __construct() {
+	public function __construct( $doing_ajax ) {
 		parent::__construct( array(
             'ajax'     => true,
 			'plural'   => 'urls',
@@ -26,7 +26,7 @@ class DisplayHints extends WP_List_Table {
 			'singular' => 'url',
 		) );
 
-		if ( ! wp_doing_ajax() ) {
+		if ( ! $doing_ajax ) {
 			$this->prepare_items();
 			$this->display();
 		}

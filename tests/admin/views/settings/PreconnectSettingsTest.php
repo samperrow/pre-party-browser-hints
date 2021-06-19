@@ -6,9 +6,7 @@ use PHPUnit\Framework\TestCase;
 //class PreconnectSettingsTest extends TestCase {
 //
 //	public function test_constructor() {
-//		if ( WP_ADMIN ) {
-//			$this->test_load_reset_settings();
-//		}
+//		$this->test_load_reset_settings();
 //	}
 //
 //	public function test_load_reset_settings() {

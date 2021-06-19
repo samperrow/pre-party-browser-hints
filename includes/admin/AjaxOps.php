@@ -35,7 +35,7 @@ class AjaxOps {
 			$db_result = $this->handle_action( $pprh_data );
 
 			if ( is_object( $db_result ) ) {
-				$display_hints = new DisplayHints();
+				$display_hints = new DisplayHints( true );
 				$json = $display_hints->ajax_response( $db_result );
 				return $this->return_values( $json, $db_result );
 			}

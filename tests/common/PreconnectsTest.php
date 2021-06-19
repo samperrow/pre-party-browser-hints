@@ -5,14 +5,6 @@ use PHPUnit\Framework\TestCase;
 
 class PreconnectsTest extends TestCase {
 
-	/**
-	 * @before
-	 */
-	public function test_begin() {
-		if ( WP_ADMIN ) return;
-
-		$this->test_create_js_object();
-	}
 
 	public function util_create_free_config_arr( $autoload, $allow_unauth, $preconnects_set )  {
 		return array(
@@ -21,8 +13,6 @@ class PreconnectsTest extends TestCase {
 			'preconnects_set' => $preconnects_set,
 		);
 	}
-
-
 
 
 	public function test_constructor():void {

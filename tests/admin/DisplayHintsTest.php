@@ -11,8 +11,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 final class DisplayHintsTest extends TestCase {
 
 	public function test_on_post_page_and_global_hint():void {
-		if ( ! WP_ADMIN ) return;
-
 		$args = array(
 			'plural'   => '',
 			'singular' => '',

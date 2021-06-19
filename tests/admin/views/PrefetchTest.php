@@ -5,8 +5,6 @@ use PHPUnit\Framework\TestCase;
 class PrefetchTest extends TestCase {
 
 	public function test_flying_pages_loaded(): void {
-		if ( WP_ADMIN ) return;
-
 		$option_name = 'pprh_prefetch_enabled';
 		$option_value = get_option($option_name);
 		$expected = ('true' === $option_value);
@@ -19,7 +17,7 @@ class PrefetchTest extends TestCase {
 
 	public function flying_pages_loaded():bool {
 		global $wp_scripts;
-		\do_action('wp_enqueue_scripts');
+//		\do_action('wp_enqueue_scripts');
 
 		foreach ($wp_scripts->queue as $handle) {
 			if ('pprh_prefetch_flying_pages' === $handle) {

@@ -45,25 +45,29 @@ class Pre_Party_Browser_Hints {
 		\load_plugin_textdomain( 'pprh', false, PPRH_REL_DIR . 'languages' );
 		\do_action( 'pprh_load_plugin' );
 
-		if ( ! function_exists( 'wp_doing_ajax' ) ) {
-			\apply_filters( 'wp_doing_ajax', defined( 'DOING_AJAX' ) && DOING_AJAX );
-		}
-
-		if ( is_admin() ) {
-			\add_action( 'wp_loaded', array( $this, 'load_admin' ) );
-		} else {
-			\add_action( 'wp_loaded', array( $this, 'load_client' ) );
-		}
+        $is_admin = \is_admin();
+		$this->load( $is_admin );
 
 		// this needs to be loaded front end and back end bc Ajax needs to be able to communicate between the two.
 		include_once 'includes/Preconnects.php';
 		$preconnects = new Preconnects();
 	}
 
+	public function load( $is_admin ) {
+		if ( $is_admin ) {
+			\add_action( 'wp_loaded', array( $this, 'load_admin' ) );
+		} else {
+			\add_action( 'wp_loaded', array( $this, 'load_client' ) );
+		}
+    }
+
 	public function load_admin() {
 		include_once 'includes/admin/LoadAdmin.php';
+
 		$load_admin = new LoadAdmin();
+		\add_action( 'admin_menu', array( $load_admin, 'load_admin_menu' ) );
 		$load_admin->init();
+
 		\add_action( 'pprh_check_to_upgrade', array( $this, 'check_to_upgrade' ), 10, 1 );
 	}
 
@@ -92,6 +96,7 @@ class Pre_Party_Browser_Hints {
 			define( 'PPRH_PRO_PLUGIN_ACTIVE', $pprh_pro_active );
 			define( 'PPRH_SITE_URL', $site_url );
 			define( 'PPRH_TESTING', $testing );
+			define( 'PPRH_MENU_SLUG', 'pprh-plugin-settings' );
         }
 	}
 
