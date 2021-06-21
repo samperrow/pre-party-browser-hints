@@ -21,7 +21,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class WP_List_Table {
 
-	public $on_pprh_admin;
+	public $on_pprh_post_page;
+
 
 	/**
 	 * The current list of items.
@@ -156,7 +157,7 @@ class WP_List_Table {
 		);
 
 		$this->screen = convert_to_screen( $args['screen'] );
-		$this->on_pprh_admin = \apply_filters( 'pprh_on_pprh_admin', true );
+		$this->on_pprh_post_page = ! \apply_filters( 'pprh_on_pprh_admin', false );
 
 		\add_filter( "manage_{$this->screen->id}_columns", array( $this, 'get_columns' ), 0 );
 
@@ -1282,7 +1283,7 @@ class WP_List_Table {
 
 	public function on_post_page_and_global_hint( $item ) {
 		$global_hint = ( ! empty( $item['post_id'] ) && 'global' === $item['post_id'] );
-		return ( $global_hint && ! $this->on_pprh_admin );
+		return ( $global_hint && $this->on_pprh_post_page );
 	}
 
 	protected function global_hint_alert() {

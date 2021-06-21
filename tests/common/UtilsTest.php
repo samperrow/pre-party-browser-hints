@@ -169,7 +169,6 @@ final class UtilsTest extends TestCase {
 		self::assertEquals( false, $actual_7 );
 
 
-
 		$_GET['page'] = null;
 		$_GET['post'] = '2128';
 		$test2 = \PPRH\Utils::on_pprh_admin_page( false, null );

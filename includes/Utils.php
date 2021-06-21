@@ -14,6 +14,10 @@ class Utils {
 		echo sprintf( '<div id="pprhNoticeBox"><div id="pprhNotice" class="notice notice-%1$s is-dismissible %2$s"><p>%3$s</p></div></div>', $alert, $class, $msg );
 	}
 
+	public static function add_pprh_notice( $callback ) {
+		\add_action( 'pprh_notice', $callback );
+	}
+
 	public static function json_to_array( $json ) {
 		$array = false;
 
@@ -90,9 +94,14 @@ class Utils {
 		return ( $site_active || $network_active );
 	}
 
-	public static function get_pprh_hints( $query_code ) {
+	public static function get_all_pprh_hints( $query_code ) {
 		$dao = new DAO();
-		return $dao->get_pprh_hints( $query_code );
+		return $dao->get_all_pprh_hints( $query_code );
+	}
+
+	public static function get_duplicate_hints( $url, $hint_type ) {
+		$dao = new DAO();
+		return $dao->get_duplicate_hints( $url, $hint_type );
 	}
 
 

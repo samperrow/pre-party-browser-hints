@@ -12,10 +12,9 @@ class HintInfo {
 
 	public function __construct() {
 		$this->image_path = PPRH_REL_DIR;
-		$this->resource_hint_nav();
 	}
 
-	public function resource_hint_nav() {
+	public function markup() {
 		?>
         <div id="pprh-hint-info" class="pprh-content">
 			<h2><?php esc_html_e( 'Resource Hint Information', 'pprh' ); ?></h2>

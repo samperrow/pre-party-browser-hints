@@ -8,27 +8,23 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class Settings {
 
-	private $general_settings;
-	private $preconnect_settings;
-	private $prefetch_settings;
-
-	protected $on_pprh_admin = false;
+//	private $general_settings;
+//	private $preconnect_settings;
+//	private $prefetch_settings;
+//
+//	protected $on_pprh_admin = false;
 
 	public function __construct() {
-//		$this->on_pprh_admin = $on_pprh_admin;
-//		$this->general_settings = new GeneralSettings();
-//		$this->preconnect_settings = new PreconnectSettings($on_pprh_admin);
-//		$this->prefetch_settings = new PrefetchSettings();
-		$this->display_settings( true );
+		$this->save_user_options();
 	}
 
-	public function display_settings( $on_pprh_admin ) {
+	public function markup( $on_pprh_admin ) {
 		?>
         <div id="pprh-settings" class="pprh-content">
             <form method="post" action="">
                 <?php
                     wp_nonce_field( 'pprh_save_admin_options', 'pprh_admin_options_nonce' );
-                    $this->save_user_options();
+//                    $this->save_user_options();
 
                     if ( $on_pprh_admin ) {
 						wp_nonce_field( 'closedpostboxes', 'closedpostboxesnonce', false );

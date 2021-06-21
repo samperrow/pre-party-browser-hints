@@ -9,12 +9,19 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 final class CreateHintsTest extends TestCase {
 
+	public $create_hints;
+
+	/**
+	 * @before
+	 */
+	public function test_start():void {
+		$this->create_hints = new \PPRH\CreateHints();
+	}
 
 	/**
 	 * @covers \PPRH\CreateHints::create_hint
 	 */
 	public function test_create_hint(): void {
-		$create_hints = new \PPRH\CreateHints();
 		$url_1 = 'https://sphacks.local/wp-content/themes/sphacks/images/icons/newspaper.woff?19';
 
 		$test1 = TestUtils::create_hint_array( 'https://www.espn.com', 'dns-prefetch' );
@@ -23,125 +30,81 @@ final class CreateHintsTest extends TestCase {
 		$test_4 = TestUtils::create_hint_array( '//espn.com', '' );
 		$test_5 = TestUtils::create_hint_array( $url_1, 'preload', 'font', 'font/woff', 'crossorigin', '' );
 
-		$test_hint1 = $create_hints->create_hint($test1);
-		self::assertEquals($test_hint1, $test1);
+		$expected_1 = $this->create_hints->create_hint($test1);
+		self::assertEquals($expected_1, $test1);
 
-		$actual_hint_2 = $create_hints->create_hint($test2);
+		$actual_hint_2 = $this->create_hints->create_hint($test2);
 		$test2['url'] = 'https://www.espn.com';
 		self::assertEquals($test2, $actual_hint_2);
 
-		$test_hint3 = $create_hints->create_hint($test3);
+		$test_hint3 = $this->create_hints->create_hint($test3);
 		self::assertEquals($test_hint3, $test3);
 
-		$test_hint_4 = $create_hints->create_hint($test_4);
+		$test_hint_4 = $this->create_hints->create_hint($test_4);
 		self::assertEquals(false, $test_hint_4);
 
 		$data1 = TestUtils::create_hint_array( '', 'dns-prefetch' );
-		$bool1 = $create_hints->create_hint($data1);
+		$bool1 = $this->create_hints->create_hint($data1);
 		self::assertEquals(false, $bool1);
 
-		$actual_6 = $create_hints->create_hint( $test_5 );
+		$actual_6 = $this->create_hints->create_hint( $test_5 );
 		self::assertEquals( $test_5, $actual_6);
 	}
 
 
 
-	public function test_new_hint_controller():void {
-		$create_hints = new \PPRH\CreateHints();
-
+	public function test_new_hint_ctrl():void {
 		$dummy_hint = TestUtils::create_hint_array( 'https://free-hint.com', 'dns-prefetch', '', '', '', 'screen' );
 		$dummy_hint['op_code'] = 0;
-		$actual = $create_hints->create_hint( $dummy_hint );
-		$expected = $create_hints->new_hint_controller( $dummy_hint );
+		$actual = $this->create_hints->create_hint( $dummy_hint );
+		$expected = $this->create_hints->new_hint_ctrl( $dummy_hint );
 		self::assertEquals( $expected, $actual );
 
 
 		$dummy_hint['op_code'] = 1;
-		$actual_2 = $create_hints->create_hint( $dummy_hint );
-		$expected_2 = $create_hints->new_hint_controller( $dummy_hint );
+		$actual_2 = $this->create_hints->create_hint( $dummy_hint );
+		$expected_2 = $this->create_hints->new_hint_ctrl( $dummy_hint );
 		self::assertEquals( $expected_2, $actual_2 );
 	}
 
+	public function test_new_hint_controller() {
+		$test_hint_1 = TestUtils::create_hint_array( 'https://test.com', 'dns-prefetch', '', '', '', 'screen' );
+		$candidate_hint_1 = TestUtils::create_hint_array( 'https://test.com', 'dns-prefetch', '', '', '', 'screen' );
+		$dup_hints_1 = array( $test_hint_1 );
+		$actual_1 = $this->create_hints->new_hint_controller( 0, $candidate_hint_1, $dup_hints_1 );
+		self::assertEquals( true, is_object( $actual_1 ) );
 
-
-
-
-
-	public function test_duplicate_hints_exist() {
-		$create_hints = new \PPRH\CreateHints();
-
-		$test_hint_1 = TestUtils::create_hint_array( 'https://duplicate-hint.com', 'dns-prefetch', '', '', '', '' );
-		$test_hint_2 = TestUtils::create_hint_array( 'https://hint2.com', 'dns-prefetch', '', '', '', '' );
-		$test_hint_3 = TestUtils::create_hint_array( 'https://hint3.com', 'dns-prefetch', '', '', '', '' );
-
-		$dup_hints = array( $test_hint_1, $test_hint_2, $test_hint_3 );
-
-		$actual_1 = $create_hints->duplicate_hints_exist( $dup_hints );
-		$actual_2 = $create_hints->duplicate_hints_exist( array() );
-
-		self::assertEquals( true, $actual_1 );
-		self::assertEquals( false, $actual_2 );
+		$candidate_hint_2 = TestUtils::create_hint_array( 'https://test2.com', 'dns-prefetch', '', '', '', 'screen' );
+		$dup_hints_2 = array();
+		$actual_2 = $this->create_hints->new_hint_controller( 0, $candidate_hint_2, $dup_hints_2 );
+		self::assertEquals( $candidate_hint_2, $actual_2 );
 	}
 
-
-
-
-
-
-
 	public function test_create_pprh_hint_fail():void {
-		$create_hints = new \PPRH\CreateHints();
 		$raw_data1 = TestUtils::create_hint_array( '', '' );
-		$actual = $create_hints->create_hint( $raw_data1 );
+		$actual = $this->create_hints->create_hint( $raw_data1 );
 		self::assertEquals( false, $actual );
 	}
 
+
+
+
 	public function test_handle_duplicate_hints():void {
-		$dao = new \PPRH\DAO();
-		$create_hints = new \PPRH\CreateHints();
-		$test_hint_1 = TestUtils::create_hint_array( 'https://duplicate-hints.com', 'preconnect', '', '', '', '' );
-		$test_hint_2 = TestUtils::create_hint_array( 'https://testerroo.com', 'preconnect', '', '', '', '' );
-		$test_hint_3 = TestUtils::create_hint_array( 'https://asdf3.com', 'preconnect', '', '', '', '' );
-		$test_hint_4 = TestUtils::create_hint_array( 'https://test-get-duplicate-hints.com', 'dns-prefetch', '', '', '', '' );
+		// free tests
+		$test_hint_1 = TestUtils::create_hint_array( 'https://test.com', 'preconnect', '', '', '', '' );
+		$dup_hints = array( $test_hint_1 );
+		$candidate_hint = TestUtils::create_hint_array( 'https://test.com', 'preconnect', '', '', '', '' );
+		$actual_1 = $this->create_hints->handle_duplicate_hints( $dup_hints, $candidate_hint );
+		self::assertEquals( false, $actual_1 );
 
-		$all_hints = array( $test_hint_1, $test_hint_2, $test_hint_3, $test_hint_4 );
-
-		$candidate_hint = TestUtils::create_hint_array( 'https://duplicate-hints.com', 'preconnect', '', '', '', '' );
-
-		$actual_1 = $create_hints->handle_duplicate_hints( $all_hints, $candidate_hint );
-		$expected_1 = \PPRH\DAO::create_db_result( false, '', 'A duplicate hint already exists!', 0, null );
-		self::assertEquals( $expected_1, $actual_1 );
-
-		$candidate_hint = TestUtils::create_hint_array( 'https://new-unique-hint.com', 'preconnect', '', '', '', '' );
-
-		$actual_2 = $create_hints->handle_duplicate_hints( $all_hints, $candidate_hint );
+		// pro tests
+		$test_hint_2 = TestUtils::create_hint_array( 'https://test.com', 'preconnect', '', '', '', '', '2138');
+		$test_hint_2['id'] = '10';
+		$dup_hints_2 = array( $test_hint_2 );
+		$candidate_hint_2 = TestUtils::create_hint_array( 'https://test.com', 'preconnect', '', '', '', '', 'global');
+		$actual_2 = $this->create_hints->handle_duplicate_hints( $dup_hints_2, $candidate_hint_2 );
 		self::assertEquals( true, $actual_2 );
 	}
 
-	public function test_get_duplicate_hints():void {
-		$create_hints = new \PPRH\CreateHints();
-		$test_hint_1 = TestUtils::create_hint_array( 'https://test-get-duplicate-hints.com', 'preconnect', '', '', '', '' );
-		$test_hint_2 = TestUtils::create_hint_array( 'https://testerroo.com', 'preconnect', '', '', '', '' );
-		$test_hint_3 = TestUtils::create_hint_array( 'https://test-get-duplicate-hints.com', 'preconnect', '', '', '', '' );
-		$test_hint_4 = TestUtils::create_hint_array( 'https://asdf3.com', 'preconnect', '', '', '', '' );
-		$test_hint_5 = TestUtils::create_hint_array( 'https://test-get-duplicate-hints.com', 'dns-prefetch', '', '', '', '' );
-
-		$all_hints = array( $test_hint_1, $test_hint_2, $test_hint_3, $test_hint_4, $test_hint_5 );
-		$new_hint = $create_hints->create_hint( $test_hint_1 );
-
-		$actual = $create_hints->get_duplicate_hints( $all_hints, $new_hint );
-		$expected = array( $test_hint_1, $test_hint_3 );
-
-		self::assertEquals( $expected, $actual );
-	}
-
-
-
-	public function test_resolve_duplicate_hints() {
-		$create_hints = new \PPRH\CreateHints();
-		$hint_1 = TestUtils::create_hint_array( 'asdf.com', 'dns-prefetch', '', '', '', 'screen' );
-		$actual_1 = $create_hints->resolve_duplicate_hints( $hint_1, array() );
-		self::assertEquals( false, $actual_1 );
-	}
 
 }

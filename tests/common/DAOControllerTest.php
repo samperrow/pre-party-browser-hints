@@ -19,7 +19,7 @@ class DAOControllerTest extends TestCase {
 		);
 
 		$actual = $dao_ctrl->hint_controller( $raw_data_1 );
-		$expected = $dao_ctrl->create_db_result( true, '', '', $raw_data_1['op_code'], $actual->new_hint );
+		$expected = \PPRH\DAO::create_db_result( true, '', '', $raw_data_1['op_code'], $actual->new_hint );
 		self::assertEquals($expected, $actual);
 	}
 
@@ -34,7 +34,7 @@ class DAOControllerTest extends TestCase {
 		);
 
 		$actual = $dao_ctrl->hint_controller( $raw_data_1 );
-		$expected = $dao_ctrl->create_db_result( true, $raw_data_1['hint_ids'], '', $raw_data_1['op_code'], $actual->new_hint );
+		$expected = \PPRH\DAO::create_db_result( true, $raw_data_1['hint_ids'], '', $raw_data_1['op_code'], $actual->new_hint );
 		self::assertEquals($expected, $actual);
 	}
 

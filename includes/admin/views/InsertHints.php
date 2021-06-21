@@ -9,6 +9,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 class InsertHints {
 
 	public function __construct() {
+
+	}
+
+	public function markup() {
 		echo '<div id="pprh-insert-hints" class="pprh-content">';
 		wp_nonce_field( 'pprh_display_hints_nonce_action', 'pprh_display_hints_nonce' );
 		$display_hints = new DisplayHints(false);

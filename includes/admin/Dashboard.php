@@ -21,21 +21,28 @@ class Dashboard {
     }
 
 	public function show_plugin_dashboard() {
+		$insert_hints = new InsertHints();
+		$settings = new Settings();
+		$hint_info = new HintInfo();
+		$upgrade = new Upgrade();
+
 		echo '<div id="poststuff"><h1>';
 		esc_html_e( 'Pre* Party Plugin Settings', 'pprh' );
 		echo '</h1>';
         \do_action(  'pprh_notice' );
 		$this->show_admin_tabs();
 
-		new InsertHints();
-		new Settings();
-		new HintInfo();
-		new Upgrade();
+		$insert_hints->markup();
+		$settings->markup(true);
+		$hint_info->markup();
+		$upgrade->markup();
+
 
 		\do_action( 'pprh_load_view_classes' );
 		\do_action( 'pprh_check_to_upgrade', '1.7.6.3' );
 		$this->show_footer();
 		echo '</div>';
+		unset( $insert_hints, $settings, $hint_info, $upgrade );
 	}
 
 

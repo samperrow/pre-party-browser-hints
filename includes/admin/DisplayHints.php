@@ -17,7 +17,6 @@ class DisplayHints extends WP_List_Table {
 	public $table;
 	public $items;
 
-
 	public function __construct( $doing_ajax ) {
 		parent::__construct( array(
             'ajax'     => true,
@@ -90,7 +89,7 @@ class DisplayHints extends WP_List_Table {
 		$this->_column_headers = array( $columns, array(), $sortable );
 		$current_page = $this->get_pagenum();
 		$query_code = ( ! empty( $_REQUEST['orderby'] ) ? 2 : 3 );
-		$all_hints = Utils::get_pprh_hints( $query_code );
+		$all_hints = Utils::get_all_pprh_hints( $query_code );
 		$this->items = array_slice( $all_hints, ( ( $current_page - 1 ) * $this->hints_per_page ), $this->hints_per_page );
 		$total_items = count( $all_hints );
 

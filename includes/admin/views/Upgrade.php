@@ -9,10 +9,10 @@ if ( ! defined ('ABSPATH' ) ) {
 class Upgrade {
 
 	public function __construct() {
-		$this->init();
+//		$this->init();
 	}
 
-	public function init() {
+	public function markup() {
 		?>
 		<div id="pprh-upgrade" class="pprh-content">
 			<h2>Upgrade to Pre* Party Resource Hints Pro!</h2>

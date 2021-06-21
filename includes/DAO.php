@@ -119,9 +119,9 @@ class DAO {
 		if ( $hint_id_exists > 0 ) {
 			$wpdb->query( "DELETE FROM $this->table WHERE id IN ($hint_ids)" );
 			return self::create_db_result( $wpdb->result, $wpdb->insert_id, $wpdb->last_error, 2, null );
-		} else {
-			return self::create_db_result( false, null, 'No hint IDs to delete.', 2, null );
 		}
+
+		return self::create_db_result( false, null, 'No hint IDs to delete.', 2, null );
 	}
 
 	public function bulk_update( $hint_ids, $code ) {
@@ -137,7 +137,15 @@ class DAO {
 	}
 
 
-	public function get_pprh_hints( $query_code = null ) {
+	public function get_duplicate_hints( $url, $hint_type ) {
+		global $wpdb;
+		$sql = "SELECT * FROM $this->table WHERE url = %s AND hint_type = %s";
+
+		return $wpdb->get_results( $wpdb->prepare( $sql, $url, $hint_type ), ARRAY_A );
+	}
+
+
+	public function get_all_pprh_hints( $query_code = null ) {
 		global $wpdb;
 		$query = $this->parse_query_code( $query_code );
 
@@ -148,7 +156,7 @@ class DAO {
 			$results = $wpdb->get_results( $query['sql'], ARRAY_A );
 		}
 
-		return \apply_filters( 'pprh_filter_hints', $results );
+		return $results;
 	}
 
 	private function parse_query_code( $query_code ) {
