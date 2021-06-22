@@ -28,7 +28,7 @@ class Settings {
 
                     if ( $on_pprh_admin ) {
 						wp_nonce_field( 'closedpostboxes', 'closedpostboxesnonce', false );
-						do_meta_boxes( 'toplevel_page_pprh-plugin-settings', 'normal', null );
+						do_meta_boxes( PPRH_ADMIN_SCREEN, 'normal', null );
 					}
 
                 ?>

@@ -11,7 +11,9 @@ class Dashboard {
 //	public $on_pprh_admin = false;
 
 	public function __construct() {
-        if ( ! \has_action(  'pprh_notice' ) ) {
+		\add_action( 'pprh_check_to_upgrade', array( $this, 'check_to_upgrade' ), 10, 1 );
+
+		if ( ! \has_action(  'pprh_notice' ) ) {
 			\add_action( 'pprh_notice', array( $this, 'default_admin_notice' ), 10, 0 );
 		}
     }
@@ -20,7 +22,11 @@ class Dashboard {
 	    Utils::show_notice( '', true );
     }
 
-	public function show_plugin_dashboard() {
+	public function show_plugin_dashboard( $on_pprh_admin_page ) {
+	    if ( ! $on_pprh_admin_page ) {
+	        return;
+        }
+
 		$insert_hints = new InsertHints();
 		$settings = new Settings();
 		$hint_info = new HintInfo();
@@ -37,7 +43,6 @@ class Dashboard {
 		$hint_info->markup();
 		$upgrade->markup();
 
-
 		\do_action( 'pprh_load_view_classes' );
 		\do_action( 'pprh_check_to_upgrade', '1.7.6.3' );
 		$this->show_footer();
@@ -47,6 +52,7 @@ class Dashboard {
 
 
 	public function show_admin_tabs() {
+		$menu_slug = PPRH_MENU_SLUG;
 		$tabs = array(
 			'insert-hints' => 'Insert Hints',
 			'settings'     => 'Settings',
@@ -58,9 +64,32 @@ class Dashboard {
 
 		echo '<div class="nav-tab-wrapper" style="margin-bottom: 10px;">';
 		foreach ( $tabs as $tab => $name ) {
-			echo "<a class='nav-tab $tab' href='?page=pprh-plugin-settings'>" . $name . '</a>';
+			echo "<a class='nav-tab $tab' href='?page=$menu_slug'>" . $name . '</a>';
 		}
 		echo '</div>';
+	}
+
+
+	public function check_to_upgrade( $new_version ) {
+		if ( $new_version !== PPRH_VERSION ) {
+			$this->do_upgrade();
+			update_option( 'pprh_version', $new_version );
+		}
+	}
+
+	public function do_upgrade() {
+		$previous_version = PPRH_VERSION;
+		$pprh = new Pre_Party_Browser_Hints();
+		$pprh->activate_plugin();
+		$activate_plugin = new ActivatePlugin();
+
+		$msg = PPRH_VERSION . ' Upgrade Notes: Fixed bug preventing users from selecting crossorigin and media attribute.';
+		Utils::show_notice( $msg, true );
+
+		if ( version_compare( '1.7.6', $previous_version ) > 0 ) {
+			$activate_plugin->upgrade_prefetch_keywords();
+			$activate_plugin->upgrade_plugin();
+		}
 	}
 
 	public function show_footer() {

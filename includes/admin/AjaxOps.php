@@ -54,14 +54,20 @@ class AjaxOps {
 
 		if ( isset( $data['action'] ) && 'reset_single_post_preconnects' === $data['action'] ) {
 			$result = \apply_filters( 'pprh_reset_post_preconnect', null );
-		} elseif ( 'reset_single_post_prerender' === $data['action'] ) {
-			$result = \apply_filters( 'pprh_reset_and_create_auto_prerender_hint', $data );
 		}
 
+		elseif ( 'set_single_prerender_hint' === $data['action'] ) {
+			$result = \apply_filters( 'pprh_single_prerender_config', $data );
+		}
 
-
+		$op_code = (int) $data['op_code'];
+		$error = DAO::create_db_result( false, '', 'Error updating hints. Please try aggain or contact support.', $op_code, null );
 		// TODO: if error, return generic error msg if no error from db is there.
-		return ( is_object( $result ) ? $result : false );
+		if ( is_object( $result ) ) {
+			return $result;
+		} else {
+			return $error;
+		}
 	}
 
 }

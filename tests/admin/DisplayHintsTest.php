@@ -13,7 +13,7 @@ final class DisplayHintsTest extends TestCase {
 			'plural'   => '',
 			'singular' => '',
 			'ajax'     => true,
-			'screen'   => 'toplevel_page_pprh-plugin-settings',
+			'screen'   => PPRH_ADMIN_SCREEN,
 		);
 
 		$wp_list_table = new \PPRH\WP_List_Table( $args );

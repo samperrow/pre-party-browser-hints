@@ -9,7 +9,7 @@ final class LoadAdminTest extends TestCase {
 	public function test_register_admin_files():void {
 		global $wp_scripts;
 		$load_admin = new \PPRH\LoadAdmin( false );
-		$load_admin->register_admin_files( 'toplevel_page_pprh-plugin-settings' );
+		$load_admin->register_admin_files( PPRH_ADMIN_SCREEN );
 		$actual_scripts = array();
 
 		foreach( $wp_scripts->queue as $script ) {

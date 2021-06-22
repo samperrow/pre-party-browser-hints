@@ -28,14 +28,17 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 $pprh_load = new Pre_Party_Browser_Hints();
+$pprh_load->init();
 
 register_activation_hook( __FILE__, array( $pprh_load, 'activate_plugin' ) );
 add_action( 'wpmu_new_blog', array( $pprh_load, 'activate_plugin' ) );
 
 class Pre_Party_Browser_Hints {
 
-	public function __construct() {
-	    \add_action( 'init', array( $this, 'load_plugin' ) );
+//	public function __construct() {}
+
+	public function init() {
+		\add_action( 'init', array( $this, 'load_plugin' ) );
 	}
 
 	public function load_plugin() {
@@ -63,12 +66,10 @@ class Pre_Party_Browser_Hints {
 
 	public function load_admin() {
 		include_once 'includes/admin/LoadAdmin.php';
-
 		$load_admin = new LoadAdmin();
-		\add_action( 'admin_menu', array( $load_admin, 'load_admin_menu' ) );
 		$load_admin->init();
 
-		\add_action( 'pprh_check_to_upgrade', array( $this, 'check_to_upgrade' ), 10, 1 );
+//		\add_action( 'pprh_check_to_upgrade', array( $this, 'check_to_upgrade' ), 10, 1 );
 	}
 
     public function load_client() {
@@ -92,11 +93,12 @@ class Pre_Party_Browser_Hints {
 			define( 'PPRH_POSTMETA_TABLE', $postmeta_table );
 			define( 'PPRH_ABS_DIR', WP_PLUGIN_DIR . '/pre-party-browser-hints/' );
 			define( 'PPRH_REL_DIR', plugins_url() . '/pre-party-browser-hints/' );
-			define( 'PPRH_HOME_URL', admin_url() . 'admin.php?page=pprh-plugin-setttings' );
+			define( 'PPRH_MENU_SLUG', 'pprh-plugin-settings' );
+			define( 'PPRH_ADMIN_SCREEN', 'toplevel_page_' . PPRH_MENU_SLUG );
+			define( 'PPRH_HOME_URL', admin_url() . 'admin.php?page=' . PPRH_MENU_SLUG );
 			define( 'PPRH_PRO_PLUGIN_ACTIVE', $pprh_pro_active );
 			define( 'PPRH_SITE_URL', $site_url );
 			define( 'PPRH_TESTING', $testing );
-			define( 'PPRH_MENU_SLUG', 'pprh-plugin-settings' );
         }
 	}
 
@@ -114,47 +116,14 @@ class Pre_Party_Browser_Hints {
 		}
 	}
 
-	private function load_activate_plugin() {
+	public function activate_plugin() {
+		include_once 'includes/admin/ActivatePlugin.php';
 		$this->load_common_files();
 		$this->create_constants();
-		include_once 'includes/admin/ActivatePlugin.php';
-	}
-
-	public function check_to_upgrade( $new_version ) {
-		if ( $new_version !== PPRH_VERSION ) {
-			$this->do_upgrade();
-			update_option( 'pprh_version', $new_version );
-		}
-	}
-
-	public function do_upgrade() {
-		$previous_version = PPRH_VERSION;
-		$this->load_activate_plugin();
-		$activate_plugin = new ActivatePlugin();
-
-        $this->upgrade_notice();
-
-        if ( version_compare( '1.7.6', $previous_version ) > 0 ) {
-			$activate_plugin->upgrade_prefetch_keywords();
-			$activate_plugin->upgrade_plugin();
-        }
-	}
-
-	private function upgrade_notice() {
-		if ( PPRH_TESTING ) {
-			return;
-		}
-		?>
-		<div class="notice notice-info is-dismissible">
-			<p><?php _e('1.7.6.3 Upgrade Notes: Fixed bug preventing users from selecting crossorigin and media attribute.' ); ?></p>
-		</div>
-		<?php
-	}
-
-	public function activate_plugin() {
-		$this->load_activate_plugin();
 		$activate_plugin = new ActivatePlugin();
 		$activate_plugin->activate_plugin();
+		return $activate_plugin->plugin_activated;
 	}
+
 
 }

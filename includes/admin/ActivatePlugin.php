@@ -95,13 +95,5 @@ class ActivatePlugin {
 		}
 	}
 
-//	private function drop_columns() {
-//		$dao = new DAO();
-//		$column = $dao->get_table_column();
-//
-//		if ( count( $column ) > 0 ) {
-//			$dao->drop_table_column();
-//		}
-//	}
 
 }

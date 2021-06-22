@@ -14,7 +14,7 @@ class LoadClient {
 
 		$this->verify_to_load_fp();
 
-		$enabled_hints = Utils::get_all_pprh_hints( 1 );
+		$enabled_hints = Utils::get_pprh_hints();
 
 		$send_hints = new SendHints();
 		$send_hints->init($enabled_hints);

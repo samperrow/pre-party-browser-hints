@@ -21,7 +21,7 @@ class DisplayHints extends WP_List_Table {
 		parent::__construct( array(
             'ajax'     => true,
 			'plural'   => 'urls',
-			'screen'   => 'toplevel_page_pprh-plugin-settings',
+			'screen'   => 'toplevel_page_' . PPRH_MENU_SLUG,
 			'singular' => 'url',
 		) );
 
@@ -76,8 +76,8 @@ class DisplayHints extends WP_List_Table {
 
 	public function get_bulk_actions() {
 		return array(
-            '2'  => __( 'Delete', 'pprh' ),
-            '3'  => __( 'Enable', 'pprh' ),
+            '2' => __( 'Delete', 'pprh' ),
+            '3' => __( 'Enable', 'pprh' ),
             '4' => __( 'Disable', 'pprh' )
         );
 	}
@@ -88,8 +88,8 @@ class DisplayHints extends WP_List_Table {
 		$sortable = $this->get_sortable_columns();
 		$this->_column_headers = array( $columns, array(), $sortable );
 		$current_page = $this->get_pagenum();
-		$query_code = ( ! empty( $_REQUEST['orderby'] ) ? 2 : 3 );
-		$all_hints = Utils::get_all_pprh_hints( $query_code );
+//		$query_code = ( ! empty( $_REQUEST['orderby'] ) ? 2 : 3 );
+		$all_hints = Utils::get_pprh_hints();
 		$this->items = array_slice( $all_hints, ( ( $current_page - 1 ) * $this->hints_per_page ), $this->hints_per_page );
 		$total_items = count( $all_hints );
 

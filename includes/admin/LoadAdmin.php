@@ -11,12 +11,13 @@ class LoadAdmin {
     public $on_pprh_admin_page = false;
 
 	public function init() {
-		$this->on_pprh_admin_page = Utils::on_pprh_admin_page( \wp_doing_ajax() );
-		$this->load_common_content();
+		\add_action( 'admin_menu', array( $this, 'load_admin_menu' ) );
+		\add_action( 'admin_init', array( $this, 'add_settings_meta_boxes' ) );
 
-		if ( $this->on_pprh_admin_page ) {
-			$this->load_admin_screen_content();
-		}
+		$this->on_pprh_admin_page = Utils::on_pprh_admin_page( \wp_doing_ajax() );
+
+		$this->load_common_content();
+		$this->load_admin_files();
 	}
 
 	public function load_common_content() {
@@ -32,10 +33,14 @@ class LoadAdmin {
 		\do_action( 'pprh_pro_load_admin' );
 	}
 
-    public function load_admin_screen_content() {
-		\add_action( 'admin_init', array( $this, 'add_settings_meta_boxes' ) );
-		$this->load_admin_files();
-	}
+//    public function load_admin_screen_content( $on_pprh_admin_page ) {
+//	    if ( ! $on_pprh_admin_page ) {
+//	        return;
+//        }
+//
+//		\add_action( 'admin_init', array( $this, 'add_settings_meta_boxes' ) );
+//		$this->load_admin_files();
+//	}
 
 
 	public function load_admin_menu() {
@@ -56,10 +61,10 @@ class LoadAdmin {
 			wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
 		}
 
-		if ( $this->on_pprh_admin_page ) {
+//		if ( $this->on_pprh_admin_page ) {
 			$dashboard = new Dashboard();
-			$dashboard->show_plugin_dashboard();
-		}
+			$dashboard->show_plugin_dashboard( $this->on_pprh_admin_page );
+//		}
 	}
 
 	public function load_admin_files() {
@@ -88,7 +93,7 @@ class LoadAdmin {
 
 	// Register and call the CSS and JS we need only on the needed page.
 	public function register_admin_files( $hook ) {
-		$str = 'toplevel_page_pprh-plugin-settings|post.php';
+		$str = PPRH_ADMIN_SCREEN . 'post.php';
 
 		if ( str_contains( $str, $hook ) ) {
 			$ajax_data = array(
@@ -121,7 +126,7 @@ class LoadAdmin {
 			'pprh_general_settings_metabox',
 			'General Settings',
 			array( $general_settings, 'show_settings' ),
-			'toplevel_page_pprh-plugin-settings',
+			PPRH_ADMIN_SCREEN,
 			'normal',
 			'low'
 		);
@@ -130,7 +135,7 @@ class LoadAdmin {
 			'pprh_preconnect_settings_metabox',
 			'Auto Preconnect Settings',
 			array( $preconnect_settings, 'show_settings' ),
-			'toplevel_page_pprh-plugin-settings',
+			PPRH_ADMIN_SCREEN,
 			'normal',
 			'low'
 		);
@@ -139,7 +144,7 @@ class LoadAdmin {
 			'pprh_prefetch_settings_metabox',
 			'Auto Prefetch Settings',
 			array( $prefetch_settings, 'show_settings' ),
-			'toplevel_page_pprh-plugin-settings',
+			PPRH_ADMIN_SCREEN,
 			'normal',
 			'low'
 		);
@@ -148,7 +153,7 @@ class LoadAdmin {
 			'pprh_prerender_settings_metabox',
 			'Auto Prerender Settings',
 			array( $this, 'create_prerender_metabox' ),
-			'toplevel_page_pprh-plugin-settings',
+			PPRH_ADMIN_SCREEN,
 			'normal',
 			'low'
 		);

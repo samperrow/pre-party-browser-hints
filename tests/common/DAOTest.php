@@ -25,7 +25,7 @@ final class DAOTest extends TestCase {
 			)
 		);
 
-		$test1 = \PPRH\DAO::create_db_result( true, '', '', 0, null );
+		$test1 = \PPRH\DAO::create_db_result( true, '', null, 0, null );
 
 		self::assertEquals( $expected, $test1 );
 	}

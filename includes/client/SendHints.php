@@ -47,7 +47,6 @@ class SendHints {
 
 		foreach ( $hints as $key => $val ) {
 			$attrs = $this->get_attrs( $val );
-
 			$str .= sprintf( '<link href="%1$s" rel="%2$s"%3$s>', $val['url'], $val['hint_type'], $attrs );
 		}
 

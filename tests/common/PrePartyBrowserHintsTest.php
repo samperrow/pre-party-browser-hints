@@ -5,6 +5,15 @@ use PHPUnit\Framework\TestCase;
 
 final class PrePartyBrowserHintsTest extends TestCase {
 
+	public $pprh;
+
+	/**
+	 * @before
+	 */
+	public function test_start():void {
+		$this->pprh = new \PPRH\Pre_Party_Browser_Hints();
+	}
+
 	public function test_create_constants():void {
 		global $wpdb;
 		$table = $wpdb->prefix . 'pprh_table';
@@ -16,7 +25,7 @@ final class PrePartyBrowserHintsTest extends TestCase {
 		$rel_dir = \plugins_url() . '/pre-party-browser-hints/';
 		self::assertEquals( PPRH_REL_DIR, $rel_dir );
 
-		$home_url = \admin_url() . 'admin.php?page=pprh-plugin-setttings';
+		$home_url = \admin_url() . 'admin.php?page=' . PPRH_MENU_SLUG;
 		self::assertEquals( PPRH_HOME_URL, $home_url );
 
 		$version = \get_option( 'pprh_version' );
@@ -42,9 +51,11 @@ final class PrePartyBrowserHintsTest extends TestCase {
 		self::assertEquals( true, $manage_options );
 	}
 
-//	public function test_upgrade_notice():void {
-//
-//	}
+	public function test_activate_plugin():void {
+		$actual = $this->pprh->activate_plugin();
+
+		self::assertEquals( true, $actual );
+	}
 
 
 //	public function test_():void {

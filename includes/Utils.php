@@ -9,6 +9,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Utils {
 
 	public static function show_notice( string $msg, bool $success ):void {
+		if ( PPRH_TESTING ) {
+			return;
+		}
 		$alert = ( $success ) ? 'success' : 'error';
 		$class = ( empty( $msg ) ? '' : 'active' );
 		echo sprintf( '<div id="pprhNoticeBox"><div id="pprhNotice" class="notice notice-%1$s is-dismissible %2$s"><p>%3$s</p></div></div>', $alert, $class, $msg );
@@ -94,9 +97,9 @@ class Utils {
 		return ( $site_active || $network_active );
 	}
 
-	public static function get_all_pprh_hints( $query_code ) {
+	public static function get_pprh_hints() {
 		$dao = new DAO();
-		return $dao->get_all_pprh_hints( $query_code );
+		return $dao->get_pprh_hints();
 	}
 
 	public static function get_duplicate_hints( $url, $hint_type ) {
