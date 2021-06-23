@@ -1,7 +1,6 @@
 div#poststuff {
 
     h1 {
-        font-size: 23px;
         font-weight: normal;
     }
 
@@ -85,7 +84,7 @@ div#poststuff {
     }
 
     div.pprh-container {
-        max-width: 765px;
+        width: 775px;
         margin: 0 auto;
 
         &.widefat {
@@ -100,19 +99,20 @@ div#poststuff {
     }
 
     table#pprh-enter-data {
+        text-align: center;
+
         thead tr th {
             text-align: center;
             font-size: 23px;
             font-weight: 600;
-            padding: 15px 0;
         }
 
         tbody tr td {
-            text-align: center
+            vertical-align: middle;
+            padding: 12px 10px;
         }
 
         tfoot tr td {
-            text-align: center;
             padding: 20px 0;
         }
 

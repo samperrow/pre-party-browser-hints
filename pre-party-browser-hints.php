@@ -81,7 +81,6 @@ class Pre_Party_Browser_Hints {
 		$table = $wpdb->prefix . 'pprh_table';
 		$postmeta_table = $wpdb->prefix . 'postmeta';
 		$plugin_version = \get_option( 'pprh_version', '1.7.7' );
-		$pprh_pro_active = Utils::pprh_is_plugin_active();
         $site_url = \get_option( 'siteurl' );
         $testing = defined( 'PPRH_TESTING_LOCALLY' ) && PPRH_TESTING_LOCALLY;
 
@@ -94,7 +93,6 @@ class Pre_Party_Browser_Hints {
 			define( 'PPRH_MENU_SLUG', 'pprh-plugin-settings' );
 			define( 'PPRH_ADMIN_SCREEN', 'toplevel_page_' . PPRH_MENU_SLUG );
 			define( 'PPRH_HOME_URL', admin_url() . 'admin.php?page=' . PPRH_MENU_SLUG );
-			define( 'PPRH_PRO_PLUGIN_ACTIVE', $pprh_pro_active );
 			define( 'PPRH_SITE_URL', $site_url );
 			define( 'PPRH_TESTING', $testing );
         }
