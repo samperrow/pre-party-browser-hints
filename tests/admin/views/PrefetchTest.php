@@ -6,7 +6,7 @@ class PrefetchTest extends TestCase {
 
 	public function test_flying_pages_loaded(): void {
 		$option_name = 'pprh_prefetch_enabled';
-		$option_value = get_option($option_name);
+		$option_value = \get_option($option_name);
 		$expected = ('true' === $option_value);
 
 		$actual_enabled = $this->flying_pages_loaded();
@@ -29,7 +29,7 @@ class PrefetchTest extends TestCase {
 	}
 
 //	public function test_update_prefetch_ignoreKeywords() {
-//		$orig_ignore_keywords = get_option( 'pprh_prefetch_ignoreKeywords' );
+//		$orig_ignore_keywords = \get_option( 'pprh_prefetch_ignoreKeywords' );
 //		$ignore_keywords_arr = explode( ',', $orig_ignore_keywords);
 //		$json = json_encode( $ignore_keywords_arr );
 //
@@ -42,7 +42,7 @@ class PrefetchTest extends TestCase {
 //		$option_name = 'pprh_prefetch_disableForLoggedInUsers';
 //		wp_set_current_user(2, 'phpUnitTesting' );
 //
-//		$disable_for_logged_in_users = get_option( $option_name );
+//		$disable_for_logged_in_users = \get_option( $option_name );
 //		$expected = ('true' === $disable_for_logged_in_users);
 //		$actual_enabled = $this->flying_pages_loaded();
 //

@@ -15,26 +15,42 @@ class SendHints {
 	protected $send_hints_in_html = '';
 
 	public function __construct() {
-		$this->send_hints_in_html = get_option( 'pprh_html_head' );
+		$this->send_hints_in_html = ( 'true' === \get_option( 'pprh_html_head', 'true' ) );
 	}
 
-	public function init( $hints ) {
-		if ( ! is_array( $hints ) || count( $hints ) === 0 ) {
+	public function init_ctrl() {
+		$enabled_hints = Utils::get_pprh_hints( false );
+		$headers_sent = \headers_sent();
+		$send_in_http_header = $this->add_action_ctrl( $this->send_hints_in_html, $headers_sent );
+		$this->init( $enabled_hints, $send_in_http_header );
+	}
+
+	public function init( $enabled_hints, $send_in_http_header ) {
+		return $this->init_private( $enabled_hints, $send_in_http_header );
+	}
+
+	private function init_private( $enabled_hints, $send_in_http_header ) {
+		if ( ! is_array( $enabled_hints ) || count( $enabled_hints ) === 0 ) {
 			return false;
 		}
 
-		if ( 'false' === $this->send_hints_in_html && ! headers_sent() ) {
-			$this->hint_str = $this->send_in_http_header( $hints );
-			\add_action( 'send_headers', array( $this, 'send_header' ), 1, 0 );
+		if ( $send_in_http_header ) {
+			$this->hint_str = $this->send_in_http_header( $enabled_hints );
+			\add_action( 'send_headers', array( $this, 'send_in_header' ), 1, 0 );
 		} else {
-			$this->hint_str = $this->send_to_html_head( $hints );
+			$this->hint_str = $this->send_to_html_head( $enabled_hints );
 			\add_action( 'wp_head', array( $this, 'send_html_head' ), 1, 0 );
 		}
 
 		return true;
 	}
 
-	public function send_header() {
+
+	public function add_action_ctrl( $hints_in_html, $headers_sent ) {
+		return ( ! $hints_in_html && ! $headers_sent );
+	}
+
+	public function send_in_header() {
 		header( $this->hint_str );
 	}
 
@@ -98,7 +114,7 @@ class SendHints {
 		if ( 'crossorigin' === $name ) {
 			$str = ' ' . $name;
 		} else {
-			$attr = ( 'true' === $this->send_hints_in_html ) ? "\"$attr_value\"" : "$attr_value;";
+			$attr = ( $this->send_hints_in_html ) ? "\"$attr_value\"" : "$attr_value;";
 			$str = ' ' .  "$name=" . $attr;
 		}
 

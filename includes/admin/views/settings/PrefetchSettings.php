@@ -72,7 +72,7 @@ class PrefetchSettings {
 		$this->prefetch_disableForLoggedInUsers = \PPRH\Utils::is_option_checked( 'pprh_prefetch_disableForLoggedInUsers' );
 		$this->prefetch_enabled = \PPRH\Utils::is_option_checked( 'pprh_prefetch_enabled' );
 
-		$prefetch_ignoreKeywords = get_option( 'pprh_prefetch_ignoreKeywords' );
+		$prefetch_ignoreKeywords = \get_option( 'pprh_prefetch_ignoreKeywords' );
 		$this->ignoreKeywords = $prefetch_ignoreKeywords;
 		$this->prefetch_initialization_delay = Utils::esc_get_option( 'pprh_prefetch_delay' );
 		$this->prefetch_max_prefetches = Utils::esc_get_option( 'pprh_prefetch_max_prefetches' );

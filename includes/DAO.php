@@ -17,11 +17,12 @@ class DAO {
 	// db results
 	public static function create_db_result( $result, $hint_id, $msg = '', $op_code = '', $new_hint = null ) {
 		$actions = self::code_action_arr( $op_code );
+		$new_msg = ( '' === $msg ) ? self::create_msg( $result, $actions ) : $msg;
 
 		return (object) array(
 			'new_hint'  => $new_hint,
 			'db_result' => array(
-				'msg'        => $msg ?? self::create_msg($result, $actions),
+				'msg'        => $new_msg,
 				'status'     => ( $result ) ? 'success' : 'error',
 				'hint_id'    => $hint_id,
 				'success'    => $result,
@@ -31,12 +32,7 @@ class DAO {
 	}
 
 	public static function create_msg( $result, $actions ) {
-
-		if ( $result ) {
-			return "Resource hint $actions[1] successfully.";
-		} else {
-			return "Failed to $actions[0] hint.";
-		}
+		return ( $result ) ? "Resource hint $actions[1] successfully." : "Failed to $actions[0] hint.";
 	}
 
 	public static function code_action_arr( $op_code ) {
@@ -142,11 +138,58 @@ class DAO {
 		return $wpdb->get_results( $wpdb->prepare( $sql, $url, $hint_type ), ARRAY_A );
 	}
 
+	public function get_pprh_hints( $is_admin ) {
+		if ( $is_admin )  {
+			$query = $this->get_admin_hints_query();
+		} else {
+			$query = $this->get_client_hints_query();
+		}
 
-	public function get_pprh_hints() {
+		return $this->get_db_results( $query );
+	}
+
+	public function get_admin_hints_query() {
+		$sql = "SELECT * FROM $this->table";
+		$query = array(
+			'sql' => $sql,
+			'args' => array()
+		);
+
+		$new_query = \apply_filters( 'pprh_append_admin_sql', $query );
+
+		if ( ! empty( $_REQUEST['orderby'] ) && ! empty( $_REQUEST['order'] ) ) {
+			$valid_orderby_columns = array( 'url', 'hint_type', 'status', 'created_by', 'post_id' );
+			$valid_order_columns = array( 'asc', 'desc' );
+			$valid_orderby = Utils::string_in_array( $valid_orderby_columns, $_REQUEST['orderby'] );
+			$valid_order = Utils::string_in_array( $valid_order_columns, $_REQUEST['order'] );
+
+			if ( $valid_orderby && $valid_order ) {
+				$orderby = esc_sql( $_REQUEST['orderby'] );
+				$order = esc_sql( $_REQUEST['order'] );
+				$new_query['sql'] .= " ORDER BY $orderby $order";
+			}
+		}
+
+		elseif ( $new_query === $query ) {
+			$new_query['sql'] .= ' ORDER BY url ASC';
+		}
+
+		return $new_query;
+	}
+
+
+	public function get_client_hints_query() {
+		$sql = "SELECT * FROM $this->table WHERE status = %s";
+		$query = array(
+			'sql'  => $sql,
+			'args' => array( 'enabled' )
+		);
+
+		return \apply_filters( 'pprh_append_client_sql', $query );
+	}
+
+	private function get_db_results( $query ) {
 		global $wpdb;
-		$is_admin = \is_admin();
-		$query = $this->build_query( $is_admin );
 
 		if ( ! empty( $query['args'] ) ) {
 			$prepared_stmt = $wpdb->prepare( $query['sql'], $query['args'] );
@@ -156,23 +199,6 @@ class DAO {
 		}
 
 		return $results;
-	}
-
-	private function build_query( $is_admin ) {
-		$sql = "SELECT * FROM $this->table";
-		$query = array( 'sql' => $sql );
-		$new_query = \apply_filters( 'pprh_append_sql', $query, $is_admin, null );
-
-		if ( $is_admin ) {
-			if ( ! empty( $_REQUEST['orderby'] ) ) {
-				$new_query['sql'] .=  ' ORDER BY ' . esc_sql( $_REQUEST['orderby'] );
-			}
-			elseif ( $new_query === $query ) {
-				$new_query['sql'] .= ' ORDER BY url ASC';
-			}
-		}
-
-		return $new_query;
 	}
 
 

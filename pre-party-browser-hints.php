@@ -80,9 +80,9 @@ class Pre_Party_Browser_Hints {
 		global $wpdb;
 		$table = $wpdb->prefix . 'pprh_table';
 		$postmeta_table = $wpdb->prefix . 'postmeta';
-		$plugin_version = get_option( 'pprh_version', '1.7.7' );
+		$plugin_version = \get_option( 'pprh_version', '1.7.7' );
 		$pprh_pro_active = Utils::pprh_is_plugin_active();
-        $site_url = get_option( 'siteurl' );
+        $site_url = \get_option( 'siteurl' );
         $testing = defined( 'PPRH_TESTING_LOCALLY' ) && PPRH_TESTING_LOCALLY;
 
 		if ( ! defined( 'PPRH_VERSION' ) ) {

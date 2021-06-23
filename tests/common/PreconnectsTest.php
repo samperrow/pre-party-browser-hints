@@ -178,8 +178,8 @@ class PreconnectsTest extends TestCase {
 //		$preconnects = new \PPRH\Preconnects();
 //		$autoload_option = 'pprh_preconnect_autoload';
 //		$set = 'pprh_preconnect_set';
-//		$autoload_initial = get_option( $autoload_option );
-//		$preconnects_set_initial = get_option( $set );
+//		$autoload_initial = \get_option( $autoload_option );
+//		$preconnects_set_initial = \get_option( $set );
 //
 //		update_option( $autoload_option, 'true' );
 //		update_option( $set, 'false' );

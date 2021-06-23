@@ -39,9 +39,9 @@ class ActivatePlugin {
 	}
 
 	private function update_option_names() {
-		$preconnect_allow_unauth = get_option('pprh_allow_unauth');
-		$preconnect_autoload = get_option( 'pprh_autoload_preconnects' );
-		$preconnects_set = get_option( 'pprh_preconnects_set' );
+		$preconnect_allow_unauth = \get_option('pprh_allow_unauth');
+		$preconnect_autoload = \get_option( 'pprh_autoload_preconnects' );
+		$preconnects_set = \get_option( 'pprh_preconnects_set' );
 
 		if ( false !== $preconnect_allow_unauth ) {
 			add_option('pprh_preconnect_allow_unauth', $preconnect_allow_unauth, '', 'yes');
@@ -66,7 +66,7 @@ class ActivatePlugin {
 	}
 
 	public function upgrade_prefetch_keywords() {
-		$keywords = get_option( 'pprh_prefetch_ignoreKeywords' );
+		$keywords = \get_option( 'pprh_prefetch_ignoreKeywords' );
 		$updated_keywords = $this->reformat_prefetch_keywords( $keywords );
 		$clean_keywords = Utils::clean_url( $updated_keywords );
 		update_option( 'pprh_prefetch_ignoreKeywords', $clean_keywords );

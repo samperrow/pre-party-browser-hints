@@ -91,15 +91,15 @@ class Utils {
 
 	public static function pprh_is_plugin_active() {
 		$plugin = 'pprh-pro/pprh-pro.php';
-		$active_plugins = (array) get_option( 'active_plugins', array() );
+		$active_plugins = (array) \get_option( 'active_plugins', array() );
 		$site_active = ( in_array( $plugin, $active_plugins, true ) );
 		$network_active = function_exists( 'is_plugin_active_for_network' ) && is_plugin_active_for_network( $plugin );
 		return ( $site_active || $network_active );
 	}
 
-	public static function get_pprh_hints() {
+	public static function get_pprh_hints( $is_admin ) {
 		$dao = new DAO();
-		return $dao->get_pprh_hints();
+		return $dao->get_pprh_hints( $is_admin );
 	}
 
 	public static function get_duplicate_hints( $url, $hint_type ) {
@@ -117,6 +117,16 @@ class Utils {
 			$referer = self::get_referrer();
 		}
 		return ( $doing_ajax ? str_contains( $referer, PPRH_MENU_SLUG ) : ( PPRH_MENU_SLUG === ( $_GET['page'] ?? '' ) ) );
+	}
+
+	public static function string_in_array( $array, $test_col ) {
+		foreach( $array as $item ) {
+			if ( 0 === strcasecmp( $item, $test_col ) ) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 }

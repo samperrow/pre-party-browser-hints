@@ -90,20 +90,11 @@ final class CreateHintsTest extends TestCase {
 
 
 	public function test_handle_duplicate_hints():void {
-		// free tests
 		$test_hint_1 = TestUtils::create_hint_array( 'https://test.com', 'preconnect', '', '', '', '' );
 		$dup_hints = array( $test_hint_1 );
 		$candidate_hint = TestUtils::create_hint_array( 'https://test.com', 'preconnect', '', '', '', '' );
 		$actual_1 = $this->create_hints->handle_duplicate_hints( $dup_hints, $candidate_hint );
 		self::assertEquals( false, $actual_1 );
-
-		// pro tests
-		$test_hint_2 = TestUtils::create_hint_array( 'https://test.com', 'preconnect', '', '', '', '', '2138');
-		$test_hint_2['id'] = '10';
-		$dup_hints_2 = array( $test_hint_2 );
-		$candidate_hint_2 = TestUtils::create_hint_array( 'https://test.com', 'preconnect', '', '', '', '', 'global');
-		$actual_2 = $this->create_hints->handle_duplicate_hints( $dup_hints_2, $candidate_hint_2 );
-		self::assertEquals( true, $actual_2 );
 	}
 
 

@@ -37,8 +37,6 @@ class CreateHints {
 		$candidate_hint = $this->create_hint( $raw_hint );
 		$op_code = $raw_hint['op_code'];
 		$duplicate_hints = \PPRH\Utils::get_duplicate_hints( $candidate_hint['url'], $candidate_hint['hint_type'] );
-
-
 		return $this->new_hint_controller( $op_code, $candidate_hint, $duplicate_hints );
 	}
 

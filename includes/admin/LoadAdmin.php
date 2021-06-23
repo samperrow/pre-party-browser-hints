@@ -119,7 +119,7 @@ class LoadAdmin {
 
 	public function add_settings_meta_boxes() {
 		$general_settings = new GeneralSettings();
-		$preconnect_settings = new PreconnectSettings(true);
+		$preconnect_settings = new PreconnectSettings();
 		$prefetch_settings = new PrefetchSettings();
 
 		add_meta_box(

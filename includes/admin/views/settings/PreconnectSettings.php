@@ -11,11 +11,11 @@ class PreconnectSettings {
 	public $autoload = false;
 	public $allow_unauth = false;
 
-	protected $on_pprh_admin = false;
+//	protected $on_pprh_admin = false;
 
-	public function __construct($on_pprh_admin) {
-	    $this->on_pprh_admin = $on_pprh_admin;
-    }
+//	public function __construct($on_pprh_admin) {
+//	    $this->on_pprh_admin = $on_pprh_admin;
+//    }
 
 	public static function save_options() {
 	    $options = array(
@@ -68,21 +68,21 @@ class PreconnectSettings {
 	}
 
 	public function load_reset_settings() {
-		if ( $this->on_pprh_admin && PPRH_PRO_PLUGIN_ACTIVE ) {
-			\do_action( 'pprh_sc_show_preconnect_settings' );
-			return true;
-		} else { ?>
-            <tr>
-                <th><?php esc_html_e( 'Reset automatically created preconnect links?', 'pprh' ); ?></th>
+        $res = \apply_filters( 'pprh_sc_show_preconnect_settings', false );
+        if ( $res ) {
+            return false;
+        }
+        ?>
+        <tr>
+            <th><?php esc_html_e( 'Reset automatically created preconnect links?', 'pprh' ); ?></th>
 
-                <td>
-                    <input type="submit" name="pprh_preconnect_set" id="pprhPreconnectReset" class="pprh-reset button-primary" data-text="reset auto-preconnect hints?" value="Reset">
-                    <p><?php esc_html_e( 'This will reset automatically created preconnect hints, allowing new preconnect hints to be generated when your front end is loaded.', 'pprh' ); ?></p>
-                </td>
-            </tr>
-			<?php
-			return false;
-		}
+            <td>
+                <input type="submit" name="pprh_preconnect_set" class="pprh-reset button-primary" data-text="reset auto-preconnect hints?" value="Reset">
+                <p><?php esc_html_e( 'This will reset automatically created preconnect hints, allowing new preconnect hints to be generated when your front end is loaded.', 'pprh' ); ?></p>
+            </td>
+        </tr>
+        <?php
+        return false;
 	}
 
 }

@@ -13,9 +13,9 @@ class Preconnects {
 	// tested
 	public function __construct() {
 		\add_action( 'wp_loaded', array( $this, 'init_controller' ), 10, 0 );
-		$autoload = get_option( 'pprh_preconnect_autoload' );
-		$allow_unauth = get_option( 'pprh_preconnect_allow_unauth' );
-		$preconnects_set = get_option( 'pprh_preconnect_set' );
+		$autoload = \get_option( 'pprh_preconnect_autoload' );
+		$allow_unauth = \get_option( 'pprh_preconnect_allow_unauth' );
+		$preconnects_set = \get_option( 'pprh_preconnect_set' );
 
 		$this->config = $this->get_config( $autoload, $allow_unauth, $preconnects_set );
 	}

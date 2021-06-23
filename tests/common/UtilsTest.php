@@ -176,6 +176,8 @@ final class UtilsTest extends TestCase {
 
 		$test2 = \PPRH\Utils::on_pprh_admin_page( true, null );
 		self::assertEquals(false, $test2);
+
+		unset( $_GET['post'], $_GET['page'] );
 	}
 
 
