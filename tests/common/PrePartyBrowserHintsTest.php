@@ -57,6 +57,14 @@ final class PrePartyBrowserHintsTest extends TestCase {
 		self::assertEquals( true, $actual );
 	}
 
+	public function test_register_activation_hook():void {
+		$registered = \has_filter( 'activate_pre-party-browser-hints/pre-party-browser-hints.php' );
+		self::assertEquals( true, $registered );
+
+		$wp_loaded = \has_filter( 'wp_loaded' );
+		self::assertEquals( true, $wp_loaded );
+	}
+
 
 //	public function test_():void {
 //
