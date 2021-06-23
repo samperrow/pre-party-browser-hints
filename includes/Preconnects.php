@@ -176,6 +176,7 @@ class Preconnects {
 
 		foreach ( $hint_data['hints'] as $new_hint ) {
 			$new_hint['op_code'] = 0;
+			$new_hint['auto_created'] = 1;
 
 			if ( isset( $hint_data['post_id'] ) ) {
 				$new_hint['post_id'] = $hint_data['post_id'];

@@ -50,7 +50,7 @@ class DAO {
 	public function insert_hint( $new_hint ) {
 		global $wpdb;
 
-		if ( ! is_array( $new_hint ) )  {
+		if ( ! isset( $new_hint['url'], $new_hint['hint_type'] ) ) {
 			return;
 		}
 
@@ -60,21 +60,17 @@ class DAO {
 				'url'          => $new_hint['url'],
 				'hint_type'    => $new_hint['hint_type'],
 				'status'       => 'enabled',
-				'as_attr'      => $new_hint['as_attr'],
-				'type_attr'    => $new_hint['type_attr'],
-				'crossorigin'  => $new_hint['crossorigin'],
-				'created_by'   => $new_hint['current_user'],
-				'media'        => $new_hint['media']
+				'as_attr'      => $new_hint['as_attr'] ?? '',
+				'type_attr'    => $new_hint['type_attr'] ?? '',
+				'crossorigin'  => $new_hint['crossorigin'] ?? '',
+				'created_by'   => $new_hint['current_user'] ?? '',
+				'media'        => $new_hint['media'] ?? '',
+				'auto_created' => $new_hint['auto_created'] ?? 0
 			)
 		);
 
 		$args = \apply_filters( 'pprh_dao_insert_hint_schema', $args, $new_hint );
-
-		$wpdb->insert(
-			$this->table,
-			$args['columns'],
-			$args['types']
-		);
+		$wpdb->insert( $this->table, $args['columns'], $args['types'] );
 
 		return self::create_db_result( $wpdb->result, $wpdb->insert_id, $wpdb->last_error, 0, $new_hint );
 	}
