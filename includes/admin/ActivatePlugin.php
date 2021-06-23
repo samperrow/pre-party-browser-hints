@@ -45,21 +45,21 @@ class ActivatePlugin {
 
 		if ( false !== $preconnect_allow_unauth ) {
 			add_option('pprh_preconnect_allow_unauth', $preconnect_allow_unauth, '', 'yes');
-			delete_option('pprh_allow_unauth');
+			\delete_option('pprh_allow_unauth');
 		} else {
 			add_option('pprh_preconnect_allow_unauth', 'false', '', 'yes');
 		}
 
 		if ( false !== $preconnect_autoload ) {
 			add_option('pprh_preconnect_autoload', $preconnect_autoload, '', 'yes');
-			delete_option('pprh_autoload_preconnects');
+			\delete_option('pprh_autoload_preconnects');
 		} else {
 			add_option( 'pprh_preconnect_autoload', 'true', '', 'yes' );
 		}
 
 		if ( false !== $preconnects_set ) {
 			add_option('pprh_preconnect_set', $preconnects_set, '', 'yes');
-			delete_option('pprh_preconnects_set');
+			\delete_option('pprh_preconnects_set');
 		} else {
 			add_option( 'pprh_preconnect_set', 'false', '', 'yes' );
 		}
@@ -69,7 +69,7 @@ class ActivatePlugin {
 		$keywords = \get_option( 'pprh_prefetch_ignoreKeywords' );
 		$updated_keywords = $this->reformat_prefetch_keywords( $keywords );
 		$clean_keywords = Utils::clean_url( $updated_keywords );
-		update_option( 'pprh_prefetch_ignoreKeywords', $clean_keywords );
+		\update_option( 'pprh_prefetch_ignoreKeywords', $clean_keywords );
 	}
 
 	// update previous prefetch ignoreKeywords option to new format.

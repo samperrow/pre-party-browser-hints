@@ -181,21 +181,21 @@ class PreconnectsTest extends TestCase {
 //		$autoload_initial = \get_option( $autoload_option );
 //		$preconnects_set_initial = \get_option( $set );
 //
-//		update_option( $autoload_option, 'true' );
-//		update_option( $set, 'false' );
+//		\update_option( $autoload_option, 'true' );
+//		\update_option( $set, 'false' );
 //		$load_preconnects = $preconnects->load_auto_preconnects(null);
 //		self::assertEquals( true, $load_preconnects );
 //
-//		update_option( $autoload_option, 'false' );
+//		\update_option( $autoload_option, 'false' );
 //		$load_preconnects2 = $preconnects->load_auto_preconnects(null);
 //		self::assertEquals( false, $load_preconnects2 );
 //
-//		update_option( $set, 'true' );
+//		\update_option( $set, 'true' );
 //		$load_preconnects3 = $preconnects->load_auto_preconnects(null);
 //		self::assertEquals( false, $load_preconnects3 );
 //
-//		update_option( $autoload_option, $autoload_initial );
-//		update_option( $set, $preconnects_set_initial );
+//		\update_option( $autoload_option, $autoload_initial );
+//		\update_option( $set, $preconnects_set_initial );
 //	}
 //
 

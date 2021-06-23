@@ -54,13 +54,13 @@ class PrefetchSettings {
 			'pprh_prefetch_max_prefetches'          => isset( $_POST['pprh_prefetch_max_prefetches'] )          ? Utils::strip_non_numbers( $_POST['pprh_prefetch_max_prefetches'] ) : '10',
 		);
 
-		update_option( 'pprh_prefetch_enabled',                 $options['pprh_prefetch_enabled'] );
-		update_option( 'pprh_prefetch_disableForLoggedInUsers', $options['pprh_prefetch_disableForLoggedInUsers'] );
-		update_option( 'pprh_prefetch_delay',                   $options['pprh_prefetch_delay'] );
-		update_option( 'pprh_prefetch_ignoreKeywords',          $options['pprh_prefetch_ignoreKeywords'] );
-		update_option( 'pprh_prefetch_maxRPS',                  $options['pprh_prefetch_maxRPS'] );
-		update_option( 'pprh_prefetch_hoverDelay',              $options['pprh_prefetch_hoverDelay'] );
-		update_option( 'pprh_prefetch_max_prefetches',          $options['pprh_prefetch_max_prefetches'] );
+		\update_option( 'pprh_prefetch_enabled',                 $options['pprh_prefetch_enabled'] );
+		\update_option( 'pprh_prefetch_disableForLoggedInUsers', $options['pprh_prefetch_disableForLoggedInUsers'] );
+		\update_option( 'pprh_prefetch_delay',                   $options['pprh_prefetch_delay'] );
+		\update_option( 'pprh_prefetch_ignoreKeywords',          $options['pprh_prefetch_ignoreKeywords'] );
+		\update_option( 'pprh_prefetch_maxRPS',                  $options['pprh_prefetch_maxRPS'] );
+		\update_option( 'pprh_prefetch_hoverDelay',              $options['pprh_prefetch_hoverDelay'] );
+		\update_option( 'pprh_prefetch_max_prefetches',          $options['pprh_prefetch_max_prefetches'] );
 	}
 
 	public function show_settings() {

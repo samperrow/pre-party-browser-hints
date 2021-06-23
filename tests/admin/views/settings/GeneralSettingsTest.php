@@ -21,8 +21,8 @@ use PHPUnit\Framework\TestCase;
 //		$this->option_update( 'pprh_disable_wp_hints', 'false');
 //		$this->option_update( 'pprh_html_head', 'true');
 //
-//		update_option( 'pprh_disable_wp_hints', $orig_value_1 );
-//		update_option( 'pprh_html_head', $orig_value_2 );
+//		\update_option( 'pprh_disable_wp_hints', $orig_value_1 );
+//		\update_option( 'pprh_html_head', $orig_value_2 );
 //	}
 
 //	public function test_save_options2():void {

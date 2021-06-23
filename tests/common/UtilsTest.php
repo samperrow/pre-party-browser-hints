@@ -122,7 +122,7 @@ final class UtilsTest extends TestCase {
 		$test_2 = \PPRH\Utils::get_option_status( $option_name, 'true' );
 		self::assertEquals( '', $test_2 );
 
-		delete_option( $option_name );
+		\delete_option( $option_name );
 	}
 
 

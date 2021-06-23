@@ -8,23 +8,23 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class Settings {
 
-//	private $general_settings;
-//	private $preconnect_settings;
-//	private $prefetch_settings;
-//
-//	protected $on_pprh_admin = false;
+	public function save_user_options() {
+		if ( ( isset( $_POST['pprh_save_options'] ) || isset( $_POST['pprh_preconnect_set'] ) ) && check_admin_referer( 'pprh_save_admin_options', 'pprh_admin_options_nonce' ) ) {
+			GeneralSettings::save_options();
+			PreconnectSettings::save_options();
+			PrefetchSettings::save_options();
+		}
 
-	public function __construct() {
-		$this->save_user_options();
+		\do_action( 'pprh_sc_save_settings' );
 	}
 
 	public function markup( $on_pprh_admin ) {
+		$this->save_user_options();
 		?>
         <div id="pprh-settings" class="pprh-content">
             <form method="post" action="">
                 <?php
                     wp_nonce_field( 'pprh_save_admin_options', 'pprh_admin_options_nonce' );
-//                    $this->save_user_options();
 
                     if ( $on_pprh_admin ) {
 						wp_nonce_field( 'closedpostboxes', 'closedpostboxesnonce', false );
@@ -38,16 +38,6 @@ class Settings {
             </form>
         </div>
 		<?php
-	}
-
-	public function save_user_options() {
-	    if ( ( isset( $_POST['pprh_save_options'] ) || isset( $_POST['pprh_preconnect_set'] ) ) && check_admin_referer( 'pprh_save_admin_options', 'pprh_admin_options_nonce' ) ) {
-			GeneralSettings::save_options();
-			PreconnectSettings::save_options();
-			PrefetchSettings::save_options();
-		}
-
-		\do_action( 'pprh_sc_save_settings' );
 	}
 
 }

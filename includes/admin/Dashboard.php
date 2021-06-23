@@ -30,7 +30,7 @@ class Dashboard {
 		$insert_hints = new InsertHints();
 		$settings = new Settings();
 		$hint_info = new HintInfo();
-		$upgrade = new Upgrade();
+//		$upgrade = new Upgrade();
 
 		echo '<div id="poststuff"><h1>';
 		esc_html_e( 'Pre* Party Plugin Settings', 'pprh' );
@@ -41,13 +41,13 @@ class Dashboard {
 		$insert_hints->markup();
 		$settings->markup(true);
 		$hint_info->markup();
-		$upgrade->markup();
+//		$upgrade->markup();
 
 		\do_action( 'pprh_load_view_classes' );
 		\do_action( 'pprh_check_to_upgrade', '1.7.6.3' );
 		$this->show_footer();
 		echo '</div>';
-		unset( $insert_hints, $settings, $hint_info, $upgrade );
+		unset( $insert_hints, $settings, $hint_info );
 	}
 
 
@@ -73,7 +73,7 @@ class Dashboard {
 	public function check_to_upgrade( $new_version ) {
 		if ( $new_version !== PPRH_VERSION ) {
 			$this->do_upgrade();
-			update_option( 'pprh_version', $new_version );
+			\update_option( 'pprh_version', $new_version );
 		}
 	}
 

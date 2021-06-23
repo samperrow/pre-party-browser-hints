@@ -42,4 +42,5 @@ final class LoadClientTest extends TestCase {
 		self::assertEquals( false, $actual_4 );
 	}
 
+
 }

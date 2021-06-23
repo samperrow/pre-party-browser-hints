@@ -195,7 +195,7 @@ class Preconnects {
 		$updated = \apply_filters( 'pprh_preconnects_update_options', $raw_hint_data );
 
 		if ( is_array( $updated ) ) {
-			update_option( 'pprh_preconnect_set', 'true' );
+			\update_option( 'pprh_preconnect_set', 'true' );
 		}
 	}
 

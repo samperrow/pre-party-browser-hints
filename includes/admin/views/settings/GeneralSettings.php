@@ -19,8 +19,8 @@ class GeneralSettings {
 			'pprh_disable_wp_hints' => ( ! empty( $_POST['pprh_disable_wp_hints'] ) ? Utils::strip_non_alphanums( $_POST['pprh_disable_wp_hints'] ) : 'false' ),
 		);
 
-		update_option('pprh_disable_wp_hints', $options['pprh_disable_wp_hints'] );
-		update_option('pprh_html_head', $options['pprh_html_head'] );
+		\update_option('pprh_disable_wp_hints', $options['pprh_disable_wp_hints'] );
+		\update_option('pprh_html_head', $options['pprh_html_head'] );
 	}
 
 	public function show_settings() {
