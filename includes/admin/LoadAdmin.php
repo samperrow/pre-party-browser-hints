@@ -149,32 +149,10 @@ class LoadAdmin {
 			'low'
 		);
 
-		add_meta_box(
-			'pprh_prerender_settings_metabox',
-			'Auto Prerender Settings',
-			array( $this, 'create_prerender_metabox' ),
-			PPRH_ADMIN_SCREEN,
-			'normal',
-			'low'
-		);
+		\do_action( 'pprh_load_prerender_metabox' );
 	}
 
 
-	public function create_prerender_metabox() {
-        $pro_loaded = \apply_filters( 'pprh_get_prerender_metabox', false );
-        if ( $pro_loaded ) {
-            return;
-		}
-		?>
-		<div style="text-align: center;">
-			<h3><?php \esc_html_e( 'This feature is only available after upgrading to the Pro version.', 'pprh' ); ?></h3>
-            <p><?php \esc_html_e( 'Auto Prerender will automatically create the proper prerender hints automatically, for each post on your website. 
-            This feature works by implementing custom analytics to determine which page a visitor is most likely to navigate towards after from a given page, and a prerender hint is created pointing to that destination.
-            This prerender hint allows a visitor to download an entire webpage in the background, allowing the page to load instantly. 
-            For example, if most visitors navigate to your /shop page from your home page, a prerender hint will be created for the /shop URL, and that page will be downloaded while the visitor is on the home page. ', 'pprh' ); ?></p>
-			<input id="pprhOpenCheckoutModal" type="button" class="button button-primary" value="Purchase License"/>
-		</div>
-		<?php
-	}
+
 
 }
