@@ -81,6 +81,8 @@ final class DAOTest extends TestCase {
 			'args' => array()
 		);
 		self::assertEquals( $expected_3, $actual_3 );
+
+		unset( $_REQUEST['orderby'], $_REQUEST['order'] );
 	}
 
 	public function test_get_client_hints_query():void {
