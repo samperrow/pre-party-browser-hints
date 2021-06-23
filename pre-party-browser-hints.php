@@ -6,7 +6,7 @@ declare(strict_types=1);
  * Description:       Take advantage of the browser resource hints DNS-Prefetch, Prerender, Preconnect, Prefetch, and Preload to improve page load time.
  * Version:           1.7.7
  * Requires at least: 4.4
- * Requires PHP:      5.6.30
+ * Requires PHP:      7.0.0
  * Author:            Sam Perrow
  * Author URI:        https://www.linkedin.com/in/sam-perrow
  * License:           GPL3
@@ -14,7 +14,7 @@ declare(strict_types=1);
  * Text Domain:       pprh
  * Domain Path:       /languages
  *
- * last edited June 22, 2021
+ * last edited June 23, 2021
  *
  * Copyright 2016  Sam Perrow  (email : sam.perrow399@gmail.com)
  *
