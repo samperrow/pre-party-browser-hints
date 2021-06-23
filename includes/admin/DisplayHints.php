@@ -154,7 +154,7 @@ class DisplayHints extends WP_List_Table {
                             </td>
                         </tr>
 					</table>
-				    <input type="hidden" class="pprh-hint-storage <?php echo $item_id; ?>" value='<?php echo $json; ?>'>
+				    <input type="hidden" id="pprh-hint-storage-<?php echo $item_id; ?>" class="pprh-hint-storage <?php echo $item_id; ?>" value='<?php echo $json; ?>'>
 				</td>
 		    </tr>
 		<?php

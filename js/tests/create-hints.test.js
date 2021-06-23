@@ -1,3 +1,7 @@
+/**
+ * @jest-environment jsdom
+ */
+
 'use strict';
 
 const CreateHintsFile = require('../create-hints.js');

@@ -4,31 +4,12 @@
 
 	'use strict';
 	let $ = jQuery;
+	let insertHintsTable = document.getElementById("pprh-insert-hints");
 	const currentURL = document.location.href;
 
 	if (/pprh-plugin-settings/.test(currentURL)) {
-		// togglePrefetchRows();
 		toggleEmailSubmit();
 	}
-
-	// function togglePrefetchRows() {
-	// 	let toggleMetas = document.getElementsByClassName('toggleMetaBox');
-	//
-	// 	for (let i = 0; i < toggleMetas.length; i++)  {
-	// 		toggleMetas[i].addEventListener('click', function() {
-	// 			let tbodyRows = this.closest('table').getElementsByTagName('tr');
-	// 			callback(this, tbodyRows);
-	// 		});
-	// 	}
-	//
-	// 	function callback(checkbox, rows) {
-	// 		let cssValue = checkbox.checked ? 'table-row' : 'none';
-	//
-	// 		for (let i = 1; i < rows.length; i++) {
-	// 			rows[i].style.display = cssValue;
-	// 		}
-	// 	}
-	// }
 
 	function toggleEmailSubmit() {
 		let emailSubmitBtn = document.getElementById('pprhSubmit');
@@ -40,25 +21,29 @@
 
 	toggleDivs();
 	function toggleDivs() {
-		let tabs = $('a.nav-tab');
-		let divs = $('div.pprh-content');
+		let navTabs = document.querySelectorAll('a.nav-tab');
+		let divs = document.querySelectorAll('div.pprh-content');
 
-		tabs.first().toggleClass('nav-tab-active');
-		$("#pprh-insert-hints").toggleClass('active');
+		navTabs[0].classList.toggle('nav-tab-active');
+		insertHintsTable.classList.toggle('active');
 
-		if (!tabs) {
+		if (!navTabs) {
 			return;
 		}
 
-		$.each(tabs, function () {
-			$(this).on('click', function (e) {
+		navTabs.forEach(function(tab) {
+			tab.addEventListener('click', function (e) {
 				let className = e.currentTarget.classList[1];
-				divs.removeClass('active');
-				$('div#pprh-' + className).addClass('active');
+				divs.forEach(function(div) {
+					div.classList.remove('active');
+				});
+				document.getElementById('pprh-' + className).classList.add('active');
 				e.preventDefault();
 
-				tabs.removeClass('nav-tab-active');
-				$(this).addClass('nav-tab-active');
+				navTabs.forEach(function(tabElem) {
+					tabElem.classList.remove('nav-tab-active');
+				});
+				tab.classList.toggle('nav-tab-active');
 			});
 		});
 	}
@@ -243,11 +228,8 @@
 			});
 		}
 
-
-
-
 		function putHintInfoIntoElems(hintID) {
-			let json = $('input.pprh-hint-storage.' + hintID).val();
+			let json = $('input#pprh-hint-storage-' + hintID).val();
 			let data = JSON.parse(json);
 			let table = $('table#pprh-edit-' + hintID);
 			let elems = getRowElems(table);
@@ -255,7 +237,6 @@
 			elems.url.val(data.url);
 
 			let hintTypeElem = elems.hint_type.find('input[value="' + data.hint_type + '"]').first();
-			// hintTypeElem.attr('checked', true);
 			hintTypeElem[0].checked = true;
 
 			if (data['crossorigin']) {
@@ -295,11 +276,9 @@
 		adminNoticeElem.classList.remove('notice-');
 		adminNoticeElem.classList.add('notice-' + status);
 
-		// if ( adminNoticeElem !== null) {
-		// 	setTimeout(function() {
-		// 		adminNoticeElem.classList.remove('active');
-		// 	}, 10000);
-		// }
+		setTimeout(function() {
+			adminNoticeElem.classList.remove('active');
+		}, 10000);
 	}
 
 	// xhr object
