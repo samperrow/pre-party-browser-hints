@@ -76,7 +76,7 @@ class Dashboard {
 
         include_once 'ActivatePlugin.php';
         $activate_plugin = new ActivatePlugin();
-        $msg = 'Version ' . PPRH_VERSION_NEW . ' Upgrade Notes: The settings tabs have been ugpraded to meta boxes, ';
+        $msg = 'Version ' . PPRH_VERSION_NEW . ' upgrade uotes: The settings tabs have been ugpraded to meta boxes, fixed bugs relating to JSON conversions, more unit testing, and more.';
         Utils::show_notice( $msg, true );
         $activate_plugin->upgrade_plugin();
 
