@@ -50,7 +50,7 @@ class LoadClient {
 			'maxRPS'         => \get_option( 'pprh_prefetch_maxRPS', 3 ),
 			'hoverDelay'     => \get_option( 'pprh_prefetch_hoverDelay', 50 ),
 			'maxPrefetches'  => \get_option( 'pprh_prefetch_max_prefetches', 10 ),
-			'ignoreKeywords' => \get_option( 'pprh_prefetch_ignoreKeywords', '' )
+			'ignoreKeywords' => \get_option( 'pprh_prefetch_ignoreKeywords', array() )
 		);
 
 		\wp_register_script( 'pprh_prefetch_flying_pages', PPRH_REL_DIR . $js_script_path, null, PPRH_VERSION, true );

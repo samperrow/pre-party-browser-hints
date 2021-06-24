@@ -8,7 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class Utils {
 
-	public static function show_notice( string $msg, bool $success ):void {
+	public static function show_notice( $msg, $success ) {
 		if ( PPRH_TESTING ) {
 			return;
 		}
@@ -25,8 +25,9 @@ class Utils {
 		$array = false;
 
 		try {
-			$array = json_decode( wp_unslash( $json ), true, 512, JSON_THROW_ON_ERROR );
-		} catch ( \JsonException $error ) {
+			$unslashed_json = wp_unslash( $json );
+			$array = json_decode( $unslashed_json, true );
+		} catch ( \Exception $error ) {
 			// log error..
 		}
 
@@ -87,14 +88,6 @@ class Utils {
 	public static function is_option_checked( $option ) {
 		$value = self::esc_get_option( $option );
 		return ( 'true' === $value ? 'checked' : '' );
-	}
-
-	public static function pprh_is_plugin_active() {
-		$plugin = 'pprh-pro/pprh-pro.php';
-		$active_plugins = (array) \get_option( 'active_plugins', array() );
-		$site_active = ( in_array( $plugin, $active_plugins, true ) );
-		$network_active = function_exists( 'is_plugin_active_for_network' ) && is_plugin_active_for_network( $plugin );
-		return ( $site_active || $network_active );
 	}
 
 	public static function get_pprh_hints( $is_admin ) {

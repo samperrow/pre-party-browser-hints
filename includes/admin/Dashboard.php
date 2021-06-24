@@ -11,8 +11,6 @@ class Dashboard {
 //	public $on_pprh_admin = false;
 
 	public function __construct() {
-		\add_action( 'pprh_check_to_upgrade', array( $this, 'check_to_upgrade' ), 10, 1 );
-
 		if ( ! \has_action(  'pprh_notice' ) ) {
 			\add_action( 'pprh_notice', array( $this, 'default_admin_notice' ), 10, 0 );
 		}
@@ -36,6 +34,7 @@ class Dashboard {
 		esc_html_e( 'Pre* Party Plugin Settings', 'pprh' );
 		echo '</h1>';
         \do_action(  'pprh_notice' );
+		$this->do_upgrade( PPRH_VERSION_NEW, PPRH_VERSION );
 		$this->show_admin_tabs();
 
 		$insert_hints->markup();
@@ -44,7 +43,6 @@ class Dashboard {
 //		$upgrade->markup();
 
 		\do_action( 'pprh_load_view_classes' );
-		\do_action( 'pprh_check_to_upgrade', '1.7.6.3' );
 		$this->show_footer();
 		echo '</div>';
 		unset( $insert_hints, $settings, $hint_info );
@@ -69,27 +67,26 @@ class Dashboard {
 		echo '</div>';
 	}
 
+	public function do_upgrade( $new_version, $old_version ) {
+	    $ugprade = $this->check_to_upgrade( $new_version, $old_version );
 
-	public function check_to_upgrade( $new_version ) {
-		if ( $new_version !== PPRH_VERSION ) {
-			$this->do_upgrade();
-			\update_option( 'pprh_version', $new_version );
-		}
-	}
+	    if ( ! $ugprade ) {
+	        return;
+        }
 
-	public function do_upgrade() {
-		$previous_version = PPRH_VERSION;
-		$pprh = new Pre_Party_Browser_Hints();
-		$pprh->activate_plugin();
-		$activate_plugin = new ActivatePlugin();
+        include_once 'ActivatePlugin.php';
+        $activate_plugin = new ActivatePlugin();
+        $msg = 'Version ' . PPRH_VERSION_NEW . ' Upgrade Notes: The settings tabs have been ugpraded to meta boxes, ';
+        Utils::show_notice( $msg, true );
+        $activate_plugin->upgrade_plugin();
 
-		$msg = PPRH_VERSION . ' Upgrade Notes: Fixed bug preventing users from selecting crossorigin and media attribute.';
-		Utils::show_notice( $msg, true );
+        if ( $activate_plugin->plugin_activated ) {
+            \update_option( 'pprh_version', $new_version );
+        }
+    }
 
-		if ( version_compare( '1.7.6', $previous_version ) > 0 ) {
-			$activate_plugin->upgrade_prefetch_keywords();
-			$activate_plugin->upgrade_plugin();
-		}
+	public function check_to_upgrade( $new_version, $old_version ):bool {
+		return ( version_compare( $new_version, $old_version ) > 0 );
 	}
 
 	public function show_footer() {

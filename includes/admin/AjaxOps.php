@@ -62,12 +62,7 @@ class AjaxOps {
 
 		$op_code = (int) $data['op_code'];
 		$error = DAO::create_db_result( false, '', 'Error updating hints. Please try aggain or contact support.', $op_code, null );
-		// TODO: if error, return generic error msg if no error from db is there.
-		if ( is_object( $result ) ) {
-			return $result;
-		} else {
-			return $error;
-		}
+		return ( is_object( $result ) ) ? $result : $error;
 	}
 
 }

@@ -14,6 +14,42 @@ class PrefetchSettings {
 	public $prefetch_initialization_delay = 0;
 	public $prefetch_max_prefetches;
 
+	public static function turn_textarea_to_csv( $text ) {
+		$text = trim( $text );
+		return explode( "\r\n", $text );
+	}
+
+	public static function save_options() {
+		$options = self::get_options();
+		self::update_options( $options );
+	}
+
+	public static function get_options() {
+		$options = array(
+			'pprh_prefetch_enabled'                 => isset( $_POST['pprh_prefetch_enabled'] )                 ? 'true' : 'false',
+			'pprh_prefetch_disableForLoggedInUsers' => isset( $_POST['pprh_prefetch_disableForLoggedInUsers'] ) ? 'true' : 'false',
+			'pprh_prefetch_delay'                   => isset( $_POST['pprh_prefetch_delay'] )                   ? Utils::strip_non_numbers( $_POST['pprh_prefetch_delay'] ) : '0',
+			'pprh_prefetch_ignoreKeywords'          => isset( $_POST['pprh_prefetch_ignoreKeywords'] )          ? self::turn_textarea_to_csv( $_POST['pprh_prefetch_ignoreKeywords'] ) : '',
+			'pprh_prefetch_maxRPS'                  => isset( $_POST['pprh_prefetch_maxRPS'] )                  ? Utils::strip_non_numbers( $_POST['pprh_prefetch_maxRPS'] ) : '3',
+			'pprh_prefetch_hoverDelay'              => isset( $_POST['pprh_prefetch_hoverDelay'] )              ? Utils::strip_non_numbers( $_POST['pprh_prefetch_hoverDelay'] ) : '50',
+			'pprh_prefetch_max_prefetches'          => isset( $_POST['pprh_prefetch_max_prefetches'] )          ? Utils::strip_non_numbers( $_POST['pprh_prefetch_max_prefetches'] ) : '10',
+		);
+
+		return $options;
+	}
+
+	public static function update_options( $options ) {
+		\update_option( 'pprh_prefetch_enabled',                 $options['pprh_prefetch_enabled'] );
+		\update_option( 'pprh_prefetch_disableForLoggedInUsers', $options['pprh_prefetch_disableForLoggedInUsers'] );
+		\update_option( 'pprh_prefetch_delay',                   $options['pprh_prefetch_delay'] );
+		\update_option( 'pprh_prefetch_ignoreKeywords',          $options['pprh_prefetch_ignoreKeywords'] );
+		\update_option( 'pprh_prefetch_maxRPS',                  $options['pprh_prefetch_maxRPS'] );
+		\update_option( 'pprh_prefetch_hoverDelay',              $options['pprh_prefetch_hoverDelay'] );
+		\update_option( 'pprh_prefetch_max_prefetches',          $options['pprh_prefetch_max_prefetches'] );
+	}
+
+
+
 	public function get_each_keyword( $keywords ) {
 	    if ( is_null( $keywords ) ) {
 	        return '';
@@ -37,32 +73,6 @@ class PrefetchSettings {
 		return $str;
 	}
 
-	public static function turn_textarea_to_csv( $text ) {
-		$text = trim( $text );
-		$text_arr = explode( "\r\n", $text );
-		return implode( ', ', $text_arr );
-	}
-
-	public static function save_options() {
-		$options = array(
-			'pprh_prefetch_enabled'                 => isset( $_POST['pprh_prefetch_enabled'] )                 ? 'true' : 'false',
-			'pprh_prefetch_disableForLoggedInUsers' => isset( $_POST['pprh_prefetch_disableForLoggedInUsers'] ) ? 'true' : 'false',
-			'pprh_prefetch_delay'                   => isset( $_POST['pprh_prefetch_delay'] )                   ? Utils::strip_non_numbers( $_POST['pprh_prefetch_delay'] ) : '0',
-			'pprh_prefetch_ignoreKeywords'          => isset( $_POST['pprh_prefetch_ignoreKeywords'] )          ? self::turn_textarea_to_csv( $_POST['pprh_prefetch_ignoreKeywords'] ) : '',
-			'pprh_prefetch_maxRPS'                  => isset( $_POST['pprh_prefetch_maxRPS'] )                  ? Utils::strip_non_numbers( $_POST['pprh_prefetch_maxRPS'] ) : '3',
-			'pprh_prefetch_hoverDelay'              => isset( $_POST['pprh_prefetch_hoverDelay'] )              ? Utils::strip_non_numbers( $_POST['pprh_prefetch_hoverDelay'] ) : '50',
-			'pprh_prefetch_max_prefetches'          => isset( $_POST['pprh_prefetch_max_prefetches'] )          ? Utils::strip_non_numbers( $_POST['pprh_prefetch_max_prefetches'] ) : '10',
-		);
-
-		\update_option( 'pprh_prefetch_enabled',                 $options['pprh_prefetch_enabled'] );
-		\update_option( 'pprh_prefetch_disableForLoggedInUsers', $options['pprh_prefetch_disableForLoggedInUsers'] );
-		\update_option( 'pprh_prefetch_delay',                   $options['pprh_prefetch_delay'] );
-		\update_option( 'pprh_prefetch_ignoreKeywords',          $options['pprh_prefetch_ignoreKeywords'] );
-		\update_option( 'pprh_prefetch_maxRPS',                  $options['pprh_prefetch_maxRPS'] );
-		\update_option( 'pprh_prefetch_hoverDelay',              $options['pprh_prefetch_hoverDelay'] );
-		\update_option( 'pprh_prefetch_max_prefetches',          $options['pprh_prefetch_max_prefetches'] );
-	}
-
 	public function show_settings() {
 		$this->set_values();
 		$this->markup();
@@ -73,7 +83,7 @@ class PrefetchSettings {
 		$this->prefetch_enabled = \PPRH\Utils::is_option_checked( 'pprh_prefetch_enabled' );
 
 		$prefetch_ignoreKeywords = \get_option( 'pprh_prefetch_ignoreKeywords' );
-		$this->ignoreKeywords = $prefetch_ignoreKeywords;
+		$this->ignoreKeywords = implode( ', ', $prefetch_ignoreKeywords );
 		$this->prefetch_initialization_delay = Utils::esc_get_option( 'pprh_prefetch_delay' );
 		$this->prefetch_max_prefetches = Utils::esc_get_option( 'pprh_prefetch_max_prefetches' );
 	}

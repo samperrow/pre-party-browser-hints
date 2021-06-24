@@ -14,7 +14,7 @@ declare(strict_types=1);
  * Text Domain:       pprh
  * Domain Path:       /languages
  *
- * last edited June 23, 2021
+ * last edited June 24, 2021
  *
  * Copyright 2016  Sam Perrow  (email : sam.perrow399@gmail.com)
  *
@@ -80,13 +80,14 @@ class Pre_Party_Browser_Hints {
 		global $wpdb;
 		$table = $wpdb->prefix . 'pprh_table';
 		$postmeta_table = $wpdb->prefix . 'postmeta';
-		$plugin_version = \get_option( 'pprh_version', '1.7.7' );
+		$plugin_version = \get_option( 'pprh_version', '' );
         $site_url = \get_option( 'siteurl' );
         $testing = defined( 'PPRH_TESTING_LOCALLY' ) && PPRH_TESTING_LOCALLY;
 
-		if ( ! defined( 'PPRH_VERSION' ) ) {
-			define( 'PPRH_VERSION', $plugin_version );
+		if ( ! defined( 'PPRH_DB_TABLE' ) ) {
 			define( 'PPRH_DB_TABLE', $table );
+			define( 'PPRH_VERSION', $plugin_version );
+			define( 'PPRH_VERSION_NEW', '1.7.7' );
 			define( 'PPRH_POSTMETA_TABLE', $postmeta_table );
 			define( 'PPRH_ABS_DIR', WP_PLUGIN_DIR . '/pre-party-browser-hints/' );
 			define( 'PPRH_REL_DIR', plugins_url() . '/pre-party-browser-hints/' );
@@ -114,9 +115,9 @@ class Pre_Party_Browser_Hints {
 
 	public function activate_plugin() {
 		include_once 'includes/admin/ActivatePlugin.php';
+		$activate_plugin = new ActivatePlugin();
 		$this->load_common_files();
 		$this->create_constants();
-		$activate_plugin = new ActivatePlugin();
 		$activate_plugin->activate_plugin();
 		return $activate_plugin->plugin_activated;
 	}
