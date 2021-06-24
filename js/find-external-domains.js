@@ -1,7 +1,7 @@
 (function() {
 
     let host = document.location.origin;
-    let altDomain = getAltHostName.call(host);
+    let altHostName = getAltHostName.call(host);
     const TESTING = (/sphacks\.local/.test(host));
 
     function getAltHostName() {
@@ -9,13 +9,14 @@
         return (this.indexOf("www.") > 0) ? this.replace(/www\./, "") : this.slice(0, idx+2) + "www." + this.slice(idx+2, this.length);
     }
 
-    function isValidHintDomain(domain, newHintArr) {
-        return (domain !== host && newHintArr.indexOf(domain) === -1 && !/\.gravatar\.com/.test(domain) && domain !== altDomain);
+    function isValidHintDomain(domain, domainArr) {
+        return (domain !== host && domainArr.indexOf(domain) === -1 && !/\.gravatar\.com/.test(domain) && domain !== altHostName);
     }
 
     function findResourceSources() {
         let resources = window.performance.getEntriesByType('resource');
         let newHintArr = [];
+        let domains = [];
 
         resources.forEach(function(item) {
             let hintObj = {
@@ -26,7 +27,8 @@
             let hint = pprhCreateHint.CreateHint(hintObj);
             let domain = pprhCreateHint.GetDomain(hint.url);
 
-            if (isValidHintDomain(domain, newHintArr)) {
+            if (isValidHintDomain(domain, domains)) {
+                domains.push(hint.url);
                 newHintArr.push(hint);
             }
         });

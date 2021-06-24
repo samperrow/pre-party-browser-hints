@@ -8,13 +8,34 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class DAO {
 
-	private $table;
+	public $table;
 
 	public function __construct() {
 		$this->table = PPRH_DB_TABLE;
 	}
 
-	public function code_action_arr( $code ) {
+	// db results
+	public static function create_db_result( $result, $hint_id, $msg = '', $op_code = '', $new_hint = null ) {
+		$actions = self::code_action_arr( $op_code );
+		$new_msg = ( '' === $msg ) ? self::create_msg( $result, $actions ) : $msg;
+
+		return (object) array(
+			'new_hint'  => $new_hint,
+			'db_result' => array(
+				'msg'        => $new_msg,
+				'status'     => ( $result ) ? 'success' : 'error',
+				'hint_id'    => $hint_id,
+				'success'    => $result,
+				'last_error' => $msg
+			)
+		);
+	}
+
+	public static function create_msg( $result, $actions ) {
+		return ( $result ) ? "Resource hint $actions[1] successfully." : "Failed to $actions[0] hint.";
+	}
+
+	public static function code_action_arr( $op_code ) {
 		$actions = array(
 			0 => array( 'create', 'created' ),
 			1 => array( 'update', 'updated' ),
@@ -23,43 +44,15 @@ class DAO {
 			4 => array( 'disable', 'disabled' )
 		);
 
-		return $actions[$code];
+		return $actions[$op_code];
 	}
-
-	// db results
-	public function create_db_result( $result, $hint_id, $last_error, $action_code = '', $new_hint = null ) {
-		return (object) array(
-			'new_hint'  => $new_hint,
-			'db_result' => array(
-				'msg'        => $this->create_msg( $result, $last_error, $action_code ),
-				'status'     => ( $result ) ? 'success' : 'error',
-				'hint_id'    => $hint_id,
-				'success'    => $result,
-				'last_error' => $last_error
-			)
-		);
-	}
-
-	public function create_msg( $result, $last_error, $action_code )  {
-		$actions = $this->code_action_arr( $action_code );
-
-		if ( $result ) {
-			$msg = "Resource hint $actions[1] successfully.";
-		} elseif ( '' !== $last_error ) {
-			$msg = $last_error;
-		} else {
-			$msg = "Failed to $actions[0] hint.";
-		}
-
-		return $msg;
-	}
-
-
-
 
 	public function insert_hint( $new_hint ) {
 		global $wpdb;
-		$current_user = wp_get_current_user()->display_name;
+
+		if ( ! isset( $new_hint['url'], $new_hint['hint_type'] ) ) {
+			return;
+		}
 
 		$args = array(
 			'types'   => array( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' ),
@@ -67,23 +60,19 @@ class DAO {
 				'url'          => $new_hint['url'],
 				'hint_type'    => $new_hint['hint_type'],
 				'status'       => 'enabled',
-				'as_attr'      => $new_hint['as_attr'],
-				'type_attr'    => $new_hint['type_attr'],
-				'crossorigin'  => $new_hint['crossorigin'],
-				'created_by'   => $current_user,
-				'media'        => $new_hint['media']
+				'as_attr'      => $new_hint['as_attr'] ?? '',
+				'type_attr'    => $new_hint['type_attr'] ?? '',
+				'crossorigin'  => $new_hint['crossorigin'] ?? '',
+				'created_by'   => $new_hint['current_user'] ?? '',
+				'media'        => $new_hint['media'] ?? '',
+				'auto_created' => $new_hint['auto_created'] ?? 0
 			)
 		);
 
-		$args = apply_filters( 'pprh_dao_insert_hint_schema', $args, $new_hint );
+		$args = \apply_filters( 'pprh_dao_insert_hint_schema', $args, $new_hint );
+		$wpdb->insert( $this->table, $args['columns'], $args['types'] );
 
-		$wpdb->insert(
-			$this->table,
-			$args['columns'],
-			$args['types']
-		);
-
-		return $this->create_db_result( $wpdb->result, $wpdb->insert_id, $wpdb->last_error, 0, $new_hint );
+		return self::create_db_result( $wpdb->result, $wpdb->insert_id, $wpdb->last_error, 0, $new_hint );
 	}
 
 
@@ -110,28 +99,23 @@ class DAO {
 			array( '%d' )
 		);
 
-		return $this->create_db_result( $wpdb->result, $wpdb->insert_id, $wpdb->last_error, 1, $new_hint );
+		return self::create_db_result( $wpdb->result, $wpdb->insert_id, $wpdb->last_error, 1, $new_hint );
 	}
 
 	public function delete_hint( $hint_ids ) {
 		global $wpdb;
-//		$table = PPRH_DB_TABLE;
 		$hint_id_exists = preg_match('/\d/', $hint_ids );
 
 		if ( $hint_id_exists > 0 ) {
 			$wpdb->query( "DELETE FROM $this->table WHERE id IN ($hint_ids)" );
-			return $this->create_db_result( $wpdb->result, $wpdb->insert_id, $wpdb->last_error, 2, null );
+			return self::create_db_result( $wpdb->result, $wpdb->insert_id, $wpdb->last_error, 2, null );
 		}
 
-		else {
-			return $this->create_db_result( false, null, 'No hint IDs to delete.', 2, null );
-		}
+		return self::create_db_result( false, null, 'No hint IDs to delete.', 2, null );
 	}
 
 	public function bulk_update( $hint_ids, $code ) {
 		global $wpdb;
-//		$table = PPRH_DB_TABLE;
-
 		$action = ( 3 === $code ) ? 'enabled' : 'disabled';
 
 		$wpdb->query( $wpdb->prepare(
@@ -139,13 +123,69 @@ class DAO {
 			$action
 		) );
 
-		return $this->create_db_result( $wpdb->result, $wpdb->insert_id, $wpdb->last_error, $code, null );
+		return self::create_db_result( $wpdb->result, $wpdb->insert_id, $wpdb->last_error, $code, null );
 	}
 
 
-	public function get_pprh_hints( $query_code = null ) {
+	public function get_duplicate_hints( $url, $hint_type ) {
 		global $wpdb;
-		$query = $this->parse_query_code( $query_code );
+		$sql = "SELECT * FROM $this->table WHERE url = %s AND hint_type = %s";
+
+		return $wpdb->get_results( $wpdb->prepare( $sql, $url, $hint_type ), ARRAY_A );
+	}
+
+	public function get_pprh_hints( $is_admin ) {
+		if ( $is_admin )  {
+			$query = $this->get_admin_hints_query();
+		} else {
+			$query = $this->get_client_hints_query();
+		}
+
+		return $this->get_db_results( $query );
+	}
+
+	public function get_admin_hints_query() {
+		$sql = "SELECT * FROM $this->table";
+		$query = array(
+			'sql' => $sql,
+			'args' => array()
+		);
+
+		$new_query = \apply_filters( 'pprh_append_admin_sql', $query );
+
+		if ( ! empty( $_REQUEST['orderby'] ) && ! empty( $_REQUEST['order'] ) ) {
+			$valid_orderby_columns = array( 'url', 'hint_type', 'status', 'created_by', 'post_id' );
+			$valid_order_columns = array( 'asc', 'desc' );
+			$valid_orderby = Utils::string_in_array( $valid_orderby_columns, $_REQUEST['orderby'] );
+			$valid_order = Utils::string_in_array( $valid_order_columns, $_REQUEST['order'] );
+
+			if ( $valid_orderby && $valid_order ) {
+				$orderby = esc_sql( $_REQUEST['orderby'] );
+				$order = esc_sql( $_REQUEST['order'] );
+				$new_query['sql'] .= " ORDER BY $orderby $order";
+			}
+		}
+
+		elseif ( $new_query === $query ) {
+			$new_query['sql'] .= ' ORDER BY url ASC';
+		}
+
+		return $new_query;
+	}
+
+
+	public function get_client_hints_query() {
+		$sql = "SELECT * FROM $this->table WHERE status = %s";
+		$query = array(
+			'sql'  => $sql,
+			'args' => array( 'enabled' )
+		);
+
+		return \apply_filters( 'pprh_append_client_sql', $query );
+	}
+
+	private function get_db_results( $query ) {
+		global $wpdb;
 
 		if ( ! empty( $query['args'] ) ) {
 			$prepared_stmt = $wpdb->prepare( $query['sql'], $query['args'] );
@@ -154,30 +194,7 @@ class DAO {
 			$results = $wpdb->get_results( $query['sql'], ARRAY_A );
 		}
 
-		return apply_filters( 'pprh_filter_hints', $results );
-	}
-
-	private function parse_query_code( $query_code ) {
-//		$table = PPRH_DB_TABLE;
-		$sql = "SELECT * FROM $this->table";
-		$query = array( 'sql' => $sql );
-
-		if ( 1 === $query_code ) {
-			$query['sql'] .= ' WHERE status = %s';
-			$query['args'] = array( 'enabled' );
-		} elseif ( 2 === $query_code ) {
-			$query['sql'] .= ' ORDER BY ' . esc_sql( $_REQUEST['orderby'] );
-			$query['sql'] .= ! empty( $_REQUEST['order'] ) ? ' ' . esc_sql( $_REQUEST['order'] ) : ' ASC';
-		}
-		elseif ( 3 === $query_code ) {
-			if ( PPRH_PRO_PLUGIN_ACTIVE ) {
-				$query['sql'] = apply_filters( 'pprh_append_string', $query['sql'], ' ORDER BY post_id DESC, url ASC' );
-			} else {
-				$query['sql'] .= ' ORDER BY url ASC';
-			}
-		}
-
-		return $query;
+		return $results;
 	}
 
 
@@ -227,6 +244,7 @@ class DAO {
             crossorigin VARCHAR(55) DEFAULT '',
             media VARCHAR(255) DEFAULT '',
             created_by VARCHAR(55) DEFAULT '' NOT NULL,
+			auto_created INT(2) DEFAULT 0 NOT NULL,
             PRIMARY KEY  (id)
         ) $charset;";
 

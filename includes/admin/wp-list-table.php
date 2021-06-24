@@ -21,7 +21,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class WP_List_Table {
 
-	public $on_pprh_admin;
+	public $on_pprh_post_page;
+
 
 	/**
 	 * The current list of items.
@@ -145,7 +146,7 @@ class WP_List_Table {
 	 * }
 	 */
 	public function __construct( $args = array() ) {
-		$args = wp_parse_args(
+		$args = \wp_parse_args(
 			$args,
 			array(
 				'plural'        => '',
@@ -156,9 +157,9 @@ class WP_List_Table {
 		);
 
 		$this->screen = convert_to_screen( $args['screen'] );
-		$this->on_pprh_admin = apply_filters( 'pprh_on_pprh_admin', null );
+		$this->on_pprh_post_page = ! \apply_filters( 'pprh_on_pprh_admin', true );
 
-		add_filter( "manage_{$this->screen->id}_columns", array( $this, 'get_columns' ), 0 );
+		\add_filter( "manage_{$this->screen->id}_columns", array( $this, 'get_columns' ), 0 );
 
 		if ( ! $args['plural'] ) {
 			$args['plural'] = $this->screen->base;
@@ -170,7 +171,7 @@ class WP_List_Table {
 		$this->_args = $args;
 
 		if ( $args['ajax'] ) {
-			add_action( 'admin_footer', array( $this, '_js_vars' ) );
+			\add_action( 'admin_footer', array( $this, '_js_vars' ) );
 		}
 
 		if ( empty( $this->modes ) ) {
@@ -409,7 +410,7 @@ class WP_List_Table {
 		 *
 		 * @param string[] $views An array of available list table views.
 		 */
-		$views = apply_filters( "views_{$this->screen->id}", $views );
+		$views = \apply_filters( "views_{$this->screen->id}", $views );
 
 		if ( empty( $views ) ) {
 			return;
@@ -457,7 +458,7 @@ class WP_List_Table {
 			 *
 			 * @param string[] $actions An array of the available bulk actions.
 			 */
-			$this->_actions = apply_filters( "bulk_actions-{$this->screen->id}", $this->_actions );
+			$this->_actions = \apply_filters( "bulk_actions-{$this->screen->id}", $this->_actions );
 			$two            = '';
 		} else {
 			$two = '2';
@@ -556,7 +557,7 @@ class WP_List_Table {
 		 * @param bool   $disable   Whether to disable the drop-down. Default false.
 		 * @param string $post_type The post type.
 		 */
-		if ( apply_filters( 'disable_months_dropdown', false, $post_type ) ) {
+		if ( \apply_filters( 'disable_months_dropdown', false, $post_type ) ) {
 			return;
 		}
 
@@ -588,7 +589,7 @@ class WP_List_Table {
 		 * @param object $months    The months drop-down query results.
 		 * @param string $post_type The post type.
 		 */
-		$months = apply_filters( 'months_dropdown_results', $months, $post_type );
+		$months = \apply_filters( 'months_dropdown_results', $months, $post_type );
 
 		$month_count = count( $months );
 
@@ -769,7 +770,7 @@ class WP_List_Table {
 		 *
 		 * @param int $per_page Number of items to be displayed. Default 20.
 		 */
-		return (int) apply_filters( (string)($option), $per_page );
+		return (int) \apply_filters( (string)($option), $per_page );
 	}
 
 	/**
@@ -800,7 +801,7 @@ class WP_List_Table {
 		$current              = $this->get_pagenum();
 		$removable_query_args = wp_removable_query_args();
 
-        $current_url = ( wp_doing_ajax() ) ? esc_url_raw( $_SERVER['HTTP_REFERER'] ) : menu_page_url( 'pprh-plugin-settings', false );
+        $current_url = ( wp_doing_ajax() ) ? esc_url_raw( $_SERVER['HTTP_REFERER'] ) : menu_page_url( PPRH_MENU_SLUG, false );
 		$current_url = remove_query_arg( $removable_query_args, $current_url );
 
 		$page_links = array();
@@ -993,7 +994,7 @@ class WP_List_Table {
 		 * @param string $default Column name default for the specific list table, e.g. 'name'.
 		 * @param string $context Screen ID for specific list table, e.g. 'plugins'.
 		 */
-		$column = apply_filters( 'list_table_primary_column', $default, $this->screen->id );
+		$column = \apply_filters( 'list_table_primary_column', $default, $this->screen->id );
 
 		if ( empty( $column ) || ! isset( $columns[ $column ] ) ) {
 			$column = $default;
@@ -1036,7 +1037,7 @@ class WP_List_Table {
 		 *
 		 * @param array $sortable_columns An array of sortable columns.
 		 */
-		$_sortable = apply_filters( "manage_{$this->screen->id}_sortable_columns", $sortable_columns );
+		$_sortable = \apply_filters( "manage_{$this->screen->id}_sortable_columns", $sortable_columns );
 
 		$sortable = array();
 		foreach ( $_sortable as $id => $data ) {
@@ -1156,7 +1157,7 @@ class WP_List_Table {
 	 * @since 3.1.0
 	 */
 	public function display() {
-		if ( defined( 'PPRH_TESTING' ) && PPRH_TESTING ) {
+		if ( PPRH_TESTING ) {
 			return;
 		}
 
@@ -1282,8 +1283,7 @@ class WP_List_Table {
 
 	public function on_post_page_and_global_hint( $item ) {
 		$global_hint = ( ! empty( $item['post_id'] ) && 'global' === $item['post_id'] );
-		$on_pprh_admin = ( PPRH_PRO_PLUGIN_ACTIVE && ! $this->on_pprh_admin );
-		return ( $global_hint && $on_pprh_admin );
+		return ( $global_hint && $this->on_pprh_post_page );
 	}
 
 	protected function global_hint_alert() {
@@ -1340,7 +1340,6 @@ class WP_List_Table {
 					    $item['id'] = '';
 					}
 				    echo $this->{'column_' . $column_name}($item, $global_hint_alert);
-//					echo $this->{'column_' . $column_name}($item);
 				}
 				echo '</td>';
 			} else {

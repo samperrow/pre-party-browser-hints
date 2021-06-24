@@ -17,16 +17,15 @@ class DisplayHints extends WP_List_Table {
 	public $table;
 	public $items;
 
-
-	public function __construct() {
+	public function __construct( $doing_ajax ) {
 		parent::__construct( array(
             'ajax'     => true,
 			'plural'   => 'urls',
-			'screen'   => 'toplevel_page_pprh-plugin-settings',
+			'screen'   => 'toplevel_page_' . PPRH_MENU_SLUG,
 			'singular' => 'url',
 		) );
 
-		if ( ! wp_doing_ajax() ) {
+		if ( ! $doing_ajax ) {
 			$this->prepare_items();
 			$this->display();
 		}
@@ -34,7 +33,7 @@ class DisplayHints extends WP_List_Table {
 
 	public function column_default( $item, $column_name ) {
 		if ( 'post_id' === $column_name ) {
-            return apply_filters( 'pprh_dh_get_post_link', $item['post_id'] );
+            return \apply_filters( 'pprh_dh_get_post_link', $item['post_id'] );
         }
 
 		if ( '' === $item[$column_name] ) {
@@ -61,7 +60,7 @@ class DisplayHints extends WP_List_Table {
             'created_by'  => __( 'Created By', 'pprh' ),
         );
 
-		return apply_filters( 'pprh_dh_get_columns', $arr );
+		return \apply_filters( 'pprh_dh_get_columns', $arr );
 	}
 
 	public function get_sortable_columns() {
@@ -72,14 +71,14 @@ class DisplayHints extends WP_List_Table {
             'created_by'  => array('created_by', false)
         );
 
-		return apply_filters( 'pprh_dh_get_sortortable_columns', $arr );
+		return \apply_filters( 'pprh_dh_get_sortortable_columns', $arr );
 	}
 
 	public function get_bulk_actions() {
 		return array(
-            'delete'  => __( 'Delete', 'pprh' ),
-            'enable'  => __( 'Enable', 'pprh' ),
-            'disable' => __( 'Disable', 'pprh' )
+            '2' => __( 'Delete', 'pprh' ),
+            '3' => __( 'Enable', 'pprh' ),
+            '4' => __( 'Disable', 'pprh' )
         );
 	}
 
@@ -89,8 +88,8 @@ class DisplayHints extends WP_List_Table {
 		$sortable = $this->get_sortable_columns();
 		$this->_column_headers = array( $columns, array(), $sortable );
 		$current_page = $this->get_pagenum();
-		$query_code = ( ! empty( $_REQUEST['orderby'] ) ? 2 : 3 );
-		$all_hints = Utils::get_pprh_hints( $query_code );
+//		$query_code = ( ! empty( $_REQUEST['orderby'] ) ? 2 : 3 );
+		$all_hints = Utils::get_pprh_hints( true );
 		$this->items = array_slice( $all_hints, ( ( $current_page - 1 ) * $this->hints_per_page ), $this->hints_per_page );
 		$total_items = count( $all_hints );
 
@@ -122,7 +121,7 @@ class DisplayHints extends WP_List_Table {
 				'delete' => sprintf( '<a id="pprh-delete-hint-%1$s">%2$s</a>', $item['id'], 'Delete' ),
 			);
         } else {
-	        $actions = array('edit'   => '', 'delete' => '');
+	        $actions = array( 'edit' => '', 'delete' => '' );
         }
 
 		return sprintf( '%1$s %2$s', $item['url'], $this->row_actions( $actions ) );
@@ -155,7 +154,7 @@ class DisplayHints extends WP_List_Table {
                             </td>
                         </tr>
 					</table>
-				    <input type="hidden" class="pprh-hint-storage <?php echo $item_id; ?>" value='<?php echo $json; ?>'>
+				    <input type="hidden" id="pprh-hint-storage-<?php echo $item_id; ?>" class="pprh-hint-storage <?php echo $item_id; ?>" value='<?php echo $json; ?>'>
 				</td>
 		    </tr>
 		<?php

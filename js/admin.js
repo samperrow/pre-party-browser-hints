@@ -4,40 +4,16 @@
 
 	'use strict';
 	let $ = jQuery;
+	let insertHintsTable = document.getElementById("pprh-insert-hints");
 	const currentURL = document.location.href;
-	const adminNoticeElem = document.getElementById('pprhNotice');
 
 	if (/pprh-plugin-settings/.test(currentURL)) {
-		togglePrefetchRows();
 		toggleEmailSubmit();
-	}
-
-	function togglePrefetchRows() {
-		let prefetchEnabledCheckbox = document.getElementById('pprhPrefetchEnabled');
-		let prefetchBox = document.getElementById('prefetch');
-		let tbodyRows;
-
-		if (null !== prefetchEnabledCheckbox) {
-			tbodyRows = prefetchBox.getElementsByTagName('tr');
-			prefetchEnabledCheckbox.addEventListener('click', callback);
-		}
-
-		function callback() {
-			hideRows( (prefetchEnabledCheckbox.checked) ? 'table-row' : 'none');
-		}
-		callback();
-
-
-		function hideRows(cssValue) {
-			for (let i = 1; i < tbodyRows.length; i++) {
-				tbodyRows[i].style.display = cssValue;
-			}
-		}
 	}
 
 	function toggleEmailSubmit() {
 		let emailSubmitBtn = document.getElementById('pprhSubmit');
-		if (null !== emailSubmitBtn) {
+		if (isObjectAndNotNull(emailSubmitBtn)) {
 			emailSubmitBtn.addEventListener("click", emailValidate);
 		}
 	}
@@ -45,25 +21,29 @@
 
 	toggleDivs();
 	function toggleDivs() {
-		let tabs = $('a.nav-tab');
-		let divs = $('div.pprh-content');
+		let navTabs = document.querySelectorAll('a.nav-tab');
+		let divs = document.querySelectorAll('div.pprh-content');
 
-		tabs.first().toggleClass('nav-tab-active');
-		$("#pprh-insert-hints").toggleClass('active');
+		navTabs[0].classList.toggle('nav-tab-active');
+		insertHintsTable.classList.toggle('active');
 
-		if (!tabs) {
+		if (!navTabs) {
 			return;
 		}
 
-		$.each(tabs, function () {
-			$(this).on('click', function (e) {
+		navTabs.forEach(function(tab) {
+			tab.addEventListener('click', function (e) {
 				let className = e.currentTarget.classList[1];
-				divs.removeClass('active');
-				$('div#pprh-' + className).addClass('active');
+				divs.forEach(function(div) {
+					div.classList.remove('active');
+				});
+				document.getElementById('pprh-' + className).classList.add('active');
 				e.preventDefault();
 
-				tabs.removeClass('nav-tab-active');
-				$(this).addClass('nav-tab-active');
+				navTabs.forEach(function(tabElem) {
+					tabElem.classList.remove('nav-tab-active');
+				});
+				tab.classList.toggle('nav-tab-active');
 			});
 		});
 	}
@@ -112,7 +92,7 @@
 		let table = $('#' + tableId);
 		let rawHint = configForHint(table);
 
-		if (typeof rawHint === "object") {
+		if (isObjectAndNotNull(rawHint)) {
 			let hint = pprhCreateHint.CreateHint(rawHint);
 			let isHintValid = verifyHint(hint);
 
@@ -248,11 +228,8 @@
 			});
 		}
 
-
-
-
 		function putHintInfoIntoElems(hintID) {
-			let json = $('input.pprh-hint-storage.' + hintID).val();
+			let json = $('input#pprh-hint-storage-' + hintID).val();
 			let data = JSON.parse(json);
 			let table = $('table#pprh-edit-' + hintID);
 			let elems = getRowElems(table);
@@ -260,7 +237,6 @@
 			elems.url.val(data.url);
 
 			let hintTypeElem = elems.hint_type.find('input[value="' + data.hint_type + '"]').first();
-			// hintTypeElem.attr('checked', true);
 			hintTypeElem[0].checked = true;
 
 			if (data['crossorigin']) {
@@ -282,127 +258,75 @@
 		});
 	}
 
-	function verifyResponse(response) {
-		let status = (response.status) ? response.status : 'error';
-		let msg = (response.msg) ? response.msg : 'Error updating hint. Please contact support or try again later.';
+	// TODO: remove previous notices which have a different status. i.e- removing an 'error' box after a successful notice
+	function updateAdminNotice(msg, status) {
+		let adminNoticeElem = document.getElementById('pprhNotice');
 
-		if ( response.last_error && response.last_error !== '' && ! response.success ) {
-			msg = response.last_error;
+		if (typeof adminNoticeElem === "undefined" || adminNoticeElem === null) {
+			let pprhNoticeBox = document.getElementById('pprhNoticeBox');
+			pprhNoticeBox.innerHTML = '<div id="pprhNotice" class="notice notice-success is-dismissible"><p></p></div>';
+			adminNoticeElem = document.getElementById('pprhNotice');
 		}
 
-		response.msg = msg;
-		response.status = status;
-		return response;
-	}
+		if ( '' !== msg) {
+			adminNoticeElem.classList.add('active');
+			adminNoticeElem.getElementsByTagName('p')[0].innerText = msg;
+		}
 
-	// TODO: remove previous notices which have a different status. i.e- removing an 'error' box after a successful notice
-	function updateAdminNotice(response) {
-		response = verifyResponse(response);
 		adminNoticeElem.classList.remove('notice-');
-		adminNoticeElem.classList.add('notice-' + response.status);
-		adminNoticeElem.classList.add('active');
-		adminNoticeElem.getElementsByTagName('p')[0].innerText = response.msg;
+		adminNoticeElem.classList.add('notice-' + status);
 
 		setTimeout(function() {
 			adminNoticeElem.classList.remove('active');
-			adminNoticeElem.classList.remove('notice-' + response.status);
 		}, 10000);
 	}
 
-
-
 	// xhr object
 	function createAjaxReq(dataObj, callback, nonce) {
+		let xhr = new XMLHttpRequest();
+		let url = pprh_data.admin_url + 'admin-ajax.php';
+		xhr.open('POST', url, true);
+		xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+		let json = JSON.stringify(dataObj);
+		let paginationPage = getUrlValue.call('paged');
 
-		doAjax(dataObj, callback, nonce);
-		function doAjax(dataObj, callback, nonce) {
-			let xhr = new XMLHttpRequest();
-			let url = pprh_data.admin_url + 'admin-ajax.php';
-			xhr.open('POST', url, true);
-			xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
-			let json = JSON.stringify(dataObj);
-			let paginationPage = getUrlValue.call('paged');
+		// for testing
+		if ( ! callback ) callback = 'pprh_update_hints';
+		if ( ! nonce ) nonce = pprh_data.nonce;
+		let target = 'action=' + callback + '&pprh_data=' + json + '&nonce=' + nonce;
 
-			// for testing
-			if ( ! callback ) callback = 'pprh_update_hints';
-			if ( ! nonce ) nonce = pprh_data.nonce;
-
-			let target = 'action=' + callback + '&pprh_data=' + json + '&nonce=' + nonce;
-
-			if (paginationPage.length > 0) {
-				target += '&paged=' + paginationPage;
-			}
-
-			xhr.send(target);
-			xhr.onreadystatechange = function() {
-				xhrResponse(xhr);
-			}
+		if (paginationPage.length > 0) {
+			target += '&paged=' + paginationPage;
 		}
 
-		function getUrlValue() {
-			let val = '';
-
-			if (currentURL.indexOf(this) > -1) {
-				try {
-					val = new URL(currentURL).searchParams.get(this);
-				} catch (e) {
-					val = currentURL.split(this + '=')[1].match(/^\d/)[0];
-				}
-			}
-
-			return val;
-		}
-
-		// update the hint table via ajax.
-		function updateTable(response) {
-			let table = $('table.pprh-post-table').first();
-			let postTable = document.getElementsByClassName('pprh-post-table')[0];
-			let tbody = table.find('tbody');
-
-			tbody.html('');
-
-			if (response.rows.length) {
-				tbody.html(response.rows);
-			}
-
-			if (response.pagination.bottom.length) {
-				$('.tablenav.top .tablenav-pages').html($(response.pagination.top).html());
-			}
-
-			if (response.pagination.top.length) {
-				$('.tablenav.bottom .tablenav-pages').html($(response.pagination.bottom).html());
-			}
-
-			if (response.total_pages === 1) {
-				$('div.tablenav, div.alignleft.actions.bulkactions').removeClass('no-pages');
-			}
-
-			postTable.querySelectorAll(':checked').forEach(function (item) {
-				return item.checked = false;
-			});
+		xhr.send(target);
+		xhr.onreadystatechange = function() {
+			xhrResponse(xhr);
 		}
 
 		function xhrResponse(xhr) {
-			if (xhr.readyState === 4 && xhr.status === 200) {
-				if (xhr.response.length > 0) {
+			if (xhr.readyState === 4 && xhr.status === 200 && xhr.response && xhr.response !== "0") {
+
+				if (xhr.response.indexOf('<div') === 0) {
+					logError('error');
+					return;
+				}
+			
+				try {
 					let response = JSON.parse(xhr.response);
 					clearHintTable();
-
-					if ( typeof response.result === "object") {
-						if (response.result.db_result) {
-							updateAdminNotice(response.result.db_result);
-							updateTable(response);
-							addEventListeners();
-							return;
-						}
-					} else {
-						console.error(response);
-					}
+					let msg = response.result.db_result.msg;
+					let status = response.result.db_result.status;
+					updateAdminNotice(msg, status);
+					updateTable(response);
+					addEventListeners();
+				} catch(e) {
+					logError(e);
 				}
 			}
 		}
-	}
 
+	}
 
 
 	// bulk deletes, enables/disables.
@@ -411,7 +335,7 @@
 		e.preventDefault();
 		let idArr = [];
 		let op = $(e.currentTarget).prev().val();
-		let opCode = ( 'delete' === op ) ? 2 : ( 'enable' === op ) ? 3 : ('disable' === op) ? 4 : 5;
+		let opCode = (/2|3|4/.test(op)) ? Number(op) : 5;
 		let checkboxes = $('table.pprh-post-table tbody th.check-column input:checkbox');
 
 		$.each(checkboxes, function () {
@@ -428,6 +352,60 @@
 		} else {
 			window.alert('Please select a row(s) for bulk updating.');
 		}
+	}
+
+	function logError(err) {
+		let error = (err.message) ? err.message : " Please clear your browser cache, refresh your page, or contact support to resolve the issue.";
+		let msg = "Error updating resource hint. " + error;
+		updateAdminNotice(msg, "error");
+		console.error(err);
+	}
+
+	function isObjectAndNotNull(obj) {
+		return (typeof obj === "object" && obj !== null);
+	}
+
+	function getUrlValue() {
+		let val = '';
+
+		if (currentURL.indexOf(this) > -1) {
+			try {
+				val = new URL(currentURL).searchParams.get(this);
+			} catch (e) {
+				val = currentURL.split(this + '=')[1].match(/^\d/)[0];
+			}
+		}
+
+		return val;
+	}
+
+	// update the hint table via ajax.
+	function updateTable(response) {
+		let table = $('table.pprh-post-table').first();
+		let postTable = document.getElementsByClassName('pprh-post-table')[0];
+		let tbody = table.find('tbody');
+
+		tbody.html('');
+
+		if (response.rows.length) {
+			tbody.html(response.rows);
+		}
+
+		if (response.pagination.bottom.length) {
+			$('.tablenav.top .tablenav-pages').html($(response.pagination.top).html());
+		}
+
+		if (response.pagination.top.length) {
+			$('.tablenav.bottom .tablenav-pages').html($(response.pagination.bottom).html());
+		}
+
+		if (response.total_pages === 1) {
+			$('div.tablenav, div.alignleft.actions.bulkactions').removeClass('no-pages');
+		}
+
+		postTable.querySelectorAll(':checked').forEach(function (item) {
+			return item.checked = false;
+		});
 	}
 
 	return {

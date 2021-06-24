@@ -8,58 +8,80 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class LoadAdmin {
 
+    public $on_pprh_admin_page = false;
+
 	public function init() {
-		add_action( 'admin_menu', array( $this, 'load_admin_menu' ) );
+		\add_action( 'admin_menu', array( $this, 'load_admin_menu' ) );
+		\add_action( 'admin_init', array( $this, 'add_settings_meta_boxes' ) );
 
-		$on_pprh_page = Utils::on_pprh_page();
+		$this->on_pprh_admin_page = Utils::on_pprh_admin_page( \wp_doing_ajax() );
 
-		if ( ! $on_pprh_page ) {
-			return;
-		}
+		$this->load_common_content();
+		$this->load_admin_files();
+	}
 
-		add_action( 'admin_enqueue_scripts', array( $this, 'register_admin_files' ) );
-		add_filter( 'set-screen-option', array( $this, 'pprh_set_screen_option' ), 10, 3 );
-		load_plugin_textdomain( 'pprh', false, PPRH_REL_DIR . 'languages' );
+	public function load_common_content() {
+		\add_action( 'admin_enqueue_scripts', array( $this, 'register_admin_files' ) );
+		\add_filter( 'set-screen-option', array( $this, 'pprh_set_screen_option' ), 10, 3 );
 
 		include_once 'NewHint.php';
 		include_once 'DisplayHints.php';
 		include_once 'AjaxOps.php';
-		new AjaxOps();
+		include_once 'views/InsertHints.php';
 
-		do_action( 'pprh_pro_load_admin' );
+		new AjaxOps();
+		\do_action( 'pprh_pro_load_admin' );
 	}
+
+//    public function load_admin_screen_content( $on_pprh_admin_page ) {
+//	    if ( ! $on_pprh_admin_page ) {
+//	        return;
+//        }
+//
+//		\add_action( 'admin_init', array( $this, 'add_settings_meta_boxes' ) );
+//		$this->load_admin_files();
+//	}
+
 
 	public function load_admin_menu() {
 		$settings_page = add_menu_page(
 			'Pre* Party Settings',
 			'Pre* Party',
 			'update_plugins',
-			'pprh-plugin-settings',
+			PPRH_MENU_SLUG,
 			array( $this, 'load_dashboard' ),
 			PPRH_REL_DIR . 'images/lightning.png'
 		);
 
-		add_action( "load-{$settings_page}", array( $this, 'screen_option' ) );
-	}
+		\add_action( "load-{$settings_page}", array( $this, 'screen_option' ) );
+    }
 
 	public function load_dashboard() {
 		if ( ! current_user_can( 'manage_options' ) ) {
 			wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
 		}
 
-		$on_pprh_admin = Utils::on_pprh_admin();
-		include_once 'Dashboard.php';
+//		if ( $this->on_pprh_admin_page ) {
+			$dashboard = new Dashboard();
+			$dashboard->show_plugin_dashboard( $this->on_pprh_admin_page );
+//		}
+	}
 
-		$dashboard = new Dashboard( $on_pprh_admin );
-		$dashboard->load_plugin_admin_files();
-		$dashboard->show_plugin_dashboard();
+	public function load_admin_files() {
+		include_once 'Dashboard.php';
+		include_once 'views/Settings.php';
+		include_once 'views/HintInfo.php';
+//		include_once 'views/Upgrade.php';
+		include_once 'views/settings/GeneralSettings.php';
+		include_once 'views/settings/PreconnectSettings.php';
+		include_once 'views/settings/PrefetchSettings.php';
 	}
 
 	public function screen_option() {
 		$args = array(
 			'label'   => 'Resource hints per page: ',
 			'option'  => 'pprh_per_page',
-			'default' => 10,
+			'default' => 10
 		);
 
 		add_screen_option( 'per_page', $args );
@@ -71,9 +93,9 @@ class LoadAdmin {
 
 	// Register and call the CSS and JS we need only on the needed page.
 	public function register_admin_files( $hook ) {
-		$str = apply_filters( 'pprh_append_string', 'toplevel_page_pprh-plugin-settings', '|post.php' );
+		$str = PPRH_ADMIN_SCREEN . 'post.php';
 
-		if ( strpos( $str, $hook, 0 ) !== false ) {
+		if ( str_contains( $str, $hook ) ) {
 			$ajax_data = array(
 				'nonce'     => wp_create_nonce( 'pprh_table_nonce' ),
 				'admin_url' => admin_url()
@@ -89,22 +111,48 @@ class LoadAdmin {
 			wp_enqueue_script( 'pprh_create_hints_js' );
 			wp_enqueue_script( 'pprh_admin_js' );
 			wp_enqueue_style( 'pprh_styles_css' );
+
+			// needed for metaboxes
+			wp_enqueue_script( 'post' );
 		}
 	}
 
-	public function general_settings() {
+	public function add_settings_meta_boxes() {
 		$general_settings = new GeneralSettings();
-		$general_settings->show_settings();
+		$preconnect_settings = new PreconnectSettings();
+		$prefetch_settings = new PrefetchSettings();
+
+		add_meta_box(
+			'pprh_general_settings_metabox',
+			'General Settings',
+			array( $general_settings, 'show_settings' ),
+			PPRH_ADMIN_SCREEN,
+			'normal',
+			'low'
+		);
+
+		add_meta_box(
+			'pprh_preconnect_settings_metabox',
+			'Auto Preconnect Settings',
+			array( $preconnect_settings, 'show_settings' ),
+			PPRH_ADMIN_SCREEN,
+			'normal',
+			'low'
+		);
+
+		add_meta_box(
+			'pprh_prefetch_settings_metabox',
+			'Auto Prefetch Settings',
+			array( $prefetch_settings, 'show_settings' ),
+			PPRH_ADMIN_SCREEN,
+			'normal',
+			'low'
+		);
+
+		\do_action( 'pprh_load_prerender_metabox' );
 	}
 
-	public function preconnect_settings() {
-		$general_settings = new PreconnectSettings(true);
-		$general_settings->show_settings();
-	}
 
-	public function prefetch_settings() {
-		$general_settings = new PrefetchSettings();
-		$general_settings->show_settings();
-	}
+
 
 }

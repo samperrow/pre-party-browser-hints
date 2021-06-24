@@ -34,7 +34,7 @@
         link.onload = resolve;
         link.onerror = reject;
         document.head.appendChild(link);
-        if (fp_data.debug) console.log(link);
+        if (fp_data.testing) console.log(link);
     });
 
     // Prefetch pages with a timeout
@@ -175,7 +175,7 @@
                 hoverDelay: 50,
                 ignoreKeywords: '',
                 maxPrefetches: 10,
-                debug: 'true'
+                testing: 'true'
             }
         }
 
@@ -184,11 +184,11 @@
             delay: Number(pprh_fp_data.delay),
             hoverDelay: Number(pprh_fp_data.hoverDelay),
             ignoreKeywords: pprh_fp_data.ignoreKeywords.replace(/\s/g, '').split(','),
-            debug: ('true' === pprh_fp_data.debug),
+            testing: ('true' === pprh_fp_data.testing),
             maxPrefetches: Number(pprh_fp_data.maxPrefetches)
         };
 
-        if (! fp_data.debug) {
+        if (! fp_data.testing) {
             if (isSlowConnection || !isSupported) return;
         }
 

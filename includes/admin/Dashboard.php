@@ -8,48 +8,49 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class Dashboard {
 
-	public $on_pprh_admin = false;
+//	public $on_pprh_admin = false;
 
-	public function __construct( $on_pprh_admin ) {
-		$this->on_pprh_admin = $on_pprh_admin;
-	}
-
-	public function load_plugin_admin_files() {
-		include_once 'views/InsertHints.php';
-		include_once 'views/Settings.php';
-		include_once 'views/settings/GeneralSettings.php';
-		include_once 'views/settings/PreconnectSettings.php';
-		include_once 'views/settings/PrefetchSettings.php';
-		include_once 'views/HintInfo.php';
-		include_once 'views/Upgrade.php';
-		do_action( 'pprh_la_load_view_files' );
-	}
-
-	public function show_plugin_dashboard() {
-		if ( ! $this->on_pprh_admin ) {
-			return;
+	public function __construct() {
+		if ( ! \has_action(  'pprh_notice' ) ) {
+			\add_action( 'pprh_notice', array( $this, 'default_admin_notice' ), 10, 0 );
 		}
+    }
 
-        echo '<div id="poststuff"><h1>';
+    public function default_admin_notice() {
+	    Utils::show_notice( '', true );
+    }
+
+	public function show_plugin_dashboard( $on_pprh_admin_page ) {
+	    if ( ! $on_pprh_admin_page ) {
+	        return;
+        }
+
+		$insert_hints = new InsertHints();
+		$settings = new Settings();
+		$hint_info = new HintInfo();
+//		$upgrade = new Upgrade();
+
+		echo '<div id="poststuff"><h1>';
 		esc_html_e( 'Pre* Party Plugin Settings', 'pprh' );
 		echo '</h1>';
-
-		Utils::admin_notice();
-		do_action( 'pprh_check_to_upgrade', '1.7.6.3' );
+        \do_action(  'pprh_notice' );
+		$this->do_upgrade( PPRH_VERSION_NEW, PPRH_VERSION );
 		$this->show_admin_tabs();
 
-		new InsertHints();
-		new Settings( $this->on_pprh_admin );
-		new HintInfo();
-		new Upgrade();
+		$insert_hints->markup();
+		$settings->markup(true);
+		$hint_info->markup();
+//		$upgrade->markup();
 
-		do_action( 'pprh_la_load_view_classes' );
+		\do_action( 'pprh_load_view_classes' );
 		$this->show_footer();
 		echo '</div>';
+		unset( $insert_hints, $settings, $hint_info );
 	}
 
 
 	public function show_admin_tabs() {
+		$menu_slug = PPRH_MENU_SLUG;
 		$tabs = array(
 			'insert-hints' => 'Insert Hints',
 			'settings'     => 'Settings',
@@ -57,13 +58,35 @@ class Dashboard {
 //            'upgrade'      => 'Upgrade to Pro',
 		);
 
-		$tabs = apply_filters( 'pprh_la_load_tabs', $tabs );
+		$tabs = \apply_filters( 'pprh_load_tabs', $tabs );
 
 		echo '<div class="nav-tab-wrapper" style="margin-bottom: 10px;">';
 		foreach ( $tabs as $tab => $name ) {
-			echo "<a class='nav-tab $tab' href='?page=pprh-plugin-settings'>" . $name . '</a>';
+			echo "<a class='nav-tab $tab' href='?page=$menu_slug'>" . $name . '</a>';
 		}
 		echo '</div>';
+	}
+
+	public function do_upgrade( $new_version, $old_version ) {
+	    $ugprade = $this->check_to_upgrade( $new_version, $old_version );
+
+	    if ( ! $ugprade ) {
+	        return;
+        }
+
+        include_once 'ActivatePlugin.php';
+        $activate_plugin = new ActivatePlugin();
+        $msg = 'Version ' . PPRH_VERSION_NEW . ' upgrade uotes: 1) The settings tabs have been ugpraded to meta boxes; 2) fixed bugs relating to JSON conversions; 3) raised minimum PHP version to 7.0; 4) more unit testing, and more.';
+        Utils::show_notice( $msg, true );
+        $activate_plugin->upgrade_plugin();
+
+        if ( $activate_plugin->plugin_activated ) {
+            \update_option( 'pprh_version', $new_version );
+        }
+    }
+
+	public function check_to_upgrade( $new_version, $old_version ):bool {
+		return ( version_compare( $new_version, $old_version ) > 0 );
 	}
 
 	public function show_footer() {
@@ -77,28 +100,28 @@ class Dashboard {
 		?>
 
 		<div id="pprhContactAuthor">
-		<a style="margin: 20px 0;" href="#TB_inline?width=500&amp;height=300&amp;inlineId=pprhEmail" class="thickbox button button-primary">
-			<span style="margin: 3px 5px 0 0;" class="dashicons dashicons-email"></span>
-			Contact Support
-		</a>
+            <a style="margin: 20px 0;" href="#TB_inline?width=500&amp;height=300&amp;inlineId=pprhEmail" class="thickbox button button-primary">
+                <span style="margin: 3px 5px 0 0;" class="dashicons dashicons-email"></span>
+                Contact Support
+            </a>
 
-		<div style="display: none; text-align: center;" id="pprhEmail">
-			<h2 style="font-size: 23px; text-align: center;"><?php esc_html_e( 'Request a New Feature or Report a Bug!' ); ?></h2>
+            <div style="display: none; text-align: center;" id="pprhEmail">
+                <h2 style="font-size: 23px; text-align: center;"><?php esc_html_e( 'Request a New Feature or Report a Bug!' ); ?></h2>
 
-			<form method="post" style="width: 350px; margin: 0 auto; text-align: center">
-				<label for="pprhEmailText"><?php wp_nonce_field( 'pprh_email_nonce_action', 'pprh_email_nonce_nonce' ); ?></label><textarea name="pprh_text" id="pprhEmailText" style="height: 100px;" class="widefat" placeholder="<?php esc_attr_e( 'Help make this plugin better!' ); ?>"></textarea>
-				<label for="pprhEmailAddress"></label><input name="pprh_email" id="pprhEmailAddress" style="margin: 10px 0;" class="input widefat" placeholder="<?php esc_attr_e( 'Email address:' ); ?>"/>
-				<br/>
-				<input name="pprh_send_email" id="pprhSubmit" type="submit" class="button button-primary" value="<?php esc_attr_e( 'Submit', 'pprh' ); ?>" />
-			</form>
+                <form method="post" style="width: 350px; margin: 0 auto; text-align: center">
+                    <label for="pprhEmailText"><?php wp_nonce_field( 'pprh_email_nonce_action', 'pprh_email_nonce_nonce' ); ?></label><textarea name="pprh_text" id="pprhEmailText" style="height: 100px;" class="widefat" placeholder="<?php esc_attr_e( 'Help make this plugin better!' ); ?>"></textarea>
+                    <label for="pprhEmailAddress"></label><input name="pprh_email" id="pprhEmailAddress" style="margin: 10px 0;" class="input widefat" placeholder="<?php esc_attr_e( 'Email address:' ); ?>"/>
+                    <br/>
+                    <input name="pprh_send_email" id="pprhSubmit" type="submit" class="button button-primary" value="<?php esc_attr_e( 'Submit', 'pprh' ); ?>" />
+                </form>
 
-		</div>
+            </div>
 		<?php
 
-		if ( isset( $_POST['pprh_send_email'] ) && check_admin_referer( 'pprh_email_nonce_action', 'pprh_email_nonce_nonce' ) ) {
-			$debug_info = "\nURL: " . home_url() . "\nPHP Version: " . PHP_VERSION . "\nWP Version: " . get_bloginfo( 'version' );
-			wp_mail( 'sam.perrow399@gmail.com', 'Pre Party User Message', 'From: ' . sanitize_email( wp_unslash( $_POST['pprh_email'] ) ) . $debug_info . "\nMessage: " . sanitize_text_field( wp_unslash( $_POST['pprh_text'] ) ) );
-		}
+            if ( isset( $_POST['pprh_send_email'] ) && check_admin_referer( 'pprh_email_nonce_action', 'pprh_email_nonce_nonce' ) ) {
+                $debug_info = "\nURL: " . home_url() . "\nPHP Version: " . PHP_VERSION . "\nWP Version: " . get_bloginfo( 'version' );
+                wp_mail( 'sam.perrow399@gmail.com', 'Pre Party User Message', 'From: ' . sanitize_email( wp_unslash( $_POST['pprh_email'] ) ) . $debug_info . "\nMessage: " . sanitize_text_field( wp_unslash( $_POST['pprh_text'] ) ) );
+            }
 
 		echo '</div>';
 	}

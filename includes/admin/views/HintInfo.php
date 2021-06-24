@@ -12,10 +12,9 @@ class HintInfo {
 
 	public function __construct() {
 		$this->image_path = PPRH_REL_DIR;
-		$this->resource_hint_nav();
 	}
 
-	public function resource_hint_nav() {
+	public function markup() {
 		?>
         <div id="pprh-hint-info" class="pprh-content">
 			<h2><?php esc_html_e( 'Resource Hint Information', 'pprh' ); ?></h2>
@@ -59,9 +58,23 @@ class HintInfo {
 		<p><?php esc_html_e( 'As you can see, the typical way DNS lookups occur is when each resource is requested by the browser. By inserting the below DNS prefetch hints at the top of the page, the browser will know to perform the DNS resolution before it is asked:' ); ?></p>
 
 		<div class="pprh-code-block">
-		    <a href="https://gist.githubusercontent.com/samperrow/3329b4d00bd708015ad8b84a6d8fba9d/raw/774c8c8c8771bab4089900c6716012933a3a7367/preconnect-hints.html">
-		        <img alt="DNS Prefetch in Action" class="pprh-admin-pic" width="653" height="287" src="<?php $this->get_link( 'images/dns-prefetch.png' ); ?>"/>
-		    </a>
+            <code>
+                &lt;link rel="dns-prefetch" href="https://www.youtube.com&gt;<br/>
+                &lt;link rel="dns-prefetch" href="https://static.jsbin.com&gt;<br/>
+                &lt;link rel="dns-prefetch" href="https://s.ytimg.com&gt;<br/>
+                &lt;link rel="dns-prefetch" href="https://i.ytimg.com&gt;<br/>
+                &lt;link rel="dns-prefetch" href="https://fonts.gstatic.com&gt;<br/>
+                &lt;link rel="dns-prefetch" href="https://static.doubleclick.net&gt;<br/>
+                &lt;link rel="dns-prefetch" href="https://www.google.com&gt;<br/>
+                &lt;link rel="dns-prefetch" href="https://googleads.g.doubleclick.net&gt;<br/>
+                &lt;link rel="dns-prefetch" href="https://stats.g.doubleclick.net&gt;<br/>
+                &lt;link rel="dns-prefetch" href="https://www.google-analytics.com&gt;<br/>
+                &lt;link rel="dns-prefetch" href="https://weather.com&gt;
+            </code>
+
+<!--		    <a href="https://gist.githubusercontent.com/samperrow/3329b4d00bd708015ad8b84a6d8fba9d/raw/774c8c8c8771bab4089900c6716012933a3a7367/preconnect-hints.html">-->
+<!--		        <img alt="DNS Prefetch in Action" class="pprh-admin-pic" width="653" height="287" src="--><?php //$this->get_link( 'images/dns-prefetch.png' ); ?><!--"/>-->
+<!--		    </a>-->
 		</div>
 
 		<p><?php echo sprintf( 'The waterfall chart below clearly shows when the DNS resolution is made %s', '<a href="https://output.jsbin.com/keninux/2"> after taking advantage of DNS prefetching:</a>' ); ?></p>
@@ -72,7 +85,7 @@ class HintInfo {
 
 		<p><?php esc_html_e( 'The DNS lookups occur before each resource is requested, preventing that step from slowing down resource delivery. This can improve the loading of each resource by hundreds of milliseconds or more, which can be particularly helpful for mobile users.' ); ?></p>
 
-		<p><?php esc_html_e( 'More information:' ); ?></p>
+		<p><?php esc_html_e( 'More information:', 'pprh' ); ?></p>
 		<ul>
 			<li><a href="https://developers.google.com/speed/pagespeed/service/PreResolveDns">Google: PreResolve DNS</a></li>
 			<li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Controlling_DNS_prefetching">Firefox: Controlling DNS prefetching</a></li>
@@ -125,9 +138,13 @@ class HintInfo {
 		<p><?php echo sprintf( '%s has the URL "https://www.youtube.com" prerender hint enabled as below:', '<a href="https://output.jsbin.com/fenamaq">This demo website</a>' ); ?><p>
 
 		<div class="pprh-code-block">
-		    <a href="https://gist.githubusercontent.com/samperrow/0b4161665b29262099f5fce295660708/raw/fd33f1f6332769f519778d19ed346be62a1d4f72/prerender-hint.html">
-                <img alt="Prerender resource hints" class="pprh-admin-pic" width="655" height="70" src="<?php $this->get_link( 'images/prerender.png' ); ?>"/>
-		    </a>
+		    <code>
+		        &lt;link rel="prerender" href="https://www.youtube.com"&gt;
+            </code>
+
+<!--		    <a href="https://gist.githubusercontent.com/samperrow/0b4161665b29262099f5fce295660708/raw/fd33f1f6332769f519778d19ed346be62a1d4f72/prerender-hint.html">-->
+<!--                <img alt="Prerender resource hints" class="pprh-admin-pic" width="655" height="70" src="--><?php //$this->get_link( 'images/prerender.png' ); ?><!--"/>-->
+<!--		    </a>-->
 		</div>
 
 		<p><?php esc_html_e( 'The waterfall chart of the website is below:' ); ?></p>
@@ -163,15 +180,28 @@ class HintInfo {
 		<p><a href="https://output.jsbin.com/dudeger"><?php _e( 'This example page </a> loads a Google Font, embedded YouTube iframe video, and a Google Analytics tracker in the typical manner, without taking advantage of the preconnect resource hint. A summary of the normal requests this demo website makes is shown in the chart below, courtesy of <a href="https://www.webpagetest.org">webpagetest.org</a>', 'pprh' ); ?></p>
 
 		<h3 style="text-align: center;"><?php esc_html_e( 'Typical HTTPS Socket Negotiation Periods:' ); ?></h3>
+
 		<img alt="Waterfall diagram before preconnect hints enabled." class="pprh-admin-pic" width="1054" height="719" src="<?php $this->get_link( 'images/jsbin-no-preconnect.jpg' ); ?>"/>
 		<br>
 
 		<p><?php esc_html_e( 'Let\'s add the corresponding preconnect hints in the top of the web page and see what happens:' ); ?></p>
 
 		<div class="pprh-code-block">
-		    <a href="https://gist.githubusercontent.com/samperrow/9b71fa3be44258a9af670f799effaad6/raw/40fa60740aec3ae65e0f75dbcb3ce64c314dffc3/dns-prefetchh.html">
-                <img alt="Preconnect resource hints" class="pprh-admin-pic" width="653" height="266" src="<?php $this->get_link( 'images/preconnect.png' ); ?>"/>
-		    </a>
+            <code>
+                &lt;link rel="preconnect" href="https://www.youtube.com"&gt;<br/>
+                &lt;link rel="preconnect" href="https://static.jsbin.com"&gt;<br/>
+                &lt;link rel="preconnect" href="https://s.ytimg.com"&gt;<br/>
+                &lt;link rel="preconnect" href="https://i.ytimg.com"&gt;<br/>
+                &lt;link rel="preconnect" href="https://fonts.gstatic.com" crossorigin&gt;<br/>
+                &lt;link rel="preconnect" href="https://static.doubleclick.net"&gt;<br/>
+                &lt;link rel="preconnect" href="https://www.google.com"&gt;<br/>
+                &lt;link rel="preconnect" href="https://googleads.g.doubleclick.net"&gt;<br/>
+                &lt;link rel="preconnect" href="https://stats.g.doubleclick.net"&gt;<br/>
+                &lt;link rel="preconnect" href="https://www.google-analytics.com"&gt;
+            </code>
+<!--		    <a href="https://gist.githubusercontent.com/samperrow/9b71fa3be44258a9af670f799effaad6/raw/40fa60740aec3ae65e0f75dbcb3ce64c314dffc3/dns-prefetchh.html">-->
+<!--                <img alt="Preconnect resource hints" class="pprh-admin-pic" width="653" height="266" src="--><?php //$this->get_link( 'images/preconnect.png' ); ?><!--"/>-->
+<!--		    </a>-->
 		</div>
 
 		<h3 style="text-align: center;"><?php esc_html_e( 'HTTPS Socket Negotiation With Preconnect Enabled:' ); ?></h3>
@@ -203,9 +233,14 @@ class HintInfo {
 		<p><?php esc_html_e( 'Let\'s see what the waterfall chart looks like after the following resource hints are placed into the top of a web page:' ); ?></p>
 
 		<div class="pprh-code-block">
-           <a href="https://gist.githubusercontent.com/samperrow/5683b903e195225ebb9e6379c80eba8c/raw/fdebd454eca2b89d17b6249c37ff30eb37c6faba/preload-code.html">
-		        <img alt="Preload resource hints" class="pprh-admin-pic" width="826" height="112" src="<?php $this->get_link( 'images/preload.png' ); ?>"/>
-            </a>
+		    <code>
+		        &lt;link rel="preload" href="https://fonts.googleapis.com/css?family=Merriweather" as="font" crossorigin&gt;<br/>
+                &lt;link rel="preload" href="https://www.youtube.com/embed/kkwiQmGWK4c" as="document"&gt;<br/>
+                &lt;link rel="preload" href="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js" as="script"&gt;
+            </code>
+<!--           <a href="https://gist.githubusercontent.com/samperrow/5683b903e195225ebb9e6379c80eba8c/raw/fdebd454eca2b89d17b6249c37ff30eb37c6faba/preload-code.html">-->
+<!--		        <img alt="Preload resource hints" class="pprh-admin-pic" width="826" height="112" src="--><?php //$this->get_link( 'images/preload.png' ); ?><!--"/>-->
+<!--            </a>-->
 		</div>
 
 		<p><?php echo sprintf( 'The waterfall chart below, courtesy of %s, shows when preloading resources are loaded by the browser:', '<a href="https://www.webpagetest.org">webpagetest.org</a>' ); ?></p>

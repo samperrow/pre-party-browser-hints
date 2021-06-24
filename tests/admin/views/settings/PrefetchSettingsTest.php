@@ -5,15 +5,13 @@ use PHPUnit\Framework\TestCase;
 
 //class PrefetchSettingsTest extends TestCase {
 
-//	public function test_get_each_keyword():void {
-//		if ( ! WP_ADMIN ) return;
-//
+//	public function test_get_each_keyword():void {//
 //		$prefetch_settings = new \PPRH\PrefetchSettings();
 //		$keywords = array( 'testeroo/asdf', 'blah', 'wp-login.php', 'cart', '' );
 //
 //		$actual = $prefetch_settings->get_each_keyword( $keywords );
 //		$expected = "testeroo/asdf\nblah\nwp-login.php\ncart\n";
-//		$this->assertEquals( $expected, $actual );
+//		self::assertEquals( $expected, $actual );
 //	}
 
 //	public function test_turn_textarea_to_json():void {
