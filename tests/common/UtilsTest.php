@@ -14,7 +14,7 @@ final class UtilsTest extends TestCase {
 
 
 
-	public function test_strip_non_alphanums():void {
+	public function test_strip_non_alphanums() {
 		$str1 = '!f_a#FED__=26 5b-2tb(&YT^>"28352';
 		$test1 = \PPRH\Utils::strip_non_alphanums($str1);
 		self::assertEquals( 'faFED265b2tbYT28352', $test1 );
@@ -24,13 +24,13 @@ final class UtilsTest extends TestCase {
 		self::assertEquals( $str2, $test2 );
 	}
 
-	public function test_strip_non_numbers():void {
+	public function test_strip_non_numbers() {
 		$str1 = '!f_a#FED__=26 5b-2tb(&YT^>"28352';
 		$test1 = \PPRH\Utils::strip_non_numbers($str1);
 		self::assertEquals( '265228352', $test1 );
 	}
 
-	public function test_clean_hint_type():void {
+	public function test_clean_hint_type() {
 		$str1 = 'DNS-prefetch';
 		$test1 = \PPRH\Utils::clean_hint_type($str1);
 		self::assertEquals( $str1, $test1 );
@@ -40,7 +40,7 @@ final class UtilsTest extends TestCase {
 		self::assertEquals( 'preconnect', $test2 );
 	}
 
-	public function test_clean_url():void {
+	public function test_clean_url() {
 		$str1 = 'https://www.espn.com';
 		$test1 = \PPRH\Utils::clean_url($str1);
 		self::assertEquals( $str1, $test1 );
@@ -50,7 +50,7 @@ final class UtilsTest extends TestCase {
 		self::assertEquals( 'https://scripttest.comscript', $test2 );
 	}
 
-	public function test_clean_url_path():void {
+	public function test_clean_url_path() {
 		$str1 = 'https://www.espn.com';
 		$test1 = \PPRH\Utils::clean_url_path($str1);
 		self::assertEquals( $str1, $test1 );
@@ -59,7 +59,7 @@ final class UtilsTest extends TestCase {
 		self::assertEquals( 'testdsdf/blah', $test2 );
 	}
 
-	public function test_clean_hint_attr():void {
+	public function test_clean_hint_attr() {
 		$str1 = 'font/woff2';
 		$test1 = \PPRH\Utils::clean_hint_attr($str1);
 		self::assertEquals( $str1, $test1 );
@@ -68,7 +68,7 @@ final class UtilsTest extends TestCase {
 		self::assertEquals( 'f/asdlfkj43t935u23asdflkj3', $test2 );
 	}
 
-//	public function test_create_db_result():void {
+//	public function test_create_db_result() {
 //
 //
 //		$test1 = PPRH\Utils::create_db_result($str1);
@@ -76,7 +76,7 @@ final class UtilsTest extends TestCase {
 //		self::assertEquals( '', $test2 );
 //	}
 
-//	public function test_get_wpdb_result():void {
+//	public function test_get_wpdb_result() {
 //		$action1 = 'created';
 //		$hint_id = null;
 //		$wpdb1 = (object) array(
@@ -112,7 +112,7 @@ final class UtilsTest extends TestCase {
 //		self::assertEquals( $result2, $test2 );
 //	}
 
-	public function test_get_option_status():void {
+	public function test_get_option_status() {
 		$option_name = 'pprh_test_option';
 		\add_option( $option_name, 'true' );
 		$actual_1 = \PPRH\Utils::get_option_status($option_name, 'true' );
@@ -128,7 +128,7 @@ final class UtilsTest extends TestCase {
 
 
 
-	public function test_esc_get_option():void {
+	public function test_esc_get_option() {
 		$test_option_name1 = 'pprh_test_option1';
 		\add_option( $test_option_name1, 'https://<test.com>/asdfasdf', '', 'true' );
 		$actual1 = \PPRH\Utils::esc_get_option( $test_option_name1 );

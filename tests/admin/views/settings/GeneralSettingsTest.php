@@ -14,7 +14,7 @@ use PHPUnit\Framework\TestCase;
 //
 //	}
 
-//	public function test_save_options():void {//
+//	public function test_save_options() {//
 //		$orig_value_1 = \get_option( 'pprh_disable_wp_hints' );
 //		$orig_value_2 = \get_option( 'pprh_html_head' );
 //
@@ -25,7 +25,7 @@ use PHPUnit\Framework\TestCase;
 //		\update_option( 'pprh_html_head', $orig_value_2 );
 //	}
 
-//	public function test_save_options2():void {
+//	public function test_save_options2() {
 //		$this->option_update( 'pprh_disable_wp_hints', 'true');
 //		$this->option_update( 'pprh_html_head', 'false');
 //	}

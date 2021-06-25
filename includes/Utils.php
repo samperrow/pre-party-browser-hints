@@ -21,6 +21,10 @@ class Utils {
 		\add_action( 'pprh_notice', $callback );
 	}
 
+	public static function update_option( string $option, $value ) {
+		return PPRH_TESTING || \update_option( $option, $value );
+	}
+
 	public static function json_to_array( $json ) {
 		$array = false;
 

@@ -152,7 +152,4 @@ class LoadAdmin {
 		\do_action( 'pprh_load_prerender_metabox' );
 	}
 
-
-
-
 }

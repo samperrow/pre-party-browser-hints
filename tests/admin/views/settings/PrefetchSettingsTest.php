@@ -5,7 +5,7 @@ use PHPUnit\Framework\TestCase;
 
 //class PrefetchSettingsTest extends TestCase {
 
-//	public function test_get_each_keyword():void {//
+//	public function test_get_each_keyword() {//
 //		$prefetch_settings = new \PPRH\PrefetchSettings();
 //		$keywords = array( 'testeroo/asdf', 'blah', 'wp-login.php', 'cart', '' );
 //
@@ -14,7 +14,7 @@ use PHPUnit\Framework\TestCase;
 //		self::assertEquals( $expected, $actual );
 //	}
 
-//	public function test_turn_textarea_to_json():void {
+//	public function test_turn_textarea_to_json() {
 //		$prefetch_settings = new \PPRH\PrefetchSettings();
 //
 //

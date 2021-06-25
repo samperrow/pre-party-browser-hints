@@ -14,12 +14,12 @@ final class DAOTest extends TestCase {
 	/**
 	 * @before
 	 */
-	public function test_init():void {
+	public function test_init() {
 		$this->dao = new \PPRH\DAO();
 	}
 
 
-	public function test_create_db_result():void {
+	public function test_create_db_result() {
 		$result = true;
 		$new_hint = null;
 
@@ -38,7 +38,7 @@ final class DAOTest extends TestCase {
 		self::assertEquals( $expected, $actual_1 );
 	}
 
-	public function test_create_msg():void {
+	public function test_create_msg() {
 		$actions_1 = array( 'create', 'created' );
 		$actual_1 = \PPRH\DAO::create_msg( true, $actions_1 );
 		$expected_1 = "Resource hint $actions_1[1] successfully.";
@@ -50,7 +50,7 @@ final class DAOTest extends TestCase {
 		self::assertEquals( $expected_2, $actual_2 );
 	}
 
-	public function test_get_admin_hints_query():void {
+	public function test_get_admin_hints_query() {
 		if ( PPRH_PRO_PLUGIN_ACTIVE ) {
 			return;
 		}
@@ -85,7 +85,7 @@ final class DAOTest extends TestCase {
 		unset( $_REQUEST['orderby'], $_REQUEST['order'] );
 	}
 
-	public function test_get_client_hints_query():void {
+	public function test_get_client_hints_query() {
 		if ( PPRH_PRO_PLUGIN_ACTIVE ) {
 			return;
 		}
@@ -116,7 +116,7 @@ final class DAOTest extends TestCase {
 	/**
 	 * @depends test_create_hint
 	 */
-	public function test_update_hint( int $hint_id ): void {
+	public function test_update_hint( int $hint_id ) {
 		$new_hint = TestUtils::create_hint_array( 'https://www.asdf2.com/foozball/blah.css', 'dns-prefetch', 'font', 'font/woff2', '');
 
 		$result = $this->dao->update_hint( $new_hint, $hint_id );
@@ -127,7 +127,7 @@ final class DAOTest extends TestCase {
 	/**
 	 * @depends test_create_hint
 	 */
-	public function test_bulk_update( int $hint_ids ): void {
+	public function test_bulk_update( int $hint_ids ) {
 		$hint_id_str = (string) $hint_ids;
 		$result = $this->dao->bulk_update( $hint_id_str, 4 );
 		$expected = \PPRH\DAO::create_db_result( true, $hint_id_str, '', 4, null );
@@ -137,7 +137,7 @@ final class DAOTest extends TestCase {
 	/**
 	 * @depends test_create_hint
 	 */
-	public function test_delete_hint( int $hint_ids ): void {
+	public function test_delete_hint( int $hint_ids ) {
 		$hint_id_str = (string) $hint_ids;
 		$result = $this->dao->delete_hint( $hint_id_str );
 		$expected = \PPRH\DAO::create_db_result( true, $hint_id_str, '', 2, null );
@@ -146,7 +146,7 @@ final class DAOTest extends TestCase {
 
 
 //
-//	public function test_get_hints(): void {
+//	public function test_get_hints() {
 //		$hint_arr = Create_Hints::create_raw_hint_array('https://www.asdf.com/foozball', 'preconnect', 1);
 //		$new_hint = Create_Hints::create_pprh_hint($hint_arr);
 //		$expected = $this->dao->insert_hint($new_hint);
@@ -158,12 +158,12 @@ final class DAOTest extends TestCase {
 //	}
 
 //
-//	public function test_get_multisite_tables(): void {
+//	public function test_get_multisite_tables() {
 //		self::assertEquals(true, true);
 //
 //	}
 //
-//	public function test_create_table(): void {
+//	public function test_create_table() {
 //		self::assertEquals(true, true);
 //
 //	}

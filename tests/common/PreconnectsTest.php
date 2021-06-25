@@ -15,7 +15,7 @@ class PreconnectsTest extends TestCase {
 	}
 
 
-	public function test_constructor():void {
+	public function test_constructor() {
 		$preconnects = new \PPRH\Preconnects();
 		$loaded = \add_action( 'wp_loaded', array($preconnects, 'init_controller') );
 		self::assertEquals( true, $loaded );
@@ -29,7 +29,7 @@ class PreconnectsTest extends TestCase {
 		self::assertEquals( $expected_config, $actual_config );
 	}
 
-	public function test_entire_preconnect_class(): void {
+	public function test_entire_preconnect_class() {
 		$preconnects = new \PPRH\Preconnects();
 
 		$config_1 = $preconnects->get_config( 'true', 'true', 'true' );
@@ -77,7 +77,7 @@ class PreconnectsTest extends TestCase {
 
 
 
-	public function test_check_to_enqueue_scripts():void {
+	public function test_check_to_enqueue_scripts() {
 		$preconnects = new \PPRH\Preconnects();
 
 		$actual_1 = $preconnects->check_to_enqueue_scripts(true);
@@ -158,7 +158,7 @@ class PreconnectsTest extends TestCase {
 	}
 
 
-	public function test_allow_unauth_users():void {
+	public function test_allow_unauth_users() {
 		$preconnects = new \PPRH\Preconnects();
 
 		$expected_1 = $preconnects->allow_unauth_users( true, true );
@@ -174,7 +174,7 @@ class PreconnectsTest extends TestCase {
 
 
 
-//	public function test_free_load_auto_preconnects():void {
+//	public function test_free_load_auto_preconnects() {
 //		$preconnects = new \PPRH\Preconnects();
 //		$autoload_option = 'pprh_preconnect_autoload';
 //		$set = 'pprh_preconnect_set';

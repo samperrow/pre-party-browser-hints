@@ -14,11 +14,11 @@ final class AjaxOpsTest extends TestCase {
 	/**
 	 * @before
 	 */
-	public function test_start():void {
+	public function test_start() {
 		$this->ajax_ops = new \PPRH\AjaxOps();
 	}
 
-	public function test_pprh_update_hints(): void {
+	public function test_pprh_update_hints() {
 		$expected = \wp_doing_ajax();
 		$expected_nonce = TestUtils::create_nonce('pprh_table_nonce');
 		$_POST['pprh_data'] = '{"url":"tester","hint_type":"dns-prefetch","action":"create","hint_ids":null"}';
@@ -30,7 +30,7 @@ final class AjaxOpsTest extends TestCase {
 
 	// also need to verify update, delete, enable, disable, bulk operations work properly.
 
-	public function test_init():void {
+	public function test_init() {
 		$test_data_1 = TestUtils::create_hint_array( 'https://testAjaxOps1.com', 'dns-prefetch' );
 		$test_data_1['op_code'] = 0;
 		$test_data_1['action'] = '';

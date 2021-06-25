@@ -10,11 +10,11 @@ final class ActivatePluginTest extends TestCase {
 	/**
 	 * @before
 	 */
-	public function test_start():void {
+	public function test_start() {
 		$this->activate_plugin = new \PPRH\ActivatePlugin();
 	}
 
-	public function test_convert_prefetch_string_to_array():void {
+	public function test_convert_prefetch_string_to_array() {
 		$orig_prefetch_ignore_links = '/wp-admin, /wp-login.php, /cart, /checkout, add-to-cart, logout, #, ?, .png, .jpeg, .jpg, .gif, .svg, .webp';
 		$keyword_array = $this->activate_plugin->convert_prefetch_string_to_array( $orig_prefetch_ignore_links );
 		self::assertEquals( true, is_array( $keyword_array ) );

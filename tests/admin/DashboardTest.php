@@ -9,12 +9,12 @@ class DashboardTest extends TestCase {
 	/**
 	 * @before
 	 */
-	public function test_start():void {
+	public function test_start() {
 		$this->dashboard = new \PPRH\Dashboard();
 	}
 
 
-	public function test_check_to_upgrade():void {
+	public function test_check_to_upgrade() {
 		$actual_1 = $this->dashboard->check_to_upgrade( '1.7.7', '1.7.6.3' );
 		self::assertEquals( true, $actual_1 );
 

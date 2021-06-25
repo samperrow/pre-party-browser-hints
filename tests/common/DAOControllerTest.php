@@ -14,12 +14,12 @@ class DAOControllerTest extends TestCase {
 	/**
 	 * @before
 	 */
-	public function test_start():void {
+	public function test_start() {
 		$this->dao_controller = new \PPRH\DAOController();
 	}
 
 
-	public function test_hint_controller():void {
+	public function test_hint_controller() {
 		// insert_hint
 		$raw_data_1 = array('url' => 'test.com', 'hint_type' => 'dns-prefetch', 'op_code' => 0 );
 		$actual_1 = $this->dao_controller->hint_controller( $raw_data_1 );

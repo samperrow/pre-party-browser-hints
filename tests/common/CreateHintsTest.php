@@ -14,14 +14,14 @@ final class CreateHintsTest extends TestCase {
 	/**
 	 * @before
 	 */
-	public function test_start():void {
+	public function test_start() {
 		$this->create_hints = new \PPRH\CreateHints();
 	}
 
 	/**
 	 * @covers \PPRH\CreateHints::create_hint
 	 */
-	public function test_create_hint(): void {
+	public function test_create_hint() {
 		$url_1 = 'https://sphacks.local/wp-content/themes/sphacks/images/icons/newspaper.woff?19';
 
 		$test1 = TestUtils::create_hint_array( 'https://www.espn.com', 'dns-prefetch' );
@@ -53,7 +53,7 @@ final class CreateHintsTest extends TestCase {
 
 
 
-	public function test_new_hint_ctrl():void {
+	public function test_new_hint_ctrl() {
 		$dummy_hint = TestUtils::create_hint_array( 'https://free-hint.com', 'dns-prefetch', '', '', '', 'screen' );
 		$dummy_hint['op_code'] = 0;
 		$actual = $this->create_hints->create_hint( $dummy_hint );
@@ -80,7 +80,7 @@ final class CreateHintsTest extends TestCase {
 		self::assertEquals( $candidate_hint_2, $actual_2 );
 	}
 
-	public function test_create_pprh_hint_fail():void {
+	public function test_create_pprh_hint_fail() {
 		$raw_data1 = TestUtils::create_hint_array( '', '' );
 		$actual = $this->create_hints->create_hint( $raw_data1 );
 		self::assertEquals( false, $actual );
@@ -89,7 +89,7 @@ final class CreateHintsTest extends TestCase {
 
 
 
-	public function test_handle_duplicate_hints():void {
+	public function test_handle_duplicate_hints() {
 		$test_hint_1 = TestUtils::create_hint_array( 'https://test.com', 'preconnect', '', '', '', '' );
 		$dup_hints = array( $test_hint_1 );
 		$candidate_hint = TestUtils::create_hint_array( 'https://test.com', 'preconnect', '', '', '', '' );

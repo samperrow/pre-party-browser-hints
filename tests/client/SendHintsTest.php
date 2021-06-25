@@ -11,7 +11,7 @@ class SendHintsTest extends TestCase {
 	/**
 	 * @before
 	 */
-	public function test_start():void {
+	public function test_start() {
 		$this->send_hints = new \PPRH\SendHints();
 	}
 
@@ -25,7 +25,7 @@ class SendHintsTest extends TestCase {
 //		$this->test_hint = $dao->insert_hint( $new_hint );
 //	}
 
-	public function test_init():void {
+	public function test_init() {
 		$hints_1 = array();
 		$actual_1 = $this->send_hints->init($hints_1, true);
 		self::assertEquals( false, $actual_1 );
@@ -40,7 +40,7 @@ class SendHintsTest extends TestCase {
 	}
 
 
-	public function test_add_action_ctrl():void {
+	public function test_add_action_ctrl() {
 		$actual_1 = $this->send_hints->add_action_ctrl( true, true );
 		self::assertEquals( false, $actual_1 );
 
