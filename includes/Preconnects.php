@@ -137,7 +137,7 @@ class Preconnects {
 
 	public function pprh_post_domain_names() {
 		if ( isset( $_POST['pprh_data'] ) && wp_doing_ajax() ) {
-			check_ajax_referer('pprh_ajax_nonce', 'nonce');
+			\check_ajax_referer('pprh_ajax_nonce', 'nonce');
 			$allow_unauth = $this->config['allow_unauth'];
 
 			if ( $this->allow_unauth_users( $allow_unauth ) ) {

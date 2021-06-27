@@ -33,7 +33,7 @@ class DAOController extends DAO {
 	 * bulk_update = 3
 	 */
 	private function db_controller( $op_code, $raw_data, $hint_ids = null ) {
-		$db_result = self::create_db_result( false, null, '', $op_code, null );
+		$db_result = self::create_db_result( false, $op_code, 0 );
 
 		if ( 0 === $op_code || 1 === $op_code ) {
 			$db_result = $this->insert_or_update_hint( $op_code, $raw_data, $hint_ids );
@@ -66,12 +66,13 @@ class DAOController extends DAO {
 
 
 	protected function test_db_controller( $op_code, $ctrl_data, $hint_ids ) {
-		if ( empty( $ctrl_data['new_hint'] ) ) {
-			$test_result = self::create_db_result( true, $hint_ids ?? '', '', $op_code, null );
-		} else {
-			$test_result = self::create_db_result( true, '', '', $op_code, $ctrl_data['new_hint'] );
-		}
+//		if ( empty( $ctrl_data['new_hint'] ) ) {
+//			$test_result = self::create_db_result( true, $op_code, 0 );
+//		} else {
+//			$test_result = self::create_db_result( true, $op_code, 0 );
+//		}
 
+		$test_result = self::create_db_result( true, $op_code, 0 );
 		return $test_result;
 	}
 

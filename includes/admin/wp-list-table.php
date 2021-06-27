@@ -937,16 +937,18 @@ class WP_List_Table {
 	 * @return string Name of the default primary column, in this case, an empty string.
 	 */
 	protected function get_default_primary_column_name() {
-		$columns = $this->get_columns();
+	    if ( null === $this->columns ) {
+			$this->columns = $this->get_columns();
+		}
 		$column  = '';
 
-		if ( empty( $columns ) ) {
+		if ( empty( $this->columns ) ) {
 			return $column;
 		}
 
 		// We need a primary defined so responsive views show something,
 		// so let's fall back to the first non-checkbox column.
-		foreach ( $columns as $col => $column_name ) {
+		foreach ( $this->columns as $col => $column_name ) {
 			if ( 'cb' === $col ) {
 				continue;
 			}

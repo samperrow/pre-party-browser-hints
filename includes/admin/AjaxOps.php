@@ -49,20 +49,26 @@ class AjaxOps {
 	}
 
 	private function handle_action( $data ) {
-		$dao_ctrl = new DAOController();
-		$result = $dao_ctrl->hint_controller( $data );
+		$op_code = $data['op_code'] ?? 0;
+		$db_result = DAO::create_db_result( false, $op_code, 0 );
 
-		if ( isset( $data['action'] ) && 'reset_single_post_preconnects' === $data['action'] ) {
-			$result = \apply_filters( 'pprh_reset_post_preconnect', null );
+		if ( isset( $data['action'] ) ) {
+
+			if ( 'reset_single_post_preconnects' === $data['action'] ) {
+				$db_result = \apply_filters('pprh_reset_post_preconnect', $data );
+			} elseif ( 'prerender_config' === $data['action'] ) {
+				$result = \apply_filters('pprh_prerender_config', $data, true );
+
+				if ( is_array( $result ) && ! empty( $result ) ) {
+					$db_result = $result[0];
+				}
+			}
+		} else {
+			$dao_ctrl = new DAOController();
+			$db_result = $dao_ctrl->hint_controller( $data );
 		}
 
-		elseif ( 'set_single_prerender_hint' === $data['action'] ) {
-			$result = \apply_filters( 'pprh_single_prerender_config', $data );
-		}
-
-		$op_code = (int) $data['op_code'];
-		$error = DAO::create_db_result( false, '', 'Error updating hints. Please try aggain or contact support.', $op_code, null );
-		return ( is_object( $result ) ) ? $result : $error;
+		return $db_result;
 	}
 
 }
