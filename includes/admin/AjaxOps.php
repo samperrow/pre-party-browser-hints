@@ -22,7 +22,7 @@ class AjaxOps {
 				$db_result = $this->init( $pprh_data );
 			}
 
-			if ( PPRH_IN_DEV ) {
+			if ( PPRH_RUNNING_UNIT_TESTS ) {
 				return true;
 			}
 
@@ -45,7 +45,7 @@ class AjaxOps {
 	}
 
 	private function return_values( $json, $db_result ) {
-		return ( PPRH_IN_DEV ) ? $db_result : $json;
+		return ( PPRH_RUNNING_UNIT_TESTS ) ? $db_result : $json;
 	}
 
 	private function handle_action( $data ) {
