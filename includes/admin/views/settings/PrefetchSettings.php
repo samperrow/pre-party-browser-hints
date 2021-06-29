@@ -15,8 +15,8 @@ class PrefetchSettings {
 	public $prefetch_max_prefetches;
 
 	public static function turn_textarea_to_csv( $text ) {
-		$text = trim( $text );
-		return explode( "\r\n", $text );
+		$clean_text = Utils::clean_url( $text );
+		return explode( "\r\n", $clean_text );
 	}
 
 	public static function save_options() {

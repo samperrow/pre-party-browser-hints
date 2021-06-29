@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Utils {
 
 	public static function show_notice( $msg, $success ) {
-		if ( PPRH_TESTING ) {
+		if ( PPRH_IN_DEV ) {
 			return;
 		}
 		$alert = ( $success ) ? 'success' : 'error';
@@ -22,11 +22,11 @@ class Utils {
 	}
 
 	public static function update_option( string $option, $value ) {
-		return PPRH_TESTING || \update_option( $option, $value );
+		return ( PPRH_IN_DEV || PPRH_RUNNING_UNIT_TESTS ) || \update_option( $option, $value );
 	}
 
-	public static function json_to_array( $json ) {
-		$array = false;
+	public static function json_to_array( $json ):array {
+		$array = array();
 
 		try {
 			$unslashed_json = wp_unslash( $json );
@@ -51,7 +51,7 @@ class Utils {
 	}
 
 	public static function clean_url( $url ) {
-		return preg_replace( '/[\'<>^\"\\\]/', '', $url );
+		return preg_replace( '/[\s\'<>^\"\\\]/', '', $url );
 	}
 
 	public static function clean_url_path( $path ) {

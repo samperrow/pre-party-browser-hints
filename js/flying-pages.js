@@ -173,17 +173,23 @@
                 maxRPS: 3,
                 delay: 0,
                 hoverDelay: 50,
-                ignoreKeywords: '',
+                ignoreKeywords: [],
                 maxPrefetches: 10,
                 testing: 'true'
             }
+        }
+
+        let ignoreKeywords;
+
+        if (Array.isArray(pprh_fp_data.ignoreKeywords)) {
+            ignoreKeywords = pprh_fp_data.ignoreKeywords.map( (keyword) => keyword.replace(/[\s|\\'<>^\\"]/g, '') );
         }
 
         fp_data = {
             maxRPS: Number(pprh_fp_data.maxRPS),
             delay: Number(pprh_fp_data.delay),
             hoverDelay: Number(pprh_fp_data.hoverDelay),
-            ignoreKeywords: pprh_fp_data.ignoreKeywords.replace(/\s/g, '').split(','),
+            ignoreKeywords: ignoreKeywords,
             testing: ('true' === pprh_fp_data.testing),
             maxPrefetches: Number(pprh_fp_data.maxPrefetches)
         };

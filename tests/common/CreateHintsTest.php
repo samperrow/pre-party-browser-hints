@@ -24,22 +24,21 @@ final class CreateHintsTest extends TestCase {
 	public function test_create_hint() {
 		$url_1 = 'https://sphacks.local/wp-content/themes/sphacks/images/icons/newspaper.woff?19';
 
-		$test1 = TestUtils::create_hint_array( 'https://www.espn.com', 'dns-prefetch' );
-		$test2 = TestUtils::create_hint_array( 'ht<tps://www.e>\'sp"n.com', 'dns-prefetch', 'font', 'font/woff2', 'crossorigin', '(max-width: 600px)' );
-		$test3 = TestUtils::create_hint_array( '//espn.com', 'dns-prefetch' );
-		$test_4 = TestUtils::create_hint_array( '//espn.com', '' );
-		$test_5 = TestUtils::create_hint_array( $url_1, 'preload', 'font', 'font/woff', 'crossorigin', '' );
 
+		$test1 = TestUtils::create_hint_array( 'https://www.espn.com', 'dns-prefetch' );
 		$expected_1 = $this->create_hints->create_hint($test1);
 		self::assertEquals($expected_1, $test1);
 
+		$test2 = TestUtils::create_hint_array( 'ht<tps://www.e>\'sp"n.com', 'dns-prefetch', 'font', 'font/woff2', 'crossorigin', '(max-width:600px)' );
 		$actual_hint_2 = $this->create_hints->create_hint($test2);
 		$test2['url'] = 'https://www.espn.com';
 		self::assertEquals($test2, $actual_hint_2);
 
+		$test3 = TestUtils::create_hint_array( '//espn.com', 'dns-prefetch' );
 		$test_hint3 = $this->create_hints->create_hint($test3);
 		self::assertEquals($test_hint3, $test3);
 
+		$test_4 = TestUtils::create_hint_array( '//espn.com', '' );
 		$test_hint_4 = $this->create_hints->create_hint($test_4);
 		self::assertEquals(false, $test_hint_4);
 
@@ -47,8 +46,19 @@ final class CreateHintsTest extends TestCase {
 		$bool1 = $this->create_hints->create_hint($data1);
 		self::assertEquals(false, $bool1);
 
-		$actual_6 = $this->create_hints->create_hint( $test_5 );
-		self::assertEquals( $test_5, $actual_6);
+		$test_6 = TestUtils::create_hint_array( $url_1, 'preload', 'font', 'font/woff', 'crossorigin', '' );
+		$actual_6 = $this->create_hints->create_hint( $test_6 );
+		self::assertEquals( $test_6, $actual_6);
+
+		$test_7 = TestUtils::create_hint_array( 'https://www.espn.com/asdf something/page', 'dns-prefetch' );
+		$expected_7 = TestUtils::create_hint_array( 'https://www.espn.com/asdfsomething/page', 'dns-prefetch' );
+		$actual_7 = $this->create_hints->create_hint($test_7);
+		self::assertEquals($expected_7, $actual_7);
+
+		$test_8 = TestUtils::create_hint_array( "https://www.es\tpn.com/asdf/something/page", 'dns-prefetch' );
+		$expected_8 = TestUtils::create_hint_array( 'https://www.espn.com/asdf/something/page', 'dns-prefetch' );
+		$actual_8 = $this->create_hints->create_hint($test_8);
+		self::assertEquals($expected_8, $actual_8);
 	}
 
 

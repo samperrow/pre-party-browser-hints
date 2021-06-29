@@ -82,7 +82,9 @@ class Pre_Party_Browser_Hints {
 		$postmeta_table = $wpdb->prefix . 'postmeta';
 		$plugin_version = \get_option( 'pprh_version', '' );
         $site_url = \get_option( 'siteurl' );
-        $testing = defined( 'PPRH_TESTING_LOCALLY' ) && PPRH_TESTING_LOCALLY;
+//        $testing = defined( 'PPRH_UNIT_TESTING' ) && PPRH_UNIT_TESTING;
+		$testing = ( 'https://sphacks.local' === $site_url );
+		$unit_testing = defined( 'PPRH_UNIT_TESTING' ) && PPRH_UNIT_TESTING;
 
 		if ( ! defined( 'PPRH_DB_TABLE' ) ) {
 			define( 'PPRH_DB_TABLE', $table );
@@ -95,8 +97,9 @@ class Pre_Party_Browser_Hints {
 			define( 'PPRH_ADMIN_SCREEN', 'toplevel_page_' . PPRH_MENU_SLUG );
 			define( 'PPRH_HOME_URL', admin_url() . 'admin.php?page=' . PPRH_MENU_SLUG );
 			define( 'PPRH_SITE_URL', $site_url );
-			define( 'PPRH_TESTING', $testing );
-        }
+			define( 'PPRH_IN_DEV', $testing );
+			define( 'PPRH_RUNNING_UNIT_TESTS', $unit_testing );
+		}
 	}
 
 	public function load_common_files() {

@@ -15,10 +15,11 @@ class DAO {
 	}
 
 	// db results
-	public static function create_db_result( bool $success, int $action_code, int $success_code ) {
+	public static function create_db_result( bool $success, int $action_code, int $success_code, array $new_hint = null ) {
 		$msg = self::get_msg( $success, $action_code, $success_code );
 
 		return (object) array(
+			'new_hint'  => $new_hint ?? null,
 			'db_result' => array(
 				'msg'    => $msg,
 				'status' => $success,
@@ -77,9 +78,13 @@ class DAO {
 		);
 
 		$args = \apply_filters( 'pprh_dao_insert_hint_schema', $args, $new_hint );
-		$wpdb->insert( $this->table, $args['columns'], $args['types'] );
 
-		return self::create_db_result( $wpdb->result, 0, 0 );
+		if ( PPRH_RUNNING_UNIT_TESTS ) {
+			return self::create_db_result( true, 0, 0, $new_hint );
+		}
+
+		$wpdb->insert( $this->table, $args['columns'], $args['types'] );
+		return self::create_db_result( $wpdb->result, 0, 0, $new_hint );
 	}
 
 
@@ -87,26 +92,24 @@ class DAO {
 		global $wpdb;
 		$hint_id = (int) $hint_ids;
 		$current_user = wp_get_current_user()->display_name;
-
-		$wpdb->update(
-			$this->table,
-			array(
-				'url'         => $new_hint['url'],
-				'hint_type'   => $new_hint['hint_type'],
-				'as_attr'     => $new_hint['as_attr'],
-				'type_attr'   => $new_hint['type_attr'],
-				'crossorigin' => $new_hint['crossorigin'],
-				'media'       => $new_hint['media'],
-				'created_by'  => $current_user,
-			),
-			array(
-				'id' => $hint_id,
-			),
-			array( '%s', '%s', '%s', '%s', '%s' ),
-			array( '%d' )
+		$hint_arg = array(
+			'url'         => $new_hint['url'],
+			'hint_type'   => $new_hint['hint_type'],
+			'as_attr'     => $new_hint['as_attr'],
+			'type_attr'   => $new_hint['type_attr'],
+			'crossorigin' => $new_hint['crossorigin'],
+			'media'       => $new_hint['media'],
+			'created_by'  => $current_user
 		);
+		$where = array( 'id' => $hint_id );
+		$type_arg = array( '%s', '%s', '%s', '%s', '%s' );
 
-		return self::create_db_result( $wpdb->result, 1, 0 );
+		if ( PPRH_RUNNING_UNIT_TESTS ) {
+			return self::create_db_result( true, 1, 0, $new_hint );
+		}
+
+		$wpdb->update( $this->table, $hint_arg, $where, $type_arg, array( '%d' ) );
+		return self::create_db_result( $wpdb->result, 1, 0, $new_hint );
 	}
 
 	public function delete_hint( $hint_ids ) {
@@ -114,22 +117,30 @@ class DAO {
 		$hint_id_exists = preg_match('/\d/', $hint_ids );
 
 		if ( $hint_id_exists > 0 ) {
+
+			if ( PPRH_RUNNING_UNIT_TESTS ) {
+				return self::create_db_result( true, 2, 0, null );
+			}
+
 			$wpdb->query( "DELETE FROM $this->table WHERE id IN ($hint_ids)" );
+			return self::create_db_result( $wpdb->result, 2, 0, null );
 		}
 
-		return self::create_db_result( $wpdb->result, 2, 0 );
 	}
 
 	public function bulk_update( $hint_ids, $op_code ) {
 		global $wpdb;
 		$action = ( 3 === $op_code ) ? 'enabled' : 'disabled';
 
-		$wpdb->query( $wpdb->prepare(
-			"UPDATE $this->table SET status = %s WHERE id IN ($hint_ids)",
-			$action
-		) );
+		if ( PPRH_RUNNING_UNIT_TESTS ) {
+			return self::create_db_result( true, $op_code, 0, null );
+		}
 
-		return self::create_db_result( $wpdb->result, $op_code, 0 );
+		$wpdb->query( $wpdb->prepare(
+			"UPDATE $this->table SET status = %s WHERE id IN ($hint_ids)", $action )
+		);
+
+		return self::create_db_result( $wpdb->result, $op_code, 0, null );
 	}
 
 

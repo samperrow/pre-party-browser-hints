@@ -18,11 +18,11 @@ class AjaxOps {
 			$pprh_data = Utils::json_to_array( $_POST['pprh_data'] );
 			$db_result = '';
 
-			if ( false !== $pprh_data ) {
+			if ( ! empty( $pprh_data ) ) {
 				$db_result = $this->init( $pprh_data );
 			}
 
-			if ( PPRH_TESTING ) {
+			if ( PPRH_IN_DEV ) {
 				return true;
 			}
 
@@ -45,12 +45,12 @@ class AjaxOps {
 	}
 
 	private function return_values( $json, $db_result ) {
-		return ( PPRH_TESTING ) ? $db_result : $json;
+		return ( PPRH_IN_DEV ) ? $db_result : $json;
 	}
 
 	private function handle_action( $data ) {
 		$op_code = $data['op_code'] ?? 0;
-		$db_result = DAO::create_db_result( false, $op_code, 0 );
+		$db_result = DAO::create_db_result( false, $op_code, 0, null );
 
 		if ( isset( $data['action'] ) ) {
 

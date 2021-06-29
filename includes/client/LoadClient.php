@@ -42,10 +42,10 @@ class LoadClient {
 	}
 
 	public function load_flying_pages() {
-		$js_script_path = (PPRH_TESTING) ? 'js/flying-pages.js' : 'js/flying-pages.min.js';
+		$js_script_path = (PPRH_IN_DEV) ? 'js/flying-pages.js' : 'js/flying-pages.min.js';
 
 		$fp_data = array(
-			'testing'        => ( PPRH_TESTING ) ? 'true' : 'false',
+			'testing'        => ( PPRH_IN_DEV ) ? 'true' : 'false',
 			'delay'          => \get_option( 'pprh_prefetch_delay', 0 ),
 			'maxRPS'         => \get_option( 'pprh_prefetch_maxRPS', 3 ),
 			'hoverDelay'     => \get_option( 'pprh_prefetch_hoverDelay', 50 ),

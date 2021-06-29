@@ -16,13 +16,7 @@ class DAOController extends DAO {
 	// tested
 	public function hint_controller( $raw_data ) {
 		$op_code = (int) $raw_data['op_code'];
-		$new_hint_data = array();
 		$hint_ids = ( ! empty( $raw_data['hint_ids'] ) ) ? Utils::array_into_csv( $raw_data['hint_ids'] ) : '';
-
-		if ( PPRH_TESTING ) {
-			return $this->test_db_controller( $op_code, $new_hint_data, $hint_ids );
-		}
-
 		return $this->db_controller( $op_code, $raw_data, $hint_ids );
 	}
 
@@ -33,7 +27,7 @@ class DAOController extends DAO {
 	 * bulk_update = 3
 	 */
 	private function db_controller( $op_code, $raw_data, $hint_ids = null ) {
-		$db_result = self::create_db_result( false, $op_code, 0 );
+		$db_result = self::create_db_result( false, $op_code, 0, null );
 
 		if ( 0 === $op_code || 1 === $op_code ) {
 			$db_result = $this->insert_or_update_hint( $op_code, $raw_data, $hint_ids );
@@ -65,15 +59,9 @@ class DAOController extends DAO {
 	}
 
 
-	protected function test_db_controller( $op_code, $ctrl_data, $hint_ids ) {
-//		if ( empty( $ctrl_data['new_hint'] ) ) {
-//			$test_result = self::create_db_result( true, $op_code, 0 );
-//		} else {
-//			$test_result = self::create_db_result( true, $op_code, 0 );
-//		}
-
-		$test_result = self::create_db_result( true, $op_code, 0 );
-		return $test_result;
-	}
+//	protected function test_db_controller( $op_code, $ctrl_data, $hint_ids ) {
+//		$test_result = self::create_db_result( true, $op_code, 0, null );
+//		return $test_result;
+//	}
 
 }

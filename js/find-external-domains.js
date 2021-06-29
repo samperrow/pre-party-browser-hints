@@ -21,7 +21,6 @@
         resources.forEach(function(item) {
             let hintObj = {
                 url: item.name,
-                hint_type: pprh_data.hint_type,
             };
 
             let hint = pprhCreateHint.CreateHint(hintObj);

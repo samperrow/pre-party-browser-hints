@@ -48,6 +48,10 @@ final class UtilsTest extends TestCase {
 		$str2 = 'https"://<script\>test.com<script>';
 		$test2 = \PPRH\Utils::clean_url($str2);
 		self::assertEquals( 'https://scripttest.comscript', $test2 );
+
+		$str_3 = "https://asdf.com/asf /'<>^\"";
+		$test_3 = \PPRH\Utils::clean_url($str_3);
+		self::assertEquals( 'https://asdf.com/asf/', $test_3 );
 	}
 
 	public function test_clean_url_path() {
