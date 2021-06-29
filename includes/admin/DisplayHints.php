@@ -16,6 +16,7 @@ class DisplayHints extends WP_List_Table {
 	public $hints_per_page;
 	public $table;
 	public $items;
+	protected $columns;
 
 	public function __construct( $doing_ajax ) {
 		parent::__construct( array(
@@ -48,7 +49,7 @@ class DisplayHints extends WP_List_Table {
 	}
 
 	public function get_columns() {
-		$arr = array(
+		$columns = array(
             'cb'          => '<input type="checkbox" />',
             'url'         => __( 'URL', 'pprh' ),
             'hint_type'   => __( 'Hint Type', 'pprh' ),
@@ -60,7 +61,7 @@ class DisplayHints extends WP_List_Table {
             'created_by'  => __( 'Created By', 'pprh' ),
         );
 
-		return \apply_filters( 'pprh_dh_get_columns', $arr );
+		return \apply_filters( 'pprh_dh_get_columns', $columns );
 	}
 
 	public function get_sortable_columns() {
@@ -84,11 +85,10 @@ class DisplayHints extends WP_List_Table {
 
 	public function prepare_items() {
 		$this->hints_per_page = $this->set_hints_per_page();
-		$columns = $this->get_columns();
+		$this->columns = $this->get_columns();
 		$sortable = $this->get_sortable_columns();
-		$this->_column_headers = array( $columns, array(), $sortable );
+		$this->_column_headers = array( $this->columns, array(), $sortable );
 		$current_page = $this->get_pagenum();
-//		$query_code = ( ! empty( $_REQUEST['orderby'] ) ? 2 : 3 );
 		$all_hints = Utils::get_pprh_hints( true );
 		$this->items = array_slice( $all_hints, ( ( $current_page - 1 ) * $this->hints_per_page ), $this->hints_per_page );
 		$total_items = count( $all_hints );

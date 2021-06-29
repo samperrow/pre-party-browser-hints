@@ -8,7 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 final class DisplayHintsTest extends TestCase {
 
-	public function test_on_post_page_and_global_hint():void {
+	public function test_on_post_page_and_global_hint() {
 		$args = array(
 			'plural'   => '',
 			'singular' => '',

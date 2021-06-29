@@ -167,29 +167,39 @@
     document.addEventListener("mouseout", mouseOutListener, listenerOptions);
     document.addEventListener("touchstart", touchStartListener, listenerOptions);
 
-    function init() {
+    function get_Fp_data() {
+        return {
+            maxRPS: 3,
+            delay: 0,
+            hoverDelay: 50,
+            ignoreKeywords: [],
+            maxPrefetches: 10,
+            testing: false
+        }
+    }
+
+    function init(pprh_fp_data) {
+        let ignoreKeywords;
+
         if (typeof pprh_fp_data === "undefined") {
-            pprh_fp_data = {
-                maxRPS: 3,
-                delay: 0,
-                hoverDelay: 50,
-                ignoreKeywords: '',
-                maxPrefetches: 10,
-                testing: 'true'
-            }
+            pprh_fp_data = get_Fp_data();
+        }
+
+        if (Array.isArray(pprh_fp_data.ignoreKeywords)) {
+            ignoreKeywords = pprh_fp_data.ignoreKeywords.map( (keyword) => keyword.replace(/[\s|\\'<>^\\"]/g, '') );
         }
 
         fp_data = {
             maxRPS: Number(pprh_fp_data.maxRPS),
             delay: Number(pprh_fp_data.delay),
             hoverDelay: Number(pprh_fp_data.hoverDelay),
-            ignoreKeywords: pprh_fp_data.ignoreKeywords.replace(/\s/g, '').split(','),
+            ignoreKeywords: ignoreKeywords,
             testing: ('true' === pprh_fp_data.testing),
             maxPrefetches: Number(pprh_fp_data.maxPrefetches)
         };
 
-        if (! fp_data.testing) {
-            if (isSlowConnection || !isSupported) return;
+        if (! fp_data.testing && (isSlowConnection || !isSupported) ) {
+            return;
         }
 
         // Start Queue
@@ -210,5 +220,5 @@
 if (typeof module === "object") {
     module.exports = this.pprhFlyingPages;
 } else {
-    pprhFlyingPages.Init();
+    pprhFlyingPages.Init(pprh_fp_data);
 }

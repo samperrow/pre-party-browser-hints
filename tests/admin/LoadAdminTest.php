@@ -6,7 +6,7 @@ use PHPUnit\Framework\TestCase;
 
 final class LoadAdminTest extends TestCase {
 
-	public function test_register_admin_files():void {
+	public function test_register_admin_files() {
 		global $wp_scripts;
 		$load_admin = new \PPRH\LoadAdmin( false );
 		$load_admin->register_admin_files( PPRH_ADMIN_SCREEN );

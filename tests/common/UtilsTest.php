@@ -14,7 +14,7 @@ final class UtilsTest extends TestCase {
 
 
 
-	public function test_strip_non_alphanums():void {
+	public function test_strip_non_alphanums() {
 		$str1 = '!f_a#FED__=26 5b-2tb(&YT^>"28352';
 		$test1 = \PPRH\Utils::strip_non_alphanums($str1);
 		self::assertEquals( 'faFED265b2tbYT28352', $test1 );
@@ -24,13 +24,13 @@ final class UtilsTest extends TestCase {
 		self::assertEquals( $str2, $test2 );
 	}
 
-	public function test_strip_non_numbers():void {
+	public function test_strip_non_numbers() {
 		$str1 = '!f_a#FED__=26 5b-2tb(&YT^>"28352';
 		$test1 = \PPRH\Utils::strip_non_numbers($str1);
 		self::assertEquals( '265228352', $test1 );
 	}
 
-	public function test_clean_hint_type():void {
+	public function test_clean_hint_type() {
 		$str1 = 'DNS-prefetch';
 		$test1 = \PPRH\Utils::clean_hint_type($str1);
 		self::assertEquals( $str1, $test1 );
@@ -40,7 +40,7 @@ final class UtilsTest extends TestCase {
 		self::assertEquals( 'preconnect', $test2 );
 	}
 
-	public function test_clean_url():void {
+	public function test_clean_url() {
 		$str1 = 'https://www.espn.com';
 		$test1 = \PPRH\Utils::clean_url($str1);
 		self::assertEquals( $str1, $test1 );
@@ -48,9 +48,13 @@ final class UtilsTest extends TestCase {
 		$str2 = 'https"://<script\>test.com<script>';
 		$test2 = \PPRH\Utils::clean_url($str2);
 		self::assertEquals( 'https://scripttest.comscript', $test2 );
+
+		$str_3 = "https://asdf.com/asf /'<>^\"";
+		$test_3 = \PPRH\Utils::clean_url($str_3);
+		self::assertEquals( 'https://asdf.com/asf/', $test_3 );
 	}
 
-	public function test_clean_url_path():void {
+	public function test_clean_url_path() {
 		$str1 = 'https://www.espn.com';
 		$test1 = \PPRH\Utils::clean_url_path($str1);
 		self::assertEquals( $str1, $test1 );
@@ -59,7 +63,7 @@ final class UtilsTest extends TestCase {
 		self::assertEquals( 'testdsdf/blah', $test2 );
 	}
 
-	public function test_clean_hint_attr():void {
+	public function test_clean_hint_attr() {
 		$str1 = 'font/woff2';
 		$test1 = \PPRH\Utils::clean_hint_attr($str1);
 		self::assertEquals( $str1, $test1 );
@@ -68,7 +72,33 @@ final class UtilsTest extends TestCase {
 		self::assertEquals( 'f/asdlfkj43t935u23asdflkj3', $test2 );
 	}
 
-//	public function test_create_db_result():void {
+	public function test_isArrayAndNotEmpty() {
+		$test_1 = array();
+		$actual_1 = \PPRH\Utils::isArrayAndNotEmpty($test_1);
+		self::assertFalse( $actual_1 );
+
+		$test_2 = '';
+		$actual_2 = \PPRH\Utils::isArrayAndNotEmpty($test_2);
+		self::assertFalse( $actual_2 );
+
+		$test_3 = null;
+		$actual_3 = \PPRH\Utils::isArrayAndNotEmpty($test_3);
+		self::assertFalse( $actual_3 );
+
+		$test_4 = (object) array( 'asdf' );
+		$actual_4 = \PPRH\Utils::isArrayAndNotEmpty($test_4);
+		self::assertFalse( $actual_4 );
+
+		$test_5 = 21;
+		$actual_5 = \PPRH\Utils::isArrayAndNotEmpty($test_5);
+		self::assertFalse( $actual_5 );
+
+		$test_6 = array( 'asdf' );
+		$actual_6 = \PPRH\Utils::isArrayAndNotEmpty($test_6);
+		self::assertTrue( $actual_6 );
+	}
+
+//	public function test_create_db_result() {
 //
 //
 //		$test1 = PPRH\Utils::create_db_result($str1);
@@ -76,7 +106,7 @@ final class UtilsTest extends TestCase {
 //		self::assertEquals( '', $test2 );
 //	}
 
-//	public function test_get_wpdb_result():void {
+//	public function test_get_wpdb_result() {
 //		$action1 = 'created';
 //		$hint_id = null;
 //		$wpdb1 = (object) array(
@@ -112,7 +142,7 @@ final class UtilsTest extends TestCase {
 //		self::assertEquals( $result2, $test2 );
 //	}
 
-	public function test_get_option_status():void {
+	public function test_get_option_status() {
 		$option_name = 'pprh_test_option';
 		\add_option( $option_name, 'true' );
 		$actual_1 = \PPRH\Utils::get_option_status($option_name, 'true' );
@@ -128,7 +158,7 @@ final class UtilsTest extends TestCase {
 
 
 
-	public function test_esc_get_option():void {
+	public function test_esc_get_option() {
 		$test_option_name1 = 'pprh_test_option1';
 		\add_option( $test_option_name1, 'https://<test.com>/asdfasdf', '', 'true' );
 		$actual1 = \PPRH\Utils::esc_get_option( $test_option_name1 );
@@ -178,6 +208,35 @@ final class UtilsTest extends TestCase {
 		self::assertEquals(false, $test2);
 
 		unset( $_GET['post'], $_GET['page'] );
+	}
+
+	public function test_get_duplicate_hints() {
+		$url_1 = 'https://asdfasdfadsf.com';
+		$hint_type_1 = 'preconnect';
+		$actual_1 = \PPRH\Utils::get_duplicate_hints( $url_1, $hint_type_1 );
+		self::assertEmpty( $actual_1 );
+	}
+
+	public function test_get_pprh_hints() {
+
+		$actual_1 = \PPRH\Utils::get_pprh_hints( true );
+		self::assertNotEmpty( $actual_1 );
+
+		$actual_2 = \PPRH\Utils::get_pprh_hints( false );
+		self::assertNotEmpty( $actual_2 );
+	}
+
+	public function test_string_in_array() {
+		$test_array = array( 'asdf', 'magicstring', 'fakecol', 'blah' );
+
+		$actual_1 = \PPRH\Utils::string_in_array( $test_array, 'testcol' );
+		self::assertFalse( $actual_1 );
+
+		$actual_2 = \PPRH\Utils::string_in_array( $test_array, 'fakecol' );
+		self::assertTrue( $actual_2 );
+
+		$actual_3 = \PPRH\Utils::string_in_array( $test_array, 'fakecol253' );
+		self::assertFalse( $actual_3 );
 	}
 
 

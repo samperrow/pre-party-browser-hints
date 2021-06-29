@@ -18,16 +18,18 @@
 		}
 	}
 
-
 	toggleDivs();
 	function toggleDivs() {
 		let navTabs = document.querySelectorAll('a.nav-tab');
 		let divs = document.querySelectorAll('div.pprh-content');
 
-		navTabs[0].classList.toggle('nav-tab-active');
-		insertHintsTable.classList.toggle('active');
+		if (isObjectAndNotNull(insertHintsTable)) {
+			insertHintsTable.classList.toggle('active');
+		}
 
-		if (!navTabs) {
+		if (isObjectAndNotNull(navTabs) && navTabs.length > 0) {
+			navTabs[0].classList.toggle('nav-tab-active');
+		} else {
 			return;
 		}
 

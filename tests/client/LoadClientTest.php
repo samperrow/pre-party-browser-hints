@@ -14,18 +14,18 @@ final class LoadClientTest extends TestCase {
 	/**
 	 * @before
 	 */
-	public function test_start():void {
+	public function test_start() {
 		$this->load_client = new \PPRH\LoadClient();
 	}
 
-//	public function test_init():void {
+//	public function test_init() {
 //		$action = \has_action( 'pprh_pro_load_client' );
 //		self::assertEquals( true, $action );
 //
 //	}
 
 
-	public function test_verify_to_load_fp():void {
+	public function test_verify_to_load_fp() {
 		$action = \has_action( 'wp_enqueue_scripts', array( $this->load_client, 'load_flying_pages' ) );
 		self::assertEquals( false, $action );
 

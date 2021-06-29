@@ -10,11 +10,11 @@ final class PrePartyBrowserHintsTest extends TestCase {
 	/**
 	 * @before
 	 */
-	public function test_start():void {
+	public function test_start() {
 		$this->pprh = new \PPRH\Pre_Party_Browser_Hints();
 	}
 
-	public function test_create_constants():void {
+	public function test_create_constants() {
 		global $wpdb;
 		$table = $wpdb->prefix . 'pprh_table';
 		self::assertEquals( PPRH_DB_TABLE, $table );
@@ -32,7 +32,7 @@ final class PrePartyBrowserHintsTest extends TestCase {
 		self::assertEquals( PPRH_VERSION, $version );
 	}
 
-	public function test_load_common_files():void {
+	public function test_load_common_files() {
 		$utils = class_exists(\PPRH\Utils::class);
 		self::assertEquals( true, $utils );
 
@@ -43,7 +43,7 @@ final class PrePartyBrowserHintsTest extends TestCase {
 		self::assertEquals( true, $create_hints );
 	}
 
-	public function test_load_dashboard():void {
+	public function test_load_dashboard() {
 		$load_admin = class_exists( \PPRH\LoadAdmin::class );
 		self::assertEquals( true, $load_admin );
 
@@ -51,13 +51,13 @@ final class PrePartyBrowserHintsTest extends TestCase {
 		self::assertEquals( true, $manage_options );
 	}
 
-	public function test_activate_plugin():void {
+	public function test_activate_plugin() {
 		$actual = $this->pprh->activate_plugin();
 
 		self::assertEquals( true, $actual );
 	}
 
-	public function test_register_activation_hook():void {
+	public function test_register_activation_hook() {
 		$registered = \has_filter( 'activate_pre-party-browser-hints/pre-party-browser-hints.php' );
 		self::assertEquals( true, $registered );
 
@@ -66,7 +66,7 @@ final class PrePartyBrowserHintsTest extends TestCase {
 	}
 
 
-//	public function test_():void {
+//	public function test_() {
 //
 //	}
 }

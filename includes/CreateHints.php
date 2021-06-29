@@ -52,7 +52,8 @@ class CreateHints {
 			}
 		}
 
-		$response_obj = \PPRH\DAO::create_db_result( false, '', $msg, 0, null );
+		$response_obj = \PPRH\DAO::create_db_result( false,0, 0, null );
+//		$response_obj = \PPRH\DAO::create_db_result( false, '', $msg, 0, null );
 		return ( $resolved ) ? $candidate_hint : $response_obj;
 	}
 
