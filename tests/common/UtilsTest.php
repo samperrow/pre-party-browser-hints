@@ -72,6 +72,32 @@ final class UtilsTest extends TestCase {
 		self::assertEquals( 'f/asdlfkj43t935u23asdflkj3', $test2 );
 	}
 
+	public function test_isArrayAndNotEmpty() {
+		$test_1 = array();
+		$actual_1 = \PPRH\Utils::isArrayAndNotEmpty($test_1);
+		self::assertFalse( $actual_1 );
+
+		$test_2 = '';
+		$actual_2 = \PPRH\Utils::isArrayAndNotEmpty($test_2);
+		self::assertFalse( $actual_2 );
+
+		$test_3 = null;
+		$actual_3 = \PPRH\Utils::isArrayAndNotEmpty($test_3);
+		self::assertFalse( $actual_3 );
+
+		$test_4 = (object) array( 'asdf' );
+		$actual_4 = \PPRH\Utils::isArrayAndNotEmpty($test_4);
+		self::assertFalse( $actual_4 );
+
+		$test_5 = 21;
+		$actual_5 = \PPRH\Utils::isArrayAndNotEmpty($test_5);
+		self::assertFalse( $actual_5 );
+
+		$test_6 = array( 'asdf' );
+		$actual_6 = \PPRH\Utils::isArrayAndNotEmpty($test_6);
+		self::assertTrue( $actual_6 );
+	}
+
 //	public function test_create_db_result() {
 //
 //
@@ -182,6 +208,35 @@ final class UtilsTest extends TestCase {
 		self::assertEquals(false, $test2);
 
 		unset( $_GET['post'], $_GET['page'] );
+	}
+
+	public function test_get_duplicate_hints() {
+		$url_1 = 'https://asdfasdfadsf.com';
+		$hint_type_1 = 'preconnect';
+		$actual_1 = \PPRH\Utils::get_duplicate_hints( $url_1, $hint_type_1 );
+		self::assertEmpty( $actual_1 );
+	}
+
+	public function test_get_pprh_hints() {
+
+		$actual_1 = \PPRH\Utils::get_pprh_hints( true );
+		self::assertNotEmpty( $actual_1 );
+
+		$actual_2 = \PPRH\Utils::get_pprh_hints( false );
+		self::assertNotEmpty( $actual_2 );
+	}
+
+	public function test_string_in_array() {
+		$test_array = array( 'asdf', 'magicstring', 'fakecol', 'blah' );
+
+		$actual_1 = \PPRH\Utils::string_in_array( $test_array, 'testcol' );
+		self::assertFalse( $actual_1 );
+
+		$actual_2 = \PPRH\Utils::string_in_array( $test_array, 'fakecol' );
+		self::assertTrue( $actual_2 );
+
+		$actual_3 = \PPRH\Utils::string_in_array( $test_array, 'fakecol253' );
+		self::assertFalse( $actual_3 );
 	}
 
 

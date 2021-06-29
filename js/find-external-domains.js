@@ -21,6 +21,7 @@
         resources.forEach(function(item) {
             let hintObj = {
                 url: item.name,
+                hint_type: 'preconnect'
             };
 
             let hint = pprhCreateHint.CreateHint(hintObj);

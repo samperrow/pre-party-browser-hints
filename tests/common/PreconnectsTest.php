@@ -101,16 +101,16 @@ class PreconnectsTest extends TestCase {
 
 	public function test_check_to_perform_reset() {
 		$actual_1 = $this->preconnects->check_to_perform_reset( true, true, null );
-		self::assertEquals(false, $actual_1);
+		self::assertFalse($actual_1);
 
 		$actual_2 = $this->preconnects->check_to_perform_reset( false, true, null );
-		self::assertEquals(false, $actual_2);
+		self::assertFalse($actual_2);
 
 		$actual_3 = $this->preconnects->check_to_perform_reset( true, false, null );
-		self::assertEquals(true, $actual_3);
+		self::assertTrue( $actual_3);
 
 		$actual_4 = $this->preconnects->check_to_perform_reset( false, false, null );
-		self::assertEquals(false, $actual_4);
+		self::assertFalse( $actual_4);
 	}
 
 
@@ -119,54 +119,27 @@ class PreconnectsTest extends TestCase {
 		$ajax_cb = 'pprh_post_domain_names';
 
 		$wp_ajax_nopriv_added_1 = \has_action( "wp_ajax_nopriv_$ajax_cb", array($this->preconnects, $ajax_cb) );
-		self::assertEquals(false, $wp_ajax_nopriv_added_1);
+		self::assertFalse($wp_ajax_nopriv_added_1);
 
 		$wp_ajax_added_1 = \has_action( "wp_ajax_$ajax_cb", array($this->preconnects, $ajax_cb) );
-		self::assertEquals(false, $wp_ajax_added_1);
+		self::assertFalse($wp_ajax_added_1);
 
 
 		$this->preconnects->load_ajax_callbacks( false );
 		$wp_ajax_nopriv_added_2 = \has_action( "wp_ajax_nopriv_$ajax_cb", array($this->preconnects, $ajax_cb) );
-		self::assertEquals(false, $wp_ajax_nopriv_added_2);
+		self::assertFalse($wp_ajax_nopriv_added_2);
 
 		$wp_ajax_added_2 = \has_action( "wp_ajax_$ajax_cb", array($this->preconnects, $ajax_cb) );
-		self::assertEquals(true, $wp_ajax_added_2);
+		self::assertEquals( 10, $wp_ajax_added_2);
 
 		$this->preconnects->load_ajax_callbacks( true );
 		$wp_ajax_nopriv_added_3 = \has_action( "wp_ajax_nopriv_$ajax_cb", array($this->preconnects, $ajax_cb) );
-		self::assertEquals(true, $wp_ajax_nopriv_added_3);
+		self::assertEquals( 10, $wp_ajax_nopriv_added_3);
 
 		$wp_ajax_added_3 = \has_action( "wp_ajax_$ajax_cb", array($this->preconnects, $ajax_cb) );
-		self::assertEquals(true, $wp_ajax_added_3);
+		self::assertEquals( 10, $wp_ajax_added_3);
 	}
 
-
-//	public function test_enqueue_scripts() {
-//		global $wp_scripts;
-//		$preconnects_1 = new \PPRH\Preconnects();
-//		$preconnects_1->is_admin = true;
-//		$actual_1 = $preconnects_1->enqueue_scripts();
-//		self::assertEquals( false, $actual_1);
-//
-//		$preconnects_2 = new \PPRH\Preconnects();
-//		$preconnects_2->is_admin = false;
-//		$preconnects_2->enqueue_scripts();
-//		$actual_scripts = array();
-//
-//		foreach( $wp_scripts->queue as $script ) {
-//			$actual_scripts[] =  $wp_scripts->registered[$script]->handle;
-//		}
-//
-//		$expected_scripts = array();
-//
-//		if ( WP_ADMIN ) {
-//			$expected_scripts = array( 'thickbox', 'pprh_admin_js' );
-//		} else {
-//			$expected_scripts[] = 'pprh-find-domain-names';
-//		}
-//
-//		self::assertEquals( $expected_scripts, $actual_scripts);
-//	}
 
 	public function test_create_js_object() {
 		$time = time();
@@ -184,58 +157,35 @@ class PreconnectsTest extends TestCase {
 
 	public function test_allow_user() {
 		$expected_1 = $this->preconnects->allow_user( true, true );
-		self::assertEquals( true, $expected_1 );
+		self::assertTrue( $expected_1 );
 
 		$expected_2 = $this->preconnects->allow_user( true, false );
-		self::assertEquals( true, $expected_2 );
+		self::assertTrue( $expected_2 );
 
 		$expected_3 = $this->preconnects->allow_user( false, true );
-		self::assertEquals( true, $expected_3 );
+		self::assertTrue( $expected_3 );
 
 		$expected_4 = $this->preconnects->allow_user( false, false );
-		self::assertEquals( false, $expected_4 );
+		self::assertFalse( $expected_4 );
 	}
 
 
 
-//	public function test_free_load_auto_preconnects() {
+
+
+//	public function util_load_ajax_callbacks( $allow_unauth ) {
 //		$preconnects = new \PPRH\Preconnects();
-//		$autoload_option = 'pprh_preconnect_autoload';
-//		$set = 'pprh_preconnect_set';
-//		$autoload_initial = \get_option( $autoload_option );
-//		$preconnects_set_initial = \get_option( $set );
+//		$preconnects->load_ajax_callbacks( $allow_unauth );
+//		$ajax_cb = 'pprh_post_domain_names';
 //
-//		\update_option( $autoload_option, 'true' );
-//		\update_option( $set, 'false' );
-//		$load_preconnects = $preconnects->load_auto_preconnects(null);
-//		self::assertEquals( true, $load_preconnects );
+//		$ajax_cb_loaded = \has_action( "wp_ajax_$ajax_cb", array($preconnects, $ajax_cb) );
+//		$ajax_cb_nopriv_loaded = \has_action( "wp_ajax_nopriv_$ajax_cb", array($preconnects, $ajax_cb) );
 //
-//		\update_option( $autoload_option, 'false' );
-//		$load_preconnects2 = $preconnects->load_auto_preconnects(null);
-//		self::assertEquals( false, $load_preconnects2 );
-//
-//		\update_option( $set, 'true' );
-//		$load_preconnects3 = $preconnects->load_auto_preconnects(null);
-//		self::assertEquals( false, $load_preconnects3 );
-//
-//		\update_option( $autoload_option, $autoload_initial );
-//		\update_option( $set, $preconnects_set_initial );
+//		return array(
+//			$ajax_cb_loaded,
+//			$ajax_cb_nopriv_loaded
+//		);
 //	}
-//
-
-	public function util_load_ajax_callbacks( $allow_unauth ) {
-		$preconnects = new \PPRH\Preconnects();
-		$preconnects->load_ajax_callbacks( $allow_unauth );
-		$ajax_cb = 'pprh_post_domain_names';
-
-		$ajax_cb_loaded = \has_action( "wp_ajax_$ajax_cb", array($preconnects, $ajax_cb) );
-		$ajax_cb_nopriv_loaded = \has_action( "wp_ajax_nopriv_$ajax_cb", array($preconnects, $ajax_cb) );
-
-		return array(
-			$ajax_cb_loaded,
-			$ajax_cb_nopriv_loaded
-		);
-	}
 
 	// tests that only logged in users will load the preconnect ajax actions
 //	public function _load_ajax_callbacks1() {
@@ -259,22 +209,22 @@ class PreconnectsTest extends TestCase {
 
 		$config_1 = array( 'allow_unauth_opt' => false, 'is_user_logged_in' => false );
 		$actual_1 = $this->preconnects->post_domain_names( $pprh_data, $config_1 );
-		self::assertEquals( false, $actual_1 );
+		self::assertFalse( $actual_1 );
 
 		$config_2 = array( 'allow_unauth_opt' => true, 'is_user_logged_in' => true );
 		$actual_2 = $this->preconnects->post_domain_names( $pprh_data, $config_2 );
-		self::assertEquals( true, $actual_2 );
+		self::assertFalse( $actual_2 );
 
 		$config_3 = array( 'allow_unauth_opt' => true, 'is_user_logged_in' => false );
 		$pprh_data['hints'] = array( $hint_1, $hint_2 );
 		$actual_3 = $this->preconnects->post_domain_names( $pprh_data, $config_3 );
-		self::assertEquals( true, $actual_3 );
+		self::assertTrue( $actual_3 );
 
 		$config_4 = array( 'allow_unauth_opt' => false, 'is_user_logged_in' => true );
 		$hint_3 = TestUtils::create_hint_array( '', 'preconnect' );
 		$pprh_data['hints'] = array( $hint_1, $hint_3 );
 		$actual_4 = $this->preconnects->post_domain_names( $pprh_data, $config_4 );
-		self::assertEquals( false, $actual_4 );
+		self::assertFalse( $actual_4 );
 
 		$config_5 = array( 'allow_unauth_opt' => false, 'is_user_logged_in' => true );
 		$pprh_data_5 = array(
@@ -284,21 +234,31 @@ class PreconnectsTest extends TestCase {
 			'start_time' => $time
 		);
 		$actual_5 = $this->preconnects->post_domain_names( $pprh_data_5, $config_5 );
-		self::assertEquals( true, $actual_5 );
+		self::assertFalse( $actual_5 );
 	}
 
 
 
-	public function test_process_hints() {
-
-		$test_data = array();
-		$hint_1 = TestUtils::create_hint_array( 'https://test-process-hints.com', 'preconnect' );
-		$hint_2 = TestUtils::create_hint_array( 'https://tester.com', 'preconnect', 'font', 'font/woff', 'crossorigin', '' );
-		$test_data['hints'] = array( $hint_1, $hint_2 );
-		$expected = count( $test_data['hints'] );
-
-		$actual = $this->preconnects->process_hints( $test_data );
-		self::assertEquals( $expected, count( $actual ) );
-	}
+	//	public function test_pprh_post_domain_names() {
+//		$time = time();
+//		$this->preconnects->config = array(
+//			'allow_unauth_opt' => true,
+//			'is_user_logged_in' => true
+//		);
+//		$pprh_data = $this->preconnects->create_js_object( $time );
+//
+//		$pprh_data['hints'] = array();
+//		$pprh_data['hints'][] = TestUtils::create_hint_array( 'https://asdf.com', 'preconnect' );
+//		$json = json_encode( $pprh_data );
+//		$_POST['action'] = 'pprh_post_domain_names';
+//		$_POST['nonce'] = $pprh_data['nonce'];
+//		$_POST['pprh_data'] = $json;
+//		$_REQUEST['action'] = 'pprh_post_domain_names';
+//		$_REQUEST['nonce'] = $pprh_data['nonce'];
+//		$_REQUEST['pprh_data'] = $json;
+//
+//		$actual_1 = $this->preconnects->pprh_post_domain_names();
+//		self::assertEquals( true, $actual_1 );
+//	}
 
 }

@@ -59,7 +59,7 @@ class AjaxOps {
 			} elseif ( 'prerender_config' === $data['action'] ) {
 				$result = \apply_filters('pprh_prerender_config', $data, true );
 
-				if ( is_array( $result ) && ! empty( $result ) ) {
+				if ( Utils::isArrayAndNotEmpty( $result ) ) {
 					$db_result = $result[0];
 				}
 			}

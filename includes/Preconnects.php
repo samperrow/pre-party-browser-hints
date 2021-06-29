@@ -8,7 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class Preconnects {
 
-	private $config;
+	public $config;
 
 	// tested
 	public function __construct() {
@@ -119,47 +119,39 @@ class Preconnects {
 	public function pprh_post_domain_names() {
 		if ( isset( $_POST['pprh_data'] ) && wp_doing_ajax() ) {
 			\check_ajax_referer('pprh_ajax_nonce', 'nonce');
-
-			$pprh_data = Utils::json_to_array( $_POST['pprh_data'] );
-
-			if ( ! empty( $pprh_data ) ) {
-				$config = $this->config;
-				$this->post_domain_names( $pprh_data, $config );
-			}
-
-
-			if ( ! PPRH_RUNNING_UNIT_TESTS ) {
-				wp_die();
-			}
+			$this->post_domain_names_ctrl();
+			wp_die();
 		}
 	}
 
-	public function post_domain_names( array $pprh_data, array $config ):bool {
-		$allow_unauth = $config['allow_unauth_opt'] ?? false;
-		$user_logged_in = $config['is_user_logged_in'] ?? false;
-
-		if ( $this->allow_user( $allow_unauth, $user_logged_in ) ) {
-			return $this->do_ajax_callback( $pprh_data );
-		}
-
-		return false;
+	private function post_domain_names_ctrl() {
+		$config = $this->config ?? array( 'allow_unauth_opt' => false, 'is_user_logged_in' => false );
+		return $this->post_domain_names( $_POST['pprh_data'], $config );
 	}
 
-	private function do_ajax_callback( $pprh_data ):bool {
-		$results = array();
+
+
+	public function post_domain_names( $pprh_data, array $config ):bool {
+		if ( ! is_array( $pprh_data ) ) {
+			$pprh_data = Utils::json_to_array( $pprh_data );
+		}
+
+		$success = false;
+		$allow_unauth = $this->allow_user( $config['allow_unauth_opt'], $config['is_user_logged_in'] );
 		$hints = $pprh_data['hints'] ?? array();
 		$raw_hint_count = count( $hints );
 
-		if ( $raw_hint_count > 0 ) {
-			$results = $this->process_hints( $pprh_data );
+		if ( $allow_unauth && ($raw_hint_count > 0) && Utils::isArrayAndNotEmpty( $pprh_data ) ) {
+			$results = $this->get_hint_results( $pprh_data );
+			$this->update_options( $pprh_data );
+			$success = ( $raw_hint_count === count( $results ) );
 		}
 
-//		$this->update_options( $raw_hint_data );
-		return ( $raw_hint_count === count( $results ) );
+		return $success;
 	}
 
 	// tested
-	public function process_hints( $hint_data ) {
+	public function get_hint_results( array $hint_data ):array {
 		$dao_ctrl = new DAOController();
 		$results = array();
 

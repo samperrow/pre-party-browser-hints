@@ -4,7 +4,7 @@ declare(strict_types=1);
  * Plugin Name:       Pre* Party Resource Hints
  * Plugin URI:        https://wordpress.org/plugins/pre-party-browser-hints/
  * Description:       Take advantage of the browser resource hints DNS-Prefetch, Prerender, Preconnect, Prefetch, and Preload to improve page load time.
- * Version:           1.7.7
+ * Version:           1.7.7.1
  * Requires at least: 4.4
  * Requires PHP:      7.0.0
  * Author:            Sam Perrow
@@ -14,7 +14,7 @@ declare(strict_types=1);
  * Text Domain:       pprh
  * Domain Path:       /languages
  *
- * last edited June 24, 2021
+ * last edited June 29, 2021
  *
  * Copyright 2016  Sam Perrow  (email : sam.perrow399@gmail.com)
  *
@@ -82,8 +82,7 @@ class Pre_Party_Browser_Hints {
 		$postmeta_table = $wpdb->prefix . 'postmeta';
 		$plugin_version = \get_option( 'pprh_version', '' );
         $site_url = \get_option( 'siteurl' );
-//        $testing = defined( 'PPRH_UNIT_TESTING' ) && PPRH_UNIT_TESTING;
-		$testing = ( 'https://sphacks.local' === $site_url );
+		$in_dev_testing = ( 'https://sphacks.local' === $site_url );
 		$unit_testing = defined( 'PPRH_UNIT_TESTING' ) && PPRH_UNIT_TESTING;
 
 		if ( ! defined( 'PPRH_DB_TABLE' ) ) {
@@ -97,7 +96,7 @@ class Pre_Party_Browser_Hints {
 			define( 'PPRH_ADMIN_SCREEN', 'toplevel_page_' . PPRH_MENU_SLUG );
 			define( 'PPRH_HOME_URL', admin_url() . 'admin.php?page=' . PPRH_MENU_SLUG );
 			define( 'PPRH_SITE_URL', $site_url );
-			define( 'PPRH_IN_DEV', $testing );
+			define( 'PPRH_IN_DEV', $in_dev_testing );
 			define( 'PPRH_RUNNING_UNIT_TESTS', $unit_testing );
 		}
 	}

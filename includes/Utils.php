@@ -22,7 +22,7 @@ class Utils {
 	}
 
 	public static function update_option( string $option, $value ) {
-		return ( PPRH_IN_DEV || PPRH_RUNNING_UNIT_TESTS ) || \update_option( $option, $value );
+		return PPRH_RUNNING_UNIT_TESTS || \update_option( $option, $value );
 	}
 
 	public static function json_to_array( $json ):array {
@@ -66,10 +66,14 @@ class Utils {
 		return ( null === $str || '' === $str );
 	}
 
+	public static function isArrayAndNotEmpty( $arr ) {
+		return ( is_array( $arr ) && ! empty( $arr ) );
+	}
+
 
 
 	public static function array_into_csv( $hint_ids ) {
-		if ( is_array( $hint_ids ) && count( $hint_ids ) > 0 ) {
+		if ( self::isArrayAndNotEmpty( $hint_ids ) ) {
 			return implode( ',', array_map( 'absint', $hint_ids ) );
 		}
 
@@ -99,7 +103,7 @@ class Utils {
 		return $dao->get_pprh_hints( $is_admin );
 	}
 
-	public static function get_duplicate_hints( $url, $hint_type ) {
+	public static function get_duplicate_hints( string $url, string $hint_type ):array {
 		$dao = new DAO();
 		return $dao->get_duplicate_hints( $url, $hint_type );
 	}
@@ -109,14 +113,14 @@ class Utils {
 		return ( isset( $_SERVER['HTTP_REFERER'] ) ? self::clean_url( $_SERVER['HTTP_REFERER'] ) : '' );
 	}
 
-	public static function on_pprh_admin_page( $doing_ajax, $referer = null ) {
+	public static function on_pprh_admin_page( bool $doing_ajax, $referer = null ):bool {
 		if ( null === $referer ) {
 			$referer = self::get_referrer();
 		}
 		return ( $doing_ajax ? str_contains( $referer, PPRH_MENU_SLUG ) : ( PPRH_MENU_SLUG === ( $_GET['page'] ?? '' ) ) );
 	}
 
-	public static function string_in_array( $array, $test_col ) {
+	public static function string_in_array( array $array, string $test_col ):bool {
 		foreach( $array as $item ) {
 			if ( 0 === strcasecmp( $item, $test_col ) ) {
 				return true;
