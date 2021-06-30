@@ -164,27 +164,21 @@ class DAO {
 	public function get_admin_hints_query() {
 		$sql = "SELECT * FROM $this->table";
 		$query = array(
-			'sql' => $sql,
+			'sql'  => $sql,
 			'args' => array()
 		);
 
-		$new_query = \apply_filters( 'pprh_append_admin_sql', $query );
+		$req_order_by = strtolower( \esc_sql( $_REQUEST['orderby'] ?? '' ) );
+		$req_order = strtoupper( \esc_sql( $_REQUEST['order'] ?? '' ) );
+		$order_by = ( 0 < preg_match( '/url|hint_type|status|created_by|post_id/i', $req_order_by ) ) ? $req_order_by : '';
+		$order = ( 0 < preg_match( '/ASC|DESC/', $req_order ) ) ? $req_order : '';
 
-		if ( ! empty( $_REQUEST['orderby'] ) && ! empty( $_REQUEST['order'] ) ) {
-			$valid_orderby_columns = array( 'url', 'hint_type', 'status', 'created_by', 'post_id' );
-			$valid_order_columns = array( 'asc', 'desc' );
-			$valid_orderby = Utils::string_in_array( $valid_orderby_columns, $_REQUEST['orderby'] );
-			$valid_order = Utils::string_in_array( $valid_order_columns, $_REQUEST['order'] );
+		$new_query = \apply_filters( 'pprh_append_admin_sql', $query, $order_by, $order );
 
-			if ( $valid_orderby && $valid_order ) {
-				$orderby = esc_sql( $_REQUEST['orderby'] );
-				$order = esc_sql( $_REQUEST['order'] );
-				$new_query['sql'] .= " ORDER BY $orderby $order";
-			}
-		}
-
-		elseif ( $new_query === $query ) {
-			$new_query['sql'] .= ' ORDER BY url ASC';
+		if ( $new_query === $query ) {
+			if ( '' === $order_by ) $order_by = 'url';
+			if ( '' === $order ) $order = 'ASC';
+			$new_query['sql'] .= " ORDER BY $order_by $order";
 		}
 
 		return $new_query;

@@ -116,7 +116,7 @@ final class DAOTest extends TestCase {
 		$_REQUEST['order'] = 'asc';
 		$actual_2 = $this->dao->get_admin_hints_query();
 		$expected_2 = array(
-			'sql'  => "SELECT * FROM $table ORDER BY hint_type asc",
+			'sql'  => "SELECT * FROM $table ORDER BY hint_type ASC",
 			'args' => array()
 		);
 		self::assertEquals( $expected_2, $actual_2 );
@@ -125,11 +125,40 @@ final class DAOTest extends TestCase {
 		$_REQUEST['order'] = 'desc';
 		$actual_3 = $this->dao->get_admin_hints_query();
 		$expected_3 = array(
-			'sql'  => "SELECT * FROM $table ORDER BY url desc",
+			'sql'  => "SELECT * FROM $table ORDER BY url DESC",
 			'args' => array()
 		);
 		self::assertEquals( $expected_3, $actual_3 );
+		unset( $_REQUEST['orderby'], $_REQUEST['order'] );
 
+		$_REQUEST['orderby'] = '';
+		$_REQUEST['order'] = '';
+		$actual_4 = $this->dao->get_admin_hints_query();
+		$expected_4 = array(
+			'sql'  => "SELECT * FROM $table ORDER BY url ASC",
+			'args' => array()
+		);
+		self::assertEquals( $expected_4, $actual_4 );
+		unset( $_REQUEST['orderby'], $_REQUEST['order'] );
+
+		$_REQUEST['orderby'] = 'hint-asdf<"asdf/';
+		$_REQUEST['order'] = 'asdf';
+		$actual_5 = $this->dao->get_admin_hints_query();
+		$expected_5 = array(
+			'sql'  => "SELECT * FROM $table ORDER BY url ASC",
+			'args' => array()
+		);
+		self::assertEquals( $expected_5, $actual_5 );
+		unset( $_REQUEST['orderby'], $_REQUEST['order'] );
+
+		$_REQUEST['orderby'] = 'HINT_TYPE';
+		$_REQUEST['order'] = 'DESC';
+		$actual_6 = $this->dao->get_admin_hints_query();
+		$expected_6 = array(
+			'sql'  => "SELECT * FROM $table ORDER BY hint_type DESC",
+			'args' => array()
+		);
+		self::assertEquals( $expected_6, $actual_6 );
 		unset( $_REQUEST['orderby'], $_REQUEST['order'] );
 	}
 
