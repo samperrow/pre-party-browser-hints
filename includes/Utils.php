@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Utils {
 
 	public static function show_notice( $msg, $success ) {
-		if ( PPRH_IN_DEV ) {
+		if ( PPRH_RUNNING_UNIT_TESTS ) {
 			return;
 		}
 		$alert = ( $success ) ? 'success' : 'error';

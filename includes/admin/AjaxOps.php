@@ -22,7 +22,7 @@ class AjaxOps {
 				$db_result = $this->init( $pprh_data );
 			}
 
-			if ( PPRH_IN_DEV ) {
+			if ( PPRH_RUNNING_UNIT_TESTS ) {
 				return true;
 			}
 
@@ -45,7 +45,7 @@ class AjaxOps {
 	}
 
 	private function return_values( $json, $db_result ) {
-		return ( PPRH_IN_DEV ) ? $db_result : $json;
+		return ( PPRH_RUNNING_UNIT_TESTS ) ? $db_result : $json;
 	}
 
 	private function handle_action( $data ) {
@@ -55,11 +55,11 @@ class AjaxOps {
 		if ( isset( $data['action'] ) ) {
 
 			if ( 'reset_single_post_preconnects' === $data['action'] ) {
-				$db_result = \apply_filters('pprh_reset_post_preconnect', $data );
+				$db_result = \apply_filters( 'pprh_reset_post_preconnect', $data );
 			} elseif ( 'prerender_config' === $data['action'] ) {
-				$result = \apply_filters('pprh_prerender_config', $data, true );
+				$result = \apply_filters( 'pprh_prerender_config', null );
 
-				if ( Utils::isArrayAndNotEmpty( $result ) ) {
+				if ( Utils::isArrayAndNotEmpty( $result ) && is_object( $result[0] ) ) {
 					$db_result = $result[0];
 				}
 			}

@@ -103,11 +103,11 @@ class DisplayHints extends WP_List_Table {
 	}
 
 	public function set_hints_per_page() {
-		$user = get_current_user_id();
-		$screen = get_current_screen();
+		$user = \get_current_user_id();
+//		$screen = \get_current_screen();
 		$option = 'pprh_per_page';
-		$hints_per_page_meta = (int) get_user_meta( $user, $option, true );
-		return ( null !== $screen && ( ! empty ( $hints_per_page_meta) && $hints_per_page_meta > 0 ) ) ? $hints_per_page_meta : 10;
+		$hints_per_page_meta = (int) \get_user_meta( $user, $option, true );
+		return empty( $hints_per_page_meta ) ? 10 : $hints_per_page_meta;
     }
 
 	public function no_items() {

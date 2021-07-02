@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 class LoadClient {
 
 	public function init() {
-		\do_action( 'pprh_pro_load_client' );
+		$post_id = \apply_filters( 'pprh_pro_load_client', null );
 		include_once 'SendHints.php';
 
 		$this->verify_to_load_fp_ctrl();
