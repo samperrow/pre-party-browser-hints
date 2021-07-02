@@ -89,7 +89,7 @@ class DisplayHints extends WP_List_Table {
 		$sortable = $this->get_sortable_columns();
 		$this->_column_headers = array( $this->columns, array(), $sortable );
 		$current_page = $this->get_pagenum();
-		$all_hints = Utils::get_pprh_hints( true );
+		$all_hints = Utils::get_pprh_hints( true, array() );
 		$this->items = array_slice( $all_hints, ( ( $current_page - 1 ) * $this->hints_per_page ), $this->hints_per_page );
 		$total_items = count( $all_hints );
 

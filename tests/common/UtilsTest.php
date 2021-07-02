@@ -219,10 +219,12 @@ final class UtilsTest extends TestCase {
 
 	public function test_get_pprh_hints() {
 
-		$actual_1 = \PPRH\Utils::get_pprh_hints( true );
+		$data_1 = array( 'post_id' => '2144', 'request_uri' => '/sp-calendar-pro/core/' );
+		$actual_1 = \PPRH\Utils::get_pprh_hints( true, $data_1 );
 		self::assertNotEmpty( $actual_1 );
 
-		$actual_2 = \PPRH\Utils::get_pprh_hints( false );
+		$data_2 = array( 'post_id' => '2128', 'request_uri' => '' );
+		$actual_2 = \PPRH\Utils::get_pprh_hints( false, $data_2 );
 		self::assertNotEmpty( $actual_2 );
 	}
 

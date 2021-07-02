@@ -151,11 +151,11 @@ class DAO {
 		return $wpdb->get_results( $wpdb->prepare( $sql, $url, $hint_type ), ARRAY_A );
 	}
 
-	public function get_pprh_hints( $is_admin ) {
-		if ( $is_admin )  {
+	public function get_pprh_hints( bool $is_admin, array $data ) {
+		if ( $is_admin ) {
 			$query = $this->get_admin_hints_query();
 		} else {
-			$query = $this->get_client_hints_query();
+			$query = $this->get_client_hints_query( $data );
 		}
 
 		return $this->get_db_results( $query );
@@ -185,14 +185,14 @@ class DAO {
 	}
 
 
-	public function get_client_hints_query() {
+	public function get_client_hints_query( array $data ) {
 		$sql = "SELECT * FROM $this->table WHERE status = %s";
 		$query = array(
-			'sql'  => $sql,
-			'args' => array( 'enabled' )
+			'sql'     => $sql,
+			'args'    => array( 'enabled' ),
 		);
 
-		return \apply_filters( 'pprh_append_client_sql', $query );
+		return \apply_filters( 'pprh_append_client_sql', $query, $data );
 	}
 
 	private function get_db_results( $query ) {

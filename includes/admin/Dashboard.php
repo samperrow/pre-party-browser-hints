@@ -81,7 +81,7 @@ class Dashboard {
         $activate_plugin->upgrade_plugin();
 
         if ( $activate_plugin->plugin_activated ) {
-            \update_option( 'pprh_version', $new_version );
+            Utils::update_option( 'pprh_version', $new_version );
         }
     }
 

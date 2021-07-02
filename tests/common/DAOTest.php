@@ -169,7 +169,8 @@ final class DAOTest extends TestCase {
 
 		$table = $this->dao->table;
 
-		$actual_1 = $this->dao->get_client_hints_query();
+		$data_1 = array( 'post_id' => '0' );
+		$actual_1 = $this->dao->get_client_hints_query( $data_1 );
 		$expected_1 = array(
 			'sql' => "SELECT * FROM $table WHERE status = %s",
 			'args' => array( 'enabled' )
