@@ -275,8 +275,11 @@
 			adminNoticeElem.getElementsByTagName('p')[0].innerText = msg;
 		}
 
-		adminNoticeElem.classList.remove('notice-');
-		adminNoticeElem.classList.add('notice-' + status);
+		let statusText = ( status) ? 'success' : 'error';
+
+		adminNoticeElem.classList.remove('notice-error');
+		adminNoticeElem.classList.remove('notice-success');
+		adminNoticeElem.classList.add('notice-' + statusText);
 
 		setTimeout(function() {
 			adminNoticeElem.classList.remove('active');

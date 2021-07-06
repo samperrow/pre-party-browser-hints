@@ -8,10 +8,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class CreateHints {
 
-//	public function __construct() {}
-
-//	public $duplicate_hints = array();
-
 	public function create_hint( $raw_hint ) {
 		if ( empty( $raw_hint['url'] ) || empty( $raw_hint['hint_type'] ) ) {
 			return false;
@@ -40,20 +36,19 @@ class CreateHints {
 		return $this->new_hint_controller( $op_code, $candidate_hint, $duplicate_hints );
 	}
 
-	public function new_hint_controller( $op_code, $candidate_hint, $duplicate_hints ) {
+	public function new_hint_controller( int $op_code, array $candidate_hint, array $duplicate_hints ) {
 		$resolved = true;
-		$msg = 'Failed to create hint.';
+		$response_obj = \PPRH\DAO::create_db_result( false,0, 0, null );
 
-		if ( 0 === $op_code && count( $duplicate_hints ) > 0 ) {												// only need to check for duplicates when creating a hint.
+		if ( 0 === $op_code && ! empty( $duplicate_hints ) ) {												// only need to check for duplicates when creating a hint.
 			$resolved = $this->handle_duplicate_hints( $duplicate_hints, $candidate_hint );
 
 			if ( ! $resolved ) {
-				$msg = 'A duplicate hint already exists!';
+				$response_obj = \PPRH\DAO::create_db_result( false,0, 1, null );
+//				$msg = 'A duplicate hint already exists!';
 			}
 		}
 
-		$response_obj = \PPRH\DAO::create_db_result( false,0, 0, null );
-//		$response_obj = \PPRH\DAO::create_db_result( false, '', $msg, 0, null );
 		return ( $resolved ) ? $candidate_hint : $response_obj;
 	}
 
@@ -66,8 +61,6 @@ class CreateHints {
 		}
 
 		return $resolved;
-
-
 	}
 
 

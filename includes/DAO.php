@@ -28,6 +28,7 @@ class DAO {
 	}
 
 	private static function get_msg( bool $success, int $action_code, int $success_code ):string {
+		$dup_hints_alert = 'A duplicate hint exists!';
 		$preconnect_success = 'Auto preconnect hints for this post have been reset. Please load this page on the front end to re-create the preconnect hints.';
 		$preconnect_fail = 'Failed to reset this post\'s preconnect data. Please refresh the page and try again.';
 
@@ -46,8 +47,12 @@ class DAO {
 		);
 
 		if ( 4 >= $action_code ) {
-			$action = $actions[$action_code];
-			$msg = ( $success ) ? "Resource hint $action[1] successfully." : "Failed to $action[0] hint.";
+			if ( 0 === $action_code && 1 === $success_code ) {
+				$msg = $dup_hints_alert;
+			} else {
+				$action = $actions[$action_code];
+				$msg = ( $success ) ? "Resource hint $action[1] successfully." : "Failed to $action[0] hint.";
+			}
 		} else {
 			$msg = $actions[$action_code][$success_code];
 		}
@@ -63,7 +68,7 @@ class DAO {
 		}
 
 		$args = array(
-			'types'   => array( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' ),
+			'types'   => array( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' ),
 			'columns' => array(
 				'url'          => $new_hint['url'],
 				'hint_type'    => $new_hint['hint_type'],
@@ -84,6 +89,11 @@ class DAO {
 		}
 
 		$wpdb->insert( $this->table, $args['columns'], $args['types'] );
+
+		if ( isset( $wpdb->insert_id ) && $wpdb->insert_id > 0 ) {
+			$new_hint['id'] = $wpdb->insert_id;
+		}
+
 		return self::create_db_result( $wpdb->result, 0, 0, $new_hint );
 	}
 
@@ -109,10 +119,15 @@ class DAO {
 		}
 
 		$wpdb->update( $this->table, $hint_arg, $where, $type_arg, array( '%d' ) );
+
+		if ( isset( $wpdb->result ) && $wpdb->insert_id > 0 ) {
+			$new_hint['id'] = $hint_id;
+		}
+
 		return self::create_db_result( $wpdb->result, 1, 0, $new_hint );
 	}
 
-	public function delete_hint( $hint_ids ) {
+	public function delete_hint( string $hint_ids ) {
 		global $wpdb;
 		$hint_id_exists = preg_match('/\d/', $hint_ids );
 
