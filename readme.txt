@@ -316,4 +316,4 @@ Nov 3, 2016:
 
 1. [Support Forum](https://wordpress.org/support/plugin/pre-party-browser-hints)
 
-2. Send me an email at sam.perrow399@gmail.com
+2. Send me an email at info@sphacks.io
