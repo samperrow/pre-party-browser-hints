@@ -106,21 +106,22 @@ class Pre_Party_Browser_Hints {
 	}
 
 	public function load_common_files() {
-		if ( ! class_exists( \PPRH\Utils::class ) ) {
-			include_once 'includes/Utils.php';
-		}
+		include_once 'includes/Utils.php';
+		include_once 'includes/DAOController.php';
+		include_once 'includes/CreateHints.php';
+		include_once 'includes/admin/ActivatePlugin.php';
 
-		if ( ! class_exists( \PPRH\DAOController::class ) ) {
-			include_once 'includes/DAOController.php';
-		}
-
-		if ( ! class_exists( \PPRH\CreateHints::class ) ) {
-			include_once 'includes/CreateHints.php';
-		}
+//		if ( ! class_exists( \PPRH\Utils::class ) ) {
+//		}
+//
+//		if ( ! class_exists( \PPRH\DAOController::class ) ) {
+//		}
+//
+//		if ( ! class_exists( \PPRH\CreateHints::class ) ) {
+//		}
 	}
 
 	public function activate_plugin() {
-		include_once 'includes/admin/ActivatePlugin.php';
 		$activate_plugin = new ActivatePlugin();
 		$this->load_common_files();
 		$this->create_constants();

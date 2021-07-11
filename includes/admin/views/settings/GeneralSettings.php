@@ -13,7 +13,6 @@ class GeneralSettings {
 	public $html_head = false;
 
 	public static function save_options() {
-
 	    $options = array(
             'pprh_html_head'        => ( ! empty( $_POST['pprh_html_head'] ) ? Utils::strip_non_alphanums( $_POST['pprh_html_head'] ) : 'false' ),
 			'pprh_disable_wp_hints' => ( ! empty( $_POST['pprh_disable_wp_hints'] ) ? Utils::strip_non_alphanums( $_POST['pprh_disable_wp_hints'] ) : 'false' ),

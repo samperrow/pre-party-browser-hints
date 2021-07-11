@@ -120,15 +120,44 @@ class Utils {
 		return ( $doing_ajax ? str_contains( $referer, PPRH_MENU_SLUG ) : ( PPRH_MENU_SLUG === ( $_GET['page'] ?? '' ) ) );
 	}
 
-	public static function string_in_array( array $array, string $test_col ):bool {
-		foreach( $array as $item ) {
-			if ( 0 === strcasecmp( $item, $test_col ) ) {
-				return true;
-			}
+	public static function get_browser() {
+		$user_agent = strip_tags( $_SERVER['HTTP_USER_AGENT'] ?? '' );
+		return self::get_browser_name( $user_agent );
+	}
+
+	public static function get_browser_name( $user_agent ):string {
+		$browser = '';
+		$is_edge = str_contains( $user_agent, 'Edg' );
+
+		if ( ( str_contains( $user_agent, 'Trident' ) ) || ( str_contains( $user_agent, 'MSIE' ) && str_contains( $user_agent, 'Opera' ) ) ) {
+			$browser = 'MSIE';
+		} elseif ( str_contains( $user_agent, 'Firefox' ) ) {
+			$browser = 'Firefox';
+		} elseif ( str_contains( $user_agent, 'OPR' ) ) {
+			$browser = 'Opera';
+		} elseif ( $is_edge ) {
+			$browser = 'Edge';
+		} elseif ( str_contains( $user_agent, 'Chrome' ) ) {
+			$browser = 'Chrome';
+		} elseif ( str_contains( $user_agent, 'Safari' ) ) {
+			$browser = 'Safari';
+		} elseif ( str_contains( $user_agent, 'Netscape' ) ) {
+			$browser = 'Netscape';
 		}
 
-		return false;
+		return $browser;
 	}
+
+//	public static function get_browser_version( $user_agent, $browser_name ) {
+//		$str = strstr( $user_agent, $browser_name . '/' );
+//		if ( str_contains( $str, ' ' ) ) {
+//			$str = explode(' ', $str )[0];
+//		} elseif ( str_contains( $str, '/' ) ) {
+//			$str = explode( '/', $str )[1];
+//		}
+//
+//		return $str;
+//	}
 
 }
 

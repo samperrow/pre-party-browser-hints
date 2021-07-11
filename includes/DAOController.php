@@ -48,8 +48,9 @@ class DAOController extends DAO {
 			$new_hint_data = $create_hints->new_hint_ctrl( $raw_data );
 
 			// duplicate hint exists, or error.
-			if ( is_object( $new_hint_data ) ) {
-				$response = $new_hint_data;
+			if ( false === $new_hint_data ) {
+//				$response = $new_hint_data;
+				$response = \PPRH\DAO::create_db_result( false,0, 1, null );
 			} elseif ( is_array( $new_hint_data ) && isset( $new_hint_data['url'], $new_hint_data['hint_type'] ) ) {
 				$response = ( 0 === $op_code ) ? $this->insert_hint( $new_hint_data ) : $this->update_hint( $new_hint_data, $hint_ids );
 			}

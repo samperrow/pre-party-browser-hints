@@ -82,12 +82,12 @@ final class CreateHintsTest extends TestCase {
 		$candidate_hint_1 = TestUtils::create_hint_array( 'https://test.com', 'dns-prefetch', '', '', '', 'screen' );
 		$dup_hints_1 = array( $test_hint_1 );
 		$actual_1 = $this->create_hints->new_hint_controller( 0, $candidate_hint_1, $dup_hints_1 );
-		self::assertEquals( true, is_object( $actual_1 ) );
+		self::assertFalse( $actual_1 );
 
 		$candidate_hint_2 = TestUtils::create_hint_array( 'https://test2.com', 'dns-prefetch', '', '', '', 'screen' );
 		$dup_hints_2 = array();
 		$actual_2 = $this->create_hints->new_hint_controller( 0, $candidate_hint_2, $dup_hints_2 );
-		self::assertEquals( $candidate_hint_2, $actual_2 );
+		self::assertTrue( $actual_2 );
 	}
 
 	public function test_create_pprh_hint_fail() {

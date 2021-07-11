@@ -71,7 +71,7 @@ class LoadAdmin {
 		include_once 'Dashboard.php';
 		include_once 'views/Settings.php';
 		include_once 'views/HintInfo.php';
-//		include_once 'views/Upgrade.php';
+		include_once 'views/Upgrade.php';
 		include_once 'views/settings/GeneralSettings.php';
 		include_once 'views/settings/PreconnectSettings.php';
 		include_once 'views/settings/PrefetchSettings.php';
