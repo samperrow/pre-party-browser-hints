@@ -120,6 +120,14 @@ class Utils {
 		return ( $doing_ajax ? str_contains( $referer, PPRH_MENU_SLUG ) : ( PPRH_MENU_SLUG === ( $_GET['page'] ?? '' ) ) );
 	}
 
+	public static function clean_string_array( array $str_array ):array {
+		foreach( $str_array as $item => $val ) {
+			$str_array[$item] = self::strip_non_alphanums( $val );
+		}
+
+		return $str_array;
+	}
+
 	public static function get_browser() {
 		$user_agent = strip_tags( $_SERVER['HTTP_USER_AGENT'] ?? '' );
 		return self::get_browser_name( $user_agent );
