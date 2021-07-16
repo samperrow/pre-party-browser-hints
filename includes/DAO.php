@@ -166,18 +166,21 @@ class DAO {
 		return $wpdb->get_results( $wpdb->prepare( $sql, $url, $hint_type ), ARRAY_A );
 	}
 
-	public function get_pprh_hints( bool $is_admin, array $data ) {
-		if ( $is_admin ) {
-			$query = $this->get_admin_hints_query();
-		} else {
-			$query = $this->get_client_hints_query( $data );
-		}
 
-		return $this->get_db_results( $query );
+
+	public static function get_admin_hints() {
+		$query = self::get_admin_hints_query();
+		return self::get_db_results( $query );
 	}
 
-	public function get_admin_hints_query() {
-		$sql = "SELECT * FROM $this->table";
+	public static function get_client_hints( $data ) {
+		$query = self::get_client_hints_query( $data );
+		return self::get_db_results( $query );
+	}
+
+	public static function get_admin_hints_query() {
+		$table = PPRH_DB_TABLE;
+		$sql = "SELECT * FROM $table";
 		$query = array(
 			'sql'  => $sql,
 			'args' => array()
@@ -196,21 +199,23 @@ class DAO {
 			$new_query['sql'] .= " ORDER BY $order_by $order";
 		}
 
-		return $new_query;
+		return $query;
 	}
 
 
-	public function get_client_hints_query( array $data ) {
-		$sql = "SELECT * FROM $this->table WHERE status = %s";
+	public static function get_client_hints_query( array $data ) {
+		$table = PPRH_DB_TABLE;
+		$sql = "SELECT * FROM $table WHERE status = %s";
 		$query = array(
 			'sql'     => $sql,
 			'args'    => array( 'enabled' ),
 		);
 
-		return \apply_filters( 'pprh_append_client_sql', $query, $data );
+		$query = \apply_filters( 'pprh_append_client_sql', $query, $data );
+		return self::get_db_results( $query );
 	}
 
-	private function get_db_results( $query ) {
+	private static function get_db_results( $query ) {
 		global $wpdb;
 
 		if ( ! empty( $query['args'] ) ) {

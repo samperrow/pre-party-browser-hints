@@ -98,10 +98,6 @@ class Utils {
 		return ( 'true' === $value ? 'checked' : '' );
 	}
 
-	public static function get_pprh_hints( bool $is_admin, array $data ) {
-		$dao = new DAO();
-		return $dao->get_pprh_hints( $is_admin, $data );
-	}
 
 	public static function get_duplicate_hints( string $url, string $hint_type ):array {
 		$dao = new DAO();
