@@ -11,12 +11,6 @@ class PreconnectSettings {
 	public $autoload = false;
 	public $allow_unauth = false;
 
-//	protected $on_pprh_admin = false;
-
-//	public function __construct($on_pprh_admin) {
-//	    $this->on_pprh_admin = $on_pprh_admin;
-//    }
-
 	public static function save_options() {
 	    $options = array(
 			'autoload_preconnects' => isset( $_POST['pprh_preconnect_autoload_preconnects'] )  ? 'true' : 'false',

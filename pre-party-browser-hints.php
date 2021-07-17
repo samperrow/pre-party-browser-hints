@@ -36,6 +36,11 @@ add_action( 'wpmu_new_blog', array( $pprh_load, 'activate_plugin' ) );
 class Pre_Party_Browser_Hints {
 
 //	public function __construct() {}
+	public $pprh_preconnect_autoload;
+
+	public function __construct() {
+		$this->pprh_preconnect_autoload = ( 'true' === \get_option( 'pprh_preconnect_autoload' ) );
+	}
 
 	public function init() {
 		\add_action( 'init', array( $this, 'load_plugin' ) );
@@ -56,16 +61,16 @@ class Pre_Party_Browser_Hints {
 		$this->load( $is_admin );
 
 		// this needs to be loaded front end and back end bc Ajax needs to be able to communicate between the two.
-		include_once 'includes/Preconnects.php';
-		$preconnects = new Preconnects();
+
+		if ( $this->pprh_preconnect_autoload ) {
+			include_once 'includes/Preconnects.php';
+			$preconnects = new Preconnects();
+		}
 	}
 
-	public function load( $is_admin ) {
-		if ( $is_admin ) {
-			\add_action( 'wp_loaded', array( $this, 'load_admin' ) );
-		} else {
-			\add_action( 'wp_loaded', array( $this, 'load_client' ) );
-		}
+	public function load( bool $is_admin ) {
+		$str = ( $is_admin ) ? 'admin' : 'client';
+		\add_action( 'wp_loaded', array( $this, "load_$str" ) );
     }
 
 	public function load_admin() {
@@ -77,7 +82,7 @@ class Pre_Party_Browser_Hints {
     public function load_client() {
 		include_once 'includes/client/LoadClient.php';
 		$load_client = new LoadClient();
-        $load_client->init();
+        $load_client->init( $this->pprh_preconnect_autoload );
     }
 
 	public function create_constants() {
@@ -92,7 +97,7 @@ class Pre_Party_Browser_Hints {
 		if ( ! defined( 'PPRH_DB_TABLE' ) ) {
 			define( 'PPRH_DB_TABLE', $table );
 			define( 'PPRH_VERSION', $plugin_version );
-			define( 'PPRH_VERSION_NEW', '1.7.8' );
+			define( 'PPRH_VERSION_NEW', '1.8.0' );
 			define( 'PPRH_POSTMETA_TABLE', $postmeta_table );
 			define( 'PPRH_ABS_DIR', WP_PLUGIN_DIR . '/pre-party-browser-hints/' );
 			define( 'PPRH_REL_DIR', plugins_url() . '/pre-party-browser-hints/' );
@@ -122,8 +127,8 @@ class Pre_Party_Browser_Hints {
 	}
 
 	public function activate_plugin() {
-		$activate_plugin = new ActivatePlugin();
 		$this->load_common_files();
+		$activate_plugin = new ActivatePlugin();
 		$this->create_constants();
 		$activate_plugin->activate_plugin();
 		return $activate_plugin->plugin_activated;

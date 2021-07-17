@@ -8,8 +8,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class LoadClient {
 
-	public function init() {
-		$data = \apply_filters( 'pprh_pro_load_client', array() );
+	public function init( bool $pprh_preconnect_autoload ) {
+		$data = \apply_filters( 'pprh_pro_load_client', $pprh_preconnect_autoload );
 		include_once 'SendHints.php';
 
 		$this->verify_to_load_fp_ctrl();

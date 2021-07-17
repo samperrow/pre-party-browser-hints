@@ -199,7 +199,7 @@ class DAO {
 			$new_query['sql'] .= " ORDER BY $order_by $order";
 		}
 
-		return $query;
+		return $new_query;
 	}
 
 
@@ -211,8 +211,7 @@ class DAO {
 			'args'    => array( 'enabled' ),
 		);
 
-		$query = \apply_filters( 'pprh_append_client_sql', $query, $data );
-		return self::get_db_results( $query );
+		return \apply_filters( 'pprh_append_client_sql', $query, $data );
 	}
 
 	private static function get_db_results( $query ) {

@@ -8,7 +8,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class AjaxOps {
 
-	public function __construct() {
+//	public function __construct() {
+//		\add_action( 'wp_ajax_pprh_update_hints', array( $this, 'pprh_update_hints' ) );
+//	}
+
+	public function set_actions() {
 		\add_action( 'wp_ajax_pprh_update_hints', array( $this, 'pprh_update_hints' ) );
 	}
 
@@ -44,11 +48,11 @@ class AjaxOps {
 		return false;
 	}
 
-	private function return_values( $json, $db_result ) {
+	private function return_values( $json, object $db_result ) {
 		return ( PPRH_RUNNING_UNIT_TESTS ) ? $db_result : $json;
 	}
 
-	private function handle_action( $data ) {
+	private function handle_action( $data ):object {
 		$op_code = $data['op_code'] ?? 0;
 		$db_result = DAO::create_db_result( false, $op_code, 0, null );
 

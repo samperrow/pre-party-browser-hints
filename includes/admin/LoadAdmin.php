@@ -30,7 +30,8 @@ class LoadAdmin {
 		include_once 'AjaxOps.php';
 		include_once 'views/InsertHints.php';
 
-		new AjaxOps();
+		$ajax_ops = new AjaxOps();
+		$ajax_ops->set_actions();
 		\do_action( 'pprh_pro_load_admin' );
 	}
 
