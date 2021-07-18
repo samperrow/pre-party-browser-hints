@@ -10,14 +10,14 @@ class SendHints {
 
 	public $hints = array();
 	public $hint_str = '';
-	protected $send_hints_in_html = '';
+	public $send_hints_in_html = '';
 
 	public function __construct() {
 		$this->send_hints_in_html = ( 'true' === \get_option( 'pprh_html_head', 'true' ) );
 	}
 
 	public function init_ctrl( array $data ) {
-		$enabled_hints = DAO::get_client_hints( $data );
+		$enabled_hints = DAO::get_pprh_hints( false, $data );
 		$headers_sent = \headers_sent();
 		$send_in_http_header = $this->add_action_ctrl( $this->send_hints_in_html, $headers_sent );
 		$this->init( $enabled_hints, $send_in_http_header );

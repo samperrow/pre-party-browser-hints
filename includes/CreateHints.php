@@ -26,7 +26,7 @@ class CreateHints {
 			'auto_created' => ( $raw_hint['auto_created'] ?? 0 )
 		);
 
-		return \apply_filters( 'pprh_append_hint', $new_hint, $raw_hint );
+		return Utils::apply_pprh_filters( 'pprh_append_hint', array( $new_hint, $raw_hint ) );
 	}
 
 	public function new_hint_ctrl( array $raw_hint ):array {
@@ -52,7 +52,7 @@ class CreateHints {
 	public function new_hint_controller( int $op_code, array $candidate_hint, array $duplicate_hints ):array {
 
 		if ( $op_code <= 2 && isset( $candidate_hint['post_id'] ) ) {
-			$candidate_hint = \apply_filters( 'pprh_resolve_duplicate_hints', $candidate_hint, $duplicate_hints );
+			$candidate_hint = Utils::apply_pprh_filters( 'pprh_resolve_duplicate_hints', array( $candidate_hint, $duplicate_hints ) );
 		} elseif ( ! empty( $duplicate_hints ) ) {
 			return array();
 		}

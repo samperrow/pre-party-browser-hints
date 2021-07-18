@@ -12,19 +12,20 @@ class LoadAdmin {
 
 	public function init() {
 		\add_action( 'admin_menu', array( $this, 'load_admin_menu' ) );
-		\add_action( 'admin_init', array( $this, 'add_settings_meta_boxes' ) );
-		\add_action( 'load-post.php', array( $this, 'create_post_meta_box' ) );
+//		\add_action( 'load-post.php', array( $this, 'create_post_meta_box' ) );
 
 		$this->on_pprh_admin_page = Utils::on_pprh_admin_page( \wp_doing_ajax() );
 
-		$this->load_common_content();
-		$this->load_admin_files();
+		if ( $this->on_pprh_admin_page ) {
+			\add_action( 'admin_init', array( $this, 'add_settings_meta_boxes' ) );
+			\add_action( 'admin_enqueue_scripts', array( $this, 'register_admin_files' ) );
+			\add_filter( 'set-screen-option', array( $this, 'pprh_set_screen_option' ), 10, 3 );
+			$this->load_common_content();
+			$this->load_admin_files();
+        }
 	}
 
 	public function load_common_content() {
-		\add_action( 'admin_enqueue_scripts', array( $this, 'register_admin_files' ) );
-		\add_filter( 'set-screen-option', array( $this, 'pprh_set_screen_option' ), 10, 3 );
-
 		include_once 'NewHint.php';
 		include_once 'DisplayHints.php';
 		include_once 'AjaxOps.php';
@@ -63,10 +64,8 @@ class LoadAdmin {
 			wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
 		}
 
-//		if ( $this->on_pprh_admin_page ) {
-			$dashboard = new Dashboard();
-			$dashboard->show_plugin_dashboard( $this->on_pprh_admin_page );
-//		}
+        $dashboard = new Dashboard();
+        $dashboard->show_plugin_dashboard( $this->on_pprh_admin_page );
 	}
 
 	public function load_admin_files() {
@@ -95,27 +94,24 @@ class LoadAdmin {
 
 	// Register and call the CSS and JS we need only on the needed page.
 	public function register_admin_files( $hook ) {
-		$str = PPRH_ADMIN_SCREEN . 'post.php';
+//		$str = PPRH_ADMIN_SCREEN . 'post.php';
 
-		if ( str_contains( $str, $hook ) ) {
+		if ( str_contains( PPRH_ADMIN_SCREEN, $hook ) ) {
 			$ajax_data = array(
 				'nonce'     => wp_create_nonce( 'pprh_table_nonce' ),
 				'admin_url' => admin_url()
 			);
 
-			wp_register_script( 'pprh_create_hints_js', PPRH_REL_DIR . 'js/create-hints.js', null, PPRH_VERSION, true );
+			\wp_register_script( 'pprh_create_hints_js', PPRH_REL_DIR . 'js/create-hints.js', null, PPRH_VERSION, true );
 
-			wp_register_script( 'pprh_admin_js', PPRH_REL_DIR . 'js/admin.js', array( 'jquery', 'pprh_create_hints_js' ), PPRH_VERSION, true );
-			wp_localize_script( 'pprh_admin_js', 'pprh_data', $ajax_data );
+			\wp_register_script( 'pprh_admin_js', PPRH_REL_DIR . 'js/admin.js', array( 'jquery', 'pprh_create_hints_js' ), PPRH_VERSION, true );
+			\wp_localize_script( 'pprh_admin_js', 'pprh_data', $ajax_data );
 
-			wp_register_style( 'pprh_styles_css', PPRH_REL_DIR . 'css/styles.css', null, PPRH_VERSION, 'all' );
-
-			wp_enqueue_script( 'pprh_create_hints_js' );
-			wp_enqueue_script( 'pprh_admin_js' );
-			wp_enqueue_style( 'pprh_styles_css' );
-
-			// needed for metaboxes
-			wp_enqueue_script( 'post' );
+			\wp_register_style( 'pprh_styles_css', PPRH_REL_DIR . 'css/styles.css', null, PPRH_VERSION, 'all' );
+			\wp_enqueue_style( 'pprh_styles_css' );
+			\wp_enqueue_script( 'pprh_create_hints_js' );
+			\wp_enqueue_script( 'pprh_admin_js' );
+			\wp_enqueue_script( 'post' );			// needed for metaboxes
 		}
 	}
 
@@ -124,7 +120,7 @@ class LoadAdmin {
 		$preconnect_settings = new PreconnectSettings();
 		$prefetch_settings = new PrefetchSettings();
 
-		add_meta_box(
+		\add_meta_box(
 			'pprh_general_settings_metabox',
 			'General Settings',
 			array( $general_settings, 'show_settings' ),
@@ -133,7 +129,7 @@ class LoadAdmin {
 			'low'
 		);
 
-		add_meta_box(
+		\add_meta_box(
 			'pprh_preconnect_settings_metabox',
 			'Auto Preconnect Settings',
 			array( $preconnect_settings, 'show_settings' ),
@@ -142,7 +138,7 @@ class LoadAdmin {
 			'low'
 		);
 
-		add_meta_box(
+		\add_meta_box(
 			'pprh_prefetch_settings_metabox',
 			'Auto Prefetch Settings',
 			array( $prefetch_settings, 'show_settings' ),
@@ -151,20 +147,20 @@ class LoadAdmin {
 			'low'
 		);
 
-		add_meta_box(
-			'pprh_prerender_settings_metabox',
-			'Auto Prerender Settings',
-			array( $this, 'create_prerender_metabox' ),
-			PPRH_ADMIN_SCREEN,
-			'normal',
-			'low'
-		);
+//		\add_meta_box(
+//			'pprh_prerender_settings_metabox',
+//			'Auto Prerender Settings',
+//			array( $this, 'create_prerender_metabox' ),
+//			PPRH_ADMIN_SCREEN,
+//			'normal',
+//			'low'
+//		);
 	}
 
 	public function create_prerender_metabox() {
-        $load = \apply_filters( 'pprh_load_prerender_metabox', null );
+        $load = Utils::apply_pprh_filters( 'pprh_load_prerender_metabox', array() );
 
-		if ( null === $load ) {
+		if ( empty( $load ) ) {
 			?>
 			<div style="text-align: center; max-width: 800px; margin: 0 auto;">
 				<h3><?php \esc_html_e( 'This feature is only available after upgrading to the Pro version.', 'pprh' ); ?></h3>
@@ -194,7 +190,6 @@ class LoadAdmin {
 //	}
 
 	public function create_post_meta_box() {
-//		$callback_name = $this->post_metabox();
 		$modal_types = \get_option( 'pprh_pro_post_modal_types', array( 'post', 'page' ) );
 		$id       = 'pprh_post_meta';
 		$title    = 'Pre* Party Resource Hints';
@@ -211,9 +206,9 @@ class LoadAdmin {
 	}
 
 	public function post_metabox() {
-	    $res = \apply_filters( 'pprh_posts_get_proper_callback', null );
+	    $res = Utils::apply_pprh_filters( 'pprh_posts_get_proper_callback', array() );
 
-	    if ( null === $res ) { ?>
+	    if ( empty( $res ) ) { ?>
             <div style="text-align: center;">
                 <h3><?php \esc_html_e( 'Upgrade to Pre* Party Resource Hints Pro to enjoy these features:', 'pprh' ); ?></h3>
                 <ul style="max-width: 500px; text-align: left; list-style-type: disc; display: block; margin: 0 auto;">
@@ -224,7 +219,5 @@ class LoadAdmin {
             </div>
         <?php }
 	}
-
-
 
 }

@@ -29,7 +29,7 @@ class Utils {
 		$array = array();
 
 		try {
-			$unslashed_json = wp_unslash( $json );
+			$unslashed_json = \wp_unslash( $json );
 			$array = json_decode( $unslashed_json, true );
 		} catch ( \Exception $error ) {
 			// log error..
@@ -81,7 +81,7 @@ class Utils {
 			return $hint_ids;
 		}
 
-		return false;
+		return '';
 	}
 
 	public static function esc_get_option( $option ) {
@@ -131,20 +131,19 @@ class Utils {
 
 	public static function get_browser_name( $user_agent ):string {
 		$browser = '';
-		$is_edge = str_contains( $user_agent, 'Edg' );
 
-		if ( ( str_contains( $user_agent, 'Trident' ) ) || ( str_contains( $user_agent, 'MSIE' ) && str_contains( $user_agent, 'Opera' ) ) ) {
-			$browser = 'MSIE';
-		} elseif ( str_contains( $user_agent, 'Firefox' ) ) {
-			$browser = 'Firefox';
+		if ( str_contains( $user_agent, 'Edg' ) ) {
+			$browser = 'Edge';
 		} elseif ( str_contains( $user_agent, 'OPR' ) ) {
 			$browser = 'Opera';
-		} elseif ( $is_edge ) {
-			$browser = 'Edge';
 		} elseif ( str_contains( $user_agent, 'Chrome' ) ) {
 			$browser = 'Chrome';
 		} elseif ( str_contains( $user_agent, 'Safari' ) ) {
 			$browser = 'Safari';
+		} elseif ( str_contains( $user_agent, 'Firefox' ) ) {
+			$browser = 'Firefox';
+		} elseif ( ( str_contains( $user_agent, 'Trident' ) ) || ( str_contains( $user_agent, 'MSIE' ) && str_contains( $user_agent, 'Opera' ) ) ) {
+			$browser = 'MSIE';
 		} elseif ( str_contains( $user_agent, 'Netscape' ) ) {
 			$browser = 'Netscape';
 		}
@@ -152,21 +151,31 @@ class Utils {
 		return $browser;
 	}
 
-//	public static function get_browser_version( $user_agent, $browser_name ) {
-//		$str = strstr( $user_agent, $browser_name . '/' );
-//		if ( str_contains( $str, ' ' ) ) {
-//			$str = explode(' ', $str )[0];
-//		} elseif ( str_contains( $str, '/' ) ) {
-//			$str = explode( '/', $str )[1];
-//		}
-//
-//		return $str;
-//	}
+	public static function apply_pprh_filters( string $filter_name, array $args ) {
+		$val = '';
+
+		if ( PPRH_PRO_ACTIVE ) {
+			$arr_len = count( $args );
+
+			if ( 1 === $arr_len ) {
+				$val = \apply_filters( $filter_name, $args[0] );
+			} elseif ( 2 === $arr_len ) {
+				$val = \apply_filters( $filter_name, $args[0], $args[1] );
+			} elseif ( 3 === $arr_len ) {
+				$val = \apply_filters( $filter_name, $args[0], $args[1], $args[2] );
+			}
+		} else {
+			$val = ( empty( $args ) ? $args : $args[0] );
+		}
+
+		return $val;
+	}
 
 }
 
 if ( ! function_exists( 'wp_doing_ajax' ) ) {
-	\apply_filters( 'wp_doing_ajax', defined( 'DOING_AJAX' ) && DOING_AJAX );
+	$doing_ajax = defined( 'DOING_AJAX' ) && DOING_AJAX;
+	Utils::apply_pprh_filters( 'wp_doing_ajax', array( $doing_ajax ) );
 }
 
 if ( ! function_exists( 'str_contains' ) ) {

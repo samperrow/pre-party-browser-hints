@@ -62,8 +62,8 @@ class PreconnectSettings {
 	}
 
 	public function load_reset_settings() {
-        $res = \apply_filters( 'pprh_sc_show_preconnect_settings', false );
-        if ( $res ) {
+        $res = Utils::apply_pprh_filters( 'pprh_sc_show_preconnect_settings', array() );
+        if ( ! empty( $res ) ) {
             return false;
         }
         ?>

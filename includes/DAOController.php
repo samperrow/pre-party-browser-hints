@@ -14,7 +14,7 @@ class DAOController extends DAO {
 
 
 	// tested
-	public function hint_controller( $raw_data ):object {
+	public function hint_controller( $raw_data ):\stdClass {
 		$op_code = (int) $raw_data['op_code'];
 		$hint_ids = ( ! empty( $raw_data['hint_ids'] ) ) ? Utils::array_into_csv( $raw_data['hint_ids'] ) : '';
 		return $this->db_controller( $op_code, $raw_data, $hint_ids );
@@ -26,7 +26,7 @@ class DAOController extends DAO {
 	 * delete_hint = 2
 	 * bulk_update = 3
 	 */
-	private function db_controller( int $op_code, array $raw_data, $hint_ids = null ):object {
+	private function db_controller( int $op_code, array $raw_data, $hint_ids = null ):\stdClass {
 		$db_result = self::create_db_result( false, $op_code, 0, null );
 
 		if ( 0 === $op_code || 1 === $op_code ) {
@@ -40,7 +40,7 @@ class DAOController extends DAO {
 		return $db_result;
 	}
 
-	public function insert_or_update_hint( int $op_code, $raw_data, $hint_ids = null ) {
+	public function insert_or_update_hint( int $op_code, $raw_data, $hint_ids = null ):\stdClass {
 		$create_hints = new CreateHints();
 		$new_hint_data = $create_hints->new_hint_ctrl( $raw_data );
 		$response = self::create_db_result( false, $op_code, 0, null );

@@ -82,7 +82,7 @@ class DAO {
 			)
 		);
 
-		$args = \apply_filters( 'pprh_dao_insert_hint_schema', $args, $new_hint );
+		$args = Utils::apply_pprh_filters( 'pprh_dao_insert_hint_schema', array( $args, $new_hint ) );
 
 		if ( PPRH_RUNNING_UNIT_TESTS ) {
 			return self::create_db_result( true, 0, 0, $new_hint );
@@ -166,17 +166,25 @@ class DAO {
 		return $wpdb->get_results( $wpdb->prepare( $sql, $url, $hint_type ), ARRAY_A );
 	}
 
+	public static function get_pprh_hints( bool $is_admin, array $data = array() ):array {
+		if ( $is_admin ) {
+			$query = self::get_admin_hints_query();
+		} else {
+			$query = self::get_client_hints_query( $data );
+		}
 
-
-	public static function get_admin_hints() {
-		$query = self::get_admin_hints_query();
 		return self::get_db_results( $query );
 	}
 
-	public static function get_client_hints( $data ) {
-		$query = self::get_client_hints_query( $data );
-		return self::get_db_results( $query );
-	}
+//	public static function get_admin_hints() {
+//		$query = self::get_admin_hints_query();
+//		return self::get_db_results( $query );
+//	}
+//
+//	public static function get_client_hints( $data ) {
+//		$query = self::get_client_hints_query( $data );
+//		return self::get_db_results( $query );
+//	}
 
 	public static function get_admin_hints_query() {
 		$table = PPRH_DB_TABLE;
@@ -191,7 +199,7 @@ class DAO {
 		$order_by = ( 0 < preg_match( '/url|hint_type|status|created_by|post_id/i', $req_order_by ) ) ? $req_order_by : '';
 		$order = ( 0 < preg_match( '/ASC|DESC/', $req_order ) ) ? $req_order : '';
 
-		$new_query = \apply_filters( 'pprh_append_admin_sql', $query, $order_by, $order );
+		$new_query = Utils::apply_pprh_filters( 'pprh_append_admin_sql', array( $query, $order_by, $order ) );
 
 		if ( $new_query === $query ) {
 			if ( '' === $order_by ) $order_by = 'url';
@@ -211,10 +219,10 @@ class DAO {
 			'args'    => array( 'enabled' ),
 		);
 
-		return \apply_filters( 'pprh_append_client_sql', $query, $data );
+		return Utils::apply_pprh_filters( 'pprh_append_client_sql', array( $query, $data ) );
 	}
 
-	private static function get_db_results( $query ) {
+	private static function get_db_results( array $query ):array {
 		global $wpdb;
 
 		if ( ! empty( $query['args'] ) ) {

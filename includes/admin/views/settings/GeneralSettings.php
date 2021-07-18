@@ -63,7 +63,6 @@ class GeneralSettings {
             </tbody>
         </table>
 		<?php
-//		\apply_filters( 'pprh_sc_pro_settings', 'general' );
 	}
 
 }

@@ -15,10 +15,10 @@ class PreconnectsTest extends TestCase {
 
 	public static function create_config( $allow_unauth, $is_user_logged_in, $preconnects_set, $reset_pro = null ) {
 		return array(
-			'allow_unauth_opt'    => $allow_unauth,
-			'is_user_logged_in'   => $is_user_logged_in,
-			'preconnects_set_opt' => $preconnects_set,
-			'reset_pro'           => $reset_pro
+			'allow_unauth_opt'       => $allow_unauth,
+			'is_user_logged_in'      => $is_user_logged_in,
+			'preconnects_set_option' => $preconnects_set,
+			'reset_pro'              => $reset_pro
 		);
 	}
 
@@ -29,42 +29,45 @@ class PreconnectsTest extends TestCase {
 	}
 
 	public function test_initialize() {
-		$config_1 = self::create_config( true, true, true, null );
+		$config_1 = self::create_config( true, true, true, false );
 		$actual_1 = $this->preconnects->initialize( $config_1 );
 		self::assertEquals( false, $actual_1 );
 
-		$config_2 = self::create_config( false, true, false, null );
+		$config_2 = self::create_config( false, true, false, false );
 		$actual_2 = $this->preconnects->initialize( $config_2);
 		self::assertEquals( true, $actual_2 );
 
-		$config_3 = self::create_config( false, true, false, null );
+		$config_3 = self::create_config( false, true, false, false );
 		$actual_3 = $this->preconnects->initialize( $config_3 );
 		self::assertEquals( true, $actual_3 );
 
-		$config_4 = self::create_config( true, false, true, null );
+		$config_4 = self::create_config( true, false, true, false );
 		$actual_4 = $this->preconnects->initialize( $config_4 );
 		self::assertEquals( false, $actual_4 );
 
-		$config_5 = self::create_config( false, false, false, null );
+		$config_5 = self::create_config( false, false, false, false );
 		$actual_5 = $this->preconnects->initialize( $config_5 );
 		self::assertEquals( false, $actual_5 );
 
-		$config_6 = self::create_config( false, false, true, null );
+		$config_6 = self::create_config( false, false, true, false );
 		$actual_6 = $this->preconnects->initialize( $config_6 );
 		self::assertEquals( false, $actual_6 );
 
-		$config_7 = self::create_config(true, false, false,null );
+		$config_7 = self::create_config( true, false, false,false );
 		$actual_7 = $this->preconnects->initialize( $config_7 );
 		self::assertEquals( true, $actual_7 );
 	}
 
 
 	public function test_check_to_perform_reset() {
-		$actual_1 = $this->preconnects->check_to_perform_reset( true, null );
+		$actual_1 = $this->preconnects->check_to_perform_reset( true, false );
 		self::assertFalse( $actual_1 );
 
-		$actual_2 = $this->preconnects->check_to_perform_reset( false, null );
+		$actual_2 = $this->preconnects->check_to_perform_reset( false, false );
 		self::assertTrue( $actual_2 );
+
+		$actual_3 = $this->preconnects->check_to_perform_reset( false, false );
+		self::assertTrue( $actual_3 );
 	}
 
 

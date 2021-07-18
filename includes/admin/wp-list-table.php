@@ -157,7 +157,7 @@ class WP_List_Table {
 		);
 
 		$this->screen = convert_to_screen( $args['screen'] );
-		$this->on_pprh_post_page = ! \apply_filters( 'pprh_on_pprh_admin', true );
+		$this->on_pprh_post_page = ! Utils::apply_pprh_filters( 'pprh_on_pprh_admin', array( true ) );
 
 		\add_filter( "manage_{$this->screen->id}_columns", array( $this, 'get_columns' ), 0 );
 

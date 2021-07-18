@@ -29,8 +29,8 @@ class Dashboard {
 		$hint_info = new HintInfo();
 		$upgrade = new Upgrade();
 
-		echo '<div id="poststuff"><h1>';
-		esc_html_e( 'Pre* Party Plugin Settings', 'pprh' );
+		echo '<div id="poststuff" class="pprh-page"><h1>';
+		esc_html_e( 'Pre* Party Resource Hints', 'pprh' );
 		echo '</h1>';
         \do_action(  'pprh_notice' );
 		$this->do_upgrade( PPRH_VERSION_NEW, PPRH_VERSION );
@@ -55,11 +55,11 @@ class Dashboard {
 		$tabs = array(
 			'insert-hints' => 'Insert Hints',
 			'settings'     => 'Settings',
-			'upgrade'      => 'Upgrade to Pro',
+//			'upgrade'      => 'Upgrade to Pro',
 			'hint-info'    => 'Information'
 		);
 
-		$tabs = \apply_filters( 'pprh_load_tabs', $tabs );
+		$tabs = Utils::apply_pprh_filters( 'pprh_load_tabs', array( $tabs ) );
 
 		echo '<div class="nav-tab-wrapper" style="margin-bottom: 10px;">';
 		foreach ( $tabs as $tab => $name ) {
