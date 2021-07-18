@@ -151,7 +151,6 @@ class LoadAdmin {
 			'low'
 		);
 
-
 		add_meta_box(
 			'pprh_prerender_settings_metabox',
 			'Auto Prerender Settings',
@@ -163,7 +162,7 @@ class LoadAdmin {
 	}
 
 	public function create_prerender_metabox() {
-		$load = \apply_filters( 'pprh_load_prerender_metabox', null );
+        $load = \apply_filters( 'pprh_load_prerender_metabox', null );
 
 		if ( null === $load ) {
 			?>
