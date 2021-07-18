@@ -76,7 +76,7 @@ class Dashboard {
         }
 
         $activate_plugin = new ActivatePlugin();
-        $msg = 'Version ' . PPRH_VERSION_NEW . ' upgrade uotes: 1) The settings tabs have been ugpraded to meta boxes; 2) fixed bugs relating to JSON conversions; 3) raised minimum PHP version to 7.0; 4) more unit testing, and more.';
+        $msg = 'Version ' . PPRH_VERSION_NEW . ' upgrade notes: 1) Fixed error which prevented modal boxes from working properly on post pages.';
         Utils::show_notice( $msg, true );
         $activate_plugin->upgrade_plugin();
 
