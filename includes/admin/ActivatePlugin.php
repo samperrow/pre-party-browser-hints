@@ -23,7 +23,7 @@ class ActivatePlugin {
 			$keyword_array = $this->convert_prefetch_string_to_array($orig_keywords);
 
 			if ( Utils::isArrayAndNotEmpty( $keyword_array ) ) {
-				\update_option( 'pprh_prefetch_ignoreKeywords', $keyword_array );
+				Utils::update_option( 'pprh_prefetch_ignoreKeywords', $keyword_array );
 			}
 		}
 

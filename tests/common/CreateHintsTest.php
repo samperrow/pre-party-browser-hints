@@ -66,9 +66,8 @@ final class CreateHintsTest extends TestCase {
 	public function test_new_hint_ctrl() {
 		$dummy_hint = TestUtils::create_hint_array( 'https://free-hint.com', 'dns-prefetch', '', '', '', 'screen' );
 		$dummy_hint['op_code'] = 0;
-		$actual = $this->create_hints->create_hint( $dummy_hint );
-		$expected = $this->create_hints->new_hint_ctrl( $dummy_hint );
-		self::assertEquals( $expected, $actual );
+		$actual_1 = $this->create_hints->new_hint_ctrl( $dummy_hint );
+		self::assertCount( 8, $actual_1 );
 
 
 		$dummy_hint['op_code'] = 1;
@@ -78,16 +77,21 @@ final class CreateHintsTest extends TestCase {
 	}
 
 	public function test_new_hint_controller() {
-		$test_hint_1 = TestUtils::create_hint_array( 'https://test.com', 'dns-prefetch', '', '', '', 'screen' );
-		$candidate_hint_1 = TestUtils::create_hint_array( 'https://test.com', 'dns-prefetch', '', '', '', 'screen' );
-		$dup_hints_1 = array( $test_hint_1 );
+		$hint_1 = TestUtils::create_hint_array( 'https://test.com', 'dns-prefetch', '', '', '', 'screen' );
+		$dup_hints_1 = array( $hint_1 );
+		$candidate_hint_1 = $hint_1;
 		$actual_1 = $this->create_hints->new_hint_controller( 0, $candidate_hint_1, $dup_hints_1 );
-		self::assertEquals( true, is_object( $actual_1 ) );
+		self::assertEmpty( $actual_1 );
 
 		$candidate_hint_2 = TestUtils::create_hint_array( 'https://test2.com', 'dns-prefetch', '', '', '', 'screen' );
 		$dup_hints_2 = array();
 		$actual_2 = $this->create_hints->new_hint_controller( 0, $candidate_hint_2, $dup_hints_2 );
-		self::assertEquals( $candidate_hint_2, $actual_2 );
+		self::assertNotEmpty( $actual_2 );
+
+		$hint_3 = TestUtils::create_hint_array( 'https://asdf.com', 'preconnect', '', '', 'crossorigin', 'screen' );
+		$dup_hints_3 = array( $hint_3 );
+		$actual_3 = $this->create_hints->new_hint_controller( 0, $hint_3, $dup_hints_3 );
+		self::assertEmpty( $actual_3 );
 	}
 
 	public function test_create_pprh_hint_fail() {
@@ -99,13 +103,13 @@ final class CreateHintsTest extends TestCase {
 
 
 
-	public function test_handle_duplicate_hints() {
-		$test_hint_1 = TestUtils::create_hint_array( 'https://test.com', 'preconnect', '', '', '', '' );
-		$dup_hints = array( $test_hint_1 );
-		$candidate_hint = TestUtils::create_hint_array( 'https://test.com', 'preconnect', '', '', '', '' );
-		$actual_1 = $this->create_hints->handle_duplicate_hints( $dup_hints, $candidate_hint );
-		self::assertEquals( false, $actual_1 );
-	}
+//	public function test_handle_duplicate_hints() {
+//		$test_hint_1 = TestUtils::create_hint_array( 'https://test.com', 'preconnect', '', '', '', '' );
+//		$dup_hints = array( $test_hint_1 );
+//		$candidate_hint = TestUtils::create_hint_array( 'https://test.com', 'preconnect', '', '', '', '' );
+//		$actual_1 = $this->create_hints->handle_duplicate_hints( $dup_hints, $candidate_hint );
+//		self::assertEquals( false, $actual_1 );
+//	}
 
 
 }

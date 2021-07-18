@@ -4,7 +4,7 @@ declare(strict_types=1);
  * Plugin Name:       Pre* Party Resource Hints
  * Plugin URI:        https://wordpress.org/plugins/pre-party-browser-hints/
  * Description:       Take advantage of the browser resource hints DNS-Prefetch, Prerender, Preconnect, Prefetch, and Preload to improve page load time.
- * Version:           1.7.7.1
+ * Version:           1.7.7.2
  * Requires at least: 4.4
  * Requires PHP:      7.0.0
  * Author:            Sam Perrow
@@ -14,9 +14,9 @@ declare(strict_types=1);
  * Text Domain:       pprh
  * Domain Path:       /languages
  *
- * last edited June 29, 2021
+ * last edited July 18, 2021
  *
- * Copyright 2016  Sam Perrow  (email : sam.perrow399@gmail.com)
+ * Copyright 2016  Sam Perrow  (email : info@sphacks.io)
  *
  */
 
@@ -36,12 +36,21 @@ add_action( 'wpmu_new_blog', array( $pprh_load, 'activate_plugin' ) );
 class Pre_Party_Browser_Hints {
 
 //	public function __construct() {}
+	public $pprh_preconnect_autoload;
+
+	public function __construct() {
+		$this->pprh_preconnect_autoload = ( 'true' === \get_option( 'pprh_preconnect_autoload' ) );
+	}
 
 	public function init() {
 		\add_action( 'init', array( $this, 'load_plugin' ) );
 	}
 
 	public function load_plugin() {
+		if ( defined( 'DOING_CRON' ) && DOING_CRON ) {
+			return;
+		}
+
 		$this->load_common_files();
 		$this->create_constants();
 
@@ -52,16 +61,16 @@ class Pre_Party_Browser_Hints {
 		$this->load( $is_admin );
 
 		// this needs to be loaded front end and back end bc Ajax needs to be able to communicate between the two.
-		include_once 'includes/Preconnects.php';
-		$preconnects = new Preconnects();
+
+		if ( $this->pprh_preconnect_autoload ) {
+			include_once 'includes/Preconnects.php';
+			$preconnects = new Preconnects();
+		}
 	}
 
-	public function load( $is_admin ) {
-		if ( $is_admin ) {
-			\add_action( 'wp_loaded', array( $this, 'load_admin' ) );
-		} else {
-			\add_action( 'wp_loaded', array( $this, 'load_client' ) );
-		}
+	public function load( bool $is_admin ) {
+		$str = ( $is_admin ) ? 'admin' : 'client';
+		\add_action( 'wp_loaded', array( $this, "load_$str" ) );
     }
 
 	public function load_admin() {
@@ -73,7 +82,7 @@ class Pre_Party_Browser_Hints {
     public function load_client() {
 		include_once 'includes/client/LoadClient.php';
 		$load_client = new LoadClient();
-        $load_client->init();
+        $load_client->init( $this->pprh_preconnect_autoload );
     }
 
 	public function create_constants() {
@@ -88,7 +97,7 @@ class Pre_Party_Browser_Hints {
 		if ( ! defined( 'PPRH_DB_TABLE' ) ) {
 			define( 'PPRH_DB_TABLE', $table );
 			define( 'PPRH_VERSION', $plugin_version );
-			define( 'PPRH_VERSION_NEW', '1.7.7.1' );
+			define( 'PPRH_VERSION_NEW', '1.7.7.2' );
 			define( 'PPRH_POSTMETA_TABLE', $postmeta_table );
 			define( 'PPRH_ABS_DIR', WP_PLUGIN_DIR . '/pre-party-browser-hints/' );
 			define( 'PPRH_REL_DIR', plugins_url() . '/pre-party-browser-hints/' );
@@ -98,27 +107,20 @@ class Pre_Party_Browser_Hints {
 			define( 'PPRH_SITE_URL', $site_url );
 			define( 'PPRH_IN_DEV', $in_dev_testing );
 			define( 'PPRH_RUNNING_UNIT_TESTS', $unit_testing );
+			define( 'PPRH_PRO_ACTIVE', defined( 'PPRH_PRO_ABS_DIR' ) );
 		}
 	}
 
 	public function load_common_files() {
-		if ( ! class_exists( \PPRH\Utils::class ) ) {
-			include_once 'includes/Utils.php';
-		}
-
-		if ( ! class_exists( \PPRH\DAOController::class ) ) {
-			include_once 'includes/DAOController.php';
-		}
-
-		if ( ! class_exists( \PPRH\CreateHints::class ) ) {
-			include_once 'includes/CreateHints.php';
-		}
+		include_once 'includes/Utils.php';
+		include_once 'includes/DAOController.php';
+		include_once 'includes/CreateHints.php';
+		include_once 'includes/admin/ActivatePlugin.php';
 	}
 
 	public function activate_plugin() {
-		include_once 'includes/admin/ActivatePlugin.php';
-		$activate_plugin = new ActivatePlugin();
 		$this->load_common_files();
+		$activate_plugin = new ActivatePlugin();
 		$this->create_constants();
 		$activate_plugin->activate_plugin();
 		return $activate_plugin->plugin_activated;

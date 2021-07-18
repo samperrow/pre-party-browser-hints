@@ -8,7 +8,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class AjaxOps {
 
-	public function __construct() {
+//	public function __construct() {
+//		\add_action( 'wp_ajax_pprh_update_hints', array( $this, 'pprh_update_hints' ) );
+//	}
+
+	public function set_actions() {
 		\add_action( 'wp_ajax_pprh_update_hints', array( $this, 'pprh_update_hints' ) );
 	}
 
@@ -44,25 +48,14 @@ class AjaxOps {
 		return false;
 	}
 
-	private function return_values( $json, $db_result ) {
+	private function return_values( $json, \stdClass $db_result ) {
 		return ( PPRH_RUNNING_UNIT_TESTS ) ? $db_result : $json;
 	}
 
-	private function handle_action( $data ) {
-		$op_code = $data['op_code'] ?? 0;
-		$db_result = DAO::create_db_result( false, $op_code, 0, null );
+	private function handle_action( array $data ):\stdClass {
 
 		if ( isset( $data['action'] ) ) {
-
-			if ( 'reset_single_post_preconnects' === $data['action'] ) {
-				$db_result = \apply_filters('pprh_reset_post_preconnect', $data );
-			} elseif ( 'prerender_config' === $data['action'] ) {
-				$result = \apply_filters('pprh_prerender_config', $data, true );
-
-				if ( Utils::isArrayAndNotEmpty( $result ) ) {
-					$db_result = $result[0];
-				}
-			}
+			$db_result = Utils::apply_pprh_filters( 'pprh_apply_ajaxops_action', array( $data['post_id'], $data['action'] ) );
 		} else {
 			$dao_ctrl = new DAOController();
 			$db_result = $dao_ctrl->hint_controller( $data );
@@ -70,5 +63,7 @@ class AjaxOps {
 
 		return $db_result;
 	}
+	
+
 
 }

@@ -11,12 +11,6 @@ class PreconnectSettings {
 	public $autoload = false;
 	public $allow_unauth = false;
 
-//	protected $on_pprh_admin = false;
-
-//	public function __construct($on_pprh_admin) {
-//	    $this->on_pprh_admin = $on_pprh_admin;
-//    }
-
 	public static function save_options() {
 	    $options = array(
 			'autoload_preconnects' => isset( $_POST['pprh_preconnect_autoload_preconnects'] )  ? 'true' : 'false',
@@ -24,9 +18,9 @@ class PreconnectSettings {
             'preconnect_set'       => ( isset( $_POST['pprh_preconnect_set'] ) && 'Reset' === $_POST['pprh_preconnect_set'] ) ? 'false' : 'true'
         );
 
-		\update_option('pprh_preconnect_autoload', $options['autoload_preconnects']);
-		\update_option('pprh_preconnect_allow_unauth', $options['allow_unauth']);
-		\update_option('pprh_preconnect_set', $options['preconnect_set']);
+		Utils::update_option('pprh_preconnect_autoload', $options['autoload_preconnects']);
+		Utils::update_option('pprh_preconnect_allow_unauth', $options['allow_unauth']);
+		Utils::update_option('pprh_preconnect_set', $options['preconnect_set']);
     }
 
 	public function show_settings() {
@@ -68,8 +62,8 @@ class PreconnectSettings {
 	}
 
 	public function load_reset_settings() {
-        $res = \apply_filters( 'pprh_sc_show_preconnect_settings', false );
-        if ( $res ) {
+        $res = Utils::apply_pprh_filters( 'pprh_sc_show_preconnect_settings', array() );
+        if ( ! empty( $res ) ) {
             return false;
         }
         ?>

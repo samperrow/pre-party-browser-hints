@@ -25,22 +25,23 @@ class Dashboard {
 	        return;
         }
 
-		$insert_hints = new InsertHints();
 		$settings = new Settings();
 		$hint_info = new HintInfo();
-//		$upgrade = new Upgrade();
+		$upgrade = new Upgrade();
 
-		echo '<div id="poststuff"><h1>';
-		esc_html_e( 'Pre* Party Plugin Settings', 'pprh' );
+		echo '<div id="poststuff" class="pprh-page"><h1>';
+		esc_html_e( 'Pre* Party Resource Hints', 'pprh' );
 		echo '</h1>';
         \do_action(  'pprh_notice' );
 		$this->do_upgrade( PPRH_VERSION_NEW, PPRH_VERSION );
+		$insert_hints = new InsertHints();
+
 		$this->show_admin_tabs();
 
 		$insert_hints->markup();
 		$settings->markup(true);
 		$hint_info->markup();
-//		$upgrade->markup();
+		$upgrade->markup();
 
 		\do_action( 'pprh_load_view_classes' );
 		$this->show_footer();
@@ -54,11 +55,11 @@ class Dashboard {
 		$tabs = array(
 			'insert-hints' => 'Insert Hints',
 			'settings'     => 'Settings',
-			'hint-info'    => 'Information',
-//            'upgrade'      => 'Upgrade to Pro',
+//			'upgrade'      => 'Upgrade to Pro',
+			'hint-info'    => 'Information'
 		);
 
-		$tabs = \apply_filters( 'pprh_load_tabs', $tabs );
+		$tabs = Utils::apply_pprh_filters( 'pprh_load_tabs', array( $tabs ) );
 
 		echo '<div class="nav-tab-wrapper" style="margin-bottom: 10px;">';
 		foreach ( $tabs as $tab => $name ) {
@@ -74,14 +75,13 @@ class Dashboard {
 	        return;
         }
 
-        include_once 'ActivatePlugin.php';
         $activate_plugin = new ActivatePlugin();
-        $msg = 'Version ' . PPRH_VERSION_NEW . ' upgrade uotes: 1) Fixed some minor bugs relating to prefetch settings, and auto preconnect.';
+        $msg = 'Version ' . PPRH_VERSION_NEW . ' upgrade notes: 1) Fixed error which prevented modal boxes from working properly on post pages.';
         Utils::show_notice( $msg, true );
         $activate_plugin->upgrade_plugin();
 
         if ( $activate_plugin->plugin_activated ) {
-            \update_option( 'pprh_version', $new_version );
+            Utils::update_option( 'pprh_version', $new_version );
         }
     }
 
@@ -96,7 +96,7 @@ class Dashboard {
 	}
 
 	public function contact_author() {
-		add_thickbox();
+		\add_thickbox();
 		?>
 
 		<div id="pprhContactAuthor">
@@ -106,24 +106,36 @@ class Dashboard {
             </a>
 
             <div style="display: none; text-align: center;" id="pprhEmail">
-                <h2 style="font-size: 23px; text-align: center;"><?php esc_html_e( 'Request a New Feature or Report a Bug!' ); ?></h2>
+                <h2 style="font-size: 23px; text-align: center;"><?php esc_html_e( 'Request a New Feature or Report a Bug' ); ?></h2>
 
                 <form method="post" style="width: 350px; margin: 0 auto; text-align: center">
-                    <label for="pprhEmailText"><?php wp_nonce_field( 'pprh_email_nonce_action', 'pprh_email_nonce_nonce' ); ?></label><textarea name="pprh_text" id="pprhEmailText" style="height: 100px;" class="widefat" placeholder="<?php esc_attr_e( 'Help make this plugin better!' ); ?>"></textarea>
-                    <label for="pprhEmailAddress"></label><input name="pprh_email" id="pprhEmailAddress" style="margin: 10px 0;" class="input widefat" placeholder="<?php esc_attr_e( 'Email address:' ); ?>"/>
+                    <label for="pprhEmailText">
+                        <?php wp_nonce_field( 'pprh_email_nonce_action', 'pprh_email_nonce_nonce' ); ?>
+                    </label>
+                    <textarea name="pprh_text" id="pprhEmailText" style="height: 100px;" class="widefat" placeholder="<?php esc_attr_e( 'Help make this plugin better!' ); ?>"></textarea>
+                    <label for="pprhEmailAddress"></label><input name="pprh_email" id="pprhEmailAddress" style="padding: 5px;" class="input widefat" placeholder="<?php esc_attr_e( 'Email address:' ); ?>"/>
                     <br/>
                     <input name="pprh_send_email" id="pprhSubmit" type="submit" class="button button-primary" value="<?php esc_attr_e( 'Submit', 'pprh' ); ?>" />
                 </form>
 
             </div>
 		<?php
-
             if ( isset( $_POST['pprh_send_email'] ) && check_admin_referer( 'pprh_email_nonce_action', 'pprh_email_nonce_nonce' ) ) {
-                $debug_info = "\nURL: " . home_url() . "\nPHP Version: " . PHP_VERSION . "\nWP Version: " . get_bloginfo( 'version' );
-                wp_mail( 'sam.perrow399@gmail.com', 'Pre Party User Message', 'From: ' . sanitize_email( wp_unslash( $_POST['pprh_email'] ) ) . $debug_info . "\nMessage: " . sanitize_text_field( wp_unslash( $_POST['pprh_text'] ) ) );
+				$msg = $this->get_email_debug_info();
+                \wp_mail( 'info@sphacks.io', 'Pre Party User Message', $msg );
             }
-
 		echo '</div>';
+	}
+
+	public function get_email_debug_info():string {
+		$email = \sanitize_email( \wp_unslash( $_POST['pprh_email'] ) );
+		$browser = Utils::get_browser();
+		$version = PPRH_VERSION;
+		$home_url = \home_url();
+		$wp_version = \get_bloginfo( 'version' );
+		$php_version = PHP_VERSION;
+		$text = \sanitize_text_field( \wp_unslash( $_POST['pprh_text'] ) );
+		return "From: $email \nURL: $home_url \nPHP Version: $php_version \nWP Version: $wp_version \nBrowser: $browser \nPPRH Version: $version \nMessage: $text";
 	}
 
 }

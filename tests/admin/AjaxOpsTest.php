@@ -26,6 +26,7 @@ final class AjaxOpsTest extends TestCase {
 		$_REQUEST['nonce'] = $expected_nonce;
 		$initiated = $this->ajax_ops->pprh_update_hints();
 		self::assertEquals($expected, $initiated);
+		unset( $_POST['pprh_data'], $_POST['action'], $_REQUEST['nonce'] );
 	}
 
 	// also need to verify update, delete, enable, disable, bulk operations work properly.

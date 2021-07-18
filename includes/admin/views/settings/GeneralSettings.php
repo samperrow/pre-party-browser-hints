@@ -13,14 +13,13 @@ class GeneralSettings {
 	public $html_head = false;
 
 	public static function save_options() {
-
 	    $options = array(
             'pprh_html_head'        => ( ! empty( $_POST['pprh_html_head'] ) ? Utils::strip_non_alphanums( $_POST['pprh_html_head'] ) : 'false' ),
 			'pprh_disable_wp_hints' => ( ! empty( $_POST['pprh_disable_wp_hints'] ) ? Utils::strip_non_alphanums( $_POST['pprh_disable_wp_hints'] ) : 'false' ),
 		);
 
-		\update_option('pprh_disable_wp_hints', $options['pprh_disable_wp_hints'] );
-		\update_option('pprh_html_head', $options['pprh_html_head'] );
+		Utils::update_option('pprh_disable_wp_hints', $options['pprh_disable_wp_hints'] );
+		Utils::update_option('pprh_html_head', $options['pprh_html_head'] );
 	}
 
 	public function show_settings() {
@@ -64,7 +63,6 @@ class GeneralSettings {
             </tbody>
         </table>
 		<?php
-//		\apply_filters( 'pprh_sc_pro_settings', 'general' );
 	}
 
 }

@@ -9,9 +9,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Utils {
 
 	public static function show_notice( $msg, $success ) {
-//		if ( PPRH_RUNNING_UNIT_TESTS ) {
-//			return;
-//		}
+		if ( PPRH_RUNNING_UNIT_TESTS ) {
+			return;
+		}
 		$alert = ( $success ) ? 'success' : 'error';
 		$class = ( empty( $msg ) ? '' : 'active' );
 		echo sprintf( '<div id="pprhNoticeBox"><div id="pprhNotice" class="notice notice-%1$s is-dismissible %2$s"><p>%3$s</p></div></div>', $alert, $class, $msg );
@@ -29,7 +29,7 @@ class Utils {
 		$array = array();
 
 		try {
-			$unslashed_json = wp_unslash( $json );
+			$unslashed_json = \wp_unslash( $json );
 			$array = json_decode( $unslashed_json, true );
 		} catch ( \Exception $error ) {
 			// log error..
@@ -81,7 +81,7 @@ class Utils {
 			return $hint_ids;
 		}
 
-		return false;
+		return '';
 	}
 
 	public static function esc_get_option( $option ) {
@@ -98,10 +98,6 @@ class Utils {
 		return ( 'true' === $value ? 'checked' : '' );
 	}
 
-	public static function get_pprh_hints( $is_admin ) {
-		$dao = new DAO();
-		return $dao->get_pprh_hints( $is_admin );
-	}
 
 	public static function get_duplicate_hints( string $url, string $hint_type ):array {
 		$dao = new DAO();
@@ -120,20 +116,66 @@ class Utils {
 		return ( $doing_ajax ? str_contains( $referer, PPRH_MENU_SLUG ) : ( PPRH_MENU_SLUG === ( $_GET['page'] ?? '' ) ) );
 	}
 
-	public static function string_in_array( array $array, string $test_col ):bool {
-		foreach( $array as $item ) {
-			if ( 0 === strcasecmp( $item, $test_col ) ) {
-				return true;
-			}
+	public static function clean_string_array( array $str_array ):array {
+		foreach( $str_array as $item => $val ) {
+			$str_array[$item] = self::strip_non_alphanums( $val );
 		}
 
-		return false;
+		return $str_array;
+	}
+
+	public static function get_browser() {
+		$user_agent = strip_tags( $_SERVER['HTTP_USER_AGENT'] ?? '' );
+		return self::get_browser_name( $user_agent );
+	}
+
+	public static function get_browser_name( $user_agent ):string {
+		$browser = '';
+
+		if ( str_contains( $user_agent, 'Edg' ) ) {
+			$browser = 'Edge';
+		} elseif ( str_contains( $user_agent, 'OPR' ) ) {
+			$browser = 'Opera';
+		} elseif ( str_contains( $user_agent, 'Chrome' ) ) {
+			$browser = 'Chrome';
+		} elseif ( str_contains( $user_agent, 'Safari' ) ) {
+			$browser = 'Safari';
+		} elseif ( str_contains( $user_agent, 'Firefox' ) ) {
+			$browser = 'Firefox';
+		} elseif ( ( str_contains( $user_agent, 'Trident' ) ) || ( str_contains( $user_agent, 'MSIE' ) && str_contains( $user_agent, 'Opera' ) ) ) {
+			$browser = 'MSIE';
+		} elseif ( str_contains( $user_agent, 'Netscape' ) ) {
+			$browser = 'Netscape';
+		}
+
+		return $browser;
+	}
+
+	public static function apply_pprh_filters( string $filter_name, array $args ) {
+		$val = '';
+
+		if ( PPRH_PRO_ACTIVE ) {
+			$arr_len = count( $args );
+
+			if ( 1 === $arr_len ) {
+				$val = \apply_filters( $filter_name, $args[0] );
+			} elseif ( 2 === $arr_len ) {
+				$val = \apply_filters( $filter_name, $args[0], $args[1] );
+			} elseif ( 3 === $arr_len ) {
+				$val = \apply_filters( $filter_name, $args[0], $args[1], $args[2] );
+			}
+		} else {
+			$val = ( empty( $args ) ? $args : $args[0] );
+		}
+
+		return $val;
 	}
 
 }
 
 if ( ! function_exists( 'wp_doing_ajax' ) ) {
-	\apply_filters( 'wp_doing_ajax', defined( 'DOING_AJAX' ) && DOING_AJAX );
+	$doing_ajax = defined( 'DOING_AJAX' ) && DOING_AJAX;
+	Utils::apply_pprh_filters( 'wp_doing_ajax', array( $doing_ajax ) );
 }
 
 if ( ! function_exists( 'str_contains' ) ) {

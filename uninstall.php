@@ -4,7 +4,9 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 	die;
 }
 
-pprh_uninstall_plugin();
+if ( function_exists( 'pprh_uninstall_plugin' ) ) {
+	pprh_uninstall_plugin();
+}
 
 function pprh_uninstall_plugin() {
 	\delete_option( 'pprh_disable_wp_hints' );

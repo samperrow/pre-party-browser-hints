@@ -34,7 +34,7 @@ class DisplayHints extends WP_List_Table {
 
 	public function column_default( $item, $column_name ) {
 		if ( 'post_id' === $column_name ) {
-            return \apply_filters( 'pprh_dh_get_post_link', $item['post_id'] );
+            return Utils::apply_pprh_filters( 'pprh_dh_get_post_link', array( $item['post_id'] ) );
         }
 
 		if ( '' === $item[$column_name] ) {
@@ -61,7 +61,7 @@ class DisplayHints extends WP_List_Table {
             'created_by'  => __( 'Created By', 'pprh' ),
         );
 
-		return \apply_filters( 'pprh_dh_get_columns', $columns );
+		return Utils::apply_pprh_filters( 'pprh_dh_get_columns', array( $columns ) );
 	}
 
 	public function get_sortable_columns() {
@@ -72,7 +72,7 @@ class DisplayHints extends WP_List_Table {
             'created_by'  => array('created_by', false)
         );
 
-		return \apply_filters( 'pprh_dh_get_sortortable_columns', $arr );
+		return Utils::apply_pprh_filters( 'pprh_dh_get_sortortable_columns', array( $arr ) );
 	}
 
 	public function get_bulk_actions() {
@@ -89,7 +89,7 @@ class DisplayHints extends WP_List_Table {
 		$sortable = $this->get_sortable_columns();
 		$this->_column_headers = array( $this->columns, array(), $sortable );
 		$current_page = $this->get_pagenum();
-		$all_hints = Utils::get_pprh_hints( true );
+		$all_hints = DAO::get_pprh_hints( true, array() );
 		$this->items = array_slice( $all_hints, ( ( $current_page - 1 ) * $this->hints_per_page ), $this->hints_per_page );
 		$total_items = count( $all_hints );
 
@@ -103,11 +103,11 @@ class DisplayHints extends WP_List_Table {
 	}
 
 	public function set_hints_per_page() {
-		$user = get_current_user_id();
-		$screen = get_current_screen();
+		$user = \get_current_user_id();
+//		$screen = \get_current_screen();
 		$option = 'pprh_per_page';
-		$hints_per_page_meta = (int) get_user_meta( $user, $option, true );
-		return ( null !== $screen && ( ! empty ( $hints_per_page_meta) && $hints_per_page_meta > 0 ) ) ? $hints_per_page_meta : 10;
+		$hints_per_page_meta = (int) \get_user_meta( $user, $option, true );
+		return empty( $hints_per_page_meta ) ? 10 : $hints_per_page_meta;
     }
 
 	public function no_items() {

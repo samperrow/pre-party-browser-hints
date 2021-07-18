@@ -49,6 +49,13 @@ class DAOControllerTest extends TestCase {
 		$actual_5 = $this->dao_controller->hint_controller( $raw_data_5 );
 		$expected_5 = \PPRH\DAO::create_db_result( true, $raw_data_5['op_code'], 0, null );
 		self::assertEquals($expected_5, $actual_5);
+
+		// dup hint exists..
+//		$raw_data_6 = array('url' => 'https://fonts.gstatic.com', 'hint_type' => 'preconnect', 'op_code' => 0, 'hint_ids' => '' );
+//		$actual_6 = $this->dao_controller->hint_controller( $raw_data_6 );
+//		$expected_6 = \PPRH\DAO::create_db_result( false, $raw_data_6['op_code'], 1, null );
+//		self::assertEquals( $expected_6, $actual_6 );
+
 	}
 
 

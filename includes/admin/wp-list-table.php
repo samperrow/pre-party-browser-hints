@@ -157,7 +157,7 @@ class WP_List_Table {
 		);
 
 		$this->screen = convert_to_screen( $args['screen'] );
-		$this->on_pprh_post_page = ! \apply_filters( 'pprh_on_pprh_admin', true );
+		$this->on_pprh_post_page = ! Utils::apply_pprh_filters( 'pprh_on_pprh_admin', array( true ) );
 
 		\add_filter( "manage_{$this->screen->id}_columns", array( $this, 'get_columns' ), 0 );
 
@@ -1086,7 +1086,7 @@ class WP_List_Table {
 	public function print_column_headers( $with_id = true ) {
 		list( $columns, $hidden, $sortable, $primary ) = $this->get_column_info();
 
-		$current_url = set_url_scheme( 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
+		$current_url = set_url_scheme( 'http://' . $_SERVER['HTTP_HOST'] . ( $_SERVER['REQUEST_URI'] ?? '' ) );
 		$current_url = remove_query_arg( 'paged', $current_url );
 
 		if ( isset( $_GET['orderby'] ) ) {

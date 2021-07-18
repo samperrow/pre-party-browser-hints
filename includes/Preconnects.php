@@ -16,17 +16,16 @@ class Preconnects {
 	}
 
 	public function init_controller() {
-		$reset_pro = \apply_filters( 'pprh_preconnects_do_reset_init', null );
+		$reset_pro = Utils::apply_pprh_filters( 'pprh_preconnects_do_reset_init', array( false ) );
 
 		$this->config = array(
-			'reset_pro'           => $reset_pro ?? null,
-			'do_autoload_opt'     => ( 'true' === \get_option( 'pprh_preconnect_autoload' ) ),
-			'allow_unauth_opt'    => ( 'true' === \get_option( 'pprh_preconnect_allow_unauth' ) ),
-			'is_user_logged_in'   => \is_user_logged_in(),
-			'preconnects_set_opt' => ( 'true' === \get_option( 'pprh_preconnect_set' ) )
+			'reset_pro'              => $reset_pro,
+			'allow_unauth_opt'       => ( 'true' === \get_option( 'pprh_preconnect_allow_unauth' ) ),
+			'is_user_logged_in'      => \is_user_logged_in(),
+			'preconnects_set_option' => ( 'true' === \get_option( 'pprh_preconnect_set' ) )
 		);
 
-		if ( is_admin() ) {
+		if ( \is_admin() ) {
 			$this->load_ajax_callbacks( $this->config['allow_unauth_opt'] );
 		} else {
 			$this->initialize( $this->config );
@@ -42,7 +41,7 @@ class Preconnects {
 			return false;
 		}
 
-		$perform_reset = $this->check_to_perform_reset( $config['do_autoload_opt'], $config['preconnects_set_opt'], $config['reset_pro'] );
+		$perform_reset = $this->check_to_perform_reset( $config['preconnects_set_option'], $config['reset_pro'] );
 
 		if ( false === $perform_reset ) {
 			return false;
@@ -53,14 +52,8 @@ class Preconnects {
 		return true;
 	}
 
-	public function check_to_perform_reset( bool $do_autoload_opt, bool $preconnects_set_opt, $reset_pro = null ):bool {
-		if ( null === $reset_pro ) {
-			$perform_reset = ( $do_autoload_opt && ! $preconnects_set_opt );
-		} else {
-			$perform_reset = $reset_pro;
-		}
-
-		return $perform_reset;
+	public function check_to_perform_reset( bool $preconnects_set_option, bool $reset_pro ):bool {
+		return ( ! $preconnects_set_option || $reset_pro );
 	}
 
 
@@ -95,13 +88,13 @@ class Preconnects {
 	public function create_js_object( int $time ) {
 		$js_arr = array(
 			'hints'      => array(),
-			'nonce'      => wp_create_nonce( 'pprh_ajax_nonce' ),
-			'admin_url'  => admin_url() . 'admin-ajax.php',
+			'nonce'      => \wp_create_nonce( 'pprh_ajax_nonce' ),
+			'admin_url'  => \admin_url() . 'admin-ajax.php',
 			'start_time' => $time
 		);
 
 		if ( isset( $this->config['reset_pro'] ) ) {
-			$js_arr = \apply_filters( 'pprh_preconnects_append_hint_object', $js_arr );
+			$js_arr = Utils::apply_pprh_filters( 'pprh_preconnects_append_hint_object', array( $js_arr ) );
 		}
 
 		return $js_arr;
@@ -175,7 +168,7 @@ class Preconnects {
 	}
 
 	private function update_options( $raw_hint_data ) {
-		$updated = \apply_filters( 'pprh_preconnects_update_options', $raw_hint_data );
+		$updated = Utils::apply_pprh_filters( 'pprh_preconnects_update_options', array( $raw_hint_data ) );
 
 		if ( is_array( $updated ) ) {
 			Utils::update_option( 'pprh_preconnect_set', 'true' );
