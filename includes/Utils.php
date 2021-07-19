@@ -113,7 +113,10 @@ class Utils {
 		if ( null === $referer ) {
 			$referer = self::get_referrer();
 		}
-		return ( $doing_ajax ? str_contains( $referer, PPRH_MENU_SLUG ) : ( PPRH_MENU_SLUG === ( $_GET['page'] ?? '' ) ) );
+
+		$referer_is_admin = str_contains( $referer, PPRH_MENU_SLUG );
+		$get_page_match = ( PPRH_MENU_SLUG === ( $_GET['page'] ?? '' ) );
+		return ( $doing_ajax ? $referer_is_admin : $get_page_match );
 	}
 
 	public static function clean_string_array( array $str_array ):array {
