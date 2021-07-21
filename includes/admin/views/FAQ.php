@@ -6,32 +6,101 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class HintInfo {
+class FAQ {
 
-	public $image_path = '';
+    public $image_path = '';
 
 	public function __construct() {
 		$this->image_path = PPRH_REL_DIR;
 	}
 
+
 	public function markup() {
 		?>
-        <div id="pprh-hint-info" class="pprh-content hint-info">
-			<h2><?php esc_html_e( 'Resource Hint Information', 'pprh' ); ?></h2>
+        <div class="pprh-content faq">
+            <?php
+                $this->show_faq();
+                $this->upgrade_to_pro();
+                $this->show_hint_info();
+             ?>
+        </div>
+		<?php
+	}
 
-			<p><a href="<?php esc_attr_e( '#dns-prefetch-info' ); ?>">DNS Prefetch</a></p>
-			<p><a href="<?php esc_attr_e( '#prefetch-info' ); ?>">Prefetch</a></p>
-			<p><a href="<?php esc_attr_e( '#preconnect-info' ); ?>">Preconnect</a></p>
-			<p><a href="<?php esc_attr_e( '#preload-info' ); ?>">Preload</a></p>
-            <p><a href="<?php esc_attr_e( '#prerender-info' ); ?>">Prerender</a></p>
+	public function show_faq() {
+	    ?>
+            <div class="postbox">
+                <div>
+                    <h3>Frequently Asked Questions</h3>
 
-			<?php
-			$this->show_dnsprefetch_info();
-			$this->show_prefetch_info();
-			$this->show_preconnect_info();
-			$this->show_preload_info();
-            $this->show_prerender_info();
-			echo '</div>';
+                    <p>How do I add new resource hints?</p>
+
+                    <p>How can I update existing hints?</p>
+
+                    <p>What are the crossorigin, "as", "type", and "media" attributes used for?</p>
+
+                    <p>What does the "auto preconnect" feature do?</p>
+
+                    <p>How does the "auto prefetch" feature work?</p>
+
+                    <p>How does the "auto prerender" feature work?</p>
+
+                    <p>My resource hints are not appearing on the front end?</p>
+
+                    <p>What are the benefits of upgrading to the Pro version?</p>
+
+
+                </div>
+            </div>
+        <?php
+	}
+
+	public function upgrade_to_pro() {
+	    ?>
+        <div class="postbox">
+            <div>
+                <h3>Upgrade to Pre* Party Pro!</h3>
+                <p>I have been hard at work for over a year creating a dramatically improved version of this plugin. It has taken much longer than I anticipated, however the benefits of the upgraded version are extraordinary, and there is nothing comparable on the market. </p>
+                <p>The main benefits are below:</p>
+
+                <ol>
+                    <li>Ability to create unique resource hints on a post-specific basis.</li>
+                    <li><b>Automatic creation of prerender hints.</b> Integration with Google Analytics data, which allows for each page or posts' most commonly visited second page to be determined. From this information, a prerender hint will be automatically generated for that second page, which
+                        is only used on the previous page. For example, if 70% of your visitors visit the "/shop" page after they land on your home page, a prerender hint to "/shop" will be created and used only on your home page. The same will be done with every other page on your site!<br/>
+                        -Using prerender resource hints in this manner allows for a page to be loaded <i>instantly</i> when the user navigates towards that page.<br/>
+                        -For further elaboration, please read this article: <a href="https://ipullrank.com/how-i-sped-up-my-site-68-percent-with-one-line-of-code/">https://ipullrank.com/how-i-sped-up-my-site-68-percent-with-one-line-of-code/</a>
+                    </li>
+
+                    <li>There is a modal box on every page/post admin page which allows for simple and easy resource hint creation to specific pages/posts.</li>
+                    <li>Automatic creation of preconnect hints are unique to every page and post on your site. The "auto-preconnect" hints are created in the same manner, except that if one page has resources loaded from external domains which other pages do not, that page will have unique
+                        preconnect hints created and used ONLY on that specific page.</li>
+                </ol>
+
+                <p>** youtube video here of difference **</p>
+            </div>
+        </div>
+        <?php
+	}
+
+
+	public function show_hint_info() {
+		?>
+        <div class="postbox">
+            <div>
+                <h3>Resource Hint Information</h3>
+                <p><a href="<?php esc_attr_e( '#dns-prefetch-info' ); ?>">DNS Prefetch</a></p>
+                <p><a href="<?php esc_attr_e( '#prefetch-info' ); ?>">Prefetch</a></p>
+                <p><a href="<?php esc_attr_e( '#preconnect-info' ); ?>">Preconnect</a></p>
+                <p><a href="<?php esc_attr_e( '#preload-info' ); ?>">Preload</a></p>
+                <p><a href="<?php esc_attr_e( '#prerender-info' ); ?>">Prerender</a></p>
+
+                <?php
+                $this->show_dnsprefetch_info();
+                $this->show_prefetch_info();
+                $this->show_preconnect_info();
+                $this->show_preload_info();
+                $this->show_prerender_info();
+                echo '</div></div>';
 	}
 
 	public function get_link( $img_name ) {
@@ -42,7 +111,7 @@ class HintInfo {
 	public function show_dnsprefetch_info() {
 		?>
 		<span id="dns-prefetch-info" style="display: block; height: 30px;"></span>
-		<h2><?php esc_html_e( 'DNS Prefetch', 'pprh' ); ?></h2>
+		<h3><?php esc_html_e( 'DNS Prefetch', 'pprh' ); ?></h3>
 		<p><?php echo sprintf( 'DNS Prefetching allows browsers to proactively perform domain name resolution on resources hosted on %s which are requested by a website.', '<b>external domain names</b>' ); ?></p>
 		<p><?php echo sprintf( 'In other words, when a website tells the browser to fetch a resource (CSS, JavaScript, images, etc) that is hosted on a different domain, time must be spent converting that domain name into its corresponding IP address. As the chart below shows, this step is normally done when the browser requests the resouce. Implementing DNS prefetching takes care of this step before the referenced resources are needed. This improves page load time by reducing latency, which is particularly noticeable on %s', '<b>mobile networks</b>' ); ?></p>
 		<p><?php echo sprintf( 'For example, if your website is %s, and you have an image stored on your CDN at %s, the browser would have to perform a domain name resolution for %s. If you provide a DNS prefetch hint in the head of your web page, the browser knows to perform a DNS lookup ahead of schedule, instead of procrastinating until the last second.', '<i>http://example.com</i>', '<i>http://cdn.example.com</i>', '<i>http://cdn.example.com</i>' ); ?></p>
@@ -68,9 +137,7 @@ class HintInfo {
 		</div>
 
 		<p><?php echo sprintf( 'The waterfall chart below clearly shows when the DNS resolution is made %s', '<a href="https://output.jsbin.com/keninux/2"> after taking advantage of DNS prefetching:</a>' ); ?></p>
-
 		<br>
-
 		<img alt="Waterfall diagram after DNS Prefetching" class="pprh-admin-pic" width="1056" height="496" src="<?php $this->get_link( 'images/jsbin-with-dnsprefetch.jpg' ); ?>"/>
 
 		<p><?php esc_html_e( 'The DNS lookups occur before each resource is requested, preventing that step from slowing down resource delivery. This can improve the loading of each resource by hundreds of milliseconds or more, which can be particularly helpful for mobile users.' ); ?></p>
@@ -86,7 +153,7 @@ class HintInfo {
 	public function show_prefetch_info() {
 		?>
 		<span id="prefetch-info" style="display: block; height: 30px;"></span>
-		<h2><?php esc_html_e( 'Prefetch' ); ?></h2>
+		<h3><?php esc_html_e( 'Prefetch' ); ?></h3>
 		<p><?php echo sprintf( 'Prefetching allows %s (such as images, web fonts, CSS, JS files) to be loaded by the browser %s by the web page, by taking advantage of browser idle time.', '<b>individual resources</b>', '<b>before they are initiated</b>' ); ?></p>
 		<p><?php esc_html_e( 'Link prefetching utilizes browser idle time to download resources that the user might require in the immediate future. When idle, the browser begins silently downloading the specified documents and stores them in the browser cache. When that resource is requested, it can be served immediately, instead of downloading the entire resource from scratch. Prefetching will allow an entire resource to be loaded, instead of simply resolving the DNS as in DNS prefetching.' ); ?></p>
 		<p><?php echo sprintf( 'Prefetching resources can be especially useful for %s that will be loaded later in the page, or resources behind a redirect.', '<a href="https://developers.google.com/web/fundamentals/performance/critical-rendering-path/optimizing-critical-rendering-path">critical resources</a>' ); ?></p>
@@ -107,7 +174,7 @@ class HintInfo {
 	public function show_prerender_info() {
 		?>
 		<span id="prerender-info" style="display: block; height: 30px;"></span>
-		<h2><?php esc_html_e( 'Prerender' ); ?></h2>
+		<h3><?php esc_html_e( 'Prerender' ); ?></h3>
 		<p><?php echo sprintf( 'Prerendering allows %s to be loaded by the browser before any request is made by the user.', '<b>entire web pages</b>' ); ?></p>
 		<p><?php echo sprintf( 'The prerender resource hint should used to notify the browser that a user will %s visit a web page soon to allow the browser to load the entire page before the user has chosen to navigate there. When the visitor does click to navigate to the page, it will be %s.', '<b>probably</b>', '<b>displayed immediately</b>' ); ?></p>
 		<p><?php echo sprintf( 'Prerendering a URL loads all of the related CSS, JavaScript, images, etc, that are required by the prefetched page. These files will also %s. In some circumstances the request to prerender a page will be canceled by the user\'s browser for various reasons, such as limited bandwidth, or pop-up messages from the prerendered page.', '<b>be executed</b>' ); ?></p>
@@ -139,7 +206,7 @@ class HintInfo {
 	public function show_preconnect_info() {
 		?>
 		<span id="preconnect-info" style="display: block; height: 30px;"></span>
-		<h2><?php esc_html_e( 'Preconnect' ); ?></h2>
+		<h3><?php esc_html_e( 'Preconnect' ); ?></h3>
 		<p><?php esc_html_e( 'Preconnecting allows the browser to establish a connection to an external domain before the request has been made.' ); ?></p>
 		<p><?php esc_html_e( 'Typically the three steps involved in establishing a connection (DNS lookup, initial connection, and SSL negotiation) must be carried out when the resource is requested by the browser. Preconnecting allows these steps to be made proactively. This is similar to DNS prefetching, however preconnecting allows the initial connection and SSL negotiation to be resolved as well, instead of just the DNS lookup as is the case with DNS prefetching.' ); ?></p>
 		<p><a href="https://output.jsbin.com/dudeger"><?php _e( 'This example page </a> loads a Google Font, embedded YouTube iframe video, and a Google Analytics tracker in the typical manner, without taking advantage of the preconnect resource hint. A summary of the normal requests this demo website makes is shown in the chart below, courtesy of <a href="https://www.webpagetest.org">webpagetest.org</a>', 'pprh' ); ?></p>
@@ -180,7 +247,7 @@ class HintInfo {
 	public function show_preload_info() {
 		?>
 		<span id="preload-info" style="display: block; height: 30px;"></span>
-		<h2><?php esc_html_e( 'Preload' ); ?></h2>
+		<h3><?php esc_html_e( 'Preload' ); ?></h3>
 		<p><?php echo sprintf( 'Preload %s proactively.', '<b>fetches one resource</b>' ); ?></p>
 		<p><?php echo sprintf( 'This works in a similar manner to prefetching, however the preload hint is %s. Whereas prefetching resources is optional (to the browser), low priority, and used to load resources a visitor is likely to require in the future.', '<b>mandatory, high priority, used for current navigation, and non-render blocking</b>' ); ?></p>
 		<p><?php esc_html_e( 'Let\'s see what the waterfall chart looks like after the following resource hints are placed into the top of a web page:' ); ?></p>
@@ -206,3 +273,8 @@ class HintInfo {
 	}
 
 }
+
+
+
+
+

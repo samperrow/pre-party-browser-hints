@@ -103,11 +103,11 @@ class Pre_Party_Browser_Hints {
 			define( 'PPRH_REL_DIR', plugins_url() . '/pre-party-browser-hints/' );
 			define( 'PPRH_MENU_SLUG', 'pprh-plugin-settings' );
 			define( 'PPRH_ADMIN_SCREEN', 'toplevel_page_' . PPRH_MENU_SLUG );
-			define( 'PPRH_HOME_URL', admin_url() . 'admin.php?page=' . PPRH_MENU_SLUG );
 			define( 'PPRH_SITE_URL', $site_url );
 			define( 'PPRH_IN_DEV', $in_dev_testing );
 			define( 'PPRH_RUNNING_UNIT_TESTS', $unit_testing );
 			define( 'PPRH_PRO_ACTIVE', defined( 'PPRH_PRO_ABS_DIR' ) );
+//			define( 'PPRH_HOME_URL', admin_url() . 'admin.php?page=' . PPRH_MENU_SLUG );
 		}
 	}
 

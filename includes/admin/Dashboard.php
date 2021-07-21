@@ -20,16 +20,15 @@ class Dashboard {
 	    Utils::show_notice( '', true );
     }
 
-	public function show_plugin_dashboard( $on_pprh_admin_page ) {
-	    if ( ! $on_pprh_admin_page ) {
+	public function show_plugin_dashboard( $on_pprh_page ) {
+	    if ( ! $on_pprh_page ) {
 	        return;
         }
 
 		$settings = new Settings();
-		$hint_info = new HintInfo();
-		$upgrade = new Upgrade();
+        $faq = new FAQ();
 
-		echo '<div id="poststuff" class="pprh-page"><h1>';
+		echo '<div id="pprh-poststuff"><h1>';
 		esc_html_e( 'Pre* Party Resource Hints', 'pprh' );
 		echo '</h1>';
         \do_action(  'pprh_notice' );
@@ -40,13 +39,12 @@ class Dashboard {
 
 		$insert_hints->markup();
 		$settings->markup(true);
-		$hint_info->markup();
-		$upgrade->markup();
+		$faq->markup();
 
 		\do_action( 'pprh_load_view_classes' );
 		$this->show_footer();
 		echo '</div>';
-		unset( $insert_hints, $settings, $hint_info );
+		unset( $insert_hints, $settings, $faq );
 	}
 
 
@@ -55,8 +53,7 @@ class Dashboard {
 		$tabs = array(
 			'insert-hints' => 'Insert Hints',
 			'settings'     => 'Settings',
-//			'upgrade'      => 'Upgrade to Pro',
-			'hint-info'    => 'Information'
+			'faq'          => 'FAQ',
 		);
 
 		$tabs = Utils::apply_pprh_filters( 'pprh_load_tabs', array( $tabs ) );
@@ -110,7 +107,7 @@ class Dashboard {
 
                 <form method="post" style="width: 350px; margin: 0 auto; text-align: center">
                     <label for="pprhEmailText">
-                        <?php wp_nonce_field( 'pprh_email_nonce_action', 'pprh_email_nonce_nonce' ); ?>
+                        <?php \wp_nonce_field( 'pprh_email_nonce_action', 'pprh_email_nonce_nonce' ); ?>
                     </label>
                     <textarea name="pprh_text" id="pprhEmailText" style="height: 100px;" class="widefat" placeholder="<?php esc_attr_e( 'Help make this plugin better!' ); ?>"></textarea>
                     <label for="pprhEmailAddress"></label><input name="pprh_email" id="pprhEmailAddress" style="padding: 5px;" class="input widefat" placeholder="<?php esc_attr_e( 'Email address:' ); ?>"/>

@@ -21,16 +21,15 @@ class Settings {
 	public function markup( $on_pprh_admin ) {
 		$this->save_user_options();
 		?>
-        <div id="pprh-settings" class="pprh-content">
+        <div class="pprh-content settings">
             <form method="post" action="">
                 <?php
-                    wp_nonce_field( 'pprh_save_admin_options', 'pprh_admin_options_nonce' );
+                    \wp_nonce_field( 'pprh_save_admin_options', 'pprh_admin_options_nonce' );
 
                     if ( $on_pprh_admin ) {
-						wp_nonce_field( 'closedpostboxes', 'closedpostboxesnonce', false );
-						do_meta_boxes( PPRH_ADMIN_SCREEN, 'normal', null );
+						\wp_nonce_field( 'closedpostboxes', 'closedpostboxesnonce', false );
+						\do_meta_boxes( PPRH_ADMIN_SCREEN, 'normal', null );
 					}
-
                 ?>
                 <div class="text-center">
                     <input type="submit" name="pprh_save_options" class="button button-primary" value="<?php esc_attr_e( 'Save Changes', 'pprh' ); ?>" />

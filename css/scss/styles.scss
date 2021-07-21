@@ -1,4 +1,4 @@
-div#poststuff.pprh-page {
+div#pprh-poststuff {
 
     h1 {
         font-weight: normal;
@@ -14,6 +14,10 @@ div#poststuff.pprh-page {
 
     .text-center {
         text-align: center;
+    }
+
+    div.postbox > div {
+        padding: 0 10px;
     }
 
     div.pprh-content {

@@ -8,7 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class Utils {
 
-	public static function show_notice( $msg, $success ) {
+	public static function show_notice( string $msg, string $success ) {
 		if ( PPRH_RUNNING_UNIT_TESTS ) {
 			return;
 		}
@@ -38,35 +38,43 @@ class Utils {
 		return $array;
     }
 
-    public static function strip_non_alphanums( $text ) {
+    public static function strip_non_alphanums( string $text ):string {
 		return preg_replace( '/[^a-z\d]/imu', '', $text );
 	}
 
-	public static function strip_non_numbers( $text ) {
+	public static function strip_non_numbers( string $text ):string {
 		return preg_replace( '/\D/', '', $text );
 	}
 
-	public static function clean_hint_type( $text ) {
+	public static function clean_hint_type( string $text ):string {
 		return preg_replace( '/[^a-z|\-]/i', '', $text );
 	}
 
-	public static function clean_url( $url ) {
+	public static function clean_url( string $url ):string {
 		return preg_replace( '/[\s\'<>^\"\\\]/', '', $url );
 	}
 
-	public static function clean_url_path( $path ) {
+	public static function clean_url_path( string $path ):string {
 		return strtolower( trim( $path, '/?&' ) );
 	}
 
-	public static function clean_hint_attr( $attr ) {
+	public static function clean_hint_attr( string $attr ):string {
 		return strtolower( preg_replace( '/[^a-z0-9|\/]/i', '', $attr ) );
 	}
 
-	public static function is_null_or_empty_string( $str ) {
+	public static function clean_string_array( array $str_array ):array {
+		foreach( $str_array as $item => $val ) {
+			$str_array[$item] = self::strip_non_alphanums( $val );
+		}
+
+		return $str_array;
+	}
+
+	public static function is_null_or_empty_string( string $str ):bool {
 		return ( null === $str || '' === $str );
 	}
 
-	public static function isArrayAndNotEmpty( $arr ) {
+	public static function isArrayAndNotEmpty( $arr ):bool {
 		return ( is_array( $arr ) && ! empty( $arr ) );
 	}
 
@@ -84,16 +92,18 @@ class Utils {
 		return '';
 	}
 
-	public static function esc_get_option( $option ) {
+
+
+	public static function esc_get_option( string $option ) {
 		return \esc_html( \get_option( $option ) );
 	}
 
-	public static function get_option_status( $option, $val ) {
+	public static function get_option_status( string $option, string $val ) {
 		$value = self::esc_get_option( $option );
 		return ( ( $value === $val ) ? 'selected=selected' : '' );
 	}
 
-	public static function is_option_checked( $option ) {
+	public static function is_option_checked( string $option ) {
 		$value = self::esc_get_option( $option );
 		return ( 'true' === $value ? 'checked' : '' );
 	}
@@ -105,30 +115,27 @@ class Utils {
 	}
 
 
-	public static function get_referrer() {
-		return ( isset( $_SERVER['HTTP_REFERER'] ) ? self::clean_url( $_SERVER['HTTP_REFERER'] ) : '' );
+	public static function get_server_prop( string $prop ):string {
+		return ( isset( $_SERVER[$prop] ) ? self::clean_url( $_SERVER[$prop] ) : '' );
 	}
 
-	public static function on_pprh_admin_page( bool $doing_ajax, $referer = null ):bool {
-		if ( null === $referer ) {
-			$referer = self::get_referrer();
+	public static function on_pprh_page( bool $doing_ajax, string $referer ):bool {
+		if ( '' === $referer ) {
+			$referer = self::get_server_prop( 'HTTP_REFERER' );
 		}
 
-		$referer_is_admin = str_contains( $referer, PPRH_MENU_SLUG );
-		$get_page_match = ( PPRH_MENU_SLUG === ( $_GET['page'] ?? '' ) );
-		return ( $doing_ajax ? $referer_is_admin : $get_page_match );
+		$request_uri = self::get_server_prop( 'REQUEST_URI' );
+		return self::on_pprh_page_ctrl( $doing_ajax, $referer, $request_uri );
 	}
 
-	public static function clean_string_array( array $str_array ):array {
-		foreach( $str_array as $item => $val ) {
-			$str_array[$item] = self::strip_non_alphanums( $val );
-		}
-
-		return $str_array;
+	public static function on_pprh_page_ctrl( bool $doing_ajax, string $referer, string $request_uri ):bool {
+		$matcher = ( $doing_ajax ) ? $referer : $request_uri;
+		return ( preg_match( '/pprh-plugin-settings|post\.php/', $matcher ) > 0 );
 	}
 
-	public static function get_browser() {
-		$user_agent = strip_tags( $_SERVER['HTTP_USER_AGENT'] ?? '' );
+
+	public static function get_browser():string {
+		$user_agent = self::get_server_prop( 'HTTP_USER_AGENT' );
 		return self::get_browser_name( $user_agent );
 	}
 

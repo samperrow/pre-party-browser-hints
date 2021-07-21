@@ -13,7 +13,7 @@ class InsertHints {
 	}
 
 	public function markup() {
-		echo '<div id="pprh-insert-hints" class="pprh-content">';
+		echo '<div class="pprh-content insert-hints">';
 		wp_nonce_field( 'pprh_display_hints_nonce_action', 'pprh_display_hints_nonce' );
 		$display_hints = new DisplayHints(false);
 		$new_hint = new NewHint();

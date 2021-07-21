@@ -7,18 +7,21 @@
 	let insertHintsTable = document.getElementById("pprh-insert-hints");
 	const currentURL = document.location.href;
 
-	if (/pprh-plugin-settings/.test(currentURL)) {
-		toggleEmailSubmit();
-	}
+	checkoutModals();
+	toggleEmailSubmit();
+	toggleDivs();
+
+
 
 	function toggleEmailSubmit() {
-		let emailSubmitBtn = document.getElementById('pprhSubmit');
-		if (isObjectAndNotNull(emailSubmitBtn)) {
-			emailSubmitBtn.addEventListener("click", emailValidate);
+		if (/pprh-plugin-settings/.test(currentURL)) {
+			let emailSubmitBtn = document.getElementById('pprhSubmit');
+			if (isObjectAndNotNull(emailSubmitBtn)) {
+				emailSubmitBtn.addEventListener("click", emailValidate);
+			}
 		}
 	}
 
-	toggleDivs();
 	function toggleDivs() {
 		let navTabs = document.querySelectorAll('a.nav-tab');
 		let divs = document.querySelectorAll('div.pprh-content');
@@ -29,25 +32,25 @@
 
 		if (isObjectAndNotNull(navTabs) && navTabs.length > 0) {
 			navTabs[0].classList.toggle('nav-tab-active');
-		} else {
-			return;
 		}
 
-		navTabs.forEach(function(tab) {
-			tab.addEventListener('click', function (e) {
-				let className = e.currentTarget.classList[1];
-				divs.forEach(function(div) {
-					div.classList.remove('active');
-				});
-				document.getElementById('pprh-' + className).classList.add('active');
-				e.preventDefault();
+		divs[0].classList.toggle('active');
 
-				navTabs.forEach(function(tabElem) {
-					tabElem.classList.remove('nav-tab-active');
-				});
-				tab.classList.toggle('nav-tab-active');
-			});
+		navTabs.forEach(function(tab) {
+			tab.addEventListener('click', tabClick);
 		});
+
+		function tabClick(e) {
+			let className = e.currentTarget.classList[1];
+
+			navTabs.forEach(function(tab, i) {
+				let tabClassmatch = (tab.className.indexOf(className) > -1);
+				let divClassMatch = (divs[i].className.indexOf(className) > -1);
+				tab.classList[ (tabClassmatch) ? 'add' : 'remove']('nav-tab-active');
+				divs[i].classList[ (divClassMatch) ? 'add' : 'remove']('active');
+			});
+			e.preventDefault();
+		}
 	}
 
 	$('input.pprh-reset').each(function () {
@@ -60,6 +63,24 @@
 			}
 		});
 	});
+
+	function checkoutModals() {
+		let checkoutModals = document.getElementsByClassName('pprhOpenCheckoutModal');
+		if (isObjectAndNotNull(checkoutModals)) {
+			for (const checkoutModal of checkoutModals) {
+				checkoutModal.addEventListener('click', openCheckoutModal);
+			}
+		}
+
+		function openCheckoutModal() {
+			let windowWidth = window.innerWidth;
+			// let windowHeight = window.innerHeight;
+			// let leftSpace = (windowWidth - 700) / 2;
+			// // window.open( 'https://sphacks.io/checkout', '_blank', '', false );
+			window.open( 'https://sphacks.io/checkout', '_blank', 'height=850,scrollbars=yes,width=700', false );
+		}
+	}
+
 
 	// used on all admin and modal screens w/ contact button.
 	function emailValidate(e) {

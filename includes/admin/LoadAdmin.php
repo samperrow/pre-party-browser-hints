@@ -8,15 +8,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class LoadAdmin {
 
-    public $on_pprh_admin_page = false;
+    public $on_pprh_page = false;
 
 	public function init() {
 		\add_action( 'admin_menu', array( $this, 'load_admin_menu' ) );
-//		\add_action( 'load-post.php', array( $this, 'create_post_meta_box' ) );
+		\add_action( 'load-post.php', array( $this, 'create_post_meta_box' ) );
 
-		$this->on_pprh_admin_page = Utils::on_pprh_admin_page( \wp_doing_ajax() );
+		$this->on_pprh_page = Utils::on_pprh_page( \wp_doing_ajax(), '' );
 
-		if ( $this->on_pprh_admin_page ) {
+		if ( $this->on_pprh_page ) {
 			\add_action( 'admin_init', array( $this, 'add_settings_meta_boxes' ) );
 			\add_action( 'admin_enqueue_scripts', array( $this, 'register_admin_files' ) );
 			\add_filter( 'set-screen-option', array( $this, 'pprh_set_screen_option' ), 10, 3 );
@@ -36,8 +36,8 @@ class LoadAdmin {
 		\do_action( 'pprh_pro_load_admin' );
 	}
 
-//    public function load_admin_screen_content( $on_pprh_admin_page ) {
-//	    if ( ! $on_pprh_admin_page ) {
+//    public function load_admin_screen_content( $on_pprh_page ) {
+//	    if ( ! $on_pprh_page ) {
 //	        return;
 //        }
 //
@@ -65,14 +65,13 @@ class LoadAdmin {
 		}
 
         $dashboard = new Dashboard();
-        $dashboard->show_plugin_dashboard( $this->on_pprh_admin_page );
+        $dashboard->show_plugin_dashboard( $this->on_pprh_page );
 	}
 
 	public function load_admin_files() {
 		include_once 'Dashboard.php';
 		include_once 'views/Settings.php';
-		include_once 'views/HintInfo.php';
-		include_once 'views/Upgrade.php';
+		include_once 'views/FAQ.php';
 		include_once 'views/settings/GeneralSettings.php';
 		include_once 'views/settings/PreconnectSettings.php';
 		include_once 'views/settings/PrefetchSettings.php';
@@ -96,7 +95,7 @@ class LoadAdmin {
 	public function register_admin_files( $hook ) {
 //		$str = PPRH_ADMIN_SCREEN . 'post.php';
 
-		if ( str_contains( PPRH_ADMIN_SCREEN, $hook ) ) {
+		if ( str_contains( PPRH_ADMIN_SCREEN, $hook ) || str_contains( 'post.php', $hook ) ) {
 			$ajax_data = array(
 				'nonce'     => wp_create_nonce( 'pprh_table_nonce' ),
 				'admin_url' => admin_url()
@@ -147,20 +146,20 @@ class LoadAdmin {
 			'low'
 		);
 
-//		\add_meta_box(
-//			'pprh_prerender_settings_metabox',
-//			'Auto Prerender Settings',
-//			array( $this, 'create_prerender_metabox' ),
-//			PPRH_ADMIN_SCREEN,
-//			'normal',
-//			'low'
-//		);
+		\add_meta_box(
+			'pprh_prerender_settings_metabox',
+			'Auto Prerender Settings',
+			array( $this, 'create_prerender_metabox' ),
+			PPRH_ADMIN_SCREEN,
+			'normal',
+			'low'
+		);
 	}
 
 	public function create_prerender_metabox() {
-        $load = Utils::apply_pprh_filters( 'pprh_load_prerender_metabox', array() );
+        $load_prerender_metabox = Utils::apply_pprh_filters( 'pprh_load_prerender_metabox', array( false ) );
 
-		if ( empty( $load ) ) {
+		if ( ! $load_prerender_metabox ) {
 			?>
 			<div style="text-align: center; max-width: 800px; margin: 0 auto;">
 				<h3><?php \esc_html_e( 'This feature is only available after upgrading to the Pro version.', 'pprh' ); ?></h3>
@@ -168,7 +167,7 @@ class LoadAdmin {
 		This feature works by implementing custom analytics to determine which page a visitor is most likely to navigate towards after from a given page, and a prerender hint is created pointing to that destination.
 		This prerender hint allows a visitor to download an entire webpage in the background, allowing the page to load instantly.
 		For example, if most visitors navigate to your /shop page from your home page, a prerender hint will be created for the /shop URL, and that page will be downloaded while the visitor is on the home page. ', 'pprh' ); ?></p>
-				<input id="pprhOpenCheckoutModal" type="button" class="button button-primary" value="Purchase License"/>
+				<input type="button" class="pprhOpenCheckoutModal button button-primary" value="Purchase License"/>
 			</div>
 			<?php
 		}
@@ -191,7 +190,7 @@ class LoadAdmin {
 
 	public function create_post_meta_box() {
 		$modal_types = \get_option( 'pprh_pro_post_modal_types', array( 'post', 'page' ) );
-		$id       = 'pprh_post_meta';
+		$id       = 'pprh-poststuff';
 		$title    = 'Pre* Party Resource Hints';
 		$callback = array( $this, 'post_metabox' );
 		$context  = 'normal';
@@ -206,16 +205,16 @@ class LoadAdmin {
 	}
 
 	public function post_metabox() {
-	    $res = Utils::apply_pprh_filters( 'pprh_posts_get_proper_callback', array() );
+	    $res = Utils::apply_pprh_filters( 'pprh_posts_get_proper_callback', array( false ) );
 
-	    if ( empty( $res ) ) { ?>
+	    if ( ! $res ) { ?>
             <div style="text-align: center;">
                 <h3><?php \esc_html_e( 'Upgrade to Pre* Party Resource Hints Pro to enjoy these features:', 'pprh' ); ?></h3>
                 <ul style="max-width: 500px; text-align: left; list-style-type: disc; display: block; margin: 0 auto;">
                     <li>Implement resource hints to specific posts and pages.</li>
                     <li>Automatic and post-specific creation of custom preconnect hints for each post/page.</li>
                 </ul>
-                <input id="pprhOpenCheckoutModal" type="button" class="button button-primary" value="Purchase License"/>
+<!--                <input type="button" class="pprhOpenCheckoutModal button button-primary" value="Purchase License"/>-->
             </div>
         <?php }
 	}
