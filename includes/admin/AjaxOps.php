@@ -8,9 +8,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class AjaxOps {
 
-//	public function __construct() {
+	private $on_pprh_page;
+
+	public function __construct( int $on_pprh_page ) {
+		$this->on_pprh_page = $on_pprh_page;
 //		\add_action( 'wp_ajax_pprh_update_hints', array( $this, 'pprh_update_hints' ) );
-//	}
+	}
 
 	public function set_actions() {
 		\add_action( 'wp_ajax_pprh_update_hints', array( $this, 'pprh_update_hints' ) );
@@ -39,7 +42,7 @@ class AjaxOps {
 			$db_result = $this->handle_action( $pprh_data );
 
 			if ( is_object( $db_result ) ) {
-				$display_hints = new DisplayHints( true );
+				$display_hints = new DisplayHints( true, $this->on_pprh_page );
 				$json = $display_hints->ajax_response( $db_result );
 				return $this->return_values( $json, $db_result );
 			}
@@ -53,7 +56,6 @@ class AjaxOps {
 	}
 
 	private function handle_action( array $data ):\stdClass {
-
 		if ( isset( $data['action'] ) ) {
 			$db_result = Utils::apply_pprh_filters( 'pprh_apply_ajaxops_action', array( $data['post_id'], $data['action'] ) );
 		} else {
@@ -63,7 +65,5 @@ class AjaxOps {
 
 		return $db_result;
 	}
-	
-
 
 }

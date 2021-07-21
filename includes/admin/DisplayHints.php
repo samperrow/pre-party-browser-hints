@@ -18,12 +18,13 @@ class DisplayHints extends WP_List_Table {
 	public $items;
 	protected $columns;
 
-	public function __construct( $doing_ajax ) {
+	public function __construct( bool $doing_ajax, int $on_pprh_page ) {
 		parent::__construct( array(
-            'ajax'     => true,
-			'plural'   => 'urls',
-			'screen'   => 'toplevel_page_' . PPRH_MENU_SLUG,
-			'singular' => 'url',
+            'ajax'         => true,
+			'plural'       => 'urls',
+			'screen'       => 'toplevel_page_' . PPRH_MENU_SLUG,
+			'singular'     => 'url',
+            'on_pprh_page' => $on_pprh_page
 		) );
 
 		if ( ! $doing_ajax ) {
@@ -104,7 +105,6 @@ class DisplayHints extends WP_List_Table {
 
 	public function set_hints_per_page() {
 		$user = \get_current_user_id();
-//		$screen = \get_current_screen();
 		$option = 'pprh_per_page';
 		$hints_per_page_meta = (int) \get_user_meta( $user, $option, true );
 		return empty( $hints_per_page_meta ) ? 10 : $hints_per_page_meta;
@@ -145,7 +145,7 @@ class DisplayHints extends WP_List_Table {
                         </thead>
 						<?php
 							$new_hint = new NewHint();
-						    $new_hint->insert_table_body();
+						    $new_hint->insert_hint_table();
 						?>
                         <tr>
                             <td colspan="5">

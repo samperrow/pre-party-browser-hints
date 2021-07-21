@@ -8,7 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class LoadAdmin {
 
-    public $on_pprh_page = false;
+    public $on_pprh_page;
 
 	public function init() {
 		\add_action( 'admin_menu', array( $this, 'load_admin_menu' ) );
@@ -16,7 +16,7 @@ class LoadAdmin {
 
 		$this->on_pprh_page = Utils::on_pprh_page( \wp_doing_ajax(), '' );
 
-		if ( $this->on_pprh_page ) {
+		if ( $this->on_pprh_page > 0 ) {
 			\add_action( 'admin_init', array( $this, 'add_settings_meta_boxes' ) );
 			\add_action( 'admin_enqueue_scripts', array( $this, 'register_admin_files' ) );
 			\add_filter( 'set-screen-option', array( $this, 'pprh_set_screen_option' ), 10, 3 );
@@ -31,9 +31,9 @@ class LoadAdmin {
 		include_once 'AjaxOps.php';
 		include_once 'views/InsertHints.php';
 
-		$ajax_ops = new AjaxOps();
+		$ajax_ops = new AjaxOps( $this->on_pprh_page );
 		$ajax_ops->set_actions();
-		\do_action( 'pprh_pro_load_admin' );
+		\apply_filters( 'pprh_pro_load_admin', $this->on_pprh_page );
 	}
 
 //    public function load_admin_screen_content( $on_pprh_page ) {
@@ -92,7 +92,7 @@ class LoadAdmin {
 	}
 
 	// Register and call the CSS and JS we need only on the needed page.
-	public function register_admin_files( $hook ) {
+	public function register_admin_files( string $hook ) {
 //		$str = PPRH_ADMIN_SCREEN . 'post.php';
 
 		if ( str_contains( PPRH_ADMIN_SCREEN, $hook ) || str_contains( 'post.php', $hook ) ) {

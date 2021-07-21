@@ -119,7 +119,7 @@ class Utils {
 		return ( isset( $_SERVER[$prop] ) ? self::clean_url( $_SERVER[$prop] ) : '' );
 	}
 
-	public static function on_pprh_page( bool $doing_ajax, string $referer ):bool {
+	public static function on_pprh_page( bool $doing_ajax, string $referer ):int {
 		if ( '' === $referer ) {
 			$referer = self::get_server_prop( 'HTTP_REFERER' );
 		}
@@ -128,9 +128,23 @@ class Utils {
 		return self::on_pprh_page_ctrl( $doing_ajax, $referer, $request_uri );
 	}
 
-	public static function on_pprh_page_ctrl( bool $doing_ajax, string $referer, string $request_uri ):bool {
+	/**
+	 * @param bool $doing_ajax
+	 * @param string $referer
+	 * @param string $request_uri
+	 * @return int: 0 means the current page does NOT use PPRH; 1 means current page is PPRH ADMIN; 2 means current page is POST EDIT.
+	 */
+	public static function on_pprh_page_ctrl( bool $doing_ajax, string $referer, string $request_uri ):int {
 		$matcher = ( $doing_ajax ) ? $referer : $request_uri;
-		return ( preg_match( '/pprh-plugin-settings|post\.php/', $matcher ) > 0 );
+		$val = 0;
+
+		if ( str_contains( $matcher, PPRH_MENU_SLUG ) ) {
+			$val = 1;
+		} elseif ( str_contains( $matcher, 'post.php' ) ) {
+			$val = 2;
+		}
+
+		return $val;
 	}
 
 

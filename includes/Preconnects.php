@@ -132,12 +132,11 @@ class Preconnects {
 		$success = false;
 		$allow_unauth = $this->allow_user( $config['allow_unauth_opt'], $config['is_user_logged_in'] );
 		$hints = $pprh_data['hints'] ?? array();
-		$raw_hint_count = count( $hints );
 
-		if ( $allow_unauth && ($raw_hint_count > 0) && Utils::isArrayAndNotEmpty( $pprh_data ) ) {
+		if ( $allow_unauth && Utils::isArrayAndNotEmpty( $hints ) && Utils::isArrayAndNotEmpty( $pprh_data ) ) {
 			$results = $this->get_hint_results( $pprh_data );
 			$this->update_options( $pprh_data );
-			$success = ( $raw_hint_count === count( $results ) );
+			$success = ( count( $hints ) === count( $results ) );
 		}
 
 		return $success;
@@ -168,7 +167,8 @@ class Preconnects {
 	}
 
 	private function update_options( $raw_hint_data ) {
-		$updated = Utils::apply_pprh_filters( 'pprh_preconnects_update_options', array( $raw_hint_data ) );
+//		$updated = Utils::apply_pprh_filters( 'pprh_preconnects_update_options', array( $raw_hint_data ) );
+		$updated = \apply_filters( 'pprh_preconnects_update_options', $raw_hint_data );
 
 		if ( is_array( $updated ) ) {
 			Utils::update_option( 'pprh_preconnect_set', 'true' );

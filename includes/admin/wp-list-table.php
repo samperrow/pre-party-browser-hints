@@ -157,7 +157,7 @@ class WP_List_Table {
 		);
 
 		$this->screen = convert_to_screen( $args['screen'] );
-		$this->on_pprh_post_page = ! Utils::apply_pprh_filters( 'pprh_on_pprh_admin', array( true ) );
+		$this->on_pprh_post_page = $args['on_pprh_page'];
 
 		\add_filter( "manage_{$this->screen->id}_columns", array( $this, 'get_columns' ), 0 );
 
@@ -1283,9 +1283,9 @@ class WP_List_Table {
 	protected function column_default( $item, $column_name ) {}
 
 
-	public function on_post_page_and_global_hint( $item ) {
-		$global_hint = ( ! empty( $item['post_id'] ) && 'global' === $item['post_id'] );
-		return ( $global_hint && $this->on_pprh_post_page );
+	public function on_post_page_and_global_hint( $item, $on_pprh_post_page ) {
+		$global_hint = ( isset( $item['post_id'] ) && 'global' === $item['post_id'] );
+		return ( $global_hint && ( 2 === $on_pprh_post_page ) );
 	}
 
 	protected function global_hint_alert() {
@@ -1305,7 +1305,7 @@ class WP_List_Table {
 	 */
 	protected function single_row_columns( $item ) {
 		list( $columns, $hidden, $primary ) = $this->get_column_info();
-		$global_hint_alert = $this->on_post_page_and_global_hint( $item );
+		$global_hint_alert = $this->on_post_page_and_global_hint( $item, $this->on_pprh_post_page );
 
 		foreach ( $columns as $column_name => $column_display_name ) {
 			$classes = "$column_name column-$column_name";

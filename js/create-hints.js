@@ -49,7 +49,7 @@
         if (typeof window.URL === "function" && (0 !== url.indexOf('//') )) {
             domain = new URL(url).origin;
         } else {
-            var newStr = url.split('/');
+            let newStr = url.split('/');
             domain = newStr[0] + '//' + newStr[2];
         }
 

@@ -12,7 +12,7 @@ class NewHint {
 		?>
 
         <div class="pprh-container">
-            <table id="pprh-enter-data" class="fixed widefat striped" aria-label="Add a new resource hint">
+            <table id="pprh-enter-data" class="fixed widefat striped text-center" aria-label="Add a new resource hint">
 
                 <thead>
                     <tr>
@@ -21,16 +21,16 @@ class NewHint {
                 </thead>
 
                 <tbody>
-				    <?php $this->insert_table_body(); ?>
+				    <?php $this->insert_hint_table(); ?>
                 </tbody>
 
                 <tfoot>
                     <tr>
-                        <td colspan="2" class="text-center"><?php \do_action( 'pprh_get_post_preconnects_markup' ); ?></td>
+                        <td colspan="2" class="text-center"><?php \apply_filters( 'pprh_newhint_get_content', 2, 'post_preconnects_output' ); ?></td>
                         <td colspan="1">
                             <input id="pprhSubmitHints" type="button" class="button button-primary" value="<?php esc_attr_e( 'Insert Resource Hint', 'pprh' ); ?>" />
                         </td>
-                        <td colspan="2" class="text-center"><?php \do_action( 'pprh_get_post_prerenders_markup' ); ?></td>
+                        <td colspan="2" class="text-center"><?php \apply_filters( 'pprh_newhint_get_content', 2, 'post_prerenders_output' ); ?></td>
                     </tr>
                 </tfoot>
 
@@ -40,13 +40,13 @@ class NewHint {
         <?php
 	}
 
-	public function insert_table_body() {
+	public function insert_hint_table() {
 	    echo '<form method="post">';
 		$this->enter_url();
 		$this->show_pp_radio_options();
 		$this->set_attrs();
 		$this->set_media_attr();
-		\do_action( 'pprh_get_home_page_options' );
+		\apply_filters( 'pprh_newhint_get_content', 1, 'home_page_output' );
 		echo '</form>';
 	}
 

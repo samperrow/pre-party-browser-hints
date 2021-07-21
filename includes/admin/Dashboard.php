@@ -21,7 +21,7 @@ class Dashboard {
     }
 
 	public function show_plugin_dashboard( $on_pprh_page ) {
-	    if ( ! $on_pprh_page ) {
+	    if ( 0 === $on_pprh_page ) {
 	        return;
         }
 
@@ -33,7 +33,7 @@ class Dashboard {
 		echo '</h1>';
         \do_action(  'pprh_notice' );
 		$this->do_upgrade( PPRH_VERSION_NEW, PPRH_VERSION );
-		$insert_hints = new InsertHints();
+		$insert_hints = new InsertHints( $on_pprh_page );
 
 		$this->show_admin_tabs();
 
@@ -96,7 +96,7 @@ class Dashboard {
 		\add_thickbox();
 		?>
 
-		<div id="pprhContactAuthor">
+		<div class="text-center">
             <a style="margin: 20px 0;" href="#TB_inline?width=500&amp;height=300&amp;inlineId=pprhEmail" class="thickbox button button-primary">
                 <span style="margin: 3px 5px 0 0;" class="dashicons dashicons-email"></span>
                 Contact Support

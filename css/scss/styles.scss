@@ -1,3 +1,8 @@
+div#wpbody-content > div#pprh-poststuff {
+    padding-top: 10px;
+    min-width: 763px;
+}
+
 div#pprh-poststuff {
 
     h1 {
@@ -5,7 +10,8 @@ div#pprh-poststuff {
     }
 
     h2 {
-        font-size: 18px;
+        margin: 0;
+        padding: 8px 12px;
     }
 
     h3 {
@@ -16,7 +22,7 @@ div#pprh-poststuff {
         text-align: center;
     }
 
-    div.postbox > div {
+    div.pprh-content > div.postbox > div {
         padding: 0 10px;
     }
 
@@ -103,7 +109,7 @@ div#pprh-poststuff {
     }
 
     table#pprh-enter-data {
-        text-align: center;
+        //text-align: center;
 
         thead tr th {
             text-align: center;
@@ -126,22 +132,6 @@ div#pprh-poststuff {
 
         input.pprh_url {
             padding: 5px;
-        }
-    }
-
-    table.pprh-settings-table {
-        font-size: 14px;
-        text-align: left;
-
-        tbody tr td {
-            margin-bottom: 9px;
-            padding: 15px 10px;
-            line-height: 1.3;
-            vertical-align: middle
-        }
-
-        tfoot {
-            text-align: center
         }
     }
 
@@ -226,13 +216,5 @@ div#pprh-poststuff {
 
     div.row-actions span input {
         display: none
-    }
-
-    #pprhContactAuthor {
-        text-align: center
-    }
-
-    div#pprh-hint-info p {
-        font-size: 1.1em;
     }
 }

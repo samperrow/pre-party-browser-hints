@@ -4,12 +4,19 @@
 
 	'use strict';
 	let $ = jQuery;
-	let insertHintsTable = document.getElementById("pprh-insert-hints");
 	const currentURL = document.location.href;
+	const submitHintsBtn = document.getElementById('pprhSubmitHints');
+	let resetButtonElems = document.querySelectorAll('input.pprh-reset');
+	let bulkActionElems = document.querySelectorAll('input.pprhBulkAction');
 
-	checkoutModals();
 	toggleEmailSubmit();
 	toggleDivs();
+	checkoutModals();
+	resetButtons();
+	addSubmitHintsListener();
+	addEventListeners();
+	toggleElemIterator();
+	applyBulkActionListeners();
 
 
 
@@ -20,21 +27,31 @@
 				emailSubmitBtn.addEventListener("click", emailValidate);
 			}
 		}
+
+		// used on all admin and modal screens w/ contact button.
+		function emailValidate(e) {
+			let emailAddr = document.getElementById("pprhEmailAddress");
+			let emailMsg = document.getElementById("pprhEmailText");
+			let emailformat = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/i;
+
+			if (!emailformat.test(emailAddr.value) || emailMsg.value === "") {
+				e.preventDefault();
+				window.alert('Please enter a valid message and email address.');
+			}
+		}
 	}
 
 	function toggleDivs() {
 		let navTabs = document.querySelectorAll('a.nav-tab');
 		let divs = document.querySelectorAll('div.pprh-content');
 
-		if (isObjectAndNotNull(insertHintsTable)) {
-			insertHintsTable.classList.toggle('active');
-		}
-
 		if (isObjectAndNotNull(navTabs) && navTabs.length > 0) {
 			navTabs[0].classList.toggle('nav-tab-active');
 		}
 
-		divs[0].classList.toggle('active');
+		if (isObjectAndNotNull(divs) && divs.length > 0) {
+			divs[0].classList.toggle('active');
+		}
 
 		navTabs.forEach(function(tab) {
 			tab.addEventListener('click', tabClick);
@@ -53,16 +70,7 @@
 		}
 	}
 
-	$('input.pprh-reset').each(function () {
-		$(this).on('click', function (e) {
-			let text = e.target.getAttribute('data-text');
-			let res = confirm('Are you sure you want to ' + text);
 
-			if (!res) {
-				e.preventDefault();
-			}
-		});
-	});
 
 	function checkoutModals() {
 		let checkoutModals = document.getElementsByClassName('pprhOpenCheckoutModal');
@@ -81,39 +89,39 @@
 		}
 	}
 
+	function resetButtons() {
+		if ( ! isObjectAndNotNull(resetButtonElems)) {
+			return;
+		}
+		resetButtonElems.forEach( function (btn) {
+			btn.addEventListener('click', addConfirmNotice);
+		});
 
-	// used on all admin and modal screens w/ contact button.
-	function emailValidate(e) {
-		let emailAddr = document.getElementById("pprhEmailAddress");
-		let emailMsg = document.getElementById("pprhEmailText");
-		let emailformat = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/i;
-
-		if (!emailformat.test(emailAddr.value) || emailMsg.value === "") {
-			e.preventDefault();
-			window.alert('Please enter a valid message and email address.');
+		function addConfirmNotice (e) {
+			let text = e.target.getAttribute('data-text');
+			let res = confirm('Are you sure you want to ' + text);
+			if (!res) {
+				e.preventDefault();
+			}
 		}
 	}
 
 
 
-	function configForHint(table) {
-		let elems = getRowElems(table);
-		let rawHintType = elems.hint_type;
-		let hintTypeVal = rawHintType.find('input:checked').val();
-
-		return {
-			url:         elems.url.val(),
-			hint_type:   hintTypeVal,
-			media:       elems.media.val(),
-			as_attr:     elems.as_attr.val(),
-			type_attr:   elems.type_attr.val(),
-			crossorigin: elems.crossorigin.is(':checked'),
+	function addSubmitHintsListener() {
+		if (! isObjectAndNotNull(submitHintsBtn)) {
+			return;
 		}
+
+		submitHintsBtn.addEventListener("click", function(e) {
+			prepareHint('pprh-enter-data', 0);
+		});
 	}
+
 
 	function prepareHint(tableId, operation) {
 		let table = $('#' + tableId);
-		let rawHint = configForHint(table);
+		let rawHint = configForHint();
 
 		if (isObjectAndNotNull(rawHint)) {
 			let hint = pprhCreateHint.CreateHint(rawHint);
@@ -125,25 +133,36 @@
 				return createAjaxReq(hint, 'pprh_update_hints', pprh_data.nonce);
 			}
 		}
-	}
 
-	$('input#pprhSubmitHints').on("click", function (e) {
-		prepareHint('pprh-enter-data', 0);
-	});
+		function configForHint() {
+			let elems = getRowElems(table);
+			let rawHintType = elems.hint_type;
+			let hintTypeVal = rawHintType.find('input:checked').val();
 
-
-
-	function verifyHint(hint) {
-		if (hint.url.length === 0 || typeof hint.hint_type === "undefined") {
-			window.alert('Please enter a proper URL and hint type.');
-			return false;
-		} else if (hint.hint_type === 'preload' && !hint.as_attr) {
-			window.alert("You must specify an 'as' attribute when using preload hints.");
-			return false;
+			return {
+				url:         elems.url.val(),
+				hint_type:   hintTypeVal,
+				media:       elems.media.val(),
+				as_attr:     elems.as_attr.val(),
+				type_attr:   elems.type_attr.val(),
+				crossorigin: elems.crossorigin.is(':checked'),
+			}
 		}
 
-		return true;
+		function verifyHint(hint) {
+			if (hint.url.length === 0 || typeof hint.hint_type === "undefined") {
+				window.alert('Please enter a proper URL and hint type.');
+				return false;
+			} else if (hint.hint_type === 'preload' && !hint.as_attr) {
+				window.alert("You must specify an 'as' attribute when using preload hints.");
+				return false;
+			}
+
+			return true;
+		}
 	}
+
+
 
 	function getRowElems(table) {
 		let tbody = table.find('tbody');
@@ -199,8 +218,7 @@
 	}
 
 
-	addEventListeners();
-	toggleElemIterator();
+
 
 	function addEventListeners() {
 		getHintIdsAndInsertData();
@@ -327,10 +345,10 @@
 
 		xhr.send(target);
 		xhr.onreadystatechange = function() {
-			xhrResponse(xhr);
+			xhrResponse();
 		}
 
-		function xhrResponse(xhr) {
+		function xhrResponse() {
 			if (xhr.readyState === 4 && xhr.status === 200 && xhr.response && xhr.response !== "0") {
 
 				if (xhr.response.indexOf('<div') === 0) {
@@ -352,91 +370,101 @@
 			}
 		}
 
-	}
+		// update the hint table via ajax.
+		function updateTable(response) {
+			let table = $('table.pprh-post-table').first();
+			let postTable = document.getElementsByClassName('pprh-post-table')[0];
+			let tbody = table.find('tbody');
 
+			tbody.html('');
 
-	// bulk deletes, enables/disables.
-	$('input.pprhBulkAction').on('click', bulkUpdates);
-	function bulkUpdates(e) {
-		e.preventDefault();
-		let idArr = [];
-		let op = $(e.currentTarget).prev().val();
-		let opCode = (/2|3|4/.test(op)) ? Number(op) : 5;
-		let checkboxes = $('table.pprh-post-table tbody th.check-column input:checkbox');
-
-		$.each(checkboxes, function () {
-			if ($(this).is(':checked')) {
-				return idArr.push($(this).val());
+			if (response.rows.length) {
+				tbody.html(response.rows);
 			}
-		});
 
-		if (idArr.length > 0) {
-			return createAjaxReq({
-				op_code: opCode,
-				hint_ids: idArr,
+			if (response.pagination.bottom.length) {
+				$('.tablenav.top .tablenav-pages').html($(response.pagination.top).html());
+			}
+
+			if (response.pagination.top.length) {
+				$('.tablenav.bottom .tablenav-pages').html($(response.pagination.bottom).html());
+			}
+
+			if (response.total_pages === 1) {
+				$('div.tablenav, div.alignleft.actions.bulkactions').removeClass('no-pages');
+			}
+
+			postTable.querySelectorAll(':checked').forEach(function (item) {
+				return item.checked = false;
 			});
-		} else {
-			window.alert('Please select a row(s) for bulk updating.');
+		}
+
+		function getUrlValue() {
+			let val = '';
+
+			if (currentURL.indexOf(this) > -1) {
+				try {
+					val = new URL(currentURL).searchParams.get(this);
+				} catch (e) {
+					val = currentURL.split(this + '=')[1].match(/^\d/)[0];
+				}
+			}
+
+			return val;
+		}
+
+		function logError(err) {
+			let error = (err.message) ? err.message : " Please clear your browser cache, refresh your page, or contact support to resolve the issue.";
+			let msg = "Error updating resource hint. " + error;
+			updateAdminNotice(msg, "error");
+			console.error(err);
 		}
 	}
 
-	function logError(err) {
-		let error = (err.message) ? err.message : " Please clear your browser cache, refresh your page, or contact support to resolve the issue.";
-		let msg = "Error updating resource hint. " + error;
-		updateAdminNotice(msg, "error");
-		console.error(err);
+	function applyBulkActionListeners() {
+		if ( ! isObjectAndNotNull(bulkActionElems)) {
+			return;
+		}
+
+		bulkActionElems.forEach(function(elem) {
+			elem.addEventListener('click', bulkUpdates);
+		});
+
+		// bulk deletes, enables/disables.
+		function bulkUpdates(e) {
+			e.preventDefault();
+			let idArr = [];
+			let op = $(e.currentTarget).prev().val();
+			let opCode = (/2|3|4/.test(op)) ? Number(op) : 5;
+			let checkboxes = $('table.pprh-post-table tbody th.check-column input:checkbox');
+
+			$.each(checkboxes, function () {
+				if ($(this).is(':checked')) {
+					return idArr.push($(this).val());
+				}
+			});
+
+			if (idArr.length > 0) {
+				return createAjaxReq({
+					op_code: opCode,
+					hint_ids: idArr,
+				});
+			} else {
+				window.alert('Please select a row(s) for bulk updating.');
+			}
+		}
 	}
+
 
 	function isObjectAndNotNull(obj) {
 		return (typeof obj === "object" && obj !== null);
 	}
 
-	function getUrlValue() {
-		let val = '';
-
-		if (currentURL.indexOf(this) > -1) {
-			try {
-				val = new URL(currentURL).searchParams.get(this);
-			} catch (e) {
-				val = currentURL.split(this + '=')[1].match(/^\d/)[0];
-			}
-		}
-
-		return val;
-	}
-
-	// update the hint table via ajax.
-	function updateTable(response) {
-		let table = $('table.pprh-post-table').first();
-		let postTable = document.getElementsByClassName('pprh-post-table')[0];
-		let tbody = table.find('tbody');
-
-		tbody.html('');
-
-		if (response.rows.length) {
-			tbody.html(response.rows);
-		}
-
-		if (response.pagination.bottom.length) {
-			$('.tablenav.top .tablenav-pages').html($(response.pagination.top).html());
-		}
-
-		if (response.pagination.top.length) {
-			$('.tablenav.bottom .tablenav-pages').html($(response.pagination.bottom).html());
-		}
-
-		if (response.total_pages === 1) {
-			$('div.tablenav, div.alignleft.actions.bulkactions').removeClass('no-pages');
-		}
-
-		postTable.querySelectorAll(':checked').forEach(function (item) {
-			return item.checked = false;
-		});
-	}
 
 	return {
 		CreateAjaxReq: createAjaxReq,
 		UpdateAdminNotice: updateAdminNotice,
+		IsObjectAndNotNull: isObjectAndNotNull
 	}
 
 }));
