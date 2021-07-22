@@ -187,15 +187,15 @@
 
 		$.each(hintTypeRadios, function () {
 			$(this).on('click', function () {
-				toggleBasedOnHintType(parentTbody, $(this));
+				toggleBasedOnHintType($(this));
 			});
 
-			if ($(this).is(':checked')) {
-				toggleBasedOnHintType(parentTbody, $(this));
-			}
+			// if ($(this).is(':checked')) {
+			// 	toggleBasedOnHintType($(this));
+			// }
 		});
 
-		function toggleBasedOnHintType(parentTbody, elem) {
+		function toggleBasedOnHintType(elem) {
 			let hintType = elem.val();
 			let xoriginElem = parentTbody.find('input.pprh_crossorigin').first();
 			let mediaElem = parentTbody.find('input.pprh_media').first();
