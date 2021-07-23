@@ -157,7 +157,7 @@ class LoadAdmin {
 	}
 
 	public function create_prerender_metabox() {
-        $load_prerender_metabox = Utils::apply_pprh_filters( 'pprh_load_prerender_metabox', array( false ) );
+        $load_prerender_metabox = \apply_filters( 'pprh_load_prerender_metabox', false );
 
 		if ( ! $load_prerender_metabox ) {
 			?>
@@ -205,7 +205,7 @@ class LoadAdmin {
 	}
 
 	public function post_metabox() {
-	    $res = Utils::apply_pprh_filters( 'pprh_posts_get_proper_callback', array( false ) );
+	    $res = \apply_filters( 'pprh_posts_get_proper_callback', false );
 
 	    if ( ! $res ) { ?>
             <div style="text-align: center;">

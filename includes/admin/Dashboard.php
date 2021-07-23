@@ -56,7 +56,7 @@ class Dashboard {
 			'faq'          => 'FAQ',
 		);
 
-		$tabs = Utils::apply_pprh_filters( 'pprh_load_tabs', array( $tabs ) );
+		$tabs = \apply_filters( 'pprh_load_tabs', $tabs );
 
 		echo '<div class="nav-tab-wrapper" style="margin-bottom: 10px;">';
 		foreach ( $tabs as $tab => $name ) {

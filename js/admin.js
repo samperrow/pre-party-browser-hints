@@ -8,6 +8,7 @@
 	const submitHintsBtn = document.getElementById('pprhSubmitHints');
 	let resetButtonElems = document.querySelectorAll('input.pprh-reset');
 	let bulkActionElems = document.querySelectorAll('input.pprhBulkAction');
+	let newHintTable = document.getElementById('pprh-enter-data');
 
 	toggleEmailSubmit();
 	toggleDivs();
@@ -15,7 +16,7 @@
 	resetButtons();
 	addSubmitHintsListener();
 	addEventListeners();
-	toggleElemIterator();
+	addHintTypeListener(null);
 	applyBulkActionListeners();
 
 
@@ -73,10 +74,10 @@
 
 
 	function checkoutModals() {
-		let checkoutModals = document.getElementsByClassName('pprhOpenCheckoutModal');
-		if (isObjectAndNotNull(checkoutModals)) {
-			for (const checkoutModal of checkoutModals) {
-				checkoutModal.addEventListener('click', openCheckoutModal);
+		let checkoutModalElems = document.getElementsByClassName('pprhOpenCheckoutModal');
+		if (isObjectAndNotNull(checkoutModalElems)) {
+			for (const checkoutModalElem of checkoutModalElems) {
+				checkoutModalElem.addEventListener('click', openCheckoutModal);
 			}
 		}
 
@@ -121,7 +122,7 @@
 
 	function prepareHint(tableId, operation) {
 		let table = $('#' + tableId);
-		let rawHint = configForHint();
+		let rawHint = getHintValuesFromTable(table);
 
 		if (isObjectAndNotNull(rawHint)) {
 			let hint = pprhCreateHint.CreateHint(rawHint);
@@ -131,21 +132,6 @@
 				hint.op_code = operation;
 				hint.hint_ids = (operation === 1) ? tableId.split('pprh-edit-')[1] : [];
 				return createAjaxReq(hint, 'pprh_update_hints', pprh_data.nonce);
-			}
-		}
-
-		function configForHint() {
-			let elems = getRowElems(table);
-			let rawHintType = elems.hint_type;
-			let hintTypeVal = rawHintType.find('input:checked').val();
-
-			return {
-				url:         elems.url.val(),
-				hint_type:   hintTypeVal,
-				media:       elems.media.val(),
-				as_attr:     elems.as_attr.val(),
-				type_attr:   elems.type_attr.val(),
-				crossorigin: elems.crossorigin.is(':checked'),
 			}
 		}
 
@@ -162,7 +148,20 @@
 		}
 	}
 
+	function getHintValuesFromTable(table) {
+		let elems = getRowElems(table);
+		let rawHintType = elems.hint_type;
+		let hintTypeVal = rawHintType.find('input:checked').val();
 
+		return {
+			url:         elems.url.val(),
+			hint_type:   hintTypeVal,
+			media:       elems.media.val(),
+			as_attr:     elems.as_attr.val(),
+			type_attr:   elems.type_attr.val(),
+			crossorigin: elems.crossorigin.is(':checked'),
+		}
+	}
 
 	function getRowElems(table) {
 		let tbody = table.find('tbody');
@@ -177,25 +176,21 @@
 	}
 
 
-	function toggleElemIterator(editRow) {
-		if (typeof editRow === "undefined") {
+	function addHintTypeListener(editRow) {
+		if (null === editRow) {
 			editRow = $('table#pprh-enter-data');
 		}
 
 		let hintTypeRadios = editRow.find('tr.pprhHintTypes input.hint_type');
-		let parentTbody = editRow.find('tbody');
 
-		$.each(hintTypeRadios, function () {
+		$.each(hintTypeRadios, function() {
 			$(this).on('click', function () {
-				toggleBasedOnHintType($(this));
+				hintTypeListener($(this));
 			});
-
-			// if ($(this).is(':checked')) {
-			// 	toggleBasedOnHintType($(this));
-			// }
 		});
 
-		function toggleBasedOnHintType(elem) {
+		function hintTypeListener(elem) {
+			let parentTbody = editRow.find('tbody');
 			let hintType = elem.val();
 			let xoriginElem = parentTbody.find('input.pprh_crossorigin').first();
 			let mediaElem = parentTbody.find('input.pprh_media').first();
@@ -229,9 +224,7 @@
 			let editRows = $('tr.pprh-row.edit');
 
 			$.each(editRows, function() {
-				let id = $(this).attr('class').split(' ')[2];
-				putHintInfoIntoElems(id);
-				toggleElemIterator($(this));
+				addHintTypeListener($(this));
 			});
 		}
 
@@ -257,7 +250,6 @@
 
 				let rows = $('tr.pprh-row.' + hintID);
 				rows.addClass('active');
-				putHintInfoIntoElems(hintID);
 
 				rows.find('button.button.cancel').first().on('click', function() {
 					rows.removeClass('active');
@@ -268,31 +260,11 @@
 				});
 			});
 		}
-
-		function putHintInfoIntoElems(hintID) {
-			let json = $('input#pprh-hint-storage-' + hintID).val();
-			let data = JSON.parse(json);
-			let table = $('table#pprh-edit-' + hintID);
-			let elems = getRowElems(table);
-
-			elems.url.val(data.url);
-
-			let hintTypeElem = elems.hint_type.find('input[value="' + data.hint_type + '"]').first();
-			hintTypeElem[0].checked = true;
-
-			if (data['crossorigin']) {
-				elems.crossorigin.attr('checked', true);
-			}
-
-			elems.as_attr.val(data['as_attr'] ? data['as_attr'] : '');
-			elems.type_attr.val(data['type_attr'] ? data['type_attr'] : '');
-			elems.media.val(data['media'] ? data['media'] : '');
-		}
 	}
 
 
 	function clearHintTable() {
-		let tbody = document.getElementById('pprh-enter-data').getElementsByTagName('tbody')[0];
+		let tbody = newHintTable.getElementsByTagName('tbody')[0];
 
 		tbody.querySelectorAll('select, input').forEach(function (elem) {
 			return elem[(/radio|checkbox/.test(elem.type)) ? 'checked' : 'value'] = '';
@@ -373,7 +345,6 @@
 		// update the hint table via ajax.
 		function updateTable(response) {
 			let table = $('table.pprh-post-table').first();
-			let postTable = document.getElementsByClassName('pprh-post-table')[0];
 			let tbody = table.find('tbody');
 
 			tbody.html('');
@@ -393,10 +364,6 @@
 			if (response.total_pages === 1) {
 				$('div.tablenav, div.alignleft.actions.bulkactions').removeClass('no-pages');
 			}
-
-			postTable.querySelectorAll(':checked').forEach(function (item) {
-				return item.checked = false;
-			});
 		}
 
 		function getUrlValue() {

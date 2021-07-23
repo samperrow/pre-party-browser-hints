@@ -93,27 +93,14 @@ class Utils {
 	}
 
 
-
 	public static function esc_get_option( string $option ) {
 		return \esc_html( \get_option( $option ) );
 	}
 
-	public static function get_option_status( string $option, string $val ) {
-		$value = self::esc_get_option( $option );
-		return ( ( $value === $val ) ? 'selected=selected' : '' );
+	public static function does_option_match( string $option, string $match, string $output ) {
+		$option_value = self::esc_get_option( $option );
+		return ( ( $option_value === $match ) ? $output : '' );
 	}
-
-	public static function is_option_checked( string $option ) {
-		$value = self::esc_get_option( $option );
-		return ( 'true' === $value ? 'checked' : '' );
-	}
-
-
-	public static function get_duplicate_hints( string $url, string $hint_type ):array {
-		$dao = new DAO();
-		return $dao->get_duplicate_hints( $url, $hint_type );
-	}
-
 
 	public static function get_server_prop( string $prop ):string {
 		return ( isset( $_SERVER[$prop] ) ? self::clean_url( $_SERVER[$prop] ) : '' );
@@ -199,7 +186,7 @@ class Utils {
 
 if ( ! function_exists( 'wp_doing_ajax' ) ) {
 	$doing_ajax = defined( 'DOING_AJAX' ) && DOING_AJAX;
-	Utils::apply_pprh_filters( 'wp_doing_ajax', array( $doing_ajax ) );
+	\apply_filters( 'wp_doing_ajax', $doing_ajax );
 }
 
 if ( ! function_exists( 'str_contains' ) ) {

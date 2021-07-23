@@ -142,14 +142,16 @@ final class UtilsTest extends TestCase {
 //		self::assertEquals( $result2, $test2 );
 //	}
 
-	public function test_get_option_status() {
+	public function test_does_option_match() {
+		$selected = 'selected="selected"';
 		$option_name = 'pprh_test_option';
 		\add_option( $option_name, 'true' );
-		$actual_1 = \PPRH\Utils::get_option_status($option_name, 'true' );
-		self::assertEquals( 'selected=selected', $actual_1 );
+
+		$actual_1 = \PPRH\Utils::does_option_match($option_name, 'true', $selected );
+		self::assertEquals( $selected, $actual_1 );
 
 		\update_option( $option_name, 'false' );
-		$test_2 = \PPRH\Utils::get_option_status( $option_name, 'true' );
+		$test_2 = \PPRH\Utils::does_option_match( $option_name, 'true', $selected );
 		self::assertEquals( '', $test_2 );
 
 		\delete_option( $option_name );
@@ -218,12 +220,7 @@ final class UtilsTest extends TestCase {
 		self::assertEquals( false, $actual_9 );
 	}
 
-	public function test_get_duplicate_hints() {
-		$url_1 = 'https://asdfasdfadsf.com';
-		$hint_type_1 = 'preconnect';
-		$actual_1 = \PPRH\Utils::get_duplicate_hints( $url_1, $hint_type_1 );
-		self::assertEmpty( $actual_1 );
-	}
+
 
 //	public function test_get_hints_free() {
 //		$actual_1 = \PPRH\DAO::get_admin_hints();

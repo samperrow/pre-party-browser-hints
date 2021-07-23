@@ -82,7 +82,7 @@ class DAO {
 			)
 		);
 
-		$args = Utils::apply_pprh_filters( 'pprh_dao_insert_hint_schema', array( $args, $new_hint ) );
+		$args = \apply_filters( 'pprh_dao_insert_hint_schema', $args, $new_hint );
 
 		if ( PPRH_RUNNING_UNIT_TESTS ) {
 			return self::create_db_result( true, 0, 0, $new_hint );
@@ -159,9 +159,16 @@ class DAO {
 	}
 
 
-	public function get_duplicate_hints( $url, $hint_type ) {
+	public function get_duplicate_hints( string $url, string $hint_type, array $raw_hint ):array {
 		global $wpdb;
 		$sql = "SELECT * FROM $this->table WHERE url = %s AND hint_type = %s";
+		$hint_ids = $raw_hint['hint_ids'] ?? '';
+		$op_code = $raw_hint['op_code'] ?? 0;
+
+		if ( 1 === $op_code && ! empty( $hint_ids ) ) {
+			$sql .= " AND id != %d";
+			return $wpdb->get_results( $wpdb->prepare( $sql, $url, $hint_type, $hint_ids ), ARRAY_A );
+		}
 
 		return $wpdb->get_results( $wpdb->prepare( $sql, $url, $hint_type ), ARRAY_A );
 	}
@@ -176,16 +183,6 @@ class DAO {
 		return self::get_db_results( $query );
 	}
 
-//	public static function get_admin_hints() {
-//		$query = self::get_admin_hints_query();
-//		return self::get_db_results( $query );
-//	}
-//
-//	public static function get_client_hints( $data ) {
-//		$query = self::get_client_hints_query( $data );
-//		return self::get_db_results( $query );
-//	}
-
 	public static function get_admin_hints_query() {
 		$table = PPRH_DB_TABLE;
 		$sql = "SELECT * FROM $table";
@@ -199,7 +196,7 @@ class DAO {
 		$order_by = ( 0 < preg_match( '/url|hint_type|status|created_by|post_id/i', $req_order_by ) ) ? $req_order_by : '';
 		$order = ( 0 < preg_match( '/ASC|DESC/', $req_order ) ) ? $req_order : '';
 
-		$new_query = Utils::apply_pprh_filters( 'pprh_append_admin_sql', array( $query, $order_by, $order ) );
+		$new_query = \apply_filters( 'pprh_append_admin_sql', $query, $order_by, $order );
 
 		if ( $new_query === $query ) {
 			if ( '' === $order_by ) $order_by = 'url';
@@ -219,7 +216,7 @@ class DAO {
 			'args'    => array( 'enabled' ),
 		);
 
-		return Utils::apply_pprh_filters( 'pprh_append_client_sql', array( $query, $data ) );
+		return \apply_filters( 'pprh_append_client_sql', $query, $data );
 	}
 
 	private static function get_db_results( array $query ):array {

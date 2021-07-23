@@ -98,6 +98,18 @@ final class DAOTest extends TestCase {
 //		self::assertEquals( $expected_2, $actual_2 );
 //	}
 
+	public function test_get_duplicate_hints() {
+		$url_1 = 'https://asdfasdfadsf.com';
+		$hint_type_1 = 'preconnect';
+		$raw_hint_1 = array( 'hint_ids' => '100', 'op_code' => 1 );
+		$actual_1 = $this->dao->get_duplicate_hints( $url_1, $hint_type_1, $raw_hint_1 );
+		self::assertEmpty( $actual_1 );
+
+		$raw_hint_2 = array( 'op_code' => 0 );
+		$actual_2 = $this->dao->get_duplicate_hints( $url_1, $hint_type_1, $raw_hint_2 );
+		self::assertEmpty( $actual_2 );
+	}
+
 	public function test_get_admin_hints_query() {
 		if ( PPRH_PRO_PLUGIN_ACTIVE ) {
 			return;

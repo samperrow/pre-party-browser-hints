@@ -35,7 +35,7 @@ class DisplayHints extends WP_List_Table {
 
 	public function column_default( $item, $column_name ) {
 		if ( 'post_id' === $column_name ) {
-            return Utils::apply_pprh_filters( 'pprh_dh_get_post_link', array( $item['post_id'] ) );
+            return \apply_filters( 'pprh_dh_get_post_link', $item['post_id'] );
         }
 
 		if ( '' === $item[$column_name] ) {
@@ -62,7 +62,7 @@ class DisplayHints extends WP_List_Table {
             'created_by'  => __( 'Created By', 'pprh' ),
         );
 
-		return Utils::apply_pprh_filters( 'pprh_dh_get_columns', array( $columns ) );
+		return \apply_filters( 'pprh_dh_get_columns', $columns );
 	}
 
 	public function get_sortable_columns() {
@@ -73,7 +73,7 @@ class DisplayHints extends WP_List_Table {
             'created_by'  => array('created_by', false)
         );
 
-		return Utils::apply_pprh_filters( 'pprh_dh_get_sortortable_columns', array( $arr ) );
+		return \apply_filters( 'pprh_dh_get_sortortable_columns', $arr );
 	}
 
 	public function get_bulk_actions() {
@@ -131,32 +131,30 @@ class DisplayHints extends WP_List_Table {
 		return sprintf( '<input type="checkbox" name="urlValue[]" value="%1$s"/>', $item['id'] );
 	}
 
-	public function inline_edit_row( $item ) {
-		$json = json_encode( $item,true );
-		$item_id = Utils::strip_non_numbers( $item['id'] );
+	public function inline_edit_row( array $hint ) {
+		$hint_id = Utils::strip_non_numbers( $hint['id'] );
 		?>
-			<tr class="pprh-row edit <?php echo $item_id; ?>">
-				<td colspan="9">
-					<table id="pprh-edit-<?php echo $item_id; ?>" aria-label="Update this resource hint">
-                        <thead>
-                            <tr>
-                                <th colspan="5" scope="colgroup"><?php esc_html_e( 'Update Resource Hint', 'pprh' ); ?></th>
-                            </tr>
-                        </thead>
-						<?php
-							$new_hint = new NewHint();
-						    $new_hint->insert_hint_table();
-						?>
+        <tr class="pprh-row edit <?php echo $hint_id; ?>">
+            <td colspan="9">
+                <table id="pprh-edit-<?php echo $hint_id; ?>" aria-label="Update this resource hint">
+                    <thead>
                         <tr>
-                            <td colspan="5">
-                                <button type="button" class="pprh-cancel button cancel">Cancel</button>
-                                <button type="button" class="pprh-update button button-primary save">Update</button>
-                            </td>
+                            <th colspan="5" scope="colgroup"><?php esc_html_e( 'Update Resource Hint', 'pprh' ); ?></th>
                         </tr>
-					</table>
-				    <input type="hidden" id="pprh-hint-storage-<?php echo $item_id; ?>" class="pprh-hint-storage <?php echo $item_id; ?>" value='<?php echo $json; ?>'>
-				</td>
-		    </tr>
+                    </thead>
+                    <?php
+                        $new_hint = new NewHint();
+                        $new_hint->insert_hint_table( $hint );
+                    ?>
+                    <tr>
+                        <td colspan="5">
+                            <button type="button" class="pprh-cancel button cancel">Cancel</button>
+                            <button type="button" class="pprh-update button button-primary save">Update</button>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
 		<?php
 	}
 

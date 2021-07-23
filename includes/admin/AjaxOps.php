@@ -12,7 +12,6 @@ class AjaxOps {
 
 	public function __construct( int $on_pprh_page ) {
 		$this->on_pprh_page = $on_pprh_page;
-//		\add_action( 'wp_ajax_pprh_update_hints', array( $this, 'pprh_update_hints' ) );
 	}
 
 	public function set_actions() {
@@ -57,7 +56,7 @@ class AjaxOps {
 
 	private function handle_action( array $data ):\stdClass {
 		if ( isset( $data['action'] ) ) {
-			$db_result = Utils::apply_pprh_filters( 'pprh_apply_ajaxops_action', array( $data['post_id'], $data['action'] ) );
+			$db_result = \apply_filters( 'pprh_apply_ajaxops_action', $data['post_id'], $data['action'] );
 		} else {
 			$dao_ctrl = new DAOController();
 			$db_result = $dao_ctrl->hint_controller( $data );

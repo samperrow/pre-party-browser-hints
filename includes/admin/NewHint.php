@@ -10,7 +10,6 @@ class NewHint {
 
 	public function create_new_hint_table() {
 		?>
-
         <div class="pprh-container">
             <table id="pprh-enter-data" class="fixed widefat striped text-center" aria-label="Add a new resource hint">
 
@@ -21,7 +20,7 @@ class NewHint {
                 </thead>
 
                 <tbody>
-				    <?php $this->insert_hint_table(); ?>
+				    <?php $this->insert_hint_table( array() ); ?>
                 </tbody>
 
                 <tfoot>
@@ -36,21 +35,28 @@ class NewHint {
 
             </table>
         </div>
-
         <?php
 	}
 
-	public function insert_hint_table() {
+	public function insert_hint_table( array $hint = array() ) {
 	    echo '<form method="post">';
-		$this->enter_url();
-		$this->show_pp_radio_options();
-		$this->set_attrs();
-		$this->set_media_attr();
+	    $url = $hint['url'] ?? '';
+		$hint_type = $hint['hint_type'] ?? '';
+		$xorigin = $hint['crossorigin'] ?? '';
+		$hint_id = $hint['hint_id'] ?? '';
+		$type_attr = $hint['type_attr'] ?? '';
+		$as_attr = $hint['as_attr'] ?? '';
+		$media = $hint['media'] ?? '';
+
+		$this->enter_url( $url );
+		$this->show_pp_radio_options( $hint_type, $hint_id );
+		$this->set_attrs( $hint_type, $xorigin, $as_attr, $type_attr );
+		$this->set_media_attr( $hint_type, $media );
 		\apply_filters( 'pprh_newhint_get_content', 1, 'home_page_output' );
 		echo '</form>';
 	}
 
-	protected function enter_url() {
+	protected function enter_url( string $hint_url ) {
 		?>
         <tr>
             <td colspan="1">
@@ -61,14 +67,21 @@ class NewHint {
             </td>
             <td colspan="4">
                 <label>
-                    <input class="widefat pprh_url" placeholder="<?php esc_attr_e( 'Enter valid domain or URL here...', 'pprh' ); ?>" name="url"/>
+                    <input class="widefat pprh_url" value="<?php echo $hint_url; ?>" placeholder="<?php esc_attr_e( 'Enter valid domain or URL here...', 'pprh' ); ?>" name="url"/>
                 </label>
             </td>
         </tr>
 		<?php
 	}
 
-	protected function show_pp_radio_options() {
+	private function is_checked( string $str, string $value ) {
+	    if ( $str === $value ) {
+	        echo 'checked="checked"';
+		}
+	}
+
+	protected function show_pp_radio_options( string $hint_type, string $hint_id ) {
+		$name = 'hint_type-' . $hint_id;
 		?>
         <tr class="pprhHintTypes">
 
@@ -78,8 +91,8 @@ class NewHint {
 						<span><?php esc_html_e( 'Insert domain names from external URL\'s to perform DNS resolution early.', 'pprh' ); ?></span>
 					</span>
                     <span><?php esc_html_e( 'DNS-Prefetch' ); ?></span>
-                    <label>
-                        <input name="hint_type" class="hint_type" type="radio" value="dns-prefetch"/>
+                    <label for="<?php echo $name ?>">
+                        <input name="<?php echo $name ?>" class="hint_type dns-prefetch" type="radio" value="dns-prefetch" <?php $this->is_checked( 'dns-prefetch', $hint_type ); ?>/>
                     </label>
                 </div>
             </td>
@@ -90,8 +103,8 @@ class NewHint {
 						<span><?php esc_html_e( 'Insert the full URL of a resource that is likely to be needed on a page later.', 'pprh' ); ?></span>
 					</span>
                     <span><?php esc_html_e( 'Prefetch' ); ?></span>
-                    <label>
-                        <input name="hint_type" class="hint_type" type="radio" value="prefetch"/>
+                    <label for="<?php echo $hint_type . '-' . $hint_id; ?>">
+                        <input name="<?php echo $name ?>" class="hint_type prefetch" type="radio" value="prefetch" <?php $this->is_checked( 'prefetch', $hint_type ); ?>/>
                     </label>
                 </div>
             </td>
@@ -102,8 +115,8 @@ class NewHint {
 						<span><?php esc_html_e( 'Insert the full URL of a page/post your visitors are likely to navigate towards.', 'pprh' ); ?></span>
 					</span>
                     <span><?php esc_html_e( 'Prerender' ); ?></span>
-                    <label>
-                        <input name="hint_type" class="hint_type" type="radio" value="prerender"/>
+                    <label for="<?php echo $hint_type . '-' . $hint_id; ?>">
+                        <input name="<?php echo $name ?>" class="hint_type prerender" type="radio" value="prerender" <?php $this->is_checked( 'prerender', $hint_type ); ?>/>
                     </label>
                 </div>
             </td>
@@ -114,8 +127,8 @@ class NewHint {
 						<span><?php esc_html_e( 'Insert domain names from external URL\'s to perform DNS resolution, initial connection, and SSL negotiation ahead of time.', 'pprh' ); ?></span>
 					</span>
                     <span><?php esc_html_e( 'Preconnect' ); ?></span>
-                    <label>
-                        <input name="hint_type" class="hint_type" type="radio" value="preconnect"/>
+                    <label for="<?php echo $hint_type . '-' . $hint_id; ?>">
+                        <input name="<?php echo $name ?>" class="hint_type preconnect" type="radio" value="preconnect" <?php $this->is_checked( 'preconnect', $hint_type ); ?>/>
                     </label>
                 </div>
             </td>
@@ -126,8 +139,8 @@ class NewHint {
 						<span><?php esc_html_e( 'Insert the full URL of a resource that is needed on a current page.', 'pprh' ); ?></span>
 					</span>
                     <span><?php esc_html_e( 'Preload' ); ?></span>
-                    <label>
-                        <input name="hint_type" class="hint_type" type="radio" value="preload"/>
+                    <label for="<?php echo $hint_type . '-' . $hint_id; ?>">
+                        <input name="<?php echo $name ?>" class="hint_type preload" type="radio" value="preload" <?php $this->is_checked( 'preload', $hint_type ); ?>/>
                     </label>
                 </div>
             </td>
@@ -137,17 +150,38 @@ class NewHint {
 		<?php
 	}
 
-	protected function set_attrs() {
+
+	private function get_as_attrs( string $selected_value, string $attr ) {
+	    if ( 'as' === $attr ) {
+			$values = array( 'audio', 'document', 'embed', 'fetch', 'image', 'font', 'object', 'script', 'style', 'track', 'video', 'worker' );
+		} else {
+			$values = array( 'text/css', 'text/html', 'font/eot', 'font/ttf', 'font/woff', 'font/woff2' );
+		}
+
+	    foreach ( $values as $index => $value ) {
+			$selected = ( $selected_value === $value ) ? 'selected' : '';
+
+			if ( 0 === $index ) {
+				echo "<option label=' ' value=''></option>";
+			}
+
+			echo "<option $selected value='$value'>$value</option>";
+		}
+	}
+
+	protected function set_attrs( string $hint_type, string $xorigin, string $as_attr, string $type_attr ) {
+		$xorigin_disabled = ( empty( $xorigin ) ? '' : 'checked="checked"' );
+	    $disabled = ( 0 === preg_match( '/preconnect|preload/', $hint_type ) ) ? 'disabled' : '';
 		?>
         <tr>
 
             <td colspan="1">
 				<span class="pprh-help-tip-hint">
-					<span><?php _e( 'Crossorigin applies to preconnect and preload hints only. For various reasons, font files (and others) need to be loaded with the crossorigin attribute.<a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Preloading_content#Cross-origin_fetches">Source: Mozilla</a>',
-                            'pprh' ); ?></span>
+					<span><?php _e( 'Crossorigin applies to preconnect and preload hints only. For various reasons, font files (and others) need to be loaded with the crossorigin attribute.<a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Preloading_content#Cross-origin_fetches">Source: Mozilla</a>', 'pprh' ); ?></span>
 				</span>
-                <label><?php esc_html_e( 'Crossorigin?', 'pprh' ); ?>
-                    <input class="widefat pprh_crossorigin" value="crossorigin" type="checkbox" name="crossorigin" disabled="true"/>
+                <label>
+                    <span><?php esc_html_e( 'Crossorigin?', 'pprh' ); ?></span>
+                    <input class="widefat pprh_crossorigin" value="crossorigin" type="checkbox" name="crossorigin" <?php echo $xorigin_disabled . $disabled; ?>/>
                 </label>
             </td>
 
@@ -160,19 +194,7 @@ class NewHint {
                 <span><?php esc_html_e( 'as:', 'pprh' ); ?></span>
                 <label>
                     <select class="pprh_as_attr" name="as_attr">
-                        <option selected label=" "></option>
-                        <option value="audio">audio</option>
-                        <option value="document">document</option>
-                        <option value="embed">embed</option>
-                        <option value="fetch">fetch</option>
-                        <option value="image">image</option>
-                        <option value="font">font</option>
-                        <option value="object">object</option>
-                        <option value="script">script</option>
-                        <option value="style">style</option>
-                        <option value="track">track</option>
-                        <option value="video">video</option>
-                        <option value="worker">worker</option>
+                        <?php $this->get_as_attrs( $as_attr, 'as' ); ?>
                     </select>
                 </label>
             </td>
@@ -184,13 +206,7 @@ class NewHint {
                 <span><?php esc_html_e( 'Mime Type:', 'pprh' ); ?></span>
                 <label>
                     <select class="pprh_type_attr" name="type_attr">
-                        <option selected label=" "></option>
-                        <option value="text/css">text/css</option>
-                        <option value="text/html">text/html</option>
-                        <option value="font/eot">font/eot</option>
-                        <option value="font/ttf">font/ttf</option>
-                        <option value="font/woff">font/woff</option>
-                        <option value="font/woff2">font/woff2</option>
+                        <?php $this->get_as_attrs( $type_attr, 'type' ); ?>
                     </select>
                 </label>
             </td>
@@ -199,8 +215,10 @@ class NewHint {
 		<?php
 	}
 
-	protected function set_media_attr() {
-	    ?>
+	protected function set_media_attr( string $hint_type, string $media ) {
+	    $med_value = "value='$media'";
+		$med_value .= ( 'preload' === $hint_type ) ? '' : ' disabled';
+		?>
         <tr>
 
             <td colspan="1">
@@ -212,7 +230,7 @@ class NewHint {
             </td>
 
             <td colspan="4">
-                <input placeholder="" class="widefat pprh_media" value="" type="text" name="media" disabled="true"/>
+                <input placeholder="" class="widefat pprh_media" type="text" name="media" <?php echo $med_value; ?> />
             </td>
 
         </tr>

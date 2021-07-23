@@ -79,8 +79,8 @@ class PrefetchSettings {
 	}
 
 	public function set_values() {
-		$this->prefetch_disableForLoggedInUsers = \PPRH\Utils::is_option_checked( 'pprh_prefetch_disableForLoggedInUsers' );
-		$this->prefetch_enabled = \PPRH\Utils::is_option_checked( 'pprh_prefetch_enabled' );
+		$this->prefetch_disableForLoggedInUsers = \PPRH\Utils::does_option_match( 'pprh_prefetch_disableForLoggedInUsers', 'true', 'checked' );
+		$this->prefetch_enabled = \PPRH\Utils::does_option_match( 'pprh_prefetch_enabled', 'true', 'checked' );
 
 		$prefetch_ignoreKeywords = \get_option( 'pprh_prefetch_ignoreKeywords' );
 		$this->ignoreKeywords = implode( ', ', $prefetch_ignoreKeywords );

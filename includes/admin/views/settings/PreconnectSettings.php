@@ -29,8 +29,8 @@ class PreconnectSettings {
 	}
 
 	public function set_values() {
-		$this->autoload = \PPRH\Utils::is_option_checked( 'pprh_preconnect_autoload' );
-		$this->allow_unauth = \PPRH\Utils::is_option_checked( 'pprh_preconnect_allow_unauth' );
+		$this->autoload = \PPRH\Utils::does_option_match( 'pprh_preconnect_autoload', 'true', 'checked' );
+		$this->allow_unauth = \PPRH\Utils::does_option_match( 'pprh_preconnect_allow_unauth', 'true', 'checked' );
 	}
 
 	public function markup() {
@@ -62,7 +62,7 @@ class PreconnectSettings {
 	}
 
 	public function load_reset_settings() {
-        $res = Utils::apply_pprh_filters( 'pprh_sc_show_preconnect_settings', array() );
+        $res = \apply_filters( 'pprh_sc_show_preconnect_settings', array() );
         if ( ! empty( $res ) ) {
             return false;
         }
