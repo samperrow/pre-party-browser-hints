@@ -101,12 +101,10 @@ final class DAOTest extends TestCase {
 	public function test_get_duplicate_hints() {
 		$url_1 = 'https://asdfasdfadsf.com';
 		$hint_type_1 = 'preconnect';
-		$raw_hint_1 = array( 'hint_ids' => '100', 'op_code' => 1 );
-		$actual_1 = $this->dao->get_duplicate_hints( $url_1, $hint_type_1, $raw_hint_1 );
+		$actual_1 = $this->dao->get_duplicate_hints( $url_1, $hint_type_1, 1, '100' );
 		self::assertEmpty( $actual_1 );
 
-		$raw_hint_2 = array( 'op_code' => 0 );
-		$actual_2 = $this->dao->get_duplicate_hints( $url_1, $hint_type_1, $raw_hint_2 );
+		$actual_2 = $this->dao->get_duplicate_hints( $url_1, $hint_type_1, 0, '' );
 		self::assertEmpty( $actual_2 );
 	}
 

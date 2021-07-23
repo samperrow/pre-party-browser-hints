@@ -8,8 +8,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class Dashboard {
 
-//	public $on_pprh_admin = false;
-
 	public function __construct() {
 		if ( ! \has_action(  'pprh_notice' ) ) {
 			\add_action( 'pprh_notice', array( $this, 'default_admin_notice' ), 10, 0 );
@@ -34,9 +32,7 @@ class Dashboard {
         \do_action(  'pprh_notice' );
 		$this->do_upgrade( PPRH_VERSION_NEW, PPRH_VERSION );
 		$insert_hints = new InsertHints( $on_pprh_page );
-
 		$this->show_admin_tabs();
-
 		$insert_hints->markup();
 		$settings->markup(true);
 		$faq->markup();
@@ -73,7 +69,7 @@ class Dashboard {
         }
 
         $activate_plugin = new ActivatePlugin();
-        $msg = 'Version ' . PPRH_VERSION_NEW . ' upgrade notes: 1) Fixed error which prevented modal boxes from working properly on post pages.';
+        $msg = 'Version ' . PPRH_VERSION_NEW . ' Upgrade Notes: 1) Optimized/fixed new hint creation process.';
         Utils::show_notice( $msg, true );
         $activate_plugin->upgrade_plugin();
 

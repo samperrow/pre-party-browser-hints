@@ -127,9 +127,10 @@ class Utils {
 
 		if ( str_contains( $matcher, PPRH_MENU_SLUG ) ) {
 			$val = 1;
-		} elseif ( str_contains( $matcher, 'post.php' ) ) {
-			$val = 2;
 		}
+//		elseif ( str_contains( $matcher, 'post.php' ) ) {
+//			$val = 2;
+//		}
 
 		return $val;
 	}

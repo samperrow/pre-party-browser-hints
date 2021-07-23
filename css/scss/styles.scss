@@ -211,7 +211,16 @@ div#pprh-poststuff {
 
     div.pprh-code-block {
         margin: 0 auto;
-        max-width: 95%
+        width: 550px;
+        background-color: rgba(0,0,0,0.07);
+        overflow-x: scroll;
+
+        > code {
+            display: block;
+            line-height: 22px;
+            background: none;
+            width: 850px
+        }
     }
 
     div.row-actions span input {

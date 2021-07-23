@@ -129,9 +129,9 @@ class DAO {
 
 	public function delete_hint( string $hint_ids ) {
 		global $wpdb;
-		$hint_id_exists = preg_match('/\d/', $hint_ids );
+		$valid_hint_id = ( 0 < preg_match('/\d/', $hint_ids ) );
 
-		if ( $hint_id_exists > 0 ) {
+		if ( $valid_hint_id ) {
 
 			if ( PPRH_RUNNING_UNIT_TESTS ) {
 				return self::create_db_result( true, 2, 0, null );
@@ -159,11 +159,9 @@ class DAO {
 	}
 
 
-	public function get_duplicate_hints( string $url, string $hint_type, array $raw_hint ):array {
+	public function get_duplicate_hints( string $url, string $hint_type, int $op_code, string $hint_ids ):array {
 		global $wpdb;
 		$sql = "SELECT * FROM $this->table WHERE url = %s AND hint_type = %s";
-		$hint_ids = $raw_hint['hint_ids'] ?? '';
-		$op_code = $raw_hint['op_code'] ?? 0;
 
 		if ( 1 === $op_code && ! empty( $hint_ids ) ) {
 			$sql .= " AND id != %d";

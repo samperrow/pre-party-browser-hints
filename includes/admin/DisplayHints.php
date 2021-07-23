@@ -35,7 +35,7 @@ class DisplayHints extends WP_List_Table {
 
 	public function column_default( $item, $column_name ) {
 		if ( 'post_id' === $column_name ) {
-            return \apply_filters( 'pprh_dh_get_post_link', $item['post_id'] );
+            return \apply_filters( 'pprh_dh_get_post_link', $item );
         }
 
 		if ( '' === $item[$column_name] ) {
