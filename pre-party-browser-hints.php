@@ -14,7 +14,7 @@ declare(strict_types=1);
  * Text Domain:       pprh
  * Domain Path:       /languages
  *
- * last edited July 23, 2021
+ * last edited July 26, 2021
  *
  * Copyright 2016  Sam Perrow  (email : info@sphacks.io)
  *
@@ -119,11 +119,10 @@ class Pre_Party_Browser_Hints {
 
 	public function activate_plugin() {
 		$this->load_common_files();
-		$activate_plugin = new ActivatePlugin();
 		$this->create_constants();
+		$activate_plugin = new ActivatePlugin();
 		$activate_plugin->activate_plugin();
 		return $activate_plugin->plugin_activated;
 	}
-
 
 }

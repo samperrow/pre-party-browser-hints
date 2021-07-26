@@ -10,13 +10,21 @@
     }
 
     function isValidHintDomain(domain, domainArr) {
-        return (domain !== host && domainArr.indexOf(domain) === -1 && !/\.gravatar\.com/.test(domain) && domain !== altHostName);
+        let domainNotHost = (domain !== host);
+        let disAllowedDomains = (! /\.gravatar\.com|data:application/.test(domain));
+        let domainNotAltDomain = (domain !== altHostName);
+        let domainNotInArr = (domainArr.indexOf(domain) === -1);
+        return ( domainNotHost && domainNotInArr && domainNotAltDomain && disAllowedDomains );
     }
 
     function findResourceSources() {
         let resources = window.performance.getEntriesByType('resource');
         let newHintArr = [];
         let domains = [];
+
+        if (typeof pprhCreateHint === "undefined" || resources.length === 0) {
+            return newHintArr;
+        }
 
         resources.forEach(function(item) {
             let hintObj = {
@@ -58,7 +66,7 @@
 
     // sometimes this file can be cached, and this prevents it from constantly firing ajax requests.
     if (scriptSentWithinSixHours()) {
-        let timer = (TESTING) ? 1000 : 7000;
+        let timer = (TESTING) ? 2000 : 7000;
         setTimeout(fireAjax, timer);
     }
 })();

@@ -12,8 +12,10 @@ class ActivatePlugin {
 	public $plugin_activated = false;
 
 	public function activate_plugin() {
+		$this->update_option_names();
 		$this->add_options();
-		$this->init();
+		$this->setup_tables();
+		$this->plugin_activated = true;
 	}
 
 	public function upgrade_plugin() {
@@ -48,32 +50,30 @@ class ActivatePlugin {
 		\add_option( 'pprh_prefetch_maxRPS', '3', '', 'yes' );
 		\add_option( 'pprh_prefetch_hoverDelay', '50', '', 'yes' );
 		\add_option( 'pprh_prefetch_max_prefetches', '10', '', 'yes' );
+
+		\add_option( 'pprh_preconnect_allow_unauth', 'false', '', 'yes' );
+		\add_option( 'pprh_preconnect_autoload', 'true', '', 'yes' );
+		\add_option( 'pprh_preconnect_set', 'false', '', 'yes' );
 	}
 
 	private function update_option_names() {
-		$preconnect_allow_unauth = \get_option('pprh_allow_unauth');
+		$preconnect_allow_unauth = \get_option( 'pprh_allow_unauth' );
 		$preconnect_autoload = \get_option( 'pprh_autoload_preconnects' );
 		$preconnects_set = \get_option( 'pprh_preconnects_set' );
 
 		if ( false !== $preconnect_allow_unauth ) {
-			\add_option('pprh_preconnect_allow_unauth', $preconnect_allow_unauth, '', 'yes');
-			\delete_option('pprh_allow_unauth');
-		} else {
-			\add_option('pprh_preconnect_allow_unauth', 'false', '', 'yes');
+			\add_option( 'pprh_preconnect_allow_unauth', $preconnect_allow_unauth, '', 'yes' );
+			\delete_option( 'pprh_allow_unauth' );
 		}
 
 		if ( false !== $preconnect_autoload ) {
-			\add_option('pprh_preconnect_autoload', $preconnect_autoload, '', 'yes');
-			\delete_option('pprh_autoload_preconnects');
-		} else {
-			\add_option( 'pprh_preconnect_autoload', 'true', '', 'yes' );
+			\add_option( 'pprh_preconnect_autoload', $preconnect_autoload, '', 'yes' );
+			\delete_option( 'pprh_autoload_preconnects' );
 		}
 
 		if ( false !== $preconnects_set ) {
-			\add_option('pprh_preconnect_set', $preconnects_set, '', 'yes');
-			\delete_option('pprh_preconnects_set');
-		} else {
-			\add_option( 'pprh_preconnect_set', 'false', '', 'yes' );
+			\add_option( 'pprh_preconnect_set', $preconnects_set, '', 'yes' );
+			\delete_option( 'pprh_preconnects_set' );
 		}
 	}
 
