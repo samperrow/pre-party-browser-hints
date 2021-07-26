@@ -28,11 +28,12 @@ class GeneralSettings {
 	}
 
 	public function set_values() {
-		$this->disable_wp_hints = \PPRH\Utils::is_option_checked( 'pprh_disable_wp_hints' );
-		$this->html_head = \PPRH\Utils::is_option_checked( 'pprh_html_head' );
+		$this->disable_wp_hints = \PPRH\Utils::does_option_match( 'pprh_disable_wp_hints', 'true', 'checked' );
+		$this->html_head = \PPRH\Utils::does_option_match( 'pprh_html_head', 'true', 'checked' );
 	}
 
 	public function markup() {
+	    $selected = 'selected="selected"';
 		?>
         <table class="form-table">
             <tbody>
@@ -51,8 +52,8 @@ class GeneralSettings {
 
                 <td>
                     <select id="pprhHintLocation" name="pprh_html_head">
-                        <option value="true" <?php echo Utils::get_option_status( 'pprh_html_head', 'true' ); ?>><?php esc_html_e( 'HTML &lt;head&gt;', 'pprh' ); ?></option>
-                        <option value="false" <?php echo Utils::get_option_status( 'pprh_html_head', 'false' ); ?>><?php esc_html_e( 'HTTP Header', 'pprh' ); ?></option>
+                        <option value="true" <?php echo Utils::does_option_match( 'pprh_html_head', 'true', $selected ); ?>><?php esc_html_e( 'HTML &lt;head&gt;', 'pprh' ); ?></option>
+                        <option value="false" <?php echo Utils::does_option_match( 'pprh_html_head', 'false', $selected ); ?>><?php esc_html_e( 'HTTP Header', 'pprh' ); ?></option>
                     </select>
                     <p><?php esc_html_e( 'Send hints in the HTML &lt;head&gt; or the HTTP header.', 'pprh' ); ?></p>
                 </td>

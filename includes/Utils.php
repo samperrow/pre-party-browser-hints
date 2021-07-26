@@ -8,7 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class Utils {
 
-	public static function show_notice( $msg, $success ) {
+	public static function show_notice( string $msg, string $success ) {
 		if ( PPRH_RUNNING_UNIT_TESTS ) {
 			return;
 		}
@@ -26,48 +26,62 @@ class Utils {
 	}
 
 	public static function json_to_array( $json ):array {
-		$array = array();
+//		$json2 = '{asdf}';
+		$unslashed_json = \wp_unslash( $json );
+		$array = json_decode( $unslashed_json, true );
 
-		try {
-			$unslashed_json = \wp_unslash( $json );
-			$array = json_decode( $unslashed_json, true );
-		} catch ( \Exception $error ) {
-			// log error..
+		if ( ! is_array( $array ) ) {
+			self::log_error( "Failed at Utils::json_to_array()" );
 		}
 
 		return $array;
     }
 
-    public static function strip_non_alphanums( $text ) {
+    public static function strip_non_alphanums( string $text ):string {
 		return preg_replace( '/[^a-z\d]/imu', '', $text );
 	}
 
-	public static function strip_non_numbers( $text ) {
+	public static function strip_non_numbers( string $text ):string {
 		return preg_replace( '/\D/', '', $text );
 	}
 
-	public static function clean_hint_type( $text ) {
+	public static function clean_hint_type( string $text ):string {
 		return preg_replace( '/[^a-z|\-]/i', '', $text );
 	}
 
-	public static function clean_url( $url ) {
+	public static function clean_url( string $url ):string {
 		return preg_replace( '/[\s\'<>^\"\\\]/', '', $url );
 	}
 
-	public static function clean_url_path( $path ) {
+	public static function clean_url_path( string $path ):string {
 		return strtolower( trim( $path, '/?&' ) );
 	}
 
-	public static function clean_hint_attr( $attr ) {
+	public static function clean_hint_attr( string $attr ):string {
 		return strtolower( preg_replace( '/[^a-z0-9|\/]/i', '', $attr ) );
 	}
 
-	public static function is_null_or_empty_string( $str ) {
+	public static function clean_string_array( array $str_array ):array {
+		foreach( $str_array as $item => $val ) {
+			$str_array[$item] = self::strip_non_alphanums( $val );
+		}
+
+		return $str_array;
+	}
+
+	public static function is_null_or_empty_string( string $str ):bool {
 		return ( null === $str || '' === $str );
 	}
 
-	public static function isArrayAndNotEmpty( $arr ) {
+	public static function isArrayAndNotEmpty( $arr ):bool {
 		return ( is_array( $arr ) && ! empty( $arr ) );
+	}
+
+	public static function get_current_datetime():string {
+		$offset = new \DateTimeZone( 'America/Denver' );
+		$datetime = new \DateTime( 'now', $offset );
+		$timezone_offset = (string) ($datetime->getOffset() / 3600) . ' hours';
+		return date( 'Y-m-d H:m:s', strtotime( $timezone_offset ) );
 	}
 
 
@@ -84,48 +98,64 @@ class Utils {
 		return '';
 	}
 
-	public static function esc_get_option( $option ) {
+
+	public static function esc_get_option( string $option ) {
 		return \esc_html( \get_option( $option ) );
 	}
 
-	public static function get_option_status( $option, $val ) {
-		$value = self::esc_get_option( $option );
-		return ( ( $value === $val ) ? 'selected=selected' : '' );
+	public static function does_option_match( string $option, string $match, string $output ) {
+		$option_value = self::esc_get_option( $option );
+		return ( ( $option_value === $match ) ? $output : '' );
 	}
 
-	public static function is_option_checked( $option ) {
-		$value = self::esc_get_option( $option );
-		return ( 'true' === $value ? 'checked' : '' );
+	public static function get_server_prop( string $prop ):string {
+		return ( isset( $_SERVER[$prop] ) ? self::clean_url( $_SERVER[$prop] ) : '' );
 	}
 
-
-	public static function get_duplicate_hints( string $url, string $hint_type ):array {
-		$dao = new DAO();
-		return $dao->get_duplicate_hints( $url, $hint_type );
-	}
-
-
-	public static function get_referrer() {
-		return ( isset( $_SERVER['HTTP_REFERER'] ) ? self::clean_url( $_SERVER['HTTP_REFERER'] ) : '' );
-	}
-
-	public static function on_pprh_admin_page( bool $doing_ajax, $referer = null ):bool {
-		if ( null === $referer ) {
-			$referer = self::get_referrer();
-		}
-		return ( $doing_ajax ? str_contains( $referer, PPRH_MENU_SLUG ) : ( PPRH_MENU_SLUG === ( $_GET['page'] ?? '' ) ) );
-	}
-
-	public static function clean_string_array( array $str_array ):array {
-		foreach( $str_array as $item => $val ) {
-			$str_array[$item] = self::strip_non_alphanums( $val );
+	public static function on_pprh_page( bool $doing_ajax, string $referer ):int {
+		if ( '' === $referer ) {
+			$referer = self::get_server_prop( 'HTTP_REFERER' );
 		}
 
-		return $str_array;
+		$request_uri = self::get_server_prop( 'REQUEST_URI' );
+		return self::on_pprh_page_ctrl( $doing_ajax, $referer, $request_uri );
 	}
 
-	public static function get_browser() {
-		$user_agent = strip_tags( $_SERVER['HTTP_USER_AGENT'] ?? '' );
+	public static function log_error( $message ) {
+		$debugger = new DebugLogger();
+		$debugger->log_error( $message );
+	}
+
+	public static function get_current_datetime():string {
+		$offset = new \DateTimeZone( 'America/Denver' );
+		$datetime = new \DateTime( 'now', $offset );
+		$timezone_offset = (string) ($datetime->getOffset() / 3600) . ' hours';
+		return date( 'Y-m-d H:m:s', strtotime( $timezone_offset ) );
+	}
+
+	/**
+	 * @param bool $doing_ajax
+	 * @param string $referer
+	 * @param string $request_uri
+	 * @return int: 0 means the current page does NOT use PPRH; 1 means current page is PPRH ADMIN; 2 means current page is POST EDIT.
+	 */
+	public static function on_pprh_page_ctrl( bool $doing_ajax, string $referer, string $request_uri ):int {
+		$matcher = ( $doing_ajax ) ? $referer : $request_uri;
+		$val = 0;
+
+		if ( str_contains( $matcher, PPRH_MENU_SLUG ) ) {
+			$val = 1;
+		}
+//		elseif ( str_contains( $matcher, 'post.php' ) ) {
+//			$val = 2;
+//		}
+
+		return $val;
+	}
+
+
+	public static function get_browser():string {
+		$user_agent = self::get_server_prop( 'HTTP_USER_AGENT' );
 		return self::get_browser_name( $user_agent );
 	}
 
@@ -175,7 +205,7 @@ class Utils {
 
 if ( ! function_exists( 'wp_doing_ajax' ) ) {
 	$doing_ajax = defined( 'DOING_AJAX' ) && DOING_AJAX;
-	Utils::apply_pprh_filters( 'wp_doing_ajax', array( $doing_ajax ) );
+	\apply_filters( 'wp_doing_ajax', $doing_ajax );
 }
 
 if ( ! function_exists( 'str_contains' ) ) {

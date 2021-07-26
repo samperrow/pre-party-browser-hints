@@ -74,6 +74,12 @@ final class CreateHintsTest extends TestCase {
 		$actual_2 = $this->create_hints->create_hint( $dummy_hint );
 		$expected_2 = $this->create_hints->new_hint_ctrl( $dummy_hint );
 		self::assertEquals( $expected_2, $actual_2 );
+
+		$dummy_hint['op_code'] = 1;
+		$dummy_hint['hint_ids'] = '';
+		$actual_3 = $this->create_hints->create_hint( $dummy_hint );
+		$expected_3 = $this->create_hints->new_hint_ctrl( $dummy_hint );
+		self::assertEquals( $expected_3, $actual_3 );
 	}
 
 	public function test_new_hint_controller() {

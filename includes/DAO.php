@@ -82,7 +82,7 @@ class DAO {
 			)
 		);
 
-		$args = Utils::apply_pprh_filters( 'pprh_dao_insert_hint_schema', array( $args, $new_hint ) );
+		$args = \apply_filters( 'pprh_dao_insert_hint_schema', $args, $new_hint );
 
 		if ( PPRH_RUNNING_UNIT_TESTS ) {
 			return self::create_db_result( true, 0, 0, $new_hint );
@@ -92,6 +92,10 @@ class DAO {
 
 		if ( isset( $wpdb->insert_id ) && $wpdb->insert_id > 0 ) {
 			$new_hint['id'] = $wpdb->insert_id;
+		}
+
+		if ( ! $wpdb->result ) {
+			Utils::log_error( $wpdb->last_error );
 		}
 
 		return self::create_db_result( $wpdb->result, 0, 0, $new_hint );
@@ -124,14 +128,18 @@ class DAO {
 			$new_hint['id'] = $hint_id;
 		}
 
+		if ( ! $wpdb->result ) {
+			Utils::log_error( $wpdb->last_error );
+		}
+
 		return self::create_db_result( $wpdb->result, 1, 0, $new_hint );
 	}
 
 	public function delete_hint( string $hint_ids ) {
 		global $wpdb;
-		$hint_id_exists = preg_match('/\d/', $hint_ids );
+		$valid_hint_id = ( 0 < preg_match('/\d/', $hint_ids ) );
 
-		if ( $hint_id_exists > 0 ) {
+		if ( $valid_hint_id ) {
 
 			if ( PPRH_RUNNING_UNIT_TESTS ) {
 				return self::create_db_result( true, 2, 0, null );
@@ -141,6 +149,9 @@ class DAO {
 			return self::create_db_result( $wpdb->result, 2, 0, null );
 		}
 
+		if ( ! $wpdb->result ) {
+			Utils::log_error( $wpdb->last_error );
+		}
 	}
 
 	public function bulk_update( $hint_ids, $op_code ) {
@@ -155,15 +166,30 @@ class DAO {
 			"UPDATE $this->table SET status = %s WHERE id IN ($hint_ids)", $action )
 		);
 
+		if ( ! $wpdb->result ) {
+			Utils::log_error( $wpdb->last_error );
+		}
+
 		return self::create_db_result( $wpdb->result, $op_code, 0, null );
 	}
 
 
-	public function get_duplicate_hints( $url, $hint_type ) {
+	public function get_duplicate_hints( string $url, string $hint_type, int $op_code, string $hint_ids ):array {
 		global $wpdb;
 		$sql = "SELECT * FROM $this->table WHERE url = %s AND hint_type = %s";
 
-		return $wpdb->get_results( $wpdb->prepare( $sql, $url, $hint_type ), ARRAY_A );
+		if ( 1 === $op_code && ! empty( $hint_ids ) ) {
+			$sql .= " AND id != %d";
+			$results = $wpdb->get_results( $wpdb->prepare( $sql, $url, $hint_type, $hint_ids ), ARRAY_A );
+		} else {
+			$results = $wpdb->get_results( $wpdb->prepare( $sql, $url, $hint_type ), ARRAY_A );
+		}
+
+		if ( ! $wpdb->result ) {
+			Utils::log_error( $wpdb->last_error );
+		}
+
+		return $results;
 	}
 
 	public static function get_pprh_hints( bool $is_admin, array $data = array() ):array {
@@ -175,16 +201,6 @@ class DAO {
 
 		return self::get_db_results( $query );
 	}
-
-//	public static function get_admin_hints() {
-//		$query = self::get_admin_hints_query();
-//		return self::get_db_results( $query );
-//	}
-//
-//	public static function get_client_hints( $data ) {
-//		$query = self::get_client_hints_query( $data );
-//		return self::get_db_results( $query );
-//	}
 
 	public static function get_admin_hints_query() {
 		$table = PPRH_DB_TABLE;
@@ -199,7 +215,7 @@ class DAO {
 		$order_by = ( 0 < preg_match( '/url|hint_type|status|created_by|post_id/i', $req_order_by ) ) ? $req_order_by : '';
 		$order = ( 0 < preg_match( '/ASC|DESC/', $req_order ) ) ? $req_order : '';
 
-		$new_query = Utils::apply_pprh_filters( 'pprh_append_admin_sql', array( $query, $order_by, $order ) );
+		$new_query = \apply_filters( 'pprh_append_admin_sql', $query, $order_by, $order );
 
 		if ( $new_query === $query ) {
 			if ( '' === $order_by ) $order_by = 'url';
@@ -219,7 +235,7 @@ class DAO {
 			'args'    => array( 'enabled' ),
 		);
 
-		return Utils::apply_pprh_filters( 'pprh_append_client_sql', array( $query, $data ) );
+		return \apply_filters( 'pprh_append_client_sql', $query, $data );
 	}
 
 	private static function get_db_results( array $query ):array {
@@ -230,6 +246,10 @@ class DAO {
 			$results = $wpdb->get_results( $prepared_stmt, ARRAY_A );
 		} else {
 			$results = $wpdb->get_results( $query['sql'], ARRAY_A );
+		}
+
+		if ( ! $wpdb->result ) {
+			Utils::log_error( $wpdb->last_error );
 		}
 
 		return $results;
@@ -251,17 +271,23 @@ class DAO {
 				$ms_table_names[] = $ms_table_name;
 			}
 		}
+
+		if ( ! $wpdb->result ) {
+			Utils::log_error( $wpdb->last_error );
+		}
+
 		return $ms_table_names;
 	}
 
 	public function get_table_column() {
 		global $wpdb;
-		return $wpdb->get_results( "SHOW COLUMNS FROM $this->table LIKE 'auto_created'", ARRAY_A );
-	}
+		$results = $wpdb->get_results( "SHOW COLUMNS FROM $this->table LIKE 'auto_created'", ARRAY_A );
 
-	public function drop_table_column() {
-		global $wpdb;
-		$wpdb->query( "ALTER TABLE $this->table DROP COLUMN auto_created" );
+		if ( ! $wpdb->result ) {
+			Utils::log_error( $wpdb->last_error );
+		}
+
+		return $results;
 	}
 
 	public function create_table( $table_name ) {
@@ -287,6 +313,10 @@ class DAO {
         ) $charset;";
 
 		dbDelta( $sql, true );
+
+		if ( ! $wpdb->result ) {
+			Utils::log_error( $wpdb->last_error );
+		}
 	}
 
 }

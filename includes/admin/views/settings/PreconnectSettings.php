@@ -29,8 +29,8 @@ class PreconnectSettings {
 	}
 
 	public function set_values() {
-		$this->autoload = \PPRH\Utils::is_option_checked( 'pprh_preconnect_autoload' );
-		$this->allow_unauth = \PPRH\Utils::is_option_checked( 'pprh_preconnect_allow_unauth' );
+		$this->autoload = \PPRH\Utils::does_option_match( 'pprh_preconnect_autoload', 'true', 'checked' );
+		$this->allow_unauth = \PPRH\Utils::does_option_match( 'pprh_preconnect_allow_unauth', 'true', 'checked' );
 	}
 
 	public function markup() {
@@ -39,10 +39,10 @@ class PreconnectSettings {
             <tbody>
 
                 <tr>
-                    <th><?php esc_html_e( 'Enable this feature? (This allows preconnect hints to be automatically created.)', 'pprh' ); ?></th>
+                    <th><?php esc_html_e( 'Enable Auto Preconnect?', 'pprh' ); ?></th>
                     <td>
                         <input type="checkbox" name="pprh_preconnect_autoload_preconnects" value="true" <?php echo $this->autoload; ?>/>
-                        <p><?php esc_html_e( 'JavaScript, CSS, and images loaded from external domains will preconnect automatically.', 'pprh' ); ?></p>
+                        <p><?php esc_html_e( 'This feature allows preconnect hints to be automatically created. JavaScript, CSS, and images loaded from external domains will preconnect automatically.', 'pprh' ); ?></p>
                     </td>
                 </tr>
 
@@ -62,7 +62,7 @@ class PreconnectSettings {
 	}
 
 	public function load_reset_settings() {
-        $res = Utils::apply_pprh_filters( 'pprh_sc_show_preconnect_settings', array() );
+        $res = \apply_filters( 'pprh_sc_show_preconnect_settings', array() );
         if ( ! empty( $res ) ) {
             return false;
         }

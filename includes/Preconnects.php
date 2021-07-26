@@ -16,7 +16,7 @@ class Preconnects {
 	}
 
 	public function init_controller() {
-		$reset_pro = Utils::apply_pprh_filters( 'pprh_preconnects_do_reset_init', array( false ) );
+		$reset_pro = \apply_filters( 'pprh_preconnects_do_reset_init', false );
 
 		$this->config = array(
 			'reset_pro'              => $reset_pro,
@@ -94,7 +94,7 @@ class Preconnects {
 		);
 
 		if ( isset( $this->config['reset_pro'] ) ) {
-			$js_arr = Utils::apply_pprh_filters( 'pprh_preconnects_append_hint_object', array( $js_arr ) );
+			$js_arr = \apply_filters( 'pprh_preconnects_append_hint_object', $js_arr );
 		}
 
 		return $js_arr;
@@ -132,12 +132,11 @@ class Preconnects {
 		$success = false;
 		$allow_unauth = $this->allow_user( $config['allow_unauth_opt'], $config['is_user_logged_in'] );
 		$hints = $pprh_data['hints'] ?? array();
-		$raw_hint_count = count( $hints );
 
-		if ( $allow_unauth && ($raw_hint_count > 0) && Utils::isArrayAndNotEmpty( $pprh_data ) ) {
+		if ( $allow_unauth && Utils::isArrayAndNotEmpty( $hints ) && Utils::isArrayAndNotEmpty( $pprh_data ) ) {
 			$results = $this->get_hint_results( $pprh_data );
 			$this->update_options( $pprh_data );
-			$success = ( $raw_hint_count === count( $results ) );
+			$success = ( count( $hints ) === count( $results ) );
 		}
 
 		return $success;
@@ -168,7 +167,8 @@ class Preconnects {
 	}
 
 	private function update_options( $raw_hint_data ) {
-		$updated = Utils::apply_pprh_filters( 'pprh_preconnects_update_options', array( $raw_hint_data ) );
+//		$updated = \apply_filters( 'pprh_preconnects_update_options', array( $raw_hint_data ) );
+		$updated = \apply_filters( 'pprh_preconnects_update_options', $raw_hint_data );
 
 		if ( is_array( $updated ) ) {
 			Utils::update_option( 'pprh_preconnect_set', 'true' );

@@ -79,8 +79,8 @@ class PrefetchSettings {
 	}
 
 	public function set_values() {
-		$this->prefetch_disableForLoggedInUsers = \PPRH\Utils::is_option_checked( 'pprh_prefetch_disableForLoggedInUsers' );
-		$this->prefetch_enabled = \PPRH\Utils::is_option_checked( 'pprh_prefetch_enabled' );
+		$this->prefetch_disableForLoggedInUsers = \PPRH\Utils::does_option_match( 'pprh_prefetch_disableForLoggedInUsers', 'true', 'checked' );
+		$this->prefetch_enabled = \PPRH\Utils::does_option_match( 'pprh_prefetch_enabled', 'true', 'checked' );
 
 		$prefetch_ignoreKeywords = \get_option( 'pprh_prefetch_ignoreKeywords' );
 		$this->ignoreKeywords = implode( ', ', $prefetch_ignoreKeywords );
@@ -99,10 +99,10 @@ class PrefetchSettings {
             <tbody>
 
                 <tr>
-                    <th><?php esc_html_e( 'Enable this feature? (This allows for navigation links to be automatically prefetched while in viewport.)', 'pprh' ); ?></th>
+                    <th><?php esc_html_e( 'Enable Auto Prefetch?', 'pprh' ); ?></th>
                     <td>
                         <input type="checkbox" name="pprh_prefetch_enabled" class="toggleMetaBox" value="true" <?php echo $this->prefetch_enabled; ?>/>
-                        <p><?php esc_html_e( 'When navigation (anchor) links are being moused over, this feature will initiate a prefetch request for the URL in the link. Select No (default) to disable this feature.', 'pprh' ); ?></p>
+                        <p><?php esc_html_e( 'This allows for navigation links to be automatically prefetched while in viewport. When navigation (anchor) links are being moused over, this feature will initiate a prefetch request for the URL in the link. Select No (default) to disable this feature.', 'pprh' ); ?></p>
                     </td>
                 </tr>
 

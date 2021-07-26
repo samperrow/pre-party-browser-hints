@@ -5,7 +5,7 @@ use PHPUnit\Framework\TestCase;
 
 class NewHintTest extends TestCase {
 
-	public function testInsert_table_body () {
+	public function testinsert_hint_table () {
 
 	}
 

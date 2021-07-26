@@ -15,7 +15,7 @@ final class AjaxOpsTest extends TestCase {
 	 * @before
 	 */
 	public function test_start() {
-		$this->ajax_ops = new \PPRH\AjaxOps();
+		$this->ajax_ops = new \PPRH\AjaxOps( 2 );
 	}
 
 	public function test_pprh_update_hints() {

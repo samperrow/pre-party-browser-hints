@@ -142,14 +142,16 @@ final class UtilsTest extends TestCase {
 //		self::assertEquals( $result2, $test2 );
 //	}
 
-	public function test_get_option_status() {
+	public function test_does_option_match() {
+		$selected = 'selected="selected"';
 		$option_name = 'pprh_test_option';
 		\add_option( $option_name, 'true' );
-		$actual_1 = \PPRH\Utils::get_option_status($option_name, 'true' );
-		self::assertEquals( 'selected=selected', $actual_1 );
+
+		$actual_1 = \PPRH\Utils::does_option_match($option_name, 'true', $selected );
+		self::assertEquals( $selected, $actual_1 );
 
 		\update_option( $option_name, 'false' );
-		$test_2 = \PPRH\Utils::get_option_status( $option_name, 'true' );
+		$test_2 = \PPRH\Utils::does_option_match( $option_name, 'true', $selected );
 		self::assertEquals( '', $test_2 );
 
 		\delete_option( $option_name );
@@ -172,50 +174,53 @@ final class UtilsTest extends TestCase {
 		\delete_option( $test_option_name2 );
 	}
 
-	public function test_on_pprh_admin_page() {
+	public function test_get_server_prop() {
+		$_SERVER['HTTP_REFERER'] = 'https://sphacks.local/wp-admin/edit.php?post_type=page';
+		$actual_1 = \PPRH\Utils::get_server_prop( 'HTTP_REFERER' );
+		self::assertEquals( 'https://sphacks.local/wp-admin/edit.php?post_type=page', $actual_1 );
+		unset( $_SERVER['HTTP_REFERER'] );
 
-		$actual_1 = \PPRH\Utils::on_pprh_admin_page(true, PPRH_MENU_SLUG);
+		$_SERVER['REQUEST_URI'] = '/wp-admin/admin.php?page=pprh-plugin-settings';
+		$actual_2 = \PPRH\Utils::get_server_prop( 'REQUEST_URI' );
+		self::assertEquals( '/wp-admin/admin.php?page=pprh-plugin-settings', $actual_2 );
+		unset( $_SERVER['REQUEST_URI'] );
+
+		$_SERVER['REQUEST_URI'] = '/wp-ad<>min/plu^gins.php';
+		$actual_3 = \PPRH\Utils::get_server_prop( 'REQUEST_URI' );
+		self::assertEquals( '/wp-admin/plugins.php', $actual_3 );
+		unset( $_SERVER['REQUEST_URI'] );
+	}
+
+	public function test_on_pprh_page_ctrl() {
+		$actual_1 = \PPRH\Utils::on_pprh_page_ctrl( false, 'https://sphacks.local/wp-admin/plugins.php?plugin_status=all&paged=1&s', '/wp-admin/admin.php?page=pprh-plugin-settings' );
 		self::assertEquals( true, $actual_1 );
 
-		$actual_2 = \PPRH\Utils::on_pprh_admin_page(true, 'post.php');
-		self::assertEquals( false, $actual_2 );
+//		$actual_2 = \PPRH\Utils::on_pprh_page_ctrl( false, 'https://sphacks.local/wp-admin/edit.php?post_type=page', 'post.php' );
+//		self::assertEquals( true, $actual_2 );
 
-		$actual_3 = \PPRH\Utils::on_pprh_admin_page(true, '');
-		self::assertEquals( false, $actual_3 );
+		$actual_3 = \PPRH\Utils::on_pprh_page_ctrl( true, 'https://sphacks.local/wp-admin/admin.php?page=pprh-plugin-settings', 'admin-ajax.php' );
+		self::assertEquals( true, $actual_3 );
 
-		$_GET['page'] = PPRH_MENU_SLUG;
-		$actual_4 = \PPRH\Utils::on_pprh_admin_page(false);
-		self::assertEquals( true, $actual_4 );
+//		$actual_4 = \PPRH\Utils::on_pprh_page_ctrl(true, 'https://sphacks.local/wp-admin/post.php?post=2128&action=edit', 'admin-ajax.php' );
+//		self::assertEquals( true, $actual_4 );
 
-		$_GET['page'] = 'post.php';
-		$actual_5 = \PPRH\Utils::on_pprh_admin_page(false);
+		$actual_5 = \PPRH\Utils::on_pprh_page_ctrl(false, 'https://sphacks.local/wp-admin/admin.php?page=pprh-plugin-settings', '/wp-admin/upload.php' );
 		self::assertEquals( false, $actual_5 );
 
-		$_GET['page'] = '';
-		$actual_6 = \PPRH\Utils::on_pprh_admin_page(false);
+		$actual_6 = \PPRH\Utils::on_pprh_page_ctrl(false, 'https://sphacks.local/wp-admin/admin.php?page=pprh-plugin-settings', '/wp-admin/themes.php' );
 		self::assertEquals( false, $actual_6 );
 
-		$actual_7 = \PPRH\Utils::on_pprh_admin_page(false);
+		$actual_7 = \PPRH\Utils::on_pprh_page_ctrl(false, 'https://sphacks.local/wp-admin/themes.php', '/wp-admin/options-general.php' );
 		self::assertEquals( false, $actual_7 );
 
+		$actual_8 = \PPRH\Utils::on_pprh_page_ctrl( false, 'https://sphacks.local/', '' );
+		self::assertEquals(false, $actual_8 );
 
-		$_GET['page'] = null;
-		$_GET['post'] = '2128';
-		$test2 = \PPRH\Utils::on_pprh_admin_page( false, null );
-		self::assertEquals(false, $test2);
-
-		$test2 = \PPRH\Utils::on_pprh_admin_page( true, null );
-		self::assertEquals(false, $test2);
-
-		unset( $_GET['post'], $_GET['page'] );
+		$actual_9 = \PPRH\Utils::on_pprh_page_ctrl( true, 'asdfasys4ygdadf<>######%', '?' );
+		self::assertEquals( false, $actual_9 );
 	}
 
-	public function test_get_duplicate_hints() {
-		$url_1 = 'https://asdfasdfadsf.com';
-		$hint_type_1 = 'preconnect';
-		$actual_1 = \PPRH\Utils::get_duplicate_hints( $url_1, $hint_type_1 );
-		self::assertEmpty( $actual_1 );
-	}
+
 
 //	public function test_get_hints_free() {
 //		$actual_1 = \PPRH\DAO::get_admin_hints();

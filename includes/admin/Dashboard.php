@@ -8,8 +8,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class Dashboard {
 
-//	public $on_pprh_admin = false;
-
 	public function __construct() {
 		if ( ! \has_action(  'pprh_notice' ) ) {
 			\add_action( 'pprh_notice', array( $this, 'default_admin_notice' ), 10, 0 );
@@ -20,33 +18,29 @@ class Dashboard {
 	    Utils::show_notice( '', true );
     }
 
-	public function show_plugin_dashboard( $on_pprh_admin_page ) {
-	    if ( ! $on_pprh_admin_page ) {
+	public function show_plugin_dashboard( $on_pprh_page ) {
+	    if ( 0 === $on_pprh_page ) {
 	        return;
         }
 
 		$settings = new Settings();
-		$hint_info = new HintInfo();
-		$upgrade = new Upgrade();
+        $faq = new FAQ();
 
-		echo '<div id="poststuff" class="pprh-page"><h1>';
+		echo '<div id="pprh-poststuff"><h1>';
 		esc_html_e( 'Pre* Party Resource Hints', 'pprh' );
 		echo '</h1>';
         \do_action(  'pprh_notice' );
 		$this->do_upgrade( PPRH_VERSION_NEW, PPRH_VERSION );
-		$insert_hints = new InsertHints();
-
+		$insert_hints = new InsertHints( $on_pprh_page );
 		$this->show_admin_tabs();
-
 		$insert_hints->markup();
 		$settings->markup(true);
-		$hint_info->markup();
-		$upgrade->markup();
+		$faq->markup();
 
 		\do_action( 'pprh_load_view_classes' );
 		$this->show_footer();
 		echo '</div>';
-		unset( $insert_hints, $settings, $hint_info );
+		unset( $insert_hints, $settings, $faq );
 	}
 
 
@@ -55,11 +49,10 @@ class Dashboard {
 		$tabs = array(
 			'insert-hints' => 'Insert Hints',
 			'settings'     => 'Settings',
-//			'upgrade'      => 'Upgrade to Pro',
-			'hint-info'    => 'Information'
+			'faq'          => 'FAQ',
 		);
 
-		$tabs = Utils::apply_pprh_filters( 'pprh_load_tabs', array( $tabs ) );
+		$tabs = \apply_filters( 'pprh_load_tabs', $tabs );
 
 		echo '<div class="nav-tab-wrapper" style="margin-bottom: 10px;">';
 		foreach ( $tabs as $tab => $name ) {
@@ -76,7 +69,7 @@ class Dashboard {
         }
 
         $activate_plugin = new ActivatePlugin();
-        $msg = 'Version ' . PPRH_VERSION_NEW . ' upgrade notes: 1) Fixed error which prevented modal boxes from working properly on post pages.';
+        $msg = 'Version ' . PPRH_VERSION_NEW . ' Upgrade Notes: 1) Fixed error preventing new hint attributes from being selected/unselected as they should be.';
         Utils::show_notice( $msg, true );
         $activate_plugin->upgrade_plugin();
 
@@ -99,7 +92,7 @@ class Dashboard {
 		\add_thickbox();
 		?>
 
-		<div id="pprhContactAuthor">
+		<div class="text-center">
             <a style="margin: 20px 0;" href="#TB_inline?width=500&amp;height=300&amp;inlineId=pprhEmail" class="thickbox button button-primary">
                 <span style="margin: 3px 5px 0 0;" class="dashicons dashicons-email"></span>
                 Contact Support
@@ -110,7 +103,7 @@ class Dashboard {
 
                 <form method="post" style="width: 350px; margin: 0 auto; text-align: center">
                     <label for="pprhEmailText">
-                        <?php wp_nonce_field( 'pprh_email_nonce_action', 'pprh_email_nonce_nonce' ); ?>
+                        <?php \wp_nonce_field( 'pprh_email_nonce_action', 'pprh_email_nonce_nonce' ); ?>
                     </label>
                     <textarea name="pprh_text" id="pprhEmailText" style="height: 100px;" class="widefat" placeholder="<?php esc_attr_e( 'Help make this plugin better!' ); ?>"></textarea>
                     <label for="pprhEmailAddress"></label><input name="pprh_email" id="pprhEmailAddress" style="padding: 5px;" class="input widefat" placeholder="<?php esc_attr_e( 'Email address:' ); ?>"/>

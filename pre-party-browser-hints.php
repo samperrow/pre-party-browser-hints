@@ -4,7 +4,7 @@ declare(strict_types=1);
  * Plugin Name:       Pre* Party Resource Hints
  * Plugin URI:        https://wordpress.org/plugins/pre-party-browser-hints/
  * Description:       Take advantage of the browser resource hints DNS-Prefetch, Prerender, Preconnect, Prefetch, and Preload to improve page load time.
- * Version:           1.7.7.2
+ * Version:           1.7.7.3
  * Requires at least: 4.4
  * Requires PHP:      7.0.0
  * Author:            Sam Perrow
@@ -14,7 +14,7 @@ declare(strict_types=1);
  * Text Domain:       pprh
  * Domain Path:       /languages
  *
- * last edited July 18, 2021
+ * last edited July 26, 2021
  *
  * Copyright 2016  Sam Perrow  (email : info@sphacks.io)
  *
@@ -97,13 +97,12 @@ class Pre_Party_Browser_Hints {
 		if ( ! defined( 'PPRH_DB_TABLE' ) ) {
 			define( 'PPRH_DB_TABLE', $table );
 			define( 'PPRH_VERSION', $plugin_version );
-			define( 'PPRH_VERSION_NEW', '1.7.7.2' );
+			define( 'PPRH_VERSION_NEW', '1.7.7.3' );
 			define( 'PPRH_POSTMETA_TABLE', $postmeta_table );
 			define( 'PPRH_ABS_DIR', WP_PLUGIN_DIR . '/pre-party-browser-hints/' );
 			define( 'PPRH_REL_DIR', plugins_url() . '/pre-party-browser-hints/' );
 			define( 'PPRH_MENU_SLUG', 'pprh-plugin-settings' );
 			define( 'PPRH_ADMIN_SCREEN', 'toplevel_page_' . PPRH_MENU_SLUG );
-			define( 'PPRH_HOME_URL', admin_url() . 'admin.php?page=' . PPRH_MENU_SLUG );
 			define( 'PPRH_SITE_URL', $site_url );
 			define( 'PPRH_IN_DEV', $in_dev_testing );
 			define( 'PPRH_RUNNING_UNIT_TESTS', $unit_testing );
@@ -116,15 +115,15 @@ class Pre_Party_Browser_Hints {
 		include_once 'includes/DAOController.php';
 		include_once 'includes/CreateHints.php';
 		include_once 'includes/admin/ActivatePlugin.php';
+		include_once 'includes/DebugLogger.php';
 	}
 
 	public function activate_plugin() {
 		$this->load_common_files();
-		$activate_plugin = new ActivatePlugin();
 		$this->create_constants();
+		$activate_plugin = new ActivatePlugin();
 		$activate_plugin->activate_plugin();
 		return $activate_plugin->plugin_activated;
 	}
-
 
 }

@@ -10,41 +10,38 @@ final class DisplayHintsTest extends TestCase {
 
 	public function test_on_post_page_and_global_hint() {
 		$args = array(
-			'plural'   => '',
-			'singular' => '',
-			'ajax'     => true,
-			'screen'   => PPRH_ADMIN_SCREEN,
+			'plural'       => '',
+			'singular'     => '',
+			'ajax'         => true,
+			'screen'       => PPRH_ADMIN_SCREEN,
+			'on_pprh_page' => true
 		);
 
 		$wp_list_table = new \PPRH\WP_List_Table( $args );
 
 		$wp_list_table->on_pprh_post_page = false;
-		$actual_1 = $wp_list_table->on_post_page_and_global_hint( array('post_id' => 'global') );
+		$actual_1 = $wp_list_table->on_post_page_and_global_hint( array('post_id' => 'global'), 0 );
 		self::assertEquals( false, $actual_1 );
 
-		$actual_2 = $wp_list_table->on_post_page_and_global_hint( array('post_id' => '2138') );
+		$actual_2 = $wp_list_table->on_post_page_and_global_hint( array('post_id' => '2138'), 1 );
 		self::assertEquals( false, $actual_2 );
 
-		$actual_3 = $wp_list_table->on_post_page_and_global_hint( array('post_id' => '2138') );
+		$actual_3 = $wp_list_table->on_post_page_and_global_hint( array('post_id' => '2138'), 2 );
 		self::assertEquals( false, $actual_3 );
 
-		$actual_4 = $wp_list_table->on_post_page_and_global_hint( array('url' => 'https://espn.com') );
+		$actual_4 = $wp_list_table->on_post_page_and_global_hint( array('url' => 'https://espn.com'), 2 );
 		self::assertEquals( false, $actual_4 );
 
-		if ( PPRH_PRO_PLUGIN_ACTIVE )  {
+		if ( PPRH_PRO_PLUGIN_ACTIVE ) {
 			$test_5 = array('post_id' => 'global');
 
-			$wp_list_table->on_pprh_post_page = true;
-			$actual_5 = $wp_list_table->on_post_page_and_global_hint( $test_5 );
+			$actual_5 = $wp_list_table->on_post_page_and_global_hint( $test_5, 2 );
 			self::assertEquals( true, $actual_5 );
 
-			$wp_list_table->on_pprh_post_page = false;
-			$actual_6 = $wp_list_table->on_post_page_and_global_hint( $test_5 );
+			$actual_6 = $wp_list_table->on_post_page_and_global_hint( $test_5, 1 );
 			self::assertEquals( false, $actual_6 );
 		} else {
-			$test_3 = array('post_id' => '');
-			$wp_list_table->on_pprh_post_page = false;
-			$actual_3 = $wp_list_table->on_post_page_and_global_hint( $test_3 );
+			$actual_3 = $wp_list_table->on_post_page_and_global_hint( array('post_id' => ''), 0 );
 			self::assertEquals( false, $actual_3 );
 		}
 	}

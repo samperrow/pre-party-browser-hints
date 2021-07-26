@@ -14,7 +14,7 @@ class Upgrade {
 
 	public function markup() {
 		?>
-		<div id="pprh-upgrade" class="pprh-content">
+		<div id="pprh-upgrade" class="pprh-content upgrade">
 			<h2>Upgrade to Pre* Party Resource Hints Pro!</h2>
 			<p>I have been hard at work for over a year creating a dramatically improved version of this plugin. It has taken much longer than I anticipated, however the benefits of the upgraded version are extraordinary, and there is nothing comparable on the market. </p>
 			<p>The main benefits are below:</p>
@@ -34,12 +34,6 @@ class Upgrade {
 			</ol>
 
 			** youtube video here of difference **
-
-
-<!--			<div style="text-align: center; margin-top: 20px;">-->
-<!--				<input style="padding: 10px 30px; font-size: 22px " id="pprhOpenCheckoutModal" type="button" class="button button-primary" value="Upgrade to Pro Now!"/>-->
-<!--			</div>-->
-
 
 		</div>
 		<?php
