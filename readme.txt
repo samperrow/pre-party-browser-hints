@@ -74,10 +74,10 @@ To activate the preloaded resource, you must call that file in HTML as you would
 
 
 == Changelog ==
-1. Most recent update: July 23, 2021.
+1. Most recent update: July 26, 2021.
 2. Version 1.7.7.3
 
-July 23, 2021:
+July 26, 2021:
 1) Fixed error preventing new hint attributes from being selected/unselected as they should be.
 
 June 29, 2021:
