@@ -12,7 +12,7 @@ class LoadAdmin {
 
 	public function init() {
 		\add_action( 'admin_menu', array( $this, 'load_admin_menu' ) );
-//		\add_action( 'load-post.php', array( $this, 'create_post_meta_box' ) );
+		\add_action( 'load-post.php', array( $this, 'create_post_meta_box' ) );
 
 		$this->on_pprh_page = Utils::on_pprh_page( \wp_doing_ajax(), '' );
 
@@ -86,8 +86,8 @@ class LoadAdmin {
 	public function register_admin_files( string $hook ) {
 //		$str = PPRH_ADMIN_SCREEN . 'post.php';
 
-		if ( str_contains( PPRH_ADMIN_SCREEN, $hook ) ) {
-//        if ( str_contains( PPRH_ADMIN_SCREEN, $hook ) || str_contains( 'post.php', $hook ) ) {
+//		if ( str_contains( PPRH_ADMIN_SCREEN, $hook ) ) {
+        if ( str_contains( PPRH_ADMIN_SCREEN, $hook ) || str_contains( 'post.php', $hook ) ) {
 			$ajax_data = array(
 				'nonce'     => wp_create_nonce( 'pprh_table_nonce' ),
 				'admin_url' => admin_url()
@@ -138,14 +138,14 @@ class LoadAdmin {
 			'low'
 		);
 
-//		\add_meta_box(
-//			'pprh_prerender_settings_metabox',
-//			'Auto Prerender Settings',
-//			array( $this, 'create_prerender_metabox' ),
-//			PPRH_ADMIN_SCREEN,
-//			'normal',
-//			'low'
-//		);
+		\add_meta_box(
+			'pprh_prerender_settings_metabox',
+			'Auto Prerender Settings',
+			array( $this, 'create_prerender_metabox' ),
+			PPRH_ADMIN_SCREEN,
+			'normal',
+			'low'
+		);
 	}
 
 	public function create_prerender_metabox() {

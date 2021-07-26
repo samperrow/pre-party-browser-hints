@@ -126,12 +126,6 @@ class Utils {
 		$debugger->log_error( $message );
 	}
 
-	public static function get_current_datetime():string {
-		$offset = new \DateTimeZone( 'America/Denver' );
-		$datetime = new \DateTime( 'now', $offset );
-		$timezone_offset = (string) ($datetime->getOffset() / 3600) . ' hours';
-		return date( 'Y-m-d H:m:s', strtotime( $timezone_offset ) );
-	}
 
 	/**
 	 * @param bool $doing_ajax
