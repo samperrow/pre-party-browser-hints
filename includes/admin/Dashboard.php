@@ -69,7 +69,7 @@ class Dashboard {
         }
 
         $activate_plugin = new ActivatePlugin();
-        $msg = 'Version ' . PPRH_VERSION_NEW . ' Upgrade Notes: 1) Optimized/fixed new hint creation process.';
+        $msg = 'Version ' . PPRH_VERSION_NEW . ' Upgrade Notes: 1) Fixed error preventing new hint attributes from being selected/unselected as they should be.';
         Utils::show_notice( $msg, true );
         $activate_plugin->upgrade_plugin();
 
