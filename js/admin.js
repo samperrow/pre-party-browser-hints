@@ -12,7 +12,7 @@
 
 	toggleEmailSubmit();
 	toggleDivs();
-	checkoutModals();
+	// checkoutModals();
 	resetButtons();
 	addSubmitHintsListener();
 	addEventListeners();
@@ -149,7 +149,7 @@
 	}
 
 	function getHintValuesFromTable(table) {
-		let elems = getRowElems(table);
+		let elems = getRowElemsFromTable(table);
 		let rawHintType = elems.hint_type;
 		let hintTypeVal = rawHintType.find('input:checked').val();
 
@@ -163,7 +163,7 @@
 		}
 	}
 
-	function getRowElems(table) {
+	function getRowElemsFromTable(table) {
 		let tbody = table.find('tbody');
 		return {
 			url:         tbody.find('input.pprh_url'),
@@ -174,7 +174,7 @@
 			media:       tbody.find('input.pprh_media')
 		};
 	}
-
+	
 
 	function addHintTypeListener(editRow) {
 		if (null === editRow) {

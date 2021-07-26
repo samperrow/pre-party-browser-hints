@@ -43,7 +43,7 @@ class NewHint {
 	    $url = $hint['url'] ?? '';
 		$hint_type = $hint['hint_type'] ?? '';
 		$xorigin = $hint['crossorigin'] ?? '';
-		$hint_id = $hint['hint_id'] ?? '';
+		$hint_id = $hint['id'] ?? '';
 		$type_attr = $hint['type_attr'] ?? '';
 		$as_attr = $hint['as_attr'] ?? '';
 		$media = $hint['media'] ?? '';
@@ -91,7 +91,7 @@ class NewHint {
 						<span><?php esc_html_e( 'Insert domain names from external URL\'s to perform DNS resolution early.', 'pprh' ); ?></span>
 					</span>
                     <span><?php esc_html_e( 'DNS-Prefetch' ); ?></span>
-                    <label for="<?php echo $name ?>">
+                    <label for="<?php echo $name; ?>">
                         <input name="<?php echo $name ?>" class="hint_type dns-prefetch" type="radio" value="dns-prefetch" <?php $this->is_checked( 'dns-prefetch', $hint_type ); ?>/>
                     </label>
                 </div>
@@ -103,7 +103,7 @@ class NewHint {
 						<span><?php esc_html_e( 'Insert the full URL of a resource that is likely to be needed on a page later.', 'pprh' ); ?></span>
 					</span>
                     <span><?php esc_html_e( 'Prefetch' ); ?></span>
-                    <label for="<?php echo $hint_type . '-' . $hint_id; ?>">
+                    <label for="<?php echo $name; ?>">
                         <input name="<?php echo $name ?>" class="hint_type prefetch" type="radio" value="prefetch" <?php $this->is_checked( 'prefetch', $hint_type ); ?>/>
                     </label>
                 </div>
@@ -115,7 +115,7 @@ class NewHint {
 						<span><?php esc_html_e( 'Insert the full URL of a page/post your visitors are likely to navigate towards.', 'pprh' ); ?></span>
 					</span>
                     <span><?php esc_html_e( 'Prerender' ); ?></span>
-                    <label for="<?php echo $hint_type . '-' . $hint_id; ?>">
+                    <label for="<?php echo $name; ?>">
                         <input name="<?php echo $name ?>" class="hint_type prerender" type="radio" value="prerender" <?php $this->is_checked( 'prerender', $hint_type ); ?>/>
                     </label>
                 </div>
@@ -127,7 +127,7 @@ class NewHint {
 						<span><?php esc_html_e( 'Insert domain names from external URL\'s to perform DNS resolution, initial connection, and SSL negotiation ahead of time.', 'pprh' ); ?></span>
 					</span>
                     <span><?php esc_html_e( 'Preconnect' ); ?></span>
-                    <label for="<?php echo $hint_type . '-' . $hint_id; ?>">
+                    <label for="<?php echo $name; ?>">
                         <input name="<?php echo $name ?>" class="hint_type preconnect" type="radio" value="preconnect" <?php $this->is_checked( 'preconnect', $hint_type ); ?>/>
                     </label>
                 </div>
@@ -139,7 +139,7 @@ class NewHint {
 						<span><?php esc_html_e( 'Insert the full URL of a resource that is needed on a current page.', 'pprh' ); ?></span>
 					</span>
                     <span><?php esc_html_e( 'Preload' ); ?></span>
-                    <label for="<?php echo $hint_type . '-' . $hint_id; ?>">
+                    <label for="<?php echo $name; ?>">
                         <input name="<?php echo $name ?>" class="hint_type preload" type="radio" value="preload" <?php $this->is_checked( 'preload', $hint_type ); ?>/>
                     </label>
                 </div>

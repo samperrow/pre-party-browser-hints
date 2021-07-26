@@ -46,7 +46,7 @@ class DisplayHints extends WP_List_Table {
 	}
 
 	private function set_item( $item ) {
-		return ( ! empty( $item ) ) ? Utils::clean_hint_attr( $item ) : '-';
+		return ( empty( $item ) ) ? '-' : Utils::clean_hint_attr( $item );
 	}
 
 	public function get_columns() {
@@ -124,7 +124,7 @@ class DisplayHints extends WP_List_Table {
 	        $actions = array( 'edit' => '', 'delete' => '' );
         }
 
-		return sprintf( '%1$s %2$s', $item['url'], $this->row_actions( $actions ) );
+		echo sprintf( '%1$s %2$s', $item['url'], $this->row_actions( $actions ) );
 	}
 
 	protected function column_cb( $item ) {

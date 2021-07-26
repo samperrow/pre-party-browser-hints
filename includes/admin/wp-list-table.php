@@ -1341,6 +1341,7 @@ class WP_List_Table {
 					if ($global_hint_alert) {
 					    $item['id'] = '';
 					}
+
 				    echo $this->{'column_' . $column_name}($item, $global_hint_alert);
 				}
 				echo '</td>';
