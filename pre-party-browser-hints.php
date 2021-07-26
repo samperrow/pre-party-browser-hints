@@ -115,6 +115,7 @@ class Pre_Party_Browser_Hints {
 		include_once 'includes/DAOController.php';
 		include_once 'includes/CreateHints.php';
 		include_once 'includes/admin/ActivatePlugin.php';
+		include_once 'includes/DebugLogger.php';
 	}
 
 	public function activate_plugin() {

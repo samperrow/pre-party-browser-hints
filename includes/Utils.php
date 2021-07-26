@@ -26,13 +26,12 @@ class Utils {
 	}
 
 	public static function json_to_array( $json ):array {
-		$array = array();
+//		$json2 = '{asdf}';
+		$unslashed_json = \wp_unslash( $json );
+		$array = json_decode( $unslashed_json, true );
 
-		try {
-			$unslashed_json = \wp_unslash( $json );
-			$array = json_decode( $unslashed_json, true );
-		} catch ( \Exception $error ) {
-			// log error..
+		if ( ! is_array( $array ) ) {
+			self::log_error( "Failed at Utils::json_to_array()" );
 		}
 
 		return $array;
@@ -120,6 +119,18 @@ class Utils {
 
 		$request_uri = self::get_server_prop( 'REQUEST_URI' );
 		return self::on_pprh_page_ctrl( $doing_ajax, $referer, $request_uri );
+	}
+
+	public static function log_error( $message ) {
+		$debugger = new DebugLogger();
+		$debugger->log_error( $message );
+	}
+
+	public static function get_current_datetime():string {
+		$offset = new \DateTimeZone( 'America/Denver' );
+		$datetime = new \DateTime( 'now', $offset );
+		$timezone_offset = (string) ($datetime->getOffset() / 3600) . ' hours';
+		return date( 'Y-m-d H:m:s', strtotime( $timezone_offset ) );
 	}
 
 	/**

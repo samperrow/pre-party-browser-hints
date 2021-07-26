@@ -94,6 +94,10 @@ class DAO {
 			$new_hint['id'] = $wpdb->insert_id;
 		}
 
+		if ( ! $wpdb->result ) {
+			Utils::log_error( $wpdb->last_error );
+		}
+
 		return self::create_db_result( $wpdb->result, 0, 0, $new_hint );
 	}
 
@@ -124,6 +128,10 @@ class DAO {
 			$new_hint['id'] = $hint_id;
 		}
 
+		if ( ! $wpdb->result ) {
+			Utils::log_error( $wpdb->last_error );
+		}
+
 		return self::create_db_result( $wpdb->result, 1, 0, $new_hint );
 	}
 
@@ -141,6 +149,9 @@ class DAO {
 			return self::create_db_result( $wpdb->result, 2, 0, null );
 		}
 
+		if ( ! $wpdb->result ) {
+			Utils::log_error( $wpdb->last_error );
+		}
 	}
 
 	public function bulk_update( $hint_ids, $op_code ) {
@@ -155,6 +166,10 @@ class DAO {
 			"UPDATE $this->table SET status = %s WHERE id IN ($hint_ids)", $action )
 		);
 
+		if ( ! $wpdb->result ) {
+			Utils::log_error( $wpdb->last_error );
+		}
+
 		return self::create_db_result( $wpdb->result, $op_code, 0, null );
 	}
 
@@ -165,10 +180,16 @@ class DAO {
 
 		if ( 1 === $op_code && ! empty( $hint_ids ) ) {
 			$sql .= " AND id != %d";
-			return $wpdb->get_results( $wpdb->prepare( $sql, $url, $hint_type, $hint_ids ), ARRAY_A );
+			$results = $wpdb->get_results( $wpdb->prepare( $sql, $url, $hint_type, $hint_ids ), ARRAY_A );
+		} else {
+			$results = $wpdb->get_results( $wpdb->prepare( $sql, $url, $hint_type ), ARRAY_A );
 		}
 
-		return $wpdb->get_results( $wpdb->prepare( $sql, $url, $hint_type ), ARRAY_A );
+		if ( ! $wpdb->result ) {
+			Utils::log_error( $wpdb->last_error );
+		}
+
+		return $results;
 	}
 
 	public static function get_pprh_hints( bool $is_admin, array $data = array() ):array {
@@ -227,6 +248,10 @@ class DAO {
 			$results = $wpdb->get_results( $query['sql'], ARRAY_A );
 		}
 
+		if ( ! $wpdb->result ) {
+			Utils::log_error( $wpdb->last_error );
+		}
+
 		return $results;
 	}
 
@@ -246,17 +271,23 @@ class DAO {
 				$ms_table_names[] = $ms_table_name;
 			}
 		}
+
+		if ( ! $wpdb->result ) {
+			Utils::log_error( $wpdb->last_error );
+		}
+
 		return $ms_table_names;
 	}
 
 	public function get_table_column() {
 		global $wpdb;
-		return $wpdb->get_results( "SHOW COLUMNS FROM $this->table LIKE 'auto_created'", ARRAY_A );
-	}
+		$results = $wpdb->get_results( "SHOW COLUMNS FROM $this->table LIKE 'auto_created'", ARRAY_A );
 
-	public function drop_table_column() {
-		global $wpdb;
-		$wpdb->query( "ALTER TABLE $this->table DROP COLUMN auto_created" );
+		if ( ! $wpdb->result ) {
+			Utils::log_error( $wpdb->last_error );
+		}
+
+		return $results;
 	}
 
 	public function create_table( $table_name ) {
@@ -282,6 +313,10 @@ class DAO {
         ) $charset;";
 
 		dbDelta( $sql, true );
+
+		if ( ! $wpdb->result ) {
+			Utils::log_error( $wpdb->last_error );
+		}
 	}
 
 }
