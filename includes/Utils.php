@@ -26,8 +26,8 @@ class Utils {
 	}
 
 	public static function json_to_array( string $json ):array {
-		$unslashed_json = \wp_unslash( $json );
-		$array = json_decode( $unslashed_json, true );
+//		$unslashed_json = \wp_unslash( $json );
+		$array = json_decode( $json, true );
 
 		if ( ! is_array( $array ) ) {
 			self::log_error( "Failed at Utils::json_to_array()" );
