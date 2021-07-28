@@ -96,7 +96,6 @@ class Pre_Party_Browser_Hints {
 
 		if ( ! defined( 'PPRH_DB_TABLE' ) ) {
 			define( 'PPRH_DB_TABLE', $table );
-			define( 'PPRH_VERSION', $plugin_version );
 			define( 'PPRH_VERSION_NEW', '1.7.7.3' );
 			define( 'PPRH_POSTMETA_TABLE', $postmeta_table );
 			define( 'PPRH_ABS_DIR', WP_PLUGIN_DIR . '/pre-party-browser-hints/' );
@@ -108,6 +107,11 @@ class Pre_Party_Browser_Hints {
 			define( 'PPRH_RUNNING_UNIT_TESTS', $unit_testing );
 			define( 'PPRH_PRO_ACTIVE', defined( 'PPRH_PRO_ABS_DIR' ) );
 		}
+
+		if ( ! defined( 'PPRH_VERSION' ) ) {
+			define( 'PPRH_VERSION', $plugin_version );
+		}
+
 	}
 
 	public function load_common_files() {

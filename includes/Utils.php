@@ -25,13 +25,13 @@ class Utils {
 		return PPRH_RUNNING_UNIT_TESTS || \update_option( $option, $value );
 	}
 
-	public static function json_to_array( $json ):array {
-//		$json2 = '{asdf}';
+	public static function json_to_array( string $json ):array {
 		$unslashed_json = \wp_unslash( $json );
 		$array = json_decode( $unslashed_json, true );
 
 		if ( ! is_array( $array ) ) {
 			self::log_error( "Failed at Utils::json_to_array()" );
+			return array();
 		}
 
 		return $array;

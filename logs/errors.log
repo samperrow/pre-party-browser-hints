@@ -1,0 +1,369 @@
+Error requesting license data.
+/Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/DebugLogger.php#0 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/DebugLogger.php(44): PPRH\DebugLogger->get_msg_from_exception()
+#1 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/Utils.php(125): PPRH\DebugLogger->log_error('Error requestin...')
+#2 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pprh-pro/includes/UtilsPro.php(188): PPRH\Utils::log_error('Error requestin...')
+#3 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pprh-pro/includes/admin/license/LicenseAPI.php(33): PPRH\PRO\UtilsPro::get_api_response_body(Array)
+#4 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pprh-pro/tests/admin/license/LicenseAPITest.php(24): PPRH\PRO\LicenseAPI->get_remote_license_info('fake_key123', 'slm_activate')
+#5 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(1248): LicenseAPITest->test_get_remote_license_info__activate()
+#6 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(914): PHPUnit\Framework\TestCase->runTest()
+#7 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestResult.php(581): PHPUnit\Framework\TestCase->runBare()
+#8 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(707): PHPUnit\Framework\TestResult->run(Object(LicenseAPITest))
+#9 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestCase->run(Object(PHPUnit\Framework\TestResult))
+#10 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#11 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#12 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/TestRunner.php(489): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#13 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/Command.php(124): PHPUnit\TextUI\TestRunner->run(Object(PHPUnit\Framework\TestSuite), Array, Array, true)
+#14 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/Command.php(93): PHPUnit\TextUI\Command->run(Array, true)
+#15 /Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar(1140): PHPUnit\TextUI\Command::main()
+#16 {main}
+Environment info: 
+Datetime: 2021-07-27 20:07:43
+PHP_Version: 8.0.8
+WP_version: 5.8
+home_url: https://sphacks.local
+Browser: 
+PPRH version: 1.7.7.3
+Error requesting license data.
+/Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/DebugLogger.php#0 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/DebugLogger.php(44): PPRH\DebugLogger->get_msg_from_exception()
+#1 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/Utils.php(125): PPRH\DebugLogger->log_error('Error requestin...')
+#2 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pprh-pro/includes/UtilsPro.php(188): PPRH\Utils::log_error('Error requestin...')
+#3 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pprh-pro/includes/admin/license/LicenseAPI.php(33): PPRH\PRO\UtilsPro::get_api_response_body(Array)
+#4 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pprh-pro/tests/admin/license/LicenseAPITest.php(24): PPRH\PRO\LicenseAPI->get_remote_license_info('fake_key123', 'slm_activate')
+#5 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(1248): LicenseAPITest->test_get_remote_license_info__activate()
+#6 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(914): PHPUnit\Framework\TestCase->runTest()
+#7 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestResult.php(581): PHPUnit\Framework\TestCase->runBare()
+#8 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(707): PHPUnit\Framework\TestResult->run(Object(LicenseAPITest))
+#9 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestCase->run(Object(PHPUnit\Framework\TestResult))
+#10 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#11 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#12 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/TestRunner.php(489): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#13 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/Command.php(124): PHPUnit\TextUI\TestRunner->run(Object(PHPUnit\Framework\TestSuite), Array, Array, true)
+#14 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/Command.php(93): PHPUnit\TextUI\Command->run(Array, true)
+#15 /Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar(1140): PHPUnit\TextUI\Command::main()
+#16 {main}
+Environment info: 
+Datetime: 2021-07-27 20:07:01
+PHP_Version: 8.0.8
+WP_version: 5.8
+home_url: https://sphacks.local
+Browser: 
+PPRH version: 1.7.7.3
+Error requesting license data.
+/Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/DebugLogger.php#0 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/DebugLogger.php(44): PPRH\DebugLogger->get_msg_from_exception()
+#1 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/Utils.php(125): PPRH\DebugLogger->log_error('Error requestin...')
+#2 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pprh-pro/includes/UtilsPro.php(188): PPRH\Utils::log_error('Error requestin...')
+#3 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pprh-pro/includes/admin/license/LicenseAPI.php(33): PPRH\PRO\UtilsPro::get_api_response_body(Array)
+#4 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pprh-pro/tests/admin/license/LicenseAPITest.php(24): PPRH\PRO\LicenseAPI->get_remote_license_info('fake_key123', 'slm_activate')
+#5 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(1248): LicenseAPITest->test_get_remote_license_info__activate()
+#6 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(914): PHPUnit\Framework\TestCase->runTest()
+#7 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestResult.php(581): PHPUnit\Framework\TestCase->runBare()
+#8 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(707): PHPUnit\Framework\TestResult->run(Object(LicenseAPITest))
+#9 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestCase->run(Object(PHPUnit\Framework\TestResult))
+#10 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#11 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#12 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/TestRunner.php(489): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#13 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/Command.php(124): PHPUnit\TextUI\TestRunner->run(Object(PHPUnit\Framework\TestSuite), Array, Array, true)
+#14 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/Command.php(93): PHPUnit\TextUI\Command->run(Array, true)
+#15 /Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar(1140): PHPUnit\TextUI\Command::main()
+#16 {main}
+Environment info: 
+Datetime: 2021-07-27 20:07:09
+PHP_Version: 8.0.8
+WP_version: 5.8
+home_url: https://sphacks.local
+Browser: 
+PPRH version: 1.7.7.3
+Error requesting license data.
+/Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/DebugLogger.php#0 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/DebugLogger.php(44): PPRH\DebugLogger->get_msg_from_exception()
+#1 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/Utils.php(125): PPRH\DebugLogger->log_error('Error requestin...')
+#2 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pprh-pro/includes/UtilsPro.php(188): PPRH\Utils::log_error('Error requestin...')
+#3 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pprh-pro/includes/admin/license/LicenseAPI.php(33): PPRH\PRO\UtilsPro::get_api_response_body(Array)
+#4 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pprh-pro/tests/admin/license/LicenseAPITest.php(24): PPRH\PRO\LicenseAPI->get_remote_license_info('fake_key123', 'slm_activate')
+#5 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(1248): LicenseAPITest->test_get_remote_license_info__activate()
+#6 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(914): PHPUnit\Framework\TestCase->runTest()
+#7 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestResult.php(581): PHPUnit\Framework\TestCase->runBare()
+#8 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(707): PHPUnit\Framework\TestResult->run(Object(LicenseAPITest))
+#9 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestCase->run(Object(PHPUnit\Framework\TestResult))
+#10 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#11 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#12 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/TestRunner.php(489): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#13 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/Command.php(124): PHPUnit\TextUI\TestRunner->run(Object(PHPUnit\Framework\TestSuite), Array, Array, true)
+#14 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/Command.php(93): PHPUnit\TextUI\Command->run(Array, true)
+#15 /Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar(1140): PHPUnit\TextUI\Command::main()
+#16 {main}
+Environment info: 
+Datetime: 2021-07-27 20:07:06
+PHP_Version: 8.0.8
+WP_version: 5.8
+home_url: https://sphacks.local
+Browser: 
+PPRH version: 1.7.7.3
+Failed at Utils::json_to_array()
+/Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/DebugLogger.php#0 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/DebugLogger.php(44): PPRH\DebugLogger->get_msg_from_exception()
+#1 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/Utils.php(125): PPRH\DebugLogger->log_error('Failed at Utils...')
+#2 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/Utils.php(33): PPRH\Utils::log_error('Failed at Utils...')
+#3 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pprh-pro/includes/UtilsPro.php(186): PPRH\Utils::json_to_array('')
+#4 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pprh-pro/includes/admin/license/LicenseAPI.php(33): PPRH\PRO\UtilsPro::get_api_response_body(Array)
+#5 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pprh-pro/tests/admin/license/LicenseAPITest.php(24): PPRH\PRO\LicenseAPI->get_remote_license_info('fake_key123', 'slm_activate')
+#6 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(1248): LicenseAPITest->test_get_remote_license_info__activate()
+#7 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(914): PHPUnit\Framework\TestCase->runTest()
+#8 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestResult.php(581): PHPUnit\Framework\TestCase->runBare()
+#9 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(707): PHPUnit\Framework\TestResult->run(Object(LicenseAPITest))
+#10 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestCase->run(Object(PHPUnit\Framework\TestResult))
+#11 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#12 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#13 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/TestRunner.php(489): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#14 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/Command.php(124): PHPUnit\TextUI\TestRunner->run(Object(PHPUnit\Framework\TestSuite), Array, Array, true)
+#15 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/Command.php(93): PHPUnit\TextUI\Command->run(Array, true)
+#16 /Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar(1140): PHPUnit\TextUI\Command::main()
+#17 {main}
+Environment info: 
+Datetime: 2021-07-27 21:07:32
+PHP_Version: 8.0.8
+WP_version: 5.8
+home_url: https://sphacks.local
+Browser: 
+PPRH version: 1.7.7.3
+Failed at Utils::json_to_array()
+/Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/DebugLogger.php#0 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/DebugLogger.php(44): PPRH\DebugLogger->get_msg_from_exception()
+#1 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/Utils.php(125): PPRH\DebugLogger->log_error('Failed at Utils...')
+#2 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/Utils.php(33): PPRH\Utils::log_error('Failed at Utils...')
+#3 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pprh-pro/includes/UtilsPro.php(186): PPRH\Utils::json_to_array('')
+#4 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pprh-pro/includes/admin/license/LicenseAPI.php(33): PPRH\PRO\UtilsPro::get_api_response_body(Array)
+#5 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pprh-pro/tests/admin/license/LicenseAPITest.php(24): PPRH\PRO\LicenseAPI->get_remote_license_info('fake_key123', 'slm_activate')
+#6 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(1248): LicenseAPITest->test_get_remote_license_info__activate()
+#7 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(914): PHPUnit\Framework\TestCase->runTest()
+#8 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestResult.php(581): PHPUnit\Framework\TestCase->runBare()
+#9 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(707): PHPUnit\Framework\TestResult->run(Object(LicenseAPITest))
+#10 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestCase->run(Object(PHPUnit\Framework\TestResult))
+#11 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#12 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#13 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/TestRunner.php(489): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#14 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/Command.php(124): PHPUnit\TextUI\TestRunner->run(Object(PHPUnit\Framework\TestSuite), Array, Array, true)
+#15 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/Command.php(93): PHPUnit\TextUI\Command->run(Array, true)
+#16 /Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar(1140): PHPUnit\TextUI\Command::main()
+#17 {main}
+Environment info: 
+Datetime: 2021-07-27 21:07:31
+PHP_Version: 8.0.8
+WP_version: 5.8
+home_url: https://sphacks.local
+Browser: 
+PPRH version: 1.7.7.3
+Failed at Utils::json_to_array()
+/Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/DebugLogger.php#0 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/DebugLogger.php(44): PPRH\DebugLogger->get_msg_from_exception()
+#1 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/Utils.php(126): PPRH\DebugLogger->log_error('Failed at Utils...')
+#2 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/Utils.php(33): PPRH\Utils::log_error('Failed at Utils...')
+#3 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pprh-pro/includes/UtilsPro.php(186): PPRH\Utils::json_to_array('')
+#4 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pprh-pro/includes/admin/license/LicenseAPI.php(33): PPRH\PRO\UtilsPro::get_api_response_body(Array)
+#5 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pprh-pro/tests/admin/license/LicenseAPITest.php(24): PPRH\PRO\LicenseAPI->get_remote_license_info('fake_key123', 'slm_activate')
+#6 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(1248): LicenseAPITest->test_get_remote_license_info__activate()
+#7 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(914): PHPUnit\Framework\TestCase->runTest()
+#8 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestResult.php(581): PHPUnit\Framework\TestCase->runBare()
+#9 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(707): PHPUnit\Framework\TestResult->run(Object(LicenseAPITest))
+#10 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestCase->run(Object(PHPUnit\Framework\TestResult))
+#11 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#12 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#13 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/TestRunner.php(489): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#14 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/Command.php(124): PHPUnit\TextUI\TestRunner->run(Object(PHPUnit\Framework\TestSuite), Array, Array, true)
+#15 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/Command.php(93): PHPUnit\TextUI\Command->run(Array, true)
+#16 /Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar(1140): PHPUnit\TextUI\Command::main()
+#17 {main}
+Environment info: 
+Datetime: 2021-07-27 21:07:41
+PHP_Version: 8.0.8
+WP_version: 5.8
+home_url: https://sphacks.local
+Browser: 
+PPRH version: 1.7.7.3
+Failed at Utils::json_to_array()
+/Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/DebugLogger.php#0 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/DebugLogger.php(44): PPRH\DebugLogger->get_msg_from_exception()
+#1 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/Utils.php(126): PPRH\DebugLogger->log_error('Failed at Utils...')
+#2 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/Utils.php(33): PPRH\Utils::log_error('Failed at Utils...')
+#3 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pprh-pro/includes/UtilsPro.php(186): PPRH\Utils::json_to_array('')
+#4 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pprh-pro/includes/admin/license/LicenseAPI.php(33): PPRH\PRO\UtilsPro::get_api_response_body(Array)
+#5 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pprh-pro/tests/admin/license/LicenseAPITest.php(24): PPRH\PRO\LicenseAPI->get_remote_license_info('fake_key123', 'slm_activate')
+#6 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(1248): LicenseAPITest->test_get_remote_license_info__activate()
+#7 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(914): PHPUnit\Framework\TestCase->runTest()
+#8 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestResult.php(581): PHPUnit\Framework\TestCase->runBare()
+#9 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(707): PHPUnit\Framework\TestResult->run(Object(LicenseAPITest))
+#10 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestCase->run(Object(PHPUnit\Framework\TestResult))
+#11 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#12 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#13 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/TestRunner.php(489): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#14 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/Command.php(124): PHPUnit\TextUI\TestRunner->run(Object(PHPUnit\Framework\TestSuite), Array, Array, true)
+#15 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/Command.php(93): PHPUnit\TextUI\Command->run(Array, true)
+#16 /Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar(1140): PHPUnit\TextUI\Command::main()
+#17 {main}
+Environment info: 
+Datetime: 2021-07-27 21:07:08
+PHP_Version: 8.0.8
+WP_version: 5.8
+home_url: https://sphacks.local
+Browser: 
+PPRH version: 1.7.7.3
+Failed at Utils::json_to_array()
+/Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/DebugLogger.php#0 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/DebugLogger.php(44): PPRH\DebugLogger->get_msg_from_exception()
+#1 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/Utils.php(126): PPRH\DebugLogger->log_error('Failed at Utils...')
+#2 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/Utils.php(33): PPRH\Utils::log_error('Failed at Utils...')
+#3 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pprh-pro/includes/UtilsPro.php(186): PPRH\Utils::json_to_array('<br />\n<b>Warni...')
+#4 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pprh-pro/includes/admin/license/LicenseAPI.php(33): PPRH\PRO\UtilsPro::get_api_response_body(Array)
+#5 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pprh-pro/tests/admin/license/LicenseAPITest.php(48): PPRH\PRO\LicenseAPI->get_remote_license_info('608ef1e80b3146....', 'slm_deactivate')
+#6 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(1248): LicenseAPITest->test_get_remote_license_info__deactivate()
+#7 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(914): PHPUnit\Framework\TestCase->runTest()
+#8 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestResult.php(581): PHPUnit\Framework\TestCase->runBare()
+#9 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(707): PHPUnit\Framework\TestResult->run(Object(LicenseAPITest))
+#10 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestCase->run(Object(PHPUnit\Framework\TestResult))
+#11 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#12 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#13 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/TestRunner.php(489): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#14 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/Command.php(124): PHPUnit\TextUI\TestRunner->run(Object(PHPUnit\Framework\TestSuite), Array, Array, true)
+#15 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/Command.php(93): PHPUnit\TextUI\Command->run(Array, true)
+#16 /Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar(1140): PHPUnit\TextUI\Command::main()
+#17 {main}
+Environment info: 
+Datetime: 2021-07-27 21:07:53
+PHP_Version: 8.0.8
+WP_version: 5.8
+home_url: https://sphacks.local
+Browser: 
+PPRH version: 1.7.7.3
+Failed at Utils::json_to_array()
+/Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/DebugLogger.php#0 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/DebugLogger.php(44): PPRH\DebugLogger->get_msg_from_exception()
+#1 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/Utils.php(126): PPRH\DebugLogger->log_error('Failed at Utils...')
+#2 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/Utils.php(33): PPRH\Utils::log_error('Failed at Utils...')
+#3 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pprh-pro/includes/UtilsPro.php(186): PPRH\Utils::json_to_array('<br />\n<b>Warni...')
+#4 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pprh-pro/includes/admin/license/LicenseAPI.php(33): PPRH\PRO\UtilsPro::get_api_response_body(Array)
+#5 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pprh-pro/tests/admin/license/LicenseAPITest.php(48): PPRH\PRO\LicenseAPI->get_remote_license_info('608ef1e80b3146....', 'slm_deactivate')
+#6 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(1248): LicenseAPITest->test_get_remote_license_info__deactivate()
+#7 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(914): PHPUnit\Framework\TestCase->runTest()
+#8 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestResult.php(581): PHPUnit\Framework\TestCase->runBare()
+#9 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(707): PHPUnit\Framework\TestResult->run(Object(LicenseAPITest))
+#10 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestCase->run(Object(PHPUnit\Framework\TestResult))
+#11 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#12 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#13 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/TestRunner.php(489): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#14 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/Command.php(124): PHPUnit\TextUI\TestRunner->run(Object(PHPUnit\Framework\TestSuite), Array, Array, true)
+#15 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/Command.php(93): PHPUnit\TextUI\Command->run(Array, true)
+#16 /Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar(1140): PHPUnit\TextUI\Command::main()
+#17 {main}
+Environment info: 
+Datetime: 2021-07-27 21:07:59
+PHP_Version: 8.0.8
+WP_version: 5.8
+home_url: https://sphacks.local
+Browser: 
+PPRH version: 1.7.7.3
+Failed at Utils::json_to_array()
+/Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/DebugLogger.php#0 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/DebugLogger.php(44): PPRH\DebugLogger->get_msg_from_exception()
+#1 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/Utils.php(126): PPRH\DebugLogger->log_error('Failed at Utils...')
+#2 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/Utils.php(33): PPRH\Utils::log_error('Failed at Utils...')
+#3 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pprh-pro/includes/UtilsPro.php(186): PPRH\Utils::json_to_array('<br />\n<b>Warni...')
+#4 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pprh-pro/includes/admin/license/LicenseAPI.php(33): PPRH\PRO\UtilsPro::get_api_response_body(Array)
+#5 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pprh-pro/tests/admin/license/LicenseAPITest.php(48): PPRH\PRO\LicenseAPI->get_remote_license_info('608ef1e80b3146....', 'slm_deactivate')
+#6 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(1248): LicenseAPITest->test_get_remote_license_info__deactivate()
+#7 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(914): PHPUnit\Framework\TestCase->runTest()
+#8 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestResult.php(581): PHPUnit\Framework\TestCase->runBare()
+#9 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(707): PHPUnit\Framework\TestResult->run(Object(LicenseAPITest))
+#10 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestCase->run(Object(PHPUnit\Framework\TestResult))
+#11 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#12 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#13 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/TestRunner.php(489): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#14 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/Command.php(124): PHPUnit\TextUI\TestRunner->run(Object(PHPUnit\Framework\TestSuite), Array, Array, true)
+#15 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/Command.php(93): PHPUnit\TextUI\Command->run(Array, true)
+#16 /Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar(1140): PHPUnit\TextUI\Command::main()
+#17 {main}
+Environment info: 
+Datetime: 2021-07-27 21:07:37
+PHP_Version: 8.0.8
+WP_version: 5.8
+home_url: https://sphacks.local
+Browser: 
+PPRH version: 1.7.7.3
+Error requesting license data.
+/Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/DebugLogger.php#0 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/DebugLogger.php(44): PPRH\DebugLogger->get_msg_from_exception()
+#1 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/Utils.php(126): PPRH\DebugLogger->log_error('Error requestin...')
+#2 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pprh-pro/includes/UtilsPro.php(188): PPRH\Utils::log_error('Error requestin...')
+#3 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pprh-pro/includes/admin/license/LicenseAPI.php(33): PPRH\PRO\UtilsPro::get_api_response_body(Array)
+#4 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pprh-pro/includes/admin/license/LicenseView.php(38): PPRH\PRO\LicenseAPI->get_remote_license_info('6100767bb59850....', 'slm_activate')
+#5 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pprh-pro/includes/admin/license/LicenseView.php(32): PPRH\PRO\LicenseView->validate_request('6100767bb59850....', 'slm_activate')
+#6 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pprh-pro/includes/admin/LoadAdmin.php(28): PPRH\PRO\LicenseView->add_listeners()
+#7 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pprh-pro/pprh-pro.php(88): PPRH\PRO\LoadAdmin->init(1)
+#8 /Users/samperrow/Desktop/repos/WordPress/wp-includes/class-wp-hook.php(303): PPRH\PRO\PPRH_Pro->load_admin(1)
+#9 /Users/samperrow/Desktop/repos/WordPress/wp-includes/plugin.php(189): WP_Hook->apply_filters(1, Array)
+#10 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/admin/LoadAdmin.php(36): apply_filters('pprh_pro_load_a...', 1)
+#11 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/admin/LoadAdmin.php(23): PPRH\LoadAdmin->load_common_content()
+#12 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/pre-party-browser-hints.php(79): PPRH\LoadAdmin->init()
+#13 /Users/samperrow/Desktop/repos/WordPress/wp-includes/class-wp-hook.php(303): PPRH\Pre_Party_Browser_Hints->load_admin('')
+#14 /Users/samperrow/Desktop/repos/WordPress/wp-includes/class-wp-hook.php(327): WP_Hook->apply_filters(NULL, Array)
+#15 /Users/samperrow/Desktop/repos/WordPress/wp-includes/plugin.php(470): WP_Hook->do_action(Array)
+#16 /Users/samperrow/Desktop/repos/WordPress/wp-settings.php(600): do_action('wp_loaded')
+#17 /Users/samperrow/Desktop/repos/WordPress/wp-config.php(85): require_once('/Users/samperro...')
+#18 /Users/samperrow/Desktop/repos/WordPress/wp-load.php(50): require_once('/Users/samperro...')
+#19 /Users/samperrow/Desktop/repos/WordPress/wp-admin/admin.php(34): require_once('/Users/samperro...')
+#20 {main}
+Environment info: 
+Datetime: 2021-07-27 21:07:18
+PHP_Version: 8.0.8
+WP_version: 5.8
+home_url: https://sphacks.local
+Browser: Mozilla/5.0(Macintosh;IntelMacOSX10_16_0)AppleWebKit/537.36(KHTML,likeGecko)Chrome/85.0.4183.121Safari/537.36
+PPRH version: 1.7.7.3
+Error requesting license data.
+/Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/DebugLogger.php#0 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/DebugLogger.php(44): PPRH\DebugLogger->get_msg_from_exception()
+#1 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/Utils.php(126): PPRH\DebugLogger->log_error('Error requestin...')
+#2 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pprh-pro/includes/UtilsPro.php(188): PPRH\Utils::log_error('Error requestin...')
+#3 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pprh-pro/includes/admin/license/LicenseAPI.php(33): PPRH\PRO\UtilsPro::get_api_response_body(Array)
+#4 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pprh-pro/includes/admin/license/LicenseView.php(38): PPRH\PRO\LicenseAPI->get_remote_license_info('6100767bb59850....', 'slm_activate')
+#5 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pprh-pro/includes/admin/license/LicenseView.php(32): PPRH\PRO\LicenseView->validate_request('6100767bb59850....', 'slm_activate')
+#6 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pprh-pro/includes/admin/LoadAdmin.php(28): PPRH\PRO\LicenseView->add_listeners()
+#7 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pprh-pro/pprh-pro.php(88): PPRH\PRO\LoadAdmin->init(1)
+#8 /Users/samperrow/Desktop/repos/WordPress/wp-includes/class-wp-hook.php(303): PPRH\PRO\PPRH_Pro->load_admin(1)
+#9 /Users/samperrow/Desktop/repos/WordPress/wp-includes/plugin.php(189): WP_Hook->apply_filters(1, Array)
+#10 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/admin/LoadAdmin.php(36): apply_filters('pprh_pro_load_a...', 1)
+#11 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/admin/LoadAdmin.php(23): PPRH\LoadAdmin->load_common_content()
+#12 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/pre-party-browser-hints.php(79): PPRH\LoadAdmin->init()
+#13 /Users/samperrow/Desktop/repos/WordPress/wp-includes/class-wp-hook.php(303): PPRH\Pre_Party_Browser_Hints->load_admin('')
+#14 /Users/samperrow/Desktop/repos/WordPress/wp-includes/class-wp-hook.php(327): WP_Hook->apply_filters(NULL, Array)
+#15 /Users/samperrow/Desktop/repos/WordPress/wp-includes/plugin.php(470): WP_Hook->do_action(Array)
+#16 /Users/samperrow/Desktop/repos/WordPress/wp-settings.php(600): do_action('wp_loaded')
+#17 /Users/samperrow/Desktop/repos/WordPress/wp-config.php(85): require_once('/Users/samperro...')
+#18 /Users/samperrow/Desktop/repos/WordPress/wp-load.php(50): require_once('/Users/samperro...')
+#19 /Users/samperrow/Desktop/repos/WordPress/wp-admin/admin.php(34): require_once('/Users/samperro...')
+#20 {main}
+Environment info: 
+Datetime: 2021-07-27 21:07:26
+PHP_Version: 8.0.8
+WP_version: 5.8
+home_url: https://sphacks.local
+Browser: Mozilla/5.0(Macintosh;IntelMacOSX10_16_0)AppleWebKit/537.36(KHTML,likeGecko)Chrome/85.0.4183.121Safari/537.36
+PPRH version: 1.7.7.3
+Error requesting license data.
+/Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/DebugLogger.php#0 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/DebugLogger.php(44): PPRH\DebugLogger->get_msg_from_exception()
+#1 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/Utils.php(126): PPRH\DebugLogger->log_error('Error requestin...')
+#2 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pprh-pro/includes/UtilsPro.php(188): PPRH\Utils::log_error('Error requestin...')
+#3 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pprh-pro/includes/admin/license/LicenseAPI.php(33): PPRH\PRO\UtilsPro::get_api_response_body(Array)
+#4 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pprh-pro/includes/admin/license/LicenseView.php(38): PPRH\PRO\LicenseAPI->get_remote_license_info('6100767bb59850....', 'slm_deactivate')
+#5 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pprh-pro/includes/admin/license/LicenseView.php(32): PPRH\PRO\LicenseView->validate_request('6100767bb59850....', 'slm_deactivate')
+#6 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pprh-pro/includes/admin/LoadAdmin.php(28): PPRH\PRO\LicenseView->add_listeners()
+#7 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pprh-pro/pprh-pro.php(88): PPRH\PRO\LoadAdmin->init(1)
+#8 /Users/samperrow/Desktop/repos/WordPress/wp-includes/class-wp-hook.php(303): PPRH\PRO\PPRH_Pro->load_admin(1)
+#9 /Users/samperrow/Desktop/repos/WordPress/wp-includes/plugin.php(189): WP_Hook->apply_filters(1, Array)
+#10 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/admin/LoadAdmin.php(36): apply_filters('pprh_pro_load_a...', 1)
+#11 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/admin/LoadAdmin.php(23): PPRH\LoadAdmin->load_common_content()
+#12 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/pre-party-browser-hints.php(79): PPRH\LoadAdmin->init()
+#13 /Users/samperrow/Desktop/repos/WordPress/wp-includes/class-wp-hook.php(303): PPRH\Pre_Party_Browser_Hints->load_admin('')
+#14 /Users/samperrow/Desktop/repos/WordPress/wp-includes/class-wp-hook.php(327): WP_Hook->apply_filters(NULL, Array)
+#15 /Users/samperrow/Desktop/repos/WordPress/wp-includes/plugin.php(470): WP_Hook->do_action(Array)
+#16 /Users/samperrow/Desktop/repos/WordPress/wp-settings.php(600): do_action('wp_loaded')
+#17 /Users/samperrow/Desktop/repos/WordPress/wp-config.php(85): require_once('/Users/samperro...')
+#18 /Users/samperrow/Desktop/repos/WordPress/wp-load.php(50): require_once('/Users/samperro...')
+#19 /Users/samperrow/Desktop/repos/WordPress/wp-admin/admin.php(34): require_once('/Users/samperro...')
+#20 {main}
+Environment info: 
+Datetime: 2021-07-28 00:07:55
+PHP_Version: 8.0.8
+WP_version: 5.8
+home_url: https://sphacks.local
+Browser: Mozilla/5.0(Macintosh;IntelMacOSX10_16_0)AppleWebKit/537.36(KHTML,likeGecko)Chrome/85.0.4183.121Safari/537.36
+PPRH version: 1.7.7.3
