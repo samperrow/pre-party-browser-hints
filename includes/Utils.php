@@ -35,7 +35,7 @@ class Utils {
 		try {
 			$array = json_decode( $json, true, 512, JSON_THROW_ON_ERROR );
 		} catch( \JsonException $exception ) {
-			self::log_error( $json );
+			self::log_error( "$json\n$exception"  );
 		}
 
 		if ( ! is_array( $array ) ) {
