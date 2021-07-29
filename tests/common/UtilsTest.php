@@ -260,6 +260,10 @@ final class UtilsTest extends TestCase {
 		$json_1 = '{"license":{"id":"32","license_key":"6100767bb59850.76443566","status":"activated","name":"sam p","email":"asdf@gmail.com","txn_id":"","manual_reset_count":"0","date_created":"2021-07-27 15:07:46","date_renewed":"0000-00-00 00:00:00","date_expiry":"2022-07-27 00:00:00","registered_domain":"asdf.com","datetime_last_checked":"2021-07-27 15:07:46","max_sites":"5","site_count":3,"domain_list":"a:1:{i:0;s:13:\"sphacks.local\";}"},"response_code":{"msg":"Your license key has been activated!","code":130,"success":true}}';
 		$actual_1 = \PPRH\Utils::json_to_array( $json_1 );
 		self::assertNotEmpty( $actual_1 );
+
+		$json_2 = json_encode( array( 'asdf' => true, 'asdfwa' => 2352365, 'asdfe' => 'asdf34w' ) );
+		$actual_2 = \PPRH\Utils::json_to_array( $json_2 );
+		self::assertCount( 3, $actual_2 );
 	}
 
 }
