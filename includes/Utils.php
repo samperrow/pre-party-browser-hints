@@ -25,7 +25,7 @@ class Utils {
 		return PPRH_RUNNING_UNIT_TESTS || \update_option( $option, $value );
 	}
 
-	public static function json_to_array( string $json ):array {
+	public static function json_to_array( $json ):array {
 //		$json = \wp_unslash( $json );
 		$array = array();
 
