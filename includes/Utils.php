@@ -27,6 +27,7 @@ class Utils {
 
 	public static function json_to_array( string $json ):array {
 //		$json = \wp_unslash( $json );
+		$array = array();
 
 		try {
 			$array = json_decode( $json, true, 512, JSON_THROW_ON_ERROR );
