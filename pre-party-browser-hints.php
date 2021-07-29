@@ -96,7 +96,7 @@ class Pre_Party_Browser_Hints {
 
 		if ( ! defined( 'PPRH_DB_TABLE' ) ) {
 			define( 'PPRH_DB_TABLE', $table );
-			define( 'PPRH_VERSION_NEW', '1.7.7.3' );
+			define( 'PPRH_VERSION_NEW', '1.8.0' );
 			define( 'PPRH_POSTMETA_TABLE', $postmeta_table );
 			define( 'PPRH_ABS_DIR', WP_PLUGIN_DIR . '/pre-party-browser-hints/' );
 			define( 'PPRH_REL_DIR', plugins_url() . '/pre-party-browser-hints/' );
