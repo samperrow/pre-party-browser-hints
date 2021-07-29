@@ -7,3 +7,4 @@ js/ts/*
 js/ts
 js/ts/tsconfig.json
 js/ts/find-external-domains.ts
+logs/*
