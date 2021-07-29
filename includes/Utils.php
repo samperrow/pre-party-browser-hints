@@ -28,6 +28,10 @@ class Utils {
 	public static function json_to_array( string $json ):array {
 		$array = array();
 
+		if ( 1 === strpos( $json, '\\', 0 ) ) {
+			$json = str_replace( '\\', '', $json );
+		}
+
 		try {
 			$array = json_decode( $json, true, 512, JSON_THROW_ON_ERROR );
 		} catch( \JsonException $exception ) {

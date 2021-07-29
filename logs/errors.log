@@ -1,0 +1,480 @@
+{\"hints\":[{\"url\":\"https://imagem.natelinha.uol.com.br\",\"hint_type\":\"preconnect\",\"media\":\"\",\"as_attr\":\"\",\"type_attr\":\"\",\"crossorigin\":\"\"},{\"url\":\"https://ajax.cloudflare.com\",\"hint_type\":\"preconnect\",\"media\":\"\",\"as_attr\":\"\",\"type_attr\":\"\",\"crossorigin\":\"\"}],\"nonce\":\"dccb2f24c0\",\"admin_url\":\"https://test.obapress.com/wp-admin/admin-ajax.php\",\"start_time\":\"1627578091\",\"post_id\":\"21\"}
+/Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/DebugLogger.php#0 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/DebugLogger.php(44): PPRH\DebugLogger->get_msg_from_exception()
+#1 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/Utils.php(131): PPRH\DebugLogger->log_error('{\\"hints\\":[{\\"...')
+#2 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/Utils.php(34): PPRH\Utils::log_error('{\\"hints\\":[{\\"...')
+#3 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/tests/common/UtilsTest.php(269): PPRH\Utils::json_to_array('{\\"hints\\":[{\\"...')
+#4 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(1248): UtilsTest->test_json_to_array()
+#5 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(914): PHPUnit\Framework\TestCase->runTest()
+#6 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestResult.php(581): PHPUnit\Framework\TestCase->runBare()
+#7 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(707): PHPUnit\Framework\TestResult->run(Object(UtilsTest))
+#8 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestCase->run(Object(PHPUnit\Framework\TestResult))
+#9 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#10 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#11 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/TestRunner.php(489): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#12 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/Command.php(124): PHPUnit\TextUI\TestRunner->run(Object(PHPUnit\Framework\TestSuite), Array, Array, true)
+#13 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/Command.php(93): PHPUnit\TextUI\Command->run(Array, true)
+#14 /Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar(1140): PHPUnit\TextUI\Command::main()
+#15 {main}
+Environment info: 
+Datetime: 2021-07-29 11:07:42
+PHP_Version: 8.0.8
+WP_version: 5.8
+home_url: https://sphacks.local
+Browser: 
+PPRH version: 1.8.0
+{\"hints\":[{\"url\":\"https://imagem.natelinha.uol.com.br\",\"hint_type\":\"preconnect\",\"media\":\"\",\"as_attr\":\"\",\"type_attr\":\"\",\"crossorigin\":\"\"},{\"url\":\"https://ajax.cloudflare.com\",\"hint_type\":\"preconnect\",\"media\":\"\",\"as_attr\":\"\",\"type_attr\":\"\",\"crossorigin\":\"\"}],\"nonce\":\"dccb2f24c0\",\"admin_url\":\"https://test.obapress.com/wp-admin/admin-ajax.php\",\"start_time\":\"1627578091\",\"post_id\":\"21\"}
+/Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/DebugLogger.php#0 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/DebugLogger.php(44): PPRH\DebugLogger->get_msg_from_exception()
+#1 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/Utils.php(131): PPRH\DebugLogger->log_error('{\\"hints\\":[{\\"...')
+#2 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/Utils.php(34): PPRH\Utils::log_error('{\\"hints\\":[{\\"...')
+#3 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/tests/common/UtilsTest.php(269): PPRH\Utils::json_to_array('{\\"hints\\":[{\\"...')
+#4 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(1248): UtilsTest->test_json_to_array()
+#5 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(914): PHPUnit\Framework\TestCase->runTest()
+#6 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestResult.php(581): PHPUnit\Framework\TestCase->runBare()
+#7 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(707): PHPUnit\Framework\TestResult->run(Object(UtilsTest))
+#8 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestCase->run(Object(PHPUnit\Framework\TestResult))
+#9 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#10 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#11 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/TestRunner.php(489): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#12 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/Command.php(124): PHPUnit\TextUI\TestRunner->run(Object(PHPUnit\Framework\TestSuite), Array, Array, true)
+#13 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/Command.php(93): PHPUnit\TextUI\Command->run(Array, true)
+#14 /Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar(1140): PHPUnit\TextUI\Command::main()
+#15 {main}
+Environment info: 
+Datetime: 2021-07-29 11:07:06
+PHP_Version: 8.0.8
+WP_version: 5.8
+home_url: https://sphacks.local
+Browser: 
+PPRH version: 1.8.0
+{"license":{"id":"32","license_key":"6100767bb59850.76443566","status":"activated","name":"sam p","email":"asdf@gmail.com","txn_id":"","manual_reset_count":"0","date_created":"2021-07-27 15:07:46","date_renewed":"0000-00-00 00:00:00","date_expiry":"2022-07-27 00:00:00","registered_domain":"asdf.com","datetime_last_checked":"2021-07-27 15:07:46","max_sites":"5","site_count":3,"domain_list":"a:1:{i:0;s:13:"sphacks.local";}"},"response_code":{"msg":"Your license key has been activated!","code":130,"success":true}}
+/Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/DebugLogger.php#0 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/DebugLogger.php(44): PPRH\DebugLogger->get_msg_from_exception()
+#1 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/Utils.php(132): PPRH\DebugLogger->log_error('{"license":{"id...')
+#2 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/Utils.php(35): PPRH\Utils::log_error('{"license":{"id...')
+#3 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/tests/common/UtilsTest.php(261): PPRH\Utils::json_to_array('{"license":{"id...')
+#4 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(1248): UtilsTest->test_json_to_array()
+#5 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(914): PHPUnit\Framework\TestCase->runTest()
+#6 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestResult.php(581): PHPUnit\Framework\TestCase->runBare()
+#7 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(707): PHPUnit\Framework\TestResult->run(Object(UtilsTest))
+#8 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestCase->run(Object(PHPUnit\Framework\TestResult))
+#9 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#10 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#11 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/TestRunner.php(489): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#12 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/Command.php(124): PHPUnit\TextUI\TestRunner->run(Object(PHPUnit\Framework\TestSuite), Array, Array, true)
+#13 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/Command.php(93): PHPUnit\TextUI\Command->run(Array, true)
+#14 /Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar(1140): PHPUnit\TextUI\Command::main()
+#15 {main}
+Environment info: 
+Datetime: 2021-07-29 11:07:09
+PHP_Version: 8.0.8
+WP_version: 5.8
+home_url: https://sphacks.local
+Browser: 
+PPRH version: 1.8.0
+{\"hints\":[{\"url\":\"https://imagem.natelinha.uol.com.br\",\"hint_type\":\"preconnect\",\"media\":\"\",\"as_attr\":\"\",\"type_attr\":\"\",\"crossorigin\":\"\"},{\"url\":\"https://ajax.cloudflare.com\",\"hint_type\":\"preconnect\",\"media\":\"\",\"as_attr\":\"\",\"type_attr\":\"\",\"crossorigin\":\"\"}],\"nonce\":\"dccb2f24c0\",\"admin_url\":\"https://test.obapress.com/wp-admin/admin-ajax.php\",\"start_time\":\"1627578091\",\"post_id\":\"21\"}
+/Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/DebugLogger.php#0 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/DebugLogger.php(44): PPRH\DebugLogger->get_msg_from_exception()
+#1 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/Utils.php(135): PPRH\DebugLogger->log_error('{\\"hints\\":[{\\"...')
+#2 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/Utils.php(38): PPRH\Utils::log_error('{\\"hints\\":[{\\"...')
+#3 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/tests/common/UtilsTest.php(269): PPRH\Utils::json_to_array('{\\"hints\\":[{\\"...')
+#4 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(1248): UtilsTest->test_json_to_array()
+#5 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(914): PHPUnit\Framework\TestCase->runTest()
+#6 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestResult.php(581): PHPUnit\Framework\TestCase->runBare()
+#7 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(707): PHPUnit\Framework\TestResult->run(Object(UtilsTest))
+#8 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestCase->run(Object(PHPUnit\Framework\TestResult))
+#9 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#10 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#11 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/TestRunner.php(489): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#12 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/Command.php(124): PHPUnit\TextUI\TestRunner->run(Object(PHPUnit\Framework\TestSuite), Array, Array, true)
+#13 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/Command.php(93): PHPUnit\TextUI\Command->run(Array, true)
+#14 /Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar(1140): PHPUnit\TextUI\Command::main()
+#15 {main}
+Environment info: 
+Datetime: 2021-07-29 11:07:59
+PHP_Version: 8.0.8
+WP_version: 5.8
+home_url: https://sphacks.local
+Browser: 
+PPRH version: 1.8.0
+{\"hints\":[{\"url\":\"https://imagem.natelinha.uol.com.br\",\"hint_type\":\"preconnect\",\"media\":\"\",\"as_attr\":\"\",\"type_attr\":\"\",\"crossorigin\":\"\"},{\"url\":\"https://ajax.cloudflare.com\",\"hint_type\":\"preconnect\",\"media\":\"\",\"as_attr\":\"\",\"type_attr\":\"\",\"crossorigin\":\"\"}],\"nonce\":\"dccb2f24c0\",\"admin_url\":\"https://test.obapress.com/wp-admin/admin-ajax.php\",\"start_time\":\"1627578091\",\"post_id\":\"21\"}
+/Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/DebugLogger.php#0 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/DebugLogger.php(44): PPRH\DebugLogger->get_msg_from_exception()
+#1 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/Utils.php(135): PPRH\DebugLogger->log_error('{\\"hints\\":[{\\"...')
+#2 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/Utils.php(38): PPRH\Utils::log_error('{\\"hints\\":[{\\"...')
+#3 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/tests/common/UtilsTest.php(269): PPRH\Utils::json_to_array('{\\"hints\\":[{\\"...')
+#4 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(1248): UtilsTest->test_json_to_array()
+#5 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(914): PHPUnit\Framework\TestCase->runTest()
+#6 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestResult.php(581): PHPUnit\Framework\TestCase->runBare()
+#7 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(707): PHPUnit\Framework\TestResult->run(Object(UtilsTest))
+#8 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestCase->run(Object(PHPUnit\Framework\TestResult))
+#9 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#10 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#11 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/TestRunner.php(489): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#12 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/Command.php(124): PHPUnit\TextUI\TestRunner->run(Object(PHPUnit\Framework\TestSuite), Array, Array, true)
+#13 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/Command.php(93): PHPUnit\TextUI\Command->run(Array, true)
+#14 /Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar(1140): PHPUnit\TextUI\Command::main()
+#15 {main}
+Environment info: 
+Datetime: 2021-07-29 11:07:24
+PHP_Version: 8.0.8
+WP_version: 5.8
+home_url: https://sphacks.local
+Browser: 
+PPRH version: 1.8.0
+{"license":{"id":"32","license_key":"6100767bb59850.76443566","status":"activated","name":"sam p","email":"asdf@gmail.com","txn_id":"","manual_reset_count":"0","date_created":"2021-07-27 15:07:46","date_renewed":"0000-00-00 00:00:00","date_expiry":"2022-07-27 00:00:00","registered_domain":"asdf.com","datetime_last_checked":"2021-07-27 15:07:46","max_sites":"5","site_count":3,"domain_list":"a:1:{i:0;s:13:"sphacks.local";}"},"response_code":{"msg":"Your license key has been activated!","code":130,"success":true}}
+/Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/DebugLogger.php#0 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/DebugLogger.php(44): PPRH\DebugLogger->get_msg_from_exception()
+#1 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/Utils.php(135): PPRH\DebugLogger->log_error('{"license":{"id...')
+#2 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/Utils.php(38): PPRH\Utils::log_error('{"license":{"id...')
+#3 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/tests/common/UtilsTest.php(261): PPRH\Utils::json_to_array('{"license":{"id...')
+#4 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(1248): UtilsTest->test_json_to_array()
+#5 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(914): PHPUnit\Framework\TestCase->runTest()
+#6 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestResult.php(581): PHPUnit\Framework\TestCase->runBare()
+#7 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(707): PHPUnit\Framework\TestResult->run(Object(UtilsTest))
+#8 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestCase->run(Object(PHPUnit\Framework\TestResult))
+#9 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#10 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#11 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/TestRunner.php(489): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#12 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/Command.php(124): PHPUnit\TextUI\TestRunner->run(Object(PHPUnit\Framework\TestSuite), Array, Array, true)
+#13 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/Command.php(93): PHPUnit\TextUI\Command->run(Array, true)
+#14 /Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar(1140): PHPUnit\TextUI\Command::main()
+#15 {main}
+Environment info: 
+Datetime: 2021-07-29 11:07:07
+PHP_Version: 8.0.8
+WP_version: 5.8
+home_url: https://sphacks.local
+Browser: 
+PPRH version: 1.8.0
+{"license":{"id":"32","license_key":"6100767bb59850.76443566","status":"activated","name":"sam p","email":"asdf@gmail.com","txn_id":"","manual_reset_count":"0","date_created":"2021-07-27 15:07:46","date_renewed":"0000-00-00 00:00:00","date_expiry":"2022-07-27 00:00:00","registered_domain":"asdf.com","datetime_last_checked":"2021-07-27 15:07:46","max_sites":"5","site_count":3,"domain_list":"a:1:{i:0;s:13:"sphacks.local";}"},"response_code":{"msg":"Your license key has been activated!","code":130,"success":true}}
+/Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/DebugLogger.php#0 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/DebugLogger.php(44): PPRH\DebugLogger->get_msg_from_exception()
+#1 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/Utils.php(135): PPRH\DebugLogger->log_error('{"license":{"id...')
+#2 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/Utils.php(38): PPRH\Utils::log_error('{"license":{"id...')
+#3 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/tests/common/UtilsTest.php(261): PPRH\Utils::json_to_array('{"license":{"id...')
+#4 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(1248): UtilsTest->test_json_to_array()
+#5 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(914): PHPUnit\Framework\TestCase->runTest()
+#6 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestResult.php(581): PHPUnit\Framework\TestCase->runBare()
+#7 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(707): PHPUnit\Framework\TestResult->run(Object(UtilsTest))
+#8 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestCase->run(Object(PHPUnit\Framework\TestResult))
+#9 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#10 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#11 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/TestRunner.php(489): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#12 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/Command.php(124): PHPUnit\TextUI\TestRunner->run(Object(PHPUnit\Framework\TestSuite), Array, Array, true)
+#13 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/Command.php(93): PHPUnit\TextUI\Command->run(Array, true)
+#14 /Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar(1140): PHPUnit\TextUI\Command::main()
+#15 {main}
+Environment info: 
+Datetime: 2021-07-29 11:07:11
+PHP_Version: 8.0.8
+WP_version: 5.8
+home_url: https://sphacks.local
+Browser: 
+PPRH version: 1.8.0
+{\"hints\":[{\"url\":\"https://imagem.natelinha.uol.com.br\",\"hint_type\":\"preconnect\",\"media\":\"\",\"as_attr\":\"\",\"type_attr\":\"\",\"crossorigin\":\"\"},{\"url\":\"https://ajax.cloudflare.com\",\"hint_type\":\"preconnect\",\"media\":\"\",\"as_attr\":\"\",\"type_attr\":\"\",\"crossorigin\":\"\"}],\"nonce\":\"dccb2f24c0\",\"admin_url\":\"https://test.obapress.com/wp-admin/admin-ajax.php\",\"start_time\":\"1627578091\",\"post_id\":\"21\"}
+/Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/DebugLogger.php#0 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/DebugLogger.php(44): PPRH\DebugLogger->get_msg_from_exception()
+#1 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/Utils.php(136): PPRH\DebugLogger->log_error('{\\"hints\\":[{\\"...')
+#2 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/Utils.php(39): PPRH\Utils::log_error('{\\"hints\\":[{\\"...')
+#3 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/tests/common/UtilsTest.php(269): PPRH\Utils::json_to_array('{\\"hints\\":[{\\"...')
+#4 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(1248): UtilsTest->test_json_to_array()
+#5 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(914): PHPUnit\Framework\TestCase->runTest()
+#6 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestResult.php(581): PHPUnit\Framework\TestCase->runBare()
+#7 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(707): PHPUnit\Framework\TestResult->run(Object(UtilsTest))
+#8 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestCase->run(Object(PHPUnit\Framework\TestResult))
+#9 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#10 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#11 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/TestRunner.php(489): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#12 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/Command.php(124): PHPUnit\TextUI\TestRunner->run(Object(PHPUnit\Framework\TestSuite), Array, Array, true)
+#13 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/Command.php(93): PHPUnit\TextUI\Command->run(Array, true)
+#14 /Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar(1140): PHPUnit\TextUI\Command::main()
+#15 {main}
+Environment info: 
+Datetime: 2021-07-29 11:07:08
+PHP_Version: 8.0.8
+WP_version: 5.8
+home_url: https://sphacks.local
+Browser: 
+PPRH version: 1.8.0
+
+/Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/DebugLogger.php#0 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/DebugLogger.php(44): PPRH\DebugLogger->get_msg_from_exception()
+#1 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/Utils.php(138): PPRH\DebugLogger->log_error('')
+#2 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/Utils.php(41): PPRH\Utils::log_error('')
+#3 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/tests/common/UtilsTest.php(261): PPRH\Utils::json_to_array('')
+#4 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(1248): UtilsTest->test_json_to_array()
+#5 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(914): PHPUnit\Framework\TestCase->runTest()
+#6 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestResult.php(581): PHPUnit\Framework\TestCase->runBare()
+#7 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(707): PHPUnit\Framework\TestResult->run(Object(UtilsTest))
+#8 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestCase->run(Object(PHPUnit\Framework\TestResult))
+#9 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#10 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#11 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/TestRunner.php(489): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#12 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/Command.php(124): PHPUnit\TextUI\TestRunner->run(Object(PHPUnit\Framework\TestSuite), Array, Array, true)
+#13 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/Command.php(93): PHPUnit\TextUI\Command->run(Array, true)
+#14 /Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar(1140): PHPUnit\TextUI\Command::main()
+#15 {main}
+Environment info: 
+Datetime: 2021-07-29 11:07:38
+PHP_Version: 8.0.8
+WP_version: 5.8
+home_url: https://sphacks.local
+Browser: 
+PPRH version: 1.8.0
+{\"hints\":[{\"url\":\"https:imagem.natelinha.uol.com.br\",\"hint_type\":\"preconnect\",\"media\":\"\",\"as_attr\":\"\",\"type_attr\":\"\",\"crossorigin\":\"\"},{\"url\":\"https:ajax.cloudflare.com\",\"hint_type\":\"preconnect\",\"media\":\"\",\"as_attr\":\"\",\"type_attr\":\"\",\"crossorigin\":\"\"}],\"nonce\":\"dccb2f24c0\",\"admin_url\":\"https:test.obapress.comwp-adminadmin-ajax.php\",\"start_time\":\"1627578091\",\"post_id\":\"21\"}
+/Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/DebugLogger.php#0 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/DebugLogger.php(44): PPRH\DebugLogger->get_msg_from_exception()
+#1 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/Utils.php(138): PPRH\DebugLogger->log_error('{\\"hints\\":[{\\"...')
+#2 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/Utils.php(41): PPRH\Utils::log_error('{\\"hints\\":[{\\"...')
+#3 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/tests/common/UtilsTest.php(269): PPRH\Utils::json_to_array('{\\"hints\\":[{\\"...')
+#4 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(1248): UtilsTest->test_json_to_array()
+#5 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(914): PHPUnit\Framework\TestCase->runTest()
+#6 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestResult.php(581): PHPUnit\Framework\TestCase->runBare()
+#7 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(707): PHPUnit\Framework\TestResult->run(Object(UtilsTest))
+#8 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestCase->run(Object(PHPUnit\Framework\TestResult))
+#9 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#10 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#11 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/TestRunner.php(489): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#12 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/Command.php(124): PHPUnit\TextUI\TestRunner->run(Object(PHPUnit\Framework\TestSuite), Array, Array, true)
+#13 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/Command.php(93): PHPUnit\TextUI\Command->run(Array, true)
+#14 /Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar(1140): PHPUnit\TextUI\Command::main()
+#15 {main}
+Environment info: 
+Datetime: 2021-07-29 11:07:12
+PHP_Version: 8.0.8
+WP_version: 5.8
+home_url: https://sphacks.local
+Browser: 
+PPRH version: 1.8.0
+{\"hints\":[{\"url\":\"https:imagem.natelinha.uol.com.br\",\"hint_type\":\"preconnect\",\"media\":\"\",\"as_attr\":\"\",\"type_attr\":\"\",\"crossorigin\":\"\"},{\"url\":\"https:ajax.cloudflare.com\",\"hint_type\":\"preconnect\",\"media\":\"\",\"as_attr\":\"\",\"type_attr\":\"\",\"crossorigin\":\"\"}],\"nonce\":\"dccb2f24c0\",\"admin_url\":\"https:test.obapress.comwp-adminadmin-ajax.php\",\"start_time\":\"1627578091\",\"post_id\":\"21\"}
+/Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/DebugLogger.php#0 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/DebugLogger.php(44): PPRH\DebugLogger->get_msg_from_exception()
+#1 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/Utils.php(138): PPRH\DebugLogger->log_error('{\\"hints\\":[{\\"...')
+#2 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/Utils.php(41): PPRH\Utils::log_error('{\\"hints\\":[{\\"...')
+#3 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/tests/common/UtilsTest.php(274): PPRH\Utils::json_to_array('{\\"hints\\":[{\\"...')
+#4 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(1248): UtilsTest->test_json_to_array()
+#5 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(914): PHPUnit\Framework\TestCase->runTest()
+#6 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestResult.php(581): PHPUnit\Framework\TestCase->runBare()
+#7 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(707): PHPUnit\Framework\TestResult->run(Object(UtilsTest))
+#8 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestCase->run(Object(PHPUnit\Framework\TestResult))
+#9 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#10 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#11 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/TestRunner.php(489): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#12 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/Command.php(124): PHPUnit\TextUI\TestRunner->run(Object(PHPUnit\Framework\TestSuite), Array, Array, true)
+#13 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/Command.php(93): PHPUnit\TextUI\Command->run(Array, true)
+#14 /Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar(1140): PHPUnit\TextUI\Command::main()
+#15 {main}
+Environment info: 
+Datetime: 2021-07-29 11:07:59
+PHP_Version: 8.0.8
+WP_version: 5.8
+home_url: https://sphacks.local
+Browser: 
+PPRH version: 1.8.0
+{\"hints\":[{\"url\":\"https:imagem.natelinha.uol.com.br\",\"hint_type\":\"preconnect\",\"media\":\"\",\"as_attr\":\"\",\"type_attr\":\"\",\"crossorigin\":\"\"},{\"url\":\"https:ajax.cloudflare.com\",\"hint_type\":\"preconnect\",\"media\":\"\",\"as_attr\":\"\",\"type_attr\":\"\",\"crossorigin\":\"\"}],\"nonce\":\"dccb2f24c0\",\"admin_url\":\"https:test.obapress.comwp-adminadmin-ajax.php\",\"start_time\":\"1627578091\",\"post_id\":\"21\"}
+/Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/DebugLogger.php#0 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/DebugLogger.php(44): PPRH\DebugLogger->get_msg_from_exception()
+#1 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/Utils.php(138): PPRH\DebugLogger->log_error('{\\"hints\\":[{\\"...')
+#2 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/Utils.php(41): PPRH\Utils::log_error('{\\"hints\\":[{\\"...')
+#3 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/tests/common/UtilsTest.php(274): PPRH\Utils::json_to_array('{\\"hints\\":[{\\"...')
+#4 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(1248): UtilsTest->test_json_to_array()
+#5 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(914): PHPUnit\Framework\TestCase->runTest()
+#6 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestResult.php(581): PHPUnit\Framework\TestCase->runBare()
+#7 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(707): PHPUnit\Framework\TestResult->run(Object(UtilsTest))
+#8 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestCase->run(Object(PHPUnit\Framework\TestResult))
+#9 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#10 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#11 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/TestRunner.php(489): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#12 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/Command.php(124): PHPUnit\TextUI\TestRunner->run(Object(PHPUnit\Framework\TestSuite), Array, Array, true)
+#13 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/Command.php(93): PHPUnit\TextUI\Command->run(Array, true)
+#14 /Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar(1140): PHPUnit\TextUI\Command::main()
+#15 {main}
+Environment info: 
+Datetime: 2021-07-29 11:07:37
+PHP_Version: 8.0.8
+WP_version: 5.8
+home_url: https://sphacks.local
+Browser: 
+PPRH version: 1.8.0
+{\"hints\":[{\"url\":\"https:imagem.natelinha.uol.com.br\",\"hint_type\":\"preconnect\",\"media\":\"\",\"as_attr\":\"\",\"type_attr\":\"\",\"crossorigin\":\"\"},{\"url\":\"https:ajax.cloudflare.com\",\"hint_type\":\"preconnect\",\"media\":\"\",\"as_attr\":\"\",\"type_attr\":\"\",\"crossorigin\":\"\"}],\"nonce\":\"dccb2f24c0\",\"admin_url\":\"https:test.obapress.comwp-adminadmin-ajax.php\",\"start_time\":\"1627578091\",\"post_id\":\"21\"}
+/Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/DebugLogger.php#0 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/DebugLogger.php(44): PPRH\DebugLogger->get_msg_from_exception()
+#1 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/Utils.php(138): PPRH\DebugLogger->log_error('{\\"hints\\":[{\\"...')
+#2 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/Utils.php(41): PPRH\Utils::log_error('{\\"hints\\":[{\\"...')
+#3 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/tests/common/UtilsTest.php(274): PPRH\Utils::json_to_array('{\\"hints\\":[{\\"...')
+#4 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(1248): UtilsTest->test_json_to_array()
+#5 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(914): PHPUnit\Framework\TestCase->runTest()
+#6 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestResult.php(581): PHPUnit\Framework\TestCase->runBare()
+#7 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(707): PHPUnit\Framework\TestResult->run(Object(UtilsTest))
+#8 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestCase->run(Object(PHPUnit\Framework\TestResult))
+#9 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#10 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#11 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/TestRunner.php(489): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#12 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/Command.php(124): PHPUnit\TextUI\TestRunner->run(Object(PHPUnit\Framework\TestSuite), Array, Array, true)
+#13 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/Command.php(93): PHPUnit\TextUI\Command->run(Array, true)
+#14 /Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar(1140): PHPUnit\TextUI\Command::main()
+#15 {main}
+Environment info: 
+Datetime: 2021-07-29 11:07:29
+PHP_Version: 8.0.8
+WP_version: 5.8
+home_url: https://sphacks.local
+Browser: 
+PPRH version: 1.8.0
+{"license":{"id":"32","license_key":"6100767bb59850.76443566","status":"activated","name":"sam p","email":"asdf@gmail.com","txn_id":"","manual_reset_count":"0","date_created":"2021-07-27 15:07:46","date_renewed":"0000-00-00 00:00:00","date_expiry":"2022-07-27 00:00:00","registered_domain":"asdf.com","datetime_last_checked":"2021-07-27 15:07:46","max_sites":"5","site_count":3,"domain_list":"a:1:{i:0;s:13:\"sphacks.local\";}"},"response_code":{"msg":"Your license key has been activated!","code":130,"success":true}}
+/Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/DebugLogger.php#0 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/DebugLogger.php(44): PPRH\DebugLogger->get_msg_from_exception()
+#1 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/Utils.php(138): PPRH\DebugLogger->log_error('{"license":{"id...')
+#2 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/Utils.php(41): PPRH\Utils::log_error('{"license":{"id...')
+#3 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/tests/common/UtilsTest.php(261): PPRH\Utils::json_to_array('{"license":{"id...')
+#4 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(1248): UtilsTest->test_json_to_array()
+#5 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(914): PHPUnit\Framework\TestCase->runTest()
+#6 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestResult.php(581): PHPUnit\Framework\TestCase->runBare()
+#7 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(707): PHPUnit\Framework\TestResult->run(Object(UtilsTest))
+#8 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestCase->run(Object(PHPUnit\Framework\TestResult))
+#9 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#10 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#11 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/TestRunner.php(489): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#12 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/Command.php(124): PHPUnit\TextUI\TestRunner->run(Object(PHPUnit\Framework\TestSuite), Array, Array, true)
+#13 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/Command.php(93): PHPUnit\TextUI\Command->run(Array, true)
+#14 /Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar(1140): PHPUnit\TextUI\Command::main()
+#15 {main}
+Environment info: 
+Datetime: 2021-07-29 11:07:47
+PHP_Version: 8.0.8
+WP_version: 5.8
+home_url: https://sphacks.local
+Browser: 
+PPRH version: 1.8.0
+{"license":{"id":"32","license_key":"6100767bb59850.76443566","status":"activated","name":"sam p","email":"asdf@gmail.com","txn_id":"","manual_reset_count":"0","date_created":"2021-07-27 15:07:46","date_renewed":"0000-00-00 00:00:00","date_expiry":"2022-07-27 00:00:00","registered_domain":"asdf.com","datetime_last_checked":"2021-07-27 15:07:46","max_sites":"5","site_count":3,"domain_list":"a:1:{i:0;s:13:\"sphacks.local\";}"},"response_code":{"msg":"Your license key has been activated!","code":130,"success":true}}
+/Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/DebugLogger.php#0 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/DebugLogger.php(44): PPRH\DebugLogger->get_msg_from_exception()
+#1 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/Utils.php(138): PPRH\DebugLogger->log_error('{"license":{"id...')
+#2 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/Utils.php(41): PPRH\Utils::log_error('{"license":{"id...')
+#3 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/tests/common/UtilsTest.php(261): PPRH\Utils::json_to_array('{"license":{"id...')
+#4 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(1248): UtilsTest->test_json_to_array()
+#5 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(914): PHPUnit\Framework\TestCase->runTest()
+#6 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestResult.php(581): PHPUnit\Framework\TestCase->runBare()
+#7 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(707): PHPUnit\Framework\TestResult->run(Object(UtilsTest))
+#8 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestCase->run(Object(PHPUnit\Framework\TestResult))
+#9 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#10 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#11 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/TestRunner.php(489): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#12 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/Command.php(124): PHPUnit\TextUI\TestRunner->run(Object(PHPUnit\Framework\TestSuite), Array, Array, true)
+#13 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/Command.php(93): PHPUnit\TextUI\Command->run(Array, true)
+#14 /Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar(1140): PHPUnit\TextUI\Command::main()
+#15 {main}
+Environment info: 
+Datetime: 2021-07-29 11:07:50
+PHP_Version: 8.0.8
+WP_version: 5.8
+home_url: https://sphacks.local
+Browser: 
+PPRH version: 1.8.0
+{"license":{"id":"32","license_key":"6100767bb59850.76443566","status":"activated","name":"sam p","email":"asdf@gmail.com","txn_id":"","manual_reset_count":"0","date_created":"2021-07-27 15:07:46","date_renewed":"0000-00-00 00:00:00","date_expiry":"2022-07-27 00:00:00","registered_domain":"asdf.com","datetime_last_checked":"2021-07-27 15:07:46","max_sites":"5","site_count":3,"domain_list":"a:1:{i:0;s:13:\"sphacks.local\";}"},"response_code":{"msg":"Your license key has been activated!","code":130,"success":true}}
+/Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/DebugLogger.php#0 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/DebugLogger.php(44): PPRH\DebugLogger->get_msg_from_exception()
+#1 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/Utils.php(139): PPRH\DebugLogger->log_error('{"license":{"id...')
+#2 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/Utils.php(42): PPRH\Utils::log_error('{"license":{"id...')
+#3 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/tests/common/UtilsTest.php(261): PPRH\Utils::json_to_array('{"license":{"id...')
+#4 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(1248): UtilsTest->test_json_to_array()
+#5 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(914): PHPUnit\Framework\TestCase->runTest()
+#6 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestResult.php(581): PHPUnit\Framework\TestCase->runBare()
+#7 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(707): PHPUnit\Framework\TestResult->run(Object(UtilsTest))
+#8 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestCase->run(Object(PHPUnit\Framework\TestResult))
+#9 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#10 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#11 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/TestRunner.php(489): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#12 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/Command.php(124): PHPUnit\TextUI\TestRunner->run(Object(PHPUnit\Framework\TestSuite), Array, Array, true)
+#13 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/Command.php(93): PHPUnit\TextUI\Command->run(Array, true)
+#14 /Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar(1140): PHPUnit\TextUI\Command::main()
+#15 {main}
+Environment info: 
+Datetime: 2021-07-29 11:07:35
+PHP_Version: 8.0.8
+WP_version: 5.8
+home_url: https://sphacks.local
+Browser: 
+PPRH version: 1.8.0
+{"license":{"id":"32","license_key":"6100767bb59850.76443566","status":"activated","name":"sam p","email":"asdf@gmail.com","txn_id":"","manual_reset_count":"0","date_created":"2021-07-27 15:07:46","date_renewed":"0000-00-00 00:00:00","date_expiry":"2022-07-27 00:00:00","registered_domain":"asdf.com","datetime_last_checked":"2021-07-27 15:07:46","max_sites":"5","site_count":3,"domain_list":"a:1:{i:0;s:13:"sphacks.local";}"},"response_code":{"msg":"Your license key has been activated!","code":130,"success":true}}
+/Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/DebugLogger.php#0 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/DebugLogger.php(44): PPRH\DebugLogger->get_msg_from_exception()
+#1 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/Utils.php(139): PPRH\DebugLogger->log_error('{"license":{"id...')
+#2 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/Utils.php(42): PPRH\Utils::log_error('{"license":{"id...')
+#3 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/tests/common/UtilsTest.php(261): PPRH\Utils::json_to_array('{"license":{"id...')
+#4 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(1248): UtilsTest->test_json_to_array()
+#5 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(914): PHPUnit\Framework\TestCase->runTest()
+#6 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestResult.php(581): PHPUnit\Framework\TestCase->runBare()
+#7 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(707): PHPUnit\Framework\TestResult->run(Object(UtilsTest))
+#8 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestCase->run(Object(PHPUnit\Framework\TestResult))
+#9 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#10 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#11 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/TestRunner.php(489): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#12 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/Command.php(124): PHPUnit\TextUI\TestRunner->run(Object(PHPUnit\Framework\TestSuite), Array, Array, true)
+#13 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/Command.php(93): PHPUnit\TextUI\Command->run(Array, true)
+#14 /Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar(1140): PHPUnit\TextUI\Command::main()
+#15 {main}
+Environment info: 
+Datetime: 2021-07-29 11:07:52
+PHP_Version: 8.0.8
+WP_version: 5.8
+home_url: https://sphacks.local
+Browser: 
+PPRH version: 1.8.0
+{"license":{"id":"32","license_key":"6100767bb59850.76443566","status":"activated","name":"sam p","email":"asdf@gmail.com","txn_id":"","manual_reset_count":"0","date_created":"2021-07-27 15:07:46","date_renewed":"0000-00-00 00:00:00","date_expiry":"2022-07-27 00:00:00","registered_domain":"asdf.com","datetime_last_checked":"2021-07-27 15:07:46","max_sites":"5","site_count":3,"domain_list":"a:1:{i:0;s:13:"sphacks.local";}"},"response_code":{"msg":"Your license key has been activated!","code":130,"success":true}}
+/Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/DebugLogger.php#0 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/DebugLogger.php(44): PPRH\DebugLogger->get_msg_from_exception()
+#1 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/Utils.php(138): PPRH\DebugLogger->log_error('{"license":{"id...')
+#2 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/Utils.php(41): PPRH\Utils::log_error('{"license":{"id...')
+#3 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/tests/common/UtilsTest.php(261): PPRH\Utils::json_to_array('{"license":{"id...')
+#4 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(1248): UtilsTest->test_json_to_array()
+#5 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(914): PHPUnit\Framework\TestCase->runTest()
+#6 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestResult.php(581): PHPUnit\Framework\TestCase->runBare()
+#7 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(707): PHPUnit\Framework\TestResult->run(Object(UtilsTest))
+#8 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestCase->run(Object(PHPUnit\Framework\TestResult))
+#9 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#10 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#11 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/TestRunner.php(489): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#12 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/Command.php(124): PHPUnit\TextUI\TestRunner->run(Object(PHPUnit\Framework\TestSuite), Array, Array, true)
+#13 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/Command.php(93): PHPUnit\TextUI\Command->run(Array, true)
+#14 /Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar(1140): PHPUnit\TextUI\Command::main()
+#15 {main}
+Environment info: 
+Datetime: 2021-07-29 11:07:07
+PHP_Version: 8.0.8
+WP_version: 5.8
+home_url: https://sphacks.local
+Browser: 
+PPRH version: 1.8.0
+{\"hints\":[{\"url\":\"https:imagem.natelinha.uol.com.br\",\"hint_type\":\"preconnect\",\"media\":\"\",\"as_attr\":\"\",\"type_attr\":\"\",\"crossorigin\":\"\"},{\"url\":\"https:ajax.cloudflare.com\",\"hint_type\":\"preconnect\",\"media\":\"\",\"as_attr\":\"\",\"type_attr\":\"\",\"crossorigin\":\"\"}],\"nonce\":\"dccb2f24c0\",\"admin_url\":\"https:test.obapress.comwp-adminadmin-ajax.php\",\"start_time\":\"1627578091\",\"post_id\":\"21\"}
+/Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/DebugLogger.php#0 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/DebugLogger.php(44): PPRH\DebugLogger->get_msg_from_exception()
+#1 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/Utils.php(138): PPRH\DebugLogger->log_error('{\\"hints\\":[{\\"...')
+#2 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/Utils.php(41): PPRH\Utils::log_error('{\\"hints\\":[{\\"...')
+#3 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/tests/common/UtilsTest.php(271): PPRH\Utils::json_to_array('{\\"hints\\":[{\\"...')
+#4 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(1248): UtilsTest->test_json_to_array()
+#5 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(914): PHPUnit\Framework\TestCase->runTest()
+#6 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestResult.php(581): PHPUnit\Framework\TestCase->runBare()
+#7 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(707): PHPUnit\Framework\TestResult->run(Object(UtilsTest))
+#8 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestCase->run(Object(PHPUnit\Framework\TestResult))
+#9 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#10 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#11 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/TestRunner.php(489): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#12 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/Command.php(124): PHPUnit\TextUI\TestRunner->run(Object(PHPUnit\Framework\TestSuite), Array, Array, true)
+#13 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/Command.php(93): PHPUnit\TextUI\Command->run(Array, true)
+#14 /Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar(1140): PHPUnit\TextUI\Command::main()
+#15 {main}
+Environment info: 
+Datetime: 2021-07-29 11:07:11
+PHP_Version: 8.0.8
+WP_version: 5.8
+home_url: https://sphacks.local
+Browser: 
+PPRH version: 1.8.0
+{\"hints\":[{\"url\":\"https:imagem.natelinha.uol.com.br\",\"hint_type\":\"preconnect\",\"media\":\"\",\"as_attr\":\"\",\"type_attr\":\"\",\"crossorigin\":\"\"},{\"url\":\"https:ajax.cloudflare.com\",\"hint_type\":\"preconnect\",\"media\":\"\",\"as_attr\":\"\",\"type_attr\":\"\",\"crossorigin\":\"\"}],\"nonce\":\"dccb2f24c0\",\"admin_url\":\"https:test.obapress.comwp-adminadmin-ajax.php\",\"start_time\":\"1627578091\",\"post_id\":\"21\"}
+/Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/DebugLogger.php#0 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/DebugLogger.php(44): PPRH\DebugLogger->get_msg_from_exception()
+#1 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/Utils.php(138): PPRH\DebugLogger->log_error('{\\"hints\\":[{\\"...')
+#2 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/Utils.php(41): PPRH\Utils::log_error('{\\"hints\\":[{\\"...')
+#3 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/tests/common/UtilsTest.php(271): PPRH\Utils::json_to_array('{\\"hints\\":[{\\"...')
+#4 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(1248): UtilsTest->test_json_to_array()
+#5 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(914): PHPUnit\Framework\TestCase->runTest()
+#6 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestResult.php(581): PHPUnit\Framework\TestCase->runBare()
+#7 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(707): PHPUnit\Framework\TestResult->run(Object(UtilsTest))
+#8 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestCase->run(Object(PHPUnit\Framework\TestResult))
+#9 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#10 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#11 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/TestRunner.php(489): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#12 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/Command.php(124): PHPUnit\TextUI\TestRunner->run(Object(PHPUnit\Framework\TestSuite), Array, Array, true)
+#13 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/Command.php(93): PHPUnit\TextUI\Command->run(Array, true)
+#14 /Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar(1140): PHPUnit\TextUI\Command::main()
+#15 {main}
+Environment info: 
+Datetime: 2021-07-29 11:07:01
+PHP_Version: 8.0.8
+WP_version: 5.8
+home_url: https://sphacks.local
+Browser: 
+PPRH version: 1.8.0
