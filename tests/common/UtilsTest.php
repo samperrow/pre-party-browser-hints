@@ -54,6 +54,21 @@ final class UtilsTest extends TestCase {
 		self::assertEquals( 'https://asdf.com/asf/', $test_3 );
 	}
 
+	public function test_strip_bad_chars() {
+		$str1 = 'https://www.espn.com';
+		$test1 = \PPRH\Utils::strip_bad_chars($str1);
+		self::assertEquals( $str1, $test1 );
+
+		$str2 = 'https"://<script\>test.com<script>';
+		$test2 = \PPRH\Utils::strip_bad_chars($str2);
+		self::assertEquals( 'https://scripttest.comscript', $test2 );
+
+		$str_3 = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.1 Safari/605.1.15';
+		$test_3 = \PPRH\Utils::strip_bad_chars($str_3);
+		self::assertEquals( $str_3, $test_3 );
+	}
+
+
 	public function test_clean_url_path() {
 		$str1 = 'https://www.espn.com';
 		$test1 = \PPRH\Utils::clean_url_path($str1);
@@ -270,6 +285,11 @@ final class UtilsTest extends TestCase {
 		$json_3 = '{\"hints\":[{\"url\":\"https://imagem.natelinha.uol.com.br\",\"hint_type\":\"preconnect\",\"media\":\"\",\"as_attr\":\"\",\"type_attr\":\"\",\"crossorigin\":\"\"},{\"url\":\"https://ajax.cloudflare.com\",\"hint_type\":\"preconnect\",\"media\":\"\",\"as_attr\":\"\",\"type_attr\":\"\",\"crossorigin\":\"\"}],\"nonce\":\"dccb2f24c0\",\"admin_url\":\"https://test.obapress.com/wp-admin/admin-ajax.php\",\"start_time\":\"1627578091\",\"post_id\":\"21\"}';
 		$actual_3 = \PPRH\Utils::json_to_array( $json_3 );
 		self::assertCount( 5, $actual_3 );
+	}
+
+	public function test_log_error() {
+		$actual_1 = \PPRH\Utils::log_error( 'tester' );
+		self::assertFalse( $actual_1 );
 	}
 
 }

@@ -13,7 +13,6 @@ class DashboardTest extends TestCase {
 		$this->dashboard = new \PPRH\Dashboard();
 	}
 
-
 	public function test_check_to_upgrade() {
 		$actual_1 = $this->dashboard->check_to_upgrade( '1.7.7', '1.7.6.3' );
 		self::assertEquals( true, $actual_1 );
@@ -24,7 +23,6 @@ class DashboardTest extends TestCase {
 		$actual_3 = $this->dashboard->check_to_upgrade( '1.7.7', '1.7.8' );
 		self::assertEquals( false, $actual_3 );
 	}
-
 
 
 }

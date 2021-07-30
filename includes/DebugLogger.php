@@ -13,11 +13,11 @@ class DebugLogger {
 	public $section_break_marker = "\n----------------------------------------------------------\n\n";
 	public $log_reset_marker = "-------- Log File Reset --------\n";
 	public $file_path;
-	private $time_now;
+//	private $time_now;
 
 	public function __construct() {
 		$this->file_path = PPRH_ABS_DIR . 'logs/errors.log';
-		$this->time_now = Utils::get_current_datetime();
+//		$this->time_now = Utils::get_current_datetime();
 	}
 
 	public function get_section_break( $section_break ) {
@@ -27,12 +27,12 @@ class DebugLogger {
 		return "";
 	}
 
-	public function reset_log_file() {
-		$content = $this->time_now . $this->log_reset_marker;
-		$fp = fopen( $this->file_path, 'wb' );
-		fwrite( $fp, $content );
-		fclose( $fp );
-	}
+//	public function reset_log_file() {
+//		$content = $this->time_now . $this->log_reset_marker;
+//		$fp = fopen( $this->file_path, 'wb' );
+//		fwrite( $fp, $content );
+//		fclose( $fp );
+//	}
 
 	public function append_to_file( $content ) {
 		$fp = fopen( $this->file_path,'ab' );
@@ -41,16 +41,16 @@ class DebugLogger {
 	}
 
 	public function log_error( $message ) {
-		$exception_msg = $this->get_msg_from_exception();
+		$exception_msg = $this->get_msg_from_exception( $message );
 		$message .= "\n$exception_msg";
-		$message .= $this->get_environment_info();
+		$message .= Utils::get_debug_info();
 		$this->append_to_file( $message );
-		\wp_mail( 'info@sphacks.io', 'Error', $message );
+		Utils::send_email( PPRH_EMAIL, 'Error', $message );
 	}
 
-	private function get_msg_from_exception():string {
+	private function get_msg_from_exception( string $message ):string {
 		$exception_str = '';
-		$exception = new \Exception( '' );
+		$exception = new \Exception( $message );
 
 		if ( method_exists( $exception, 'getMessage' ) ) {
 			$exception_str .= $exception->getMessage();
@@ -67,24 +67,5 @@ class DebugLogger {
 		return $exception_str;
 	}
 
-
-	public function get_environment_info():string {
-		$browser = \PPRH\Utils::get_server_prop('HTTP_USER_AGENT' );
-		$text = "\nEnvironment info: \n";
-		$data = array(
-			'Datetime'    => $this->time_now,
-			'PHP_Version' => PHP_VERSION,
-			'WP_version'  => get_bloginfo( 'version' ),
-			'home_url'    => home_url(),
-			'Browser'     => $browser,
-			'PPRH version' => PPRH_VERSION
-		);
-
-		foreach ( $data as $item => $val ) {
-			$text .= "$item: $val\n";
-		}
-
-		return $text;
-	}
 
 }
