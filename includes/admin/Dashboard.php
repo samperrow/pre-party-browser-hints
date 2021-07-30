@@ -69,7 +69,7 @@ class Dashboard {
         }
 
         $activate_plugin = new ActivatePlugin();
-        $msg = 'Version ' . PPRH_VERSION_NEW . ' Upgrade Notes: 1) Fixed error preventing new hint attributes from being selected/unselected as they should be.';
+        $msg = 'Version ' . PPRH_VERSION_NEW . ' Upgrade Notes: 1) Fixed auto prefetch error.';
         Utils::show_notice( $msg, true );
         $activate_plugin->upgrade_plugin();
 
@@ -79,7 +79,7 @@ class Dashboard {
     }
 
 	public function check_to_upgrade( $new_version, $old_version ):bool {
-		return ( version_compare( $new_version, $old_version ) > 0 );
+		return $new_version !== $old_version;
 	}
 
 	public function show_footer() {
