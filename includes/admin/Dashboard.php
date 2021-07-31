@@ -69,7 +69,7 @@ class Dashboard {
         }
 
         $activate_plugin = new ActivatePlugin();
-        $msg = 'Version ' . PPRH_VERSION_NEW . ' Upgrade Notes: 1) Fixed auto prefetch error.';
+		$msg = 'Version ' . PPRH_VERSION_NEW . ' Upgrade Notes: 1) Fixed issue in auto prefetch script, improved plugin testability, and other small improvements.';
         Utils::show_notice( $msg, true );
         $activate_plugin->upgrade_plugin();
 
