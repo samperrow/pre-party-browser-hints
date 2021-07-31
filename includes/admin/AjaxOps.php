@@ -22,36 +22,30 @@ class AjaxOps {
 		if ( isset( $_POST['pprh_data'] ) && wp_doing_ajax() ) {
 			\check_ajax_referer( 'pprh_table_nonce', 'nonce' );
 			$pprh_data = Utils::json_to_array( $_POST['pprh_data'] );
-			$db_result = '';
 
-			if ( ! empty( $pprh_data ) ) {
-				$db_result = $this->init( $pprh_data );
-			}
-
-			if ( PPRH_RUNNING_UNIT_TESTS ) {
-				return true;
-			}
-
-			wp_die( $db_result );
+			$ajax_response = $this->priv_update_hints( $pprh_data  );
+			$response_json = json_encode( $ajax_response, true );
+			wp_die( $response_json );
 		}
 	}
 
-	public function init( $pprh_data ) {
-		if ( is_array( $pprh_data ) ) {
-			$db_result = $this->handle_action( $pprh_data );
-
-			if ( is_object( $db_result ) ) {
-				$display_hints = new DisplayHints( true, $this->on_pprh_page );
-				$json = $display_hints->ajax_response( $db_result );
-				return $this->return_values( $json, $db_result );
-			}
+	private function priv_update_hints( $pprh_data ):array {
+		if ( Utils::isArrayAndNotEmpty( $pprh_data ) ) {
+			return $this->update_hints( $pprh_data );
 		}
 
-		return false;
+		return array();
 	}
 
-	private function return_values( $json, \stdClass $db_result ) {
-		return ( PPRH_RUNNING_UNIT_TESTS ) ? $db_result : $json;
+	public function update_hints( array $pprh_data ):array {
+		$db_result = $this->handle_action( $pprh_data );
+
+		if ( is_object( $db_result ) ) {
+			$display_hints = new DisplayHints( true, $this->on_pprh_page );
+			return $display_hints->ajax_response( $db_result );
+		}
+
+		return array();
 	}
 
 	private function handle_action( array $data ):\stdClass {

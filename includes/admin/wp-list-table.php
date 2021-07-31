@@ -1086,7 +1086,8 @@ class WP_List_Table {
 	public function print_column_headers( $with_id = true ) {
 		list( $columns, $hidden, $sortable, $primary ) = $this->get_column_info();
 
-		$current_url = set_url_scheme( 'http://' . $_SERVER['HTTP_HOST'] . ( $_SERVER['REQUEST_URI'] ?? '' ) );
+		$url = 'http://' . ( $_SERVER['HTTP_HOST'] ?? '' ) . ( $_SERVER['REQUEST_URI'] ?? '' );
+		$current_url = set_url_scheme( $url );
 		$current_url = remove_query_arg( 'paged', $current_url );
 
 		if ( isset( $_GET['orderby'] ) ) {
@@ -1374,7 +1375,7 @@ class WP_List_Table {
      * @param $all_hints - custom
      * @since 3.1.0
      */
-	public function ajax_response($results) {
+	public function ajax_response( $db_result ) {
 		$this->prepare_items();
 
 		ob_start();
@@ -1416,8 +1417,8 @@ class WP_List_Table {
 			$response['total_pages_i18n'] = number_format_i18n( $this->_pagination_args['total_pages'] );
 		}
 
-		$response['result'] = $results;
-		return json_encode( $response, true );
+		$response['result'] = $db_result;
+		return $response;
 	}
 
 	/**

@@ -25,13 +25,22 @@ class Utils {
 		return PPRH_RUNNING_UNIT_TESTS || \update_option( $option, $value );
 	}
 
-	public static function json_to_array( $json ):array {
-//		$json2 = '{asdf}';
-		$unslashed_json = \wp_unslash( $json );
-		$array = json_decode( $unslashed_json, true );
+	public static function json_to_array( string $json ):array {
+		$array = array();
+
+		if ( 1 === strpos( $json, '\\', 0 ) ) {
+			$json = str_replace( '\\', '', $json );
+		}
+
+		try {
+			$array = json_decode( $json, true, 512, JSON_THROW_ON_ERROR );
+		} catch( \JsonException $exception ) {
+			self::log_error( "$json\n$exception"  );
+		}
 
 		if ( ! is_array( $array ) ) {
 			self::log_error( "Failed at Utils::json_to_array()" );
+			return array();
 		}
 
 		return $array;
@@ -51,6 +60,10 @@ class Utils {
 
 	public static function clean_url( string $url ):string {
 		return preg_replace( '/[\s\'<>^\"\\\]/', '', $url );
+	}
+
+	public static function strip_bad_chars( string $url ):string {
+		return preg_replace( '/[\'<>^\"\\\]/', '', $url );
 	}
 
 	public static function clean_url_path( string $path ):string {
@@ -77,14 +90,13 @@ class Utils {
 		return ( is_array( $arr ) && ! empty( $arr ) );
 	}
 
-	public static function get_current_datetime():string {
+	public static function get_current_datetime( string $added_time = '' ):string {
 		$offset = new \DateTimeZone( 'America/Denver' );
 		$datetime = new \DateTime( 'now', $offset );
 		$timezone_offset = (string) ($datetime->getOffset() / 3600) . ' hours';
-		return date( 'Y-m-d H:m:s', strtotime( $timezone_offset ) );
+		$offset = ( empty( $added_time ) ? $timezone_offset : $added_time );
+		return date( 'Y-m-d H:m:s', strtotime( $offset ) );
 	}
-
-
 
 	public static function array_into_csv( $hint_ids ) {
 		if ( self::isArrayAndNotEmpty( $hint_ids ) ) {
@@ -121,17 +133,22 @@ class Utils {
 		return self::on_pprh_page_ctrl( $doing_ajax, $referer, $request_uri );
 	}
 
-	public static function log_error( $message ) {
+	public static function log_error( $message ):bool {
+		$debug_enabled = ( 'false' !== \get_option( 'pprh_debug_enabled', 'false' ) );
+
+		if ( ! $debug_enabled ) {
+			return false;
+		}
+
+		if ( ! class_exists(\PPRH\DebugLogger::class) ) {
+			include_once 'DebugLogger.php';
+		}
+
 		$debugger = new DebugLogger();
 		$debugger->log_error( $message );
+		return true;
 	}
 
-	public static function get_current_datetime():string {
-		$offset = new \DateTimeZone( 'America/Denver' );
-		$datetime = new \DateTime( 'now', $offset );
-		$timezone_offset = (string) ($datetime->getOffset() / 3600) . ' hours';
-		return date( 'Y-m-d H:m:s', strtotime( $timezone_offset ) );
-	}
 
 	/**
 	 * @param bool $doing_ajax
@@ -199,6 +216,40 @@ class Utils {
 		}
 
 		return $val;
+	}
+
+	public static function get_debug_info():string {
+		$browser = self::get_browser();
+		$text = "\nDebug info: \n";
+		$data = array(
+			'Datetime'     => self::get_current_datetime(),
+			'PHP Version'  => PHP_VERSION,
+			'WP Version'   => get_bloginfo( 'version' ),
+			'Home URL'     => home_url(),
+			'Browser'      => $browser,
+			'PPRH Version' => PPRH_VERSION
+		);
+
+		foreach ( $data as $item => $val ) {
+			$text .= "$item: $val\n";
+		}
+
+		return $text;
+	}
+
+	public static function send_email( string $to, string $subject, string $message ):bool {
+		if ( PPRH_RUNNING_UNIT_TESTS ) {
+			return true;
+		}
+
+		try {
+			\wp_mail( $to, $subject, $message );
+		} catch ( \Exception $e ) {
+			self::log_error( $e );
+			return false;
+		}
+
+		return true;
 	}
 
 }

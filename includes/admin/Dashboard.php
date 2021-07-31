@@ -69,7 +69,7 @@ class Dashboard {
         }
 
         $activate_plugin = new ActivatePlugin();
-        $msg = 'Version ' . PPRH_VERSION_NEW . ' Upgrade Notes: 1) Fixed error preventing new hint attributes from being selected/unselected as they should be.';
+		$msg = 'Version ' . PPRH_VERSION_NEW . ' Upgrade Notes: 1) Fixed issue in auto prefetch script, improved plugin testability, and other small improvements.';
         Utils::show_notice( $msg, true );
         $activate_plugin->upgrade_plugin();
 
@@ -79,7 +79,7 @@ class Dashboard {
     }
 
 	public function check_to_upgrade( $new_version, $old_version ):bool {
-		return ( version_compare( $new_version, $old_version ) > 0 );
+		return $new_version !== $old_version;
 	}
 
 	public function show_footer() {
@@ -113,22 +113,23 @@ class Dashboard {
 
             </div>
 		<?php
-            if ( isset( $_POST['pprh_send_email'] ) && check_admin_referer( 'pprh_email_nonce_action', 'pprh_email_nonce_nonce' ) ) {
-				$msg = $this->get_email_debug_info();
-                \wp_mail( 'info@sphacks.io', 'Pre Party User Message', $msg );
-            }
+            $this->verify_support_email();
 		echo '</div>';
 	}
 
-	public function get_email_debug_info():string {
-		$email = \sanitize_email( \wp_unslash( $_POST['pprh_email'] ) );
-		$browser = Utils::get_browser();
-		$version = PPRH_VERSION;
-		$home_url = \home_url();
-		$wp_version = \get_bloginfo( 'version' );
-		$php_version = PHP_VERSION;
-		$text = \sanitize_text_field( \wp_unslash( $_POST['pprh_text'] ) );
-		return "From: $email \nURL: $home_url \nPHP Version: $php_version \nWP Version: $wp_version \nBrowser: $browser \nPPRH Version: $version \nMessage: $text";
+	public function verify_support_email() {
+		if ( isset( $_POST['pprh_send_email'], $_POST['pprh_email'], $_POST['pprh_text'] ) && check_admin_referer( 'pprh_email_nonce_action', 'pprh_email_nonce_nonce' ) ) {
+			$email_address = \sanitize_email( \wp_unslash( $_POST['pprh_email'] ) );
+			$text = \sanitize_text_field( \wp_unslash( $_POST['pprh_text'] ) );
+			$this->send_support_email( $email_address, $text );
+		}
+	}
+
+    public function send_support_email( string $email_address, string $text ) {
+		$msg = "From: $email_address";
+		$msg .= Utils::get_debug_info();
+		$msg .= "\nMessage: $text";
+        Utils::send_email( 'sam.perrow399@gmail.com', 'Pre Party User Message', $msg );
 	}
 
 }

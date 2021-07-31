@@ -1,9 +1,6 @@
 <?php
-
 declare(strict_types=1);
-
 use PHPUnit\Framework\TestCase;
-//use PPRH\PPRH_PRO;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -53,6 +50,21 @@ final class UtilsTest extends TestCase {
 		$test_3 = \PPRH\Utils::clean_url($str_3);
 		self::assertEquals( 'https://asdf.com/asf/', $test_3 );
 	}
+
+	public function test_strip_bad_chars() {
+		$str1 = 'https://www.espn.com';
+		$test1 = \PPRH\Utils::strip_bad_chars($str1);
+		self::assertEquals( $str1, $test1 );
+
+		$str2 = 'https"://<script\>test.com<script>';
+		$test2 = \PPRH\Utils::strip_bad_chars($str2);
+		self::assertEquals( 'https://scripttest.comscript', $test2 );
+
+		$str_3 = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.1 Safari/605.1.15';
+		$test_3 = \PPRH\Utils::strip_bad_chars($str_3);
+		self::assertEquals( $str_3, $test_3 );
+	}
+
 
 	public function test_clean_url_path() {
 		$str1 = 'https://www.espn.com';
@@ -256,6 +268,25 @@ final class UtilsTest extends TestCase {
 		self::assertEquals( 'Opera', $actual_6 );
 	}
 
+	public function test_json_to_array() {
+		$json_1 = '{"license":{"id":"32","license_key":"6100767bb59850.76443566","status":"activated","name":"sam p","email":"asdf@gmail.com","txn_id":"","manual_reset_count":"0","date_created":"2021-07-27 15:07:46","date_renewed":"0000-00-00 00:00:00","date_expiry":"2022-07-27 00:00:00","registered_domain":"asdf.com","datetime_last_checked":"2021-07-27 15:07:46","max_sites":"5","site_count":3,"domain_list":"a:1:{i:0;s:13:\"sphacks.local\";}"},"response_code":{"msg":"Your license key has been activated!","code":130,"success":true}}';
+		$actual_1 = \PPRH\Utils::json_to_array( $json_1 );
+		self::assertCount( 2, $actual_1 );
+		self::assertCount( 15, $actual_1['license'] );
 
+
+		$json_2 = json_encode( array( 'asdf' => true, 'asdfwa' => 2352365, 'asdfe' => 'asdf34w' ) );
+		$actual_2 = \PPRH\Utils::json_to_array( $json_2 );
+		self::assertCount( 3, $actual_2 );
+
+		$json_3 = '{\"hints\":[{\"url\":\"https://imagem.natelinha.uol.com.br\",\"hint_type\":\"preconnect\",\"media\":\"\",\"as_attr\":\"\",\"type_attr\":\"\",\"crossorigin\":\"\"},{\"url\":\"https://ajax.cloudflare.com\",\"hint_type\":\"preconnect\",\"media\":\"\",\"as_attr\":\"\",\"type_attr\":\"\",\"crossorigin\":\"\"}],\"nonce\":\"dccb2f24c0\",\"admin_url\":\"https://test.obapress.com/wp-admin/admin-ajax.php\",\"start_time\":\"1627578091\",\"post_id\":\"21\"}';
+		$actual_3 = \PPRH\Utils::json_to_array( $json_3 );
+		self::assertCount( 5, $actual_3 );
+	}
+
+	public function test_log_error() {
+		$actual_1 = \PPRH\Utils::log_error( 'tester' );
+		self::assertFalse( $actual_1 );
+	}
 
 }
