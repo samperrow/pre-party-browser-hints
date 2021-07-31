@@ -19,8 +19,8 @@ class FAQ {
 		?>
         <div class="pprh-content faq">
             <?php
-                $this->show_faq();
-                $this->upgrade_to_pro();
+//                $this->show_faq();
+//                $this->upgrade_to_pro();
                 $this->show_hint_info();
              ?>
         </div>
