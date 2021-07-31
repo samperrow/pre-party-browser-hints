@@ -1,9 +1,6 @@
 <?php
-
 declare(strict_types=1);
-
 use PHPUnit\Framework\TestCase;
-//use PPRH\PPRH_PRO;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;

@@ -15,13 +15,13 @@ class DashboardTest extends TestCase {
 
 	public function test_check_to_upgrade() {
 		$actual_1 = $this->dashboard->check_to_upgrade( '1.7.7', '1.7.6.3' );
-		self::assertEquals( true, $actual_1 );
+		self::assertTrue( $actual_1 );
 
 		$actual_2 = $this->dashboard->check_to_upgrade( '1.7.7', '1.7.7' );
-		self::assertEquals( false, $actual_2 );
+		self::assertFalse( $actual_2 );
 
-		$actual_3 = $this->dashboard->check_to_upgrade( '1.7.7', '1.7.8' );
-		self::assertEquals( false, $actual_3 );
+		$actual_3 = $this->dashboard->check_to_upgrade( '1.7.7', '1.7.7.1' );
+		self::assertTrue( $actual_3 );
 	}
 
 
