@@ -12,7 +12,6 @@ class LoadAdmin {
 
 	public function init() {
 		\add_action( 'admin_menu', array( $this, 'load_admin_menu' ) );
-//		\add_action( 'load-post.php', array( $this, 'create_post_meta_box' ) );
 
 		$this->on_pprh_page = Utils::on_pprh_page( \wp_doing_ajax(), '' );
 
@@ -84,10 +83,10 @@ class LoadAdmin {
 
 	// Register and call the CSS and JS we need only on the needed page.
 	public function register_admin_files( string $hook ) {
-//		$str = PPRH_ADMIN_SCREEN . 'post.php';
+        $post_load = \apply_filters( 'pprh_pro_check_post_page', false );
 
-		if ( str_contains( PPRH_ADMIN_SCREEN, $hook ) ) {
-//        if ( str_contains( PPRH_ADMIN_SCREEN, $hook ) || str_contains( 'post.php', $hook ) ) {
+		if ( str_contains( PPRH_ADMIN_SCREEN, $hook ) || $post_load ) {
+
 			$ajax_data = array(
 				'nonce'     => wp_create_nonce( 'pprh_table_nonce' ),
 				'admin_url' => admin_url()
@@ -138,14 +137,14 @@ class LoadAdmin {
 			'low'
 		);
 
-//		\add_meta_box(
-//			'pprh_prerender_settings_metabox',
-//			'Auto Prerender Settings',
-//			array( $this, 'create_prerender_metabox' ),
-//			PPRH_ADMIN_SCREEN,
-//			'normal',
-//			'low'
-//		);
+		\add_meta_box(
+			'pprh_prerender_settings_metabox',
+			'Auto Prerender Settings',
+			array( $this, 'create_prerender_metabox' ),
+			PPRH_ADMIN_SCREEN,
+			'normal',
+			'low'
+		);
 	}
 
 	public function create_prerender_metabox() {
@@ -163,52 +162,6 @@ class LoadAdmin {
 			</div>
 			<?php
 		}
-	}
-
-//	public function load_post_files() {
-//		include_once 'Posts.php';
-
-//		if ( ! class_exists( \PPRH\InsertHints::class ) ) {
-//			include_once PPRH_ABS_DIR . 'includes/admin/views/InsertHints.php';
-//		}
-//
-//		if ( ! class_exists( \PPRH\DisplayHints::class ) ) {
-//			include_once PPRH_ABS_DIR . 'includes/admin/DisplayHints.php';
-//		}
-
-//		$posts = new Posts( $this->has_valid_license );
-//		unset( $posts );
-//	}
-
-	public function create_post_meta_box() {
-		$modal_types = \get_option( 'pprh_pro_post_modal_types', array( 'post', 'page' ) );
-		$id       = 'pprh-poststuff';
-		$title    = 'Pre* Party Resource Hints';
-		$callback = array( $this, 'post_metabox' );
-		$context  = 'normal';
-		$priority = 'low';
-		$screens = Utils::clean_string_array( $modal_types );
-
-		if ( is_array( $screens ) && count( $screens ) > 0 ) {
-			foreach ( $screens as $screen ) {
-				\add_meta_box( $id, $title, $callback, $screen, $context, $priority );
-			}
-		}
-	}
-
-	public function post_metabox() {
-	    $res = \apply_filters( 'pprh_posts_get_proper_callback', false );
-
-	    if ( ! $res ) { ?>
-            <div style="text-align: center;">
-                <h3><?php \esc_html_e( 'Upgrade to Pre* Party Resource Hints Pro to enjoy these features:', 'pprh' ); ?></h3>
-                <ul style="max-width: 500px; text-align: left; list-style-type: disc; display: block; margin: 0 auto;">
-                    <li>Implement resource hints to specific posts and pages.</li>
-                    <li>Automatic and post-specific creation of custom preconnect hints for each post/page.</li>
-                </ul>
-<!--                <input type="button" class="pprhOpenCheckoutModal button button-primary" value="Purchase License"/>-->
-            </div>
-        <?php }
 	}
 
 }

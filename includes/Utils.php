@@ -133,6 +133,26 @@ class Utils {
 		return self::on_pprh_page_ctrl( $doing_ajax, $referer, $request_uri );
 	}
 
+	/**
+	 * @param bool $doing_ajax
+	 * @param string $referer
+	 * @param string $request_uri
+	 * @return int: 0 means the current page does NOT use PPRH; 1 means current page is PPRH ADMIN; 2 means current page is POST EDIT.
+	 */
+	public static function on_pprh_page_ctrl( bool $doing_ajax, string $referer, string $request_uri ):int {
+		$matcher = ( $doing_ajax ) ? $referer : $request_uri;
+		$val = 0;
+
+		if ( str_contains( $matcher, PPRH_MENU_SLUG ) ) {
+			$val = 1;
+		}
+		elseif ( str_contains( $matcher, 'post.php' ) ) {
+			$val = 2;
+		}
+
+		return $val;
+	}
+
 	public static function log_error( $message ):bool {
 		$debug_enabled = ( 'false' !== \get_option( 'pprh_debug_enabled', 'false' ) );
 
@@ -149,26 +169,6 @@ class Utils {
 		return true;
 	}
 
-
-	/**
-	 * @param bool $doing_ajax
-	 * @param string $referer
-	 * @param string $request_uri
-	 * @return int: 0 means the current page does NOT use PPRH; 1 means current page is PPRH ADMIN; 2 means current page is POST EDIT.
-	 */
-	public static function on_pprh_page_ctrl( bool $doing_ajax, string $referer, string $request_uri ):int {
-		$matcher = ( $doing_ajax ) ? $referer : $request_uri;
-		$val = 0;
-
-		if ( str_contains( $matcher, PPRH_MENU_SLUG ) ) {
-			$val = 1;
-		}
-//		elseif ( str_contains( $matcher, 'post.php' ) ) {
-//			$val = 2;
-//		}
-
-		return $val;
-	}
 
 
 	public static function get_browser():string {

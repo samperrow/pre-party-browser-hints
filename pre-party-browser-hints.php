@@ -30,8 +30,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 $pprh_load = new Pre_Party_Browser_Hints();
 $pprh_load->init();
 
-register_activation_hook( __FILE__, array( $pprh_load, 'activate_plugin' ) );
-add_action( 'wpmu_new_blog', array( $pprh_load, 'activate_plugin' ) );
+\register_activation_hook( __FILE__, array( $pprh_load, 'activate_plugin' ) );
+\add_action( 'wpmu_new_blog', array( $pprh_load, 'activate_plugin' ) );
 
 class Pre_Party_Browser_Hints {
 
