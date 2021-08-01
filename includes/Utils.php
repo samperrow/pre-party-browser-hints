@@ -198,26 +198,6 @@ class Utils {
 		return $browser;
 	}
 
-	public static function apply_pprh_filters( string $filter_name, array $args ) {
-		$val = '';
-
-		if ( PPRH_PRO_ACTIVE ) {
-			$arr_len = count( $args );
-
-			if ( 1 === $arr_len ) {
-				$val = \apply_filters( $filter_name, $args[0] );
-			} elseif ( 2 === $arr_len ) {
-				$val = \apply_filters( $filter_name, $args[0], $args[1] );
-			} elseif ( 3 === $arr_len ) {
-				$val = \apply_filters( $filter_name, $args[0], $args[1], $args[2] );
-			}
-		} else {
-			$val = ( empty( $args ) ? $args : $args[0] );
-		}
-
-		return $val;
-	}
-
 	public static function get_debug_info():string {
 		$browser = self::get_browser();
 		$text = "\nDebug info: \n";

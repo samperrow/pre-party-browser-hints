@@ -26,7 +26,7 @@ class Dashboard {
 		$settings = new Settings();
         $faq = new FAQ();
 
-		echo '<div id="pprh-poststuff"><h1>';
+		echo '<div id="pprh-poststuff" class="wrap"><h1>';
 		esc_html_e( 'Pre* Party Resource Hints', 'pprh' );
 		echo '</h1>';
         \do_action(  'pprh_notice' );
