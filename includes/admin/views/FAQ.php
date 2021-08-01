@@ -29,29 +29,49 @@ class FAQ {
 
 	public function show_faq() {
 	    ?>
-            <div class="postbox">
-                <div>
-                    <h3>Frequently Asked Questions</h3>
+        <div class="postbox">
+            <div>
+                <h3>Frequently Asked Questions</h3>
 
-                    <p>How do I add new resource hints?</p>
+                <p>How do I add new resource hints?</p>
+                <p>-Resource hints can be added manually on the main plugin page, or hints can be created automatically with the "Auto Preconnect", "Auto Prefetch", and "Auto Prerender" features, respecitvely.</p>
 
-                    <p>How can I update existing hints?</p>
+                <p>How can I update existing hints?</p>
+                <p>-Hover over a hint you would like to update, and an "Edit" link will appear. Click that, make the desired changes, and click "Update".</p>
 
-                    <p>What are the crossorigin, "as", "type", and "media" attributes used for?</p>
-
-                    <p>What does the "auto preconnect" feature do?</p>
-
-                    <p>How does the "auto prefetch" feature work?</p>
-
-                    <p>How does the "auto prerender" feature work?</p>
-
-                    <p>My resource hints are not appearing on the front end?</p>
-
-                    <p>What are the benefits of upgrading to the Pro version?</p>
+                <p>What are the crossorigin, "as", "type", and "media" attributes used for?</p>
+                <ol>
+                    <li>The crossorigin attribute is used for some preload and preconnect hints, and is used to notify the browser that the specified resource originates from an external domain, so that the "SSL handshake" should be done.</li>
+                    <li>The "as" attribute specifies </li>
+                    <li>The "type" attribute specifies which MIME type a given resource is. For example, a CSS stylesheet has a MIME type of "text/css", and an HTML document is "text/html".</li>
+                    <li>The "media" attribute is only used for preload hints, and gives the user the ability to only load certain hints on specific devices or screen widths. For example, setting a "media" attribute to "max-width: 600px;" tells the browse to only load a resource on screens
+                    less than 600 pixels wide.</li>
+                </ol>
 
 
-                </div>
+                <p>What does the "Auto Preconnect" feature do, and how does it work?</p>
+                <p>-</p>
+
+                <p>What does the "Auto Prefetch" feature do, and how does it work?</p>
+                <p>-</p>
+
+                <p>My resource hints are not appearing on the front end, what is the problem?</p>
+                <p>-</p>
+
+                <p>What are the benefits of upgrading to the Pro version?</p>
+                <ul>
+                    <li>Ability to add resource hints individually to specific pages/posts</li>
+                    <li>The "Auto Preconnect" feature will automatically generate the proper hints for each page/post.</li>
+                    <li>The Auto Prerender feature will generate one prerender hint (which download an entire web page in the background) for each page/post. </li>
+                </ul>
+
+                <p>What does the "Auto Prerender" feature do, and how does it work?</p>
+                <p>-</p>
+
+                add info about how to do "resets" etc..
+
             </div>
+        </div>
         <?php
 	}
 
