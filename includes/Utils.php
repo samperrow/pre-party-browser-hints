@@ -8,7 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class Utils {
 
-	public static function show_notice( string $msg, string $success ) {
+	public static function show_notice( string $msg, bool $success ) {
 		if ( PPRH_RUNNING_UNIT_TESTS ) {
 			return;
 		}
