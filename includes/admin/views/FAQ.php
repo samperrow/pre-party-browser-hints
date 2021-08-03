@@ -50,7 +50,9 @@ class FAQ {
 
 
                 <p>What does the "Auto Preconnect" feature do, and how does it work?</p>
-                <p>-</p>
+                <p>-This feature will automatically generate the proper preconnect hints.
+                This works by using JavaScript code to retrieve all resources downloaded from external domains, and sending that back to the server via an ajax call.
+                These hints will be stored until they are reset by the user. To reset theUpon installation, and after the "Reset" button is clicked (in the Auto Preconnect box in the Settings tab)</p>
 
                 <p>What does the "Auto Prefetch" feature do, and how does it work?</p>
                 <p>-</p>
