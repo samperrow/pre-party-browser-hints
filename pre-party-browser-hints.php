@@ -77,6 +77,7 @@ class Pre_Party_Browser_Hints {
 		include_once 'includes/admin/LoadAdmin.php';
 		$load_admin = new LoadAdmin();
 		$load_admin->init();
+		$this->plugin_updater();
 	}
 
     public function load_client() {
@@ -128,6 +129,17 @@ class Pre_Party_Browser_Hints {
 		$activate_plugin = new ActivatePlugin();
 		$activate_plugin->activate_plugin();
 		return $activate_plugin->plugin_activated;
+	}
+
+	private function plugin_updater() {
+		$api_endpoint = 'https://sphacks.io/wp-content/pprh/free/updater.json';
+		$plugin_file = 'pre-party-browser-hints/pre-party-browser-hints.php';
+		$transient_name = 'pprh_updater';
+
+		if ( class_exists( \PPRH\PRO\Updater::class ) ) {
+			$updater = new \PPRH\PRO\Updater( $api_endpoint, $plugin_file, $transient_name, PPRH_VERSION );
+			$updater->set_filter();
+		}
 	}
 
 }
