@@ -12,11 +12,12 @@ if ( ! class_exists( WP_List_Table::class ) ) {
 
 class DisplayHints extends WP_List_Table {
 
+	protected $columns;
+
 	public $_column_headers;
 	public $hints_per_page;
 	public $table;
 	public $items;
-	protected $columns;
 
 	public function __construct( bool $doing_ajax, int $on_pprh_page ) {
 		parent::__construct( array(
