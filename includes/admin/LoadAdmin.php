@@ -12,7 +12,6 @@ class LoadAdmin {
 
 	public function init() {
 		\add_action( 'admin_menu', array( $this, 'load_admin_menu' ) );
-//		\add_filter( 'pprh_check_for_plugin_update', array( $this, 'check_for_plugin_update' ), 10, 3 );
 
 		$this->on_pprh_page = Utils::on_pprh_page( \wp_doing_ajax(), '' );
 
@@ -24,14 +23,6 @@ class LoadAdmin {
 			$this->load_admin_files();
         }
 	}
-
-//	public function check_for_plugin_update( string $api_endpoint, string $plugin_name, string $transient_name ):array {
-//        return array(
-//            'plugin_name'    => $plugin_name,
-//			'api_endpoint'   => $api_endpoint,
-//			'transient_name' => $transient_name
-//        );
-//    }
 
 	public function load_common_content() {
 		include_once 'NewHint.php';
