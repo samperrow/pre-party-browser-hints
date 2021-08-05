@@ -282,6 +282,10 @@ final class UtilsTest extends TestCase {
 		$json_3 = '{\"hints\":[{\"url\":\"https://imagem.natelinha.uol.com.br\",\"hint_type\":\"preconnect\",\"media\":\"\",\"as_attr\":\"\",\"type_attr\":\"\",\"crossorigin\":\"\"},{\"url\":\"https://ajax.cloudflare.com\",\"hint_type\":\"preconnect\",\"media\":\"\",\"as_attr\":\"\",\"type_attr\":\"\",\"crossorigin\":\"\"}],\"nonce\":\"dccb2f24c0\",\"admin_url\":\"https://test.obapress.com/wp-admin/admin-ajax.php\",\"start_time\":\"1627578091\",\"post_id\":\"21\"}';
 		$actual_3 = \PPRH\Utils::json_to_array( $json_3 );
 		self::assertCount( 5, $actual_3 );
+
+		$json_4 = '';
+		$actual_4 = \PPRH\Utils::json_to_array( $json_4 );
+		self::assertEmpty( $actual_4 );
 	}
 
 //	public function test_log_error() {

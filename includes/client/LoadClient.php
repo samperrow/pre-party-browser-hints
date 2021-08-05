@@ -15,8 +15,6 @@ class LoadClient {
 			$data = array();
 		}
 
-		include_once 'SendHints.php';
-
 		$this->verify_to_load_fp_ctrl();
 
 		$send_hints = new SendHints();

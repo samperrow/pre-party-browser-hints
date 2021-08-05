@@ -33,8 +33,9 @@ class Dashboard {
 		$this->do_upgrade( PPRH_VERSION_NEW, PPRH_VERSION );
 		$insert_hints = new InsertHints( $on_pprh_page );
 		$this->show_admin_tabs();
+
 		$insert_hints->markup();
-		$settings->markup(true);
+		$settings->markup( true );
 		$faq->markup();
 
 		\do_action( 'pprh_load_view_classes' );

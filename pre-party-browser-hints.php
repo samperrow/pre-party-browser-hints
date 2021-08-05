@@ -82,6 +82,7 @@ class Pre_Party_Browser_Hints {
 
     public function load_client() {
 		include_once 'includes/client/LoadClient.php';
+		include_once 'includes/client/SendHints.php';
 		$load_client = new LoadClient();
         $load_client->init( $this->pprh_preconnect_autoload );
     }
@@ -107,7 +108,6 @@ class Pre_Party_Browser_Hints {
 			define( 'PPRH_IN_DEV', $in_dev_testing );
 			define( 'PPRH_RUNNING_UNIT_TESTS', $unit_testing );
 			define( 'PPRH_EMAIL', 'info@sphacks.io' );
-//			define( 'PPRH_PRO_ACTIVE', defined( 'PPRH_PRO_ABS_DIR' ) );
 		}
 
 		if ( ! defined( 'PPRH_VERSION' ) ) {

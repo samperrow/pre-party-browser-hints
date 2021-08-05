@@ -28,7 +28,6 @@ class SendHints {
 	}
 
 	private function init_private( $enabled_hints, $send_in_http_header ) {
-//		if ( ! is_array( $enabled_hints ) || count( $enabled_hints ) === 0 ) {
 		if ( ! Utils::isArrayAndNotEmpty( $enabled_hints ) ) {
 			return false;
 		}

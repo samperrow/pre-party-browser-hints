@@ -173,19 +173,12 @@ final class DAOTest extends TestCase {
 	}
 
 	public function test_get_client_hints_query() {
-		if ( PPRH_PRO_PLUGIN_ACTIVE ) {
-			return;
-		}
-
 		$table = $this->dao->table;
 
-		$data_1 = array( 'post_id' => '0' );
-		$actual_1 = $this->dao->get_client_hints_query( $data_1 );
-		$expected_1 = array(
-			'sql' => "SELECT * FROM $table WHERE status = %s",
-			'args' => array( 'enabled' )
-		);
-		self::assertEquals( $expected_1, $actual_1 );
+		$actual_1 = $this->dao->get_client_hints_query( array() );
+		$sql = "SELECT * FROM $table WHERE status = %s";
+		self::assertEquals( 'enabled', $actual_1['args'][0] );
+		self::assertTrue( str_contains( $actual_1['sql'], $sql ) );
 	}
 
 	public function test_insert_hint() {
