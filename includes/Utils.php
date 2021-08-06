@@ -192,7 +192,7 @@ class Utils {
 
 	public static function get_debug_info():string {
 		$browser = self::get_browser();
-		$text    = "\n[[DEBUG INFO: ";
+		$text    = "\nDebug info: \n";
 		$data = array(
 			'Datetime'     => self::get_current_datetime(),
 			'PHP Version'  => PHP_VERSION,
@@ -203,10 +203,10 @@ class Utils {
 		);
 
 		foreach ( $data as $item => $val ) {
-			$text .= "$item: $val; ";
+			$text .= "$item: $val\n";
 		}
 
-		return "$text]]";
+		return $text;
 	}
 
 	public static function send_email( string $to, string $subject, string $message ):bool {
