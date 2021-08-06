@@ -42,6 +42,7 @@ class Pre_Party_Browser_Hints {
 
 		if ( ! defined( 'PPRH_VERSION_NEW' ) ) {
 			define( 'PPRH_VERSION_NEW', '1.8.13' );
+//			\update_option( 'pprh_version_new', PPRH_VERSION_NEW );
 		}
 
 		if ( ! defined( 'PPRH_VERSION' ) ) {
@@ -137,7 +138,7 @@ class Pre_Party_Browser_Hints {
 		$transient_name = 'pprh_updater';
 
 		if ( class_exists( \PPRH\PRO\Updater::class ) ) {
-			$updater = new \PPRH\PRO\Updater( $api_endpoint, $plugin_file, $transient_name, PPRH_VERSION );
+			$updater = new \PPRH\PRO\Updater( $api_endpoint, $plugin_file, $transient_name, PPRH_VERSION_NEW );
 			$updater->set_filter();
 		}
 	}
