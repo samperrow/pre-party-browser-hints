@@ -4,7 +4,7 @@ declare(strict_types=1);
  * Plugin Name:       Pre* Party Resource Hints
  * Plugin URI:        https://wordpress.org/plugins/pre-party-browser-hints/
  * Description:       Take advantage of the browser resource hints DNS-Prefetch, Prerender, Preconnect, Prefetch, and Preload to improve page load time.
- * Version:           1.8.12
+ * Version:           1.8.13
  * Requires at least: 4.4
  * Requires PHP:      7.0.0
  * Author:            Sam Perrow
@@ -39,6 +39,14 @@ class Pre_Party_Browser_Hints {
 
 	public function __construct() {
 		$this->pprh_preconnect_autoload = ( 'true' === \get_option( 'pprh_preconnect_autoload' ) );
+
+		if ( ! defined( 'PPRH_VERSION_NEW' ) ) {
+			define( 'PPRH_VERSION_NEW', '1.8.13' );
+		}
+
+		if ( ! defined( 'PPRH_VERSION' ) ) {
+			define( 'PPRH_VERSION', \get_option( 'pprh_version', '' ) );
+		}
 	}
 
 	public function init() {
@@ -90,14 +98,12 @@ class Pre_Party_Browser_Hints {
 		global $wpdb;
 		$table          = $wpdb->prefix . 'pprh_table';
 		$postmeta_table = $wpdb->prefix . 'postmeta';
-		$plugin_version = \get_option( 'pprh_version', '' );
 		$site_url       = \get_option( 'siteurl' );
 		$in_dev_testing = ( 'https://sphacks.local' === $site_url );
 		$unit_testing   = defined( 'PPRH_UNIT_TESTING' ) && PPRH_UNIT_TESTING;
 
 		if ( ! defined( 'PPRH_DB_TABLE' ) ) {
 			define( 'PPRH_DB_TABLE', $table );
-			define( 'PPRH_VERSION_NEW', '1.8.12' );
 			define( 'PPRH_POSTMETA_TABLE', $postmeta_table );
 			define( 'PPRH_ABS_DIR', WP_PLUGIN_DIR . '/pre-party-browser-hints/' );
 			define( 'PPRH_REL_DIR', plugins_url() . '/pre-party-browser-hints/' );
@@ -108,11 +114,6 @@ class Pre_Party_Browser_Hints {
 			define( 'PPRH_RUNNING_UNIT_TESTS', $unit_testing );
 			define( 'PPRH_EMAIL', 'info@sphacks.io' );
 		}
-
-		if ( ! defined( 'PPRH_VERSION' ) ) {
-			define( 'PPRH_VERSION', $plugin_version );
-		}
-
 	}
 
 	public function load_common_files() {
