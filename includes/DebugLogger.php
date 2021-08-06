@@ -35,7 +35,7 @@ class DebugLogger {
 		$exception_msg = $this->get_msg_from_exception( $message );
 		$message      .= Utils::get_debug_info();
 		$message      .= "\n$exception_msg";
-		$this->append_to_file( $message );
+		$this->append_to_file( "\n$message\n" );
 		Utils::send_email( PPRH_EMAIL, 'Error', $message );
 	}
 
