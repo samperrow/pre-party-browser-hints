@@ -21,26 +21,25 @@ class Utils {
 		return PPRH_RUNNING_UNIT_TESTS || \update_option( $option, $value );
 	}
 
-	public static function json_to_array( string $json ):array {
-		$array = array();
+	public static function json_to_array( string $json ) {
+		$result = false;
 
 		if ( 1 === strpos( $json, '\\', 0 ) ) {
 			$json = str_replace( '\\', '', $json );
 		}
 
 		try {
-			$array = json_decode( $json, true, 512, JSON_THROW_ON_ERROR );
-		} catch( \JsonException $exception ) {
-			self::log_error( "$json\n$exception"  );
+			$result = json_decode( $json, true, 512, JSON_THROW_ON_ERROR );
+		} catch ( \JsonException $exception ) {
+			self::log_error( "$json\n$exception" );
 		}
 
-		if ( ! is_array( $array ) ) {
-			self::log_error( "Failed at Utils::json_to_array()" );
-			return array();
+		if ( ! is_array( $result ) ) {
+			self::log_error( 'Failed at Utils::json_to_array()' );
 		}
 
-		return $array;
-    }
+		return $result;
+	}
 
     public static function strip_non_alphanums( string $text ):string {
 		return preg_replace( '/[^a-z\d]/imu', '', $text );
@@ -71,8 +70,8 @@ class Utils {
 	}
 
 	public static function clean_string_array( array $str_array ):array {
-		foreach( $str_array as $item => $val ) {
-			$str_array[$item] = self::strip_non_alphanums( $val );
+		foreach ( $str_array as $item => $val ) {
+			$str_array[ $item ] = self::strip_non_alphanums( $val );
 		}
 
 		return $str_array;
@@ -85,11 +84,11 @@ class Utils {
 	}
 
 	public static function get_current_datetime( string $added_time = '' ):string {
-		$offset = new \DateTimeZone( 'America/Denver' );
-		$datetime = new \DateTime( 'now', $offset );
-		$timezone_offset = (string) ($datetime->getOffset() / 3600) . ' hours';
-		$offset = ( empty( $added_time ) ? $timezone_offset : $added_time );
-		return date( 'Y-m-d H:m:s', strtotime( $offset ) );
+		$offset          = new \DateTimeZone( 'America/Denver' );
+		$datetime        = new \DateTime( 'now', $offset );
+		$timezone_offset = (string) ( $datetime->getOffset() / 3600 ) . ' hours';
+		$offset          = ( empty( $added_time ) ? $timezone_offset : $added_time );
+		return date( 'Y-m-d H:i:s', strtotime( $offset ) );
 	}
 
 	public static function array_into_csv( $hint_ids ) {
@@ -115,7 +114,7 @@ class Utils {
 	}
 
 	public static function get_server_prop( string $prop ):string {
-		return ( isset( $_SERVER[$prop] ) ? self::clean_url( $_SERVER[$prop] ) : '' );
+		return ( isset( $_SERVER[ $prop ] ) ? self::clean_url( $_SERVER[ $prop ] ) : '' );
 	}
 
 	public static function on_pprh_page( bool $doing_ajax, string $referer ):int {
@@ -139,8 +138,7 @@ class Utils {
 
 		if ( str_contains( $matcher, PPRH_MENU_SLUG ) ) {
 			$val = 1;
-		}
-		elseif ( str_contains( $matcher, 'post.php' ) ) {
+		} elseif ( str_contains( $matcher, 'post.php' ) ) {
 			$val = 2;
 		}
 
@@ -154,7 +152,7 @@ class Utils {
 			return false;
 		}
 
-		if ( ! class_exists(\PPRH\DebugLogger::class) ) {
+		if ( ! class_exists( \PPRH\DebugLogger::class ) ) {
 			include_once 'DebugLogger.php';
 		}
 
@@ -194,7 +192,7 @@ class Utils {
 
 	public static function get_debug_info():string {
 		$browser = self::get_browser();
-		$text = "\nDebug info: \n";
+		$text    = "\nDebug info: \n";
 		$data = array(
 			'Datetime'     => self::get_current_datetime(),
 			'PHP Version'  => PHP_VERSION,

@@ -35,7 +35,6 @@ $pprh_load->init();
 
 class Pre_Party_Browser_Hints {
 
-//	public function __construct() {}
 	public $pprh_preconnect_autoload;
 
 	public function __construct() {
@@ -57,7 +56,7 @@ class Pre_Party_Browser_Hints {
 		\load_plugin_textdomain( 'pprh', false, PPRH_REL_DIR . 'languages' );
 		\do_action( 'pprh_load_plugin' );
 
-        $is_admin = \is_admin();
+		$is_admin = \is_admin();
 		$this->load( $is_admin );
 
 		// this needs to be loaded front end and back end bc Ajax needs to be able to communicate between the two.
@@ -71,7 +70,7 @@ class Pre_Party_Browser_Hints {
 	public function load( bool $is_admin ) {
 		$str = ( $is_admin ) ? 'admin' : 'client';
 		\add_action( 'wp_loaded', array( $this, "load_$str" ) );
-    }
+	}
 
 	public function load_admin() {
 		include_once 'includes/admin/LoadAdmin.php';
@@ -80,21 +79,21 @@ class Pre_Party_Browser_Hints {
 		$this->plugin_updater();
 	}
 
-    public function load_client() {
+	public function load_client() {
 		include_once 'includes/client/LoadClient.php';
 		include_once 'includes/client/SendHints.php';
 		$load_client = new LoadClient();
-        $load_client->init( $this->pprh_preconnect_autoload );
-    }
+		$load_client->init( $this->pprh_preconnect_autoload );
+	}
 
 	public function create_constants() {
 		global $wpdb;
-		$table = $wpdb->prefix . 'pprh_table';
+		$table          = $wpdb->prefix . 'pprh_table';
 		$postmeta_table = $wpdb->prefix . 'postmeta';
 		$plugin_version = \get_option( 'pprh_version', '' );
-        $site_url = \get_option( 'siteurl' );
+		$site_url       = \get_option( 'siteurl' );
 		$in_dev_testing = ( 'https://sphacks.local' === $site_url );
-		$unit_testing = defined( 'PPRH_UNIT_TESTING' ) && PPRH_UNIT_TESTING;
+		$unit_testing   = defined( 'PPRH_UNIT_TESTING' ) && PPRH_UNIT_TESTING;
 
 		if ( ! defined( 'PPRH_DB_TABLE' ) ) {
 			define( 'PPRH_DB_TABLE', $table );

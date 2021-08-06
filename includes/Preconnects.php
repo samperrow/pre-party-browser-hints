@@ -10,7 +10,6 @@ class Preconnects {
 
 	public $config;
 
-	// tested
 	public function __construct() {
 		\add_action( 'wp_loaded', array( $this, 'init_controller' ), 10, 0 );
 	}
@@ -33,7 +32,6 @@ class Preconnects {
 
 	}
 
-	// tested
 	public function initialize( array $config ):bool {
 		$allow_user = $this->allow_user( $config['allow_unauth_opt'], $config['is_user_logged_in'] );
 
@@ -57,8 +55,6 @@ class Preconnects {
 	}
 
 
-	// both admin and client
-	// tested
 	public function load_ajax_callbacks( $allow_unauth_opt ) {
 		$callback = 'pprh_post_domain_names';
 
@@ -68,7 +64,6 @@ class Preconnects {
 		\add_action( "wp_ajax_{$callback}", array( $this, $callback ) );				// for logged in users
 	}
 
-	// tested
 	public function enqueue_scripts() {
 		if ( is_admin() ) {
 			return;
@@ -84,7 +79,6 @@ class Preconnects {
 		wp_enqueue_script( 'pprh-find-domain-names' );
 	}
 
-	// tested
 	public function create_js_object( int $time ) {
 		$js_arr = array(
 			'hints'      => array(),
@@ -111,7 +105,7 @@ class Preconnects {
 
 	public function pprh_post_domain_names() {
 		if ( isset( $_POST['pprh_data'] ) && wp_doing_ajax() ) {
-			\check_ajax_referer('pprh_ajax_nonce', 'nonce');
+			\check_ajax_referer( 'pprh_ajax_nonce', 'nonce' );
 			$this->post_domain_names_ctrl();
 			wp_die();
 		}
@@ -129,9 +123,9 @@ class Preconnects {
 			$pprh_data = Utils::json_to_array( $pprh_data );
 		}
 
-		$success = false;
+		$success      = false;
 		$allow_unauth = $this->allow_user( $config['allow_unauth_opt'], $config['is_user_logged_in'] );
-		$hints = $pprh_data['hints'] ?? array();
+		$hints        = $pprh_data['hints'] ?? array();
 
 		if ( $allow_unauth && Utils::isArrayAndNotEmpty( $hints ) && Utils::isArrayAndNotEmpty( $pprh_data ) ) {
 			$results = $this->get_hint_results( $pprh_data );
@@ -148,9 +142,9 @@ class Preconnects {
 		$results = array();
 
 		foreach ( $hint_data['hints'] as $new_hint ) {
-			$new_hint['op_code'] = 0;
+			$new_hint['op_code']      = 0;
+			$new_hint['hint_type']    = 'preconnect';
 			$new_hint['auto_created'] = 1;
-			$new_hint['hint_type'] = 'preconnect';
 
 			if ( isset( $hint_data['post_id'] ) ) {
 				$new_hint['post_id'] = $hint_data['post_id'];
@@ -167,7 +161,6 @@ class Preconnects {
 	}
 
 	private function update_options( $raw_hint_data ) {
-//		$updated = \apply_filters( 'pprh_preconnects_update_options', array( $raw_hint_data ) );
 		$updated = \apply_filters( 'pprh_preconnects_update_options', $raw_hint_data );
 
 		if ( is_array( $updated ) ) {

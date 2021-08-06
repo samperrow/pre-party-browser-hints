@@ -8,7 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class LoadAdmin {
 
-    public $on_pprh_page;
+	public $on_pprh_page;
 
 	public function init() {
 		\add_action( 'admin_menu', array( $this, 'load_admin_menu' ) );
@@ -21,7 +21,7 @@ class LoadAdmin {
 			\add_filter( 'set-screen-option', array( $this, 'pprh_set_screen_option' ), 10, 3 );
 			$this->load_common_content();
 			$this->load_admin_files();
-        }
+		}
 	}
 
 	public function load_common_content() {
@@ -47,15 +47,15 @@ class LoadAdmin {
 		);
 
 		\add_action( "load-{$settings_page}", array( $this, 'screen_option' ) );
-    }
+	}
 
 	public function load_dashboard() {
 		if ( ! current_user_can( 'manage_options' ) ) {
 			wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
 		}
 
-        $dashboard = new Dashboard();
-        $dashboard->show_plugin_dashboard( $this->on_pprh_page );
+		$dashboard = new Dashboard();
+		$dashboard->show_plugin_dashboard( $this->on_pprh_page );
 	}
 
 	public function load_admin_files() {
@@ -83,7 +83,7 @@ class LoadAdmin {
 
 	// Register and call the CSS and JS we need only on the needed page.
 	public function register_admin_files( string $hook ) {
-        $post_load = \apply_filters( 'pprh_pro_check_post_page', false );
+		$post_load = \apply_filters( 'pprh_pro_check_post_page', false );
 
 		if ( str_contains( PPRH_ADMIN_SCREEN, $hook ) || $post_load ) {
 
@@ -106,9 +106,9 @@ class LoadAdmin {
 	}
 
 	public function add_settings_meta_boxes() {
-		$general_settings = new GeneralSettings();
+		$general_settings    = new GeneralSettings();
 		$preconnect_settings = new PreconnectSettings();
-		$prefetch_settings = new PrefetchSettings();
+		$prefetch_settings   = new PrefetchSettings();
 
 		\add_meta_box(
 			'pprh_general_settings_metabox',
@@ -148,7 +148,7 @@ class LoadAdmin {
 	}
 
 	public function create_prerender_metabox() {
-        $load_prerender_metabox = \apply_filters( 'pprh_load_prerender_metabox', false );
+		$load_prerender_metabox = \apply_filters( 'pprh_load_prerender_metabox', false );
 
 		if ( ! $load_prerender_metabox ) {
 			?>

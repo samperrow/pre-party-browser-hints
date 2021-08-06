@@ -18,10 +18,10 @@ class CreateHints {
 		$new_hint = array(
 			'url'          => Utils::clean_url( $raw_hint['url'] ),
 			'hint_type'    => Utils::clean_hint_type( $raw_hint['hint_type'] ),
-			'as_attr'      => ( ! empty( $raw_hint['as_attr'] )     ? Utils::clean_hint_attr( $raw_hint['as_attr'] ) : '' ),
-			'type_attr'    => ( ! empty( $raw_hint['type_attr'] )   ? Utils::clean_hint_attr( $raw_hint['type_attr'] ) : '' ),
+			'as_attr'      => ( ! empty( $raw_hint['as_attr'] ) ? Utils::clean_hint_attr( $raw_hint['as_attr'] ) : '' ),
+			'type_attr'    => ( ! empty( $raw_hint['type_attr'] ) ? Utils::clean_hint_attr( $raw_hint['type_attr'] ) : '' ),
 			'crossorigin'  => ( ! empty( $raw_hint['crossorigin'] ) ? 'crossorigin' : '' ),
-			'media'        => ( ! empty( $raw_hint['media'] )       ? Utils::clean_url( $raw_hint['media'] ) : '' ),
+			'media'        => ( ! empty( $raw_hint['media'] ) ? Utils::clean_url( $raw_hint['media'] ) : '' ),
 			'current_user' => ( ! empty( $current_user ) ? $current_user : '' ),
 			'auto_created' => ( $raw_hint['auto_created'] ?? 0 )
 		);
@@ -30,23 +30,23 @@ class CreateHints {
 	}
 
 	public function new_hint_ctrl( array $raw_hint ):array {
-		$dao = new DAO();
+		$dao            = new DAO();
 		$candidate_hint = $this->create_hint( $raw_hint );
-		$pprh_hint = array();
+		$pprh_hint      = array();
 
 		if ( is_array( $candidate_hint ) && isset( $raw_hint['op_code'] ) ) {
-			$op_code = (int) $raw_hint['op_code'];
-			$hint_ids = ( ! empty( $raw_hint['hint_ids'] ) ? $raw_hint['hint_ids'] : '' );
+			$op_code         = (int) $raw_hint['op_code'];
+			$hint_ids        = ( ! empty( $raw_hint['hint_ids'] ) ? $raw_hint['hint_ids'] : '' );
 			$duplicate_hints = $dao->get_duplicate_hints( $candidate_hint['url'], $candidate_hint['hint_type'], $op_code, $hint_ids );
-			$pprh_hint = $this->new_hint_controller( $op_code, $candidate_hint, $duplicate_hints );
+			$pprh_hint       = $this->new_hint_controller( $op_code, $candidate_hint, $duplicate_hints );
 		}
 
 		return $pprh_hint;
 	}
 
 	/**
-	 * An empty return value means there is a duplicate hint.
-	 * @param int $op_code
+	 *
+	 * @param int   $op_code
 	 * @param array $candidate_hint
 	 * @param array $duplicate_hints
 	 * @return array

@@ -24,9 +24,9 @@ class LoadClient {
 	}
 
 	public function verify_to_load_fp_ctrl() {
-		$flying_pages_enabled = ( 'true' === \get_option( 'pprh_prefetch_enabled' ) );
+		$flying_pages_enabled        = ( 'true' === \get_option( 'pprh_prefetch_enabled' ) );
 		$disable_for_logged_in_users = \get_option( 'pprh_prefetch_disableForLoggedInUsers', 'false' );
-		$disabled = ( 'true' === $disable_for_logged_in_users && \is_user_logged_in() );
+		$disabled                    = ( 'true' === $disable_for_logged_in_users && \is_user_logged_in() );
 
 		if ( $this->verify_to_load_fp( $flying_pages_enabled, $disabled ) ) {
 			\add_action( 'wp_enqueue_scripts', array( $this, 'load_flying_pages' ) );
@@ -44,7 +44,7 @@ class LoadClient {
 	}
 
 	public function load_flying_pages() {
-		$js_script_path = (PPRH_IN_DEV) ? 'js/flying-pages.js' : 'js/flying-pages.min.js';
+		$js_script_path = ( PPRH_IN_DEV ) ? 'js/flying-pages.js' : 'js/flying-pages.min.js';
 
 		$fp_data = array(
 			'testing'        => ( PPRH_IN_DEV ) ? 'true' : 'false',

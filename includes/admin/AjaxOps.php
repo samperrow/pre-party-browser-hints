@@ -25,6 +25,7 @@ class AjaxOps {
 
 			$ajax_response = $this->priv_update_hints( $pprh_data  );
 			$response_json = json_encode( $ajax_response, true );
+
 			wp_die( $response_json );
 		}
 	}
@@ -52,7 +53,7 @@ class AjaxOps {
 		if ( isset( $data['action'] ) ) {
 			$db_result = \apply_filters( 'pprh_apply_ajaxops_action', $data['post_id'], $data['action'] );
 		} else {
-			$dao_ctrl = new DAOController();
+			$dao_ctrl  = new DAOController();
 			$db_result = $dao_ctrl->hint_controller( $data );
 		}
 

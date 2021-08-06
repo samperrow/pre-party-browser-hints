@@ -22,7 +22,7 @@ class ActivatePlugin {
 		$orig_keywords = \get_option( 'pprh_prefetch_ignoreKeywords' );
 
 		if ( is_string( $orig_keywords ) ) {
-			$keyword_array = $this->convert_prefetch_string_to_array($orig_keywords);
+			$keyword_array = $this->convert_prefetch_string_to_array( $orig_keywords );
 
 			if ( Utils::isArrayAndNotEmpty( $keyword_array ) ) {
 				Utils::update_option( 'pprh_prefetch_ignoreKeywords', $keyword_array );
@@ -83,17 +83,11 @@ class ActivatePlugin {
 		return explode( ', ', $orig_keywords );
 	}
 
-	// update previous prefetch ignoreKeywords option to new format.
-//	public function reformat_prefetch_keywords( $keywords ) {
-//		$words = preg_replace( '/[\]|\[|\"\s]/', '', $keywords );
-//		return preg_replace( '/,/', ', ', $words );
-//	}
-
 
 	// Multisite install/delete db table.
 	private function setup_tables() {
 		$pprh_tables = array();
-		$dao = new DAO();
+		$dao         = new DAO();
 
 		if ( is_multisite() ) {
 			$pprh_tables = $dao->get_multisite_tables();
@@ -105,6 +99,5 @@ class ActivatePlugin {
 			$dao->create_table( $pprh_table );
 		}
 	}
-
 
 }

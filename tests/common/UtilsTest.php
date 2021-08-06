@@ -283,8 +283,7 @@ final class UtilsTest extends TestCase {
 		$actual_3 = \PPRH\Utils::json_to_array( $json_3 );
 		self::assertCount( 5, $actual_3 );
 
-		$json_4 = '';
-		$actual_4 = \PPRH\Utils::json_to_array( $json_4 );
+		$actual_4 = \PPRH\Utils::json_to_array( '{}' );
 		self::assertEmpty( $actual_4 );
 	}
 

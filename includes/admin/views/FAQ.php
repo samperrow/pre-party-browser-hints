@@ -8,7 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class FAQ {
 
-    public $image_path = '';
+	public $image_path = '';
 
 	public function __construct() {
 		$this->image_path = PPRH_REL_DIR;
@@ -17,112 +17,111 @@ class FAQ {
 
 	public function markup() {
 		?>
-        <div class="pprh-content faq">
-            <?php
-                $this->show_faq();
-                $this->upgrade_to_pro();
-                $this->show_hint_info();
-             ?>
-        </div>
+		<div class="pprh-content faq">
+			<?php
+				$this->show_faq();
+				$this->upgrade_to_pro();
+				$this->show_hint_info();
+			?>
+		</div>
 		<?php
 	}
 
 	public function show_faq() {
-	    ?>
-        <div class="postbox">
-            <div>
-                <h3>Frequently Asked Questions</h3>
+		?>
+		<div class="postbox">
+			<div>
+				<h3>Frequently Asked Questions</h3>
 
-                <p>How do I add new resource hints?</p>
-                <p>-Resource hints can be added manually on the main plugin page, or hints can be created automatically with the "Auto Preconnect", "Auto Prefetch", and "Auto Prerender" features, respecitvely.</p>
+				<p>How do I add new resource hints?</p>
+				<p>-Resource hints can be added manually on the main plugin page, or hints can be created automatically with the "Auto Preconnect", "Auto Prefetch", and "Auto Prerender" features, respecitvely.</p>
 
-                <p>How can I update existing hints?</p>
-                <p>-Hover over a hint you would like to update, and an "Edit" link will appear. Click that, make the desired changes, and click "Update".</p>
+				<p>How can I update existing hints?</p>
+				<p>-Hover over a hint you would like to update, and an "Edit" link will appear. Click that, make the desired changes, and click "Update".</p>
 
-                <p>What are the crossorigin, "as", "type", and "media" attributes used for?</p>
-                <ol>
-                    <li>The crossorigin attribute is used for some preload and preconnect hints, and is used to notify the browser that the specified resource originates from an external domain, so that the "SSL handshake" should be done.</li>
-                    <li>The "as" attribute specifies </li>
-                    <li>The "type" attribute specifies which MIME type a given resource is. For example, a CSS stylesheet has a MIME type of "text/css", and an HTML document is "text/html".</li>
-                    <li>The "media" attribute is only used for preload hints, and gives the user the ability to only load certain hints on specific devices or screen widths. For example, setting a "media" attribute to "max-width: 600px;" tells the browse to only load a resource on screens
-                    less than 600 pixels wide.</li>
-                </ol>
+				<p>What are the crossorigin, "as", "type", and "media" attributes used for?</p>
+				<ol>
+					<li>The crossorigin attribute is used for some preload and preconnect hints, and is used to notify the browser that the specified resource originates from an external domain, so that the "SSL handshake" should be done.</li>
+					<li>The "as" attribute specifies </li>
+					<li>The "type" attribute specifies which MIME type a given resource is. For example, a CSS stylesheet has a MIME type of "text/css", and an HTML document is "text/html".</li>
+					<li>The "media" attribute is only used for preload hints, and gives the user the ability to only load certain hints on specific devices or screen widths. For example, setting a "media" attribute to "max-width: 600px;" tells the browse to only load a resource on screens
+					less than 600 pixels wide.</li>
+				</ol>
 
 
-                <p>What does the "Auto Preconnect" feature do, and how does it work?</p>
-                <p>-This feature will automatically generate the proper preconnect hints.
-                This works by using JavaScript code to retrieve all resources downloaded from external domains, and sending that back to the server via an ajax call.
-                These hints will be stored until they are reset by the user. To reset theUpon installation, and after the "Reset" button is clicked (in the Auto Preconnect box in the Settings tab)</p>
+				<p>What does the "Auto Preconnect" feature do, and how does it work?</p>
+				<p>-This feature will automatically generate the proper preconnect hints.
+				This works by using JavaScript code to retrieve all resources downloaded from external domains, and sending that back to the server via an ajax call.
+				These hints will be stored until they are reset by the user. To reset theUpon installation, and after the "Reset" button is clicked (in the Auto Preconnect box in the Settings tab)</p>
 
-                <p>What does the "Auto Prefetch" feature do, and how does it work?</p>
-                <p>-</p>
+				<p>What does the "Auto Prefetch" feature do, and how does it work?</p>
+				<p>-</p>
 
-                <p>My resource hints are not appearing on the front end, what is the problem?</p>
-                <p>-</p>
+				<p>My resource hints are not appearing on the front end, what is the problem?</p>
+				<p>-</p>
 
-                <p>What are the benefits of upgrading to the Pro version?</p>
-                <ul>
-                    <li>Ability to add resource hints individually to specific pages/posts</li>
-                    <li>The "Auto Preconnect" feature will automatically generate the proper hints for each page/post.</li>
-                    <li>The Auto Prerender feature will generate one prerender hint (which download an entire web page in the background) for each page/post. </li>
-                </ul>
+				<p>What are the benefits of upgrading to the Pro version?</p>
+				<ul>
+					<li>Ability to add resource hints individually to specific pages/posts</li>
+					<li>The "Auto Preconnect" feature will automatically generate the proper hints for each page/post.</li>
+					<li>The Auto Prerender feature will generate one prerender hint (which download an entire web page in the background) for each page/post. </li>
+				</ul>
 
-                <p>What does the "Auto Prerender" feature do, and how does it work?</p>
-                <p>-</p>
+				<p>What does the "Auto Prerender" feature do, and how does it work?</p>
+				<p>-</p>
 
-                add info about how to do "resets" etc..
+				add info about how to do "resets" etc..
 
-            </div>
-        </div>
-        <?php
+			</div>
+		</div>
+		<?php
 	}
 
 	public function upgrade_to_pro() {
-	    ?>
-        <div class="postbox">
-            <div>
-                <h3>Upgrade to Pre* Party Pro!</h3>
-                <p>I have been hard at work for over a year creating a dramatically improved version of this plugin. It has taken much longer than I anticipated, however the benefits of the upgraded version are extraordinary, and there is nothing comparable on the market. </p>
-                <p>The main benefits are below:</p>
+		?>
+		<div class="postbox">
+			<div>
+				<h3>Upgrade to Pre* Party Pro!</h3>
+				<p>I have been hard at work for over a year creating a dramatically improved version of this plugin. It has taken much longer than I anticipated, however the benefits of the upgraded version are extraordinary, and there is nothing comparable on the market. </p>
+				<p>The main benefits are below:</p>
 
-                <ol>
-                    <li>Ability to create unique resource hints on a post-specific basis.</li>
-                    <li><b>Automatic creation of prerender hints.</b> Integration with Google Analytics data, which allows for each page or posts' most commonly visited second page to be determined. From this information, a prerender hint will be automatically generated for that second page, which
-                        is only used on the previous page. For example, if 70% of your visitors visit the "/shop" page after they land on your home page, a prerender hint to "/shop" will be created and used only on your home page. The same will be done with every other page on your site!<br/>
-                        -Using prerender resource hints in this manner allows for a page to be loaded <i>instantly</i> when the user navigates towards that page.<br/>
-                        -For further elaboration, please read this article: <a href="https://ipullrank.com/how-i-sped-up-my-site-68-percent-with-one-line-of-code/">https://ipullrank.com/how-i-sped-up-my-site-68-percent-with-one-line-of-code/</a>
-                    </li>
+				<ol>
+					<li>Ability to create unique resource hints on a post-specific basis.</li>
+					<li><b>Automatic creation of prerender hints.</b> Integration with Google Analytics data, which allows for each page or posts' most commonly visited second page to be determined. From this information, a prerender hint will be automatically generated for that second page, which
+						is only used on the previous page. For example, if 70% of your visitors visit the "/shop" page after they land on your home page, a prerender hint to "/shop" will be created and used only on your home page. The same will be done with every other page on your site!<br/>
+						-Using prerender resource hints in this manner allows for a page to be loaded <i>instantly</i> when the user navigates towards that page.<br/>
+						-For further elaboration, please read this article: <a href="https://ipullrank.com/how-i-sped-up-my-site-68-percent-with-one-line-of-code/">https://ipullrank.com/how-i-sped-up-my-site-68-percent-with-one-line-of-code/</a>
+					</li>
 
-                    <li>There is a modal box on every page/post admin page which allows for simple and easy resource hint creation to specific pages/posts.</li>
-                    <li>Automatic creation of preconnect hints are unique to every page and post on your site. The "auto-preconnect" hints are created in the same manner, except that if one page has resources loaded from external domains which other pages do not, that page will have unique
-                        preconnect hints created and used ONLY on that specific page.</li>
-                </ol>
+					<li>There is a modal box on every page/post admin page which allows for simple and easy resource hint creation to specific pages/posts.</li>
+					<li>Automatic creation of preconnect hints are unique to every page and post on your site. The "auto-preconnect" hints are created in the same manner, except that if one page has resources loaded from external domains which other pages do not, that page will have unique
+						preconnect hints created and used ONLY on that specific page.</li>
+				</ol>
 
-                <p>** youtube video here of difference **</p>
-            </div>
-        </div>
-        <?php
+				<p>** youtube video here of difference **</p>
+			</div>
+		</div>
+		<?php
 	}
 
 
 	public function show_hint_info() {
 		?>
-        <div class="postbox">
-            <div>
-                <h3>Resource Hint Information</h3>
-                <p><a href="<?php esc_attr_e( '#dns-prefetch-info' ); ?>">DNS Prefetch</a></p>
-                <p><a href="<?php esc_attr_e( '#prefetch-info' ); ?>">Prefetch</a></p>
-                <p><a href="<?php esc_attr_e( '#preconnect-info' ); ?>">Preconnect</a></p>
-                <p><a href="<?php esc_attr_e( '#preload-info' ); ?>">Preload</a></p>
-                <p><a href="<?php esc_attr_e( '#prerender-info' ); ?>">Prerender</a></p>
+		<div class="postbox"><div>
+			<h3>Resource Hint Information</h3>
+			<p><a href="<?php esc_attr_e( '#dns-prefetch-info' ); ?>">DNS Prefetch</a></p>
+			<p><a href="<?php esc_attr_e( '#prefetch-info' ); ?>">Prefetch</a></p>
+			<p><a href="<?php esc_attr_e( '#preconnect-info' ); ?>">Preconnect</a></p>
+			<p><a href="<?php esc_attr_e( '#preload-info' ); ?>">Preload</a></p>
+			<p><a href="<?php esc_attr_e( '#prerender-info' ); ?>">Prerender</a></p>
 
-                <?php
-                $this->show_dnsprefetch_info();
-                $this->show_prefetch_info();
-                $this->show_preconnect_info();
-                $this->show_preload_info();
-                $this->show_prerender_info();
-                echo '</div></div>';
+			<?php
+			$this->show_dnsprefetch_info();
+			$this->show_prefetch_info();
+			$this->show_preconnect_info();
+			$this->show_preload_info();
+			$this->show_prerender_info();
+			echo '</div></div>';
 	}
 
 	public function get_link( $img_name ) {
@@ -143,19 +142,19 @@ class FAQ {
 		<p><?php esc_html_e( 'As you can see, the typical way DNS lookups occur is when each resource is requested by the browser. By inserting the below DNS prefetch hints at the top of the page, the browser will know to perform the DNS resolution before it is asked:' ); ?></p>
 
 		<div class="pprh-code-block">
-            <code>
-                &lt;link rel="dns-prefetch" href="https://www.youtube.com&gt;<br/>
-                &lt;link rel="dns-prefetch" href="https://static.jsbin.com&gt;<br/>
-                &lt;link rel="dns-prefetch" href="https://s.ytimg.com&gt;<br/>
-                &lt;link rel="dns-prefetch" href="https://i.ytimg.com&gt;<br/>
-                &lt;link rel="dns-prefetch" href="https://fonts.gstatic.com&gt;<br/>
-                &lt;link rel="dns-prefetch" href="https://static.doubleclick.net&gt;<br/>
-                &lt;link rel="dns-prefetch" href="https://www.google.com&gt;<br/>
-                &lt;link rel="dns-prefetch" href="https://googleads.g.doubleclick.net&gt;<br/>
-                &lt;link rel="dns-prefetch" href="https://stats.g.doubleclick.net&gt;<br/>
-                &lt;link rel="dns-prefetch" href="https://www.google-analytics.com&gt;<br/>
-                &lt;link rel="dns-prefetch" href="https://weather.com&gt;
-            </code>
+			<code>
+				&lt;link rel="dns-prefetch" href="https://www.youtube.com&gt;<br/>
+				&lt;link rel="dns-prefetch" href="https://static.jsbin.com&gt;<br/>
+				&lt;link rel="dns-prefetch" href="https://s.ytimg.com&gt;<br/>
+				&lt;link rel="dns-prefetch" href="https://i.ytimg.com&gt;<br/>
+				&lt;link rel="dns-prefetch" href="https://fonts.gstatic.com&gt;<br/>
+				&lt;link rel="dns-prefetch" href="https://static.doubleclick.net&gt;<br/>
+				&lt;link rel="dns-prefetch" href="https://www.google.com&gt;<br/>
+				&lt;link rel="dns-prefetch" href="https://googleads.g.doubleclick.net&gt;<br/>
+				&lt;link rel="dns-prefetch" href="https://stats.g.doubleclick.net&gt;<br/>
+				&lt;link rel="dns-prefetch" href="https://www.google-analytics.com&gt;<br/>
+				&lt;link rel="dns-prefetch" href="https://weather.com&gt;
+			</code>
 		</div>
 
 		<p><?php echo sprintf( 'The waterfall chart below clearly shows when the DNS resolution is made %s', '<a href="https://output.jsbin.com/keninux/2"> after taking advantage of DNS prefetching:</a>' ); ?></p>
@@ -204,9 +203,9 @@ class FAQ {
 		<p><?php echo sprintf( '%s has the URL "https://www.youtube.com" prerender hint enabled as below:', '<a href="https://output.jsbin.com/fenamaq">This demo website</a>' ); ?><p>
 
 		<div class="pprh-code-block">
-		    <code>
-		        &lt;link rel="prerender" href="https://www.youtube.com"&gt;
-            </code>
+			<code>
+				&lt;link rel="prerender" href="https://www.youtube.com"&gt;
+			</code>
 		</div>
 
 		<p><?php esc_html_e( 'The waterfall chart of the website is below:' ); ?></p>
@@ -238,18 +237,18 @@ class FAQ {
 		<p><?php esc_html_e( 'Let\'s add the corresponding preconnect hints in the top of the web page and see what happens:' ); ?></p>
 
 		<div class="pprh-code-block">
-            <code>
-                &lt;link rel="preconnect" href="https://www.youtube.com"&gt;<br/>
-                &lt;link rel="preconnect" href="https://static.jsbin.com"&gt;<br/>
-                &lt;link rel="preconnect" href="https://s.ytimg.com"&gt;<br/>
-                &lt;link rel="preconnect" href="https://i.ytimg.com"&gt;<br/>
-                &lt;link rel="preconnect" href="https://fonts.gstatic.com" crossorigin&gt;<br/>
-                &lt;link rel="preconnect" href="https://static.doubleclick.net"&gt;<br/>
-                &lt;link rel="preconnect" href="https://www.google.com"&gt;<br/>
-                &lt;link rel="preconnect" href="https://googleads.g.doubleclick.net"&gt;<br/>
-                &lt;link rel="preconnect" href="https://stats.g.doubleclick.net"&gt;<br/>
-                &lt;link rel="preconnect" href="https://www.google-analytics.com"&gt;
-            </code>
+			<code>
+				&lt;link rel="preconnect" href="https://www.youtube.com"&gt;<br/>
+				&lt;link rel="preconnect" href="https://static.jsbin.com"&gt;<br/>
+				&lt;link rel="preconnect" href="https://s.ytimg.com"&gt;<br/>
+				&lt;link rel="preconnect" href="https://i.ytimg.com"&gt;<br/>
+				&lt;link rel="preconnect" href="https://fonts.gstatic.com" crossorigin&gt;<br/>
+				&lt;link rel="preconnect" href="https://static.doubleclick.net"&gt;<br/>
+				&lt;link rel="preconnect" href="https://www.google.com"&gt;<br/>
+				&lt;link rel="preconnect" href="https://googleads.g.doubleclick.net"&gt;<br/>
+				&lt;link rel="preconnect" href="https://stats.g.doubleclick.net"&gt;<br/>
+				&lt;link rel="preconnect" href="https://www.google-analytics.com"&gt;
+			</code>
 		</div>
 
 		<h3 style="text-align: center;"><?php esc_html_e( 'HTTPS Socket Negotiation With Preconnect Enabled:' ); ?></h3>
@@ -274,11 +273,11 @@ class FAQ {
 		<p><?php echo sprintf( 'This works in a similar manner to prefetching, however the preload hint is %s. Whereas prefetching resources is optional (to the browser), low priority, and used to load resources a visitor is likely to require in the future.', '<b>mandatory, high priority, used for current navigation, and non-render blocking</b>' ); ?></p>
 		<p><?php esc_html_e( 'Let\'s see what the waterfall chart looks like after the following resource hints are placed into the top of a web page:' ); ?></p>
 		<div class="pprh-code-block">
-		    <code>
-		        &lt;link rel="preload" href="https://fonts.googleapis.com/css?family=Merriweather" as="font" crossorigin&gt;<br/>
-                &lt;link rel="preload" href="https://www.youtube.com/embed/kkwiQmGWK4c" as="document"&gt;<br/>
-                &lt;link rel="preload" href="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js" as="script"&gt;
-            </code>
+			<code>
+				&lt;link rel="preload" href="https://fonts.googleapis.com/css?family=Merriweather" as="font" crossorigin&gt;<br/>
+				&lt;link rel="preload" href="https://www.youtube.com/embed/kkwiQmGWK4c" as="document"&gt;<br/>
+				&lt;link rel="preload" href="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js" as="script"&gt;
+			</code>
 		</div>
 
 		<p><?php echo sprintf( 'The waterfall chart below, courtesy of %s, shows when preloading resources are loaded by the browser:', '<a href="https://www.webpagetest.org">webpagetest.org</a>' ); ?></p>
@@ -295,8 +294,3 @@ class FAQ {
 	}
 
 }
-
-
-
-
-
