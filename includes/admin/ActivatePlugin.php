@@ -41,7 +41,6 @@ class ActivatePlugin {
 	private function add_options() {
 		$default_prefetch_ignore_links = array( '/wp-admin', '/wp-login.php', '/cart', '/checkout', 'add-to-cart', 'logout', '#', '?', '.png', '.jpeg', '.jpg', '.gif', '.svg', '.webp' );
 
-
 		\add_option( 'pprh_disable_wp_hints', 'true', '', 'yes' );
 		\add_option( 'pprh_html_head', 'true', '', 'yes' );
 		\add_option( 'pprh_prefetch_disableForLoggedInUsers', 'true', '', 'yes' );
