@@ -42,7 +42,6 @@ class Pre_Party_Browser_Hints {
 
 		if ( ! defined( 'PPRH_VERSION_NEW' ) ) {
 			define( 'PPRH_VERSION_NEW', '1.8.13' );
-//			\update_option( 'pprh_version_new', PPRH_VERSION_NEW );
 		}
 
 		if ( ! defined( 'PPRH_VERSION' ) ) {
