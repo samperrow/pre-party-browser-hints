@@ -93,9 +93,9 @@ class DAO {
 			$new_hint['id'] = $wpdb->insert_id;
 		}
 
-		if ( ! $wpdb->result ) {
-			Utils::log_error( $wpdb->last_error );
-		}
+//		if ( ! $wpdb->result ) {
+//			Utils::log_error( $wpdb->last_error );
+//		}
 
 		return self::create_db_result( $wpdb->result, 0, 0, $new_hint );
 	}
@@ -127,9 +127,9 @@ class DAO {
 			$new_hint['id'] = $hint_id;
 		}
 
-		if ( ! $wpdb->result ) {
-			Utils::log_error( $wpdb->last_error );
-		}
+//		if ( ! $wpdb->result ) {
+//			Utils::log_error( $wpdb->last_error );
+//		}
 
 		return self::create_db_result( $wpdb->result, 1, 0, $new_hint );
 	}
@@ -148,9 +148,9 @@ class DAO {
 			return self::create_db_result( $wpdb->result, 2, 0, null );
 		}
 
-		if ( ! $wpdb->result ) {
-			Utils::log_error( $wpdb->last_error );
-		}
+//		if ( ! $wpdb->result ) {
+//			Utils::log_error( $wpdb->last_error );
+//		}
 	}
 
 	public function bulk_update( $hint_ids, $op_code ) {
@@ -165,9 +165,9 @@ class DAO {
 			"UPDATE $this->table SET status = %s WHERE id IN ($hint_ids)", $action )
 		);
 
-		if ( ! $wpdb->result ) {
-			Utils::log_error( $wpdb->last_error );
-		}
+//		if ( ! $wpdb->result ) {
+//			Utils::log_error( $wpdb->last_error );
+//		}
 
 		return self::create_db_result( $wpdb->result, $op_code, 0, null );
 	}
@@ -184,9 +184,9 @@ class DAO {
 			$results = $wpdb->get_results( $wpdb->prepare( $sql, $url, $hint_type ), ARRAY_A );
 		}
 
-		if ( ! $wpdb->result ) {
-			Utils::log_error( $wpdb->last_error );
-		}
+//		if ( ! $wpdb->result ) {
+//			Utils::log_error( $wpdb->last_error );
+//		}
 
 		return $results;
 	}
@@ -251,9 +251,9 @@ class DAO {
 			$results = $wpdb->get_results( $query['sql'], ARRAY_A );
 		}
 
-		if ( ! $wpdb->result ) {
-			Utils::log_error( $wpdb->last_error );
-		}
+//		if ( ! $wpdb->result ) {
+//			Utils::log_error( $wpdb->last_error );
+//		}
 
 		return $results;
 	}
@@ -275,9 +275,9 @@ class DAO {
 			}
 		}
 
-		if ( ! $wpdb->result ) {
-			Utils::log_error( $wpdb->last_error );
-		}
+//		if ( ! $wpdb->result ) {
+//			Utils::log_error( $wpdb->last_error );
+//		}
 
 		return $ms_table_names;
 	}
@@ -286,9 +286,9 @@ class DAO {
 		global $wpdb;
 		$results = $wpdb->get_results( "SHOW COLUMNS FROM $this->table LIKE 'auto_created'", ARRAY_A );
 
-		if ( ! $wpdb->result ) {
-			Utils::log_error( $wpdb->last_error );
-		}
+//		if ( ! $wpdb->result ) {
+//			Utils::log_error( $wpdb->last_error );
+//		}
 
 		return $results;
 	}
@@ -317,9 +317,9 @@ class DAO {
 
 		dbDelta( $sql, true );
 
-		if ( ! $wpdb->result ) {
-			Utils::log_error( $wpdb->last_error );
-		}
+//		if ( ! $wpdb->result ) {
+//			Utils::log_error( $wpdb->last_error );
+//		}
 	}
 
 }

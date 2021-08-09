@@ -153,9 +153,9 @@ class Utils {
 			return false;
 		}
 
-		if ( ! class_exists( \PPRH\DebugLogger::class ) ) {
-			include_once 'DebugLogger.php';
-		}
+//		if ( ! class_exists( \PPRH\DebugLogger::class ) ) {
+//			include_once 'DebugLogger.php';
+//		}
 
 		$debugger = new DebugLogger();
 		$debugger->log_error( $message );
@@ -218,7 +218,7 @@ class Utils {
 		try {
 			\wp_mail( $to, $subject, $message );
 		} catch ( \Exception $e ) {
-			self::log_error( $e );
+//			self::log_error( $e );
 			return false;
 		}
 

@@ -30,7 +30,7 @@ class Dashboard {
 		esc_html_e( 'Pre* Party Resource Hints', 'pprh' );
 		echo '</h1>';
 		\do_action( 'pprh_notice' );
-		$this->do_upgrade( PPRH_VERSION_NEW, PPRH_VERSION );
+		$this->plugin_upgrade_notice( PPRH_VERSION_NEW, PPRH_VERSION );
 		$insert_hints = new InsertHints( $on_pprh_page );
 		$this->show_admin_tabs();
 
@@ -63,26 +63,23 @@ class Dashboard {
 		echo '</div>';
 	}
 
-	public function do_upgrade( $new_version, $old_version ) {
-		$ugprade = $this->check_to_upgrade( $new_version, $old_version );
-
-		if ( ! $ugprade ) {
-			return;
+	public function plugin_upgrade_notice( string $new_version, string $old_version ) {
+		if ( $new_version === $old_version ) {
+			return false;
 		}
 
-		$activate_plugin = new ActivatePlugin();
-		$msg = 'Version ' . PPRH_VERSION_NEW . ' Upgrade Notes: 1) Fixed issue in auto prefetch script, improved plugin testability, and other small improvements.';
+		$msg = 'Version ' . PPRH_VERSION_NEW . ' Upgrade Notes: 1) Fixed JSON parsing error which happened for < PHP 7.3 users. Thank you to the users who pointed it out.';
 		Utils::show_notice( $msg, true );
+		$activate_plugin = new ActivatePlugin();
 		$activate_plugin->upgrade_plugin();
 
 		if ( $activate_plugin->plugin_activated ) {
 			Utils::update_option( 'pprh_version', $new_version );
 		}
-	}
 
-	public function check_to_upgrade( $new_version, $old_version ):bool {
-		return $new_version !== $old_version;
+		return true;
 	}
+	
 
 	public function show_footer() {
 		$this->contact_author();

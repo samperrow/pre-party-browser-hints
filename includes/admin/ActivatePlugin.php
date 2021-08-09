@@ -53,7 +53,7 @@ class ActivatePlugin {
 
 		\add_option( 'pprh_preconnect_allow_unauth', 'false', '', 'yes' );
 		\add_option( 'pprh_preconnect_autoload', 'true', '', 'yes' );
-		\add_option( 'pprh_preconnect_set', 'false', '', 'yes' );
+		\add_option( 'pprh_preconnect_set', 'true', '', 'yes' );
 
 		\add_option( 'pprh_debug_enabled', 'false' );
 	}
