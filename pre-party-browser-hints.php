@@ -54,9 +54,9 @@ class Pre_Party_Browser_Hints {
 	}
 
 	public function load_plugin() {
-		if ( defined( 'DOING_CRON' ) && DOING_CRON ) {
-			return;
-		}
+//		if ( defined( 'DOING_CRON' ) && DOING_CRON ) {
+//			return;
+//		}
 
 		$this->load_common_files();
 		$this->create_constants();
