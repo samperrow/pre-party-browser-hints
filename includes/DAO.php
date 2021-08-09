@@ -104,7 +104,7 @@ class DAO {
 	public function update_hint( $new_hint, $hint_ids ) {
 		global $wpdb;
 		$hint_id      = (int) $hint_ids;
-		$current_user = wp_get_current_user()->display_name;
+		$current_user = \wp_get_current_user()->display_name;
 		$hint_arg = array(
 			'url'         => $new_hint['url'],
 			'hint_type'   => $new_hint['hint_type'],

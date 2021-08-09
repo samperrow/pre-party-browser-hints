@@ -152,7 +152,6 @@ class PreconnectsTest extends TestCase {
 
 		$config_5 = array( 'allow_unauth_opt' => false, 'is_user_logged_in' => true );
 		$pprh_data_5 = array(
-			'nonce'      => wp_create_nonce( 'pprh_ajax_nonce' ),
 			'admin_url'  => admin_url() . 'admin-ajax.php',
 			'start_time' => $time
 		);

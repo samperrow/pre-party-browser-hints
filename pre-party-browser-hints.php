@@ -99,7 +99,7 @@ class Pre_Party_Browser_Hints {
 		$table          = $wpdb->prefix . 'pprh_table';
 		$postmeta_table = $wpdb->prefix . 'postmeta';
 		$site_url       = \get_option( 'siteurl' );
-		$in_dev_testing = ( 'https://sphacks.local' === $site_url );
+		$in_dev_testing = str_contains( $site_url, 'sphacks.local' );
 		$unit_testing   = defined( 'PPRH_UNIT_TESTING' ) && PPRH_UNIT_TESTING;
 
 		if ( ! defined( 'PPRH_DB_TABLE' ) ) {

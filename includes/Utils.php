@@ -17,7 +17,7 @@ class Utils {
 		echo sprintf( '<div id="pprhNoticeBox"><div id="pprhNotice" class="notice notice-%1$s is-dismissible %2$s"><p>%3$s</p></div></div>', $alert, $class, $msg );
 	}
 
-	public static function update_option( string $option, $value ) {
+	public static function update_option( string $option, $value ):bool {
 		return PPRH_RUNNING_UNIT_TESTS || \update_option( $option, $value );
 	}
 
@@ -29,8 +29,8 @@ class Utils {
 		}
 
 		try {
-			$result = json_decode( $json, true, 512, JSON_THROW_ON_ERROR );
-		} catch ( \JsonException $exception ) {
+			$result = json_decode( $json, true );
+		} catch ( \Exception $exception ) {
 			self::log_error( "$json\n$exception" );
 		}
 

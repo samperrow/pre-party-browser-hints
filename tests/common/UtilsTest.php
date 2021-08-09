@@ -285,6 +285,9 @@ final class UtilsTest extends TestCase {
 
 		$actual_4 = \PPRH\Utils::json_to_array( '{}' );
 		self::assertEmpty( $actual_4 );
+
+		$actual_4 = \PPRH\Utils::json_to_array( '{\"url\":\"//asdf\",\"hint_type\":\"dns-prefetch\",\"media\":\"\",\"as_attr\":\"\",\"type_attr\":\"\",\"crossorigin\":\"\",\"post_id\":\"global\",\"op_code\":0,\"hint_ids\":[]}' );
+		self::assertCount( 9, $actual_4 );
 	}
 
 //	public function test_log_error() {

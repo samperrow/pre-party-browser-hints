@@ -178,7 +178,7 @@ final class DAOTest extends TestCase {
 		$actual_1 = $this->dao->get_client_hints_query( array() );
 		$sql = "SELECT * FROM $table WHERE status = %s";
 		self::assertEquals( 'enabled', $actual_1['args'][0] );
-		self::assertTrue( str_contains( $actual_1['sql'], $sql ) );
+		self::assertTrue( \PPRH\str_contains( $actual_1['sql'], $sql ) );
 	}
 
 	public function test_insert_hint() {

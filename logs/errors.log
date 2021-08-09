@@ -1,0 +1,242 @@
+Failed at Utils::json_to_array()
+Failed at Utils::json_to_array()/Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/DebugLogger.php#0 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/DebugLogger.php(35): PPRH\DebugLogger->get_msg_from_exception('Failed at Utils...')
+#1 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/Utils.php(160): PPRH\DebugLogger->log_error('Failed at Utils...')
+#2 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/Utils.php(38): PPRH\Utils::log_error('Failed at Utils...')
+#3 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/admin/AjaxOps.php(24): PPRH\Utils::json_to_array('{"url":"//asdf"...')
+#4 /Users/samperrow/Desktop/repos/WordPress/wp-includes/class-wp-hook.php(303): PPRH\AjaxOps->pprh_update_hints('')
+#5 /Users/samperrow/Desktop/repos/WordPress/wp-includes/class-wp-hook.php(327): WP_Hook->apply_filters('', Array)
+#6 /Users/samperrow/Desktop/repos/WordPress/wp-includes/plugin.php(470): WP_Hook->do_action(Array)
+#7 /Users/samperrow/Desktop/repos/WordPress/wp-admin/admin-ajax.php(187): do_action('wp_ajax_pprh_up...')
+#8 {main}
+Debug info: 
+Datetime: 2021-08-09 11:09:31
+PHP Version: 7.2.14
+WP Version: 5.8
+Home URL: https://sphacks.local
+Browser: Chrome
+PPRH Version: 1.8.13
+error from testing get_api_response_body()
+error from testing get_api_response_body()/Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/DebugLogger.php#0 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/DebugLogger.php(35): PPRH\DebugLogger->get_msg_from_exception('error from test...')
+#1 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/Utils.php(160): PPRH\DebugLogger->log_error('error from test...')
+#2 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pprh-pro/includes/UtilsPro.php(174): PPRH\Utils::log_error('error from test...')
+#3 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pprh-pro/tests/common/UtilsProTest.php(156): PPRH\PRO\UtilsPro::get_api_response_body(Array, 'error from test...')
+#4 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(1248): UtilsProTest->test_get_api_response_body()
+#5 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(914): PHPUnit\Framework\TestCase->runTest()
+#6 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestResult.php(581): PHPUnit\Framework\TestCase->runBare()
+#7 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(707): PHPUnit\Framework\TestResult->run(Object(UtilsProTest))
+#8 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestCase->run(Object(PHPUnit\Framework\TestResult))
+#9 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#10 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#11 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/TestRunner.php(489): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#12 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/Command.php(124): PHPUnit\TextUI\TestRunner->run(Object(PHPUnit\Framework\TestSuite), Array, Array, true)
+#13 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/Command.php(93): PHPUnit\TextUI\Command->run(Array, true)
+#14 /Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar(1140): PHPUnit\TextUI\Command::main()
+#15 {main}
+Debug info: 
+Datetime: 2021-08-09 11:11:59
+PHP Version: 7.4.15
+WP Version: 5.8
+Home URL: https://sphacks.local
+Browser: 
+PPRH Version: 1.8.13
+Failed at Utils::json_to_array()
+Failed at Utils::json_to_array()/Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/DebugLogger.php#0 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/DebugLogger.php(35): PPRH\DebugLogger->get_msg_from_exception('Failed at Utils...')
+#1 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/Utils.php(160): PPRH\DebugLogger->log_error('Failed at Utils...')
+#2 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/Utils.php(38): PPRH\Utils::log_error('Failed at Utils...')
+#3 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pprh-pro/includes/UtilsPro.php(170): PPRH\Utils::json_to_array('<!doctype html>...')
+#4 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pprh-pro/includes/admin/license/LicenseAPI.php(39): PPRH\PRO\UtilsPro::get_api_response_body(Array, 'Error requestin...')
+#5 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pprh-pro/tests/admin/license/LicenseAPITest.php(24): PPRH\PRO\LicenseAPI->get_remote_license_info('fake_key123', 'activate', 'https://testsit...')
+#6 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(1248): LicenseAPITest->test_get_remote_license_info()
+#7 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(914): PHPUnit\Framework\TestCase->runTest()
+#8 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestResult.php(581): PHPUnit\Framework\TestCase->runBare()
+#9 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(707): PHPUnit\Framework\TestResult->run(Object(LicenseAPITest))
+#10 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestCase->run(Object(PHPUnit\Framework\TestResult))
+#11 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#12 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#13 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/TestRunner.php(489): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#14 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/Command.php(124): PHPUnit\TextUI\TestRunner->run(Object(PHPUnit\Framework\TestSuite), Array, Array, true)
+#15 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/Command.php(93): PHPUnit\TextUI\Command->run(Array, true)
+#16 /Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar(1140): PHPUnit\TextUI\Command::main()
+#17 {main}
+Debug info: 
+Datetime: 2021-08-09 11:12:01
+PHP Version: 7.4.15
+WP Version: 5.8
+Home URL: https://sphacks.local
+Browser: 
+PPRH Version: 1.8.13
+Error requesting license data
+Error requesting license data/Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/DebugLogger.php#0 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/DebugLogger.php(35): PPRH\DebugLogger->get_msg_from_exception('Error requestin...')
+#1 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/Utils.php(160): PPRH\DebugLogger->log_error('Error requestin...')
+#2 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pprh-pro/includes/UtilsPro.php(174): PPRH\Utils::log_error('Error requestin...')
+#3 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pprh-pro/includes/admin/license/LicenseAPI.php(39): PPRH\PRO\UtilsPro::get_api_response_body(Array, 'Error requestin...')
+#4 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pprh-pro/tests/admin/license/LicenseAPITest.php(24): PPRH\PRO\LicenseAPI->get_remote_license_info('fake_key123', 'activate', 'https://testsit...')
+#5 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(1248): LicenseAPITest->test_get_remote_license_info()
+#6 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(914): PHPUnit\Framework\TestCase->runTest()
+#7 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestResult.php(581): PHPUnit\Framework\TestCase->runBare()
+#8 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(707): PHPUnit\Framework\TestResult->run(Object(LicenseAPITest))
+#9 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestCase->run(Object(PHPUnit\Framework\TestResult))
+#10 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#11 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#12 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/TestRunner.php(489): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#13 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/Command.php(124): PHPUnit\TextUI\TestRunner->run(Object(PHPUnit\Framework\TestSuite), Array, Array, true)
+#14 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/Command.php(93): PHPUnit\TextUI\Command->run(Array, true)
+#15 /Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar(1140): PHPUnit\TextUI\Command::main()
+#16 {main}
+Debug info: 
+Datetime: 2021-08-09 11:12:01
+PHP Version: 7.4.15
+WP Version: 5.8
+Home URL: https://sphacks.local
+Browser: 
+PPRH Version: 1.8.13
+error from testing get_api_response_body()
+error from testing get_api_response_body()/Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/DebugLogger.php#0 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/DebugLogger.php(35): PPRH\DebugLogger->get_msg_from_exception('error from test...')
+#1 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/Utils.php(160): PPRH\DebugLogger->log_error('error from test...')
+#2 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pprh-pro/includes/UtilsPro.php(174): PPRH\Utils::log_error('error from test...')
+#3 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pprh-pro/tests/common/UtilsProTest.php(156): PPRH\PRO\UtilsPro::get_api_response_body(Array, 'error from test...')
+#4 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(1248): UtilsProTest->test_get_api_response_body()
+#5 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(914): PHPUnit\Framework\TestCase->runTest()
+#6 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestResult.php(581): PHPUnit\Framework\TestCase->runBare()
+#7 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(707): PHPUnit\Framework\TestResult->run(Object(UtilsProTest))
+#8 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestCase->run(Object(PHPUnit\Framework\TestResult))
+#9 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#10 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#11 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/TestRunner.php(489): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#12 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/Command.php(124): PHPUnit\TextUI\TestRunner->run(Object(PHPUnit\Framework\TestSuite), Array, Array, true)
+#13 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/Command.php(93): PHPUnit\TextUI\Command->run(Array, true)
+#14 /Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar(1140): PHPUnit\TextUI\Command::main()
+#15 {main}
+Debug info: 
+Datetime: 2021-08-09 11:12:20
+PHP Version: 7.4.15
+WP Version: 5.8
+Home URL: https://sphacks.local
+Browser: 
+PPRH Version: 1.8.13
+Failed at Utils::json_to_array()
+Failed at Utils::json_to_array()/Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/DebugLogger.php#0 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/DebugLogger.php(35): PPRH\DebugLogger->get_msg_from_exception('Failed at Utils...')
+#1 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/Utils.php(160): PPRH\DebugLogger->log_error('Failed at Utils...')
+#2 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/Utils.php(38): PPRH\Utils::log_error('Failed at Utils...')
+#3 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pprh-pro/includes/UtilsPro.php(170): PPRH\Utils::json_to_array('<!doctype html>...')
+#4 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pprh-pro/includes/admin/license/LicenseAPI.php(39): PPRH\PRO\UtilsPro::get_api_response_body(Array, 'Error requestin...')
+#5 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pprh-pro/tests/admin/license/LicenseAPITest.php(24): PPRH\PRO\LicenseAPI->get_remote_license_info('fake_key123', 'activate', 'https://testsit...')
+#6 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(1248): LicenseAPITest->test_get_remote_license_info()
+#7 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(914): PHPUnit\Framework\TestCase->runTest()
+#8 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestResult.php(581): PHPUnit\Framework\TestCase->runBare()
+#9 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(707): PHPUnit\Framework\TestResult->run(Object(LicenseAPITest))
+#10 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestCase->run(Object(PHPUnit\Framework\TestResult))
+#11 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#12 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#13 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/TestRunner.php(489): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#14 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/Command.php(124): PHPUnit\TextUI\TestRunner->run(Object(PHPUnit\Framework\TestSuite), Array, Array, true)
+#15 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/Command.php(93): PHPUnit\TextUI\Command->run(Array, true)
+#16 /Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar(1140): PHPUnit\TextUI\Command::main()
+#17 {main}
+Debug info: 
+Datetime: 2021-08-09 11:12:22
+PHP Version: 7.4.15
+WP Version: 5.8
+Home URL: https://sphacks.local
+Browser: 
+PPRH Version: 1.8.13
+Error requesting license data
+Error requesting license data/Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/DebugLogger.php#0 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/DebugLogger.php(35): PPRH\DebugLogger->get_msg_from_exception('Error requestin...')
+#1 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/Utils.php(160): PPRH\DebugLogger->log_error('Error requestin...')
+#2 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pprh-pro/includes/UtilsPro.php(174): PPRH\Utils::log_error('Error requestin...')
+#3 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pprh-pro/includes/admin/license/LicenseAPI.php(39): PPRH\PRO\UtilsPro::get_api_response_body(Array, 'Error requestin...')
+#4 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pprh-pro/tests/admin/license/LicenseAPITest.php(24): PPRH\PRO\LicenseAPI->get_remote_license_info('fake_key123', 'activate', 'https://testsit...')
+#5 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(1248): LicenseAPITest->test_get_remote_license_info()
+#6 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(914): PHPUnit\Framework\TestCase->runTest()
+#7 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestResult.php(581): PHPUnit\Framework\TestCase->runBare()
+#8 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(707): PHPUnit\Framework\TestResult->run(Object(LicenseAPITest))
+#9 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestCase->run(Object(PHPUnit\Framework\TestResult))
+#10 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#11 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#12 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/TestRunner.php(489): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#13 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/Command.php(124): PHPUnit\TextUI\TestRunner->run(Object(PHPUnit\Framework\TestSuite), Array, Array, true)
+#14 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/Command.php(93): PHPUnit\TextUI\Command->run(Array, true)
+#15 /Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar(1140): PHPUnit\TextUI\Command::main()
+#16 {main}
+Debug info: 
+Datetime: 2021-08-09 11:12:22
+PHP Version: 7.4.15
+WP Version: 5.8
+Home URL: https://sphacks.local
+Browser: 
+PPRH Version: 1.8.13
+error from testing get_api_response_body()
+error from testing get_api_response_body()/Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/DebugLogger.php#0 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/DebugLogger.php(35): PPRH\DebugLogger->get_msg_from_exception('error from test...')
+#1 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/Utils.php(160): PPRH\DebugLogger->log_error('error from test...')
+#2 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pprh-pro/includes/UtilsPro.php(174): PPRH\Utils::log_error('error from test...')
+#3 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pprh-pro/tests/common/UtilsProTest.php(156): PPRH\PRO\UtilsPro::get_api_response_body(Array, 'error from test...')
+#4 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(1248): UtilsProTest->test_get_api_response_body()
+#5 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(914): PHPUnit\Framework\TestCase->runTest()
+#6 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestResult.php(581): PHPUnit\Framework\TestCase->runBare()
+#7 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(707): PHPUnit\Framework\TestResult->run(Object(UtilsProTest))
+#8 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestCase->run(Object(PHPUnit\Framework\TestResult))
+#9 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#10 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#11 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/TestRunner.php(489): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#12 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/Command.php(124): PHPUnit\TextUI\TestRunner->run(Object(PHPUnit\Framework\TestSuite), Array, Array, true)
+#13 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/Command.php(93): PHPUnit\TextUI\Command->run(Array, true)
+#14 /Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar(1140): PHPUnit\TextUI\Command::main()
+#15 {main}
+Debug info: 
+Datetime: 2021-08-09 11:17:59
+PHP Version: 7.4.15
+WP Version: 5.8
+Home URL: https://sphacks.local
+Browser: 
+PPRH Version: 1.8.13
+Failed at Utils::json_to_array()
+Failed at Utils::json_to_array()/Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/DebugLogger.php#0 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/DebugLogger.php(35): PPRH\DebugLogger->get_msg_from_exception('Failed at Utils...')
+#1 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/Utils.php(160): PPRH\DebugLogger->log_error('Failed at Utils...')
+#2 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/Utils.php(38): PPRH\Utils::log_error('Failed at Utils...')
+#3 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pprh-pro/includes/UtilsPro.php(170): PPRH\Utils::json_to_array('<!doctype html>...')
+#4 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pprh-pro/includes/admin/license/LicenseAPI.php(39): PPRH\PRO\UtilsPro::get_api_response_body(Array, 'Error requestin...')
+#5 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pprh-pro/tests/admin/license/LicenseAPITest.php(24): PPRH\PRO\LicenseAPI->get_remote_license_info('fake_key123', 'activate', 'https://testsit...')
+#6 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(1248): LicenseAPITest->test_get_remote_license_info()
+#7 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(914): PHPUnit\Framework\TestCase->runTest()
+#8 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestResult.php(581): PHPUnit\Framework\TestCase->runBare()
+#9 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(707): PHPUnit\Framework\TestResult->run(Object(LicenseAPITest))
+#10 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestCase->run(Object(PHPUnit\Framework\TestResult))
+#11 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#12 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#13 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/TestRunner.php(489): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#14 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/Command.php(124): PHPUnit\TextUI\TestRunner->run(Object(PHPUnit\Framework\TestSuite), Array, Array, true)
+#15 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/Command.php(93): PHPUnit\TextUI\Command->run(Array, true)
+#16 /Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar(1140): PHPUnit\TextUI\Command::main()
+#17 {main}
+Debug info: 
+Datetime: 2021-08-09 11:18:01
+PHP Version: 7.4.15
+WP Version: 5.8
+Home URL: https://sphacks.local
+Browser: 
+PPRH Version: 1.8.13
+Error requesting license data
+Error requesting license data/Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/DebugLogger.php#0 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/DebugLogger.php(35): PPRH\DebugLogger->get_msg_from_exception('Error requestin...')
+#1 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pre-party-browser-hints/includes/Utils.php(160): PPRH\DebugLogger->log_error('Error requestin...')
+#2 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pprh-pro/includes/UtilsPro.php(174): PPRH\Utils::log_error('Error requestin...')
+#3 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pprh-pro/includes/admin/license/LicenseAPI.php(39): PPRH\PRO\UtilsPro::get_api_response_body(Array, 'Error requestin...')
+#4 /Users/samperrow/Desktop/repos/WordPress/wp-content/plugins/pprh-pro/tests/admin/license/LicenseAPITest.php(24): PPRH\PRO\LicenseAPI->get_remote_license_info('fake_key123', 'activate', 'https://testsit...')
+#5 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(1248): LicenseAPITest->test_get_remote_license_info()
+#6 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(914): PHPUnit\Framework\TestCase->runTest()
+#7 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestResult.php(581): PHPUnit\Framework\TestCase->runBare()
+#8 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestCase.php(707): PHPUnit\Framework\TestResult->run(Object(LicenseAPITest))
+#9 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestCase->run(Object(PHPUnit\Framework\TestResult))
+#10 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#11 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/Framework/TestSuite.php(508): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#12 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/TestRunner.php(489): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#13 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/Command.php(124): PHPUnit\TextUI\TestRunner->run(Object(PHPUnit\Framework\TestSuite), Array, Array, true)
+#14 phar:///Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar/phpunit/TextUI/Command.php(93): PHPUnit\TextUI\Command->run(Array, true)
+#15 /Users/samperrow/Desktop/repos/WordPress/wp-content/tests/phpunit/phpunit-9.5.6.phar(1140): PHPUnit\TextUI\Command::main()
+#16 {main}
+Debug info: 
+Datetime: 2021-08-09 11:18:01
+PHP Version: 7.4.15
+WP Version: 5.8
+Home URL: https://sphacks.local
+Browser: 
+PPRH Version: 1.8.13
