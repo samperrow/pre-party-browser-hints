@@ -31,6 +31,7 @@ class Utils {
 		try {
 			$result = json_decode( $json, true );
 		} catch ( \Exception $exception ) {
+			$result = array();
 			self::log_error( "$json\n$exception" );
 		}
 
