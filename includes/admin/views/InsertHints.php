@@ -18,7 +18,7 @@ class InsertHints {
 		echo '<div class="pprh-content insert-hints">';
 		\wp_nonce_field( 'pprh_display_hints_nonce_action', 'pprh_display_hints_nonce' );
 		$display_hints = new DisplayHints( false, $this->on_pprh_page );
-		$new_hint = new NewHint();
+		$new_hint      = new NewHint();
 		$new_hint->create_new_hint_table();
 		echo '</div>';
 		unset( $display_hints );

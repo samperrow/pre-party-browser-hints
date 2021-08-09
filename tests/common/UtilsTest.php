@@ -269,7 +269,7 @@ final class UtilsTest extends TestCase {
 	}
 
 	public function test_json_to_array() {
-		$json_1 = '{"license":{"id":"32","license_key":"6100767bb59850.76443566","status":"activated","name":"sam p","email":"asdf@gmail.com","txn_id":"","manual_reset_count":"0","date_created":"2021-07-27 15:07:46","date_renewed":"0000-00-00 00:00:00","date_expiry":"2022-07-27 00:00:00","registered_domain":"asdf.com","datetime_last_checked":"2021-07-27 15:07:46","max_sites":"5","site_count":3,"domain_list":"a:1:{i:0;s:13:\"sphacks.local\";}"},"response_code":{"msg":"Your license key has been activated!","code":130,"success":true}}';
+		$json_1 = '{"license":{"id":"32","license_key":"6100767bb59850.76443566","status":"activated","name":"sam p","email":"asdf@gmail.com","txn_id":"","manual_reset_count":"0","date_created":"2021-07-27 15:07:46","date_renewed":"0000-00-00 00:00:00","date_expiry":"2022-07-27 00:00:00","registered_domain":"asdf.com","datetime_last_checked":"2021-07-27 15:07:46","max_sites":"5","active_site_count":3,"domain_list":"a:1:{i:0;s:13:\"sphacks.local\";}"},"response_code":{"msg":"Your license key has been activated!","code":130,"success":true}}';
 		$actual_1 = \PPRH\Utils::json_to_array( $json_1 );
 		self::assertCount( 2, $actual_1 );
 		self::assertCount( 15, $actual_1['license'] );
@@ -282,11 +282,17 @@ final class UtilsTest extends TestCase {
 		$json_3 = '{\"hints\":[{\"url\":\"https://imagem.natelinha.uol.com.br\",\"hint_type\":\"preconnect\",\"media\":\"\",\"as_attr\":\"\",\"type_attr\":\"\",\"crossorigin\":\"\"},{\"url\":\"https://ajax.cloudflare.com\",\"hint_type\":\"preconnect\",\"media\":\"\",\"as_attr\":\"\",\"type_attr\":\"\",\"crossorigin\":\"\"}],\"nonce\":\"dccb2f24c0\",\"admin_url\":\"https://test.obapress.com/wp-admin/admin-ajax.php\",\"start_time\":\"1627578091\",\"post_id\":\"21\"}';
 		$actual_3 = \PPRH\Utils::json_to_array( $json_3 );
 		self::assertCount( 5, $actual_3 );
+
+		$actual_4 = \PPRH\Utils::json_to_array( '{}' );
+		self::assertEmpty( $actual_4 );
+
+		$actual_4 = \PPRH\Utils::json_to_array( '{\"url\":\"//asdf\",\"hint_type\":\"dns-prefetch\",\"media\":\"\",\"as_attr\":\"\",\"type_attr\":\"\",\"crossorigin\":\"\",\"post_id\":\"global\",\"op_code\":0,\"hint_ids\":[]}' );
+		self::assertCount( 9, $actual_4 );
 	}
 
-	public function test_log_error() {
-		$actual_1 = \PPRH\Utils::log_error( 'tester' );
-		self::assertFalse( $actual_1 );
-	}
+//	public function test_log_error() {
+//		$actual_1 = \PPRH\Utils::log_error( 'tester' );
+//		self::assertTrue( $actual_1 );
+//	}
 
 }

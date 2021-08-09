@@ -1,28 +1,19 @@
 div#wpbody-content > div#pprh-poststuff {
-    padding-top: 10px;
     min-width: 763px;
 }
 
 div#pprh-poststuff {
-
-    h1 {
-        font-weight: normal;
-    }
 
     h2 {
         margin: 0;
         padding: 8px 12px;
     }
 
-    h3 {
-        font-size: 1.4em;
-    }
-
     .text-center {
         text-align: center;
     }
 
-    div.pprh-content > div.postbox > div {
+    div.pprh-content > div.postbox {
         padding: 0 10px;
     }
 

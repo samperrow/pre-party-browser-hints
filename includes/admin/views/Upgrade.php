@@ -8,9 +8,6 @@ if ( ! defined ('ABSPATH' ) ) {
 
 class Upgrade {
 
-	public function __construct() {
-//		$this->init();
-	}
 
 	public function markup() {
 		?>
