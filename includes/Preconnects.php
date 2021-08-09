@@ -8,54 +8,41 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class Preconnects {
 
-	public $config;
+	private $allow_user = false;
 
 	public function __construct() {
-		\add_action( 'wp_loaded', array( $this, 'init_controller' ), 10, 0 );
+		\add_action( 'wp_loaded', array( $this, 'initialize_ctrl' ), 10, 0 );
 	}
 
-	public function init_controller() {
-		$reset_pro = \apply_filters( 'pprh_preconnects_do_reset_init', false );
+	public function initialize_ctrl() {
+		$reset_pro                 = \apply_filters( 'pprh_preconnects_do_reset_init', null );
+		$reset_preconnects_option  = ( 'false' === \get_option( 'pprh_preconnect_set' ) );
+		$allow_unauth_users_option = ( 'true' === \get_option( 'pprh_preconnect_allow_unauth' ) );
 
-		$this->config = array(
-			'reset_pro'              => $reset_pro,
-			'allow_unauth_opt'       => ( 'true' === \get_option( 'pprh_preconnect_allow_unauth' ) ),
-			'is_user_logged_in'      => \is_user_logged_in(),
-			'preconnects_set_option' => ( 'true' === \get_option( 'pprh_preconnect_set' ) )
-		);
-
-		if ( \is_admin() ) {
-			$this->load_ajax_callbacks( $this->config['allow_unauth_opt'] );
-		} else {
-			$this->initialize( $this->config );
-		}
-
+		$this->initialize( $allow_unauth_users_option, $reset_preconnects_option, $reset_pro );
 	}
 
-	public function initialize( array $config ):bool {
-		$allow_user = $this->allow_user( $config['allow_unauth_opt'], $config['is_user_logged_in'] );
+	public function initialize( bool $allow_unauth_users_option, bool $reset_preconnects_option, $reset_pro ):bool {
+		$reset_preconnects = ( is_null( $reset_pro ) ) ? $reset_preconnects_option : $reset_pro;
+		$perform_reset = $this->check_to_perform_reset( $allow_unauth_users_option, \is_user_logged_in(), $reset_preconnects );
 
-		if ( ! $allow_user ) {
+		if ( ! $perform_reset ) {
 			return false;
 		}
 
-		$perform_reset = $this->check_to_perform_reset( $config['preconnects_set_option'], $config['reset_pro'] );
-
-		if ( false === $perform_reset ) {
-			return false;
-		}
-
-		$this->load_ajax_callbacks( $config['allow_unauth_opt'] );
+		$this->load_ajax_callbacks( $allow_unauth_users_option );
 		\add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 		return true;
 	}
 
-	public function check_to_perform_reset( bool $preconnects_set_option, bool $reset_pro ):bool {
-		return ( ! $preconnects_set_option || $reset_pro );
+
+	public function check_to_perform_reset( bool $allow_unauth_users_option, bool $is_user_logged_in, bool $reset_preconnects ):bool {
+		$this->allow_user = ( $allow_unauth_users_option || $is_user_logged_in );
+		return ( $this->allow_user && $reset_preconnects );
 	}
 
 
-	public function load_ajax_callbacks( $allow_unauth_opt ) {
+	public function load_ajax_callbacks( bool $allow_unauth_opt ) {
 		$callback = 'pprh_post_domain_names';
 
 		if ( $allow_unauth_opt ) {
@@ -65,18 +52,14 @@ class Preconnects {
 	}
 
 	public function enqueue_scripts() {
-		if ( is_admin() ) {
-			return;
-		}
-
 		$time = time();
 		$js_object = $this->create_js_object( $time );
 
-		wp_register_script( 'pprh_create_hints_js', PPRH_REL_DIR . 'js/create-hints.js', null, PPRH_VERSION, true );
-		wp_register_script( 'pprh-find-domain-names', PPRH_REL_DIR . 'js/find-external-domains.js', null, PPRH_VERSION, true );
-		wp_localize_script( 'pprh-find-domain-names', 'pprh_data', $js_object );
-		wp_enqueue_script( 'pprh_create_hints_js' );
-		wp_enqueue_script( 'pprh-find-domain-names' );
+		\wp_register_script( 'pprh_create_hints_js', PPRH_REL_DIR . 'js/create-hints.js', null, PPRH_VERSION, true );
+		\wp_register_script( 'pprh-find-domain-names', PPRH_REL_DIR . 'js/find-external-domains.js', null, PPRH_VERSION, true );
+		\wp_localize_script( 'pprh-find-domain-names', 'pprh_data', $js_object );
+		\wp_enqueue_script( 'pprh_create_hints_js' );
+		\wp_enqueue_script( 'pprh-find-domain-names' );
 	}
 
 	public function create_js_object( int $time ) {
@@ -94,11 +77,7 @@ class Preconnects {
 		return $js_arr;
 	}
 
-	// tested
-	// Returns false if the user is not logged in, and the admin chooses not to allow unauthenticated users from settings hints.
-	public function allow_user( bool $allow_unauth_opt = true, $is_user_logged_in = null ) {
-		return ( $allow_unauth_opt || $is_user_logged_in );
-	}
+
 
 
 
@@ -106,36 +85,34 @@ class Preconnects {
 	public function pprh_post_domain_names() {
 		if ( isset( $_POST['pprh_data'] ) && wp_doing_ajax() ) {
 			\check_ajax_referer( 'pprh_ajax_nonce', 'nonce' );
-			$this->post_domain_names_ctrl();
+
+			if ( $this->allow_user ) {
+				$this->private_post_domain_names();
+			}
+
 			wp_die();
 		}
 	}
 
-	private function post_domain_names_ctrl() {
-		$config = $this->config ?? array( 'allow_unauth_opt' => false, 'is_user_logged_in' => false );
-		return $this->post_domain_names( $_POST['pprh_data'], $config );
+	private function private_post_domain_names() {
+		$this->post_domain_names( $_POST['pprh_data'] );
 	}
 
 
-
-	public function post_domain_names( $pprh_data, array $config ):bool {
+	public function post_domain_names( $pprh_data ):bool {
 		if ( ! is_array( $pprh_data ) ) {
 			$pprh_data = Utils::json_to_array( $pprh_data );
 		}
 
-		$success      = false;
-		$allow_unauth = $this->allow_user( $config['allow_unauth_opt'], $config['is_user_logged_in'] );
-		$hints        = $pprh_data['hints'] ?? array();
+		$hints   = $pprh_data['hints'] ?? array();
+		$success = false;
 
-		if ( $allow_unauth ) {
-
-			if ( Utils::isArrayAndNotEmpty( $hints ) && Utils::isArrayAndNotEmpty( $pprh_data ) ) {
-				$results = $this->get_hint_results( $pprh_data );
-				$success = ( count( $hints ) === count( $results ) );
-			}
-
-			$this->update_options( $pprh_data );
+		if ( Utils::isArrayAndNotEmpty( $hints ) && Utils::isArrayAndNotEmpty( $pprh_data ) ) {
+			$results = $this->get_hint_results( $pprh_data );
+			$success = ( count( $hints ) === count( $results ) );
 		}
+
+		$this->update_options( $pprh_data );
 
 		return $success;
 	}
