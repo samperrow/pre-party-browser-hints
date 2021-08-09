@@ -30,13 +30,15 @@ class Utils {
 
 		try {
 			$result = json_decode( $json, true );
-		} catch ( \Exception $exception ) {
-			self::log_error( "$json\n$exception" );
+		}
+		catch ( \Exception $exception ) {
+			$result = array();
+//			self::log_error( "$json\n$exception" );
 		}
 
-		if ( ! is_array( $result ) ) {
-			self::log_error( 'Failed at Utils::json_to_array()' );
-		}
+//		if ( ! is_array( $result ) ) {
+//			self::log_error( 'Failed at Utils::json_to_array()' );
+//		}
 
 		return $result;
 	}
@@ -152,9 +154,9 @@ class Utils {
 			return false;
 		}
 
-		if ( ! class_exists( \PPRH\DebugLogger::class ) ) {
-			include_once 'DebugLogger.php';
-		}
+//		if ( ! class_exists( \PPRH\DebugLogger::class ) ) {
+//			include_once 'DebugLogger.php';
+//		}
 
 		$debugger = new DebugLogger();
 		$debugger->log_error( $message );
@@ -217,7 +219,7 @@ class Utils {
 		try {
 			\wp_mail( $to, $subject, $message );
 		} catch ( \Exception $e ) {
-			self::log_error( $e );
+//			self::log_error( $e );
 			return false;
 		}
 
