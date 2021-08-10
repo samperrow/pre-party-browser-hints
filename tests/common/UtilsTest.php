@@ -8,9 +8,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 final class UtilsTest extends TestCase {
 
-
-
-
 	public function test_strip_non_alphanums() {
 		$str1 = '!f_a#FED__=26 5b-2tb(&YT^>"28352';
 		$test1 = \PPRH\Utils::strip_non_alphanums($str1);
@@ -23,7 +20,7 @@ final class UtilsTest extends TestCase {
 
 	public function test_strip_non_numbers() {
 		$str1 = '!f_a#FED__=26 5b-2tb(&YT^>"28352';
-		$test1 = \PPRH\Utils::strip_non_numbers($str1);
+		$test1 = \PPRH\Utils::strip_non_numbers( $str1, true );
 		self::assertEquals( '265228352', $test1 );
 	}
 

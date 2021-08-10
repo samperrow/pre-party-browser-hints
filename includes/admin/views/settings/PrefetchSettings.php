@@ -29,11 +29,11 @@ class PrefetchSettings {
 		$options = array(
 			'pprh_prefetch_enabled'                 => isset( $_POST[ 'pprh_prefetch_enabled' ] ) ? 'true' : 'false',
 			'pprh_prefetch_disableForLoggedInUsers' => isset( $_POST[ 'pprh_prefetch_disableForLoggedInUsers' ] ) ? 'true' : 'false',
-			'pprh_prefetch_delay'                   => isset( $_POST[ 'pprh_prefetch_delay' ] ) ? Utils::strip_non_numbers( $_POST['pprh_prefetch_delay'] ) : '0',
+			'pprh_prefetch_delay'                   => isset( $_POST[ 'pprh_prefetch_delay' ] ) ? Utils::strip_non_numbers( $_POST['pprh_prefetch_delay'], true ) : '0',
 			'pprh_prefetch_ignoreKeywords'          => isset( $_POST[ 'pprh_prefetch_ignoreKeywords' ] ) ? self::turn_textarea_to_array( $_POST['pprh_prefetch_ignoreKeywords'] ) : '',
-			'pprh_prefetch_maxRPS'                  => isset( $_POST[ 'pprh_prefetch_maxRPS' ] ) ? Utils::strip_non_numbers( $_POST[ 'pprh_prefetch_maxRPS' ] ) : '3',
-			'pprh_prefetch_hoverDelay'              => isset( $_POST[ 'pprh_prefetch_hoverDelay' ] ) ? Utils::strip_non_numbers( $_POST[ 'pprh_prefetch_hoverDelay' ] ) : '50',
-			'pprh_prefetch_max_prefetches'          => isset( $_POST[ 'pprh_prefetch_max_prefetches' ] ) ? Utils::strip_non_numbers( $_POST[ 'pprh_prefetch_max_prefetches' ] ) : '10',
+			'pprh_prefetch_maxRPS'                  => isset( $_POST[ 'pprh_prefetch_maxRPS' ] ) ? Utils::strip_non_numbers( $_POST[ 'pprh_prefetch_maxRPS' ], true ) : '3',
+			'pprh_prefetch_hoverDelay'              => isset( $_POST[ 'pprh_prefetch_hoverDelay' ] ) ? Utils::strip_non_numbers( $_POST[ 'pprh_prefetch_hoverDelay' ], true ) : '50',
+			'pprh_prefetch_max_prefetches'          => isset( $_POST[ 'pprh_prefetch_max_prefetches' ] ) ? Utils::strip_non_numbers( $_POST[ 'pprh_prefetch_max_prefetches' ], true ) : '10',
 		);
 
 		return $options;

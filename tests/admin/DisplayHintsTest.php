@@ -46,21 +46,4 @@ final class DisplayHintsTest extends TestCase {
 		}
 	}
 
-//	public function test_dh_on_posts_page_and_global() {
-//		$display_hints = new \PPRH\DisplayHints();
-//
-//		$actual1 = $display_hints->on_post_page_and_global_hint( array( 'post_id' => '2128' ) );
-//		$actual2 = $display_hints->on_post_page_and_global_hint( array( 'post_id' => 'global' ) );
-//		self::assertFalse( $actual1 );
-//		self::assertFalse( $actual2 );
-//
-//		$display_hints2 = new \PPRH\DisplayHints();
-////		$actual3 = $display_hints2->on_post_page_and_global_hint( array( 'post_id' => 'global' ) );
-//
-//		$actual4 = $display_hints2->on_post_page_and_global_hint( array( 'post_id' => '2128' ) );
-//
-////		self::assertTrue(  $actual3 );
-//		self::assertFalse( $actual4 );
-//	}
-
 }

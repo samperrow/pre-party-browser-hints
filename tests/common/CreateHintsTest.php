@@ -12,18 +12,15 @@ final class CreateHintsTest extends TestCase {
 	public $create_hints;
 
 	/**
-	 * @before
+	 * @before Class
 	 */
 	public function test_start() {
 		$this->create_hints = new \PPRH\CreateHints();
 	}
 
-	/**
-	 * @covers \PPRH\CreateHints::create_hint
-	 */
+
 	public function test_create_hint() {
 		$url_1 = 'https://sphacks.local/wp-content/themes/sphacks/images/icons/newspaper.woff?19';
-
 
 		$test1 = TestUtils::create_hint_array( 'https://www.espn.com', 'dns-prefetch' );
 		$expected_1 = $this->create_hints->create_hint($test1);

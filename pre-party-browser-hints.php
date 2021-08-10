@@ -27,18 +27,27 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$pprh_load = new Pre_Party_Browser_Hints();
-$pprh_load->init();
-
-\register_activation_hook( __FILE__, array( $pprh_load, 'activate_plugin' ) );
-\add_action( 'wpmu_new_blog', array( $pprh_load, 'activate_plugin' ) );
+\add_action( 'init', function() {
+	$pprh_load = new Pre_Party_Browser_Hints();
+	$pprh_load->init();
+}, 9, 0 );
 
 class Pre_Party_Browser_Hints {
 
 	public $pprh_preconnect_autoload;
 
 	public function __construct() {
+		if ( defined( 'DOING_CRON' ) && DOING_CRON ) {
+			return;
+		}
+
+		\register_activation_hook( __FILE__, array( $this, 'activate_plugin' ) );
+		\add_action( 'wpmu_new_blog', array( $this, 'activate_plugin' ) );
 		$this->pprh_preconnect_autoload = ( 'true' === \get_option( 'pprh_preconnect_autoload' ) );
+	}
+
+	public function init() {
+		\add_action( 'init', array( $this, 'load_plugin' ), 10, 0 );
 
 		if ( ! defined( 'PPRH_VERSION_NEW' ) ) {
 			define( 'PPRH_VERSION_NEW', '1.7.8' );
@@ -47,20 +56,12 @@ class Pre_Party_Browser_Hints {
 		if ( ! defined( 'PPRH_VERSION' ) ) {
 			define( 'PPRH_VERSION', \get_option( 'pprh_version', '' ) );
 		}
-	}
-
-	public function init() {
-		\add_action( 'init', array( $this, 'load_plugin' ) );
-	}
-
-	public function load_plugin() {
-//		if ( defined( 'DOING_CRON' ) && DOING_CRON ) {
-//			return;
-//		}
 
 		$this->load_common_files();
 		$this->create_constants();
+	}
 
+	public function load_plugin() {
 		\load_plugin_textdomain( 'pprh', false, PPRH_REL_DIR . 'languages' );
 		\do_action( 'pprh_load_plugin' );
 
@@ -78,6 +79,10 @@ class Pre_Party_Browser_Hints {
 	public function load( bool $is_admin ) {
 		$str = ( $is_admin ) ? 'admin' : 'client';
 		\add_action( 'wp_loaded', array( $this, "load_$str" ) );
+
+		if ( PPRH_RUNNING_UNIT_TESTS ) {
+			\add_action( 'wp_loaded', array( $this, "load_client" ) );
+		}
 	}
 
 	public function load_admin() {

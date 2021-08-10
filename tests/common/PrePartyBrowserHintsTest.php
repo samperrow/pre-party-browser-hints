@@ -5,14 +5,11 @@ use PHPUnit\Framework\TestCase;
 
 final class PrePartyBrowserHintsTest extends TestCase {
 
-	public $pprh;
+	public static $pprh;
 
-	/**
-	 * @before
-	 */
-	public function test_start() {
-		$this->pprh = new \PPRH\Pre_Party_Browser_Hints();
-	}
+//	public static function test_start() {
+//		self::$pprh = new \PPRH\Pre_Party_Browser_Hints();
+//	}
 
 	public function test_create_constants() {
 		global $wpdb;
@@ -51,11 +48,10 @@ final class PrePartyBrowserHintsTest extends TestCase {
 		self::assertTrue( $manage_options );
 	}
 
-	public function test_activate_plugin() {
-		$actual = $this->pprh->activate_plugin();
-
-		self::assertTrue( $actual );
-	}
+//	public function test_activate_plugin() {
+//		$actual = self::$pprh->activate_plugin();
+//		self::assertTrue( $actual );
+//	}
 
 	public function test_register_activation_hook() {
 		$registered = \has_filter( 'activate_pre-party-browser-hints/pre-party-browser-hints.php' );
@@ -65,8 +61,4 @@ final class PrePartyBrowserHintsTest extends TestCase {
 		self::assertTrue( $wp_loaded );
 	}
 
-
-//	public function test_() {
-//
-//	}
 }

@@ -46,8 +46,13 @@ class Utils {
 		return preg_replace( '/[^a-z\d]/imu', '', $text );
 	}
 
-	public static function strip_non_numbers( string $text ):string {
-		return preg_replace( '/\D/', '', $text );
+//	public static function strip_non_numbers( string $text ):string {
+//		return preg_replace( '/\D/', '', $text );
+//	}
+
+	public static function strip_non_numbers( $text, bool $as_str = true ) {
+		$str = preg_replace( '/\D/', '', $text );
+		return ( $as_str ) ? $str : (int) $str;
 	}
 
 	public static function clean_hint_type( string $text ):string {
@@ -120,7 +125,8 @@ class Utils {
 
 	public static function on_pprh_page( bool $doing_ajax, string $referer ):int {
 		if ( '' === $referer ) {
-			$referer = self::get_server_prop( 'HTTP_REFERER' );
+			$referer = self::get_referer();
+//			$referer = self::get_server_prop( 'HTTP_REFERER' );
 		}
 
 		$request_uri = self::get_server_prop( 'REQUEST_URI' );
@@ -144,6 +150,16 @@ class Utils {
 		}
 
 		return $val;
+	}
+
+	public static function get_referer():string {
+		$referer = \wp_get_referer();
+		return ( false === $referer ) ? '' : $referer;
+	}
+
+	public static function get_domain_from_url( string $url ):string {
+		$parsed_url = \wp_parse_url( $url );
+		return $parsed_url['host'] ?? self::get_server_prop( 'HTTP_HOST' );
 	}
 
 	public static function log_error( $message ):bool {

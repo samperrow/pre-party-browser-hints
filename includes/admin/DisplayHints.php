@@ -133,7 +133,7 @@ class DisplayHints extends WP_List_Table {
 	}
 
 	public function inline_edit_row( array $hint ) {
-		$hint_id = Utils::strip_non_numbers( $hint['id'] );
+		$hint_id = Utils::strip_non_numbers( $hint['id'], true );
 		?>
 		<tr class="pprh-row edit <?php echo $hint_id; ?>">
 			<td colspan="9">

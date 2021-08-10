@@ -801,7 +801,7 @@ class WP_List_Table {
 		$current              = $this->get_pagenum();
 		$removable_query_args = wp_removable_query_args();
 
-        $current_url = ( wp_doing_ajax() ) ? esc_url_raw( $_SERVER['HTTP_REFERER'] ) : menu_page_url( PPRH_MENU_SLUG, false );
+        $current_url = ( wp_doing_ajax() ) ? esc_url_raw( Utils::get_referer() ) : menu_page_url( PPRH_MENU_SLUG, false );
 		$current_url = remove_query_arg( $removable_query_args, $current_url );
 
 		$page_links = array();

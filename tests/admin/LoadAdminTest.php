@@ -16,7 +16,6 @@ final class LoadAdminTest extends TestCase {
 			$actual_scripts[] =  $wp_scripts->registered[$script]->handle;
 		}
 
-
 		$expected_scripts = array( 'pprh_create_hints_js', 'pprh_admin_js', 'post' );
 		self::assertEquals( $expected_scripts, $actual_scripts);
 	}
