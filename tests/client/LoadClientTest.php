@@ -21,19 +21,19 @@ final class LoadClientTest extends TestCase {
 
 	public function test_verify_to_load_fp() {
 		$action = \has_action( 'wp_enqueue_scripts', array( $this->load_client, 'load_flying_pages' ) );
-		self::assertEquals( false, $action );
+		self::assertFalse( $action );
 
 		$actual_1 = $this->load_client->verify_to_load_fp(true, false);
-		self::assertEquals( true, $actual_1 );
+		self::assertTrue(  $actual_1 );
 
 		$actual_2 = $this->load_client->verify_to_load_fp(true, true);
-		self::assertEquals( false, $actual_2 );
+		self::assertFalse( $actual_2 );
 
 		$actual_3 = $this->load_client->verify_to_load_fp(false, true);
-		self::assertEquals( false, $actual_3 );
+		self::assertFalse( $actual_3 );
 
 		$actual_4 = $this->load_client->verify_to_load_fp(false, false);
-		self::assertEquals( false, $actual_4 );
+		self::assertFalse( $actual_4 );
 	}
 
 

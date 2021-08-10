@@ -103,7 +103,7 @@ final class CreateHintsTest extends TestCase {
 	public function test_create_pprh_hint_fail() {
 		$raw_data1 = TestUtils::create_hint_array( '', '' );
 		$actual = $this->create_hints->create_hint( $raw_data1 );
-		self::assertEquals( false, $actual );
+		self::assertFalse( $actual );
 	}
 
 
@@ -114,7 +114,7 @@ final class CreateHintsTest extends TestCase {
 //		$dup_hints = array( $test_hint_1 );
 //		$candidate_hint = TestUtils::create_hint_array( 'https://test.com', 'preconnect', '', '', '', '' );
 //		$actual_1 = $this->create_hints->handle_duplicate_hints( $dup_hints, $candidate_hint );
-//		self::assertEquals( false, $actual_1 );
+//		self::assertFalse( $actual_1 );
 //	}
 
 

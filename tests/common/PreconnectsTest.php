@@ -16,7 +16,7 @@ class PreconnectsTest extends TestCase {
 
 	public function test_constructor() {
 		$loaded = \add_action( 'wp_loaded', array( $this->preconnects, 'init_controller' ) );
-		self::assertEquals( true, $loaded );
+		self::assertTrue( $loaded );
 	}
 
 	public function test_check_to_perform_reset() {

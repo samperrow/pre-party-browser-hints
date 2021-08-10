@@ -34,35 +34,35 @@ final class PrePartyBrowserHintsTest extends TestCase {
 
 	public function test_load_common_files() {
 		$utils = class_exists(\PPRH\Utils::class);
-		self::assertEquals( true, $utils );
+		self::assertTrue(  $utils );
 
 		$dao = class_exists( \PPRH\DAO::class );
-		self::assertEquals( true, $dao );
+		self::assertTrue( $dao );
 
 		$create_hints = class_exists( \PPRH\CreateHints::class );
-		self::assertEquals( true, $create_hints );
+		self::assertTrue( $create_hints );
 	}
 
 	public function test_load_dashboard() {
 		$load_admin = class_exists( \PPRH\LoadAdmin::class );
-		self::assertEquals( true, $load_admin );
+		self::assertTrue( $load_admin );
 
 		$manage_options = current_user_can( 'manage_options' );
-		self::assertEquals( true, $manage_options );
+		self::assertTrue( $manage_options );
 	}
 
 	public function test_activate_plugin() {
 		$actual = $this->pprh->activate_plugin();
 
-		self::assertEquals( true, $actual );
+		self::assertTrue( $actual );
 	}
 
 	public function test_register_activation_hook() {
 		$registered = \has_filter( 'activate_pre-party-browser-hints/pre-party-browser-hints.php' );
-		self::assertEquals( true, $registered );
+		self::assertTrue( $registered );
 
 		$wp_loaded = \has_filter( 'wp_loaded' );
-		self::assertEquals( true, $wp_loaded );
+		self::assertTrue( $wp_loaded );
 	}
 
 

@@ -17,7 +17,7 @@ final class ActivatePluginTest extends TestCase {
 	public function test_convert_prefetch_string_to_array() {
 		$orig_prefetch_ignore_links = '/wp-admin, /wp-login.php, /cart, /checkout, add-to-cart, logout, #, ?, .png, .jpeg, .jpg, .gif, .svg, .webp';
 		$keyword_array = $this->activate_plugin->convert_prefetch_string_to_array( $orig_prefetch_ignore_links );
-		self::assertEquals( true, is_array( $keyword_array ) );
+		self::assertTrue(  is_array( $keyword_array ) );
 
 
 //		$keywords_1 = '["/cart","test","wp-login.php"]';

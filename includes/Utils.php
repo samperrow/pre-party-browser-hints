@@ -153,9 +153,9 @@ class Utils {
 			return false;
 		}
 
-//		if ( ! class_exists( \PPRH\DebugLogger::class ) ) {
-//			include_once 'DebugLogger.php';
-//		}
+		if ( ! class_exists( \PPRH\DebugLogger::class ) ) {
+			include_once 'DebugLogger.php';
+		}
 
 		$debugger = new DebugLogger();
 		$debugger->log_error( $message );

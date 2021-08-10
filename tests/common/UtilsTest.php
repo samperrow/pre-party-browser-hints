@@ -205,31 +205,31 @@ final class UtilsTest extends TestCase {
 
 	public function test_on_pprh_page_ctrl() {
 		$actual_1 = \PPRH\Utils::on_pprh_page_ctrl( false, 'https://sphacks.local/wp-admin/plugins.php?plugin_status=all&paged=1&s', '/wp-admin/admin.php?page=pprh-plugin-settings' );
-		self::assertEquals( true, $actual_1 );
+		self::assertSame( 1, $actual_1 );
 
 //		$actual_2 = \PPRH\Utils::on_pprh_page_ctrl( false, 'https://sphacks.local/wp-admin/edit.php?post_type=page', 'post.php' );
-//		self::assertEquals( true, $actual_2 );
+//		self::assertTrue( $actual_2 );
 
 		$actual_3 = \PPRH\Utils::on_pprh_page_ctrl( true, 'https://sphacks.local/wp-admin/admin.php?page=pprh-plugin-settings', 'admin-ajax.php' );
-		self::assertEquals( true, $actual_3 );
+		self::assertSame( 1, $actual_3 );
 
 //		$actual_4 = \PPRH\Utils::on_pprh_page_ctrl(true, 'https://sphacks.local/wp-admin/post.php?post=2128&action=edit', 'admin-ajax.php' );
-//		self::assertEquals( true, $actual_4 );
+//		self::assertTrue( $actual_4 );
 
 		$actual_5 = \PPRH\Utils::on_pprh_page_ctrl(false, 'https://sphacks.local/wp-admin/admin.php?page=pprh-plugin-settings', '/wp-admin/upload.php' );
-		self::assertEquals( false, $actual_5 );
+		self::assertSame( 0, $actual_5 );
 
 		$actual_6 = \PPRH\Utils::on_pprh_page_ctrl(false, 'https://sphacks.local/wp-admin/admin.php?page=pprh-plugin-settings', '/wp-admin/themes.php' );
-		self::assertEquals( false, $actual_6 );
+		self::assertSame( 0, $actual_6 );
 
 		$actual_7 = \PPRH\Utils::on_pprh_page_ctrl(false, 'https://sphacks.local/wp-admin/themes.php', '/wp-admin/options-general.php' );
-		self::assertEquals( false, $actual_7 );
+		self::assertSame( 0, $actual_7 );
 
 		$actual_8 = \PPRH\Utils::on_pprh_page_ctrl( false, 'https://sphacks.local/', '' );
-		self::assertEquals(false, $actual_8 );
+		self::assertSame( 0, $actual_8 );
 
 		$actual_9 = \PPRH\Utils::on_pprh_page_ctrl( true, 'asdfasys4ygdadf<>######%', '?' );
-		self::assertEquals( false, $actual_9 );
+		self::assertSame( 0, $actual_9 );
 	}
 
 

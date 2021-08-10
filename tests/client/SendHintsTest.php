@@ -28,30 +28,30 @@ class SendHintsTest extends TestCase {
 	public function test_init() {
 		$hints_1 = array();
 		$actual_1 = $this->send_hints->init($hints_1, true);
-		self::assertEquals( false, $actual_1 );
+		self::assertFalse( $actual_1 );
 
 		$hints_2 = array( TestUtils::create_hint_array( 'https://asdf.com', 'preconnect', '', '', '', '' ) );
 		$actual_2 = $this->send_hints->init($hints_2, false);
-		self::assertEquals( true, $actual_2 );
+		self::assertTrue(  $actual_2 );
 
 		$hints_3 = array();
 		$actual_3 = $this->send_hints->init($hints_3, true);
-		self::assertEquals( false, $actual_3 );
+		self::assertFalse( $actual_3 );
 	}
 
 
 	public function test_add_action_ctrl() {
 		$actual_1 = $this->send_hints->add_action_ctrl( true, true );
-		self::assertEquals( false, $actual_1 );
+		self::assertFalse( $actual_1 );
 
 		$actual_2 = $this->send_hints->add_action_ctrl( true, false );
-		self::assertEquals( false, $actual_2 );
+		self::assertFalse( $actual_2 );
 
 		$actual_3 = $this->send_hints->add_action_ctrl( false, true);
-		self::assertEquals( false, $actual_3 );
+		self::assertFalse( $actual_3 );
 
 		$actual_4 = $this->send_hints->add_action_ctrl( false, false );
-		self::assertEquals( true, $actual_4 );
+		self::assertTrue(  $actual_4 );
 	}
 
 	public function test_send_in_http_header() {
