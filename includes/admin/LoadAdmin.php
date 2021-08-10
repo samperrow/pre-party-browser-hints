@@ -137,14 +137,14 @@ class LoadAdmin {
 			'low'
 		);
 
-//		\add_meta_box(
-//			'pprh_prerender_settings_metabox',
-//			'Auto Prerender Settings',
-//			array( $this, 'create_prerender_metabox' ),
-//			PPRH_ADMIN_SCREEN,
-//			'normal',
-//			'low'
-//		);
+		\add_meta_box(
+			'pprh_prerender_settings_metabox',
+			'Auto Prerender Settings',
+			array( $this, 'create_prerender_metabox' ),
+			PPRH_ADMIN_SCREEN,
+			'normal',
+			'low'
+		);
 	}
 
 	public function create_prerender_metabox() {
