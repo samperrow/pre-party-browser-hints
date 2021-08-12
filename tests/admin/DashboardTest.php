@@ -24,5 +24,10 @@ class DashboardTest extends TestCase {
 		self::assertTrue( $actual_3 );
 	}
 
+//	public function test_show_plugin_dashboard() {
+//		$actual_1 = \has_action( 'pprh_notice' );
+//		self::assertTrue( $actual_1 );
+//	}
+
 
 }

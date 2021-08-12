@@ -10,10 +10,10 @@ class LoadAdmin {
 
 	public $on_pprh_page;
 
-	public function init() {
+	public function init( int $on_pprh_page ) {
+		$this->on_pprh_page = $on_pprh_page;
 		\add_action( 'admin_menu', array( $this, 'load_admin_menu' ) );
 
-		$this->on_pprh_page = Utils::on_pprh_page( \wp_doing_ajax(), '' );
 
 		if ( $this->on_pprh_page > 0 ) {
 			\add_action( 'admin_init', array( $this, 'add_settings_meta_boxes' ) );
@@ -32,7 +32,6 @@ class LoadAdmin {
 
 		$ajax_ops = new AjaxOps( $this->on_pprh_page );
 		$ajax_ops->set_actions();
-		\apply_filters( 'pprh_pro_load_admin', $this->on_pprh_page );
 	}
 
 
@@ -58,13 +57,14 @@ class LoadAdmin {
 		$dashboard->show_plugin_dashboard( $this->on_pprh_page );
 	}
 
-	public function load_admin_files() {
+	private function load_admin_files() {
 		include_once 'Dashboard.php';
+
 		include_once 'views/Settings.php';
+		include_once 'views/settings/SettingsSave.php';
+		include_once 'views/settings/SettingsView.php';
+
 		include_once 'views/FAQ.php';
-		include_once 'views/settings/GeneralSettings.php';
-		include_once 'views/settings/PreconnectSettings.php';
-		include_once 'views/settings/PrefetchSettings.php';
 	}
 
 	public function screen_option() {
@@ -106,14 +106,12 @@ class LoadAdmin {
 	}
 
 	public function add_settings_meta_boxes() {
-		$general_settings    = new GeneralSettings();
-		$preconnect_settings = new PreconnectSettings();
-		$prefetch_settings   = new PrefetchSettings();
+		$settings_view = new SettingsView();
 
 		\add_meta_box(
 			'pprh_general_settings_metabox',
 			'General Settings',
-			array( $general_settings, 'show_settings' ),
+			array( $settings_view, 'general_markup' ),
 			PPRH_ADMIN_SCREEN,
 			'normal',
 			'low'
@@ -122,7 +120,7 @@ class LoadAdmin {
 		\add_meta_box(
 			'pprh_preconnect_settings_metabox',
 			'Auto Preconnect Settings',
-			array( $preconnect_settings, 'show_settings' ),
+			array( $settings_view, 'preconnect_markup' ),
 			PPRH_ADMIN_SCREEN,
 			'normal',
 			'low'
@@ -131,7 +129,7 @@ class LoadAdmin {
 		\add_meta_box(
 			'pprh_prefetch_settings_metabox',
 			'Auto Prefetch Settings',
-			array( $prefetch_settings, 'show_settings' ),
+			array( $settings_view, 'prefetch_markup' ),
 			PPRH_ADMIN_SCREEN,
 			'normal',
 			'low'

@@ -107,50 +107,6 @@ final class UtilsTest extends TestCase {
 		self::assertTrue( $actual_6 );
 	}
 
-//	public function test_create_db_result() {
-//
-//
-//		$test1 = PPRH\Utils::create_db_result($str1);
-//
-//		self::assertEquals( '', $test2 );
-//	}
-
-//	public function test_get_wpdb_result() {
-//		$action1 = 'created';
-//		$hint_id = null;
-//		$wpdb1 = (object) array(
-//			'result'     => true,
-//			'last_error' => '',
-//		);
-//		$result1 = array(
-//			'msg'        => "Resource hint $action1 successfully.",
-//			'status'     => 'success',
-//			'success'    => true,
-//			'last_error' => '',
-//			'hint_id'  => $hint_id,
-//		);
-//
-//		$action2 = 'deleted';
-//		$wpdb2 = (object) array(
-//			'result'     => false,
-//			'last_error' => 'Failed!',
-//			'hint_id'  => $hint_id,
-//		);
-//		$result2 = array(
-//			'msg'        => "Failed to $action2 hint.",
-//			'status'     => 'error',
-//			'success'    => false,
-//			'last_error' => 'Failed!',
-//			'hint_id'  => $hint_id,
-//		);
-//
-//		$test1 = PPRH\Utils::get_wpdb_result($wpdb1, $action1);
-//		$test2 = PPRH\Utils::get_wpdb_result($wpdb2, $action2 );
-//
-//		self::assertEquals( $result1, $test1 );
-//		self::assertEquals( $result2, $test2 );
-//	}
-
 	public function test_does_option_match() {
 		$selected = 'selected="selected"';
 		$option_name = 'pprh_test_option';
@@ -166,7 +122,16 @@ final class UtilsTest extends TestCase {
 		\delete_option( $option_name );
 	}
 
+	public function test_update_checkbox_option() {
+		$actual_1 = \PPRH\Utils::update_checkbox_option( array( ), 'wacka', 'true' );
+		self::assertEquals( 'false', $actual_1 );
 
+		$actual_2 = \PPRH\Utils::update_checkbox_option( array( 'test_option' => 'true' ), 'test_option', 'false' );
+		self::assertEquals( 'true', $actual_2 );
+
+		$actual_3 = \PPRH\Utils::update_checkbox_option( array(), 'test_option2', 'false' );
+		self::assertEquals( '', $actual_3 );
+	}
 
 
 	public function test_esc_get_option() {

@@ -46,10 +46,6 @@ class Utils {
 		return preg_replace( '/[^a-z\d]/imu', '', $text );
 	}
 
-//	public static function strip_non_numbers( string $text ):string {
-//		return preg_replace( '/\D/', '', $text );
-//	}
-
 	public static function strip_non_numbers( $text, bool $as_str = true ) {
 		$str = preg_replace( '/\D/', '', $text );
 		return ( $as_str ) ? $str : (int) $str;
@@ -77,7 +73,7 @@ class Utils {
 
 	public static function clean_string_array( array $str_array ):array {
 		foreach ( $str_array as $item => $val ) {
-			$str_array[ $item ] = self::strip_non_alphanums( $val );
+			$str_array[ $item ] = self::strip_bad_chars( $val );
 		}
 
 		return $str_array;
@@ -110,6 +106,36 @@ class Utils {
 	}
 
 
+	public static function update_checkbox_option1( array $post, string $option_name ):string {
+//		$option_set = ( isset( $post[ $option_name ] ) );
+
+		$update_val = $post[ $option_name ] ?? 'false';
+
+//		if ( ! empty( $update_val ) ) {
+			self::update_option( $option_name, $update_val );
+//		}
+
+		return $update_val;
+	}
+
+
+	public static function update_checkbox_option( array $post, string $option_name, string $saved_option_value ):string {
+		$update_val = '';
+		$option_set = ( isset( $post[ $option_name ] ) );
+
+		if ( $option_set && $saved_option_value === 'false' ) {
+			$update_val = 'true';
+		} elseif ( ! $option_set && $saved_option_value === 'true' ) {
+			$update_val = 'false';
+		}
+
+		if ( ! empty( $update_val ) ) {
+			self::update_option( $option_name, $update_val );
+		}
+
+		return $update_val;
+	}
+
 	public static function esc_get_option( string $option ) {
 		return \esc_html( \get_option( $option ) );
 	}
@@ -126,7 +152,6 @@ class Utils {
 	public static function on_pprh_page( bool $doing_ajax, string $referer ):int {
 		if ( '' === $referer ) {
 			$referer = self::get_referer();
-//			$referer = self::get_server_prop( 'HTTP_REFERER' );
 		}
 
 		$request_uri = self::get_server_prop( 'REQUEST_URI' );

@@ -27,14 +27,24 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-\add_action( 'init', function() {
-	$pprh_load = new Pre_Party_Browser_Hints();
-	$pprh_load->init();
-}, 9, 0 );
+
+function somecb_fn() {
+	$pro_active = class_exists( \PPRH\PRO\PPRH_Pro::class );
+
+	if ( ! $pro_active ) {
+		$pprh_load = new Pre_Party_Browser_Hints();
+		unset( $pprh_load );
+	}
+}
+\add_action( 'init', '\PPRH\somecb_fn', 10, 0 );
 
 class Pre_Party_Browser_Hints {
 
-	public $pprh_preconnect_autoload;
+	protected static $pprh_preconnect_autoload;
+
+	protected $client_data;
+
+	protected $on_pprh_page;
 
 	public function __construct() {
 		if ( defined( 'DOING_CRON' ) && DOING_CRON ) {
@@ -43,63 +53,56 @@ class Pre_Party_Browser_Hints {
 
 		\register_activation_hook( __FILE__, array( $this, 'activate_plugin' ) );
 		\add_action( 'wpmu_new_blog', array( $this, 'activate_plugin' ) );
-		$this->pprh_preconnect_autoload = ( 'true' === \get_option( 'pprh_preconnect_autoload' ) );
+		$this->init();
 	}
 
 	public function init() {
-		\add_action( 'init', array( $this, 'load_plugin' ), 10, 0 );
-
-		if ( ! defined( 'PPRH_VERSION_NEW' ) ) {
-			define( 'PPRH_VERSION_NEW', '1.7.8' );
-		}
-
-		if ( ! defined( 'PPRH_VERSION' ) ) {
-			define( 'PPRH_VERSION', \get_option( 'pprh_version', '' ) );
-		}
+		self::$pprh_preconnect_autoload = ( 'true' === \get_option( 'pprh_preconnect_autoload' ) || PPRH_RUNNING_UNIT_TESTS );
 
 		$this->load_common_files();
 		$this->create_constants();
+		$this->load_plugin_main();
+
+		if ( is_null( $this->on_pprh_page ) ) {
+			$this->on_pprh_page = Utils::on_pprh_page( \wp_doing_ajax(), '' );
+		}
 	}
 
-	public function load_plugin() {
+	protected function load_plugin_main() {
 		\load_plugin_textdomain( 'pprh', false, PPRH_REL_DIR . 'languages' );
-		\do_action( 'pprh_load_plugin' );
 
 		$is_admin = \is_admin();
-		$this->load( $is_admin );
+
+		$str = ( $is_admin ) ? 'admin' : 'client';
+		\add_action( 'wp_loaded', array( $this, "load_main_$str" ) );
+
+		if ( PPRH_RUNNING_UNIT_TESTS ) {
+			\add_action( 'wp_loaded', array( $this, 'load_main_client' ), 10, 0 );
+		}
 
 		// this needs to be loaded front end and back end bc Ajax needs to be able to communicate between the two.
 
-		if ( $this->pprh_preconnect_autoload ) {
+		if ( self::$pprh_preconnect_autoload ) {
 			include_once 'includes/Preconnects.php';
 			$preconnects = new Preconnects();
 		}
 	}
 
-	public function load( bool $is_admin ) {
-		$str = ( $is_admin ) ? 'admin' : 'client';
-		\add_action( 'wp_loaded', array( $this, "load_$str" ) );
-
-		if ( PPRH_RUNNING_UNIT_TESTS ) {
-			\add_action( 'wp_loaded', array( $this, "load_client" ) );
-		}
-	}
-
-	public function load_admin() {
+	public function load_main_admin() {
 		include_once 'includes/admin/LoadAdmin.php';
 		$load_admin = new LoadAdmin();
-		$load_admin->init();
+		$load_admin->init( $this->on_pprh_page );
 		$this->plugin_updater();
 	}
 
-	public function load_client() {
+	public function load_main_client() {
 		include_once 'includes/client/LoadClient.php';
 		include_once 'includes/client/SendHints.php';
 		$load_client = new LoadClient();
-		$load_client->init( $this->pprh_preconnect_autoload );
+		$load_client->init( $this->client_data );
 	}
 
-	public function create_constants() {
+	protected function create_constants() {
 		global $wpdb;
 		$table          = $wpdb->prefix . 'pprh_table';
 		$postmeta_table = $wpdb->prefix . 'postmeta';
@@ -119,9 +122,18 @@ class Pre_Party_Browser_Hints {
 			define( 'PPRH_RUNNING_UNIT_TESTS', $unit_testing );
 			define( 'PPRH_EMAIL', 'info@sphacks.io' );
 		}
+
+		if ( ! defined( 'PPRH_VERSION_NEW' ) ) {
+			define( 'PPRH_VERSION_NEW', '1.7.8' );
+		}
+
+		if ( ! defined( 'PPRH_VERSION' ) ) {
+			define( 'PPRH_VERSION', \get_option( 'pprh_version', '' ) );
+		}
+
 	}
 
-	public function load_common_files() {
+	protected function load_common_files() {
 		include_once 'includes/Utils.php';
 		include_once 'includes/DAOController.php';
 		include_once 'includes/CreateHints.php';

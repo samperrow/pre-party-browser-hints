@@ -10,7 +10,8 @@ class Dashboard {
 
 	public function __construct() {
 		if ( ! \has_action(  'pprh_notice' ) ) {
-			\add_action( 'pprh_notice', array( $this, 'default_admin_notice' ), 10, 0 );
+//			Utils::show_notice( '', true );
+			\add_filter( 'pprh_notice', array( $this, 'default_admin_notice' ), 10, 0 );
 		}
 	}
 
@@ -25,6 +26,8 @@ class Dashboard {
 
 		$settings = new Settings();
 		$faq      = new FAQ();
+
+		$settings->save_user_options();
 
 		echo '<div id="pprh-poststuff" class="wrap"><h1>';
 		esc_html_e( 'Pre* Party Resource Hints', 'pprh' );
