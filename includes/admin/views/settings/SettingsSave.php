@@ -27,8 +27,10 @@ class SettingsSave extends Settings {
 		$results[] = Utils::update_checkbox_option1( $post, 'pprh_preconnect_autoload' );
 		$results[] = Utils::update_checkbox_option1( $post, 'pprh_disable_wp_hints' );
 
-		// TODO delete preconnects..
-		$reset_preconnects = ( isset( $_POST[ 'pprh_preconnect_set' ] ) && 'Reset' === $_POST[ 'pprh_preconnect_set' ] ) ? 'false' : 'true';
+		if ( isset( $_POST[ 'pprh_preconnect_set' ] ) && 'Reset' === $_POST[ 'pprh_preconnect_set' ] ) {
+			$results[] = DAO::delete_auto_preconnects( '' );
+			\add_action( 'pprh_notice', array( $this, 'auto_preconnect_notice' ) );
+		}
 
 		// PREFETCH
 		$this->save_prefetch_settings( $post );
@@ -36,6 +38,10 @@ class SettingsSave extends Settings {
 		return $results;
 	}
 
+	public function auto_preconnect_notice() {
+		$msg = 'Your automatically generated preconnect hints have been removed. Please reload a front-end page to generate new preconnect hints.';
+		\PPRH\Utils::show_notice( $msg, true );
+	}
 
 	public function save_prefetch_settings( array $post ) {
 		$results = array();

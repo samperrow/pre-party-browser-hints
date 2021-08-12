@@ -9,9 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 class LoadClient {
 
 	public function init( $client_data ) {
-//		$data = \apply_filters( 'pprh_pro_load_client', $pprh_preconnect_autoload );
-
-		if ( is_array( $client_data ) ) {
+		if ( is_null( $client_data ) ) {
 			$client_data = array();
 		}
 

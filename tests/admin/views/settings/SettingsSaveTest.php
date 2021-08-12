@@ -7,7 +7,7 @@ class SettingsSaveTest extends TestCase {
 	public static $settings_save;
 
 	public function test_start() {
-		self::$settings_save = new \PPRH\PRO\SettingsSave( true );
+		self::$settings_save = new \PPRH\SettingsSave();
 	}
 
 }

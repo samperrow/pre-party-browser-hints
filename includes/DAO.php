@@ -322,4 +322,30 @@ class DAO {
 		}
 	}
 
+	public static function delete_auto_preconnects( string $reset_type = '' ):array {
+		global $wpdb;
+		$table = PPRH_DB_TABLE;
+		$query = array(
+			'sql'  => "DELETE FROM $table WHERE hint_type = %s AND auto_created = %d",
+			'args' => array( 'preconnect', 1 )
+		);
+
+		$query = \apply_filters( 'pprh_delete_auto_preconnects', $query, $reset_type );
+
+		$wpdb->query(
+			$wpdb->prepare( $query['sql'], $query['args'] )
+		);
+
+		if ( ! $wpdb->result ) {
+			\PPRH\Utils::log_error( $wpdb->last_error );
+//			return false;
+		}
+
+		return array(
+			'result'        => $wpdb->result,
+			'last_error'    => $wpdb->last_error,
+			'rows_affected' => $wpdb->rows_affected
+		);
+	}
+
 }
