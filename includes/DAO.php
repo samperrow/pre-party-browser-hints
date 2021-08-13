@@ -83,7 +83,7 @@ class DAO {
 
 		$args = \apply_filters( 'pprh_dao_insert_hint_schema', $args, $new_hint );
 
-		if ( PPRH_RUNNING_UNIT_TESTS || PPRH_IN_DEV ) {
+		if ( PPRH_RUNNING_UNIT_TESTS ) {
 			return self::create_db_result( true, 0, 0, $new_hint );
 		}
 
@@ -117,7 +117,7 @@ class DAO {
 		$where    = array( 'id' => $hint_id );
 		$type_arg = array( '%s', '%s', '%s', '%s', '%s' );
 
-		if ( PPRH_RUNNING_UNIT_TESTS || PPRH_IN_DEV ) {
+		if ( PPRH_RUNNING_UNIT_TESTS ) {
 			return self::create_db_result( true, 1, 0, $new_hint );
 		}
 

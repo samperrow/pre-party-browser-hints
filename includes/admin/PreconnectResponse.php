@@ -24,7 +24,7 @@ class PreconnectResponse extends PreconnectInit {
 			$hints_created = $this->get_hint_results( $pprh_data );
 		}
 
-//		$this->update_options( $pprh_data );
+		$this->update_options( $pprh_data );
 
 		return $hints_created;
 	}
