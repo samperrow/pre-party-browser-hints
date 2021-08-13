@@ -59,11 +59,9 @@ class LoadAdmin {
 
 	private function load_admin_files() {
 		include_once 'Dashboard.php';
-
 		include_once 'views/Settings.php';
-		include_once 'views/settings/SettingsSave.php';
-		include_once 'views/settings/SettingsView.php';
-
+		include_once 'views/SettingsSave.php';
+		include_once 'views/SettingsView.php';
 		include_once 'views/FAQ.php';
 	}
 

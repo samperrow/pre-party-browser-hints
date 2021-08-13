@@ -83,7 +83,7 @@ class DAO {
 
 		$args = \apply_filters( 'pprh_dao_insert_hint_schema', $args, $new_hint );
 
-		if ( PPRH_RUNNING_UNIT_TESTS ) {
+		if ( PPRH_RUNNING_UNIT_TESTS || PPRH_IN_DEV ) {
 			return self::create_db_result( true, 0, 0, $new_hint );
 		}
 
@@ -117,7 +117,7 @@ class DAO {
 		$where    = array( 'id' => $hint_id );
 		$type_arg = array( '%s', '%s', '%s', '%s', '%s' );
 
-		if ( PPRH_RUNNING_UNIT_TESTS ) {
+		if ( PPRH_RUNNING_UNIT_TESTS || PPRH_IN_DEV ) {
 			return self::create_db_result( true, 1, 0, $new_hint );
 		}
 
@@ -322,7 +322,7 @@ class DAO {
 		}
 	}
 
-	public static function delete_auto_preconnects( string $reset_type = '' ):array {
+	public static function delete_auto_preconnects( string $reset_type = '' ):bool {
 		global $wpdb;
 		$table = PPRH_DB_TABLE;
 		$query = array(
@@ -332,20 +332,28 @@ class DAO {
 
 		$query = \apply_filters( 'pprh_delete_auto_preconnects', $query, $reset_type );
 
+		if ( PPRH_RUNNING_UNIT_TESTS ) {
+			return true;
+		}
+
 		$wpdb->query(
 			$wpdb->prepare( $query['sql'], $query['args'] )
 		);
 
-		if ( ! $wpdb->result ) {
+		$success = $wpdb->result;
+
+		if ( ! $success ) {
 			\PPRH\Utils::log_error( $wpdb->last_error );
-//			return false;
+			return false;
 		}
 
-		return array(
-			'result'        => $wpdb->result,
-			'last_error'    => $wpdb->last_error,
-			'rows_affected' => $wpdb->rows_affected
-		);
+		return true;
+
+//		return array(
+//			'result'        => $success,
+//			'last_error'    => $wpdb->last_error,
+//			'rows_affected' => $wpdb->rows_affected
+//		);
 	}
 
 }

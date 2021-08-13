@@ -106,35 +106,12 @@ class Utils {
 	}
 
 
-	public static function update_checkbox_option1( array $post, string $option_name ):string {
-//		$option_set = ( isset( $post[ $option_name ] ) );
-
+	public static function update_checkbox_option( array $post, string $option_name ):string {
 		$update_val = $post[ $option_name ] ?? 'false';
-
-//		if ( ! empty( $update_val ) ) {
-			self::update_option( $option_name, $update_val );
-//		}
-
+		self::update_option( $option_name, $update_val );
 		return $update_val;
 	}
 
-
-	public static function update_checkbox_option( array $post, string $option_name, string $saved_option_value ):string {
-		$update_val = '';
-		$option_set = ( isset( $post[ $option_name ] ) );
-
-		if ( $option_set && $saved_option_value === 'false' ) {
-			$update_val = 'true';
-		} elseif ( ! $option_set && $saved_option_value === 'true' ) {
-			$update_val = 'false';
-		}
-
-		if ( ! empty( $update_val ) ) {
-			self::update_option( $option_name, $update_val );
-		}
-
-		return $update_val;
-	}
 
 	public static function esc_get_option( string $option ) {
 		return \esc_html( \get_option( $option ) );

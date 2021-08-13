@@ -64,7 +64,7 @@ class SettingsView extends Settings {
 			<tr>
 				<th><?php esc_html_e( 'Allow unauthenticated users to automatically set preconnect hints via Ajax?', 'pprh' ); ?></th>
 				<td>
-					<input type="checkbox" name="pprh_preconnect_allow_unauth" value="1" <?php echo $allow_unauth; ?>/>
+					<input type="checkbox" name="pprh_preconnect_allow_unauth" value="true" <?php echo $allow_unauth; ?>/>
 					<p><?php esc_html_e( 'This plugin has a feature which allows preconnect hints to be automatically created asynchronously in the background with Ajax by the first user to visit a page (assuming the user has that option to be reset). There is an extremely remote possibility that if a visitor knew the hints would be set, they could choose to manually load many external scripts, which could trick the plugin script into accepting these as valid preconnect hints. But again this is a very remote possiblity and only a nuisance, not a vulnerability, due to the strict sanitization procedures in place.', 'pprh' ); ?></p>
 				</td>
 			</tr>

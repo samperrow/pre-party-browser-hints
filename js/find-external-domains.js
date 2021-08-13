@@ -54,9 +54,10 @@
 
         xhr.open('POST', pprh_data.admin_url, true);
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
-        xhr.send('action=pprh_post_domain_names&pprh_data=' + json + '&nonce=' + pprh_data.nonce );
+        xhr.send('action=pprh_post_domain_names&pprh_data=' + json + '&nonce=' + pprh_data.nonce);
     }
 
+    // sometimes this script can become cached in other JS files due to caching plugins. This prevents a request from being sent constantly when not desired.
     function scriptSentWithinSixHours() {
         let currentDT = new Date();
         let startTime = Number(pprh_data.start_time) * 1000;
@@ -66,7 +67,7 @@
 
     // sometimes this file can be cached, and this prevents it from constantly firing ajax requests.
     if (scriptSentWithinSixHours()) {
-        let timer = (TESTING) ? 2000 : 7000;
+        let timer = (TESTING) ? 1000 : 7000;
         setTimeout(fireAjax, timer);
     }
 })();

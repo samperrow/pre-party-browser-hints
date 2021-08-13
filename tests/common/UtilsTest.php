@@ -123,14 +123,14 @@ final class UtilsTest extends TestCase {
 	}
 
 	public function test_update_checkbox_option() {
-		$actual_1 = \PPRH\Utils::update_checkbox_option( array( ), 'wacka', 'true' );
+		$actual_1 = \PPRH\Utils::update_checkbox_option( array( ), 'wacka' );
 		self::assertEquals( 'false', $actual_1 );
 
-		$actual_2 = \PPRH\Utils::update_checkbox_option( array( 'test_option' => 'true' ), 'test_option', 'false' );
+		$actual_2 = \PPRH\Utils::update_checkbox_option( array( 'test_option' => 'true' ), 'test_option' );
 		self::assertEquals( 'true', $actual_2 );
 
-		$actual_3 = \PPRH\Utils::update_checkbox_option( array(), 'test_option2', 'false' );
-		self::assertEquals( '', $actual_3 );
+		$actual_3 = \PPRH\Utils::update_checkbox_option( array(), 'test_option2' );
+		self::assertEquals( 'false', $actual_3 );
 	}
 
 
