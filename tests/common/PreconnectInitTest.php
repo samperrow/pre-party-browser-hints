@@ -17,7 +17,7 @@ class PreconnectInitTest extends TestCase {
 		$js_object = self::$preconnect_init->create_js_object( time() );
 		$pprh_data = array(
 			'hints' => array(
-				array( 'url' => 'https://fonts.gstatic.com', 'hint_type' => 'preconnect', 'media' => '', 'as_attr' => '', 'type_attr' => '', 'crossorigin' => 'crossorigin' )
+				array( 'url' => 'https://fonts.gstatic.comTest', 'hint_type' => 'preconnect', 'media' => '', 'as_attr' => '', 'type_attr' => '', 'crossorigin' => 'crossorigin' )
 			),
 			'nonce' => $js_object['nonce'],
 		);
@@ -33,19 +33,17 @@ class PreconnectInitTest extends TestCase {
 		);
 
 		\update_option( 'pprh_preconnect_allow_unauth', 'false' );
-//		$config_1 = self::$preconnect_init->set_config( false, false, true, true, null );
-//		$load_1 = self::$preconnect_init->initialize_ctrl( $config_1 );
 		$response_1 = \wp_remote_post( $js_object['admin_url'], $args );
 		$response_body_1  = \PPRH\PRO\UtilsPro::get_api_response_body( $response_1, 'error' );
 		self::assertEmpty( $response_body_1 );
 
 
 		\update_option( 'pprh_preconnect_allow_unauth', 'true' );
-//		$config_2 = self::$preconnect_init->set_config( true, false, true, false, null );
-//		$load_2 = self::$preconnect_init->initialize_ctrl( $config_2 );
+		$pprh_data['hints'][0]['url'] = 'https://fonts.gstatic.comTest2';
+		$args['body']['pprh_data'] = json_encode( $pprh_data );
 		$response_2 = \wp_remote_post( $js_object['admin_url'], $args );
 		$response_body_2  = \PPRH\PRO\UtilsPro::get_api_response_body( $response_2, 'error' );
-		self::assertCount( 8, $response_body_2[0]['new_hint'] );
+		self::assertGreaterThan( 8, $response_body_2[0]['new_hint'] );
 		self::assertTrue( $response_body_2[0]['db_result']['status'] );
 		self::assertCount( count( $pprh_data['hints'] ), $response_body_2 );
 

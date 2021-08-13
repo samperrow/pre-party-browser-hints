@@ -53,8 +53,8 @@ class PreconnectResponse extends PreconnectInit {
 		return $results;
 	}
 
-	private function update_options( array $raw_hint_data ):bool {
-		$updated = \apply_filters( 'pprh_preconnects_update_options', $raw_hint_data );
+	private function update_options( array $pprh_data ):bool {
+		$updated = \apply_filters( 'pprh_preconnects_update_options', $pprh_data );
 
 		if ( is_array( $updated ) || false === $updated ) {
 			return Utils::update_option( 'pprh_preconnect_set', 'true' );

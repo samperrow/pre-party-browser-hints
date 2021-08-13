@@ -19,7 +19,7 @@ class AjaxOps {
 	}
 
 	public function pprh_update_hints() {
-		if ( isset( $_POST['pprh_data'] ) && wp_doing_ajax() ) {
+		if ( isset( $_POST['pprh_data'] ) && \wp_doing_ajax() ) {
 			\check_ajax_referer( 'pprh_table_nonce', 'nonce' );
 			$pprh_data = Utils::json_to_array( $_POST['pprh_data'] );
 

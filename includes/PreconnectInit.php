@@ -21,7 +21,7 @@ class PreconnectInit {
 		$allow_unauth_option       = ( 'true' === \get_option( 'pprh_preconnect_allow_unauth' ) );
 		$user_logged_in            = \is_user_logged_in();
 		$reset_preconnects_option  = ( 'false' === \get_option( 'pprh_preconnect_set' ) );
-		$this->reset_pro                 = \apply_filters( 'pprh_preconnect_check_to_reset', null );
+		$this->reset_pro           = \apply_filters( 'pprh_preconnect_check_to_reset', null );
 
 		$this->allow_user = ( $allow_unauth_option || $user_logged_in );
 		$this->doing_ajax = \wp_doing_ajax();

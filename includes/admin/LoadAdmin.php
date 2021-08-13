@@ -22,6 +22,8 @@ class LoadAdmin {
 			$this->load_common_content();
 			$this->load_admin_files();
 		}
+
+		\apply_filters( 'pprh_pro_load_admin', $this->on_pprh_page );
 	}
 
 	public function load_common_content() {

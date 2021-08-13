@@ -27,24 +27,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-
-function somecb_fn() {
-	$pro_active = class_exists( \PPRH\PRO\PPRH_Pro::class );
-
-	if ( ! $pro_active ) {
-		$pprh_load = new Pre_Party_Browser_Hints();
-		unset( $pprh_load );
-	}
-}
-\add_action( 'init', '\PPRH\somecb_fn', 10, 0 );
+\add_action( 'init', function() {
+	$pprh_load = new Pre_Party_Browser_Hints();
+	$pprh_load->init();
+}, 9, 0 );
 
 class Pre_Party_Browser_Hints {
 
-	protected static $pprh_preconnect_autoload;
+	private $preconnect_autoload;
 
 	protected $client_data;
-
-	protected $on_pprh_page;
 
 	public function __construct() {
 		if ( defined( 'DOING_CRON' ) && DOING_CRON ) {
@@ -53,21 +45,16 @@ class Pre_Party_Browser_Hints {
 
 		\register_activation_hook( __FILE__, array( $this, 'activate_plugin' ) );
 		\add_action( 'wpmu_new_blog', array( $this, 'activate_plugin' ) );
-		$this->init();
+//		$this->init();
 	}
 
 	public function init() {
-
 		$this->load_common_files();
 		$this->create_constants();
 		$this->load_plugin_main();
-
-		if ( is_null( $this->on_pprh_page ) ) {
-			$this->on_pprh_page = Utils::on_pprh_page( \wp_doing_ajax(), '' );
-		}
 	}
 
-	protected function load_common_files() {
+	private function load_common_files() {
 		include_once 'includes/Utils.php';
 		include_once 'includes/DAOController.php';
 		include_once 'includes/CreateHints.php';
@@ -105,9 +92,10 @@ class Pre_Party_Browser_Hints {
 
 	}
 
-	protected function load_plugin_main() {
-		self::$pprh_preconnect_autoload = ( 'true' === \get_option( 'pprh_preconnect_autoload' ) || PPRH_RUNNING_UNIT_TESTS );
+	public function load_plugin_main() {
+		$this->preconnect_autoload = ( 'true' === \get_option( 'pprh_preconnect_autoload' ) || PPRH_RUNNING_UNIT_TESTS );
 		\load_plugin_textdomain( 'pprh', false, PPRH_REL_DIR . 'languages' );
+		\do_action( 'pprh_load_plugin' );
 
 		$is_admin = \is_admin();
 
@@ -120,7 +108,7 @@ class Pre_Party_Browser_Hints {
 
 		// this needs to be loaded front end and back end bc Ajax needs to be able to communicate between the two.
 
-		if ( self::$pprh_preconnect_autoload ) {
+		if ( $this->preconnect_autoload ) {
 			include_once 'includes/PreconnectInit.php';
 			include_once 'includes/admin/PreconnectResponse.php';
 			$preconnect_init = new PreconnectInit();
@@ -130,6 +118,7 @@ class Pre_Party_Browser_Hints {
 
 	public function load_main_admin() {
 		include_once 'includes/admin/LoadAdmin.php';
+		$this->on_pprh_page = Utils::on_pprh_page( \wp_doing_ajax(), '' );
 		$load_admin = new LoadAdmin();
 		$load_admin->init( $this->on_pprh_page );
 		$this->plugin_updater();
@@ -139,7 +128,7 @@ class Pre_Party_Browser_Hints {
 		include_once 'includes/client/LoadClient.php';
 		include_once 'includes/client/SendHints.php';
 		$load_client = new LoadClient();
-		$load_client->init( $this->client_data );
+		$load_client->init( $this->preconnect_autoload );
 	}
 
 
