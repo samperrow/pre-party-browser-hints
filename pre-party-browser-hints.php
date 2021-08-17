@@ -30,22 +30,23 @@ if ( ! defined( 'ABSPATH' ) ) {
 \add_action( 'init', function() {
 	$pprh_load = new Pre_Party_Browser_Hints();
 	$pprh_load->init();
-}, 9, 0 );
+}, 10, 0 );
 
 class Pre_Party_Browser_Hints {
 
-	private $preconnect_autoload;
+	private static $preconnect_autoload;
+	private $on_pprh_page;
 
 	protected $client_data;
 
 	public function __construct() {
-		if ( defined( 'DOING_CRON' ) && DOING_CRON ) {
-			return;
-		}
+//		if ( defined( 'DOING_CRON' ) && DOING_CRON ) {
+//			return;
+//		}
 
 		\register_activation_hook( __FILE__, array( $this, 'activate_plugin' ) );
 		\add_action( 'wpmu_new_blog', array( $this, 'activate_plugin' ) );
-//		$this->init();
+		\add_filter( 'pre_set_site_transient_update_plugins', array( $this, 'plugin_updater' ), 10, 1 );
 	}
 
 	public function init() {
@@ -93,22 +94,15 @@ class Pre_Party_Browser_Hints {
 	}
 
 	public function load_plugin_main() {
-		$this->preconnect_autoload = ( 'true' === \get_option( 'pprh_preconnect_autoload' ) || PPRH_RUNNING_UNIT_TESTS );
+		self::$preconnect_autoload = ( 'true' === \get_option( 'pprh_preconnect_autoload' ) || PPRH_RUNNING_UNIT_TESTS );
 		\load_plugin_textdomain( 'pprh', false, PPRH_REL_DIR . 'languages' );
 		\do_action( 'pprh_load_plugin' );
-
 		$is_admin = \is_admin();
-
 		$str = ( $is_admin ) ? 'admin' : 'client';
 		\add_action( 'wp_loaded', array( $this, "load_main_$str" ) );
 
-		if ( PPRH_RUNNING_UNIT_TESTS ) {
-			\add_action( 'wp_loaded', array( $this, 'load_main_client' ), 10, 0 );
-		}
-
 		// this needs to be loaded front end and back end bc Ajax needs to be able to communicate between the two.
-
-		if ( $this->preconnect_autoload ) {
+		if ( self::$preconnect_autoload ) {
 			include_once 'includes/PreconnectInit.php';
 			include_once 'includes/admin/PreconnectResponse.php';
 			$preconnect_init = new PreconnectInit();
@@ -116,23 +110,21 @@ class Pre_Party_Browser_Hints {
 		}
 	}
 
+
 	public function load_main_admin() {
 		include_once 'includes/admin/LoadAdmin.php';
+		include_once 'includes/admin/Updater.php';
 		$this->on_pprh_page = Utils::on_pprh_page( \wp_doing_ajax(), '' );
 		$load_admin = new LoadAdmin();
 		$load_admin->init( $this->on_pprh_page );
-		$this->plugin_updater();
 	}
 
-	public function load_main_client() {
+	public static function load_main_client() {
 		include_once 'includes/client/LoadClient.php';
 		include_once 'includes/client/SendHints.php';
 		$load_client = new LoadClient();
-		$load_client->init( $this->preconnect_autoload );
+		$load_client->init( self::$preconnect_autoload );
 	}
-
-
-
 
 
 	public function activate_plugin() {
@@ -143,15 +135,13 @@ class Pre_Party_Browser_Hints {
 		return $activate_plugin->plugin_activated;
 	}
 
-	private function plugin_updater() {
-		$api_endpoint = 'https://sphacks.io/wp-content/pprh/free/updater.json';
-		$plugin_file = 'pre-party-browser-hints/pre-party-browser-hints.php';
-		$transient_name = 'pprh_updater';
-
-		if ( class_exists( \PPRH\PRO\Updater::class ) ) {
-			$updater = new \PPRH\PRO\Updater( $api_endpoint, $plugin_file, $transient_name, PPRH_VERSION_NEW );
-			$updater->set_filter();
+	public function plugin_updater( $transient ) {
+		if ( empty( $transient->checked ) ) {
+			return $transient;
 		}
+
+		$updater = new \PPRH\Updater();
+		$updater->init( $transient );
 	}
 
 }

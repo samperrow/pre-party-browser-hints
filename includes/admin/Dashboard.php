@@ -26,7 +26,6 @@ class Dashboard {
 
 		$settings = new Settings();
 		$faq      = new FAQ();
-
 		$settings->save_user_options();
 
 		echo '<div id="pprh-poststuff" class="wrap"><h1>';

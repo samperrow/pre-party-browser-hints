@@ -207,7 +207,7 @@ final class UtilsTest extends TestCase {
 	public function test_get_browser_name() {
 		$user_agent_1 = '';
 		$actual_1 = \PPRH\Utils::get_browser_name( $user_agent_1 );
-		self::assertEmpty( $actual_1 );
+		self::assertSame( 'Unknown browser.', $actual_1 );
 
 		$user_agent_2 = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:89.0) Gecko/20100101 Firefox/89.0';
 		$actual_2 = \PPRH\Utils::get_browser_name( $user_agent_2 );
@@ -250,6 +250,18 @@ final class UtilsTest extends TestCase {
 
 		$actual_4 = \PPRH\Utils::json_to_array( '{\"url\":\"//asdf\",\"hint_type\":\"dns-prefetch\",\"media\":\"\",\"as_attr\":\"\",\"type_attr\":\"\",\"crossorigin\":\"\",\"post_id\":\"global\",\"op_code\":0,\"hint_ids\":[]}' );
 		self::assertCount( 9, $actual_4 );
+	}
+
+	public function test_get_api_response_body() {
+
+		$actual_1 = \PPRH\Utils::get_api_response_body( array(), 'error from testing get_api_response_body()' );
+		self::assertEmpty( $actual_1 );
+
+		$json_2 = '{"headers":{},"body":"{\n  \"name\": \"Pre* Party Resource Hints Pro\",\n  \"slug\": \"pprh-pro\",\n  \"homepage\": \"https:\/\/sphacks.io\",\n  \"download_url\": \"https:\/\/sphacks.io\/wp-content\/pprh\/pro\/pprh-pro.zip\",\n  \"package\": \"https:\/\/sphacks.io\/wp-content\/pprh\/pro\/pprh-pro.zip\",\n\n  \"new_version\": \"2.0.2\",\n  \"requires\": \"4.4\",\n  \"tested\": \"5.8.3\",\n  \"last_updated\": \"2021-08-02\",\n  \"upgrade_notice\": \"Enjoy post specific hints, inline table updates, and more.\",\n  \"requires_php\": \"7.0.0\",\n  \"author\": \"Sam Perrow\",\n  \"author_homepage\": \"https:\/\/sphacks.io\",\n  \"compatibility\": \"Excellent\",\n\n  \"icons\": {\n    \"1x\": \"https:\/\/sphacks.io\/wp-content\/pprh\/images\/icon-128x128.png\",\n    \"2x\": \"https:\/\/sphacks.io\/wp-content\/pprh\/images\/icon-64x64.png\"\n  },\n\n  \"banners\": {\n    \"low\": \"https:\/\/sphacks.io\/wp-content\/pprh\/images\/banner-772x250.jpg\"\n  },\n\n  \"sections\": {\n    \"installation\": \"After purchasing a license, you will receive a zip file of the pro version. Upload this file to the plugins directory, then deactivate the free plugin version. Activate the Pro version, then you can delete the free version.\",\n    \"changelog\": \"test changelog\",\n    \"custom_section\": \"custom section\"\n  },\n\n\n  \"rating\": 100,\n  \"num_ratings\": 20,\n  \"downloaded\": 73000,\n  \"active_installs\": 6000\n}","response":{"code":200,"message":"OK"},"cookies":[],"filename":null,"http_response":{"data":null,"headers":null,"status":null}}';
+		$test_2 = \PPRH\Utils::json_to_array( $json_2 );
+		$actual_2 = \PPRH\Utils::get_api_response_body( $test_2, 'test' );
+		self::assertCount( 21, $actual_2 );
+
 	}
 
 //	public function test_log_error() {

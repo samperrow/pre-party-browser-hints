@@ -165,7 +165,7 @@ final class DAOTest extends TestCase {
 	}
 
 	public function test_delete_hint() {
-		$actual_1 = self::$dao->delete_hint( '10' );
+		$actual_1 = \PPRH\DAO::delete_hint( '10' );
 		$expected_1 = \PPRH\DAO::create_db_result( true, 2, 0, null );
 		self::assertEquals($expected_1, $actual_1);
 	}

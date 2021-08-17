@@ -10,11 +10,13 @@ class PreconnectInit {
 
 	private $allow_user = false;
 	private $doing_ajax = false;
+	private $token      = '';
 
 	public $reset_pro;
 
 	public function load_actions() {
 		\add_action( 'wp_loaded', array( $this, 'initialize' ), 10, 0 );
+		$this->token = 'asdf';
 	}
 
 	public function initialize() {

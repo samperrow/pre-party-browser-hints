@@ -14,7 +14,6 @@ class LoadAdmin {
 		$this->on_pprh_page = $on_pprh_page;
 		\add_action( 'admin_menu', array( $this, 'load_admin_menu' ) );
 
-
 		if ( $this->on_pprh_page > 0 ) {
 			\add_action( 'admin_init', array( $this, 'add_settings_meta_boxes' ) );
 			\add_action( 'admin_enqueue_scripts', array( $this, 'register_admin_files' ) );
@@ -24,6 +23,7 @@ class LoadAdmin {
 		}
 
 		\apply_filters( 'pprh_pro_load_admin', $this->on_pprh_page );
+		$this->check_debug_email();
 	}
 
 	public function load_common_content() {
@@ -57,6 +57,21 @@ class LoadAdmin {
 
 		$dashboard = new Dashboard();
 		$dashboard->show_plugin_dashboard( $this->on_pprh_page );
+	}
+
+	public function check_debug_email() {
+		$transient_name        = 'pprh_debug_logger';
+		$transient_expire_time = (int) \get_option( "_transient_timeout_$transient_name" );
+		$time_now              = time();
+
+		if ( $time_now >= $transient_expire_time ) {
+			$error = \get_option( "_transient_$transient_name" );
+
+			if ( ! empty( $error ) ) {
+				Utils::send_email( PPRH_EMAIL, 'Error', $transient_name );
+				\delete_transient( $transient_name );
+			}
+		}
 	}
 
 	private function load_admin_files() {

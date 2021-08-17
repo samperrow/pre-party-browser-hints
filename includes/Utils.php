@@ -165,9 +165,7 @@ class Utils {
 	}
 
 	public static function log_error( $message ):bool {
-		$debug_enabled = ( 'false' !== \get_option( 'pprh_debug_enabled', 'false' ) );
-
-		if ( ! $debug_enabled ) {
+		if ( 'true' !== \get_option( 'pprh_debug_enabled', 'false' ) ) {
 			return false;
 		}
 
@@ -188,7 +186,6 @@ class Utils {
 	}
 
 	public static function get_browser_name( $user_agent ):string {
-		$browser = '';
 
 		if ( str_contains( $user_agent, 'Edg' ) ) {
 			$browser = 'Edge';
@@ -204,6 +201,8 @@ class Utils {
 			$browser = 'MSIE';
 		} elseif ( str_contains( $user_agent, 'Netscape' ) ) {
 			$browser = 'Netscape';
+		} else {
+			$browser = 'Unknown browser.';
 		}
 
 		return $browser;
@@ -211,7 +210,7 @@ class Utils {
 
 	public static function get_debug_info():string {
 		$browser = self::get_browser();
-		$text    = "\nDebug info: \n";
+		$text    = "DEBUG INFO: \n";
 		$data = array(
 			'Datetime'     => self::get_current_datetime(),
 			'PHP Version'  => PHP_VERSION,
@@ -222,25 +221,39 @@ class Utils {
 		);
 
 		foreach ( $data as $item => $val ) {
-			$text .= "$item: $val\n";
+			$text .= "$item: $val; ";
 		}
 
 		return $text;
 	}
 
 	public static function send_email( string $to, string $subject, string $message ):bool {
-		if ( PPRH_RUNNING_UNIT_TESTS ) {
-			return true;
-		}
-
 		try {
 			\wp_mail( $to, $subject, $message );
 		} catch ( \Exception $e ) {
-//			self::log_error( $e );
+			self::log_error( $e );
 			return false;
 		}
 
 		return true;
+	}
+
+	public static function get_api_response_body( array $response, string $error_msg ):array {
+		$response_body = array();
+
+		if ( \is_wp_error( $response ) ) {
+			self::log_error( $response );
+		} elseif ( isset( $response['response'] ) && 200 === \wp_remote_retrieve_response_code( $response ) ) {
+			$body          = \wp_remote_retrieve_body( $response );
+			$response_body = self::json_to_array( $body );
+		}
+
+		if ( ! self::isArrayAndNotEmpty( $response_body ) ) {
+			self::log_error( $error_msg );
+			$response_body = array();
+		}
+
+		return $response_body;
 	}
 
 }

@@ -34,6 +34,7 @@ class SettingsSave extends Settings {
 		$results = array();
 
 		$results[] = Utils::update_checkbox_option( $post, 'pprh_disable_wp_hints' );
+		$results[] = Utils::update_checkbox_option( $post, 'pprh_debug_enabled' );
 
 		$html_head = Utils::strip_non_alphanums( $post[ 'pprh_html_head' ] ?? 'false' );
 		Utils::update_option( 'pprh_html_head', $html_head );

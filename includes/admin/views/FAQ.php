@@ -55,10 +55,12 @@ class FAQ {
 				These hints will be stored until they are reset by the user. To reset theUpon installation, and after the "Reset" button is clicked (in the Auto Preconnect box in the Settings tab)</p>
 
 				<p>What does the "Auto Prefetch" feature do, and how does it work?</p>
-				<p>-</p>
+				<p>-This feature allows for prefetch hints to be automatically created on the front end, based on navigation (a.k.a "anchor") links available to the user.
+				This enables a page a visitor is likely to click on to load much faster.
+				These prefetch hints are temporary, and are NOT created in the database.</p>
 
 				<p>My resource hints are not appearing on the front end, what is the problem?</p>
-				<p>-</p>
+				<p>-The resource hints are probably not appearing on the front end because the front end is delivering cached content. I recommend clearing the cache on any plugins, web server, or on the browser directly to resolve this problem.</p>
 
 				<p>What are the benefits of upgrading to the Pro version?</p>
 				<ul>
@@ -68,7 +70,11 @@ class FAQ {
 				</ul>
 
 				<p>What does the "Auto Prerender" feature do, and how does it work?</p>
-				<p>-</p>
+				<p>-This allows prerender hints to be automatically created, which are unique to each post/page on your website. These hints are created by using analytics data from your visitors (only the "HTTP Referer" server value is used).
+				For example, if 70% of your visitors who initially land on your home page, navigate to the "/products" link immediately afterwards, a prerender hint for the "/products" link will be created, which is only used on the home page.
+				Prerender hints are by far the most powerful resource hint available, because an entire web page can be loaded by a visitor, allowing that page to be delivered immediately to the visitor.
+				See this link for an example <a href="https://ipullrank.com/how-i-sped-up-my-site-68-percent-with-one-line-of-code">https://ipullrank.com/how-i-sped-up-my-site-68-percent-with-one-line-of-code</a>
+				</p>
 
 				add info about how to do "resets" etc..
 

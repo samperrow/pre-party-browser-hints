@@ -6,6 +6,19 @@
     let altHostName = getAltHostName(host);
     const TESTING = (/sphacks\.local/.test(host));
 
+    if (typeof pprh_data === "undefined") {
+        var pprh_data = setPprhData();
+    }
+
+    function setPprhData() {
+         return {
+            admin_url: host + '/wp-admin/admin-ajax.php',
+            start_time: new Date().getTime() / 1000,
+            hints: [],
+            nonce: ''
+        }
+    }
+
     function getAltHostName(hostname) {
         let idx = hostname.indexOf("//");
         let strippedWWW = hostname.replace(/www\./, "");
@@ -42,11 +55,14 @@
         return newHintArr;
     }
 
-    function fireAjax() {
-        pprh_data.hints = findResourceSources();
+    function fireAjax(resources = null) {
+        if (resources === null) {
+            resources = findResourceSources();
+        }
+
+        pprh_data.hints = resources;
         let json = JSON.stringify(pprh_data);
         let xhr = new XMLHttpRequest();
-
         if (TESTING) {
             console.log(pprh_data);
         }
@@ -70,4 +86,17 @@
         setTimeout(fireAjax, timer);
     }
 
+    return {
+        IsValidHintDomain: isValidHintDomain,
+        GetAltHostName: getAltHostName,
+        ScriptSentWithinSixHours: scriptSentWithinSixHours,
+        FireAjax: fireAjax,
+        FindResourceSources: findResourceSources
+    }
+
 }));
+
+// for testing
+if (typeof module === "object") {
+    module.exports = this.pprhPreconnects;
+}

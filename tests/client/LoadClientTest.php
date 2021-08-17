@@ -11,7 +11,7 @@ final class LoadClientTest extends TestCase {
 
 	public static $load_client;
 
-	public static function test_start() {
+	public function test_start() {
 		self::$load_client = new \PPRH\LoadClient();
 	}
 

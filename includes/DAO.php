@@ -10,6 +10,8 @@ class DAO {
 
 	public $table;
 
+	private static $table2 = PPRH_DB_TABLE;
+
 	public function __construct() {
 		$this->table = PPRH_DB_TABLE;
 	}
@@ -134,23 +136,20 @@ class DAO {
 		return self::create_db_result( $wpdb->result, 1, 0, $new_hint );
 	}
 
-	public function delete_hint( string $hint_ids ) {
+	public static function delete_hint( string $hint_ids ) {
 		global $wpdb;
+		$table = self::$table2;
 		$valid_hint_id = ( 0 < preg_match( '/\d/', $hint_ids ) );
 
 		if ( $valid_hint_id ) {
-
-			if ( PPRH_RUNNING_UNIT_TESTS ) {
-				return self::create_db_result( true, 2, 0, null );
-			}
-
-			$wpdb->query( "DELETE FROM $this->table WHERE id IN ($hint_ids)" );
-			return self::create_db_result( $wpdb->result, 2, 0, null );
+			$wpdb->query( "DELETE FROM $table WHERE id IN ($hint_ids)" );
 		}
 
 		if ( ! $wpdb->result ) {
 			Utils::log_error( $wpdb->last_error );
 		}
+
+		return self::create_db_result( $wpdb->result, 2, 0, null );
 	}
 
 	public function bulk_update( $hint_ids, $op_code ) {

@@ -30,7 +30,7 @@ class DAOController extends DAO {
 		if ( 0 === $op_code || 1 === $op_code ) {
 			$db_result = $this->insert_or_update_hint( $op_code, $raw_data, $hint_ids );
 		} elseif ( 2 === $op_code ) {
-			$db_result = $this->delete_hint( $hint_ids );
+			$db_result = self::delete_hint( $hint_ids );
 		} elseif ( 3 === $op_code || 4 === $op_code ) {
 			$db_result = $this->bulk_update( $hint_ids, $op_code );
 		}

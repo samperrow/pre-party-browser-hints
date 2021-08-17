@@ -12,6 +12,7 @@ class SettingsView extends Settings {
 	public function general_markup() {
 		$selected = 'selected="selected"';
 		$disable_wp_hints = Utils::does_option_match( 'pprh_disable_wp_hints', 'true', 'checked' );
+		$debug_enabled = Utils::does_option_match( 'pprh_debug_enabled', 'true', 'checked' );
 		?>
 		<table class="form-table">
 			<tbody>
@@ -36,6 +37,15 @@ class SettingsView extends Settings {
 					<p><?php esc_html_e( 'Send hints in the HTML &lt;head&gt; or the HTTP header.', 'pprh' ); ?></p>
 				</td>
 			</tr>
+
+            <tr>
+                <th><?php esc_html_e( 'Enable debug logger?', 'pprh' ); ?></th>
+
+                <td>
+                    <input type="checkbox" name="pprh_debug_enabled" value="true" <?php echo $debug_enabled; ?>/>
+                    <p><?php esc_html_e( 'This option will save any errors that occur as a transient, and emails them to the plugin developers so errors can be fixed quickly.', 'pprh' ); ?></p>
+                </td>
+            </tr>
 
 			<?php \do_action( 'pprh_sc_general_settings' ); ?>
 

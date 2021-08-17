@@ -11,13 +11,13 @@ class SettingsSaveTest extends TestCase{
 	}
 
 	public function test_save_general_settings() {
-		$post_1 = array('pprh_disable_wp_hints' => 'true', 'pprh_html_head' => 'true');
-		$actual_1 = self::$settings_save->save_general_settings($post_1);
-		self::assertSame(array('true', 'true'), $actual_1);
+		$post_1 = array('pprh_disable_wp_hints' => 'true', 'pprh_html_head' => 'true', 'pprh_debug_enabled' => 'true' );
+		$actual_1 = self::$settings_save->save_general_settings( $post_1 );
+		self::assertSame( array( 'true', 'true', 'true' ), $actual_1 );
 
 		$post_2 = array();
 		$actual_2 = self::$settings_save->save_general_settings($post_2);
-		self::assertSame(array('false', 'false'), $actual_2);
+		self::assertSame(array('false', 'false', 'false' ), $actual_2);
 	}
 
 	public function test_save_preconnect_settings() {
