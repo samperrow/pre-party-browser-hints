@@ -23,7 +23,7 @@ class ClientAjaxInit {
 			$this->args = array(
 				'hints_set_name'           => 'pprh_preconnect_set',
 				'script_filepath'          => PPRH_REL_DIR . 'js/preconnect.js',
-				'allow_unauth_option_name' => 'pprh_preconnect_allow_unauth'
+				'allow_unauth_option_name' => 'pprh_preconnect_allow_unauth',
 			);
 		}
 		elseif ( 'preload' === $hint_type ) {
@@ -56,7 +56,7 @@ class ClientAjaxInit {
 			$this->load_ajax_callbacks( $allow_user );
 			return false;
 		} else {
-			$reset_hints  = ( is_null( $reset_pro ) ) ? $reset_preconnects_option : $reset_pro;
+			$reset_hints   = ( is_string( $reset_pro ) ) ? $reset_preconnects_option : $reset_pro;
 			$perform_reset = ( $allow_user && $reset_hints );
 		}
 
@@ -64,7 +64,7 @@ class ClientAjaxInit {
 			return false;
 		}
 
-		\add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
+		\add_action( 'wp_enqueue_scripts', array( $this, "enqueue_scripts" ) );
 		return true;
 	}
 
@@ -76,28 +76,29 @@ class ClientAjaxInit {
 	}
 
 	public function enqueue_scripts() {
-		$js_object = $this->create_js_object( time() );
+		$js_object = $this->create_js_object( time(), $this->hint_type );
 		$script_file = $this->args['script_filepath'];
 
 		\wp_register_script( 'pprh_create_hints_js', PPRH_REL_DIR . 'js/create-hints.js', null, PPRH_VERSION, true );
 		\wp_enqueue_script( 'pprh_create_hints_js' );
 
-		\wp_register_script( "pprh_$this->hint_type", $script_file, null, PPRH_VERSION, true );
-		\wp_localize_script( "pprh_$this->hint_type", 'pprh_data', $js_object );
+		\wp_register_script( "pprh_$this->hint_type", $script_file, array( 'pprh_create_hints_js' ), PPRH_VERSION, true );
+		\wp_localize_script( "pprh_$this->hint_type", "pprh_data_$this->hint_type", $js_object );
 		\wp_enqueue_script( "pprh_$this->hint_type" );
 	}
 
-	public function create_js_object( int $time ):array {
+	public function create_js_object( int $time, string $hint_type ):array {
 		$js_arr = array(
 			'hints'      => array(),
 			'nonce'      => \wp_create_nonce( 'pprh_ajax_nonce' ),
 			'timeout'    => PPRH_IN_DEV ? 1000 : 7000,
 			'admin_url'  => \admin_url() . 'admin-ajax.php',
+//			'hint_type'  => $hint_type,
 			'start_time' => $time
 		);
 
 		if ( $this->reset_pro ) {
-			$js_arr = \apply_filters( 'pprh_append_hint_object', $js_arr );
+			$js_arr = \apply_filters( 'pprh_append_hint_object', $js_arr, $hint_type );
 		}
 
 		return $js_arr;

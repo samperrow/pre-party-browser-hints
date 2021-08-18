@@ -20,7 +20,7 @@ class ClientAjaxResponseTest extends TestCase {
 
 	public function test_post_domain_names() {
 		$time = time();
-		$pprh_data = self::$client_ajax_response_preconnect->create_js_object( $time );
+		$pprh_data = self::$client_ajax_response_preconnect->create_js_object( $time, self::$hint_type );
 		$hint_preconnect_1 = TestUtils::create_hint_array( 'https://fonts.gstaticTest.com', self::$hint_type );
 		$hint_preconnect_2 = TestUtils::create_hint_array( 'https://fonts.gstaticTest2.com', self::$hint_type );
 

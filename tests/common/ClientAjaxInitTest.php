@@ -13,7 +13,7 @@ class ClientAjaxInitTest extends TestCase {
 	public function test_entire_preconnects_feature() {
 		$orig_preconnect_allow_unauth = \get_option( 'pprh_preconnect_allow_unauth' );
 
-		$js_object = self::$client_ajax_init_preconnect->create_js_object( time() );
+		$js_object = self::$client_ajax_init_preconnect->create_js_object( time(), 'preconnect' );
 		$pprh_data = array(
 			'hints' => array(
 				array( 'url' => 'https://fonts.gstatic.comTest', 'hint_type' => 'preconnect', 'media' => '', 'as_attr' => '', 'type_attr' => '', 'crossorigin' => 'crossorigin' )
@@ -66,11 +66,11 @@ class ClientAjaxInitTest extends TestCase {
 		$actual_2 = self::$client_ajax_init_preconnect->initialize_ctrl( false, false, true, null );
 		self::assertFalse( $actual_2 );
 
-		$actual_3 = self::$client_ajax_init_preconnect->initialize_ctrl( true, true, false, null );
+		$actual_3 = self::$client_ajax_init_preconnect->initialize_ctrl( true, true, false, 'preload' );
 		self::assertTrue( $actual_3 );
 
-		$actual_4 = self::$client_ajax_init_preconnect->initialize_ctrl( true, true, false, null );
-		self::assertTrue( $actual_4 );
+		$actual_4 = self::$client_ajax_init_preconnect->initialize_ctrl( true, true, false, false );
+		self::assertFalse( $actual_4 );
 
 		$actual_5 = self::$client_ajax_init_preconnect->initialize_ctrl( true, true, false, true );
 		self::assertTrue( $actual_5 );
@@ -120,7 +120,7 @@ class ClientAjaxInitTest extends TestCase {
 			'start_time' => $time
 		);
 
-		$actual_object_1 = self::$client_ajax_init_preconnect->create_js_object( $time );
+		$actual_object_1 = self::$client_ajax_init_preconnect->create_js_object( $time, 'preload' );
 		self::assertEquals( $expected_arr_1, $actual_object_1 );
 	}
 
