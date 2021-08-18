@@ -9,14 +9,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class ClientAjaxInit {
 
-	private bool $allow_user = false;
-	private bool $doing_ajax = false;
+	private $allow_user = false;
+	private $doing_ajax = false;
 
-	protected string $hint_type;
+	protected $hint_type;
 
 	public $reset_pro;
-	public string $callback;
-	public array $args;
+	public $callback;
+	public $args;
 
 	public function __construct( string $hint_type, array $args = array() ) {
 		if ( 'preconnect' === $hint_type ) {
