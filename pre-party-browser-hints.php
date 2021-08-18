@@ -107,7 +107,7 @@ class Pre_Party_Browser_Hints {
 		include_once 'includes/admin/ClientAjaxResponse.php';
 
 		if ( self::$preconnect_enabled ) {
-			$client_ajax_init = new ClientAjaxInit( 'preconnect' );
+			$client_ajax_init = new ClientAjaxInit( 'preconnect', array() );
 			unset( $client_ajax_init );
 		}
 	}

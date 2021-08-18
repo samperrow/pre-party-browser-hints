@@ -18,30 +18,21 @@ class ClientAjaxInit {
 	public string $callback;
 	public array $args;
 
-	public function __construct( string $hint_type ) {
-//		$this->hint_type = $hint_type;
-
+	public function __construct( string $hint_type, array $args = array() ) {
 		if ( 'preconnect' === $hint_type ) {
-			$this->args = $this->set_args_array( 'pprh_preconnect_allow_unauth', 'pprh_preconnect_set', $hint_type );
+			$this->args = array(
+				'hints_set_name'           => 'pprh_preconnect_set',
+				'script_filepath'          => PPRH_REL_DIR . 'js/preconnect.js',
+				'allow_unauth_option_name' => 'pprh_pro_preload_allow_unauth'
+			);
 		}
 		elseif ( 'preload' === $hint_type ) {
-			$this->args = $this->set_args_array( 'pprh_pro_preload_allow_unauth', 'pprh_preloads_set', $hint_type );
+			$this->args = $args;
 		}
 
 		$this->hint_type = $hint_type;
 		$this->callback  = "pprh_{$this->hint_type}_callback";
 		\add_action( 'wp_loaded', array( $this, 'initialize' ), 10, 0 );
-	}
-
-
-	public function set_args_array( $allow_unauth_option_name, $hints_set_name, $hint_type ):array {
-		$arr = array(
-			'allow_unauth_option_name' => $allow_unauth_option_name,
-			'hints_set_name'           => $hints_set_name,
-		);
-
-		$arr['script_file'] = 'js/' . $hint_type . '.js';
-		return $arr;
 	}
 
 	public function initialize() {
@@ -86,12 +77,12 @@ class ClientAjaxInit {
 
 	public function enqueue_scripts() {
 		$js_object = $this->create_js_object( time() );
-		$script_file = $this->args['script_file'];
+		$script_file = $this->args['script_filepath'];
 
 		\wp_register_script( 'pprh_create_hints_js', PPRH_REL_DIR . 'js/create-hints.js', null, PPRH_VERSION, true );
 		\wp_enqueue_script( 'pprh_create_hints_js' );
 
-		\wp_register_script( "pprh_$this->hint_type", PPRH_REL_DIR . $script_file, null, PPRH_VERSION, true );
+		\wp_register_script( "pprh_$this->hint_type", $script_file, null, PPRH_VERSION, true );
 		\wp_localize_script( "pprh_$this->hint_type", 'pprh_data', $js_object );
 		\wp_enqueue_script( "pprh_$this->hint_type" );
 	}

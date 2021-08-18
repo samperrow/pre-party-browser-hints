@@ -4,7 +4,6 @@
 
     let host = document.location.origin;
     let altHostName = getAltHostName(host);
-    // const TESTING = (/sphacks\.local/.test(host));
 
     function getAltHostName(hostname) {
         let idx = hostname.indexOf("//");
@@ -46,12 +45,8 @@
         pprh_data.hints = findResourceSources();
         let json = JSON.stringify(pprh_data);
         let xhr = new XMLHttpRequest();
-
-        // if (TESTING) {
-        //     console.log(pprh_data);
-        // }
-
         let destination = 'action=pprh_preconnect_callback&pprh_data=' + json + '&nonce=' + pprh_data.nonce;
+        console.log(pprh_data);
         xhr.open('POST', pprh_data.admin_url, true);
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
         xhr.send(destination);

@@ -7,7 +7,7 @@ class ClientAjaxInitTest extends TestCase {
 	public static $client_ajax_init_preconnect;
 
 	public function test_start() {
-		self::$client_ajax_init_preconnect = new \PPRH\ClientAjaxInit( 'preconnect' );
+		self::$client_ajax_init_preconnect = new \PPRH\ClientAjaxInit( 'preconnect', array() );
 	}
 
 	public function test_entire_preconnects_feature() {
