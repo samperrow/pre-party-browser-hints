@@ -1,9 +1,15 @@
 /**
  * @jest-environment jsdom
  */
-'use strict';
+// 'use strict';
 
-const Preconnects = require('dev/preconnects.dev.js');
+pprh_data = {
+    start_time: new Date().getTime() * 1000,
+    timeout: 1000,
+}
+
+const Preconnects = require('../preconnect.js');
+
 
 
 // test GetUrl(url, hintType)

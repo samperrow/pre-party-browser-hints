@@ -23,7 +23,7 @@ class ClientAjaxInit {
 			$this->args = array(
 				'hints_set_name'           => 'pprh_preconnect_set',
 				'script_filepath'          => PPRH_REL_DIR . 'js/preconnect.js',
-				'allow_unauth_option_name' => 'pprh_pro_preload_allow_unauth'
+				'allow_unauth_option_name' => 'pprh_preconnect_allow_unauth'
 			);
 		}
 		elseif ( 'preload' === $hint_type ) {

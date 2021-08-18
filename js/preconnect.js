@@ -66,4 +66,15 @@
         setTimeout(fireAjax, timeout);
     }
 
+    return {
+        IsValidHintDomain: isValidHintDomain,
+        GetAltHostName: getAltHostName,
+        ScriptSentWithinSixHours: scriptSentWithinSixHours
+    }
+
 }));
+
+// for testing
+if (typeof module === "object") {
+    module.exports = this.pprhPreconnects;
+}
