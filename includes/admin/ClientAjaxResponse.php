@@ -6,7 +6,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class PreconnectResponse extends PreconnectInit {
+class ClientAjaxResponse extends ClientAjaxInit {
 
 	protected function protected_post_domain_names():array {
 		return $this->post_domain_names( $_POST['pprh_data'] );
@@ -36,7 +36,6 @@ class PreconnectResponse extends PreconnectInit {
 
 		foreach ( $hint_data['hints'] as $new_hint ) {
 			$new_hint['op_code']      = 0;
-			$new_hint['hint_type']    = 'preconnect';
 			$new_hint['auto_created'] = 1;
 
 			if ( isset( $hint_data['post_id'] ) ) {
@@ -54,7 +53,9 @@ class PreconnectResponse extends PreconnectInit {
 	}
 
 	private function update_options( array $pprh_data ):bool {
-		$updated = \apply_filters( 'pprh_preconnects_update_options', $pprh_data );
+//		$hint_type = $this->hint_type;
+
+		$updated = \apply_filters( 'pprh_pro_ajax_update_options', $pprh_data, $this->hint_type );
 
 		if ( is_array( $updated ) || false === $updated ) {
 			return Utils::update_option( 'pprh_preconnect_set', 'true' );

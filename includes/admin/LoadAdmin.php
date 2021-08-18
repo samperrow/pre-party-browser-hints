@@ -22,7 +22,7 @@ class LoadAdmin {
 			$this->load_admin_files();
 		}
 
-		\apply_filters( 'pprh_pro_load_admin', $this->on_pprh_page );
+		\apply_filters( 'pprh_load_pro_admin', $this->on_pprh_page );
 		$this->check_debug_email();
 	}
 
@@ -124,7 +124,7 @@ class LoadAdmin {
 		$settings_view = new SettingsView();
 
 		\add_meta_box(
-			'pprh_general_settings_metabox',
+			'pprh_general_metabox',
 			'General Settings',
 			array( $settings_view, 'general_markup' ),
 			PPRH_ADMIN_SCREEN,
@@ -133,7 +133,7 @@ class LoadAdmin {
 		);
 
 		\add_meta_box(
-			'pprh_preconnect_settings_metabox',
+			'pprh_preconnect_metabox',
 			'Auto Preconnect Settings',
 			array( $settings_view, 'preconnect_markup' ),
 			PPRH_ADMIN_SCREEN,
@@ -142,7 +142,7 @@ class LoadAdmin {
 		);
 
 		\add_meta_box(
-			'pprh_prefetch_settings_metabox',
+			'pprh_prefetch_metabox',
 			'Auto Prefetch Settings',
 			array( $settings_view, 'prefetch_markup' ),
 			PPRH_ADMIN_SCREEN,
@@ -151,7 +151,16 @@ class LoadAdmin {
 		);
 
 		\add_meta_box(
-			'pprh_prerender_settings_metabox',
+			'pprh_preload_metabox',
+			'Auto Preload Settings',
+			array( $this, 'create_preload_metabox' ),
+			PPRH_ADMIN_SCREEN,
+			'normal',
+			'low'
+		);
+
+		\add_meta_box(
+			'pprh_prerender_metabox',
 			'Auto Prerender Settings',
 			array( $this, 'create_prerender_metabox' ),
 			PPRH_ADMIN_SCREEN,
@@ -160,10 +169,25 @@ class LoadAdmin {
 		);
 	}
 
-	public function create_prerender_metabox() {
-		$load_prerender_metabox = \apply_filters( 'pprh_load_prerender_metabox', false );
+	public function create_preload_metabox() {
+		$load_metabox = \apply_filters( 'pprh_load_pro_metabox', 'preload' );
 
-		if ( ! $load_prerender_metabox ) {
+		if ( is_string( $load_metabox ) ) {
+			?>
+            <div style="text-align: center; max-width: 800px; margin: 0 auto;">
+                <h3><?php \esc_html_e( 'This feature is only available after upgrading to the Pro version.', 'pprh' ); ?></h3>
+                <p><?php \esc_html_e( 'Auto Preload will automatically create the proper preload hints automatically, for each post on your website.', 'pprh' ); ?></p>
+                <input type="button" class="pprhOpenCheckoutModal button button-primary" value="Purchase License"/>
+            </div>
+			<?php
+		}
+	}
+
+
+	public function create_prerender_metabox() {
+		$load_metabox = \apply_filters( 'pprh_load_pro_metabox', 'prerender' );
+
+		if ( is_string( $load_metabox ) ) {
 			?>
 			<div style="text-align: center; max-width: 800px; margin: 0 auto;">
 				<h3><?php \esc_html_e( 'This feature is only available after upgrading to the Pro version.', 'pprh' ); ?></h3>

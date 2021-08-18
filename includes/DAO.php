@@ -321,15 +321,15 @@ class DAO {
 		}
 	}
 
-	public static function delete_auto_preconnects( string $reset_type = '' ):bool {
+	public static function delete_auto_created_hints( string $hint_type, string $reset_type = '' ):bool {
 		global $wpdb;
 		$table = PPRH_DB_TABLE;
 		$query = array(
 			'sql'  => "DELETE FROM $table WHERE hint_type = %s AND auto_created = %d",
-			'args' => array( 'preconnect', 1 )
+			'args' => array( $hint_type, 1 )
 		);
 
-		$query = \apply_filters( 'pprh_delete_auto_preconnects', $query, $reset_type );
+		$query = \apply_filters( 'pprh_delete_auto_created_hints', $query, $reset_type );
 
 		if ( PPRH_RUNNING_UNIT_TESTS ) {
 			return true;

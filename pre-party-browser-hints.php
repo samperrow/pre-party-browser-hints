@@ -34,7 +34,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class Pre_Party_Browser_Hints {
 
-	private static $preconnect_autoload;
+	private static $preconnect_enabled;
 	private $on_pprh_page;
 
 	protected $client_data;
@@ -94,19 +94,21 @@ class Pre_Party_Browser_Hints {
 	}
 
 	public function load_plugin_main() {
-		self::$preconnect_autoload = ( 'true' === \get_option( 'pprh_preconnect_autoload' ) || PPRH_RUNNING_UNIT_TESTS );
+		self::$preconnect_enabled = ( 'true' === \get_option( 'pprh_preconnect_autoload' ) || PPRH_RUNNING_UNIT_TESTS );
+
 		\load_plugin_textdomain( 'pprh', false, PPRH_REL_DIR . 'languages' );
-		\do_action( 'pprh_load_plugin' );
+		\do_action( 'pprh_load_plugin', self::$preconnect_enabled );
 		$is_admin = \is_admin();
 		$str = ( $is_admin ) ? 'admin' : 'client';
 		\add_action( 'wp_loaded', array( $this, "load_main_$str" ) );
 
 		// this needs to be loaded front end and back end bc Ajax needs to be able to communicate between the two.
-		if ( self::$preconnect_autoload ) {
-			include_once 'includes/PreconnectInit.php';
-			include_once 'includes/admin/PreconnectResponse.php';
-			$preconnect_init = new PreconnectInit();
-			$preconnect_init->load_actions();
+		include_once 'includes/client/ClientAjaxInit.php';
+		include_once 'includes/admin/ClientAjaxResponse.php';
+
+		if ( self::$preconnect_enabled ) {
+			$client_ajax_init = new ClientAjaxInit( 'preconnect' );
+			unset( $client_ajax_init );
 		}
 	}
 
@@ -123,7 +125,7 @@ class Pre_Party_Browser_Hints {
 		include_once 'includes/client/LoadClient.php';
 		include_once 'includes/client/SendHints.php';
 		$load_client = new LoadClient();
-		$load_client->init( self::$preconnect_autoload );
+		$load_client->init( self::$preconnect_enabled );
 	}
 
 

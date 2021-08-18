@@ -4,7 +4,7 @@
 
     let host = document.location.origin;
     let altHostName = getAltHostName(host);
-    const TESTING = (/sphacks\.local/.test(host));
+    // const TESTING = (/sphacks\.local/.test(host));
 
     function getAltHostName(hostname) {
         let idx = hostname.indexOf("//");
@@ -47,13 +47,14 @@
         let json = JSON.stringify(pprh_data);
         let xhr = new XMLHttpRequest();
 
-        if (TESTING) {
-            console.log(pprh_data);
-        }
+        // if (TESTING) {
+        //     console.log(pprh_data);
+        // }
 
+        let destination = 'action=pprh_preconnect_callback&pprh_data=' + json + '&nonce=' + pprh_data.nonce;
         xhr.open('POST', pprh_data.admin_url, true);
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
-        xhr.send('action=pprh_post_domain_names&pprh_data=' + json + '&nonce=' + pprh_data.nonce);
+        xhr.send(destination);
     }
 
     // sometimes this script can become cached in other JS files due to caching plugins. This prevents a request from being sent constantly when not desired.
@@ -66,8 +67,8 @@
 
     // sometimes this file can be cached, and this prevents it from constantly firing ajax requests.
     if (scriptSentWithinSixHours(pprh_data.start_time)) {
-        let timer = (TESTING) ? 1000 : 7000;
-        setTimeout(fireAjax, timer);
+        let timeout = Number(pprh_data.timeout);
+        setTimeout(fireAjax, timeout);
     }
 
 }));

@@ -41,7 +41,7 @@ c) Prefetch and preload work similarly, which allows single resources to be load
 How does the plugin automatically add preconnect hints?
 After installing the plugin (or clicking the 'Reset Links' button), a JavaScript file will be loaded on your website (after a page is loaded) which captures the resources loaded from external domains and sends them via Ajax to your database six seconds after the page has been loaded. This script fires 6 seconds after the website has been loaded, to allow for all resources to be completely loaded.
 
-Many websites have cache plugins that can interfere with this functionality. I have configured the JavaScript file to only function when it is in its original folder (not been merged/combined). This is to prevent it from triggering after every page load. To get this funtionality working properly, ensure that this file (/wp-content/plugins/pre-party-browser-hints/js/find-external-domains.js) is not effected by any cache plugins.
+Many websites have cache plugins that can interfere with this functionality. I have configured the JavaScript file to only function when it is in its original folder (not been merged/combined). This is to prevent it from triggering after every page load. To get this funtionality working properly, ensure that this file (/wp-content/plugins/pre-party-browser-hints/js/preconnect.js) is not effected by any cache plugins.
 
 DNS Prefetch:
 For all HTTP requests loaded from external sources on a page web, add the domain name of each in the "Add New Resource Hint" form, select the option for "DNS Prefetch".
@@ -186,7 +186,7 @@ December 8, 2019:
 
 November 4, 2019:
 1) Ensured compatibility with WP 5.3
-2) Removed debug console.log message on find-external-domains.js; other minor change to that file.
+2) Removed debug console.log message on preconnect.js; other minor change to that file.
 
 October 5, 2019:
 1) Entered URL's will no longer be converted to lower case. This is because some sites have case-sensitive URI's.
@@ -214,7 +214,7 @@ October 19, 2018:
 
 August 9, 2018:
 1) Added a warning indicator on the admin page to let users know that they should not load hints in the HTTP header if they have a cache plugin active, and to notify them to refresh their cache.
-2) Removed the need for jQuery to be loaded dynamically in the "find-external-domains.js" script, and optimized the code. 100% vanilla JS now!
+2) Removed the need for jQuery to be loaded dynamically in the "preconnect.js" script, and optimized the code. 100% vanilla JS now!
 3) In the "Request New Feature or Report a Bug" feature, I added some info that gets sent to me to better diagnose potential plugin problems (WP version, PHP version, URL).
 
 June 29, 2018:
@@ -297,7 +297,7 @@ July 13, 2017:
 July 6, 2017:
 1) added ability to choose to add links to the Header or <head>;
 2) cleaned up UI;
-3) fixed bugs on find-external-domains.js/ improved functionality;
+3) fixed bugs on preconnect.js/ improved functionality;
 4) removed option to select which pages/posts the links went to- this was unwanted feature and removing it improved performance
 5) condensed the info tab links into one;
 6) modified schema for PPRH_table; and removed the other table;

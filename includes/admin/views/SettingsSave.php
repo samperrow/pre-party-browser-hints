@@ -49,9 +49,9 @@ class SettingsSave extends Settings {
 		$results[] = Utils::update_checkbox_option( $post, 'pprh_preconnect_autoload' );
 		$results[] = Utils::update_checkbox_option( $post, 'pprh_preconnect_allow_unauth' );
 
-		if ( isset( $post[ 'pprh_preconnect_set' ] ) && 'Reset' === $post[ 'pprh_preconnect_set' ] ) {
+		if ( isset( $post['pprh_preconnect_set'] ) && 'Reset' === $post['pprh_preconnect_set'] ) {
 			Utils::update_option( 'pprh_preconnect_set', 'false' );
-			$results[] = DAO::delete_auto_preconnects( '' );
+			$results[] = DAO::delete_auto_created_hints( 'preconnect', '' );
 			\add_action( 'pprh_notice', array( $this, 'auto_preconnect_notice' ) );
 		}
 

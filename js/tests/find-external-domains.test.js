@@ -3,7 +3,7 @@
  */
 'use strict';
 
-const Preconnects = require('dev/find-external-domains.dev.js');
+const Preconnects = require('dev/preconnects.dev.js');
 
 
 // test GetUrl(url, hintType)
