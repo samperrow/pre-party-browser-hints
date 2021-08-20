@@ -88,7 +88,7 @@ class Updater {
 		$transient->response[ $plugin_slug ]->banners  = $update_obj->banners;
 		$new_version = $transient->response[ $plugin_slug ]->new_version;
 
-		if ( version_compare( $new_version, $this->plugin_version ) > 0 ) {
+		if ( $new_version !== $this->plugin_version ) {
 			$transient->response[ $plugin_slug ] = $update_obj;
 			$transient->checked[ $plugin_slug ]  = $new_version;
 			return $transient;
