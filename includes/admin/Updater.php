@@ -16,7 +16,7 @@ class Updater {
 	public $pprh_transient;
 
 	public function __construct() {
-		$this->api_endpoint   = 'https://sphacks.io/wp-content/pprh/free/updater.json';
+		$this->api_endpoint   = 'https://sphacks.io/wp-content/pprh/updater-main.json';
 		$this->plugin_file    = 'pre-party-browser-hints/pre-party-browser-hints.php';
 		$this->transient_name = 'pprh_updater';
 		$this->plugin_version = PPRH_VERSION_NEW;

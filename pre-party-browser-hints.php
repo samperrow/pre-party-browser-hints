@@ -167,7 +167,7 @@ class Pre_Party_Browser_Hints {
 		}
 
 		include_once 'includes/admin/Updater.php';
-		$updater = new \PPRH\Updater();
+		$updater = new Updater();
 		return $updater->init( $transient );
 	}
 
