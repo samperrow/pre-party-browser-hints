@@ -30,8 +30,10 @@ class DAO {
 
 	private static function get_msg( bool $success, int $action_code, int $success_code ):string {
 		$dup_hints_alert    = 'A duplicate hint exists!';
-		$preconnect_success = 'Auto preconnect hints for this post have been reset. Please load this page on the front end to re-create the preconnect hints.';
-		$preconnect_fail    = 'Failed to reset this post\'s preconnect data. Please refresh the page and try again.';
+		$preconnect_success = 'Auto preconnect hints for this post have been reset. Please load this page on the front end to re-create the hints.';
+		$preconnect_fail    = 'Failed to reset this post\'s preconnect hint data. Please refresh the page and try again.';
+		$preload_success    = 'Preload hints for this post have been reset. Please load this page on the front end to re-create the hints.';
+		$preload_fail       = 'Failed to reset this post\'s preload hint data. Please refresh the page and try again.';
 
 		$prerender_single_success   = 'Prerender hint successfully created for this post.';
 		$prerender_multiple_success = 'Prerender hints have been successfully set for all posts with sufficiently available data.';
@@ -44,7 +46,8 @@ class DAO {
 			3 => array( 'enable', 'enabled' ),
 			4 => array( 'disable', 'disabled' ),
 			5 => array( 0 => $preconnect_success, 1 => $preconnect_fail ),
-			6 => array( 0 => $prerender_single_success, 1 => $prerender_multiple_success, 2 => $prerender_no_data )
+			6 => array( 0 => $preload_success, 1 => $preload_fail ),
+			7 => array( 0 => $prerender_single_success, 1 => $prerender_multiple_success, 2 => $prerender_no_data )
 		);
 
 		if ( 4 >= $action_code ) {

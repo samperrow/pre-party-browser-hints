@@ -126,22 +126,22 @@ class Utils {
 		return ( isset( $_SERVER[ $prop ] ) ? self::clean_url( $_SERVER[ $prop ] ) : '' );
 	}
 
-	public static function on_pprh_page( bool $doing_ajax, string $referer ):int {
+	public static function get_plugin_page( bool $doing_ajax, string $referer ):int {
 		if ( '' === $referer ) {
 			$referer = self::get_referer();
 		}
 
 		$request_uri = self::get_server_prop( 'REQUEST_URI' );
-		return self::on_pprh_page_ctrl( $doing_ajax, $referer, $request_uri );
+		return self::get_plugin_page_ctrl( $doing_ajax, $referer, $request_uri );
 	}
 
 	/**
 	 * @param bool $doing_ajax
 	 * @param string $referer
 	 * @param string $request_uri
-	 * @return int: 0 means the current page does NOT use PPRH; 1 means current page is PPRH ADMIN; 2 means current page is POST EDIT.
+	 * @return int: -1: front end page; 0 means the current page does NOT use PPRH; 1 means current page is PPRH ADMIN; 2 means current page is POST EDIT.
 	 */
-	public static function on_pprh_page_ctrl( bool $doing_ajax, string $referer, string $request_uri ):int {
+	public static function get_plugin_page_ctrl( bool $doing_ajax, string $referer, string $request_uri ):int {
 		$matcher = ( $doing_ajax ) ? $referer : $request_uri;
 		$val = 0;
 

@@ -8,31 +8,25 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class LoadAdmin {
 
-	public $on_pprh_page;
+	public $plugin_page;
 
-	public function init( int $on_pprh_page ) {
-		$this->on_pprh_page = $on_pprh_page;
+	public function init( int $plugin_page ) {
+		$this->plugin_page = $plugin_page;
 		\add_action( 'admin_menu', array( $this, 'load_admin_menu' ) );
 
-		if ( $this->on_pprh_page > 0 ) {
+		if ( $this->plugin_page > 0 ) {
 			\add_action( 'admin_init', array( $this, 'add_settings_meta_boxes' ) );
 			\add_action( 'admin_enqueue_scripts', array( $this, 'register_admin_files' ) );
 			\add_filter( 'set-screen-option', array( $this, 'pprh_set_screen_option' ), 10, 3 );
 			$this->load_common_content();
-			$this->load_admin_files();
+			\apply_filters( 'pprh_load_pro_admin', $this->plugin_page );
+			$this->check_debug_email();
 		}
 
-		\apply_filters( 'pprh_load_pro_admin', $this->on_pprh_page );
-		$this->check_debug_email();
 	}
 
 	public function load_common_content() {
-		include_once 'NewHint.php';
-		include_once 'DisplayHints.php';
-		include_once 'AjaxOps.php';
-		include_once 'views/InsertHints.php';
-
-		$ajax_ops = new AjaxOps( $this->on_pprh_page );
+		$ajax_ops = new AjaxOps( $this->plugin_page );
 		$ajax_ops->set_actions();
 	}
 
@@ -56,7 +50,7 @@ class LoadAdmin {
 		}
 
 		$dashboard = new Dashboard();
-		$dashboard->show_plugin_dashboard( $this->on_pprh_page );
+		$dashboard->show_plugin_dashboard( $this->plugin_page );
 	}
 
 	public function check_debug_email() {
@@ -74,13 +68,13 @@ class LoadAdmin {
 		}
 	}
 
-	private function load_admin_files() {
-		include_once 'Dashboard.php';
-		include_once 'views/Settings.php';
-		include_once 'views/SettingsSave.php';
-		include_once 'views/SettingsView.php';
-		include_once 'views/FAQ.php';
-	}
+//	private function load_admin_files() {
+//		include_once 'Dashboard.php';
+//		include_once 'views/Settings.php';
+//		include_once 'views/SettingsSave.php';
+//		include_once 'views/SettingsView.php';
+//		include_once 'views/FAQ.php';
+//	}
 
 	public function screen_option() {
 		$args = array(
@@ -98,9 +92,7 @@ class LoadAdmin {
 
 	// Register and call the CSS and JS we need only on the needed page.
 	public function register_admin_files( string $hook ) {
-		$post_load = \apply_filters( 'pprh_pro_check_post_page', false );
-
-		if ( str_contains( PPRH_ADMIN_SCREEN, $hook ) || $post_load ) {
+		if ( $this->plugin_page > 0 || str_contains( PPRH_ADMIN_SCREEN, $hook )  ) {
 
 			$ajax_data = array(
 				'nonce'     => wp_create_nonce( 'pprh_table_nonce' ),

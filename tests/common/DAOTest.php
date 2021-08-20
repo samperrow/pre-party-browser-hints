@@ -39,28 +39,38 @@ final class DAOTest extends TestCase {
 
 		$success_5 = true;
 		$actual_5 = \PPRH\DAO::create_db_result($success_5, 5, 0, null );
-		$expected_5 = array( 'msg' => 'Auto preconnect hints for this post have been reset. Please load this page on the front end to re-create the preconnect hints.', 'status' => $success_5 );
+		$expected_5 = array( 'msg' => 'Auto preconnect hints for this post have been reset. Please load this page on the front end to re-create the hints.', 'status' => $success_5 );
 		self::assertEquals( $expected_5, $actual_5->db_result );
 
 		$success_6 = false;
 		$actual_6 = \PPRH\DAO::create_db_result($success_6, 5, 1, null );
-		$expected_6 = array( 'msg' =>  'Failed to reset this post\'s preconnect data. Please refresh the page and try again.', 'status' => $success_6 );
+		$expected_6 = array( 'msg' => 'Failed to reset this post\'s preconnect hint data. Please refresh the page and try again.', 'status' => $success_6 );
 		self::assertEquals( $expected_6, $actual_6->db_result );
 
 		$success_7 = true;
 		$actual_7 = \PPRH\DAO::create_db_result($success_7, 6, 0, null );
-		$expected_7 = array( 'msg' =>  'Prerender hint successfully created for this post.', 'status' => $success_7 );
+		$expected_7 = array( 'msg' => 'Preload hints for this post have been reset. Please load this page on the front end to re-create the hints.', 'status' => $success_7 );
 		self::assertEquals( $expected_7, $actual_7->db_result );
 
-		$success_8 = true;
+		$success_8 = false;
 		$actual_8 = \PPRH\DAO::create_db_result($success_8, 6, 1, null );
-		$expected_8 = array( 'msg' => 'Prerender hints have been successfully set for all posts with sufficiently available data.', 'status' => $success_8 );
+		$expected_8 = array( 'msg' => 'Failed to reset this post\'s preload hint data. Please refresh the page and try again.', 'status' => $success_8 );
 		self::assertEquals( $expected_8, $actual_8->db_result );
 
-		$success_9 = false;
-		$actual_9 = \PPRH\DAO::create_db_result($success_9, 6, 2, null );
-		$expected_9 = array( 'msg' => 'There is not enough analytics data for this page to generate accurate prerender hints yet. Please try again soon.', 'status' => $success_9 );
+		$success_9 = true;
+		$actual_9 = \PPRH\DAO::create_db_result($success_9, 7, 0, null );
+		$expected_9 = array( 'msg' => 'Prerender hint successfully created for this post.', 'status' => $success_9 );
 		self::assertEquals( $expected_9, $actual_9->db_result );
+
+		$success_10 = true;
+		$actual_10 = \PPRH\DAO::create_db_result($success_10, 7, 1, null );
+		$expected_10 = array( 'msg' => 'Prerender hints have been successfully set for all posts with sufficiently available data.', 'status' => $success_10 );
+		self::assertEquals( $expected_10, $actual_10->db_result );
+
+		$success_11 = false;
+		$actual_11 = \PPRH\DAO::create_db_result($success_11, 7, 2, null );
+		$expected_11 = array( 'msg' => 'There is not enough analytics data for this page to generate accurate prerender hints yet. Please try again soon.', 'status' => $success_11 );
+		self::assertEquals( $expected_11, $actual_11->db_result );
 	}
 
 

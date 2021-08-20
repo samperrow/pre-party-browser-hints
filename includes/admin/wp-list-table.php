@@ -157,7 +157,7 @@ class WP_List_Table {
 		);
 
 		$this->screen = convert_to_screen( $args['screen'] );
-		$this->on_pprh_post_page = $args['on_pprh_page'];
+		$this->on_pprh_post_page = $args['plugin_page'];
 
 		\add_filter( "manage_{$this->screen->id}_columns", array( $this, 'get_columns' ), 0 );
 
@@ -1171,6 +1171,7 @@ class WP_List_Table {
 		$id_string = 'id="the-list';
 		$id_string .= ( $singular ) ? "-$singular\" data-wp-lists='list:$singular'" : '"';
 		?>
+        <form>
         <table style="border-spacing: 2px;" class="wp-list-table pprh-post-table <?php echo implode( ' ', $this->get_table_classes() ); ?>">
             <thead>
                 <tr>
@@ -1189,6 +1190,7 @@ class WP_List_Table {
             </tfoot>
 
         </table>
+        </form>
 		<?php
             $this->display_tablenav( 'bottom' );
 	}
@@ -1284,7 +1286,7 @@ class WP_List_Table {
 	protected function column_default( $item, $column_name ) {}
 
 
-	public function on_post_page_and_global_hint( $item, $on_pprh_post_page ) {
+	public function on_plugin_page_and_global_hint( $item, $on_pprh_post_page ) {
 		$global_hint = ( isset( $item['post_id'] ) && 'global' === $item['post_id'] );
 		return ( $global_hint && ( 2 === $on_pprh_post_page ) );
 	}
@@ -1306,7 +1308,7 @@ class WP_List_Table {
 	 */
 	protected function single_row_columns( $item ) {
 		list( $columns, $hidden, $primary ) = $this->get_column_info();
-		$global_hint_alert = $this->on_post_page_and_global_hint( $item, $this->on_pprh_post_page );
+		$global_hint_alert = $this->on_plugin_page_and_global_hint( $item, $this->on_pprh_post_page );
 
 		foreach ( $columns as $column_name => $column_display_name ) {
 			$classes = "$column_name column-$column_name";

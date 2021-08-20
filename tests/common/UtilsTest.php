@@ -165,32 +165,32 @@ final class UtilsTest extends TestCase {
 		unset( $_SERVER['REQUEST_URI'] );
 	}
 
-	public function test_on_pprh_page_ctrl() {
-		$actual_1 = \PPRH\Utils::on_pprh_page_ctrl( false, 'https://sphacks.local/wp-admin/plugins.php?plugin_status=all&paged=1&s', '/wp-admin/admin.php?page=pprh-plugin-settings' );
+	public function test_get_plugin_page_ctrl() {
+		$actual_1 = \PPRH\Utils::get_plugin_page_ctrl( false, 'https://sphacks.local/wp-admin/plugins.php?plugin_status=all&paged=1&s', '/wp-admin/admin.php?page=pprh-plugin-settings' );
 		self::assertSame( 1, $actual_1 );
 
-//		$actual_2 = \PPRH\Utils::on_pprh_page_ctrl( false, 'https://sphacks.local/wp-admin/edit.php?post_type=page', 'post.php' );
+//		$actual_2 = \PPRH\Utils::get_plugin_page_ctrl( false, 'https://sphacks.local/wp-admin/edit.php?post_type=page', 'post.php' );
 //		self::assertTrue( $actual_2 );
 
-		$actual_3 = \PPRH\Utils::on_pprh_page_ctrl( true, 'https://sphacks.local/wp-admin/admin.php?page=pprh-plugin-settings', 'admin-ajax.php' );
+		$actual_3 = \PPRH\Utils::get_plugin_page_ctrl( true, 'https://sphacks.local/wp-admin/admin.php?page=pprh-plugin-settings', 'admin-ajax.php' );
 		self::assertSame( 1, $actual_3 );
 
-//		$actual_4 = \PPRH\Utils::on_pprh_page_ctrl(true, 'https://sphacks.local/wp-admin/post.php?post=2128&action=edit', 'admin-ajax.php' );
+//		$actual_4 = \PPRH\Utils::get_plugin_page_ctrl(true, 'https://sphacks.local/wp-admin/post.php?post=2128&action=edit', 'admin-ajax.php' );
 //		self::assertTrue( $actual_4 );
 
-		$actual_5 = \PPRH\Utils::on_pprh_page_ctrl(false, 'https://sphacks.local/wp-admin/admin.php?page=pprh-plugin-settings', '/wp-admin/upload.php' );
+		$actual_5 = \PPRH\Utils::get_plugin_page_ctrl(false, 'https://sphacks.local/wp-admin/admin.php?page=pprh-plugin-settings', '/wp-admin/upload.php' );
 		self::assertSame( 0, $actual_5 );
 
-		$actual_6 = \PPRH\Utils::on_pprh_page_ctrl(false, 'https://sphacks.local/wp-admin/admin.php?page=pprh-plugin-settings', '/wp-admin/themes.php' );
+		$actual_6 = \PPRH\Utils::get_plugin_page_ctrl(false, 'https://sphacks.local/wp-admin/admin.php?page=pprh-plugin-settings', '/wp-admin/themes.php' );
 		self::assertSame( 0, $actual_6 );
 
-		$actual_7 = \PPRH\Utils::on_pprh_page_ctrl(false, 'https://sphacks.local/wp-admin/themes.php', '/wp-admin/options-general.php' );
+		$actual_7 = \PPRH\Utils::get_plugin_page_ctrl(false, 'https://sphacks.local/wp-admin/themes.php', '/wp-admin/options-general.php' );
 		self::assertSame( 0, $actual_7 );
 
-		$actual_8 = \PPRH\Utils::on_pprh_page_ctrl( false, 'https://sphacks.local/', '' );
+		$actual_8 = \PPRH\Utils::get_plugin_page_ctrl( false, 'https://sphacks.local/', '' );
 		self::assertSame( 0, $actual_8 );
 
-		$actual_9 = \PPRH\Utils::on_pprh_page_ctrl( true, 'asdfasys4ygdadf<>######%', '?' );
+		$actual_9 = \PPRH\Utils::get_plugin_page_ctrl( true, 'asdfasys4ygdadf<>######%', '?' );
 		self::assertSame( 0, $actual_9 );
 	}
 

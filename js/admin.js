@@ -179,12 +179,17 @@
 	function addHintTypeListener(editRow) {
 		if (null === editRow) {
 			editRow = $('table#pprh-enter-data');
+			let xoriginElem = editRow.find('input.pprh_crossorigin').first();
+			let mediaElem = editRow.find('input.pprh_media').first();
+
+			xoriginElem.prop('disabled', true);
+			mediaElem.prop('disabled', true);
 		}
 
 		let hintTypeRadios = editRow.find('tr.pprhHintTypes input.hint_type');
 
 		$.each(hintTypeRadios, function() {
-			$(this).on('click', function () {
+			$(this).on('click', function() {
 				hintTypeListener($(this));
 			});
 		});
@@ -198,7 +203,6 @@
 			if ('preconnect' === hintType) {
 				xoriginElem.prop('disabled', false);
 				mediaElem.prop('disabled', true);
-				mediaElem.val('');
 			} else if ('preload' === hintType) {
 				xoriginElem.prop('disabled', false);
 				mediaElem.prop('disabled', false);
@@ -206,10 +210,8 @@
 				xoriginElem.prop('checked', false);
 				xoriginElem.prop('disabled', true);
 				mediaElem.prop('disabled', true);
-				mediaElem.val('');
 			}
 		}
-
 	}
 
 
@@ -262,12 +264,15 @@
 		}
 	}
 
-
 	function clearHintTable() {
 		let tbody = newHintTable.getElementsByTagName('tbody')[0];
 
 		tbody.querySelectorAll('select, input').forEach(function (elem) {
-			return elem[(/radio|checkbox/.test(elem.type)) ? 'checked' : 'value'] = '';
+			if ( (/radio|checkbox/.test(elem.type)) ) {
+				elem.checked = "";
+			} else if ((/text|select/.test(elem.type))) {
+				elem.value = "";
+			}
 		});
 	}
 

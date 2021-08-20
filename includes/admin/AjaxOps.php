@@ -8,10 +8,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class AjaxOps {
 
-	private $on_pprh_page;
+	private $plugin_page;
 
-	public function __construct( int $on_pprh_page ) {
-		$this->on_pprh_page = $on_pprh_page;
+	public function __construct( int $plugin_page ) {
+		$this->plugin_page = $plugin_page;
 	}
 
 	public function set_actions() {
@@ -48,7 +48,7 @@ class AjaxOps {
 		$db_result = $this->handle_action( $pprh_data );
 
 		if ( is_object( $db_result ) ) {
-			$display_hints = new DisplayHints( true, $this->on_pprh_page );
+			$display_hints = new DisplayHints( true, $this->plugin_page );
 			return $display_hints->ajax_response( $db_result );
 		}
 
@@ -56,7 +56,7 @@ class AjaxOps {
 	}
 
 	private function handle_action( array $data ):\stdClass {
-		if ( isset( $data['action'] ) ) {
+		if ( isset( $data['action'], $data['post_id'] ) ) {
 			$db_result = \apply_filters( 'pprh_apply_ajaxops_action', $data['post_id'], $data['action'] );
 		} else {
 			$dao_ctrl  = new DAOController();
