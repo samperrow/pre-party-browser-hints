@@ -207,7 +207,7 @@ final class UtilsTest extends TestCase {
 	public function test_get_browser_name() {
 		$user_agent_1 = '';
 		$actual_1 = \PPRH\Utils::get_browser_name( $user_agent_1 );
-		self::assertSame( 'Unknown browser.', $actual_1 );
+		self::assertSame( '', $actual_1 );
 
 		$user_agent_2 = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:89.0) Gecko/20100101 Firefox/89.0';
 		$actual_2 = \PPRH\Utils::get_browser_name( $user_agent_2 );

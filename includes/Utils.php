@@ -202,7 +202,7 @@ class Utils {
 		} elseif ( str_contains( $user_agent, 'Netscape' ) ) {
 			$browser = 'Netscape';
 		} else {
-			$browser = 'Unknown browser.';
+			$browser = '';
 		}
 
 		return $browser;
