@@ -106,7 +106,7 @@ class Pre_Party_Browser_Hints {
 		}
 
 		\add_action( 'wp_loaded', array( $this, "load_main_$str" ) );
-		\do_action( 'pprh_load_plugin', self::$preconnect_enabled, $this->plugin_page );
+		\do_action( 'pprh_load_plugin', $this->plugin_page );
 
 		// this needs to be loaded front end and back end bc Ajax needs to be able to communicate between the two.
 		include_once 'includes/client/ClientAjaxInit.php';

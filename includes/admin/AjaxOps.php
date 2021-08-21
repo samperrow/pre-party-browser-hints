@@ -63,6 +63,10 @@ class AjaxOps {
 			$db_result = $dao_ctrl->hint_controller( $data );
 		}
 
+		if ( ! is_object( $db_result ) ) {
+			$db_result = DAO::create_db_result( false,0, 0, null );
+		}
+
 		return $db_result;
 	}
 

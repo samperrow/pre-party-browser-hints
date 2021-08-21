@@ -159,7 +159,7 @@ class SettingsView extends Settings {
             <tr>
                 <th><?php esc_html_e( 'Delay in prefetching links on mouse hover (milliseconds)', 'pprh' ); ?></th>
                 <td>
-                    <input type="number" step="50" min="0" max="1000" name="pprh_prefetch_hoverDelay" value="<?php echo Utils::esc_get_option( 'pprh_prefetch_hoverDelay' ); ?>">
+                    <input type="number" min="0" max="1000" step="1" name="pprh_prefetch_hoverDelay" value="<?php echo Utils::esc_get_option( 'pprh_prefetch_hoverDelay' ); ?>">
                     <p><?php esc_html_e( 'Set a short pause after the mouse hovers over a link before the prefetch hint is created. Default is 50 milliseconds.', 'pprh' ); ?></p>
                 </td>
             </tr>

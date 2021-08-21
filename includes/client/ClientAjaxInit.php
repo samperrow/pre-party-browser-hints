@@ -55,10 +55,10 @@ class ClientAjaxInit {
 		if ( $doing_ajax ) {
 			$this->load_ajax_callbacks( $allow_user );
 			return false;
-		} else {
-			$reset_hints   = ( is_string( $reset_pro ) ) ? $reset_preconnects_option : $reset_pro;
-			$perform_reset = ( $allow_user && $reset_hints );
 		}
+
+		$reset_hints   = ( is_string( $reset_pro ) ) ? $reset_preconnects_option : $reset_pro;
+		$perform_reset = ( $allow_user && $reset_hints );
 
 		if ( ! $perform_reset ) {
 			return false;
