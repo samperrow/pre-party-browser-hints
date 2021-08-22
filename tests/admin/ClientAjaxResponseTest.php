@@ -10,12 +10,12 @@ class ClientAjaxResponseTest extends TestCase {
 
 	public static $hint_type;
 	public static $client_ajax_response_preconnect;
-	public static $client_ajax_response_preload;
-	
+//	public static $client_ajax_response_preload;
+
 	public function test_start() {
 		self::$hint_type = 'preconnect';
 		self::$client_ajax_response_preconnect = new \PPRH\ClientAjaxResponse( self::$hint_type );
-		self::$client_ajax_response_preload    = new \PPRH\ClientAjaxResponse( 'preload' );
+//		self::$client_ajax_response_preload    = new \PPRH\ClientAjaxResponse( 'preload' );
 	}
 
 	public function test_post_domain_names() {
@@ -45,12 +45,12 @@ class ClientAjaxResponseTest extends TestCase {
 		/**
 		 * PRELOADS
 		 */
-		$hint_preload_1 = TestUtils::create_hint_array( 'https://example.com/assets/styles.css', 'preload' );
-		$hint_preload_2 = TestUtils::create_hint_array( 'https://example.com/assets/scripts/js.js', 'preload' );
-
-		$pprh_data['hints'] = array( $hint_preload_1, $hint_preload_2 );
-		$actual_preload_1 = self::$client_ajax_response_preload->post_domain_names( $pprh_data );
-		self::assertCount( 2, $actual_preload_1 );
+//		$hint_preload_1 = TestUtils::create_hint_array( 'https://example.com/assets/styles.css', 'preload' );
+//		$hint_preload_2 = TestUtils::create_hint_array( 'https://example.com/assets/scripts/js.js', 'preload' );
+//
+//		$pprh_data['hints'] = array( $hint_preload_1, $hint_preload_2 );
+//		$actual_preload_1 = self::$client_ajax_response_preload->post_domain_names( $pprh_data );
+//		self::assertCount( 2, $actual_preload_1 );
 
 
 	}

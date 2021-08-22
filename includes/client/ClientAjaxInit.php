@@ -26,9 +26,9 @@ class ClientAjaxInit {
 				'allow_unauth_option_name' => 'pprh_preconnect_allow_unauth',
 			);
 		}
-		elseif ( 'preload' === $hint_type ) {
-			$this->args = $args;
-		}
+//		elseif ( 'preload' === $hint_type ) {
+//			$this->args = $args;
+//		}
 
 		$this->hint_type = $hint_type;
 		$this->callback  = "pprh_{$this->hint_type}_callback";
@@ -104,9 +104,9 @@ class ClientAjaxInit {
 		return $js_arr;
 	}
 
-	public function pprh_preload_callback() {
-		$this->pprh_callback_fn( 'preload' );
-	}
+//	public function pprh_preload_callback() {
+//		$this->pprh_callback_fn( 'preload' );
+//	}
 
 	public function pprh_preconnect_callback() {
 		$this->pprh_callback_fn( 'preconnect' );

@@ -106,7 +106,7 @@ class Pre_Party_Browser_Hints {
 		}
 
 		\add_action( 'wp_loaded', array( $this, "load_main_$str" ) );
-		\do_action( 'pprh_load_plugin', $this->plugin_page );
+		\do_action( 'pprh_load_plugin' );
 
 		// this needs to be loaded front end and back end bc Ajax needs to be able to communicate between the two.
 		include_once 'includes/client/ClientAjaxInit.php';
@@ -141,7 +141,6 @@ class Pre_Party_Browser_Hints {
 
 	public function load_main_admin() {
 		self::load_plugin_files( true );
-//		$this->plugin_page = Utils::get_plugin_page( \wp_doing_ajax(), '' );
 		$load_admin = new LoadAdmin();
 		$load_admin->init( $this->plugin_page );
 	}

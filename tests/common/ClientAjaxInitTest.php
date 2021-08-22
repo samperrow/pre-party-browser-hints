@@ -66,8 +66,8 @@ class ClientAjaxInitTest extends TestCase {
 		$actual_2 = self::$client_ajax_init_preconnect->initialize_ctrl( false, false, true, null );
 		self::assertFalse( $actual_2 );
 
-		$actual_3 = self::$client_ajax_init_preconnect->initialize_ctrl( true, true, false, 'preload' );
-		self::assertTrue( $actual_3 );
+//		$actual_3 = self::$client_ajax_init_preconnect->initialize_ctrl( true, true, false, 'preload' );
+//		self::assertTrue( $actual_3 );
 
 		$actual_4 = self::$client_ajax_init_preconnect->initialize_ctrl( true, true, false, false );
 		self::assertFalse( $actual_4 );
@@ -120,7 +120,7 @@ class ClientAjaxInitTest extends TestCase {
 			'start_time' => $time
 		);
 
-		$actual_object_1 = self::$client_ajax_init_preconnect->create_js_object( $time, 'preload' );
+		$actual_object_1 = self::$client_ajax_init_preconnect->create_js_object( $time, 'preconnect' );
 		self::assertEquals( $expected_arr_1, $actual_object_1 );
 	}
 
