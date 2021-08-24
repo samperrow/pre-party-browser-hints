@@ -101,9 +101,9 @@ class ClientAjaxInit {
 		return $js_arr;
 	}
 
-//	public function pprh_preload_callback() {
-//		$this->pprh_callback_fn( 'preload' );
-//	}
+	public function pprh_preload_callback() {
+		$this->pprh_callback_fn( 'preload' );
+	}
 
 	public function pprh_preconnect_callback() {
 		$this->pprh_callback_fn( 'preconnect' );

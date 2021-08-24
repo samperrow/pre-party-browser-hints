@@ -17,8 +17,8 @@ class Utils {
 		echo sprintf( '<div id="pprhNoticeBox"><div id="pprhNotice" class="notice notice-%1$s is-dismissible %2$s"><p>%3$s</p></div></div>', $alert, $class, $msg );
 	}
 
-	public static function update_option( string $option, $value ):bool {
-		return PPRH_RUNNING_UNIT_TESTS || \update_option( $option, $value );
+	public static function update_option( string $option, $value, $autoload = 'yes' ):bool {
+		return PPRH_RUNNING_UNIT_TESTS || \update_option( $option, $value, $autoload );
 	}
 
 	public static function json_to_array( string $json ) {
