@@ -26,9 +26,6 @@ class ClientAjaxInit {
 				'allow_unauth_option_name' => 'pprh_preconnect_allow_unauth',
 			);
 		}
-//		elseif ( 'preload' === $hint_type ) {
-//			$this->args = $args;
-//		}
 
 		$this->hint_type = $hint_type;
 		$this->callback  = "pprh_{$this->hint_type}_callback";

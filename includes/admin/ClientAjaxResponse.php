@@ -53,9 +53,9 @@ class ClientAjaxResponse extends ClientAjaxInit {
 	}
 
 	private function update_options( array $pprh_data ):bool {
-//		$hint_type = $this->hint_type;
+		$hint_type = $this->hint_type;
 
-		$updated = \apply_filters( 'pprh_pro_ajax_update_options', $pprh_data, $this->hint_type );
+		$updated = \apply_filters( 'pprh_pro_ajax_update_options', $pprh_data, $hint_type );
 
 		if ( is_array( $updated ) || false === $updated ) {
 			return Utils::update_option( 'pprh_preconnect_set', 'true' );
