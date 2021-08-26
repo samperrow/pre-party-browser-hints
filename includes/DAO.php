@@ -324,7 +324,7 @@ class DAO {
 		}
 	}
 
-	public static function delete_auto_created_hints( string $hint_type, string $reset_type = '' ):bool {
+	public static function delete_auto_created_hints( string $hint_type, string $post_id ):bool {
 		global $wpdb;
 		$table = PPRH_DB_TABLE;
 		$query = array(
@@ -332,7 +332,7 @@ class DAO {
 			'args' => array( $hint_type, 1 )
 		);
 
-		$query = \apply_filters( 'pprh_delete_auto_created_hints', $query, $reset_type );
+		$query = \apply_filters( 'pprh_delete_auto_created_hints', $query, $post_id );
 
 		if ( PPRH_RUNNING_UNIT_TESTS ) {
 			return true;

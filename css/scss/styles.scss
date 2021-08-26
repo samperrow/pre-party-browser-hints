@@ -13,12 +13,12 @@ div#pprh-poststuff {
         text-align: center;
     }
 
-    div.pprh-content > div.postbox {
-        padding: 0 10px;
-    }
-
     div.pprh-content {
         display: none;
+
+        > div.postbox {
+            padding: 0 10px;
+        }
 
         &.active {
             display: block;
@@ -27,6 +27,10 @@ div#pprh-poststuff {
         table.pprh-post-table tbody tr td div.global-hint {
             visibility: hidden;
             height: 19.5px;
+        }
+
+        table.form-table tr td p {
+            font-style: italic;
         }
     }
 
@@ -88,10 +92,6 @@ div#pprh-poststuff {
         width: 775px;
         margin: 0 auto;
 
-        //&.widefat {
-        //    border-spacing: 2px
-        //}
-
         h2 {
             font-size: 23px !important;
             font-weight: 600 !important;
@@ -100,8 +100,6 @@ div#pprh-poststuff {
     }
 
     table#pprh-enter-data {
-        //text-align: center;
-
         thead tr th {
             text-align: center;
             font-size: 23px;
