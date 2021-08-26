@@ -68,14 +68,6 @@ class LoadAdmin {
 		}
 	}
 
-//	private function load_admin_files() {
-//		include_once 'Dashboard.php';
-//		include_once 'views/Settings.php';
-//		include_once 'views/SettingsSave.php';
-//		include_once 'views/SettingsView.php';
-//		include_once 'views/FAQ.php';
-//	}
-
 	public function screen_option() {
 		$args = array(
 			'label'   => 'Resource hints per page: ',

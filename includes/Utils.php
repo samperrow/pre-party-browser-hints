@@ -257,7 +257,7 @@ class Utils {
 		return $response_body;
 	}
 
-	public static function create_raw_hint( $url, $hint_type, $auto_created = 0, $as_attr = '', $type_attr = '', $crossorigin = '', $media = '', $post_id = null ):array {
+	public static function create_raw_hint( $url, $hint_type, $auto_created = 0, $as_attr = '', $type_attr = '', $crossorigin = '', $media = '', $post_id = null, $op_code = null ):array {
 		$hint = array(
 			'url'          => $url,
 			'hint_type'    => $hint_type,
@@ -272,6 +272,10 @@ class Utils {
 
 		if ( isset( $post_id ) ) {
 			$hint['post_id'] = $post_id;
+		}
+
+		if ( isset( $op_code ) ) {
+			$hint['op_code'] = $op_code;
 		}
 
 		return $hint;
