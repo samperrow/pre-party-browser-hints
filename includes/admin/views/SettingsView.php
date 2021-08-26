@@ -57,8 +57,7 @@ class SettingsView extends Settings {
 
 
 	public function preconnect_markup() {
-		$autoload     = \PPRH\Utils::does_option_match( 'pprh_preconnect_autoload', 'true', 'checked' );
-		$allow_unauth = \PPRH\Utils::does_option_match( 'pprh_preconnect_allow_unauth', 'true', 'checked' );
+		$autoload = \PPRH\Utils::does_option_match( 'pprh_preconnect_autoload', 'true', 'checked' );
 		?>
 		<table class="form-table">
 			<tbody>
@@ -71,14 +70,6 @@ class SettingsView extends Settings {
 				</td>
 			</tr>
 
-			<tr>
-				<th><?php esc_html_e( 'Allow unauthenticated users to automatically set preconnect hints via Ajax?', 'pprh' ); ?></th>
-				<td>
-					<input type="checkbox" name="pprh_preconnect_allow_unauth" value="true" <?php echo $allow_unauth; ?>/>
-					<p><?php esc_html_e( 'This plugin has a feature which allows preconnect hints to be automatically created asynchronously in the background with Ajax by the first user to visit a page (assuming the user has that option to be reset). There is an extremely remote possibility that if a visitor knew the hints would be set, they could choose to manually load many external scripts, which could trick the plugin script into accepting these as valid preconnect hints. But again this is a very remote possiblity and only a nuisance, not a vulnerability, due to the strict sanitization procedures in place.', 'pprh' ); ?></p>
-				</td>
-			</tr>
-
 			<?php $this->load_reset_settings(); ?>
 
 			</tbody>
@@ -88,19 +79,27 @@ class SettingsView extends Settings {
 
 	public function load_reset_settings() {
 		$res = \apply_filters( 'pprh_display_preconnect_markup', array() );
-		if ( ! empty( $res ) ) {
-			return false;
-		}
-		?>
-        <tr>
-            <th><?php esc_html_e( 'Reset automatically created preconnect links?', 'pprh' ); ?></th>
+		$allow_unauth = \PPRH\Utils::does_option_match( 'pprh_preconnect_allow_unauth', 'true', 'checked' );
 
-            <td>
-                <input type="submit" name="pprh_preconnect_set" class="pprh-reset button-primary" data-text="reset auto-preconnect hints?" value="Reset">
-                <p><?php esc_html_e( 'This will reset automatically created preconnect hints, allowing new preconnect hints to be generated when your front end is loaded.', 'pprh' ); ?></p>
-            </td>
-        </tr>
-		<?php
+		if ( empty( $res ) ) { ?>
+            <tr>
+				<th><?php esc_html_e( 'Allow unauthenticated users to automatically set preconnect hints via Ajax?', 'pprh' ); ?></th>
+				<td>
+					<input type="checkbox" name="pprh_preconnect_allow_unauth" value="true" <?php echo $allow_unauth; ?>/>
+					<p><?php esc_html_e( 'This plugin has a feature which allows preconnect hints to be automatically created asynchronously in the background with Ajax by the first user to visit a page (assuming the user has that option to be reset). There is an extremely remote possibility that if a visitor knew the hints would be set, they could choose to manually load many external scripts, which could trick the plugin script into accepting these as valid preconnect hints. But again this is a very remote possiblity and only a nuisance, not a vulnerability, due to the strict sanitization procedures in place.', 'pprh' ); ?></p>
+				</td>
+			</tr>
+
+            <tr>
+                <th><?php esc_html_e( 'Reset automatically created preconnect links?', 'pprh' ); ?></th>
+
+                <td>
+                    <input type="submit" name="pprh_preconnect_set" class="pprh-reset button-primary" data-text="reset auto-preconnect hints?" value="Reset">
+                    <p><?php esc_html_e( 'This will reset automatically created preconnect hints, allowing new preconnect hints to be generated when your front end is loaded.', 'pprh' ); ?></p>
+                </td>
+            </tr>
+
+		<?php }
 		return false;
 	}
 

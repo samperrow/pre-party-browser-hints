@@ -12,25 +12,13 @@ class ClientAjaxInit {
 	private $allow_user = false;
 	private $doing_ajax = false;
 
-	public $args;
-
 	public function __construct() {
-		$this->args = array(
-			'hints_set_name'           => 'pprh_preconnect_set',
-			'script_filepath'          => PPRH_REL_DIR . 'js/preconnect.js',
-			'allow_unauth_option_name' => 'pprh_preconnect_allow_unauth',
-		);
-
 		\add_action( 'wp_loaded', array( $this, 'initialize' ), 10, 0 );
 	}
 
 	public function initialize() {
-		if ( empty( $this->args ) ) {
-			return;
-		}
-
-		$allow_unauth_option       = ( 'true' === \get_option( $this->args['allow_unauth_option_name'] ) );
-		$reset_preconnects_option  = ( 'false' === \get_option( $this->args['hints_set_name'] ) );
+		$allow_unauth_option       = ( 'true' === \get_option( 'pprh_preconnect_allow_unauth' ) );
+		$reset_preconnects_option  = ( 'false' === \get_option( 'pprh_preconnect_set' ) );
 		$user_logged_in            = \is_user_logged_in();
 		$this->allow_user = ( $allow_unauth_option || $user_logged_in );
 		$this->doing_ajax = \wp_doing_ajax();
@@ -65,9 +53,8 @@ class ClientAjaxInit {
 
 	public function enqueue_scripts() {
 		$js_object = $this->create_js_object( time() );
-		$script_file = $this->args['script_filepath'];
 
-		\wp_register_script( 'pprh_preconnect_js', $script_file, null, PPRH_VERSION, true );
+		\wp_register_script( 'pprh_preconnect_js', PPRH_REL_DIR . 'js/preconnect.js', null, PPRH_VERSION, true );
 		\wp_localize_script( 'pprh_preconnect_js', 'pprh_data', $js_object );
 		\wp_enqueue_script( 'pprh_preconnect_js' );
 	}

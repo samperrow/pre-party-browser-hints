@@ -61,12 +61,12 @@
     }
 
     function fireAjax() {
-        pprh_data_preconnect.hints = findResourceSources();
-        let json = JSON.stringify(pprh_data_preconnect);
+        pprh_data.hints = findResourceSources();
+        let json = JSON.stringify(pprh_data);
         let xhr = new XMLHttpRequest();
-        let destination = 'action=pprh_preconnect_callback&pprh_data=' + json + '&nonce=' + pprh_data_preconnect.nonce;
-        console.log(pprh_data_preconnect);
-        xhr.open('POST', pprh_data_preconnect.admin_url, true);
+        let destination = 'action=pprh_preconnect_callback&pprh_data=' + json + '&nonce=' + pprh_data.nonce;
+        console.log(pprh_data);
+        xhr.open('POST', pprh_data.admin_url, true);
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
         xhr.send(destination);
     }
@@ -80,8 +80,8 @@
     }
 
     // sometimes this file can be cached, and this prevents it from constantly firing ajax requests.
-    if (scriptSentWithinSixHours(pprh_data_preconnect.start_time)) {
-        let timeout = Number(pprh_data_preconnect.timeout);
+    if (scriptSentWithinSixHours(pprh_data.start_time)) {
+        let timeout = Number(pprh_data.timeout);
         setTimeout(fireAjax, timeout);
     }
 

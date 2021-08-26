@@ -125,7 +125,6 @@
 		let rawHint = getHintValuesFromTable(table);
 
 		if (isObjectAndNotNull(rawHint)) {
-			// let hint = pprhCreateHint.CreateHint(rawHint);
 			let isHintValid = verifyHint(rawHint);
 
 			if (isHintValid) {
