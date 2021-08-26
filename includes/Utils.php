@@ -238,22 +238,40 @@ class Utils {
 		return true;
 	}
 
+
 	public static function get_api_response_body( array $response, string $error_msg ):array {
 		$response_body = array();
 
-		if ( \is_wp_error( $response ) ) {
-			self::log_error( $response );
-		} elseif ( isset( $response['response'] ) && 200 === \wp_remote_retrieve_response_code( $response ) ) {
-			$body          = \wp_remote_retrieve_body( $response );
-			$response_body = self::json_to_array( $body );
+		if (\is_wp_error($response)) {
+			self::log_error($response);
+		} elseif (isset($response['response']) && 200 === \wp_remote_retrieve_response_code($response)) {
+			$body = \wp_remote_retrieve_body($response);
+			$response_body = self::json_to_array($body);
 		}
 
-		if ( ! self::isArrayAndNotEmpty( $response_body ) ) {
-			self::log_error( $error_msg );
+		if (!self::isArrayAndNotEmpty($response_body)) {
+			self::log_error($error_msg);
 			$response_body = array();
 		}
 
 		return $response_body;
+	}
+
+	public static function create_raw_hint( $url, $hint_type, $auto_created = 0, $as_attr = '', $type_attr = '', $crossorigin = '', $post_id = null ):array {
+		$hint = array(
+			'url'          => $url,
+			'hint_type'    => $hint_type,
+			'auto_created' => $auto_created,
+			'as_attr'      => $as_attr,
+			'type_attr'    => $type_attr,
+			'crossorigin'  => $crossorigin
+		);
+
+		if ( isset( $post_id ) ) {
+			$hint['post_id'] = $post_id;
+		}
+
+		return $hint;
 	}
 
 }

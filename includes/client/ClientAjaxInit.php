@@ -12,23 +12,15 @@ class ClientAjaxInit {
 	private $allow_user = false;
 	private $doing_ajax = false;
 
-	protected $hint_type;
-
-	public $reset_pro;
-	public $callback;
 	public $args;
 
-	public function __construct( string $hint_type, array $args = array() ) {
-		if ( 'preconnect' === $hint_type ) {
-			$this->args = array(
-				'hints_set_name'           => 'pprh_preconnect_set',
-				'script_filepath'          => PPRH_REL_DIR . 'js/preconnect.js',
-				'allow_unauth_option_name' => 'pprh_preconnect_allow_unauth',
-			);
-		}
+	public function __construct() {
+		$this->args = array(
+			'hints_set_name'           => 'pprh_preconnect_set',
+			'script_filepath'          => PPRH_REL_DIR . 'js/preconnect.js',
+			'allow_unauth_option_name' => 'pprh_preconnect_allow_unauth',
+		);
 
-		$this->hint_type = $hint_type;
-		$this->callback  = "pprh_{$this->hint_type}_callback";
 		\add_action( 'wp_loaded', array( $this, 'initialize' ), 10, 0 );
 	}
 
@@ -40,22 +32,21 @@ class ClientAjaxInit {
 		$allow_unauth_option       = ( 'true' === \get_option( $this->args['allow_unauth_option_name'] ) );
 		$reset_preconnects_option  = ( 'false' === \get_option( $this->args['hints_set_name'] ) );
 		$user_logged_in            = \is_user_logged_in();
-		$this->reset_pro           = \apply_filters( 'pprh_check_to_reset', $this->hint_type );
+//		$this->reset_pro           = \apply_filters( 'pprh_check_to_reset', 'preconnect' );
 
 		$this->allow_user = ( $allow_unauth_option || $user_logged_in );
 		$this->doing_ajax = \wp_doing_ajax();
 
-		$this->initialize_ctrl( $this->allow_user, $reset_preconnects_option, $this->doing_ajax, $this->reset_pro );
+		$this->initialize_ctrl( $this->allow_user, $reset_preconnects_option, $this->doing_ajax );
 	}
 
-	public function initialize_ctrl( bool $allow_user, bool $reset_preconnects_option, bool $doing_ajax, $reset_pro ):bool {
+	public function initialize_ctrl( bool $allow_user, bool $reset_preconnects_option, bool $doing_ajax ):bool {
 		if ( $doing_ajax ) {
 			$this->load_ajax_callbacks( $allow_user );
 			return false;
 		}
 
-		$reset_hints   = ( is_string( $reset_pro ) ) ? $reset_preconnects_option : $reset_pro;
-		$perform_reset = ( $allow_user && $reset_hints );
+		$perform_reset = ( $allow_user && $reset_preconnects_option );
 
 		if ( ! $perform_reset ) {
 			return false;
@@ -66,56 +57,49 @@ class ClientAjaxInit {
 	}
 
 	public function load_ajax_callbacks( bool $allow_user ) {
+		$callback  = 'pprh_preconnect_callback';
+
 		if ( $allow_user ) {
-			\add_action( "wp_ajax_nopriv_{$this->callback}", array( $this, $this->callback ) );		// not logged in
+			\add_action( "wp_ajax_nopriv_{$callback}", array( $this, $callback ) );		// not logged in
 		}
-		\add_action( "wp_ajax_{$this->callback}", array( $this, $this->callback ) );				// for logged in users
+		\add_action( "wp_ajax_{$callback}", array( $this, $callback ) );				// for logged in users
 	}
 
 	public function enqueue_scripts() {
-		$js_object = $this->create_js_object( time(), $this->hint_type );
+		$js_object = $this->create_js_object( time() );
 		$script_file = $this->args['script_filepath'];
 
-		\wp_register_script( 'pprh_create_hints_js', PPRH_REL_DIR . 'js/create-hints.js', null, PPRH_VERSION, true );
-		\wp_enqueue_script( 'pprh_create_hints_js' );
-
-		\wp_register_script( "pprh_$this->hint_type", $script_file, array( 'pprh_create_hints_js' ), PPRH_VERSION, true );
-		\wp_localize_script( "pprh_$this->hint_type", "pprh_data_$this->hint_type", $js_object );
-		\wp_enqueue_script( "pprh_$this->hint_type" );
+		\wp_register_script( 'pprh_preconnect_js', $script_file, null, PPRH_VERSION, true );
+		\wp_localize_script( 'pprh_preconnect_js', 'pprh_data', $js_object );
+		\wp_enqueue_script( 'pprh_preconnect_js' );
 	}
 
-	public function create_js_object( int $time, string $hint_type ):array {
+	public function create_js_object( int $time ):array {
 		$js_arr = array(
 			'hints'      => array(),
 			'nonce'      => \wp_create_nonce( 'pprh_ajax_nonce' ),
 			'timeout'    => PPRH_IN_DEV ? 1000 : 7000,
 			'admin_url'  => \admin_url() . 'admin-ajax.php',
-//			'hint_type'  => $hint_type,
 			'start_time' => $time
 		);
 
-		if ( $this->reset_pro ) {
-			$js_arr = \apply_filters( 'pprh_append_hint_object', $js_arr, $hint_type );
-		}
+//		if ( $this->reset_pro ) {
+//			$js_arr = \apply_filters( 'pprh_append_hint_object', $js_arr, 'preconnect' );
+//		}
 
 		return $js_arr;
 	}
 
-	public function pprh_preload_callback() {
-		$this->pprh_callback_fn( 'preload' );
-	}
-
 	public function pprh_preconnect_callback() {
-		$this->pprh_callback_fn( 'preconnect' );
+		$this->pprh_callback_fn();
 	}
 
 
-	private function pprh_callback_fn( string $hint_type ) {
+	private function pprh_callback_fn() {
 		if ( isset( $_POST['pprh_data'] ) && $this->doing_ajax && $this->allow_user ) {
 			\check_ajax_referer( 'pprh_ajax_nonce', 'nonce' );
 
-			$this->hint_type = $hint_type;
-			$client_ajax_response = new ClientAjaxResponse( $this->hint_type );
+			$client_ajax_response = new ClientAjaxResponse();
 			$results = $client_ajax_response->protected_post_domain_names();
 
 			if ( PPRH_IN_DEV ) {

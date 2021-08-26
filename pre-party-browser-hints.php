@@ -34,8 +34,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class Pre_Party_Browser_Hints {
 
-	private static $preconnect_enabled;
 	private $plugin_page;
+	private static $preconnect_enabled;
 
 	protected $client_data;
 
@@ -53,16 +53,26 @@ class Pre_Party_Browser_Hints {
 		$this->load_common_files();
 		$this->create_constants();
 		$this->load_plugin_main();
+
+		\load_plugin_textdomain( 'pprh', false, PPRH_REL_DIR . 'languages' );
+		\do_action( 'pprh_load_plugin' );
+
+		// this needs to be loaded front end and back end bc Ajax needs to be able to communicate between the two.
+		if ( self::$preconnect_enabled ) {
+			include_once 'includes/client/ClientAjaxInit.php';
+			$client_ajax_init = new ClientAjaxInit();
+		}
 	}
 
 	private function load_common_files() {
 		include_once 'includes/Utils.php';
 		include_once 'includes/DAOController.php';
 		include_once 'includes/CreateHints.php';
+		include_once 'includes/HintBuilder.php';
 		include_once 'includes/admin/ActivatePlugin.php';
 	}
 
-	protected function create_constants() {
+	private function create_constants() {
 		global $wpdb;
 		$table          = $wpdb->prefix . 'pprh_table';
 		$postmeta_table = $wpdb->prefix . 'postmeta';
@@ -93,30 +103,39 @@ class Pre_Party_Browser_Hints {
 	}
 
 	public function load_plugin_main() {
-		self::$preconnect_enabled = ( 'true' === \get_option( 'pprh_preconnect_autoload' ) || PPRH_RUNNING_UNIT_TESTS );
-		\load_plugin_textdomain( 'pprh', false, PPRH_REL_DIR . 'languages' );
-
+		self::$preconnect_enabled = ('true' === \get_option('pprh_preconnect_autoload') || PPRH_RUNNING_UNIT_TESTS);
 		$is_admin = \is_admin();
-		$str = ( $is_admin ) ? 'admin' : 'client';
 
 		if ( $is_admin ) {
 			$this->plugin_page = Utils::get_plugin_page( \wp_doing_ajax(), '' );
+			\add_action( 'wp_loaded', array( $this, 'load_admin' ) );
 		} else {
 			$this->plugin_page = -1;
+			\add_action( 'wp_loaded', array( $this, 'load_client' ) );
 		}
-
-		\add_action( 'wp_loaded', array( $this, "load_main_$str" ) );
-		\do_action( 'pprh_load_plugin' );
-
+		
 		// this needs to be loaded front end and back end bc Ajax needs to be able to communicate between the two.
 		include_once 'includes/client/ClientAjaxInit.php';
 		include_once 'includes/admin/ClientAjaxResponse.php';
 
 		if ( self::$preconnect_enabled ) {
-			$client_ajax_init = new ClientAjaxInit( 'preconnect', array() );
-			unset( $client_ajax_init );
+			$client_ajax_init = new ClientAjaxInit();
+			unset($client_ajax_init);
 		}
 	}
+
+	public function load_admin() {
+		self::load_plugin_files( true );
+		$load_admin = new LoadAdmin();
+		$load_admin->init( $this->plugin_page );
+	}
+
+	public static function load_client() {
+		self::load_plugin_files( false );
+		$load_client = new LoadClient();
+		$load_client->init( self::$preconnect_enabled );
+	}
+
 
 	private static function load_plugin_files( bool $is_admin ) {
 		if ( $is_admin ) {
@@ -135,20 +154,6 @@ class Pre_Party_Browser_Hints {
 			include_once 'includes/client/LoadClient.php';
 			include_once 'includes/client/SendHints.php';
 		}
-	}
-
-
-
-	public function load_main_admin() {
-		self::load_plugin_files( true );
-		$load_admin = new LoadAdmin();
-		$load_admin->init( $this->plugin_page );
-	}
-
-	public static function load_main_client() {
-		self::load_plugin_files( false );
-		$load_client = new LoadClient();
-		$load_client->init( self::$preconnect_enabled );
 	}
 
 

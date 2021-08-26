@@ -20,17 +20,22 @@
         return (domainNotHost && domainNotInArr && domainNotAltDomain && disAllowedDomains);
     }
 
+    function sanitizeURL(url) {
+        return url.replace(/[\[\]\{\}\<\>\'\"\\(\)\*\+\\^\$\|]/g, '');
+    }
+
     function findResourceSources() {
         let resources = window.performance.getEntriesByType('resource');
         let newHintArr = [];
         let domains = [];
 
-        if (typeof pprhCreateHint === "undefined" || resources.length === 0) {
+        if (resources.length === 0) {
             return newHintArr;
         }
 
         resources.forEach(function (item) {
-            let hint = pprhCreateHint.CreateHint({url: item.name, hint_type: 'preconnect'});
+            let cleanUrl = sanitizeURL(item.name);
+            let hint = {url: cleanUrl, hint_type: 'preconnect'};
             let domain = pprhCreateHint.GetDomain(hint.url);
             if (isValidHintDomain(domain, domains)) {
                 domains.push(hint.url);
