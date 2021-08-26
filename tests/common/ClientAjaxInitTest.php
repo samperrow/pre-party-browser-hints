@@ -4,16 +4,16 @@ use PHPUnit\Framework\TestCase;
 
 class ClientAjaxInitTest extends TestCase {
 
-	public static $client_ajax_init_preconnect;
+	public static $client_ajax_init;
 
 	public function test_start() {
-		self::$client_ajax_init_preconnect = new \PPRH\ClientAjaxInit( 'preconnect', array() );
+		self::$client_ajax_init = new \PPRH\ClientAjaxInit();
 	}
 
 	public function test_entire_preconnects_feature() {
 		$orig_preconnect_allow_unauth = \get_option( 'pprh_preconnect_allow_unauth' );
 
-		$js_object = self::$client_ajax_init_preconnect->create_js_object( time(), 'preconnect' );
+		$js_object = self::$client_ajax_init->create_js_object( time() );
 		$pprh_data = array(
 			'hints' => array(
 				array( 'url' => 'https://fonts.gstatic.comTest', 'hint_type' => 'preconnect', 'media' => '', 'as_attr' => '', 'type_attr' => '', 'crossorigin' => 'crossorigin' )
@@ -23,7 +23,7 @@ class ClientAjaxInitTest extends TestCase {
 
 		$args = array(
 			'body' => array(
-				'action'    => self::$client_ajax_init_preconnect->callback,
+				'action'    => 'pprh_preconnect_callback',
 				'pprh_data' => json_encode( $pprh_data ),
 				'nonce'     => $js_object['nonce']
 			),
@@ -54,38 +54,29 @@ class ClientAjaxInitTest extends TestCase {
 
 
 	public function test_constructor() {
-		$loaded = \add_action( 'wp_loaded', array( self::$client_ajax_init_preconnect, 'init_controller' ) );
+		$loaded = \add_action( 'wp_loaded', array( self::$client_ajax_init, 'init_controller' ) );
 		self::assertTrue( $loaded );
 	}
 
 
 	public function test_initialize_ctrl() {
-		$actual_1 = self::$client_ajax_init_preconnect->initialize_ctrl( false, true, true, null );
+		$actual_1 = self::$client_ajax_init->initialize_ctrl( false, true, true );
 		self::assertFalse( $actual_1 );
 
-		$actual_2 = self::$client_ajax_init_preconnect->initialize_ctrl( false, false, true, null );
+		$actual_2 = self::$client_ajax_init->initialize_ctrl( false, false, true );
 		self::assertFalse( $actual_2 );
 
-//		$actual_3 = self::$client_ajax_init_preconnect->initialize_ctrl( true, true, false, 'preload' );
-//		self::assertTrue( $actual_3 );
+		$actual_4 = self::$client_ajax_init->initialize_ctrl( true, true, false );
+		self::assertTrue( $actual_4 );
 
-		$actual_4 = self::$client_ajax_init_preconnect->initialize_ctrl( true, true, false, false );
-		self::assertFalse( $actual_4 );
-
-		$actual_5 = self::$client_ajax_init_preconnect->initialize_ctrl( true, true, false, true );
-		self::assertTrue( $actual_5 );
-
-		$actual_6 = self::$client_ajax_init_preconnect->initialize_ctrl( true, false, true, true );
+		$actual_6 = self::$client_ajax_init->initialize_ctrl( true, false, true );
 		self::assertFalse( $actual_6 );
-
-		$actual_7 = self::$client_ajax_init_preconnect->initialize_ctrl( true, true, false, false );
-		self::assertFalse( $actual_7 );
 	}
 
 
 	public function test_load_ajax_callbacks() {
 		$ajax_cb = 'pprh_preconnect_callback';
-		$callback = array( self::$client_ajax_init_preconnect, $ajax_cb );
+		$callback = array( self::$client_ajax_init, $ajax_cb );
 		\remove_action( "wp_ajax_nopriv_$ajax_cb", $callback );
 
 		$wp_ajax_nopriv_added_1 = \has_action( "wp_ajax_nopriv_$ajax_cb", $callback );
@@ -94,14 +85,14 @@ class ClientAjaxInitTest extends TestCase {
 //		$wp_ajax_added_1 = \has_action( "wp_ajax_$ajax_cb", $callback );
 //		self::assertFalse( $wp_ajax_added_1 );
 
-		self::$client_ajax_init_preconnect->load_ajax_callbacks( false );
+		self::$client_ajax_init->load_ajax_callbacks( false );
 		$wp_ajax_nopriv_added_2 = \has_action( "wp_ajax_nopriv_$ajax_cb", $callback );
 		self::assertFalse( $wp_ajax_nopriv_added_2 );
 
 		$wp_ajax_added_2 = \has_action( "wp_ajax_$ajax_cb", $callback );
 		self::assertEquals( 10, $wp_ajax_added_2 );
 
-		self::$client_ajax_init_preconnect->load_ajax_callbacks( true );
+		self::$client_ajax_init->load_ajax_callbacks( true );
 		$wp_ajax_nopriv_added_3 = \has_action( "wp_ajax_nopriv_$ajax_cb", $callback );
 		self::assertEquals( 10, $wp_ajax_nopriv_added_3 );
 
@@ -120,7 +111,7 @@ class ClientAjaxInitTest extends TestCase {
 			'start_time' => $time
 		);
 
-		$actual_object_1 = self::$client_ajax_init_preconnect->create_js_object( $time, 'preconnect' );
+		$actual_object_1 = self::$client_ajax_init->create_js_object( $time, 'preconnect' );
 		self::assertEquals( $expected_arr_1, $actual_object_1 );
 	}
 

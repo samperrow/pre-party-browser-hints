@@ -67,8 +67,8 @@ class Pre_Party_Browser_Hints {
 	private function load_common_files() {
 		include_once 'includes/Utils.php';
 		include_once 'includes/DAOController.php';
-		include_once 'includes/CreateHints.php';
 		include_once 'includes/HintBuilder.php';
+		include_once 'includes/CreateHints.php';
 		include_once 'includes/admin/ActivatePlugin.php';
 	}
 
@@ -108,12 +108,12 @@ class Pre_Party_Browser_Hints {
 
 		if ( $is_admin ) {
 			$this->plugin_page = Utils::get_plugin_page( \wp_doing_ajax(), '' );
-			\add_action( 'wp_loaded', array( $this, 'load_admin' ) );
+			\add_action( 'wp_loaded', array( $this, 'load_main_admin' ) );
 		} else {
 			$this->plugin_page = -1;
-			\add_action( 'wp_loaded', array( $this, 'load_client' ) );
+			\add_action( 'wp_loaded', array( $this, 'load_main_client' ) );
 		}
-		
+
 		// this needs to be loaded front end and back end bc Ajax needs to be able to communicate between the two.
 		include_once 'includes/client/ClientAjaxInit.php';
 		include_once 'includes/admin/ClientAjaxResponse.php';
@@ -124,13 +124,13 @@ class Pre_Party_Browser_Hints {
 		}
 	}
 
-	public function load_admin() {
+	public function load_main_admin() {
 		self::load_plugin_files( true );
 		$load_admin = new LoadAdmin();
 		$load_admin->init( $this->plugin_page );
 	}
 
-	public static function load_client() {
+	public static function load_main_client() {
 		self::load_plugin_files( false );
 		$load_client = new LoadClient();
 		$load_client->init( self::$preconnect_enabled );

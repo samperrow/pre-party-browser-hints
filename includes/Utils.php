@@ -257,15 +257,18 @@ class Utils {
 		return $response_body;
 	}
 
-	public static function create_raw_hint( $url, $hint_type, $auto_created = 0, $as_attr = '', $type_attr = '', $crossorigin = '', $post_id = null ):array {
+	public static function create_raw_hint( $url, $hint_type, $auto_created = 0, $as_attr = '', $type_attr = '', $crossorigin = '', $media = '', $post_id = null ):array {
 		$hint = array(
 			'url'          => $url,
 			'hint_type'    => $hint_type,
 			'auto_created' => $auto_created,
 			'as_attr'      => $as_attr,
 			'type_attr'    => $type_attr,
-			'crossorigin'  => $crossorigin
+			'crossorigin'  => $crossorigin,
+			'media'        => $media
 		);
+
+		$hint['current_user'] = \wp_get_current_user()->display_name ?? '';
 
 		if ( isset( $post_id ) ) {
 			$hint['post_id'] = $post_id;

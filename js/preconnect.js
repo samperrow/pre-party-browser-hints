@@ -24,6 +24,19 @@
         return url.replace(/[\[\]\{\}\<\>\'\"\\(\)\*\+\\^\$\|]/g, '');
     }
 
+    function getDomain(url) {
+        let domain = '';
+
+        if (typeof window.URL === "function" && (0 !== url.indexOf('//') )) {
+            domain = new URL(url).origin;
+        } else {
+            let newStr = url.split('/');
+            domain = newStr[0] + '//' + newStr[2];
+        }
+
+        return domain;
+    }
+
     function findResourceSources() {
         let resources = window.performance.getEntriesByType('resource');
         let newHintArr = [];
@@ -35,10 +48,11 @@
 
         resources.forEach(function (item) {
             let cleanUrl = sanitizeURL(item.name);
-            let hint = {url: cleanUrl, hint_type: 'preconnect'};
-            let domain = pprhCreateHint.GetDomain(hint.url);
+            let domain = getDomain(cleanUrl);
+
             if (isValidHintDomain(domain, domains)) {
-                domains.push(hint.url);
+                let hint = {url: cleanUrl, hint_type: 'preconnect'};
+                domains.push(cleanUrl);
                 newHintArr.push(hint);
             }
         });

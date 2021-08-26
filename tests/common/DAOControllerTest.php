@@ -10,20 +10,23 @@ if ( ! defined( 'ABSPATH' ) ) {
 class DAOControllerTest extends TestCase {
 
 	public static $dao_controller;
-	
+
 	public function test_start() {
 		self::$dao_controller = new \PPRH\DAOController();
 	}
 
 	public function test_hint_controller() {
 		// insert_hint
-		$raw_data_1 = array('url' => 'test.com', 'hint_type' => 'dns-prefetch', 'op_code' => 0 );
+		$raw_data_1 = \PPRH\Utils::create_raw_hint( 'test.com', 'dns-prefetch', '', '', '', 'crossorigin', '' );
+		$raw_data_1['op_code'] = 1;
 		$actual_1 = self::$dao_controller->hint_controller( $raw_data_1 );
 		$expected_1 = \PPRH\DAO::create_db_result( true, $raw_data_1['op_code'], 0, $actual_1->new_hint );
 		self::assertEquals($expected_1, $actual_1);
 
 		// update_hint
-		$raw_data_2 = array( 'url' => 'test2.com', 'hint_type' => 'dns-prefetch', 'op_code' => 1, 'hint_ids' => '100' );
+		$raw_data_2 = \PPRH\Utils::create_raw_hint( 'test2.com', 'dns-prefetch', '', '', '', 'crossorigin', '' );
+		$raw_data_2['op_code'] = 1;
+		$raw_data_2['hint_ids'] = '100';
 		$actual_2 = self::$dao_controller->hint_controller( $raw_data_2 );
 		$expected_2 = \PPRH\DAO::create_db_result( true, $raw_data_2['op_code'], 0, $actual_2->new_hint );
 		self::assertEquals($expected_2, $actual_2);

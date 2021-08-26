@@ -6,7 +6,7 @@ use PHPUnit\Framework\TestCase;
 class SendHintsTest extends TestCase {
 
 	public static $send_hints;
-	
+
 	public function test_start() {
 		self::$send_hints = new \PPRH\SendHints();
 	}
@@ -16,7 +16,7 @@ class SendHintsTest extends TestCase {
 		$actual_1 = self::$send_hints->init($hints_1, true);
 		self::assertFalse( $actual_1 );
 
-		$hints_2 = array( TestUtils::create_hint_array( 'https://asdf.com', 'preconnect', '', '', '', '' ) );
+		$hints_2 = array( \PPRH\Utils::create_raw_hint( 'https://asdf.com', 'preconnect', '', '', '', '' ) );
 		$actual_2 = self::$send_hints->init($hints_2, false);
 		self::assertTrue(  $actual_2 );
 

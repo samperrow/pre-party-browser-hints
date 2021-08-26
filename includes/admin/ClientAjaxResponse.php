@@ -24,7 +24,7 @@ class ClientAjaxResponse extends ClientAjaxInit {
 			$hints_created = $this->get_hint_results( $pprh_data );
 		}
 
-		$this->update_options( $pprh_data );
+		Utils::update_option( 'pprh_preconnect_set', 'true' );
 
 		return $hints_created;
 	}
@@ -50,16 +50,6 @@ class ClientAjaxResponse extends ClientAjaxInit {
 		}
 
 		return $results;
-	}
-
-	private function update_options( array $pprh_data ):bool {
-//		$updated = \apply_filters( 'pprh_pro_ajax_update_options', $pprh_data, 'preconnect' );
-
-		if ( is_array( $updated ) || false === $updated ) {
-			return Utils::update_option( 'pprh_preconnect_set', 'true' );
-		}
-
-		return false;
 	}
 
 }

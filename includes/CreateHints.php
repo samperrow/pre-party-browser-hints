@@ -6,32 +6,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class CreateHints {
-
-	public function create_hint( array $raw_hint ) {
-		if ( empty( $raw_hint['url'] ) || empty( $raw_hint['hint_type'] ) ) {
-			return false;
-		}
-
-		$current_user = \wp_get_current_user()->display_name;
-
-		$new_hint = array(
-			'url'          => Utils::clean_url( $raw_hint['url'] ),
-			'hint_type'    => Utils::clean_hint_type( $raw_hint['hint_type'] ),
-			'as_attr'      => ( ! empty( $raw_hint['as_attr'] ) ? Utils::clean_hint_attr( $raw_hint['as_attr'] ) : '' ),
-			'type_attr'    => ( ! empty( $raw_hint['type_attr'] ) ? Utils::clean_hint_attr( $raw_hint['type_attr'] ) : '' ),
-			'crossorigin'  => ( ! empty( $raw_hint['crossorigin'] ) ? 'crossorigin' : '' ),
-			'media'        => ( ! empty( $raw_hint['media'] ) ? Utils::clean_url( $raw_hint['media'] ) : '' ),
-			'current_user' => ( ! empty( $current_user ) ? $current_user : '' ),
-			'auto_created' => ( $raw_hint['auto_created'] ?? 0 )
-		);
-
-		return \apply_filters( 'pprh_append_hint', $new_hint, $raw_hint );
-	}
+class CreateHints extends HintBuilder {
 
 	public function new_hint_ctrl( array $raw_hint ):array {
 		$dao            = new DAO();
-		$candidate_hint = $this->create_hint( $raw_hint );
+		$candidate_hint = $this->create_pprh_hint( $raw_hint );
 		$pprh_hint      = array();
 
 		if ( is_array( $candidate_hint ) && isset( $raw_hint['op_code'] ) ) {

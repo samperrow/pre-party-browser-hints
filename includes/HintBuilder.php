@@ -14,26 +14,28 @@ class HintBuilder {
 		$this->file_mime_types = $this->set_file_mime_types();
 	}
 
-	public function create_pprh_hint( array $hint ) {
-		if ( empty( $hint['url'] ) || empty( $hint['hint_type'] ) ) {
+	public function create_pprh_hint( array $raw_hint ) {
+		if ( empty( $raw_hint['url'] ) || empty( $raw_hint['hint_type'] ) ) {
 			return false;
 		}
 
-		$hint_type    = Utils::clean_hint_type( $hint['hint_type'] );
-		$url          = $this->get_url( $hint['url'], $hint_type );
+		$hint_type    = Utils::clean_hint_type( $raw_hint['hint_type'] );
+		$url          = $this->get_url( $raw_hint['url'], $hint_type );
 		$file_type    = $this->get_file_type( $url );
-		$auto_created = ( ! empty( $hint['auto_created'] ) ? 1 : 0 );
-		$as_attr      = $this->set_as_attr( $hint['as_attr'], $file_type );
-		$type_attr    = $this->set_type_attr( $hint, $file_type );
-		$crossorigin  = $this->set_crossorigin( $hint, $file_type );
+		$auto_created = ( ! empty( $raw_hint['auto_created'] ) ? 1 : 0 );
+		$as_attr      = $this->set_as_attr( $raw_hint['as_attr'], $file_type );
+		$type_attr    = $this->set_mime_type_attr( $raw_hint, $file_type );
+		$crossorigin  = $this->set_crossorigin( $raw_hint, $file_type );
+		$media        = Utils::strip_bad_chars( $raw_hint['media'] );
 
-		//		$new_hint = apply_filters( 'pprh_append_hints', $new_hint, $hint );
+		$new_hint = Utils::create_raw_hint( $url, $hint_type, $auto_created, $as_attr, $type_attr, $crossorigin, $media );
+		$new_hint['current_user'] = \wp_get_current_user()->display_name ?? '';
 
-		return Utils::create_raw_hint( $url, $hint_type, $auto_created, $as_attr, $type_attr, $crossorigin );
+		return apply_filters( 'pprh_append_hint', $new_hint, $raw_hint );
 	}
 
 
-	public function get_url( string $url, string $hint_type ) {
+	public function get_url( string $url, string $hint_type ):string {
 		$url = Utils::clean_url( $url );
 
 		if ( preg_match( '/(dns-prefetch|preconnect)/', $hint_type ) ) {
@@ -43,46 +45,57 @@ class HintBuilder {
 		return $url;
 	}
 
-	public function parse_for_domain_name( $url ) {
-		$parsed_url = wp_parse_url( $url );
+	public function parse_for_domain_name( string $url ):string {
+		$parsed_url = \wp_parse_url( $url );
 
-		if ( ! empty( $parsed_url['host'] ) && ! empty( $parsed_url['path'] ) ) {
-			$url = $parsed_url['scheme'] . '://' . $parsed_url['host'];
-		} elseif ( str_starts_with( $url, '//' ) ) {
-			$url = '//' . $parsed_url['host'];
-		} elseif ( empty( $parsed_url['scheme'] ) && ! empty( $parsed_url['path'] ) ) {
-			$url = '//' . $parsed_url['path'];
+		if ( ! isset( $parsed_url['host'], $parsed_url['scheme'] ) ) {
+			return ( str_starts_with( $url, '//' ) ) ? $url : '//' . $url;
 		}
-		return $url;
+
+		$domain = ( str_starts_with( $url, '//' ) ) ? '//' : $parsed_url['scheme'] . '://';
+		$domain .= $parsed_url['host'];
+		return $domain;
 	}
 
-	public function get_file_type( $url ) {
+	public function get_file_type( string $url ):string {
 		$basename = pathinfo( $url )['basename'];
-		return strpbrk( $basename, '?' ) !== '' ? strrchr( explode( '?', $basename )[0], '.' ) : strrchr( $basename, '.' );
+
+		if ( str_contains( $basename, '?' ) ) {
+			$basename = explode( '?', $basename )[0];
+		}
+
+		return strrchr( $basename, '.' );
 	}
 
-	public function set_crossorigin( $hint, $file_type ) {
-		if ( ! empty( $hint['crossorigin'] ) || ( preg_match( '/fonts.(googleapis|gstatic).com/i', $hint['url'] ) || preg_match( '/(.woff|.woff2|.ttf|.eot)/', $file_type ) ) ) {
+	public function set_crossorigin( array $hint, string $file_type ) {
+		$match = ( 0 < preg_match( '/(.woff|.woff2|.ttf|.eot)/', $file_type ) );
+		$match_2 = ( 0 < preg_match( '/fonts.(googleapis|gstatic).com/i', $hint['url'] ) );
+
+		if ( ( isset( $hint['crossorigin'] ) && ! empty( $hint['crossorigin'] ) ) || $match_2 || $match ) {
 			return 'crossorigin';
 		}
 
 		return '';
 	}
 
-	public function set_as_attr( $as_attr, $file_type ) {
-		return ( ! empty( $as_attr ) ) ? Utils::clean_hint_attr( $as_attr ) : $this->get_file_type_mime( $this->file_mime_types, $file_type );
+	public function set_as_attr( string $as_attr, string $file_type ) {
+		return ( ! empty( $as_attr ) ) ? Utils::clean_hint_attr( $as_attr ) : $this->get_file_type_mime( $this->file_mime_types, $file_type, 'as' );
 	}
 
-	public function set_type_attr( $hint, $file_type ) {
-		$type_attr = ( ! empty( $hint['type_attr'] ) ) ? $hint['type_attr'] : '';
+	public function set_mime_type_attr( array $hint, string $file_type ) {
+		if ( isset( $hint['type_attr'] ) && ! empty( $hint['type_attr'] ) ) {
+			$mime_type = Utils::clean_hint_attr( $hint['type_attr'] );
+		} else {
+			$mime_type = $this->get_file_type_mime( $this->file_mime_types, $file_type, 'mimeType' );
+		}
 
-		return ( ! empty( $type_attr ) ) ? Utils::clean_hint_attr( $type_attr ) : $this->get_file_type_mime( $this->file_mime_types, $file_type );
+		return $mime_type;
 	}
 
-	public function get_file_type_mime( $file_mime_types, $file_type ) {
-		foreach ( $file_mime_types as $key => $val ) {
-			if ( $key['fileType'] === $file_type ) {
-				return $val;
+	private function get_file_type_mime( $file_mime_types, $file_type, string $prop ) {
+		foreach ( $file_mime_types as $file_mime_type ) {
+			if ( $file_mime_type['fileType'] === $file_type ) {
+				return $file_mime_type[$prop];
 			}
 		}
 		return '';
@@ -129,6 +142,5 @@ class HintBuilder {
 
 		return $types;
 	}
-
 
 }

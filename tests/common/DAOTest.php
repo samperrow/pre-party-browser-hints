@@ -160,15 +160,15 @@ final class DAOTest extends TestCase {
 	public function test_insert_hint() {
 		$create_hints = new \PPRH\CreateHints();
 
-		$hint_1 = TestUtils::create_hint_array( 'https://www.asdf.com/foozball', 'preconnect', '', '', '', '', '2145' );
-		$new_hint_1 = $create_hints->create_hint($hint_1);
+		$hint_1 = \PPRH\Utils::create_raw_hint( 'https://www.asdf.com/foozball', 'preconnect', '', '', '', '', '','2145' );
+		$new_hint_1 = $create_hints->create_pprh_hint($hint_1);
 		$actual_1 = self::$dao->insert_hint( $new_hint_1 );
 		$expected = \PPRH\DAO::create_db_result( true, 0, 0, $new_hint_1 );
 		self::assertEquals( $expected, $actual_1 );
 	}
 
 	public function test_update_hint() {
-		$new_hint = TestUtils::create_hint_array( 'https://www.asdf2.com/foozball/blah.css', 'dns-prefetch', 'font', 'font/woff2', '');
+		$new_hint = \PPRH\Utils::create_raw_hint( 'https://www.asdf2.com/foozball/blah.css', 'dns-prefetch', 'font', 'font/woff2', '');
 		$result = self::$dao->update_hint( $new_hint, 10 );
 		$expected = \PPRH\DAO::create_db_result( true, 1, 0, $new_hint );
 		self::assertEquals($expected, $result);

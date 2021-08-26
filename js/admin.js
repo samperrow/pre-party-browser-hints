@@ -125,13 +125,13 @@
 		let rawHint = getHintValuesFromTable(table);
 
 		if (isObjectAndNotNull(rawHint)) {
-			let hint = pprhCreateHint.CreateHint(rawHint);
-			let isHintValid = verifyHint(hint);
+			// let hint = pprhCreateHint.CreateHint(rawHint);
+			let isHintValid = verifyHint(rawHint);
 
 			if (isHintValid) {
-				hint.op_code = operation;
-				hint.hint_ids = (operation === 1) ? tableId.split('pprh-edit-')[1] : [];
-				return createAjaxReq(hint, 'pprh_update_hints', pprh_data.nonce);
+				rawHint.op_code = operation;
+				rawHint.hint_ids = (operation === 1) ? tableId.split('pprh-edit-')[1] : [];
+				return createAjaxReq(rawHint, 'pprh_update_hints', pprh_data.nonce);
 			}
 		}
 
@@ -174,7 +174,7 @@
 			media:       tbody.find('input.pprh_media')
 		};
 	}
-	
+
 
 	function addHintTypeListener(editRow) {
 		if (null === editRow) {
@@ -332,7 +332,7 @@
 					logError('error');
 					return;
 				}
-			
+
 				try {
 					let response = JSON.parse(xhr.response);
 					clearHintTable();

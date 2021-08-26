@@ -18,13 +18,13 @@ final class AjaxOpsTest extends TestCase {
 	// also need to verify update, delete, enable, disable, bulk operations work properly.
 
 	public function test_update_hints() {
-		$test_data_1 = TestUtils::create_hint_array( 'https://testAjaxOps1.com', 'dns-prefetch' );
+		$test_data_1 = \PPRH\Utils::create_raw_hint( 'https://testAjaxOps1.com', 'dns-prefetch' );
 		$test_data_1['op_code'] = 0;
 		$actual_1 = self::$ajax_ops->update_hints( $test_data_1 );
 		$expected_1 = \PPRH\DAO::create_db_result( true, $test_data_1['op_code'], 0, $actual_1['result']->new_hint );
 		self::assertEquals( $expected_1, $actual_1['result'] );
 
-		$test_data_2 = TestUtils::create_hint_array( 'https://testAjaxOps2.com', 'dns-prefetch' );
+		$test_data_2 = \PPRH\Utils::create_raw_hint( 'https://testAjaxOps2.com', 'dns-prefetch' );
 		$test_data_2['op_code'] = 1;
 		$actual_2 = self::$ajax_ops->update_hints( $test_data_2 );
 		$expected_2 = \PPRH\DAO::create_db_result( true, $test_data_2['op_code'], 0, $actual_2['result']->new_hint );

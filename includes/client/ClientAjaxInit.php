@@ -32,8 +32,6 @@ class ClientAjaxInit {
 		$allow_unauth_option       = ( 'true' === \get_option( $this->args['allow_unauth_option_name'] ) );
 		$reset_preconnects_option  = ( 'false' === \get_option( $this->args['hints_set_name'] ) );
 		$user_logged_in            = \is_user_logged_in();
-//		$this->reset_pro           = \apply_filters( 'pprh_check_to_reset', 'preconnect' );
-
 		$this->allow_user = ( $allow_unauth_option || $user_logged_in );
 		$this->doing_ajax = \wp_doing_ajax();
 
@@ -57,7 +55,7 @@ class ClientAjaxInit {
 	}
 
 	public function load_ajax_callbacks( bool $allow_user ) {
-		$callback  = 'pprh_preconnect_callback';
+		$callback = 'pprh_preconnect_callback';
 
 		if ( $allow_user ) {
 			\add_action( "wp_ajax_nopriv_{$callback}", array( $this, $callback ) );		// not logged in
@@ -75,25 +73,18 @@ class ClientAjaxInit {
 	}
 
 	public function create_js_object( int $time ):array {
-		$js_arr = array(
+		return array(
 			'hints'      => array(),
 			'nonce'      => \wp_create_nonce( 'pprh_ajax_nonce' ),
 			'timeout'    => PPRH_IN_DEV ? 1000 : 7000,
 			'admin_url'  => \admin_url() . 'admin-ajax.php',
 			'start_time' => $time
 		);
-
-//		if ( $this->reset_pro ) {
-//			$js_arr = \apply_filters( 'pprh_append_hint_object', $js_arr, 'preconnect' );
-//		}
-
-		return $js_arr;
 	}
 
 	public function pprh_preconnect_callback() {
 		$this->pprh_callback_fn();
 	}
-
 
 	private function pprh_callback_fn() {
 		if ( isset( $_POST['pprh_data'] ) && $this->doing_ajax && $this->allow_user ) {
