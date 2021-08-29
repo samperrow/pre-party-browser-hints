@@ -11,6 +11,7 @@ class ClientAjaxInitTest extends TestCase {
 	}
 
 	public function test_entire_preconnects_feature() {
+		$orig_preconnect_autoload = \get_option( 'pprh_preconnect_autoload' );
 		$orig_preconnect_allow_unauth = \get_option( 'pprh_preconnect_allow_unauth' );
 
 		$js_object = self::$client_ajax_init->create_js_object( time() );
@@ -37,6 +38,7 @@ class ClientAjaxInitTest extends TestCase {
 		self::assertEmpty( $response_body_1 );
 
 
+		\update_option( 'pprh_preconnect_autoload', 'true' );
 		\update_option( 'pprh_preconnect_allow_unauth', 'true' );
 		$pprh_data['hints'][0]['url'] = 'https://fonts.gstatic.comTest2';
 		$args['body']['pprh_data'] = json_encode( $pprh_data );
@@ -50,6 +52,7 @@ class ClientAjaxInitTest extends TestCase {
 		\PPRH\DAO::delete_hint( $hint_id );
 
 		\update_option( 'pprh_preconnect_allow_unauth', $orig_preconnect_allow_unauth );
+		\update_option( 'pprh_preconnect_autoload', $orig_preconnect_autoload );
 	}
 
 
