@@ -56,7 +56,7 @@ class AjaxOps {
 	}
 
 	private function handle_action( array $data ):\stdClass {
-		if ( isset( $data['action'], $data['post_id'] ) ) {
+		if ( isset( $data['post_id'], $data['action'] ) ) {
 			$db_result = \apply_filters( 'pprh_apply_ajaxops_action', $data['post_id'], $data['action'] );
 		} else {
 			$dao_ctrl  = new DAOController();

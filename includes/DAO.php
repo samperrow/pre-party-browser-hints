@@ -30,7 +30,7 @@ class DAO {
 
 	private static function get_msg( bool $success, int $action_code, int $success_code ):string {
 		$dup_hints_alert    = 'A duplicate hint exists!';
-		$preconnect_success = 'Auto preconnect hints for this post have been reset. Please load this page on the front end to re-create the hints.';
+		$preconnect_success = 'A total of $count preconnect resource hints were created for this post.';
 		$preconnect_fail    = 'Failed to reset this post\'s preconnect hint data. Please refresh the page and try again.';
 		$preload_success    = 'Preload hints for this post have been reset. Please load this page on the front end to re-create the hints.';
 		$preload_fail       = 'Failed to reset this post\'s preload hint data. Please refresh the page and try again.';
@@ -146,13 +146,14 @@ class DAO {
 
 		if ( $valid_hint_id ) {
 			$wpdb->query( "DELETE FROM $table WHERE id IN ($hint_ids)" );
+
+			if ( is_bool( $wpdb->result ) ) {
+				Utils::log_error( $wpdb->last_error );
+				return self::create_db_result( $wpdb->result, 2, 0, null );
+			}
 		}
 
-		if ( ! $wpdb->result ) {
-			Utils::log_error( $wpdb->last_error );
-		}
-
-		return self::create_db_result( $wpdb->result, 2, 0, null );
+		return self::create_db_result( false, 2, 0, null );
 	}
 
 	public function bulk_update( $hint_ids, $op_code ) {

@@ -62,6 +62,23 @@ class HintBuilderTest extends TestCase {
 		self::assertEquals($expected_8, $actual_8);
 	}
 
+	public function test_get_hint_type() {
+		$actual_1 = self::$hint_builder->get_hint_type( 'dnsprefetch' );
+		self::assertSame( '', $actual_1 );
+
+		$actual_2 = self::$hint_builder->get_hint_type( 'dnsprefeasdfasdftch' );
+		self::assertSame( '', $actual_2 );
+
+		$actual_3 = self::$hint_builder->get_hint_type( 'dL KJF:#LITU#WVT F:J' );
+		self::assertSame( '', $actual_3 );
+
+		$actual_4 = self::$hint_builder->get_hint_type( 'prerender' );
+		self::assertSame( 'prerender', $actual_4 );
+
+		$actual_5 = self::$hint_builder->get_hint_type( 'dns-prefetch' );
+		self::assertSame( 'dns-prefetch', $actual_5 );
+	}
+
 	public function test_get_url() {
 		$actual_1 = self::$hint_builder->get_url( 'https://espn.com', 'preconnect' );
 		self::assertSame( 'https://espn.com', $actual_1 );
@@ -74,6 +91,15 @@ class HintBuilderTest extends TestCase {
 
 		$actual_4 = self::$hint_builder->get_url( 'https://e\sp<n.com/spo> rts/fo"ozball/', 'preload' );
 		self::assertSame( 'https://espn.com/sports/foozball/', $actual_4 );
+
+		$actual_5 = self::$hint_builder->get_url( 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAB+CAYAAADlYXudAAAA4ElEQVQoU2XIV0eGAQCG4a+9995777', 'preconnect' );
+		self::assertSame( '', $actual_5 );
+
+		$actual_6 = self::$hint_builder->get_url( '', 'preconnect' );
+		self::assertSame( '', $actual_6 );
+
+		$actual_7 = self::$hint_builder->get_url( '//', 'dns-prefetch' );
+		self::assertSame( '', $actual_7 );
 	}
 
 	public function test_parse_for_domain_name() {

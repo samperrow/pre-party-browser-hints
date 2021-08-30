@@ -12,7 +12,7 @@ if ( ! class_exists( DAO::class ) ) {
 
 class DAOController extends DAO {
 
-	public function hint_controller( $raw_data ):\stdClass {
+	public function hint_controller( array $raw_data ):\stdClass {
 		$op_code  = (int) $raw_data['op_code'];
 		$hint_ids = ( ! empty( $raw_data['hint_ids'] ) ) ? Utils::array_into_csv( $raw_data['hint_ids'] ) : '';
 		return $this->db_controller( $op_code, $raw_data, $hint_ids );
@@ -39,15 +39,15 @@ class DAOController extends DAO {
 	}
 
 	public function insert_or_update_hint( int $op_code, $raw_data, $hint_ids = null ):\stdClass {
-		$create_hints  = new CreateHints();
-		$new_hint_data = $create_hints->new_hint_ctrl( $raw_data );
-		$response      = self::create_db_result( false, $op_code, 0, null );
+		$create_hints = new CreateHints();
+		$pprh_hint    = $create_hints->new_hint_ctrl( $raw_data );
+		$response     = self::create_db_result( false, $op_code, 0, null );
 
 		// duplicate hint exists, or error.
-		if ( empty( $new_hint_data ) ) {
+		if ( empty( $pprh_hint ) ) {
 			$response = \PPRH\DAO::create_db_result( false, 0, 1, null );
-		} elseif ( isset( $new_hint_data['url'], $new_hint_data['hint_type'] ) ) {
-			$response = ( 0 === $op_code ) ? $this->insert_hint( $new_hint_data ) : $this->update_hint( $new_hint_data, $hint_ids );
+		} elseif ( isset( $pprh_hint['url'], $pprh_hint['hint_type'] ) ) {
+			$response = ( 0 === $op_code ) ? $this->insert_hint( $pprh_hint ) : $this->update_hint( $pprh_hint, $hint_ids );
 		}
 
 		return $response;

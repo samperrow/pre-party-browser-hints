@@ -152,7 +152,7 @@
 		let rawHintType = elems.hint_type;
 		let hintTypeVal = rawHintType.find('input:checked').val();
 
-		return {
+		let hint = {
 			url:         elems.url.val(),
 			hint_type:   hintTypeVal,
 			media:       elems.media.val(),
@@ -160,6 +160,12 @@
 			type_attr:   elems.type_attr.val(),
 			crossorigin: elems.crossorigin.is(':checked'),
 		}
+
+		if (typeof pprhProAdminJS !== "undefined") {
+			hint.post_id = pprhProAdminJS.GetPostId();
+		}
+
+		return hint;
 	}
 
 	function getRowElemsFromTable(table) {

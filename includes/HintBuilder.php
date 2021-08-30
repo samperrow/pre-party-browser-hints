@@ -15,12 +15,17 @@ class HintBuilder {
 	}
 
 	public function create_pprh_hint( array $raw_hint ) {
-		if ( empty( $raw_hint['url'] ) || empty( $raw_hint['hint_type'] ) ) {
+		if ( ! isset( $raw_hint['url'],  $raw_hint['hint_type'] ) ) {
 			return false;
 		}
 
-		$hint_type    = Utils::clean_hint_type( $raw_hint['hint_type'] );
-		$url          = $this->get_url( $raw_hint['url'], $hint_type );
+		$hint_type = $this->get_hint_type( $raw_hint['hint_type'] );
+		$url       = $this->get_url( $raw_hint['url'], $hint_type );
+
+		if ( empty( $hint_type ) || empty( $url ) ) {
+			return false;
+		}
+
 		$file_type    = $this->get_file_type( $url );
 		$auto_created = ( ! empty( $raw_hint['auto_created'] ) ? 1 : 0 );
 		$as_attr      = $this->set_as_attr( $raw_hint['as_attr'], $file_type );
@@ -34,12 +39,26 @@ class HintBuilder {
 		return apply_filters( 'pprh_append_hint', $new_hint, $raw_hint );
 	}
 
+	public function get_hint_type( string $hint_type ) {
+		$hint_type = Utils::clean_hint_type( $hint_type );
+		$valid_hints = array( 'dns-prefetch', 'prefetch', 'prerender', 'preconnect', 'preload' );
+
+		if ( ! in_array( $hint_type, $valid_hints ) ) {
+			return '';
+		}
+
+		return $hint_type;
+	}
 
 	public function get_url( string $url, string $hint_type ):string {
 		$url = Utils::clean_url( $url );
 
 		if ( preg_match( '/(dns-prefetch|preconnect)/', $hint_type ) ) {
 			$url = $this->parse_for_domain_name( $url );
+		}
+
+		if ( '//' === $url || str_starts_with( $url, '//data:' ) ) {
+			return '';
 		}
 
 		return $url;

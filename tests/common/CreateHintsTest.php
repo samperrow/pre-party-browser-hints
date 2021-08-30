@@ -45,17 +45,17 @@ final class CreateHintsTest extends TestCase {
 		$hint_1 = \PPRH\Utils::create_raw_hint( 'https://test.com', 'dns-prefetch', '', '', '', 'screen' );
 		$dup_hints_1 = array( $hint_1 );
 		$candidate_hint_1 = $hint_1;
-		$actual_1 = self::$create_hints->new_hint_controller( 0, $candidate_hint_1, $dup_hints_1 );
+		$actual_1 = self::$create_hints->new_hint_controller( $candidate_hint_1, $dup_hints_1 );
 		self::assertEmpty( $actual_1 );
 
 		$candidate_hint_2 = \PPRH\Utils::create_raw_hint( 'https://test2.com', 'dns-prefetch', '', '', '', 'screen' );
 		$dup_hints_2 = array();
-		$actual_2 = self::$create_hints->new_hint_controller( 0, $candidate_hint_2, $dup_hints_2 );
+		$actual_2 = self::$create_hints->new_hint_controller( $candidate_hint_2, $dup_hints_2 );
 		self::assertNotEmpty( $actual_2 );
 
 		$hint_3 = \PPRH\Utils::create_raw_hint( 'https://asdf.com', 'preconnect', '', '', 'crossorigin', 'screen' );
 		$dup_hints_3 = array( $hint_3 );
-		$actual_3 = self::$create_hints->new_hint_controller( 0, $hint_3, $dup_hints_3 );
+		$actual_3 = self::$create_hints->new_hint_controller( $hint_3, $dup_hints_3 );
 		self::assertEmpty( $actual_3 );
 	}
 

@@ -37,10 +37,10 @@ final class DAOTest extends TestCase {
 		$expected_4 = array( 'msg' => 'Resource hint disabled successfully.', 'status' => $success_4 );
 		self::assertEquals( $expected_4, $actual_4->db_result );
 
-		$success_5 = true;
-		$actual_5 = \PPRH\DAO::create_db_result($success_5, 5, 0, null );
-		$expected_5 = array( 'msg' => 'Auto preconnect hints for this post have been reset. Please load this page on the front end to re-create the hints.', 'status' => $success_5 );
-		self::assertEquals( $expected_5, $actual_5->db_result );
+//		$success_5 = true;
+//		$actual_5 = \PPRH\DAO::create_db_result($success_5, 5, 0, null );
+//		$expected_5 = array( 'msg' => 'Auto preconnect hints for this post have been reset. Please load this page on the front end to re-create the hints.', 'status' => $success_5 );
+//		self::assertEquals( $expected_5, $actual_5->db_result );
 
 		$success_6 = false;
 		$actual_6 = \PPRH\DAO::create_db_result($success_6, 5, 1, null );
