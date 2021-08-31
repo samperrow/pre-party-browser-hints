@@ -136,7 +136,8 @@ class HintBuilderTest extends TestCase {
 		$actual_4 = self::$hint_builder->get_file_type( 'https://sphacks.local/wp-content/uploads/2021/04/cropped-cropped-fish-32x32.png' );
 		self::assertSame( '.png', $actual_4 );
 
-
+		$actual_5 = self::$hint_builder->get_file_type( 'https://fonts.googleapis.com/css?family=Lato:300,300i,700,700i,900,400%7CPacifico:400&subset=latin,latin-ext&display=auto' );
+		self::assertSame( '', $actual_5 );
 	}
 
 	public function test_set_crossorigin() {

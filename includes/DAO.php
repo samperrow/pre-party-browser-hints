@@ -30,9 +30,9 @@ class DAO {
 
 	private static function get_msg( bool $success, int $action_code, int $success_code ):string {
 		$dup_hints_alert    = 'A duplicate hint exists!';
-		$preconnect_success = 'A total of $count preconnect resource hints were created for this post.';
+		$preconnect_success = 'Preconnect resource hints were created successfully for this post.';
 		$preconnect_fail    = 'Failed to reset this post\'s preconnect hint data. Please refresh the page and try again.';
-		$preload_success    = 'Preload hints for this post have been reset. Please load this page on the front end to re-create the hints.';
+		$preload_success    = 'Preload resource hints were created successfully for this post.';
 		$preload_fail       = 'Failed to reset this post\'s preload hint data. Please refresh the page and try again.';
 
 		$prerender_single_success   = 'Prerender hint successfully created for this post.';
@@ -343,7 +343,7 @@ class DAO {
 			$wpdb->prepare( $query['sql'], $query['args'] )
 		);
 
-		$success = $wpdb->result;
+		$success = ( is_bool( $wpdb->result ) ) ? $wpdb->result : false;
 
 		if ( ! $success ) {
 			\PPRH\Utils::log_error( $wpdb->last_error );
@@ -351,12 +351,6 @@ class DAO {
 		}
 
 		return true;
-
-//		return array(
-//			'result'        => $success,
-//			'last_error'    => $wpdb->last_error,
-//			'rows_affected' => $wpdb->rows_affected
-//		);
 	}
 
 }

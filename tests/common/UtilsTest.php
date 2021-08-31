@@ -82,28 +82,22 @@ final class UtilsTest extends TestCase {
 	}
 
 	public function test_isArrayAndNotEmpty() {
-		$test_1 = array();
-		$actual_1 = \PPRH\Utils::isArrayAndNotEmpty($test_1);
+		$actual_1 = \PPRH\Utils::isArrayAndNotEmpty( array() );
 		self::assertFalse( $actual_1 );
 
-		$test_2 = '';
-		$actual_2 = \PPRH\Utils::isArrayAndNotEmpty($test_2);
+		$actual_2 = \PPRH\Utils::isArrayAndNotEmpty( '' );
 		self::assertFalse( $actual_2 );
 
-		$test_3 = null;
-		$actual_3 = \PPRH\Utils::isArrayAndNotEmpty($test_3);
+		$actual_3 = \PPRH\Utils::isArrayAndNotEmpty( null );
 		self::assertFalse( $actual_3 );
 
-		$test_4 = (object) array( 'asdf' );
-		$actual_4 = \PPRH\Utils::isArrayAndNotEmpty($test_4);
+		$actual_4 = \PPRH\Utils::isArrayAndNotEmpty( (object) array( 'asdf' ) );
 		self::assertFalse( $actual_4 );
 
-		$test_5 = 21;
-		$actual_5 = \PPRH\Utils::isArrayAndNotEmpty($test_5);
+		$actual_5 = \PPRH\Utils::isArrayAndNotEmpty( 21 );
 		self::assertFalse( $actual_5 );
 
-		$test_6 = array( 'asdf' );
-		$actual_6 = \PPRH\Utils::isArrayAndNotEmpty($test_6);
+		$actual_6 = \PPRH\Utils::isArrayAndNotEmpty( array( 'asdf' ) );
 		self::assertTrue( $actual_6 );
 	}
 

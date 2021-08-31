@@ -43,6 +43,12 @@ class DAOController extends DAO {
 		$pprh_hint    = $create_hints->new_hint_ctrl( $raw_data );
 		$response     = self::create_db_result( false, $op_code, 0, null );
 
+		if ( isset( $pprh_hint['auto_created'] ) && 1 === $pprh_hint['auto_created'] ) {
+			$post_id = $pprh_hint['post_id'] ?? '';
+			\PPRH\DAO::delete_auto_created_hints( $pprh_hint['hint_type'], $post_id );
+		}
+
+
 		// duplicate hint exists, or error.
 		if ( empty( $pprh_hint ) ) {
 			$response = \PPRH\DAO::create_db_result( false, 0, 1, null );
