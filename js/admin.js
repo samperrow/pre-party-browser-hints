@@ -285,7 +285,7 @@
 	function updateAdminNotice(msg, status) {
 		let adminNoticeElem = document.getElementById('pprhNotice');
 
-		if (typeof adminNoticeElem === "undefined" || adminNoticeElem === null) {
+		if ( ! isObjectAndNotNull(adminNoticeElem)) {
 			let pprhNoticeBox = document.getElementById('pprhNoticeBox');
 			pprhNoticeBox.innerHTML = '<div id="pprhNotice" class="notice notice-success is-dismissible"><p></p></div>';
 			adminNoticeElem = document.getElementById('pprhNotice');
@@ -296,11 +296,15 @@
 			adminNoticeElem.getElementsByTagName('p')[0].innerText = msg;
 		}
 
-		let statusText = ( status) ? 'success' : 'error';
+		// if ( ! status ) {
+		// 	status = 'error';
+		// }
+		let statusText = (status) ? status : 'error';
 
 		adminNoticeElem.classList.remove('notice-error');
 		adminNoticeElem.classList.remove('notice-success');
-		adminNoticeElem.classList.add('notice-' + statusText);
+		adminNoticeElem.classList.remove('notice-info');
+		adminNoticeElem.classList.add('notice-' + status);
 
 		setTimeout(function() {
 			adminNoticeElem.classList.remove('active');
@@ -333,21 +337,22 @@
 		function xhrResponse() {
 			if (xhr.readyState === 4 && xhr.status === 200 && xhr.response && xhr.response !== "0") {
 
-				if (xhr.response.indexOf('<div') === 0) {
-					logError('error');
-					return;
-				}
+				// if (xhr.response.indexOf('<div') === 0) {
+				// 	logError('error');
+				// 	return;
+				// }
 
 				try {
 					let response = JSON.parse(xhr.response);
 					clearHintTable();
 					let msg = response.result.db_result.msg;
 					let status = response.result.db_result.status;
-					updateAdminNotice(msg, status);
+					let statusText = (status) ? 'success' : 'error';
+					updateAdminNotice(msg, statusText);
 					updateTable(response);
 					addEventListeners();
 				} catch(e) {
-					logError(e);
+					// logError(e);
 				}
 			}
 		}

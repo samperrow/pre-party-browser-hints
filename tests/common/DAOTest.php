@@ -89,7 +89,7 @@ final class DAOTest extends TestCase {
 			return;
 		}
 
-		$table = self::$dao->table;
+		$table = self::$dao->get_table();
 
 		$actual_1 = self::$dao->get_admin_hints_query();
 		$expected_1 = array(
@@ -149,7 +149,7 @@ final class DAOTest extends TestCase {
 	}
 
 	public function test_get_client_hints_query() {
-		$table = self::$dao->table;
+		$table = self::$dao->get_table();
 
 		$actual_1 = self::$dao->get_client_hints_query( array() );
 		$sql = "SELECT * FROM $table WHERE status = %s";

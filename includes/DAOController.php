@@ -38,21 +38,14 @@ class DAOController extends DAO {
 		return $db_result;
 	}
 
-	public function insert_or_update_hint( int $op_code, $raw_data, $hint_ids = null ):\stdClass {
+	public function insert_or_update_hint( int $op_code, array $raw_data, $hint_ids = null ):\stdClass {
 		$create_hints = new CreateHints();
 		$pprh_hint    = $create_hints->new_hint_ctrl( $raw_data );
-		$response     = self::create_db_result( false, $op_code, 0, null );
-
-		if ( isset( $pprh_hint['auto_created'] ) && 1 === $pprh_hint['auto_created'] ) {
-			$post_id = $pprh_hint['post_id'] ?? '';
-			\PPRH\DAO::delete_auto_created_hints( $pprh_hint['hint_type'], $post_id );
-		}
-
 
 		// duplicate hint exists, or error.
 		if ( empty( $pprh_hint ) ) {
-			$response = \PPRH\DAO::create_db_result( false, 0, 1, null );
-		} elseif ( isset( $pprh_hint['url'], $pprh_hint['hint_type'] ) ) {
+			$response = DAO::create_db_result( false, 0, 1, null );
+		} else {
 			$response = ( 0 === $op_code ) ? $this->insert_hint( $pprh_hint ) : $this->update_hint( $pprh_hint, $hint_ids );
 		}
 
