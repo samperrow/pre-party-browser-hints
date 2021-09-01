@@ -14,16 +14,16 @@ class HintBuilder {
 		$this->file_mime_types = $this->set_file_mime_types();
 	}
 
-	public function create_pprh_hint( array $raw_hint ) {
-		if ( ! isset( $raw_hint['url'],  $raw_hint['hint_type'] ) ) {
-			return false;
+	public function create_pprh_hint( array $raw_hint ):array {
+		if ( ! isset( $raw_hint['url'], $raw_hint['hint_type'] ) ) {
+			return array();
 		}
 
 		$hint_type = $this->get_hint_type( $raw_hint['hint_type'] );
 		$url       = $this->get_url( $raw_hint['url'], $hint_type );
 
 		if ( empty( $hint_type ) || empty( $url ) ) {
-			return false;
+			return array();
 		}
 
 		$file_type    = $this->get_file_type( $url );

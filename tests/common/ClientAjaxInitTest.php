@@ -20,6 +20,7 @@ class ClientAjaxInitTest extends TestCase {
 				array( 'url' => 'https://fonts.gstatic.comTest', 'hint_type' => 'preconnect', 'media' => '', 'as_attr' => '', 'type_attr' => '', 'crossorigin' => 'crossorigin' )
 			),
 			'nonce' => $js_object['nonce'],
+//			'op_code' => 0
 		);
 
 		$args = array(
@@ -49,7 +50,8 @@ class ClientAjaxInitTest extends TestCase {
 		self::assertCount( count( $pprh_data['hints'] ), $response_body_2 );
 		$hint_id = (string) $response_body_2[0]['new_hint']['id'];
 
-		\PPRH\DAO::delete_hint( $hint_id );
+		$dao = new \PPRH\DAO();
+		$dao->delete_hint( $hint_id );
 
 		\update_option( 'pprh_preconnect_allow_unauth', $orig_preconnect_allow_unauth );
 		\update_option( 'pprh_preconnect_autoload', $orig_preconnect_autoload );

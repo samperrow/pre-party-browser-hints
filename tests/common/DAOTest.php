@@ -10,9 +10,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 final class DAOTest extends TestCase {
 
 	public static $dao;
+	public static $hint_ctrl;
 
 	public function test_init() {
-		self::$dao = new \PPRH\DAO();
+		self::$dao       = new \PPRH\DAO();
+		self::$hint_ctrl = new \PPRH\HintController();
 	}
 
 	public function test_create_db_result() {
@@ -158,36 +160,31 @@ final class DAOTest extends TestCase {
 	}
 
 	public function test_insert_hint() {
-		$create_hints = new \PPRH\CreateHints();
+		$hint_builder = new \PPRH\HintBuilder();
 
 		$hint_1 = \PPRH\Utils::create_raw_hint( 'https://www.asdf.com/foozball', 'preconnect', '', '', '', '', '','2145' );
-		$new_hint_1 = $create_hints->create_pprh_hint($hint_1);
+		$new_hint_1 = $hint_builder->create_pprh_hint($hint_1);
 		$actual_1 = self::$dao->insert_hint( $new_hint_1 );
-		$expected = \PPRH\DAO::create_db_result( true, 0, 0, $new_hint_1 );
-		self::assertEquals( $expected, $actual_1 );
+		self::assertTrue( $actual_1['success'] );
 	}
 
 	public function test_update_hint() {
 		$new_hint = \PPRH\Utils::create_raw_hint( 'https://www.asdf2.com/foozball/blah.css', 'dns-prefetch', 'font', 'font/woff2', '');
-		$result = self::$dao->update_hint( $new_hint, 10 );
-		$expected = \PPRH\DAO::create_db_result( true, 1, 0, $new_hint );
-		self::assertEquals($expected, $result);
+		$actual_1 = self::$dao->update_hint( $new_hint, 10 );
+		self::assertTrue( $actual_1['success'] );
 	}
 
 	public function test_delete_hint() {
-		$actual_1 = \PPRH\DAO::delete_hint( '10' );
-		$expected_1 = \PPRH\DAO::create_db_result( true, 2, 0, null );
-		self::assertEquals($expected_1, $actual_1);
+		$actual_1 = self::$dao->delete_hint( '10' );
+		self::assertTrue( $actual_1['success'] );
 	}
 
 	public function test_bulk_update() {
 		$actual_1 = self::$dao->bulk_update( '10', 3 );
-		$expected_1 = \PPRH\DAO::create_db_result( true, 3, 0, null );
-		self::assertEquals($expected_1, $actual_1);
+		self::assertTrue($actual_1['success']);
 
 		$actual_2 = self::$dao->bulk_update( '11', 4 );
-		$expected_2 = \PPRH\DAO::create_db_result( true, 4, 0, null );
-		self::assertEquals($expected_2, $actual_2);
+		self::assertTrue($actual_2['success']);
 	}
 
 

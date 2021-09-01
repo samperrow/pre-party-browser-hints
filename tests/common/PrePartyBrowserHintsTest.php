@@ -36,8 +36,14 @@ final class PrePartyBrowserHintsTest extends TestCase {
 		$dao = class_exists( \PPRH\DAO::class );
 		self::assertTrue( $dao );
 
-		$create_hints = class_exists( \PPRH\CreateHints::class );
-		self::assertTrue( $create_hints );
+		$hint_ctrl = class_exists( \PPRH\HintController::class );
+		self::assertTrue( $hint_ctrl );
+
+		$hint_builder = class_exists( \PPRH\HintBuilder::class );
+		self::assertTrue( $hint_builder );
+
+		$activate_plugin = class_exists( \PPRH\ActivatePlugin::class );
+		self::assertTrue( $activate_plugin );
 	}
 
 	public function test_load_dashboard() {

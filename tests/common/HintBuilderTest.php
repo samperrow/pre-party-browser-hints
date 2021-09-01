@@ -17,7 +17,7 @@ class HintBuilderTest extends TestCase {
 	public function test_create_pprh_hint() {
 		$hint_1 = \PPRH\Utils::create_raw_hint( '', 'preload', 0, '', '', '', '' );
 		$actual_1 = self::$hint_builder->create_pprh_hint( $hint_1 );
-		self::assertFalse( $actual_1 );
+		self::assertEmpty( $actual_1 );
 
 		$hint_2 = \PPRH\Utils::create_raw_hint( 'https://espn.com/asdf/script.js', 'preload', 0, '', '', '', '' );
 		$actual_2 = self::$hint_builder->create_pprh_hint( $hint_2 );
@@ -41,11 +41,11 @@ class HintBuilderTest extends TestCase {
 
 		$test_4 = \PPRH\Utils::create_raw_hint( '//espn.com', '' );
 		$test_hint_4 = self::$hint_builder->create_pprh_hint($test_4);
-		self::assertEquals(false, $test_hint_4);
+		self::assertEmpty($test_hint_4);
 
 		$data1 = \PPRH\Utils::create_raw_hint( '', 'dns-prefetch' );
 		$bool1 = self::$hint_builder->create_pprh_hint($data1);
-		self::assertEquals(false, $bool1);
+		self::assertEmpty($bool1);
 
 		$test_6 = \PPRH\Utils::create_raw_hint( $url_1, 'preload', 1, 'font', 'font/woff', 'crossorigin', '' );
 		$actual_6 = self::$hint_builder->create_pprh_hint( $test_6 );

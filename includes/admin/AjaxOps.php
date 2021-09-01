@@ -59,8 +59,8 @@ class AjaxOps {
 		if ( isset( $data['post_id'], $data['action'] ) ) {
 			$db_result = \apply_filters( 'pprh_apply_ajaxops_action', $data['post_id'], $data['action'] );
 		} else {
-			$dao_ctrl  = new DAOController();
-			$db_result = $dao_ctrl->hint_controller( $data );
+			$hint_ctrl  = new HintController();
+			$db_result = $hint_ctrl->hint_ctrl_init( $data );
 		}
 
 		if ( ! is_object( $db_result ) ) {

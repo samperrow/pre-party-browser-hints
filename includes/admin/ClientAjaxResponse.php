@@ -31,7 +31,7 @@ class ClientAjaxResponse extends ClientAjaxInit {
 
 	// tested
 	public function get_hint_results( array $hint_data ):array {
-		$dao_ctrl = new DAOController();
+		$hint_ctrl = new HintController();
 		$results = array();
 
 		foreach ( $hint_data['hints'] as $new_hint ) {
@@ -42,7 +42,7 @@ class ClientAjaxResponse extends ClientAjaxInit {
 				$new_hint['post_id'] = $hint_data['post_id'];
 			}
 
-			$result = $dao_ctrl->hint_controller( $new_hint );
+			$result = $hint_ctrl->hint_ctrl_init( $new_hint );
 
 			if ( is_object( $result ) && isset( $result->db_result['status'] ) && $result->db_result['status'] ) {
 				$results[] = $result;

@@ -337,10 +337,10 @@
 		function xhrResponse() {
 			if (xhr.readyState === 4 && xhr.status === 200 && xhr.response && xhr.response !== "0") {
 
-				// if (xhr.response.indexOf('<div') === 0) {
-				// 	logError('error');
-				// 	return;
-				// }
+				if (xhr.response.indexOf('<div') === 0) {
+					logError('error');
+					return;
+				}
 
 				try {
 					let response = JSON.parse(xhr.response);
@@ -352,7 +352,7 @@
 					updateTable(response);
 					addEventListeners();
 				} catch(e) {
-					// logError(e);
+					logError(e);
 				}
 			}
 		}

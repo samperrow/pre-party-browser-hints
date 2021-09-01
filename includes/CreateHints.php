@@ -16,11 +16,11 @@ class CreateHints extends HintBuilder {
 		$candidate_hint = $this->create_pprh_hint( $raw_hint );
 		$pprh_hint      = array();
 
-		if ( is_array( $candidate_hint ) && isset( $raw_hint['op_code'] ) ) {
+		if ( ! empty( $candidate_hint ) && isset( $raw_hint['op_code'] ) ) {
 			$op_code         = (int) $raw_hint['op_code'];
 			$hint_ids        = ( ! empty( $raw_hint['hint_ids'] ) ? $raw_hint['hint_ids'] : '' );
 			$duplicate_hints = $dao->get_duplicate_hints( $candidate_hint['url'], $candidate_hint['hint_type'], $op_code, $hint_ids );
-			$pprh_hint       = $this->new_hint_controller( $candidate_hint, $duplicate_hints );
+			$pprh_hint       = $this->handle_duplicate_hints( $candidate_hint, $duplicate_hints );
 		}
 
 		return $pprh_hint;
@@ -33,8 +33,7 @@ class CreateHints extends HintBuilder {
 	 * @param array $duplicate_hints
 	 * @return array
 	 */
-	public function new_hint_controller( array $candidate_hint, array $duplicate_hints ):array {
-
+	public function handle_duplicate_hints( array $candidate_hint, array $duplicate_hints ):array {
 		if ( isset( $candidate_hint['post_id'] ) ) {
 			$candidate_hint = \apply_filters( 'pprh_resolve_duplicate_hints', $candidate_hint, $duplicate_hints );
 		} elseif ( ! empty( $duplicate_hints ) ) {
