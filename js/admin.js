@@ -10,14 +10,18 @@
 	let bulkActionElems = document.querySelectorAll('input.pprhBulkAction');
 	let newHintTable = document.getElementById('pprh-enter-data');
 
-	toggleEmailSubmit();
-	toggleDivs();
-	// checkoutModals();
-	resetButtons();
-	addSubmitHintsListener();
-	addEventListeners();
-	addHintTypeListener(null);
-	applyBulkActionListeners();
+
+	$(document).ready(function() {
+		toggleEmailSubmit();
+		toggleDivs();
+		// checkoutModals();
+		resetButtons();
+		addSubmitHintsListener();
+		addEventListeners();
+		addHintTypeListener(null);
+		applyBulkActionListeners();
+	});
+
 
 
 
@@ -281,7 +285,6 @@
 		});
 	}
 
-	// TODO: remove previous notices which have a different status. i.e- removing an 'error' box after a successful notice
 	function updateAdminNotice(msg, status) {
 		let adminNoticeElem = document.getElementById('pprhNotice');
 
@@ -296,15 +299,12 @@
 			adminNoticeElem.getElementsByTagName('p')[0].innerText = msg;
 		}
 
-		// if ( ! status ) {
-		// 	status = 'error';
-		// }
 		let statusText = (status) ? status : 'error';
 
 		adminNoticeElem.classList.remove('notice-error');
 		adminNoticeElem.classList.remove('notice-success');
 		adminNoticeElem.classList.remove('notice-info');
-		adminNoticeElem.classList.add('notice-' + status);
+		adminNoticeElem.classList.add('notice-' + statusText);
 
 		setTimeout(function() {
 			adminNoticeElem.classList.remove('active');

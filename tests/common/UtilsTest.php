@@ -244,6 +244,139 @@ final class UtilsTest extends TestCase {
 
 		$actual_4 = \PPRH\Utils::json_to_array( '{\"url\":\"//asdf\",\"hint_type\":\"dns-prefetch\",\"media\":\"\",\"as_attr\":\"\",\"type_attr\":\"\",\"crossorigin\":\"\",\"post_id\":\"global\",\"op_code\":0,\"hint_ids\":[]}' );
 		self::assertCount( 9, $actual_4 );
+
+		$actual_5 = \PPRH\Utils::json_to_array( '{\"hint_ids\":[\"133\"],\"op_code\":2}' );
+		self::assertCount( 2, $actual_5 );
+
+		$actual_6 = \PPRH\Utils::json_to_array( '{\\"hint_ids\\":[\\"133\\"],\\"op_code\\":2}' );
+		self::assertCount( 2, $actual_6 );
+
+		$arr = array( 'testing' => true, 'test2' => 'true', 'wacka' => 2352652 );
+
+		$json_7 = json_encode( $arr );
+		$actual_7 = \PPRH\Utils::json_to_array( $json_7 );
+		self::assertCount( 3, $actual_7 );
+
+		$json_8 = json_encode( (object) $arr );
+		$actual_8 = \PPRH\Utils::json_to_array( $json_8 );
+		self::assertCount( 3, $actual_8 );
+
+		$json_9 = '
+			{
+				"type": "donut",
+				"name": "Cake",
+				"toppings": "[{ \"type\": \"Glazed\" }, { \"type\": \"Maple\" }]"
+			}';
+		$actual_9 = \PPRH\Utils::json_to_array( $json_9 );
+		self::assertCount( 3, $actual_9 );
+
+		$json_10 = '{"a":1,"b":2,"c":3,"d":4,"e":5}';
+		$actual_10 = \PPRH\Utils::json_to_array( $json_10 );
+		self::assertCount( 5, $actual_10 );
+
+		$json_11 = '[{"user_id":"1","user_name":"Sayeed Amin","time":"2019-11-06 13:21:26"}]';
+		$actual_11 = \PPRH\Utils::json_to_array( $json_11 );
+		self::assertCount( 1, $actual_11 );
+		self::assertCount( 3, $actual_11[0] );
+
+		$json_12 = '{"store":{"book":[{"category":"reference","author":"Nigel Rees","title":"Sayings of the Century","price":8.95},{"category":"fiction","author":"Evelyn Waugh","title":"Sword of Honour","price":12.99},{"category":"fiction","author":"Herman Melville","title":"Moby Dick","isbn":"0-553-21311-3","price":8.99},{"category":"fiction","author":"J. R. R. Tolkien","title":"The Lord of the Rings","isbn":"0-395-19395-8","price":22.99}],"bicycle":{"color":"red","price":19.95}},"expensive":10}';
+		$actual_12 = \PPRH\Utils::json_to_array( $json_12 );
+		self::assertCount( 2, $actual_12 );
+		self::assertCount( 2, $actual_12['store'] );
+
+		$json = '{
+            "result": {
+                "list": [
+                    {
+                        "time": 1477526400,
+                        "o": "11.51000"
+                    },
+                    {
+                        "time": 1477612800,
+                        "o": "11.49870"
+                    }
+                ]
+            }
+        }';
+		$actual_12 = \PPRH\Utils::json_to_array( $json );
+		self::assertCount( 2, $actual_12['result']['list'] );
+
+		$json = '
+        {
+          "store":{
+            "books":[
+              {
+                "category":"reference",
+                "author":"Nigel Rees",
+                "title":"Sayings of the Century",
+                "price":8.95
+              },
+              {
+                "category":"fiction",
+                "author":"Evelyn Waugh",
+                "title":"Sword of Honour",
+                "price":12.99
+              },
+              {
+                "category":"fiction",
+                "author":"Herman Melville",
+                "title":"Moby Dick",
+                "isbn":"0-553-21311-3",
+                "price":8.99
+              },
+              {
+                "category":"fiction",
+                "author":"J. R. R. Tolkien",
+                "title":"The Lord of the Rings",
+                "isbn":"0-395-19395-8",
+                "price":22.99
+              }
+            ],
+            "bicycle":{
+              "color":"red",
+              "price":19.95
+            }
+          }
+        }';
+		$actual_13 = \PPRH\Utils::json_to_array( $json );
+		self::assertCount( 4, $actual_13['store']['books'] );
+
+		$json = '
+            {
+               "http://www.w3.org/2000/01/rdf-schema#label":[
+                  {
+                     "@language":"en"
+                  },
+                  {
+                     "@language":"de"
+                  }
+               ]
+            }
+        ';
+		$actual_14 = \PPRH\Utils::json_to_array( $json );
+		self::assertCount( 2, $actual_14['http://www.w3.org/2000/01/rdf-schema#label'] );
+
+		$json = '
+            {
+                "features": [],
+                "mediatypes": {
+                    "image/png": "/core/img/filetypes/image.png",
+                    "image/jpeg": "/core/img/filetypes/image.png",
+                    "image/gif": "/core/img/filetypes/image.png",
+                    "application/postscript": "/core/img/filetypes/image-vector.png"
+                }
+            }
+        ';
+		$actual_15 = \PPRH\Utils::json_to_array( $json );
+		self::assertCount( 4, $actual_15['mediatypes'] );
+
+		$json = '
+            {
+                "features": [{"name": "foo", "value": 1},{"name": "bar", "value": 2},{"name": "baz", "value": 1}]
+            }
+        ';
+		$actual_16 = \PPRH\Utils::json_to_array( $json );
+		self::assertCount( 3, $actual_16['features'] );
 	}
 
 	public function test_get_api_response_body() {

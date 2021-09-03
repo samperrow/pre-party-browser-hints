@@ -34,7 +34,7 @@ class LoadAdmin {
 		$settings_page = \add_menu_page(
 			'Pre* Party Settings',
 			'Pre* Party',
-			'activate_plugins',
+			'update_plugins',
 			PPRH_MENU_SLUG,
 			array( $this, 'load_dashboard' ),
 			PPRH_REL_DIR . 'images/lightning.png'
@@ -45,7 +45,7 @@ class LoadAdmin {
 
 	public function load_dashboard() {
 		if ( ! current_user_can( 'manage_options' ) ) {
-			wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
+			\wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
 		}
 
 		$dashboard = new Dashboard();

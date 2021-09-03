@@ -24,19 +24,20 @@ class Utils {
 	public static function json_to_array( string $json ) {
 		$result = false;
 
-		if ( 1 === strpos( $json, '\\', 0 ) ) {
+		if ( 1 === strpos( $json, "\\", 0 ) ) {
 			$json = str_replace( '\\', '', $json );
 		}
 
 		try {
 			$result = json_decode( $json, true );
 		} catch ( \Exception $exception ) {
-			$result = array();
-			self::log_error( "$json\n$exception" );
+			$result = json_last_error();
+			self::log_error( "$json\n$exception\n$result" );
 		}
 
 		if ( ! is_array( $result ) ) {
 			self::log_error( 'Failed at Utils::json_to_array()' );
+			return json_last_error_msg();
 		}
 
 		return $result;

@@ -23,17 +23,13 @@ class AjaxOps {
 			\check_ajax_referer( 'pprh_table_nonce', 'nonce' );
 			$pprh_data = Utils::json_to_array( $_POST['pprh_data'] );
 
-			$ajax_response = $this->priv_update_hints( $pprh_data  );
+			$ajax_response = $this->priv_update_hints( $pprh_data );
 			$is_proper_response = $this->is_proper_response( $ajax_response );
 
-			$response = ( $is_proper_response ) ? json_encode( $ajax_response, true ) : 'Error parsing request. Please contact support to resolve this issue.';
-			\wp_die( $response );
+			$response = ( $is_proper_response ) ? $ajax_response : array( 'Error parsing request. Please contact support to resolve this issue.' );
+			$json = json_encode( $response );
+			\wp_die( $json );
 		}
-	}
-
-	public function is_proper_response( array $ajax_response ):bool {
-		$values_set = ( isset( $ajax_response['rows'], $ajax_response['pagination'], $ajax_response['column_headers'], $ajax_response['total_pages'], $ajax_response['result'] ) );
-		return ( $values_set && is_object( $ajax_response['result'] ) );
 	}
 
 	private function priv_update_hints( $pprh_data ):array {
@@ -68,6 +64,11 @@ class AjaxOps {
 		}
 
 		return $db_result;
+	}
+
+	public function is_proper_response( array $ajax_response ):bool {
+		$values_set = ( isset( $ajax_response['rows'], $ajax_response['pagination'], $ajax_response['column_headers'], $ajax_response['total_pages'], $ajax_response['result'] ) );
+		return ( $values_set && is_object( $ajax_response['result'] ) );
 	}
 
 }
