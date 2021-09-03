@@ -26,7 +26,7 @@ class AjaxOps {
 			$ajax_response = $this->priv_update_hints( $pprh_data );
 			$is_proper_response = $this->is_proper_response( $ajax_response );
 
-			$response = ( $is_proper_response ) ? $ajax_response : array( 'Error parsing request. Please contact support to resolve this issue.' );
+			$response = ( $is_proper_response ) ? $ajax_response : array( 'error' => "Error parsing request: $pprh_data. Please contact support to resolve this issue." );
 			$json = json_encode( $response );
 			\wp_die( $json );
 		}

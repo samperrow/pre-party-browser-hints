@@ -336,24 +336,27 @@
 
 		function xhrResponse() {
 			if (xhr.readyState === 4 && xhr.status === 200 && xhr.response && xhr.response !== "0") {
+				let responseObj = JSON.parse(xhr.response);
 
-				if (xhr.response.indexOf('<div') === 0) {
+				if (isObjectAndNotNull(responseObj)) {
+
+					if (responseObj.result && responseObj.result.db_result && responseObj.result.db_result.msg) {
+						clearHintTable();
+						let msg = responseObj.result.db_result.msg;
+						let status = responseObj.result.db_result.status;
+						let statusText = (status) ? 'success' : 'error';
+						updateAdminNotice(msg, statusText);
+						updateTable(responseObj);
+						addEventListeners();
+					} else if (responseObj.error) {
+						logError(responseObj.error);
+					}
+				}
+
+				else {
 					logError('error');
-					return;
 				}
 
-				try {
-					let response = JSON.parse(xhr.response);
-					clearHintTable();
-					let msg = response.result.db_result.msg;
-					let status = response.result.db_result.status;
-					let statusText = (status) ? 'success' : 'error';
-					updateAdminNotice(msg, statusText);
-					updateTable(response);
-					addEventListeners();
-				} catch(e) {
-					logError(e);
-				}
 			}
 		}
 
@@ -395,11 +398,10 @@
 			return val;
 		}
 
-		function logError(err) {
-			let error = (err.message) ? err.message : " Please clear your browser cache, refresh your page, or contact support to resolve the issue.";
-			let msg = "Error updating resource hint. " + error;
-			updateAdminNotice(msg, "error");
-			console.error(err);
+		function logError(errorMsg) {
+			let error = (errorMsg) ? errorMsg : " Please clear your browser cache, refresh your page, or contact support to resolve the issue.";
+			updateAdminNotice(error, "error");
+			console.error(error);
 		}
 	}
 
