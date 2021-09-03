@@ -40,10 +40,6 @@ class Pre_Party_Browser_Hints {
 	protected $client_data;
 
 	public function __construct() {
-//		if ( defined( 'DOING_CRON' ) && DOING_CRON ) {
-//			return;
-//		}
-
 		\register_activation_hook( __FILE__, array( $this, 'activate_plugin' ) );
 		\add_action( 'wpmu_new_blog', array( $this, 'activate_plugin' ) );
 		\add_filter( 'pre_set_site_transient_update_plugins', array( $this, 'plugin_updater' ), 10, 1 );
