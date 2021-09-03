@@ -22,7 +22,6 @@ class LoadAdmin {
 			\apply_filters( 'pprh_load_pro_admin', $this->plugin_page );
 			$this->check_debug_email();
 		}
-
 	}
 
 	public function load_common_content() {
@@ -43,10 +42,6 @@ class LoadAdmin {
 
 		\add_action( "load-{$settings_page}", array( $this, 'screen_option' ) );
 	}
-
-    public function asdf() {
-        echo 'hi';
-    }
 
 	public function load_dashboard() {
 		if ( ! current_user_can( 'manage_options' ) ) {

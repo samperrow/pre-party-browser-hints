@@ -63,8 +63,8 @@ class Dashboard {
 			return false;
 		}
 
-		$msg = 'Version ' . PPRH_VERSION_NEW . ' Upgrade Notes: 1) Fixed JSON parsing error which happened for < PHP 7.3 users. Thank you to the users who pointed it out.';
-		Utils::show_notice( $msg, true );
+        $msg = 'Version ' . PPRH_VERSION_NEW . ' Upgrade Notes: 1) Changed minimunm role capability required to use this plugin from "update_plugins" to "activate_plugins" to address a plugin compatibliity error.';
+        Utils::show_notice( $msg, true );
 		$activate_plugin = new ActivatePlugin();
 		$activate_plugin->upgrade_plugin();
 
@@ -74,7 +74,7 @@ class Dashboard {
 
 		return true;
 	}
-	
+
 
 	public function show_footer() {
 		$this->contact_author();

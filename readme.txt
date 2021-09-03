@@ -4,7 +4,7 @@ Donate link: https://www.paypal.me/samperrow
 Tags: W3C, DNS prefetch, prerender, preconnect, prefetch, preload, web perf, performance, speed, resource hints
 Requires at least: 4.4
 Tested up to: 5.8.3
-Stable tag: 1.8.9
+Stable tag: 1.7.81
 Requires PHP: 7.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -17,9 +17,9 @@ Take advantage of browser resource hints and plug-and-play features to improve p
 
 == Description ==
 
-This plugin allows users to automatically and easily embed resource hints to improve page load time. 
+This plugin allows users to automatically and easily embed resource hints to improve page load time.
 
-DNS prefetch, prerender, preconnect, prefetch, and preload are all supported. 
+DNS prefetch, prerender, preconnect, prefetch, and preload are all supported.
 
 After installation, preconnect hints will automatically be created the next time your website is visited.
 
@@ -74,8 +74,12 @@ To activate the preloaded resource, you must call that file in HTML as you would
 
 
 == Changelog ==
-1. Most recent update: August 18, 2021.
-2. Version 1.8.9
+1. Most recent update: September 2, 2021.
+2. Version 1.7.81
+
+Sept 2, 2021:
+1) Changed minimunm role capability required to use this plugin from "update_plugins" to "activate_plugins" to address a plugin compatibliity error.
+
 
 August 18, 2021:
 1) Fixed/improved numerous things.
