@@ -10,6 +10,8 @@ class DAO {
 
 	private static $table = PPRH_DB_TABLE;
 
+//	public function __construct() {}
+
 	public function get_table() {
 		return self::$table;
 	}

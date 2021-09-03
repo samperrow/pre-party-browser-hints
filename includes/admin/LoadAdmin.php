@@ -30,12 +30,12 @@ class LoadAdmin {
 		$ajax_ops->set_actions();
 	}
 
-
+    // icon not appearing with "disable all wp updates" plugin.
 	public function load_admin_menu() {
-		$settings_page = add_menu_page(
+		$settings_page = \add_menu_page(
 			'Pre* Party Settings',
 			'Pre* Party',
-			'update_plugins',
+			'activate_plugins',
 			PPRH_MENU_SLUG,
 			array( $this, 'load_dashboard' ),
 			PPRH_REL_DIR . 'images/lightning.png'
@@ -43,6 +43,10 @@ class LoadAdmin {
 
 		\add_action( "load-{$settings_page}", array( $this, 'screen_option' ) );
 	}
+
+    public function asdf() {
+        echo 'hi';
+    }
 
 	public function load_dashboard() {
 		if ( ! current_user_can( 'manage_options' ) ) {
@@ -75,7 +79,7 @@ class LoadAdmin {
 			'default' => 10
 		);
 
-		add_screen_option( 'per_page', $args );
+		\add_screen_option( 'per_page', $args );
 	}
 
 	public function pprh_set_screen_option( $status, $option, $value ) {
