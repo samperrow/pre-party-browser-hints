@@ -377,6 +377,11 @@ final class UtilsTest extends TestCase {
         ';
 		$actual_16 = \PPRH\Utils::json_to_array( $json );
 		self::assertCount( 3, $actual_16['features'] );
+
+//		$json = 'action=pprh_update_hints&pprh_data={"hint_ids":["163"],"op_code":2}&nonce=ee2c94cf7b';
+		$json = '{"hint_ids":["163"],"op_code":2}';
+		$actual_17 = \PPRH\Utils::json_to_array( $json );
+		self::assertCount( 2, $actual_17 );
 	}
 
 	public function test_get_api_response_body() {

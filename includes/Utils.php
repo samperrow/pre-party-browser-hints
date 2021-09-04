@@ -22,22 +22,16 @@ class Utils {
 	}
 
 	public static function json_to_array( string $json ) {
-		$result = false;
+		$result = json_decode( $json, true );
 
-		if ( 1 === strpos( $json, "\\", 0 ) ) {
-			$json = str_replace( '\\', '', $json );
-		}
-
-		try {
+		if ( is_null( $result ) && 1 === strpos( $json, '\\' ) ) {
+			$json = stripslashes( $json );
 			$result = json_decode( $json, true );
-		} catch ( \Exception $exception ) {
-			$result = json_last_error();
-			self::log_error( "$json\n$exception\n$result" );
 		}
 
 		if ( ! is_array( $result ) ) {
-			self::log_error( 'Failed at Utils::json_to_array()' );
-			return json_last_error_msg();
+			$result = json_last_error_msg();
+			self::log_error( "$json\n$result" );
 		}
 
 		return $result;
