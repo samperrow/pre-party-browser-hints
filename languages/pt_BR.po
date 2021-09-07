@@ -1,11 +1,9 @@
-#, fuzzy
 msgid ""
 msgstr ""
-"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "Project-Id-Version: Pre* Party Resource Hints\n"
 "POT-Creation-Date: 2021-09-07 12:33-0600\n"
-"PO-Revision-Date: 2021-09-07 12:33-0600\n"
-"Last-Translator: \n"
+"PO-Revision-Date: 2021-09-07 12:34-0600\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -18,97 +16,114 @@ msgstr ""
 "X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
 "esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
 "_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"Last-Translator: \n"
+"Language: pt_BR\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: *.min.js\n"
 
 #. Plugin Name of the plugin/theme
 #: includes/admin/Dashboard.php:27
+#, fuzzy
 msgid "Pre* Party Resource Hints"
-msgstr ""
+msgstr "Dicas de recursos do partido pré*"
 
 #: includes/admin/Dashboard.php:96
+#, fuzzy
 msgid "Request a New Feature or Report a Bug"
-msgstr ""
+msgstr "Solicite um novo recurso ou reporte um bug"
 
 #: includes/admin/Dashboard.php:102
+#, fuzzy
 msgid "Help make this plugin better!"
-msgstr ""
+msgstr "Ajude a melhorar este plugin!"
 
 #: includes/admin/Dashboard.php:103
 msgid "Email address:"
-msgstr ""
+msgstr "Endereço de e-mail:"
 
 #: includes/admin/Dashboard.php:105
 msgid "Submit"
-msgstr ""
+msgstr "Enviar"
 
 #: includes/admin/DisplayHints.php:56
 msgid "URL"
-msgstr ""
+msgstr "URL"
 
 #: includes/admin/DisplayHints.php:57
+#, fuzzy
 msgid "Hint Type"
-msgstr ""
+msgstr "Tipo de dica"
 
 #: includes/admin/DisplayHints.php:58
+#, fuzzy
 msgid "As Attr"
-msgstr ""
+msgstr "Como Attr"
 
 #: includes/admin/DisplayHints.php:59
+#, fuzzy
 msgid "Type Attr"
-msgstr ""
+msgstr "Tipo Attr"
 
 #: includes/admin/DisplayHints.php:60
+#, fuzzy
 msgid "Crossorigin"
-msgstr ""
+msgstr "Crossorigin"
 
 #: includes/admin/DisplayHints.php:61
 msgid "Media"
-msgstr ""
+msgstr "Mídia"
 
 #: includes/admin/DisplayHints.php:62
+#, fuzzy
 msgid "Status"
-msgstr ""
+msgstr "Status"
 
 #: includes/admin/DisplayHints.php:63
 msgid "Created By"
-msgstr ""
+msgstr "Criado por"
 
 #: includes/admin/DisplayHints.php:82
 msgid "Delete"
-msgstr ""
+msgstr "Excluir"
 
 #: includes/admin/DisplayHints.php:83
 msgid "Enable"
-msgstr ""
+msgstr "Habilitar"
 
 #: includes/admin/DisplayHints.php:84
 msgid "Disable"
-msgstr ""
+msgstr "Desativar"
 
 #: includes/admin/DisplayHints.php:115
+#, fuzzy
 msgid "Enter a URL or domain name.."
-msgstr ""
+msgstr "Digite uma URL ou nome de domínio.."
 
 #: includes/admin/DisplayHints.php:144
+#, fuzzy
 msgid "Update Resource Hint"
-msgstr ""
+msgstr "Dica de recurso de atualização"
 
 #: includes/admin/LoadAdmin.php:48
 msgid "You do not have sufficient permissions to access this page."
-msgstr ""
+msgstr "Você não tem permissões suficientes para acessar esta página."
 
 #: includes/admin/LoadAdmin.php:158 includes/admin/LoadAdmin.php:173
+#, fuzzy
 msgid "This feature is only available after upgrading to the Pro version."
-msgstr ""
+msgstr "Este recurso só está disponível após a atualização para a versão Pro."
 
 #: includes/admin/LoadAdmin.php:159
+#, fuzzy
 msgid ""
 "Auto Preload will automatically create the proper preload hints "
 "automatically, for each post on your website."
 msgstr ""
+"O Auto Preload criará automaticamente as dicas de pré-carga adequadas "
+"automaticamente, para cada postagem em seu site."
 
 #: includes/admin/LoadAdmin.php:174
+#, fuzzy
 msgid ""
 "Auto Prerender will automatically create the proper prerender hints "
 "automatically, for each post on your website.\n"
@@ -121,101 +136,151 @@ msgid ""
 "page, a prerender hint will be created for the /shop URL, and that page will "
 "be downloaded while the visitor is on the home page. "
 msgstr ""
+"O Prerender Automático criará automaticamente as dicas de pré-remetente "
+"adequadas automaticamente, para cada postagem em seu site.\n"
+"\t\tEsse recurso funciona implementando análises personalizadas para "
+"determinar qual página um visitante é mais provável para navegar depois de "
+"uma determinada página, e uma dica de pré-venda é criada apontando para esse "
+"destino.\n"
+"\t\tEsta dica de pré-venda permite que um visitante baixe uma página web "
+"inteira em segundo plano, permitindo que a página seja carregada "
+"instantaneamente.\n"
+"\t\tPor exemplo, se a maioria dos visitantes navegar até sua página /shop a "
+"partir de sua página inicial, uma dica de pré-venda será criada para a URL /"
+"loja, e essa página será baixada enquanto o visitante estiver na página "
+"inicial. "
 
 #: includes/admin/NewHint.php:37
+#, fuzzy
 msgid "Add New Resource Hint"
-msgstr ""
+msgstr "Adicionar nova dica de recurso"
 
 #: includes/admin/NewHint.php:51
+#, fuzzy
 msgid "Insert Resource Hint"
-msgstr ""
+msgstr "Inserir dica de recurso"
 
 #: includes/admin/NewHint.php:73
+#, fuzzy
 msgid ""
 "Enter a domain name for dns-prefetch and preconnect hints, otherwise enter a "
 "full URL."
 msgstr ""
+"Digite um nome de domínio para dns-prefetch e dicas de pré-conexão, caso "
+"contrário, digite uma URL completa."
 
 #: includes/admin/NewHint.php:75
+#, fuzzy
 msgid "Domain or URL:"
-msgstr ""
+msgstr "Domínio ou URL:"
 
 #: includes/admin/NewHint.php:79
+#, fuzzy
 msgid "Enter valid domain or URL here..."
-msgstr ""
+msgstr "Digite domínio válido ou URL aqui..."
 
 #: includes/admin/NewHint.php:100
+#, fuzzy
 msgid ""
 "Insert domain names from external URL's to perform DNS resolution early."
 msgstr ""
+"Insira nomes de domínio de URL's externos para executar a resolução DNS mais "
+"cedo."
 
 #: includes/admin/NewHint.php:102
+#, fuzzy
 msgid "DNS-Prefetch"
-msgstr ""
+msgstr "DNS-Prefetch"
 
 #: includes/admin/NewHint.php:112
+#, fuzzy
 msgid ""
 "Insert the full URL of a resource that is likely to be needed on a page "
 "later."
 msgstr ""
+"Insira a URL completa de um recurso que provavelmente será necessário em uma "
+"página mais tarde."
 
 #: includes/admin/NewHint.php:114 includes/admin/views/FAQ.php:183
+#, fuzzy
 msgid "Prefetch"
-msgstr ""
+msgstr "Pré-introm que"
 
 #: includes/admin/NewHint.php:124
+#, fuzzy
 msgid ""
 "Insert the full URL of a page/post your visitors are likely to navigate "
 "towards."
 msgstr ""
+"Insira a URL completa de uma página/postagem que seus visitantes "
+"provavelmente navegarão."
 
 #: includes/admin/NewHint.php:126 includes/admin/views/FAQ.php:204
 msgid "Prerender"
-msgstr ""
+msgstr "Prerenderizador"
 
 #: includes/admin/NewHint.php:136
+#, fuzzy
 msgid ""
 "Insert domain names from external URL's to perform DNS resolution, initial "
 "connection, and SSL negotiation ahead of time."
 msgstr ""
+"Insira nomes de domínio de URL's externos para executar resolução DNS, "
+"conexão inicial e negociação SSL antes do tempo."
 
 #: includes/admin/NewHint.php:138 includes/admin/views/FAQ.php:236
+#, fuzzy
 msgid "Preconnect"
-msgstr ""
+msgstr "Pré-conexão"
 
 #: includes/admin/NewHint.php:148
+#, fuzzy
 msgid "Insert the full URL of a resource that is needed on a current page."
-msgstr ""
+msgstr "Insira a URL completa de um recurso necessário em uma página atual."
 
 #: includes/admin/NewHint.php:150 includes/admin/views/FAQ.php:277
 msgid "Preload"
-msgstr ""
+msgstr "Pré-Carregar"
 
 #: includes/admin/NewHint.php:186
+#, fuzzy
 msgid ""
 "Crossorigin applies to preconnect and preload hints only. For various "
 "reasons, font files (and others) need to be loaded with the crossorigin "
 "attribute.<a href=\"https://developer.mozilla.org/en-US/docs/Web/HTML/"
 "Preloading_content#Cross-origin_fetches\">Source: Mozilla</a>"
 msgstr ""
+"Crossorigin aplica-se apenas a dicas de pré-conexão e pré-carga. Por várias "
+"razões, os arquivos de fonte (e outros) precisam ser carregados com o "
+"atributo crossorigin. <a href=\"https://developer.mozilla.org/en-US/docs/Web/"
+"HTML/Preloading_content#Cross-origin_fetches\">Fonte: Mozilla</a>"
 
 #: includes/admin/NewHint.php:189
+#, fuzzy
 msgid "Crossorigin?"
-msgstr ""
+msgstr "Crossorigin?"
 
 #: includes/admin/NewHint.php:196
+#, fuzzy
 msgid ""
 "Setting this attribute allows the browser to more accurately: <br/> 1) "
 "prioritize resource loading <br/>2) store in browser cache <br/>3) apply the "
 "correct headers. <a href='https://developer.mozilla.org/en-US/docs/Web/HTML/"
 "Preloading_content#The_basics'>Source: Mozilla</a>"
 msgstr ""
+"A configuração desse atributo permite que o navegador seja mais preciso: <br/"
+"> 1) priorizar o carregamento de recursos <br/>2) armazenar no cache do "
+"navegador <br/>3) aplique os cabeçalhos corretos. <a href='https://developer."
+"mozilla.org/en-US/docs/Web/HTML/Preloading_content#The_basics'>Fonte: "
+"Mozilla</a>"
 
 #: includes/admin/NewHint.php:198
+#, fuzzy
 msgid "as:"
-msgstr ""
+msgstr "como:"
 
 #: includes/admin/NewHint.php:207
+#, fuzzy
 msgid ""
 "&lt;link&gt; elements can accept a type attribute, which contains the MIME "
 "type of the resource the element points to. This is especially useful when "
@@ -225,12 +290,21 @@ msgid ""
 "Preloading_content#Including_a_MIME_type\">Source: Mozilla</a>. (This "
 "attribute will attempt to be added automatically.)"
 msgstr ""
+"&lt;link&gt;eles podem aceitar um atributo tipo, que contém o tipo MIME do "
+"recurso que o elemento aponta. Isso é especialmente útil ao pré-carregar "
+"recursos — o navegador usará o valor do atributo tipo para descobrir se ele "
+"suporta esse recurso, e só irá baixá-lo se assim for, ignorando-o se não. <a "
+"href=\"https://developer.mozilla.org/en-US/docs/Web/HTML/"
+"Preloading_content#Including_a_MIME_type\">Fonte: Mozilla</a>. (Este "
+"atributo tentará ser adicionado automaticamente.)"
 
 #: includes/admin/NewHint.php:208
+#, fuzzy
 msgid "Mime Type:"
-msgstr ""
+msgstr "Tipo de mímica:"
 
 #: includes/admin/NewHint.php:223
+#, fuzzy
 msgid ""
 "This applies only to the preload resource hint. This can be used to allow "
 "hints to only load on certain devices, screen dimensions, and more. <a href="
@@ -238,58 +312,80 @@ msgid ""
 "Using_media_queries\">https://developer.mozilla.org/en-US/docs/Web/CSS/"
 "Media_Queries/Using_media_queries</a>"
 msgstr ""
+"Isso se aplica apenas à dica de recurso de pré-carga. Isso pode ser usado "
+"para permitir que as dicas sejam carregadas apenas em certos dispositivos, "
+"dimensões de tela e muito mais. <a href=\"https://developer.mozilla.org/en-"
+"US/docs/Web/CSS/Media_Queries/Using_media_queries\">https://developer."
+"mozilla.org/en-US/docs/Web/CSS/Media_Queries/Using_media_queries</a>"
 
 #: includes/admin/NewHint.php:224
+#, fuzzy
 msgid "Media Attribute"
-msgstr ""
+msgstr "Atributo de mídia"
 
 #: includes/admin/views/FAQ.php:118
+#, fuzzy
 msgid "#dns-prefetch-info"
-msgstr ""
+msgstr "#dns-prefetch-info"
 
 #: includes/admin/views/FAQ.php:119
+#, fuzzy
 msgid "#prefetch-info"
-msgstr ""
+msgstr "#prefetch-info"
 
 #: includes/admin/views/FAQ.php:120
+#, fuzzy
 msgid "#preconnect-info"
-msgstr ""
+msgstr "#preconnect-info"
 
 #: includes/admin/views/FAQ.php:121
+#, fuzzy
 msgid "#preload-info"
-msgstr ""
+msgstr "#preload-info"
 
 #: includes/admin/views/FAQ.php:122
+#, fuzzy
 msgid "#prerender-info"
-msgstr ""
+msgstr "#prerender-info"
 
 #: includes/admin/views/FAQ.php:141
 msgid "DNS Prefetch"
-msgstr ""
+msgstr "DNS Pré-busca"
 
 #: includes/admin/views/FAQ.php:148
+#, fuzzy
 msgid ""
 "As you can see, the typical way DNS lookups occur is when each resource is "
 "requested by the browser. By inserting the below DNS prefetch hints at the "
 "top of the page, the browser will know to perform the DNS resolution before "
 "it is asked:"
 msgstr ""
+"Como você pode ver, a maneira típica como as buscas de DNS ocorrem é quando "
+"cada recurso é solicitado pelo navegador. Ao inserir as dicas de pré-"
+"visualização do DNS abaixo na parte superior da página, o navegador saberá "
+"executar a resolução do DNS antes de ser solicitado:"
 
 #: includes/admin/views/FAQ.php:170
+#, fuzzy
 msgid ""
 "The DNS lookups occur before each resource is requested, preventing that "
 "step from slowing down resource delivery. This can improve the loading of "
 "each resource by hundreds of milliseconds or more, which can be particularly "
 "helpful for mobile users."
 msgstr ""
+"As buscas do DNS ocorrem antes de cada recurso ser solicitado, impedindo que "
+"essa etapa reduza a entrega de recursos. Isso pode melhorar o carregamento "
+"de cada recurso em centenas de milissegundos ou mais, o que pode ser "
+"particularmente útil para usuários móveis."
 
 #: includes/admin/views/FAQ.php:171 includes/admin/views/FAQ.php:190
 #: includes/admin/views/FAQ.php:222 includes/admin/views/FAQ.php:264
 #: includes/admin/views/FAQ.php:293
 msgid "More information:"
-msgstr ""
+msgstr "Para mais informações:"
 
 #: includes/admin/views/FAQ.php:185
+#, fuzzy
 msgid ""
 "Link prefetching utilizes browser idle time to download resources that the "
 "user might require in the immediate future. When idle, the browser begins "
@@ -299,68 +395,103 @@ msgid ""
 "allow an entire resource to be loaded, instead of simply resolving the DNS "
 "as in DNS prefetching."
 msgstr ""
+"O pré-lançamento do link utiliza o tempo ocioso do navegador para baixar "
+"recursos que o usuário pode exigir no futuro imediato. Quando ocioso, o "
+"navegador começa a baixar silenciosamente os documentos especificados e os "
+"armazena no cache do navegador. Quando esse recurso é solicitado, ele pode "
+"ser servido imediatamente, em vez de baixar todo o recurso do zero. O pré-"
+"travamento permitirá que todo um recurso seja carregado, em vez de "
+"simplesmente resolver o DNS como no pré-pressupõe DNS."
 
 #: includes/admin/views/FAQ.php:187
+#, fuzzy
 msgid ""
 "For example, if you have a CSS, JavaScript, or Google font that will be "
 "requested by a page a user is likely to click on, prefetching this file "
 "allows the browser to download the file ahead of time, improving the future "
 "page load time."
 msgstr ""
+"Por exemplo, se você tiver uma fonte CSS, JavaScript ou Google que será "
+"solicitada por uma página em que um usuário provavelmente clicará, pré-"
+"estimar este arquivo permite que o navegador baixe o arquivo com "
+"antecedência, melhorando o tempo de carga da página futura."
 
 #: includes/admin/views/FAQ.php:188
+#, fuzzy
 msgid ""
 "The waterfall chart below indicates when the browser loads a large image "
 "that has been prefetched:"
 msgstr ""
+"O gráfico de cachoeira abaixo indica quando o navegador carrega uma grande "
+"imagem que foi pré-carregada:"
 
 #: includes/admin/views/FAQ.php:193
+#, fuzzy
 msgid "Firefox: Link prefetching FAQ"
-msgstr ""
+msgstr "Firefox: Link pré-pré-pré-gravação faq"
 
 #: includes/admin/views/FAQ.php:194
+#, fuzzy
 msgid "Wikipedia"
-msgstr ""
+msgstr "Wikipédia"
 
 #: includes/admin/views/FAQ.php:195
+#, fuzzy
 msgid "W3C Resource Hints: Prefetch"
-msgstr ""
+msgstr "Dicas de recursos W3C: Pré-jogo"
 
 #: includes/admin/views/FAQ.php:208
+#, fuzzy
 msgid ""
 "Since prerendering can be resource intentize, this should only be used if "
 "you are confident a particular page will be visited. Frequently this would "
 "be the most popular link visitors navigate towards, such as FAQ, "
 "information, or service pages."
 msgstr ""
+"Uma vez que o pré-ressarem pode ser um recurso de intenção, isso só deve ser "
+"usado se você estiver confiante de que uma determinada página será visitada. "
+"Frequentemente, este seria o link mais popular para o usuário, como "
+"perguntas frequentes, informações ou páginas de serviço."
 
 #: includes/admin/views/FAQ.php:217
+#, fuzzy
 msgid "The waterfall chart of the website is below:"
-msgstr ""
+msgstr "O gráfico de cachoeiras do site está abaixo:"
 
 #: includes/admin/views/FAQ.php:219
+#, fuzzy
 msgid ""
 "As you can see, after the given browser has finished loading the host URL's "
 "typical contents, the browser will begin loading the prerendered page in the "
 "background. So when a user clicks to navigate to YouTube, that website will "
 "be rendered instantly!"
 msgstr ""
+"Como você pode ver, depois que o navegador dado terminar de carregar o "
+"conteúdo típico da URL do host, o navegador começará a carregar a página pré-"
+"remeteda em segundo plano. Então, quando um usuário clica para navegar para "
+"o YouTube, esse site será renderizado instantaneamente!"
 
 #: includes/admin/views/FAQ.php:225
+#, fuzzy
 msgid "Steve Souders \"Prebrowsing\""
-msgstr ""
+msgstr "Steve Souders \"Prebrowsing\""
 
 #: includes/admin/views/FAQ.php:226
+#, fuzzy
 msgid "W3C: Prerender"
-msgstr ""
+msgstr "W3C: Prerender"
 
 #: includes/admin/views/FAQ.php:237
+#, fuzzy
 msgid ""
 "Preconnecting allows the browser to establish a connection to an external "
 "domain before the request has been made."
 msgstr ""
+"A pré-conexão permite que o navegador estabeleça uma conexão a um domínio "
+"externo antes que a solicitação seja feita."
 
 #: includes/admin/views/FAQ.php:238
+#, fuzzy
 msgid ""
 "Typically the three steps involved in establishing a connection (DNS lookup, "
 "initial connection, and SSL negotiation) must be carried out when the "
@@ -369,8 +500,16 @@ msgid ""
 "allows the initial connection and SSL negotiation to be resolved as well, "
 "instead of just the DNS lookup as is the case with DNS prefetching."
 msgstr ""
+"Normalmente, as três etapas envolvidas no estabelecimento de uma conexão "
+"(busca de DNS, conexão inicial e negociação SSL) devem ser realizadas quando "
+"o recurso é solicitado pelo navegador. A pré-conexão permite que essas "
+"etapas sejam feitas de forma proativa. Isso é semelhante ao pressuposto do "
+"DNS, porém a pré-conexão permite que a conexão inicial e a negociação de SSL "
+"sejam resolvidas também, em vez de apenas a busca de DNS, como é o caso do "
+"DNS pré-pressuposto."
 
 #: includes/admin/views/FAQ.php:239
+#, fuzzy
 msgid ""
 "This example page </a> loads a Google Font, embedded YouTube iframe video, "
 "and a Google Analytics tracker in the typical manner, without taking "
@@ -378,22 +517,33 @@ msgid ""
 "this demo website makes is shown in the chart below, courtesy of <a href="
 "\"https://www.webpagetest.org\">webpagetest.org</a>"
 msgstr ""
+"Esta página de exemplo carrega uma Fonte do Google, um vídeo iframe "
+"incorporado do YouTube e um rastreador do Google Analytics da maneira "
+"típica, sem aproveitar a dica de recurso de pré-conexão. Um resumo das "
+"solicitações normais que este site demo faz é mostrado no gráfico abaixo, "
+"cortesia de <a href=\"https://www.webpagetest.org\">webpagetest.org</a>"
 
 #: includes/admin/views/FAQ.php:240
+#, fuzzy
 msgid "Typical HTTPS Socket Negotiation Periods:"
-msgstr ""
+msgstr "Períodos típicos de negociação do soquete HTTPS:"
 
 #: includes/admin/views/FAQ.php:243
+#, fuzzy
 msgid ""
 "Let's add the corresponding preconnect hints in the top of the web page and "
 "see what happens:"
 msgstr ""
+"Vamos adicionar as sugestões de pré-conexão correspondentes na parte "
+"superior da página web e ver o que acontece:"
 
 #: includes/admin/views/FAQ.php:260
+#, fuzzy
 msgid "HTTPS Socket Negotiation With Preconnect Enabled:"
-msgstr ""
+msgstr "Negociação do soquete HTTPS com pré-conexão habilitada:"
 
 #: includes/admin/views/FAQ.php:262
+#, fuzzy
 msgid ""
 "As you can see, the three steps required to load resources from external "
 "domains occurs much earlier in the page request, reducing the need for these "
@@ -401,87 +551,119 @@ msgid ""
 "preconnecting to fonts, if this is left out only a DNS prefetch will be "
 "performed."
 msgstr ""
+"Como você pode ver, as três etapas necessárias para carregar recursos de "
+"domínios externos ocorrem muito mais cedo na solicitação da página, "
+"reduzindo a necessidade de que estes sejam carregados mais cedo. O atributo "
+"\"crossorigin\" deve ser usado ao pré-conexão com fontes, se isso for "
+"deixado de fora apenas um pré-pressuto de DNS será realizado."
 
 #: includes/admin/views/FAQ.php:263
+#, fuzzy
 msgid ""
 "Basically, preconnecting is DNS-prefetching, but also takes care of the "
 "initial connection and SSL negotiation, whereas DNS prefetching solely "
 "handles the DNS lookup."
 msgstr ""
+"Basicamente, a pré-conexão é pré-pressuposto de DNS, mas também cuida da "
+"conexão inicial e da negociação de SSL, enquanto o DNS pré-pressupõe apenas "
+"o visual do DNS."
 
 #: includes/admin/views/FAQ.php:266
+#, fuzzy
 msgid "W3C: Preconnect"
-msgstr ""
+msgstr "W3C: Pré-conexão"
 
 #: includes/admin/views/FAQ.php:267
+#, fuzzy
 msgid "Eliminating Roundtrips with Preconnect, by Ilya Grigorik"
-msgstr ""
+msgstr "Eliminando Roundtrips com Preconnect, por Ilya Grigorik"
 
 #: includes/admin/views/FAQ.php:280
+#, fuzzy
 msgid ""
 "Let's see what the waterfall chart looks like after the following resource "
 "hints are placed into the top of a web page:"
 msgstr ""
+"Vamos ver como é o gráfico de cachoeiras depois que as seguintes dicas de "
+"recursos são colocadas no topo de uma página da Web:"
 
 #: includes/admin/views/FAQ.php:291
 msgid "Caution!"
-msgstr ""
+msgstr "Cuidado!"
 
 #: includes/admin/views/FAQ.php:295
+#, fuzzy
 msgid "W3C: Preload"
-msgstr ""
+msgstr "W3C: Pré-carga"
 
 #: includes/admin/views/FAQ.php:296
+#, fuzzy
 msgid "Prioritizing Your Resources with link rel=\"preload\""
-msgstr ""
+msgstr "Priorizando seus recursos com link rel=\"pré-carga\""
 
 #: includes/admin/views/Settings.php:34
 msgid "Save Changes"
-msgstr ""
+msgstr "Salvar Alterações"
 
 #: includes/admin/views/SettingsView.php:21
+#, fuzzy
 msgid "Disable automatically generated WordPress resource hints?"
-msgstr ""
+msgstr "Desativar dicas de recursos gerados automaticamente pelo WordPress?"
 
 #: includes/admin/views/SettingsView.php:24
+#, fuzzy
 msgid ""
 "This option will remove three resource hints automatically generated by "
 "WordPress, as of 4.8.2."
 msgstr ""
+"Esta opção removerá três dicas de recursos geradas automaticamente pelo "
+"WordPress, a partir de 4.8.2."
 
 #: includes/admin/views/SettingsView.php:29
+#, fuzzy
 msgid "Send resource hints in HTML head or HTTP header?"
-msgstr ""
+msgstr "Enviar dicas de recursos na cabeça HTML ou cabeçalho HTTP?"
 
 #: includes/admin/views/SettingsView.php:32
+#, fuzzy
 msgid "HTML &lt;head&gt;"
-msgstr ""
+msgstr "HTML&lt; cabeça&gt;"
 
 #: includes/admin/views/SettingsView.php:33
 msgid "HTTP Header"
-msgstr ""
+msgstr "Cabeçalho HTTP"
 
 #: includes/admin/views/SettingsView.php:35
+#, fuzzy
 msgid "Send hints in the HTML &lt;head&gt; or the HTTP header."
-msgstr ""
+msgstr "Envie dicas no HTML &lt;head&gt;ou o cabeçalho HTTP."
 
 #: includes/admin/views/SettingsView.php:61
+#, fuzzy
 msgid "Enable Auto Preconnect?"
-msgstr ""
+msgstr "Ativar a pré-conexão automática?"
 
 #: includes/admin/views/SettingsView.php:64
+#, fuzzy
 msgid ""
 "This feature allows preconnect hints to be automatically created. "
 "JavaScript, CSS, and images loaded from external domains will preconnect "
 "automatically."
 msgstr ""
+"Esse recurso permite que as dicas de pré-conexão sejam criadas "
+"automaticamente. JavaScript, CSS e imagens carregadas de domínios externos "
+"se pré-conectam automaticamente."
 
 #: includes/admin/views/SettingsView.php:81
+#, fuzzy
 msgid ""
 "Allow unauthenticated users to automatically set preconnect hints via Ajax?"
 msgstr ""
+"Permitir que usuários não autenticados desliguem automaticamente dicas de "
+"pré-conexão via Ajax?"
 
 #: includes/admin/views/SettingsView.php:86
+#, fuzzy
 msgid ""
 "This plugin has a feature which allows preconnect hints to be automatically "
 "created asynchronously in the background with Ajax by the first user to "
@@ -492,213 +674,273 @@ msgid ""
 "this is a very remote possiblity and only a nuisance, not a vulnerability, "
 "due to the strict sanitization procedures in place."
 msgstr ""
+"Este plugin tem um recurso que permite que as dicas de pré-conexão sejam "
+"criadas automaticamente assincronoumente em segundo plano com o Ajax pelo "
+"primeiro usuário a visitar uma página (supondo que o usuário tenha essa "
+"opção para ser redefinida). Há uma possibilidade extremamente remota de que, "
+"se um visitante soubesse que as dicas seriam definidas, ele poderia optar "
+"por carregar manualmente muitos scripts externos, o que poderia enganar o "
+"script plugin para aceitá-los como dicas de pré-conexão válidas. Mas, "
+"novamente, esta é uma possiblidade muito remota e apenas um incômodo, não "
+"uma vulnerabilidade, devido aos rigorosos procedimentos de higienização em "
+"vigor."
 
 #: includes/admin/views/SettingsView.php:91
+#, fuzzy
 msgid "Reset automatically created preconnect links?"
-msgstr ""
+msgstr "Redefinir links de pré-conexão criados automaticamente?"
 
 #: includes/admin/views/SettingsView.php:95
+#, fuzzy
 msgid ""
 "This will reset automatically created preconnect hints, allowing new "
 "preconnect hints to be generated when your front end is loaded."
 msgstr ""
+"Isso redefinirá as dicas de pré-conexão criadas automaticamente, permitindo "
+"que novas dicas de pré-conexão sejam geradas quando sua parte frontal "
+"estiver carregada."
 
 #: includes/admin/views/SettingsView.php:114
+#, fuzzy
 msgid "Enable Auto Prefetch?"
-msgstr ""
+msgstr "Ativar o Auto Prefetch?"
 
 #: includes/admin/views/SettingsView.php:119
+#, fuzzy
 msgid ""
 "This allows for navigation links to be automatically prefetched while in "
 "viewport. When navigation (anchor) links are being moused over, this feature "
 "will initiate a prefetch request for the URL in the link. Select No "
 "(default) to disable this feature."
 msgstr ""
+"Isso permite que os links de navegação sejam automaticamente pré-"
+"visualizados enquanto estão no viewport. Quando os links de navegação "
+"(âncora) estiverem sendo moused, este recurso iniciará uma solicitação de "
+"pré-lançamento para a URL no link. Selecione Não (padrão) para desativar "
+"esse recurso."
 
 #: includes/admin/views/SettingsView.php:124
+#, fuzzy
 msgid "Disable prefetching for logged in users?"
-msgstr ""
+msgstr "Desativar a pré-inseção de usuários conectados?"
 
 #: includes/admin/views/SettingsView.php:129
+#, fuzzy
 msgid ""
 "It usually is not necessary for logged in users to prefetch content. This "
 "will save some server resources."
 msgstr ""
+"Normalmente não é necessário que os usuários conectados pré-candidatos "
+"prefiram o conteúdo. Isso salvará alguns recursos do servidor."
 
 #: includes/admin/views/SettingsView.php:134
+#, fuzzy
 msgid "Prefetch initiation delay (seconds):"
-msgstr ""
+msgstr "Atraso de iniciação pré-trava (segundos):"
 
 #: includes/admin/views/SettingsView.php:139
+#, fuzzy
 msgid ""
 "Start prefetching after a short delay. Will be started when the browser "
 "becomes idle. Default is 0 seconds."
 msgstr ""
+"Comece a se pré-sentir depois de um curto atraso. Será iniciado quando o "
+"navegador ficar ocioso. O padrão é de 0 segundos."
 
 #: includes/admin/views/SettingsView.php:144
+#, fuzzy
 msgid "Ignore these keywords:"
-msgstr ""
+msgstr "Ignore essas palavras-chave:"
 
 #: includes/admin/views/SettingsView.php:149
+#, fuzzy
 msgid ""
 "A list of keywords to ignore from prefetching. One keyword per line. You may "
 "use an astericks (*) after a keyword (ex: \"/products*\") to act as a "
 "wildcard, preventing links with that value from being prefetched."
 msgstr ""
+"Uma lista de palavras-chave para ignorar do pré-jogo. Uma palavra-chave por "
+"linha. Você pode usar um astericks (*) após uma palavra-chave (ex: \"/"
+"products*\") para agir como um curinga, impedindo que links com esse valor "
+"sejam pre-fetched."
 
 #: includes/admin/views/SettingsView.php:154
+#, fuzzy
 msgid "Maximum requests per second:"
-msgstr ""
+msgstr "Solicitações máximas por segundo:"
 
 #: includes/admin/views/SettingsView.php:159
+#, fuzzy
 msgid ""
 "Number of prefetch hints that can be created per second. Default is 3 per "
 "second."
 msgstr ""
+"Número de dicas de pré-jogo que podem ser criadas por segundo. O padrão é de "
+"3 por segundo."
 
 #: includes/admin/views/SettingsView.php:164
+#, fuzzy
 msgid "Delay in prefetching links on mouse hover (milliseconds)"
-msgstr ""
+msgstr "Atraso nos links pré-travamento no mouse hover (milissegundos)"
 
 #: includes/admin/views/SettingsView.php:169
+#, fuzzy
 msgid ""
 "Set a short pause after the mouse hovers over a link before the prefetch "
 "hint is created. Default is 50 milliseconds."
 msgstr ""
+"Defina uma pequena pausa depois que o mouse pairar sobre um link antes que a "
+"dica de pré-configuração seja criada. O padrão é de 50 milissegundos."
 
 #: includes/admin/views/SettingsView.php:174
+#, fuzzy
 msgid ""
 "Maximum number of prefetch hints loaded? (Excluding mouse hover or touch "
 "events)"
 msgstr ""
+"Número máximo de dicas de pré-travado carregado? (Excluindo o mouse hover ou "
+"eventos de toque)"
 
 #: includes/admin/views/SettingsView.php:179
+#, fuzzy
 msgid ""
 "Set the maximum number of prefetch hints you would like to be loaded. This "
 "can save some server resources. Default is 10."
 msgstr ""
+"Defina o número máximo de dicas de pré-jogo que você gostaria de ser "
+"carregado. Isso pode salvar alguns recursos do servidor. O padrão é 10."
 
 #: includes/admin/wp-list-table.php:179
 msgid "List View"
-msgstr ""
+msgstr "Exibição de lista"
 
 #: includes/admin/wp-list-table.php:180
 msgid "Excerpt View"
-msgstr ""
+msgstr "Exibição de resumo"
 
 #: includes/admin/wp-list-table.php:345
 msgid "No items found."
-msgstr ""
+msgstr "Nenhum item encontrado."
 
 #: includes/admin/wp-list-table.php:535 includes/admin/wp-list-table.php:1370
 msgid "Show more details"
-msgstr ""
+msgstr "Mostrar mais detalhes"
 
 #: includes/admin/wp-list-table.php:602
 msgid "Filter by date"
-msgstr ""
+msgstr "Filtrar por data"
 
 #: includes/admin/wp-list-table.php:604
 msgid "All dates"
-msgstr ""
+msgstr "Todas as datas"
 
 #. translators: 1: month name, 2: 4-digit year
 #: includes/admin/wp-list-table.php:619
 #, php-format
 msgid "%1$s %2$d"
-msgstr ""
+msgstr "%1$s %2$d"
 
 #: includes/admin/wp-list-table.php:670
 #, php-format
 msgid "%s comment"
 msgid_plural "%s comments"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%s comentário"
+msgstr[1] "%s comentários"
 
 #: includes/admin/wp-list-table.php:671
 #, php-format
 msgid "%s approved comment"
 msgid_plural "%s approved comments"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%s comentário aprovado"
+msgstr[1] "%s comentários aprovados"
 
 #: includes/admin/wp-list-table.php:672
 #, php-format
 msgid "%s pending comment"
 msgid_plural "%s pending comments"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%s comentário pendente"
+msgstr[1] "%s comentários pendentes"
 
 #: includes/admin/wp-list-table.php:678 includes/admin/wp-list-table.php:700
 #: includes/admin/wp-list-table.php:723
 msgid "No comments"
-msgstr ""
+msgstr "Sem comentários"
 
 #: includes/admin/wp-list-table.php:700
 msgid "No approved comments"
-msgstr ""
+msgstr "Não há Comentários Aprovados"
 
 #: includes/admin/wp-list-table.php:723
 msgid "No pending comments"
-msgstr ""
+msgstr "Não há comentários pendentes"
 
 #: includes/admin/wp-list-table.php:799 includes/admin/wp-list-table.php:1413
 #, php-format
 msgid "%s item"
 msgid_plural "%s items"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%s item"
+msgstr[1] "%s itens"
 
 #: includes/admin/wp-list-table.php:835
 msgid "First page"
-msgstr ""
+msgstr "Primeira página"
 
 #: includes/admin/wp-list-table.php:846
 msgid "Previous page"
-msgstr ""
+msgstr "Página anterior"
 
 #: includes/admin/wp-list-table.php:853 includes/admin/wp-list-table.php:857
 msgid "Current Page"
-msgstr ""
+msgstr "Página Atual"
 
 #: includes/admin/wp-list-table.php:863
 #, php-format
 msgctxt "paging"
 msgid "%1$s of %2$s"
-msgstr ""
+msgstr "%1$s de %2$s"
 
 #: includes/admin/wp-list-table.php:871
 msgid "Next page"
-msgstr ""
+msgstr "Próxima página"
 
 #: includes/admin/wp-list-table.php:882
 msgid "Last page"
-msgstr ""
+msgstr "Última página"
 
 #: includes/admin/wp-list-table.php:1107
 msgid "Select All"
-msgstr ""
+msgstr "Selecionar Tudo"
 
 #: includes/admin/wp-list-table.php:1297
+#, fuzzy
 msgid ""
 "This is a global resource hint, and is used on all pages and posts. To "
 "update this hint, please do so from the main Pre* Party plugin page."
 msgstr ""
+"Esta é uma dica de recurso global, e é usada em todas as páginas e "
+"postagens. Para atualizar esta dica, por favor, faça-o a partir da página "
+"principal de plugin Pre* Party."
 
 #. Plugin URI of the plugin/theme
+#, fuzzy
 msgid "https://wordpress.org/plugins/pre-party-browser-hints/"
-msgstr ""
+msgstr "https://wordpress.org/plugins/pre-party-browser-hints/"
 
 #. Description of the plugin/theme
+#, fuzzy
 msgid ""
 "Take advantage of the browser resource hints DNS-Prefetch, Prerender, "
 "Preconnect, Prefetch, and Preload to improve page load time."
 msgstr ""
+"Aproveite as dicas de recursos do navegador DNS-Prefetch, Prerender, "
+"Preconnect, Prefetch e Preload para melhorar o tempo de carga da página."
 
 #. Author of the plugin/theme
+#, fuzzy
 msgid "Sam Perrow"
-msgstr ""
+msgstr "Sam Perrow"
 
 #. Author URI of the plugin/theme
+#, fuzzy
 msgid "https://www.linkedin.com/in/sam-perrow"
-msgstr ""
+msgstr "https://www.linkedin.com/in/sam-perrow"

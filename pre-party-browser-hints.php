@@ -11,10 +11,10 @@ declare(strict_types=1);
  * Author URI:        https://www.linkedin.com/in/sam-perrow
  * License:           GPL3
  * License URI:       https://www.gnu.org/licenses/gpl-3.0.html
- * Text Domain:       pprh
+ * Text Domain:       pre-party-browser-hints
  * Domain Path:       /languages
  *
- * last edited September 2, 2021
+ * last edited September 7, 2021
  *
  * Copyright 2016  Sam Perrow  (email : info@sphacks.io)
  *
@@ -42,7 +42,7 @@ class Pre_Party_Browser_Hints {
 	public function __construct() {
 		\register_activation_hook( __FILE__, array( $this, 'activate_plugin' ) );
 		\add_action( 'wpmu_new_blog', array( $this, 'activate_plugin' ) );
-		\add_filter( 'pre_set_site_transient_update_plugins', array( $this, 'plugin_updater' ), 10, 1 );
+//		\add_filter( 'pre_set_site_transient_update_plugins', array( $this, 'plugin_updater' ), 10, 1 );
 	}
 
 	public function init() {
@@ -50,7 +50,6 @@ class Pre_Party_Browser_Hints {
 		$this->create_constants();
 		$this->load_plugin_main();
 
-		\load_plugin_textdomain( 'pprh', false, PPRH_REL_DIR . 'languages' );
 		\do_action( 'pprh_load_plugin' );
 
 		// this needs to be loaded front end and back end bc Ajax needs to be able to communicate between the two.
@@ -120,6 +119,7 @@ class Pre_Party_Browser_Hints {
 	}
 
 	public function load_main_admin() {
+//		\load_plugin_textdomain( 'pre-party-browser-hints', false, '/pre-party-browser-hints/languages' );
 		self::load_plugin_files( true );
 		$load_admin = new LoadAdmin();
 		$load_admin->init( $this->plugin_page );
@@ -135,7 +135,7 @@ class Pre_Party_Browser_Hints {
 	private static function load_plugin_files( bool $is_admin ) {
 		if ( $is_admin ) {
 			include_once 'includes/admin/LoadAdmin.php';
-			include_once 'includes/admin/Updater.php';
+//			include_once 'includes/admin/Updater.php';
 			include_once 'includes/admin/Dashboard.php';
 			include_once 'includes/admin/views/Settings.php';
 			include_once 'includes/admin/views/SettingsSave.php';
@@ -160,14 +160,14 @@ class Pre_Party_Browser_Hints {
 		return $activate_plugin->plugin_activated;
 	}
 
-	public function plugin_updater( $transient ) {
-		if ( empty( $transient->checked ) ) {
-			return $transient;
-		}
-
-		include_once 'includes/admin/Updater.php';
-		$updater = new Updater();
-		return $updater->init( $transient );
-	}
+//	public function plugin_updater( $transient ) {
+//		if ( empty( $transient->checked ) ) {
+//			return $transient;
+//		}
+//
+//		include_once 'includes/admin/Updater.php';
+//		$updater = new Updater();
+//		return $updater->init( $transient );
+//	}
 
 }

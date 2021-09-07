@@ -24,7 +24,7 @@ class Dashboard {
 		$settings->save_user_options();
 
 		echo '<div id="pprh-poststuff" class="wrap"><h1>';
-		esc_html_e( 'Pre* Party Resource Hints', 'pprh' );
+		esc_html_e( 'Pre* Party Resource Hints', 'pre-party-browser-hints' );
 		echo '</h1>';
 		\do_action( 'pprh_notice' );
 		$this->plugin_upgrade_notice( PPRH_VERSION_NEW, PPRH_VERSION );
@@ -93,7 +93,7 @@ class Dashboard {
 			</a>
 
 			<div style="display: none; text-align: center;" id="pprhEmail">
-				<h2 style="font-size: 23px; text-align: center;"><?php esc_html_e( 'Request a New Feature or Report a Bug' ); ?></h2>
+				<h2 style="font-size: 23px; text-align: center;"><?php esc_html_e( 'Request a New Feature or Report a Bug', 'pre-party-browser-hints' ); ?></h2>
 
 				<form method="post" style="width: 350px; margin: 0 auto; text-align: center">
 					<label for="pprhEmailText">
@@ -102,7 +102,7 @@ class Dashboard {
 					<textarea name="pprh_text" id="pprhEmailText" style="height: 100px;" class="widefat" placeholder="<?php esc_attr_e( 'Help make this plugin better!' ); ?>"></textarea>
 					<label for="pprhEmailAddress"></label><input name="pprh_email" id="pprhEmailAddress" style="padding: 5px;" class="input widefat" placeholder="<?php esc_attr_e( 'Email address:' ); ?>"/>
 					<br/>
-					<input name="pprh_send_email" id="pprhSubmit" type="submit" class="button button-primary" value="<?php esc_attr_e( 'Submit', 'pprh' ); ?>" />
+					<input name="pprh_send_email" id="pprhSubmit" type="submit" class="button button-primary" value="<?php esc_attr_e( 'Submit', 'pre-party-browser-hints' ); ?>" />
 				</form>
 
 			</div>

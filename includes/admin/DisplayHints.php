@@ -53,14 +53,14 @@ class DisplayHints extends WP_List_Table {
 	public function get_columns() {
 		$columns = array(
 			'cb'          => '<input type="checkbox" />',
-			'url'         => __( 'URL', 'pprh' ),
-			'hint_type'   => __( 'Hint Type', 'pprh' ),
-			'as_attr'     => __( 'As Attr', 'pprh' ),
-			'type_attr'   => __( 'Type Attr', 'pprh' ),
-			'crossorigin' => __( 'Crossorigin', 'pprh' ),
-			'media'       => __( 'Media', 'pprh' ),
-			'status'      => __( 'Status', 'pprh' ),
-			'created_by'  => __( 'Created By', 'pprh' ),
+			'url'         => __( 'URL', 'pre-party-browser-hints' ),
+			'hint_type'   => __( 'Hint Type', 'pre-party-browser-hints' ),
+			'as_attr'     => __( 'As Attr', 'pre-party-browser-hints' ),
+			'type_attr'   => __( 'Type Attr', 'pre-party-browser-hints' ),
+			'crossorigin' => __( 'Crossorigin', 'pre-party-browser-hints' ),
+			'media'       => __( 'Media', 'pre-party-browser-hints' ),
+			'status'      => __( 'Status', 'pre-party-browser-hints' ),
+			'created_by'  => __( 'Created By', 'pre-party-browser-hints' ),
 		);
 
 		return \apply_filters( 'pprh_dh_get_columns', $columns );
@@ -79,9 +79,9 @@ class DisplayHints extends WP_List_Table {
 
 	public function get_bulk_actions():array {
 		return array(
-			'2' => __( 'Delete', 'pprh' ),
-			'3' => __( 'Enable', 'pprh' ),
-			'4' => __( 'Disable', 'pprh' )
+			'2' => __( 'Delete', 'pre-party-browser-hints' ),
+			'3' => __( 'Enable', 'pre-party-browser-hints' ),
+			'4' => __( 'Disable', 'pre-party-browser-hints' )
 		);
 	}
 
@@ -112,7 +112,7 @@ class DisplayHints extends WP_List_Table {
 	}
 
 	public function no_items() {
-		esc_html_e( 'Enter a URL or domain name..', 'pprh' );
+		esc_html_e( 'Enter a URL or domain name..', 'pre-party-browser-hints' );
 	}
 
 	protected function column_url( $item ) {
@@ -141,7 +141,7 @@ class DisplayHints extends WP_List_Table {
 				<table id="pprh-edit-<?php echo $hint_id_clean; ?>" aria-label="Update this resource hint">
 					<thead>
 						<tr>
-							<th colspan="5" scope="colgroup"><?php esc_html_e( 'Update Resource Hint', 'pprh' ); ?></th>
+							<th colspan="5" scope="colgroup"><?php esc_html_e( 'Update Resource Hint', 'pre-party-browser-hints' ); ?></th>
 						</tr>
 					</thead>
 

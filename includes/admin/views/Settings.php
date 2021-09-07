@@ -31,7 +31,7 @@ class Settings {
 				}
 				?>
 				<div class="text-center">
-					<input type="submit" name="pprh_save_options" class="button button-primary" value="<?php esc_attr_e( 'Save Changes', 'pprh' ); ?>" />
+					<input type="submit" name="pprh_save_options" class="button button-primary" value="<?php esc_attr_e( 'Save Changes', 'pre-party-browser-hints' ); ?>" />
 				</div>
 			</form>
 		</div>
@@ -44,7 +44,6 @@ class Settings {
 		}
 
 		$keywords = explode( ', ', $keywords );
-
 		$str   = '';
 		$count = count( $keywords );
 		$idx   = 0;

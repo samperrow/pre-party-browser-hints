@@ -1294,7 +1294,7 @@ class WP_List_Table {
 	protected function global_hint_alert() {
 		?>
         <span class="pprh-help-tip-hint">
-			<span><?php esc_html_e( 'This is a global resource hint, and is used on all pages and posts. To update this hint, please do so from the main Pre* Party plugin page.', 'pprh' ); ?></span>
+			<span><?php esc_html_e( 'This is a global resource hint, and is used on all pages and posts. To update this hint, please do so from the main Pre* Party plugin page.', 'pre-party-browser-hints' ); ?></span>
 		</span>
 		<?php
 	}
