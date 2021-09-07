@@ -34,6 +34,17 @@ if ( ! defined( 'ABSPATH' ) ) {
 	$pprh_load->init();
 }, 10, 0 );
 
+function pprh_activate_plugin() {
+	$pprh_load = new Pre_Party_Browser_Hints();
+	include_once 'includes/admin/ActivatePlugin.php';
+	$pprh_load->create_constants();
+	$activate_plugin = new ActivatePlugin();
+	$activate_plugin->activate_plugin();
+	return $activate_plugin->plugin_activated;
+}
+\register_activation_hook( __FILE__, '\PPRH\pprh_activate_plugin' );
+\add_action( 'wpmu_new_blog', '\PPRH\pprh_activate_plugin' );
+
 class Pre_Party_Browser_Hints {
 
 	private $plugin_page;
@@ -42,13 +53,10 @@ class Pre_Party_Browser_Hints {
 	protected $client_data;
 
 	public function __construct() {
-		\register_activation_hook( __FILE__, array( $this, 'activate_plugin' ) );
-		\add_action( 'wpmu_new_blog', array( $this, 'activate_plugin' ) );
-//		\add_filter( 'pre_set_site_transient_update_plugins', array( $this, 'plugin_updater' ), 10, 1 );
+		$this->load_common_files();
 	}
 
 	public function init() {
-		$this->load_common_files();
 		$this->create_constants();
 		$this->load_plugin_main();
 
@@ -59,6 +67,8 @@ class Pre_Party_Browser_Hints {
 			include_once 'includes/client/ClientAjaxInit.php';
 			$client_ajax_init = new ClientAjaxInit();
 		}
+
+//		\add_filter( 'pre_set_site_transient_update_plugins', array( $this, 'plugin_updater' ), 10, 1 );
 	}
 
 	private function load_common_files() {
@@ -69,7 +79,7 @@ class Pre_Party_Browser_Hints {
 		include_once 'includes/common/HintBuilder.php';
 	}
 
-	private function create_constants() {
+	public function create_constants() {
 		global $wpdb;
 		$table          = $wpdb->prefix . 'pprh_table';
 		$postmeta_table = $wpdb->prefix . 'postmeta';
@@ -150,16 +160,6 @@ class Pre_Party_Browser_Hints {
 			include_once 'includes/client/LoadClient.php';
 			include_once 'includes/client/SendHints.php';
 		}
-	}
-
-
-	public function activate_plugin() {
-		$this->load_common_files();
-		$this->create_constants();
-//		include_once 'includes/admin/ActivatePlugin.php';
-		$activate_plugin = new ActivatePlugin();
-		$activate_plugin->activate_plugin();
-		return $activate_plugin->plugin_activated;
 	}
 
 //	public function plugin_updater( $transient ) {

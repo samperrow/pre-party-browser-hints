@@ -126,7 +126,7 @@ class SettingsView {
 		$prefetch_enabled                 = Utils::does_option_match( 'pprh_prefetch_enabled', 'true', 'checked' );
 		$prefetch_disableForLoggedInUsers = Utils::does_option_match( 'pprh_prefetch_disableForLoggedInUsers', 'true', 'checked' );
 		$prefetch_initialization_delay    = Utils::esc_get_option( 'pprh_prefetch_delay' );
-		$ignore_keywords                  = implode( ', ', \get_option( 'pprh_prefetch_ignoreKeywords', '' ) );
+		$ignore_keywords                  = implode( ', ', \get_option( 'pprh_prefetch_ignoreKeywords', array() ) );
 		$prefetch_max_prefetches          = Utils::esc_get_option( 'pprh_prefetch_max_prefetches' );
 		?>
         <table class="form-table"><tbody>
@@ -203,6 +203,7 @@ class SettingsView {
 
         </tbody></table>
 		<?php
+        return true;
 	}
 
 	private function get_each_keyword( $keywords ) {
