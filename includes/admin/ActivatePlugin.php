@@ -2,6 +2,8 @@
 
 namespace PPRH;
 
+use PPRH\Utils\Utils;
+
 // prevent direct file access.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;

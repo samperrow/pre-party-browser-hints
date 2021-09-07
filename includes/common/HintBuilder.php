@@ -2,6 +2,9 @@
 
 namespace PPRH;
 
+use PPRH\Utils\Utils;
+use PPRH\Utils\Sanitize;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -34,7 +37,7 @@ class HintBuilder {
 		$as_attr      = $this->set_as_attr( $as_attr, $file_type );
 		$type_attr    = $this->set_mime_type_attr( $raw_hint, $file_type );
 		$crossorigin  = $this->set_crossorigin( $raw_hint, $file_type );
-		$media        = Utils::strip_bad_chars( $media_attr );
+		$media        = Sanitize::strip_bad_chars( $media_attr );
 
 		$new_hint = Utils::create_raw_hint( $url, $hint_type, $auto_created, $as_attr, $type_attr, $crossorigin, $media );
 		$new_hint['current_user'] = \wp_get_current_user()->display_name ?? '';
@@ -43,7 +46,7 @@ class HintBuilder {
 	}
 
 	public function get_hint_type( string $hint_type ) {
-		$hint_type = Utils::clean_hint_type( $hint_type );
+		$hint_type = Sanitize::clean_hint_type( $hint_type );
 		$valid_hints = array( 'dns-prefetch', 'prefetch', 'prerender', 'preconnect', 'preload' );
 
 		if ( ! in_array( $hint_type, $valid_hints ) ) {
@@ -54,7 +57,7 @@ class HintBuilder {
 	}
 
 	public function get_url( string $url, string $hint_type ):string {
-		$url = Utils::clean_url( $url );
+		$url = Sanitize::clean_url( $url );
 
 		if ( preg_match( '/(dns-prefetch|preconnect)/', $hint_type ) ) {
 			$url = $this->parse_for_domain_name( $url );
@@ -101,12 +104,12 @@ class HintBuilder {
 	}
 
 	public function set_as_attr( string $as_attr, string $file_type ) {
-		return ( ! empty( $as_attr ) ) ? Utils::clean_hint_attr( $as_attr ) : $this->get_file_type_mime( $this->file_mime_types, $file_type, 'as' );
+		return ( ! empty( $as_attr ) ) ? Sanitize::clean_hint_attr( $as_attr ) : $this->get_file_type_mime( $this->file_mime_types, $file_type, 'as' );
 	}
 
 	public function set_mime_type_attr( array $hint, string $file_type ) {
 		if ( isset( $hint['type_attr'] ) && ! empty( $hint['type_attr'] ) ) {
-			$mime_type = Utils::clean_hint_attr( $hint['type_attr'] );
+			$mime_type = Sanitize::clean_hint_attr( $hint['type_attr'] );
 		} else {
 			$mime_type = $this->get_file_type_mime( $this->file_mime_types, $file_type, 'mimeType' );
 		}

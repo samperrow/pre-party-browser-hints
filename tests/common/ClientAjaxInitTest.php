@@ -34,7 +34,7 @@ class ClientAjaxInitTest extends TestCase {
 
 		\update_option( 'pprh_preconnect_allow_unauth', 'false' );
 		$response_1 = \wp_remote_post( $js_object['admin_url'], $args );
-		$response_body_1  = \PPRH\Utils::get_api_response_body( $response_1, 'error' );
+		$response_body_1  = \PPRH\Utils\Utils::get_api_response_body( $response_1, 'error' );
 		self::assertEmpty( $response_body_1 );
 
 
@@ -43,7 +43,7 @@ class ClientAjaxInitTest extends TestCase {
 		$pprh_data['hints'][0]['url'] = 'https://fonts.gstatic.comTest2';
 		$args['body']['pprh_data'] = json_encode( $pprh_data );
 		$response_2 = \wp_remote_post( $js_object['admin_url'], $args );
-		$response_body_2  = \PPRH\Utils::get_api_response_body( $response_2, 'error' );
+		$response_body_2  = \PPRH\Utils\Utils::get_api_response_body( $response_2, 'error' );
 		self::assertGreaterThan( 8, $response_body_2[0]['new_hint'] );
 		self::assertTrue( $response_body_2[0]['db_result']['status'] );
 		self::assertCount( count( $pprh_data['hints'] ), $response_body_2 );

@@ -9,12 +9,13 @@ class DashboardTest extends TestCase {
 	/**
 	 * @before Class
 	 */
-	public function test_start() {
-		self::$dashboard = new \PPRH\Dashboard();
+	public function init() {
 		$this->setOutputCallback(function() {});
+		self::$dashboard = new \PPRH\Dashboard();
 	}
 
 	public function test_check_to_upgrade() {
+
 		$actual_1 = self::$dashboard->plugin_upgrade_notice( '1.7.7', '1.7.6.3' );
 		self::assertTrue( $actual_1 );
 

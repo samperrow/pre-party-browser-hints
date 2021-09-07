@@ -1,6 +1,8 @@
 <?php
 
-namespace PPRH;
+namespace PPRH\Utils;
+
+use PPRH\Utils\Sanitize;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -34,42 +36,7 @@ class Utils {
 		return $result;
 	}
 
-    public static function strip_non_alphanums( string $text ):string {
-		return preg_replace( '/[^a-z\d]/imu', '', $text );
-	}
 
-	public static function strip_non_numbers( $text, bool $as_str = true ) {
-		$str = preg_replace( '/\D/', '', $text );
-		return ( $as_str ) ? $str : (int) $str;
-	}
-
-	public static function clean_hint_type( string $text ):string {
-		return preg_replace( '/[^a-z|\-]/i', '', $text );
-	}
-
-	public static function clean_url( string $url ):string {
-		return preg_replace( '/[\s\'<>^\"\\\]/', '', $url );
-	}
-
-	public static function strip_bad_chars( string $url ):string {
-		return preg_replace( '/[\'<>^\"\\\]/', '', $url );
-	}
-
-	public static function clean_url_path( string $path ):string {
-		return strtolower( trim( $path, '/?&' ) );
-	}
-
-	public static function clean_hint_attr( string $attr ):string {
-		return strtolower( preg_replace( '/[^a-z0-9|\/]/i', '', $attr ) );
-	}
-
-	public static function clean_string_array( array $str_array ):array {
-		foreach ( $str_array as $item => $val ) {
-			$str_array[ $item ] = self::strip_bad_chars( $val );
-		}
-
-		return $str_array;
-	}
 
 
 
@@ -97,7 +64,6 @@ class Utils {
 		return '';
 	}
 
-
 	public static function update_checkbox_option( array $post, string $option_name ):string {
 		$update_val = $post[ $option_name ] ?? 'false';
 		self::update_option( $option_name, $update_val );
@@ -115,7 +81,7 @@ class Utils {
 	}
 
 	public static function get_server_prop( string $prop ):string {
-		return ( isset( $_SERVER[ $prop ] ) ? self::clean_url( $_SERVER[ $prop ] ) : '' );
+		return ( isset( $_SERVER[ $prop ] ) ? Sanitize::clean_url( $_SERVER[ $prop ] ) : '' );
 	}
 
 	public static function get_plugin_page( bool $doing_ajax, string $referer ):int {
@@ -156,6 +122,9 @@ class Utils {
 		return $parsed_url['host'] ?? self::get_server_prop( 'HTTP_HOST' );
 	}
 
+
+
+	// debug
 	public static function log_error( $message ):bool {
 		if ( 'true' !== \get_option( 'pprh_debug_enabled', 'false' ) ) {
 			return false;
@@ -165,20 +134,19 @@ class Utils {
 			include_once 'DebugLogger.php';
 		}
 
-		$debugger = new DebugLogger();
+		$debugger = new \PPRH\DebugLogger();
 		$debugger->log_error( $message );
 		return true;
 	}
 
-
-
+	// debug
 	public static function get_browser():string {
 		$user_agent = self::get_server_prop( 'HTTP_USER_AGENT' );
 		return self::get_browser_name( $user_agent );
 	}
 
+	// debug
 	public static function get_browser_name( $user_agent ):string {
-
 		if ( str_contains( $user_agent, 'Edg' ) ) {
 			$browser = 'Edge';
 		} elseif ( str_contains( $user_agent, 'OPR' ) ) {
@@ -200,6 +168,7 @@ class Utils {
 		return $browser;
 	}
 
+	// debug
 	public static function get_debug_info():string {
 		$browser = self::get_browser();
 		$text    = "DEBUG INFO: \n";

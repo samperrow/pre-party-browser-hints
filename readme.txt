@@ -78,10 +78,12 @@ To activate the preloaded resource, you must call that file in HTML as you would
 2. Version 1.7.81
 
 Sept 7, 2021:
-1) Changed minimunm role capability required to use this plugin from "update_plugins" to "manage_options" to address a plugin compatibliity error ("Disable All WordPress Updates").
+1) Changed minimum role capability required to use this plugin from "update_plugins" to "manage_options" to address a plugin compatibliity error ("Disable All WordPress Updates").
 2) Updated/added support for translations.
 3) Changed hint creation process to use back end validation/config instead of client side JS.
 4) Split up "auto preconnect" code into two classes for admin and client side roles.
+5) Split "Utils" class into two Utilities classes, and modified namespaces.
+6) Improved JSON parsing.
 
 August 18, 2021:
 1) Fixed/improved numerous things.

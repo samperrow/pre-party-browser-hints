@@ -22,6 +22,8 @@ declare(strict_types=1);
 
 namespace PPRH;
 
+use PPRH\Utils\Utils;
+
 // prevent direct file access.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -60,10 +62,10 @@ class Pre_Party_Browser_Hints {
 	}
 
 	private function load_common_files() {
-		include_once 'includes/Utils.php';
-		include_once 'includes/HintController.php';
-		include_once 'includes/HintBuilder.php';
-		include_once 'includes/admin/ActivatePlugin.php';
+		include_once 'includes/common/Utils.php';
+		include_once 'includes/common/Sanitize.php';
+		include_once 'includes/common/HintController.php';
+		include_once 'includes/common/HintBuilder.php';
 	}
 
 	private function create_constants() {
@@ -118,7 +120,6 @@ class Pre_Party_Browser_Hints {
 	}
 
 	public function load_main_admin() {
-//		\load_plugin_textdomain( 'pre-party-browser-hints', false, '/pre-party-browser-hints/languages' );
 		self::load_plugin_files( true );
 		$load_admin = new LoadAdmin();
 		$load_admin->init( $this->plugin_page );
@@ -143,6 +144,7 @@ class Pre_Party_Browser_Hints {
 			include_once 'includes/admin/DisplayHints.php';
 			include_once 'includes/admin/AjaxOps.php';
 			include_once 'includes/admin/views/InsertHints.php';
+			include_once 'includes/admin/ActivatePlugin.php';
 		} else {
 			include_once 'includes/client/LoadClient.php';
 			include_once 'includes/client/SendHints.php';
@@ -153,6 +155,7 @@ class Pre_Party_Browser_Hints {
 	public function activate_plugin() {
 		$this->load_common_files();
 		$this->create_constants();
+//		include_once 'includes/admin/ActivatePlugin.php';
 		$activate_plugin = new ActivatePlugin();
 		$activate_plugin->activate_plugin();
 		return $activate_plugin->plugin_activated;

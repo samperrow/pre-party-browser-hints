@@ -2,6 +2,8 @@
 
 namespace PPRH;
 
+use PPRH\Utils\Utils;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -65,7 +67,7 @@ class Dashboard {
 		}
 
         $new_version = PPRH_VERSION_NEW;
-        $msg = "Version $new_version Upgrade Notes: 1) Changed minimum role capability required to use this plugin from 'update_plugins' to 'activate_plugins' to address a plugin compatibliity error. 2) Updated/added support for translations. 3) Changed hint creation process to use back end validation/config instead of client side JS.";
+        $msg = "Version $new_version Upgrade Notes: 1) Changed minimum role capability required to use this plugin from 'update_plugins' to 'activate_plugins' to address a plugin compatibliity error. 2) Improved JSON parsing. 3) See README for me information.";
         Utils::show_notice( $msg, true );
 		$activate_plugin = new ActivatePlugin();
 		$activate_plugin->upgrade_plugin();

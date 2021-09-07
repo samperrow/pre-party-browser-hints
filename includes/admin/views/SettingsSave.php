@@ -2,6 +2,9 @@
 
 namespace PPRH;
 
+use PPRH\Utils\Utils;
+use PPRH\Utils\Sanitize;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -37,7 +40,7 @@ class SettingsSave extends SettingsView {
 		$results[] = Utils::update_checkbox_option( $post, 'pprh_disable_wp_hints' );
 		$results[] = Utils::update_checkbox_option( $post, 'pprh_debug_enabled' );
 
-		$html_head = Utils::strip_non_alphanums( $post[ 'pprh_html_head' ] ?? 'false' );
+		$html_head = Sanitize::strip_non_alphanums( $post[ 'pprh_html_head' ] ?? 'false' );
 		Utils::update_option( 'pprh_html_head', $html_head );
 		$results[] = $html_head;
 
@@ -61,7 +64,7 @@ class SettingsSave extends SettingsView {
 
 	public function auto_preconnect_notice() {
 		$msg = esc_html( 'Your automatically generated preconnect hints have been removed. Please reload a front-end page to generate new preconnect hints.', 'pre-party-browser-hints' );
-		\PPRH\Utils::show_notice( $msg, true );
+		Utils::show_notice( $msg, true );
 	}
 
 	public function save_prefetch_settings( array $post ) {
@@ -71,7 +74,7 @@ class SettingsSave extends SettingsView {
 		$results[] = Utils::update_checkbox_option( $post, 'pprh_prefetch_disableForLoggedInUsers' );
 
 		if ( isset( $post['pprh_prefetch_delay'] ) ) {
-			$prefetch_delay = Utils::strip_non_numbers( $post['pprh_prefetch_delay'] );
+			$prefetch_delay = Sanitize::strip_non_numbers( $post['pprh_prefetch_delay'] );
 			Utils::update_option( 'pprh_prefetch_delay', $prefetch_delay );
 			$results[] = $prefetch_delay;
 		}
@@ -83,19 +86,19 @@ class SettingsSave extends SettingsView {
 		}
 
 		if ( isset( $post['pprh_prefetch_maxRPS'] ) ) {
-			$max_rps = Utils::strip_non_numbers( $post['pprh_prefetch_maxRPS'] );
+			$max_rps = Sanitize::strip_non_numbers( $post['pprh_prefetch_maxRPS'] );
 			Utils::update_option( 'pprh_prefetch_maxRPS', $max_rps );
 			$results[] = $max_rps;
 		}
 
 		if ( isset( $post['pprh_prefetch_hoverDelay'] ) ) {
-			$hover_delay = Utils::strip_non_numbers( $post['pprh_prefetch_hoverDelay'] );
+			$hover_delay = Sanitize::strip_non_numbers( $post['pprh_prefetch_hoverDelay'] );
 			Utils::update_option( 'pprh_prefetch_hoverDelay', $hover_delay );
 			$results[] = $hover_delay;
 		}
 
 		if ( isset( $post['pprh_prefetch_max_prefetches'] ) ) {
-			$max_prefetches = Utils::strip_non_numbers( $post['pprh_prefetch_max_prefetches'] );
+			$max_prefetches = Sanitize::strip_non_numbers( $post['pprh_prefetch_max_prefetches'] );
 			Utils::update_option( 'pprh_prefetch_max_prefetches', $max_prefetches );
 			$results[] = $max_prefetches;
 		}

@@ -2,6 +2,8 @@
 
 namespace PPRH;
 
+use PPRH\Utils\Utils;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -71,7 +73,7 @@ class SettingsView {
 	}
 
 	public function preconnect_markup() {
-		$autoload = \PPRH\Utils::does_option_match( 'pprh_preconnect_autoload', 'true', 'checked' );
+		$autoload = Utils::does_option_match( 'pprh_preconnect_autoload', 'true', 'checked' );
 		?>
 		<table class="form-table">
 			<tbody>
@@ -93,7 +95,7 @@ class SettingsView {
 
 	public function load_reset_settings() {
 		$result       = \apply_filters( 'pprh_display_preconnect_markup', array() );
-		$allow_unauth = \PPRH\Utils::does_option_match( 'pprh_preconnect_allow_unauth', 'true', 'checked' );
+		$allow_unauth = Utils::does_option_match( 'pprh_preconnect_allow_unauth', 'true', 'checked' );
 
 		if ( empty( $result ) ) { ?>
             <tr>
@@ -121,8 +123,8 @@ class SettingsView {
 
 
 	public function prefetch_markup() {
-		$prefetch_enabled                 = \PPRH\Utils::does_option_match( 'pprh_prefetch_enabled', 'true', 'checked' );
-		$prefetch_disableForLoggedInUsers = \PPRH\Utils::does_option_match( 'pprh_prefetch_disableForLoggedInUsers', 'true', 'checked' );
+		$prefetch_enabled                 = Utils::does_option_match( 'pprh_prefetch_enabled', 'true', 'checked' );
+		$prefetch_disableForLoggedInUsers = Utils::does_option_match( 'pprh_prefetch_disableForLoggedInUsers', 'true', 'checked' );
 		$prefetch_initialization_delay    = Utils::esc_get_option( 'pprh_prefetch_delay' );
 		$ignore_keywords                  = implode( ', ', \get_option( 'pprh_prefetch_ignoreKeywords', '' ) );
 		$prefetch_max_prefetches          = Utils::esc_get_option( 'pprh_prefetch_max_prefetches' );
