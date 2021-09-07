@@ -27,7 +27,8 @@ class DisplayHints extends WP_List_Table {
 			'plural'      => 'urls',
 			'screen'      => 'toplevel_page_' . PPRH_MENU_SLUG,
 			'singular'    => 'url',
-			'plugin_page' => $plugin_page
+			'plugin_page' => $plugin_page,
+            'doing_ajax'  => $doing_ajax
 		) );
 
 		if ( ! $doing_ajax ) {

@@ -298,7 +298,7 @@ class WP_List_Table {
 		}
 
 		// Redirect if page number is invalid and headers are not already sent.
-		if ( $args['total_pages'] > 0 && ! headers_sent() && ! wp_doing_ajax() && $this->get_pagenum() > $args['total_pages'] ) {
+		if ( $args['total_pages'] > 0 && ! headers_sent() && ! $this->_args['doing_ajax'] && $this->get_pagenum() > $args['total_pages'] ) {
 			wp_redirect( add_query_arg( 'paged', $args['total_pages'] ) );
 			exit;
 		}
@@ -801,7 +801,7 @@ class WP_List_Table {
 		$current              = $this->get_pagenum();
 		$removable_query_args = wp_removable_query_args();
 
-        $current_url = ( wp_doing_ajax() ) ? esc_url_raw( Utils::get_referer() ) : menu_page_url( PPRH_MENU_SLUG, false );
+        $current_url = ( $this->_args['doing_ajax'] ) ? esc_url_raw( \PPRH\Utils\Utils::get_referer() ) : menu_page_url( PPRH_MENU_SLUG, false );
 		$current_url = remove_query_arg( $removable_query_args, $current_url );
 
 		$page_links = array();
