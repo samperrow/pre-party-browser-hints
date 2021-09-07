@@ -10,14 +10,18 @@
 	let bulkActionElems = document.querySelectorAll('input.pprhBulkAction');
 	let newHintTable = document.getElementById('pprh-enter-data');
 
-	toggleEmailSubmit();
-	toggleDivs();
-	// checkoutModals();
-	resetButtons();
-	addSubmitHintsListener();
-	addEventListeners();
-	addHintTypeListener(null);
-	applyBulkActionListeners();
+
+	$(document).ready(function() {
+		toggleEmailSubmit();
+		toggleDivs();
+		// checkoutModals();
+		resetButtons();
+		addSubmitHintsListener();
+		addEventListeners();
+		addHintTypeListener(null);
+		applyBulkActionListeners();
+	});
+
 
 
 
@@ -125,13 +129,12 @@
 		let rawHint = getHintValuesFromTable(table);
 
 		if (isObjectAndNotNull(rawHint)) {
-			let hint = pprhCreateHint.CreateHint(rawHint);
-			let isHintValid = verifyHint(hint);
+			let isHintValid = verifyHint(rawHint);
 
 			if (isHintValid) {
-				hint.op_code = operation;
-				hint.hint_ids = (operation === 1) ? tableId.split('pprh-edit-')[1] : [];
-				return createAjaxReq(hint, 'pprh_update_hints', pprh_data.nonce);
+				rawHint.op_code = operation;
+				rawHint.hint_ids = (operation === 1) ? tableId.split('pprh-edit-')[1] : [];
+				return createAjaxReq(rawHint, 'pprh_update_hints', pprh_data.nonce);
 			}
 		}
 
@@ -153,7 +156,7 @@
 		let rawHintType = elems.hint_type;
 		let hintTypeVal = rawHintType.find('input:checked').val();
 
-		return {
+		let hint = {
 			url:         elems.url.val(),
 			hint_type:   hintTypeVal,
 			media:       elems.media.val(),
@@ -161,6 +164,12 @@
 			type_attr:   elems.type_attr.val(),
 			crossorigin: elems.crossorigin.is(':checked'),
 		}
+
+		if (typeof pprhProAdminJS !== "undefined") {
+			hint.post_id = pprhProAdminJS.GetPostId();
+		}
+
+		return hint;
 	}
 
 	function getRowElemsFromTable(table) {
@@ -174,17 +183,22 @@
 			media:       tbody.find('input.pprh_media')
 		};
 	}
-	
+
 
 	function addHintTypeListener(editRow) {
 		if (null === editRow) {
 			editRow = $('table#pprh-enter-data');
+			let xoriginElem = editRow.find('input.pprh_crossorigin').first();
+			let mediaElem = editRow.find('input.pprh_media').first();
+
+			xoriginElem.prop('disabled', true);
+			mediaElem.prop('disabled', true);
 		}
 
 		let hintTypeRadios = editRow.find('tr.pprhHintTypes input.hint_type');
 
 		$.each(hintTypeRadios, function() {
-			$(this).on('click', function () {
+			$(this).on('click', function() {
 				hintTypeListener($(this));
 			});
 		});
@@ -198,7 +212,6 @@
 			if ('preconnect' === hintType) {
 				xoriginElem.prop('disabled', false);
 				mediaElem.prop('disabled', true);
-				mediaElem.val('');
 			} else if ('preload' === hintType) {
 				xoriginElem.prop('disabled', false);
 				mediaElem.prop('disabled', false);
@@ -206,10 +219,8 @@
 				xoriginElem.prop('checked', false);
 				xoriginElem.prop('disabled', true);
 				mediaElem.prop('disabled', true);
-				mediaElem.val('');
 			}
 		}
-
 	}
 
 
@@ -262,20 +273,22 @@
 		}
 	}
 
-
 	function clearHintTable() {
 		let tbody = newHintTable.getElementsByTagName('tbody')[0];
 
 		tbody.querySelectorAll('select, input').forEach(function (elem) {
-			return elem[(/radio|checkbox/.test(elem.type)) ? 'checked' : 'value'] = '';
+			if ( (/radio|checkbox/.test(elem.type)) ) {
+				elem.checked = "";
+			} else if ((/text|select/.test(elem.type))) {
+				elem.value = "";
+			}
 		});
 	}
 
-	// TODO: remove previous notices which have a different status. i.e- removing an 'error' box after a successful notice
 	function updateAdminNotice(msg, status) {
 		let adminNoticeElem = document.getElementById('pprhNotice');
 
-		if (typeof adminNoticeElem === "undefined" || adminNoticeElem === null) {
+		if ( ! isObjectAndNotNull(adminNoticeElem)) {
 			let pprhNoticeBox = document.getElementById('pprhNoticeBox');
 			pprhNoticeBox.innerHTML = '<div id="pprhNotice" class="notice notice-success is-dismissible"><p></p></div>';
 			adminNoticeElem = document.getElementById('pprhNotice');
@@ -286,10 +299,11 @@
 			adminNoticeElem.getElementsByTagName('p')[0].innerText = msg;
 		}
 
-		let statusText = ( status) ? 'success' : 'error';
+		let statusText = (status) ? status : 'error';
 
 		adminNoticeElem.classList.remove('notice-error');
 		adminNoticeElem.classList.remove('notice-success');
+		adminNoticeElem.classList.remove('notice-info');
 		adminNoticeElem.classList.add('notice-' + statusText);
 
 		setTimeout(function() {
@@ -322,23 +336,27 @@
 
 		function xhrResponse() {
 			if (xhr.readyState === 4 && xhr.status === 200 && xhr.response && xhr.response !== "0") {
+				let responseObj = JSON.parse(xhr.response);
 
-				if (xhr.response.indexOf('<div') === 0) {
+				if (isObjectAndNotNull(responseObj)) {
+
+					if (responseObj.result && responseObj.result.db_result && responseObj.result.db_result.msg) {
+						clearHintTable();
+						let msg = responseObj.result.db_result.msg;
+						let status = responseObj.result.db_result.status;
+						let statusText = (status) ? 'success' : 'error';
+						updateAdminNotice(msg, statusText);
+						updateTable(responseObj);
+						addEventListeners();
+					} else if (responseObj.error) {
+						logError(responseObj.error);
+					}
+				}
+
+				else {
 					logError('error');
-					return;
 				}
-			
-				try {
-					let response = JSON.parse(xhr.response);
-					clearHintTable();
-					let msg = response.result.db_result.msg;
-					let status = response.result.db_result.status;
-					updateAdminNotice(msg, status);
-					updateTable(response);
-					addEventListeners();
-				} catch(e) {
-					logError(e);
-				}
+
 			}
 		}
 
@@ -380,11 +398,10 @@
 			return val;
 		}
 
-		function logError(err) {
-			let error = (err.message) ? err.message : " Please clear your browser cache, refresh your page, or contact support to resolve the issue.";
-			let msg = "Error updating resource hint. " + error;
-			updateAdminNotice(msg, "error");
-			console.error(err);
+		function logError(errorMsg) {
+			let error = (errorMsg) ? errorMsg : " Please clear your browser cache, refresh your page, or contact support to resolve the issue.";
+			updateAdminNotice(error, "error");
+			console.error(error);
 		}
 	}
 
@@ -437,6 +454,6 @@
 }));
 
 // for testing
-// if (typeof module === "object") {
-// 	module.exports = this.pprhAdminJS;
-// }
+if (typeof module === "object") {
+	module.exports = this.pprhAdminJS;
+}

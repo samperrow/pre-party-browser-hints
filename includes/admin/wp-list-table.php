@@ -157,7 +157,7 @@ class WP_List_Table {
 		);
 
 		$this->screen = convert_to_screen( $args['screen'] );
-		$this->on_pprh_post_page = $args['on_pprh_page'];
+		$this->on_pprh_post_page = $args['plugin_page'];
 
 		\add_filter( "manage_{$this->screen->id}_columns", array( $this, 'get_columns' ), 0 );
 
@@ -801,7 +801,7 @@ class WP_List_Table {
 		$current              = $this->get_pagenum();
 		$removable_query_args = wp_removable_query_args();
 
-        $current_url = ( wp_doing_ajax() ) ? esc_url_raw( $_SERVER['HTTP_REFERER'] ) : menu_page_url( PPRH_MENU_SLUG, false );
+        $current_url = ( wp_doing_ajax() ) ? esc_url_raw( Utils::get_referer() ) : menu_page_url( PPRH_MENU_SLUG, false );
 		$current_url = remove_query_arg( $removable_query_args, $current_url );
 
 		$page_links = array();
@@ -1171,6 +1171,7 @@ class WP_List_Table {
 		$id_string = 'id="the-list';
 		$id_string .= ( $singular ) ? "-$singular\" data-wp-lists='list:$singular'" : '"';
 		?>
+        <form>
         <table style="border-spacing: 2px;" class="wp-list-table pprh-post-table <?php echo implode( ' ', $this->get_table_classes() ); ?>">
             <thead>
                 <tr>
@@ -1189,6 +1190,7 @@ class WP_List_Table {
             </tfoot>
 
         </table>
+        </form>
 		<?php
             $this->display_tablenav( 'bottom' );
 	}
@@ -1284,7 +1286,7 @@ class WP_List_Table {
 	protected function column_default( $item, $column_name ) {}
 
 
-	public function on_post_page_and_global_hint( $item, $on_pprh_post_page ) {
+	public function on_plugin_page_and_global_hint( $item, $on_pprh_post_page ) {
 		$global_hint = ( isset( $item['post_id'] ) && 'global' === $item['post_id'] );
 		return ( $global_hint && ( 2 === $on_pprh_post_page ) );
 	}
@@ -1292,7 +1294,7 @@ class WP_List_Table {
 	protected function global_hint_alert() {
 		?>
         <span class="pprh-help-tip-hint">
-			<span><?php esc_html_e( 'This is a global resource hint, and is used on all pages and posts. To update this hint, please do so from the main Pre* Party plugin page.', 'pprh' ); ?></span>
+			<span><?php esc_html_e( 'This is a global resource hint, and is used on all pages and posts. To update this hint, please do so from the main Pre* Party plugin page.', 'pre-party-browser-hints' ); ?></span>
 		</span>
 		<?php
 	}
@@ -1306,7 +1308,7 @@ class WP_List_Table {
 	 */
 	protected function single_row_columns( $item ) {
 		list( $columns, $hidden, $primary ) = $this->get_column_info();
-		$global_hint_alert = $this->on_post_page_and_global_hint( $item, $this->on_pprh_post_page );
+		$global_hint_alert = $this->on_plugin_page_and_global_hint( $item, $this->on_pprh_post_page );
 
 		foreach ( $columns as $column_name => $column_display_name ) {
 			$classes = "$column_name column-$column_name";

@@ -25,7 +25,7 @@ class SendHints {
 	}
 
 	public function remove_invalid_hints( array $hints, array $data ):array {
-		if ( ! empty( $data ) || false === \get_option( 'pprh_pro_license' ) ) {
+		if ( ! empty( $data ) ) {
 			return $hints;
 		}
 

@@ -8,17 +8,17 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class LoadClient {
 
-	public function init( bool $pprh_preconnect_autoload ) {
-		$data = \apply_filters( 'pprh_pro_load_client', $pprh_preconnect_autoload );
+	public function init( bool $preconnect_autoload ) {
+		$client_data = \apply_filters( 'pprh_load_pro_client', $preconnect_autoload );
 
-		if ( is_bool( $data ) ) {
-			$data = array();
+		if ( is_bool( $client_data ) ) {
+			$client_data = array();
 		}
 
 		$this->verify_to_load_fp_ctrl();
 
 		$send_hints = new SendHints();
-		$send_hints->init_ctrl( $data );
+		$send_hints->init_ctrl( $client_data );
 		$disable_wp_hints = \get_option( 'pprh_disable_wp_hints' );
 		$this->disable_wp_hints( $disable_wp_hints );
 	}
