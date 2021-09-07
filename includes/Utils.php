@@ -9,9 +9,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Utils {
 
 	public static function show_notice( string $msg, bool $success ) {
-		if ( PPRH_RUNNING_UNIT_TESTS ) {
-			return;
-		}
 		$alert = ( $success ) ? 'success' : 'error';
 		$class = ( empty( $msg ) ? '' : 'active' );
 		echo sprintf( '<div id="pprhNoticeBox"><div id="pprhNotice" class="notice notice-%1$s is-dismissible %2$s"><p>%3$s</p></div></div>', $alert, $class, $msg );

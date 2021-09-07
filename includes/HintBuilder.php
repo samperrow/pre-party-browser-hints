@@ -27,11 +27,14 @@ class HintBuilder {
 		}
 
 		$file_type    = $this->get_file_type( $url );
-		$auto_created = ( ! empty( $raw_hint['auto_created'] ) ? 1 : 0 );
-		$as_attr      = $this->set_as_attr( $raw_hint['as_attr'], $file_type );
+		$as_attr      = $raw_hint['as_attr'] ?? '';
+		$media_attr   = $raw_hint['media'] ?? '';
+		$auto_created = $raw_hint['auto_created'] ?? 0;
+
+		$as_attr      = $this->set_as_attr( $as_attr, $file_type );
 		$type_attr    = $this->set_mime_type_attr( $raw_hint, $file_type );
 		$crossorigin  = $this->set_crossorigin( $raw_hint, $file_type );
-		$media        = Utils::strip_bad_chars( $raw_hint['media'] );
+		$media        = Utils::strip_bad_chars( $media_attr );
 
 		$new_hint = Utils::create_raw_hint( $url, $hint_type, $auto_created, $as_attr, $type_attr, $crossorigin, $media );
 		$new_hint['current_user'] = \wp_get_current_user()->display_name ?? '';

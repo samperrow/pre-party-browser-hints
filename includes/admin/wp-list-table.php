@@ -508,7 +508,7 @@ class WP_List_Table {
 		return false;
 	}
 
-	/** 
+	/**
 	 * Generate row actions div
 	 *
 	 * @since 3.1.0
@@ -892,7 +892,7 @@ class WP_List_Table {
 
 		if ( $total_pages ) {
 			$page_class = $total_pages < 1 ? ' one-page' : '';
-		} 
+		}
 		else {
 			$page_class = '';
 		}
@@ -1164,7 +1164,7 @@ class WP_List_Table {
 //			return;
 //		}
 
-		wp_nonce_field( 'ajax-custom-list-nonce', '_ajax_custom_list_nonce' );
+//		\wp_nonce_field( 'ajax-custom-list-nonce', '_ajax_custom_list_nonce' );
 		$singular = $this->_args['singular'];
 		$this->display_tablenav( 'top' );
 		$this->screen->render_screen_reader_content( 'heading_list' );

@@ -6,12 +6,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class SettingsSave extends Settings {
+class SettingsSave extends SettingsView {
 
-	public function save_settings() {
-		if ( isset( $_POST ) && \PPRH\Utils::isArrayAndNotEmpty( $_POST ) ) {
+	public function save_user_options() {
+		if ( isset( $_POST['pprh_save_options'] ) || isset( $_POST['pprh_preconnect_set'] ) ) {
 			\check_admin_referer( 'pprh_save_admin_options', 'pprh_admin_options_nonce' );
 			$this->save_options( $_POST );
+			\do_action( 'pprh_sc_save_settings' );
 		}
 	}
 
@@ -59,7 +60,7 @@ class SettingsSave extends Settings {
 	}
 
 	public function auto_preconnect_notice() {
-		$msg = 'Your automatically generated preconnect hints have been removed. Please reload a front-end page to generate new preconnect hints.';
+		$msg = esc_html( 'Your automatically generated preconnect hints have been removed. Please reload a front-end page to generate new preconnect hints.', 'pre-party-browser-hints' );
 		\PPRH\Utils::show_notice( $msg, true );
 	}
 
@@ -100,6 +101,11 @@ class SettingsSave extends Settings {
 		}
 
 		return $results;
+	}
+
+	public function turn_textarea_to_array( $text ) {
+		$clean_text = preg_replace( '/[\'<>^\"\\\]/', '', $text );
+		return explode( "\r\n", $clean_text );
 	}
 
 }

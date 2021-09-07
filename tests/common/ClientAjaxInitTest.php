@@ -20,7 +20,6 @@ class ClientAjaxInitTest extends TestCase {
 				array( 'url' => 'https://fonts.gstatic.comTest', 'hint_type' => 'preconnect', 'media' => '', 'as_attr' => '', 'type_attr' => '', 'crossorigin' => 'crossorigin' )
 			),
 			'nonce' => $js_object['nonce'],
-//			'op_code' => 0
 		);
 
 		$args = array(

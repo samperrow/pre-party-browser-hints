@@ -19,9 +19,9 @@ class Dashboard {
 	}
 
 	public function show_plugin_dashboard( int $plugin_page ) {
-		$settings = new Settings();
-		$faq      = new FAQ();
-		$settings->save_user_options();
+		$faq           = new FAQ();
+		$settings_save = new SettingsSave();
+		$settings_save->save_user_options();
 
 		echo '<div id="pprh-poststuff" class="wrap"><h1>';
 		esc_html_e( 'Pre* Party Resource Hints', 'pre-party-browser-hints' );
@@ -31,13 +31,14 @@ class Dashboard {
 		$insert_hints = new InsertHints( $plugin_page );
 		$this->show_admin_tabs();
 		$insert_hints->markup();
-		$settings->markup( true );
+		$settings_save->markup( true );
 		\do_action( 'pprh_load_view_classes' );
 		$faq->markup();
 
 		$this->show_footer();
 		echo '</div>';
 		unset( $insert_hints, $settings, $faq );
+        return true;
 	}
 
 

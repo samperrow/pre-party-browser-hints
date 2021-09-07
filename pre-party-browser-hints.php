@@ -98,9 +98,8 @@ class Pre_Party_Browser_Hints {
 
 	public function load_plugin_main() {
 		self::$preconnect_enabled = ('true' === \get_option('pprh_preconnect_autoload') || PPRH_RUNNING_UNIT_TESTS);
-		$is_admin = \is_admin();
 
-		if ( $is_admin ) {
+		if ( \is_admin() ) {
 			$this->plugin_page = Utils::get_plugin_page( \wp_doing_ajax(), '' );
 			\add_action( 'wp_loaded', array( $this, 'load_main_admin' ) );
 		} else {
@@ -137,9 +136,8 @@ class Pre_Party_Browser_Hints {
 			include_once 'includes/admin/LoadAdmin.php';
 //			include_once 'includes/admin/Updater.php';
 			include_once 'includes/admin/Dashboard.php';
-			include_once 'includes/admin/views/Settings.php';
-			include_once 'includes/admin/views/SettingsSave.php';
 			include_once 'includes/admin/views/SettingsView.php';
+			include_once 'includes/admin/views/SettingsSave.php';
 			include_once 'includes/admin/views/FAQ.php';
 			include_once 'includes/admin/NewHint.php';
 			include_once 'includes/admin/DisplayHints.php';

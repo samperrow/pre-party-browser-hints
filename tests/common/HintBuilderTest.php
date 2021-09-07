@@ -60,6 +60,15 @@ class HintBuilderTest extends TestCase {
 		$actual_8 = self::$hint_builder->create_pprh_hint($test_8);
 		$expected_8 = \PPRH\Utils::create_raw_hint( 'https://www.espn.com', 'dns-prefetch' );
 		self::assertEquals($expected_8, $actual_8);
+
+		$test_9 = array(
+			'url'          => 'https://fonts.gstatic.com/s/raleway/v14/1Ptrg8zYS_SKggPNwK4vWqZPANqczVs.woff2',
+			'hint_type'    => 'preconnect',
+			'auto_created' => 1
+		);
+		$actual_9 = self::$hint_builder->create_pprh_hint($test_9);
+		$expected_9 = \PPRH\Utils::create_raw_hint( 'https://fonts.gstatic.com', 'preconnect', 1, '', '', 'crossorigin' );
+		self::assertEquals($expected_9, $actual_9);
 	}
 
 	public function test_get_hint_type() {
