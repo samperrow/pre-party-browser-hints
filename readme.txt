@@ -81,6 +81,7 @@ Sept 7, 2021:
 1) Changed minimunm role capability required to use this plugin from "update_plugins" to "manage_options" to address a plugin compatibliity error ("Disable All WordPress Updates").
 2) Updated/added support for translations.
 3) Changed hint creation process to use back end validation/config instead of client side JS.
+4) Split up "auto preconnect" code into two classes for admin and client side roles.
 
 August 18, 2021:
 1) Fixed/improved numerous things.
