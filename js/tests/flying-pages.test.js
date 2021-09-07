@@ -21,11 +21,13 @@ global.IntersectionObserver = class IntersectionObserver {
 };
 
 const FlyingPages = require('../flying-pages.js');
+const FlyingPagesMin = require('../flying-pages.min.js');
+
 FlyingPages.Init();
+FlyingPagesMin.Init();
 
 // AddUrlToQueue
 test('test AddUrlToQueue', () => {
-
 
     expect(FlyingPages.AddUrlToQueue('http://localhost/sp-calendar-pro/core/', false))
         .toBe(true);
@@ -33,9 +35,10 @@ test('test AddUrlToQueue', () => {
     expect(FlyingPages.AddUrlToQueue('http://loca3lhost/sp-calendar-pro/core/', false))
         .toBe(false);
 
+    expect(FlyingPagesMin.AddUrlToQueue('http://localhost/sp-calendar-pro/core/', false))
+        .toBe(true);
+
+    expect(FlyingPagesMin.AddUrlToQueue('http://loca3lhost/sp-calendar-pro/core/', false))
+        .toBe(false);
+
 });
-
-
-
-
-

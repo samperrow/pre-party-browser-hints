@@ -19,13 +19,13 @@ class DisplayHints extends WP_List_Table {
 	public $table;
 	public $items;
 
-	public function __construct( bool $doing_ajax, int $on_pprh_page ) {
+	public function __construct( bool $doing_ajax, int $plugin_page ) {
 		parent::__construct( array(
 			'ajax'         => true,
 			'plural'       => 'urls',
 			'screen'       => 'toplevel_page_' . PPRH_MENU_SLUG,
 			'singular'     => 'url',
-			'on_pprh_page' => $on_pprh_page
+			'plugin_page' => $plugin_page
 		) );
 
 		if ( ! $doing_ajax ) {
@@ -53,14 +53,14 @@ class DisplayHints extends WP_List_Table {
 	public function get_columns() {
 		$columns = array(
 			'cb'          => '<input type="checkbox" />',
-			'url'         => __( 'URL', 'pprh' ),
-			'hint_type'   => __( 'Hint Type', 'pprh' ),
-			'as_attr'     => __( 'As Attr', 'pprh' ),
-			'type_attr'   => __( 'Type Attr', 'pprh' ),
-			'crossorigin' => __( 'Crossorigin', 'pprh' ),
-			'media'       => __( 'Media', 'pprh' ),
-			'status'      => __( 'Status', 'pprh' ),
-			'created_by'  => __( 'Created By', 'pprh' ),
+			'url'         => __( 'URL', 'pre-party-browser-hints' ),
+			'hint_type'   => __( 'Hint Type', 'pre-party-browser-hints' ),
+			'as_attr'     => __( 'As Attr', 'pre-party-browser-hints' ),
+			'type_attr'   => __( 'Type Attr', 'pre-party-browser-hints' ),
+			'crossorigin' => __( 'Crossorigin', 'pre-party-browser-hints' ),
+			'media'       => __( 'Media', 'pre-party-browser-hints' ),
+			'status'      => __( 'Status', 'pre-party-browser-hints' ),
+			'created_by'  => __( 'Created By', 'pre-party-browser-hints' ),
 		);
 
 		return \apply_filters( 'pprh_dh_get_columns', $columns );
@@ -77,11 +77,11 @@ class DisplayHints extends WP_List_Table {
 		return \apply_filters( 'pprh_dh_get_sortortable_columns', $arr );
 	}
 
-	public function get_bulk_actions() {
+	public function get_bulk_actions():array {
 		return array(
-			'2' => __( 'Delete', 'pprh' ),
-			'3' => __( 'Enable', 'pprh' ),
-			'4' => __( 'Disable', 'pprh' )
+			'2' => __( 'Delete', 'pre-party-browser-hints' ),
+			'3' => __( 'Enable', 'pre-party-browser-hints' ),
+			'4' => __( 'Disable', 'pre-party-browser-hints' )
 		);
 	}
 
@@ -112,10 +112,10 @@ class DisplayHints extends WP_List_Table {
 	}
 
 	public function no_items() {
-		esc_html_e( 'Enter a URL or domain name..', 'pprh' );
+		esc_html_e( 'Enter a URL or domain name..', 'pre-party-browser-hints' );
 	}
 
-	public function column_url( $item ) {
+	protected function column_url( $item ) {
 		if ( ! empty( $item['id'] ) ) {
 			$actions = array(
 				'edit'   => sprintf( '<a id="pprh-edit-hint-%1$s" class="pprh-edit-hint">%2$s</a>', $item['id'], 'Edit' ),
@@ -132,21 +132,26 @@ class DisplayHints extends WP_List_Table {
 		return sprintf( '<input type="checkbox" name="urlValue[]" value="%1$s"/>', $item['id'] );
 	}
 
-	public function inline_edit_row( array $hint ) {
-		$hint_id = Utils::strip_non_numbers( $hint['id'] );
+	protected function inline_edit_row( array $hint ) {
+	    $hint_id = $hint['id'] ?? '';
+		$hint_id_clean = Utils::strip_non_numbers( $hint_id, true );
 		?>
-		<tr class="pprh-row edit <?php echo $hint_id; ?>">
+		<tr class="pprh-row edit <?php echo $hint_id_clean; ?>">
 			<td colspan="9">
-				<table id="pprh-edit-<?php echo $hint_id; ?>" aria-label="Update this resource hint">
+				<table id="pprh-edit-<?php echo $hint_id_clean; ?>" aria-label="Update this resource hint">
 					<thead>
 						<tr>
-							<th colspan="5" scope="colgroup"><?php esc_html_e( 'Update Resource Hint', 'pprh' ); ?></th>
+							<th colspan="5" scope="colgroup"><?php esc_html_e( 'Update Resource Hint', 'pre-party-browser-hints' ); ?></th>
 						</tr>
 					</thead>
-					<?php
-						$new_hint = new NewHint();
-						$new_hint->insert_hint_table( $hint );
-					?>
+
+                    <tbody>
+                        <?php
+                            $new_hint = new NewHint( $hint );
+                            $new_hint->insert_hint_table();
+                        ?>
+                    </tbody>
+
 					<tr>
 						<td colspan="5">
 							<button type="button" class="pprh-cancel button cancel">Cancel</button>

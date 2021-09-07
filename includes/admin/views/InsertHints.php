@@ -8,17 +8,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class InsertHints {
 
-	private $on_pprh_page;
+	private $plugin_page;
 
-	public function __construct( $on_pprh_page ) {
-		$this->on_pprh_page = $on_pprh_page;
+	public function __construct( $plugin_page ) {
+		$this->plugin_page = $plugin_page;
 	}
 
 	public function markup() {
 		echo '<div class="pprh-content insert-hints">';
-		\wp_nonce_field( 'pprh_display_hints_nonce_action', 'pprh_display_hints_nonce' );
-		$display_hints = new DisplayHints( false, $this->on_pprh_page );
-		$new_hint      = new NewHint();
+		$display_hints = new DisplayHints( false, $this->plugin_page );
+		$new_hint      = new NewHint( array() );
 		$new_hint->create_new_hint_table();
 		echo '</div>';
 		unset( $display_hints );

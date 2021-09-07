@@ -9,13 +9,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 final class DAOTest extends TestCase {
 
-	public $dao;
+	public static $dao;
+	public static $hint_ctrl;
 
-	/**
-	 * @before
-	 */
 	public function test_init() {
-		$this->dao = new \PPRH\DAO();
+		self::$dao       = new \PPRH\DAO();
+		self::$hint_ctrl = new \PPRH\HintController();
 	}
 
 	public function test_create_db_result() {
@@ -40,71 +39,50 @@ final class DAOTest extends TestCase {
 		$expected_4 = array( 'msg' => 'Resource hint disabled successfully.', 'status' => $success_4 );
 		self::assertEquals( $expected_4, $actual_4->db_result );
 
-		$success_5 = true;
-		$actual_5 = \PPRH\DAO::create_db_result($success_5, 5, 0, null );
-		$expected_5 = array( 'msg' => 'Auto preconnect hints for this post have been reset. Please load this page on the front end to re-create the preconnect hints.', 'status' => $success_5 );
-		self::assertEquals( $expected_5, $actual_5->db_result );
+//		$success_5 = true;
+//		$actual_5 = \PPRH\DAO::create_db_result($success_5, 5, 0, null );
+//		$expected_5 = array( 'msg' => 'Auto preconnect hints for this post have been reset. Please load this page on the front end to re-create the hints.', 'status' => $success_5 );
+//		self::assertEquals( $expected_5, $actual_5->db_result );
 
 		$success_6 = false;
 		$actual_6 = \PPRH\DAO::create_db_result($success_6, 5, 1, null );
-		$expected_6 = array( 'msg' =>  'Failed to reset this post\'s preconnect data. Please refresh the page and try again.', 'status' => $success_6 );
+		$expected_6 = array( 'msg' => 'Failed to reset this post\'s preconnect hint data. Please refresh the page and try again.', 'status' => $success_6 );
 		self::assertEquals( $expected_6, $actual_6->db_result );
 
-		$success_7 = true;
-		$actual_7 = \PPRH\DAO::create_db_result($success_7, 6, 0, null );
-		$expected_7 = array( 'msg' =>  'Prerender hint successfully created for this post.', 'status' => $success_7 );
-		self::assertEquals( $expected_7, $actual_7->db_result );
+//		$success_7 = true;
+//		$actual_7 = \PPRH\DAO::create_db_result($success_7, 6, 0, null );
+//		$expected_7 = array( 'msg' => 'Preload hints for this post have been reset. Please load this page on the front end to re-create the hints.', 'status' => $success_7 );
+//		self::assertEquals( $expected_7, $actual_7->db_result );
 
-		$success_8 = true;
-		$actual_8 = \PPRH\DAO::create_db_result($success_8, 6, 1, null );
-		$expected_8 = array( 'msg' => 'Prerender hints have been successfully set for all posts with sufficiently available data.', 'status' => $success_8 );
-		self::assertEquals( $expected_8, $actual_8->db_result );
+//		$success_8 = false;
+//		$actual_8 = \PPRH\DAO::create_db_result($success_8, 6, 1, null );
+//		$expected_8 = array( 'msg' => 'Failed to reset this post\'s preload hint data. Please refresh the page and try again.', 'status' => $success_8 );
+//		self::assertEquals( $expected_8, $actual_8->db_result );
 
-		$success_9 = false;
-		$actual_9 = \PPRH\DAO::create_db_result($success_9, 6, 2, null );
-		$expected_9 = array( 'msg' => 'There is not enough analytics data for this page to generate accurate prerender hints yet. Please try again soon.', 'status' => $success_9 );
+		$success_9 = true;
+		$actual_9 = \PPRH\DAO::create_db_result($success_9, 7, 0, null );
+		$expected_9 = array( 'msg' => 'Prerender hint successfully created for this post.', 'status' => $success_9 );
 		self::assertEquals( $expected_9, $actual_9->db_result );
+
+		$success_10 = true;
+		$actual_10 = \PPRH\DAO::create_db_result($success_10, 7, 1, null );
+		$expected_10 = array( 'msg' => 'Prerender hints have been successfully set for all posts with sufficiently available data.', 'status' => $success_10 );
+		self::assertEquals( $expected_10, $actual_10->db_result );
+
+		$success_11 = false;
+		$actual_11 = \PPRH\DAO::create_db_result($success_11, 7, 2, null );
+		$expected_11 = array( 'msg' => 'There is not enough analytics data for this page to generate accurate prerender hints yet. Please try again soon.', 'status' => $success_11 );
+		self::assertEquals( $expected_11, $actual_11->db_result );
 	}
 
-
-//	public function test_create_db_result() {
-//		$result = true;
-//		$new_hint = null;
-//
-//		$expected = (object) array(
-//			'new_hint'  => $new_hint,
-//			'db_result' => array(
-//				'msg'        => 'Resource hint created successfully.',
-//				'status'     => ( $result ) ? 'success' : 'error',
-//				'success'    => $result,
-//				'hint_id'    => '',
-//				'last_error' => '',
-//			)
-//		);
-//
-//		$actual_1 = \PPRH\DAO::create_db_result( true, '', '', 0, null );
-//		self::assertEquals( $expected, $actual_1 );
-//	}
-
-//	public function test_create_msg() {
-//		$actions_1 = array( 'create', 'created' );
-//		$actual_1 = \PPRH\DAO::create_msg( true, $actions_1 );
-//		$expected_1 = "Resource hint $actions_1[1] successfully.";
-//		self::assertEquals( $expected_1, $actual_1 );
-//
-//		$actions_2 = array( 'delete', 'deleted' );
-//		$actual_2 = \PPRH\DAO::create_msg( false, $actions_2 );
-//		$expected_2 = "Failed to $actions_2[0] hint.";
-//		self::assertEquals( $expected_2, $actual_2 );
-//	}
 
 	public function test_get_duplicate_hints() {
 		$url_1 = 'https://asdfasdfadsf.com';
 		$hint_type_1 = 'preconnect';
-		$actual_1 = $this->dao->get_duplicate_hints( $url_1, $hint_type_1, 1, '100' );
+		$actual_1 = self::$dao->get_duplicate_hints( $url_1, $hint_type_1, 1, '100' );
 		self::assertEmpty( $actual_1 );
 
-		$actual_2 = $this->dao->get_duplicate_hints( $url_1, $hint_type_1, 0, '' );
+		$actual_2 = self::$dao->get_duplicate_hints( $url_1, $hint_type_1, 0, '' );
 		self::assertEmpty( $actual_2 );
 	}
 
@@ -113,9 +91,9 @@ final class DAOTest extends TestCase {
 			return;
 		}
 
-		$table = $this->dao->table;
+		$table = self::$dao->get_table();
 
-		$actual_1 = $this->dao->get_admin_hints_query();
+		$actual_1 = self::$dao->get_admin_hints_query();
 		$expected_1 = array(
 			'sql'  => "SELECT * FROM $table ORDER BY url ASC",
 			'args' => array()
@@ -124,7 +102,7 @@ final class DAOTest extends TestCase {
 
 		$_REQUEST['orderby'] = 'hint_type';
 		$_REQUEST['order'] = 'asc';
-		$actual_2 = $this->dao->get_admin_hints_query();
+		$actual_2 = self::$dao->get_admin_hints_query();
 		$expected_2 = array(
 			'sql'  => "SELECT * FROM $table ORDER BY hint_type ASC",
 			'args' => array()
@@ -133,7 +111,7 @@ final class DAOTest extends TestCase {
 
 		$_REQUEST['orderby'] = 'url';
 		$_REQUEST['order'] = 'desc';
-		$actual_3 = $this->dao->get_admin_hints_query();
+		$actual_3 = self::$dao->get_admin_hints_query();
 		$expected_3 = array(
 			'sql'  => "SELECT * FROM $table ORDER BY url DESC",
 			'args' => array()
@@ -143,7 +121,7 @@ final class DAOTest extends TestCase {
 
 		$_REQUEST['orderby'] = '';
 		$_REQUEST['order'] = '';
-		$actual_4 = $this->dao->get_admin_hints_query();
+		$actual_4 = self::$dao->get_admin_hints_query();
 		$expected_4 = array(
 			'sql'  => "SELECT * FROM $table ORDER BY url ASC",
 			'args' => array()
@@ -153,7 +131,7 @@ final class DAOTest extends TestCase {
 
 		$_REQUEST['orderby'] = 'hint-asdf<"asdf/';
 		$_REQUEST['order'] = 'asdf';
-		$actual_5 = $this->dao->get_admin_hints_query();
+		$actual_5 = self::$dao->get_admin_hints_query();
 		$expected_5 = array(
 			'sql'  => "SELECT * FROM $table ORDER BY url ASC",
 			'args' => array()
@@ -163,7 +141,7 @@ final class DAOTest extends TestCase {
 
 		$_REQUEST['orderby'] = 'HINT_TYPE';
 		$_REQUEST['order'] = 'DESC';
-		$actual_6 = $this->dao->get_admin_hints_query();
+		$actual_6 = self::$dao->get_admin_hints_query();
 		$expected_6 = array(
 			'sql'  => "SELECT * FROM $table ORDER BY hint_type DESC",
 			'args' => array()
@@ -173,45 +151,40 @@ final class DAOTest extends TestCase {
 	}
 
 	public function test_get_client_hints_query() {
-		$table = $this->dao->table;
+		$table = self::$dao->get_table();
 
-		$actual_1 = $this->dao->get_client_hints_query( array() );
+		$actual_1 = self::$dao->get_client_hints_query( array() );
 		$sql = "SELECT * FROM $table WHERE status = %s";
 		self::assertEquals( 'enabled', $actual_1['args'][0] );
 		self::assertTrue( str_contains( $actual_1['sql'], $sql ) );
 	}
 
 	public function test_insert_hint() {
-		$create_hints = new \PPRH\CreateHints();
+		$hint_builder = new \PPRH\HintBuilder();
 
-		$hint_1 = TestUtils::create_hint_array( 'https://www.asdf.com/foozball', 'preconnect', '', '', '', '', '2145' );
-		$new_hint_1 = $create_hints->create_hint($hint_1);
-		$actual_1 = $this->dao->insert_hint( $new_hint_1 );
-		$expected = \PPRH\DAO::create_db_result( true, 0, 0, $new_hint_1 );
-		self::assertEquals( $expected, $actual_1 );
+		$hint_1 = \PPRH\Utils::create_raw_hint( 'https://www.asdf.com/foozball', 'preconnect', '', '', '', '', '','2145' );
+		$new_hint_1 = $hint_builder->create_pprh_hint($hint_1);
+		$actual_1 = self::$dao->insert_hint( $new_hint_1 );
+		self::assertTrue( $actual_1['success'] );
 	}
 
 	public function test_update_hint() {
-		$new_hint = TestUtils::create_hint_array( 'https://www.asdf2.com/foozball/blah.css', 'dns-prefetch', 'font', 'font/woff2', '');
-		$result = $this->dao->update_hint( $new_hint, 10 );
-		$expected = \PPRH\DAO::create_db_result( true, 1, 0, $new_hint );
-		self::assertEquals($expected, $result);
+		$new_hint = \PPRH\Utils::create_raw_hint( 'https://www.asdf2.com/foozball/blah.css', 'dns-prefetch', 'font', 'font/woff2', '');
+		$actual_1 = self::$dao->update_hint( $new_hint, 10 );
+		self::assertTrue( $actual_1['success'] );
 	}
 
 	public function test_delete_hint() {
-		$actual_1 = $this->dao->delete_hint( '10' );
-		$expected_1 = \PPRH\DAO::create_db_result( true, 2, 0, null );
-		self::assertEquals($expected_1, $actual_1);
+		$actual_1 = self::$dao->delete_hint( '10' );
+		self::assertTrue( $actual_1['success'] );
 	}
 
 	public function test_bulk_update() {
-		$actual_1 = $this->dao->bulk_update( '10', 3 );
-		$expected_1 = \PPRH\DAO::create_db_result( true, 3, 0, null );
-		self::assertEquals($expected_1, $actual_1);
+		$actual_1 = self::$dao->bulk_update( '10', 3 );
+		self::assertTrue($actual_1['success']);
 
-		$actual_2 = $this->dao->bulk_update( '11', 4 );
-		$expected_2 = \PPRH\DAO::create_db_result( true, 4, 0, null );
-		self::assertEquals($expected_2, $actual_2);
+		$actual_2 = self::$dao->bulk_update( '11', 4 );
+		self::assertTrue($actual_2['success']);
 	}
 
 
@@ -222,11 +195,11 @@ final class DAOTest extends TestCase {
 //	public function test_get_hints() {
 //		$hint_arr = Create_Hints::create_raw_hint_array('https://www.asdf.com/foozball', 'preconnect', 1);
 //		$new_hint = Create_Hints::create_pprh_hint($hint_arr);
-//		$expected = $this->dao->insert_hint($new_hint);
+//		$expected = self::$dao->insert_hint($new_hint);
 //		$id = $expected->db_result['hint_id'];
 //
 //		$expected = array_merge( array('id' => $id, 'status' => 'enabled', 'created_by' => '' ), $expected->new_hint );
-//		$actual = $this->dao->get_hints()['0'];
+//		$actual = self::$dao->get_hints()['0'];
 //		self::assertEquals($expected, $actual);
 //	}
 

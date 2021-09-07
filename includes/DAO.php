@@ -8,14 +8,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class DAO {
 
-	public $table;
+	private static $table = PPRH_DB_TABLE;
 
-	public function __construct() {
-		$this->table = PPRH_DB_TABLE;
+//	public function __construct() {}
+
+	public function get_table() {
+		return self::$table;
 	}
 
-	public static function create_db_result( bool $success, int $action_code, int $success_code, array $new_hint = null ) {
-		$msg = self::get_msg( $success, $action_code, $success_code );
+	public static function create_db_result( bool $success, int $op_code, int $success_code, array $new_hint = null ) {
+		$msg = self::get_msg( $success, $op_code, $success_code );
 
 		return (object) array(
 			'new_hint'  => $new_hint ?? null,
@@ -26,10 +28,14 @@ class DAO {
 		);
 	}
 
-	private static function get_msg( bool $success, int $action_code, int $success_code ):string {
+	private static function get_msg( bool $success, int $op_code, int $success_code ):string {
 		$dup_hints_alert    = 'A duplicate hint exists!';
-		$preconnect_success = 'Auto preconnect hints for this post have been reset. Please load this page on the front end to re-create the preconnect hints.';
-		$preconnect_fail    = 'Failed to reset this post\'s preconnect data. Please refresh the page and try again.';
+
+		$preconnect_success = 'Preconnect resource hints were created successfully for this post.';
+		$preconnect_fail    = 'Failed to reset this post\'s preconnect hint data. Please refresh the page and try again.';
+
+		$preload_success    = 'Preload resource hints were created successfully for this post.';
+		$preload_fail       = 'Failed to reset this post\'s preload hint data. Please refresh the page and try again.';
 
 		$prerender_single_success   = 'Prerender hint successfully created for this post.';
 		$prerender_multiple_success = 'Prerender hints have been successfully set for all posts with sufficiently available data.';
@@ -42,30 +48,45 @@ class DAO {
 			3 => array( 'enable', 'enabled' ),
 			4 => array( 'disable', 'disabled' ),
 			5 => array( 0 => $preconnect_success, 1 => $preconnect_fail ),
-			6 => array( 0 => $prerender_single_success, 1 => $prerender_multiple_success, 2 => $prerender_no_data )
+			6 => array( 0 => $preload_success, 1 => $preload_fail ),
+			7 => array( 0 => $prerender_single_success, 1 => $prerender_multiple_success, 2 => $prerender_no_data )
 		);
 
-		if ( 4 >= $action_code ) {
-			if ( 0 === $action_code && 1 === $success_code ) {
+		if ( 400 === $success_code ) {
+			$msg = 'Invalid API key. Please verify your API key and try again.';
+		} elseif ( 429 === $success_code ) {
+			$msg = 'API quota limit exceeded. Please wait a few moments and try again.';
+		}
+
+		elseif ( 4 >= $op_code ) {
+			if ( 0 === $op_code && 1 === $success_code ) {
 				$msg = $dup_hints_alert;
 			} else {
-				$action = $actions[ $action_code ];
+				$action = $actions[ $op_code ];
 				$msg    = ( $success ) ? "Resource hint $action[1] successfully." : "Failed to $action[0] hint.";
 			}
 		} else {
-			$msg = $actions[ $action_code ][ $success_code ];
+			$msg = $actions[ $op_code ][ $success_code ];
 		}
 
 		return $msg;
 	}
 
-	public function insert_hint( $new_hint ) {
-		global $wpdb;
+	public function handle_wpdb_result( $wpdb_result, $wpdb_last_error, array $new_hint = array() ):array {
+		$success = ( is_bool( $wpdb_result ) ) ? $wpdb_result : false;
 
-		if ( ! isset( $new_hint['url'], $new_hint['hint_type'] ) ) {
-			return;
+		if ( ! $success ) {
+			Utils::log_error( $wpdb_last_error );
 		}
 
+		return array(
+			'success' => $success,
+			'new_hint' => $new_hint
+		);
+	}
+
+	public function insert_hint( array $new_hint ) {
+		global $wpdb;
 		$args = array(
 			'types'   => array( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' ),
 			'columns' => array(
@@ -84,20 +105,16 @@ class DAO {
 		$args = \apply_filters( 'pprh_dao_insert_hint_schema', $args, $new_hint );
 
 		if ( PPRH_RUNNING_UNIT_TESTS ) {
-			return self::create_db_result( true, 0, 0, $new_hint );
+			return $this->handle_wpdb_result( true, '', $new_hint );
 		}
 
-		$wpdb->insert( $this->table, $args['columns'], $args['types'] );
+		$wpdb->insert( self::$table, $args['columns'], $args['types'] );
 
 		if ( isset( $wpdb->insert_id ) && $wpdb->insert_id > 0 ) {
 			$new_hint['id'] = $wpdb->insert_id;
 		}
 
-//		if ( ! $wpdb->result ) {
-//			Utils::log_error( $wpdb->last_error );
-//		}
-
-		return self::create_db_result( $wpdb->result, 0, 0, $new_hint );
+		return $this->handle_wpdb_result( $wpdb->result, $wpdb->last_error, $new_hint );
 	}
 
 
@@ -118,75 +135,63 @@ class DAO {
 		$type_arg = array( '%s', '%s', '%s', '%s', '%s' );
 
 		if ( PPRH_RUNNING_UNIT_TESTS ) {
-			return self::create_db_result( true, 1, 0, $new_hint );
+			return $this->handle_wpdb_result( true, '', $new_hint );
 		}
 
-		$wpdb->update( $this->table, $hint_arg, $where, $type_arg, array( '%d' ) );
+		$wpdb->update( self::$table, $hint_arg, $where, $type_arg, array( '%d' ) );
 
 		if ( isset( $wpdb->result ) && $wpdb->insert_id > 0 ) {
 			$new_hint['id'] = $hint_id;
 		}
 
-//		if ( ! $wpdb->result ) {
-//			Utils::log_error( $wpdb->last_error );
-//		}
-
-		return self::create_db_result( $wpdb->result, 1, 0, $new_hint );
+		return $this->handle_wpdb_result( $wpdb->result, $wpdb->last_error, $new_hint );
 	}
 
 	public function delete_hint( string $hint_ids ) {
 		global $wpdb;
+		$table = self::$table;
 		$valid_hint_id = ( 0 < preg_match( '/\d/', $hint_ids ) );
 
 		if ( $valid_hint_id ) {
-
-			if ( PPRH_RUNNING_UNIT_TESTS ) {
-				return self::create_db_result( true, 2, 0, null );
-			}
-
-			$wpdb->query( "DELETE FROM $this->table WHERE id IN ($hint_ids)" );
-			return self::create_db_result( $wpdb->result, 2, 0, null );
+			$wpdb->query( "DELETE FROM $table WHERE id IN ($hint_ids)" );
+			return $this->handle_wpdb_result( $wpdb->result, $wpdb->last_error );
 		}
 
-//		if ( ! $wpdb->result ) {
-//			Utils::log_error( $wpdb->last_error );
-//		}
+		return $this->handle_wpdb_result( false, 'Error in DAO::delete_hint().' );
 	}
 
 	public function bulk_update( $hint_ids, $op_code ) {
 		global $wpdb;
+		$table = self::$table;
 		$action = ( 3 === $op_code ) ? 'enabled' : 'disabled';
 
 		if ( PPRH_RUNNING_UNIT_TESTS ) {
-			return self::create_db_result( true, $op_code, 0, null );
+			return $this->handle_wpdb_result( true, '' );
 		}
 
 		$wpdb->query( $wpdb->prepare(
-			"UPDATE $this->table SET status = %s WHERE id IN ($hint_ids)", $action )
+			"UPDATE $table SET status = %s WHERE id IN ($hint_ids)", $action )
 		);
 
-//		if ( ! $wpdb->result ) {
-//			Utils::log_error( $wpdb->last_error );
-//		}
-
-		return self::create_db_result( $wpdb->result, $op_code, 0, null );
+		return $this->handle_wpdb_result( $wpdb->result, $wpdb->last_error );
 	}
 
 
 	public function get_duplicate_hints( string $url, string $hint_type, int $op_code, string $hint_ids ):array {
 		global $wpdb;
-		$sql = "SELECT * FROM $this->table WHERE url = %s AND hint_type = %s";
+		$table = self::$table;
+		$sql = "SELECT * FROM $table WHERE url = %s AND hint_type = %s";
 
-		if ( 1 === $op_code && ! empty( $hint_ids ) ) {
+		if ( 1 === $op_code && ! empty( $hint_ids ) ) {			// hint is being updated, so ignore the existing one.
 			$sql .= " AND id != %d";
 			$results = $wpdb->get_results( $wpdb->prepare( $sql, $url, $hint_type, $hint_ids ), ARRAY_A );
 		} else {
 			$results = $wpdb->get_results( $wpdb->prepare( $sql, $url, $hint_type ), ARRAY_A );
 		}
 
-//		if ( ! $wpdb->result ) {
-//			Utils::log_error( $wpdb->last_error );
-//		}
+		if ( ! $wpdb->result ) {
+			Utils::log_error( $wpdb->last_error );
+		}
 
 		return $results;
 	}
@@ -251,9 +256,9 @@ class DAO {
 			$results = $wpdb->get_results( $query['sql'], ARRAY_A );
 		}
 
-//		if ( ! $wpdb->result ) {
-//			Utils::log_error( $wpdb->last_error );
-//		}
+		if ( ! $wpdb->result ) {
+			Utils::log_error( $wpdb->last_error );
+		}
 
 		return $results;
 	}
@@ -275,20 +280,21 @@ class DAO {
 			}
 		}
 
-//		if ( ! $wpdb->result ) {
-//			Utils::log_error( $wpdb->last_error );
-//		}
+		if ( ! $wpdb->result ) {
+			Utils::log_error( $wpdb->last_error );
+		}
 
 		return $ms_table_names;
 	}
 
 	public function get_table_column() {
 		global $wpdb;
-		$results = $wpdb->get_results( "SHOW COLUMNS FROM $this->table LIKE 'auto_created'", ARRAY_A );
+		$table = self::$table;
+		$results = $wpdb->get_results( "SHOW COLUMNS FROM $table LIKE 'auto_created'", ARRAY_A );
 
-//		if ( ! $wpdb->result ) {
-//			Utils::log_error( $wpdb->last_error );
-//		}
+		if ( ! $wpdb->result ) {
+			Utils::log_error( $wpdb->last_error );
+		}
 
 		return $results;
 	}
@@ -317,9 +323,37 @@ class DAO {
 
 		dbDelta( $sql, true );
 
-//		if ( ! $wpdb->result ) {
-//			Utils::log_error( $wpdb->last_error );
-//		}
+		if ( ! $wpdb->result ) {
+			Utils::log_error( $wpdb->last_error );
+		}
+	}
+
+	public static function delete_auto_created_hints( string $hint_type, string $post_id ):bool {
+		global $wpdb;
+		$table = PPRH_DB_TABLE;
+		$query = array(
+			'sql'  => "DELETE FROM $table WHERE hint_type = %s AND auto_created = %d",
+			'args' => array( $hint_type, 1 )
+		);
+
+		$query = \apply_filters( 'pprh_delete_auto_created_hints', $query, $post_id );
+
+		if ( PPRH_RUNNING_UNIT_TESTS ) {
+			return true;
+		}
+
+		$wpdb->query(
+			$wpdb->prepare( $query['sql'], $query['args'] )
+		);
+
+		$success = ( is_bool( $wpdb->result ) ) ? $wpdb->result : false;
+
+		if ( ! $success ) {
+			\PPRH\Utils::log_error( $wpdb->last_error );
+			return false;
+		}
+
+		return true;
 	}
 
 }

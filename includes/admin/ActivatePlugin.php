@@ -41,8 +41,12 @@ class ActivatePlugin {
 	private function add_options() {
 		$default_prefetch_ignore_links = array( '/wp-admin', '/wp-login.php', '/cart', '/checkout', 'add-to-cart', 'logout', '#', '?', '.png', '.jpeg', '.jpg', '.gif', '.svg', '.webp' );
 
+		// general settings
 		\add_option( 'pprh_disable_wp_hints', 'true', '', 'yes' );
 		\add_option( 'pprh_html_head', 'true', '', 'yes' );
+		\add_option( 'pprh_debug_enabled', 'false' );
+
+		// prefetch
 		\add_option( 'pprh_prefetch_disableForLoggedInUsers', 'true', '', 'yes' );
 		\add_option( 'pprh_prefetch_enabled', 'false', '', 'yes' );
 		\add_option( 'pprh_prefetch_delay', '0', '', 'yes' );
@@ -51,11 +55,11 @@ class ActivatePlugin {
 		\add_option( 'pprh_prefetch_hoverDelay', '50', '', 'yes' );
 		\add_option( 'pprh_prefetch_max_prefetches', '10', '', 'yes' );
 
+		// preconnects
 		\add_option( 'pprh_preconnect_allow_unauth', 'false', '', 'yes' );
 		\add_option( 'pprh_preconnect_autoload', 'true', '', 'yes' );
 		\add_option( 'pprh_preconnect_set', 'true', '', 'yes' );
 
-		\add_option( 'pprh_debug_enabled', 'false' );
 	}
 
 	private function update_option_names() {

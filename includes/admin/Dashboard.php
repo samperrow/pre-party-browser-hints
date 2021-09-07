@@ -10,7 +10,7 @@ class Dashboard {
 
 	public function __construct() {
 		if ( ! \has_action(  'pprh_notice' ) ) {
-			\add_action( 'pprh_notice', array( $this, 'default_admin_notice' ), 10, 0 );
+			\add_filter( 'pprh_notice', array( $this, 'default_admin_notice' ), 10, 0 );
 		}
 	}
 
@@ -18,27 +18,22 @@ class Dashboard {
 		Utils::show_notice( '', true );
 	}
 
-	public function show_plugin_dashboard( $on_pprh_page ) {
-		if ( 0 === $on_pprh_page ) {
-			return;
-		}
-
+	public function show_plugin_dashboard( int $plugin_page ) {
 		$settings = new Settings();
 		$faq      = new FAQ();
+		$settings->save_user_options();
 
 		echo '<div id="pprh-poststuff" class="wrap"><h1>';
-		esc_html_e( 'Pre* Party Resource Hints', 'pprh' );
+		esc_html_e( 'Pre* Party Resource Hints', 'pre-party-browser-hints' );
 		echo '</h1>';
 		\do_action( 'pprh_notice' );
 		$this->plugin_upgrade_notice( PPRH_VERSION_NEW, PPRH_VERSION );
-		$insert_hints = new InsertHints( $on_pprh_page );
+		$insert_hints = new InsertHints( $plugin_page );
 		$this->show_admin_tabs();
-
 		$insert_hints->markup();
 		$settings->markup( true );
-		$faq->markup();
-
 		\do_action( 'pprh_load_view_classes' );
+		$faq->markup();
 
 		$this->show_footer();
 		echo '</div>';
@@ -68,8 +63,8 @@ class Dashboard {
 			return false;
 		}
 
-		$msg = 'Version ' . PPRH_VERSION_NEW . ' Upgrade Notes: 1) Fixed JSON parsing error which happened for < PHP 7.3 users. Thank you to the users who pointed it out.';
-		Utils::show_notice( $msg, true );
+        $msg = 'Version ' . PPRH_VERSION_NEW . ' Upgrade Notes: 1) Changed minimunm role capability required to use this plugin from "update_plugins" to "activate_plugins" to address a plugin compatibliity error.';
+        Utils::show_notice( $msg, true );
 		$activate_plugin = new ActivatePlugin();
 		$activate_plugin->upgrade_plugin();
 
@@ -79,7 +74,7 @@ class Dashboard {
 
 		return true;
 	}
-	
+
 
 	public function show_footer() {
 		$this->contact_author();
@@ -98,7 +93,7 @@ class Dashboard {
 			</a>
 
 			<div style="display: none; text-align: center;" id="pprhEmail">
-				<h2 style="font-size: 23px; text-align: center;"><?php esc_html_e( 'Request a New Feature or Report a Bug' ); ?></h2>
+				<h2 style="font-size: 23px; text-align: center;"><?php esc_html_e( 'Request a New Feature or Report a Bug', 'pre-party-browser-hints' ); ?></h2>
 
 				<form method="post" style="width: 350px; margin: 0 auto; text-align: center">
 					<label for="pprhEmailText">
@@ -107,7 +102,7 @@ class Dashboard {
 					<textarea name="pprh_text" id="pprhEmailText" style="height: 100px;" class="widefat" placeholder="<?php esc_attr_e( 'Help make this plugin better!' ); ?>"></textarea>
 					<label for="pprhEmailAddress"></label><input name="pprh_email" id="pprhEmailAddress" style="padding: 5px;" class="input widefat" placeholder="<?php esc_attr_e( 'Email address:' ); ?>"/>
 					<br/>
-					<input name="pprh_send_email" id="pprhSubmit" type="submit" class="button button-primary" value="<?php esc_attr_e( 'Submit', 'pprh' ); ?>" />
+					<input name="pprh_send_email" id="pprhSubmit" type="submit" class="button button-primary" value="<?php esc_attr_e( 'Submit', 'pre-party-browser-hints' ); ?>" />
 				</form>
 
 			</div>

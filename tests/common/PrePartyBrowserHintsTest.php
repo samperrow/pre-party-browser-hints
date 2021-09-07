@@ -5,14 +5,11 @@ use PHPUnit\Framework\TestCase;
 
 final class PrePartyBrowserHintsTest extends TestCase {
 
-	public $pprh;
+	public static $pprh;
 
-	/**
-	 * @before
-	 */
-	public function test_start() {
-		$this->pprh = new \PPRH\Pre_Party_Browser_Hints();
-	}
+//	public static function test_start() {
+//		self::$pprh = new \PPRH\Pre_Party_Browser_Hints();
+//	}
 
 	public function test_create_constants() {
 		global $wpdb;
@@ -34,39 +31,40 @@ final class PrePartyBrowserHintsTest extends TestCase {
 
 	public function test_load_common_files() {
 		$utils = class_exists(\PPRH\Utils::class);
-		self::assertEquals( true, $utils );
+		self::assertTrue(  $utils );
 
 		$dao = class_exists( \PPRH\DAO::class );
-		self::assertEquals( true, $dao );
+		self::assertTrue( $dao );
 
-		$create_hints = class_exists( \PPRH\CreateHints::class );
-		self::assertEquals( true, $create_hints );
+		$hint_ctrl = class_exists( \PPRH\HintController::class );
+		self::assertTrue( $hint_ctrl );
+
+		$hint_builder = class_exists( \PPRH\HintBuilder::class );
+		self::assertTrue( $hint_builder );
+
+		$activate_plugin = class_exists( \PPRH\ActivatePlugin::class );
+		self::assertTrue( $activate_plugin );
 	}
 
 	public function test_load_dashboard() {
 		$load_admin = class_exists( \PPRH\LoadAdmin::class );
-		self::assertEquals( true, $load_admin );
+		self::assertTrue( $load_admin );
 
 		$manage_options = current_user_can( 'manage_options' );
-		self::assertEquals( true, $manage_options );
+		self::assertTrue( $manage_options );
 	}
 
-	public function test_activate_plugin() {
-		$actual = $this->pprh->activate_plugin();
-
-		self::assertEquals( true, $actual );
-	}
+//	public function test_activate_plugin() {
+//		$actual = self::$pprh->activate_plugin();
+//		self::assertTrue( $actual );
+//	}
 
 	public function test_register_activation_hook() {
 		$registered = \has_filter( 'activate_pre-party-browser-hints/pre-party-browser-hints.php' );
-		self::assertEquals( true, $registered );
+		self::assertTrue( $registered );
 
 		$wp_loaded = \has_filter( 'wp_loaded' );
-		self::assertEquals( true, $wp_loaded );
+		self::assertTrue( $wp_loaded );
 	}
 
-
-//	public function test_() {
-//
-//	}
 }
