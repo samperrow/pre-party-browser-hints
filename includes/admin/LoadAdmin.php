@@ -130,23 +130,23 @@ class LoadAdmin {
 			'low'
 		);
 
-//		\add_meta_box(
-//			'pprh_preload_metabox',
-//			'Auto Preload Settings',
-//			array( $this, 'create_preload_metabox' ),
-//			PPRH_ADMIN_SCREEN,
-//			'normal',
-//			'low'
-//		);
+		\add_meta_box(
+			'pprh_preload_metabox',
+			'Auto Preload Settings',
+			array( $this, 'create_preload_metabox' ),
+			PPRH_ADMIN_SCREEN,
+			'normal',
+			'low'
+		);
 
-//		\add_meta_box(
-//			'pprh_prerender_metabox',
-//			'Auto Prerender Settings',
-//			array( $this, 'create_prerender_metabox' ),
-//			PPRH_ADMIN_SCREEN,
-//			'normal',
-//			'low'
-//		);
+		\add_meta_box(
+			'pprh_prerender_metabox',
+			'Auto Prerender Settings',
+			array( $this, 'create_prerender_metabox' ),
+			PPRH_ADMIN_SCREEN,
+			'normal',
+			'low'
+		);
 	}
 
 	public function create_preload_metabox() {

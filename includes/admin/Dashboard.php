@@ -67,7 +67,7 @@ class Dashboard {
 		}
 
         $new_version = PPRH_VERSION_NEW;
-        $msg = "Version $new_version Upgrade Notes: 1) Changed minimum role capability required to use this plugin from 'update_plugins' to 'activate_plugins' to address a plugin compatibliity error. 2) Improved JSON parsing. 3) See README for me information.";
+        $msg = "Version $new_version Upgrade Notes: 1) ";
         Utils::show_notice( $msg, true );
 		$activate_plugin = new ActivatePlugin();
 		$activate_plugin->upgrade_plugin();

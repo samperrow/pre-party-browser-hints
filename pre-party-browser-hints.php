@@ -4,7 +4,7 @@ declare(strict_types=1);
  * Plugin Name:       Pre* Party Resource Hints
  * Plugin URI:        https://wordpress.org/plugins/pre-party-browser-hints/
  * Description:       Take advantage of the browser resource hints DNS-Prefetch, Prerender, Preconnect, Prefetch, and Preload to improve page load time.
- * Version:           1.7.81
+ * Version:           1.8.0
  * Requires at least: 4.4
  * Requires PHP:      7.0.0
  * Author:            Sam Perrow
@@ -68,7 +68,7 @@ class Pre_Party_Browser_Hints {
 			$client_ajax_init = new ClientAjaxInit();
 		}
 
-//		\add_filter( 'pre_set_site_transient_update_plugins', array( $this, 'plugin_updater' ), 10, 1 );
+		\add_filter( 'pre_set_site_transient_update_plugins', array( $this, 'plugin_updater' ), 10, 1 );
 	}
 
 	private function load_common_files() {
@@ -101,7 +101,7 @@ class Pre_Party_Browser_Hints {
 		}
 
 		if ( ! defined( 'PPRH_VERSION_NEW' ) ) {
-			define( 'PPRH_VERSION_NEW', '1.7.81' );
+			define( 'PPRH_VERSION_NEW', '1.8.0' );
 		}
 
 		if ( ! defined( 'PPRH_VERSION' ) ) {
@@ -146,7 +146,7 @@ class Pre_Party_Browser_Hints {
 	private static function load_plugin_files( bool $is_admin ) {
 		if ( $is_admin ) {
 			include_once 'includes/admin/LoadAdmin.php';
-//			include_once 'includes/admin/Updater.php';
+			include_once 'includes/admin/Updater.php';
 			include_once 'includes/admin/Dashboard.php';
 			include_once 'includes/admin/views/SettingsView.php';
 			include_once 'includes/admin/views/SettingsSave.php';
@@ -162,14 +162,14 @@ class Pre_Party_Browser_Hints {
 		}
 	}
 
-//	public function plugin_updater( $transient ) {
-//		if ( empty( $transient->checked ) ) {
-//			return $transient;
-//		}
-//
-//		include_once 'includes/admin/Updater.php';
-//		$updater = new Updater();
-//		return $updater->init( $transient );
-//	}
+	public function plugin_updater( $transient ) {
+		if ( empty( $transient->checked ) ) {
+			return $transient;
+		}
+
+		include_once 'includes/admin/Updater.php';
+		$updater = new Updater();
+		return $updater->init( $transient );
+	}
 
 }
