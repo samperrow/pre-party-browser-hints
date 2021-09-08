@@ -22,6 +22,8 @@ declare(strict_types=1);
 
 namespace PPRH;
 
+use PPRH\Utils\Utils;
+
 // prevent direct file access.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -32,6 +34,17 @@ if ( ! defined( 'ABSPATH' ) ) {
 	$pprh_load->init();
 }, 10, 0 );
 
+function pprh_activate_plugin() {
+	$pprh_load = new Pre_Party_Browser_Hints();
+	include_once 'includes/admin/ActivatePlugin.php';
+	$pprh_load->create_constants();
+	$activate_plugin = new ActivatePlugin();
+	$activate_plugin->activate_plugin();
+	return $activate_plugin->plugin_activated;
+}
+\register_activation_hook( __FILE__, '\PPRH\pprh_activate_plugin' );
+\add_action( 'wpmu_new_blog', '\PPRH\pprh_activate_plugin' );
+
 class Pre_Party_Browser_Hints {
 
 	private $plugin_page;
@@ -40,13 +53,10 @@ class Pre_Party_Browser_Hints {
 	protected $client_data;
 
 	public function __construct() {
-		\register_activation_hook( __FILE__, array( $this, 'activate_plugin' ) );
-		\add_action( 'wpmu_new_blog', array( $this, 'activate_plugin' ) );
-//		\add_filter( 'pre_set_site_transient_update_plugins', array( $this, 'plugin_updater' ), 10, 1 );
+		$this->load_common_files();
 	}
 
 	public function init() {
-		$this->load_common_files();
 		$this->create_constants();
 		$this->load_plugin_main();
 
@@ -57,16 +67,19 @@ class Pre_Party_Browser_Hints {
 			include_once 'includes/client/ClientAjaxInit.php';
 			$client_ajax_init = new ClientAjaxInit();
 		}
+
+//		\add_filter( 'pre_set_site_transient_update_plugins', array( $this, 'plugin_updater' ), 10, 1 );
 	}
 
 	private function load_common_files() {
-		include_once 'includes/Utils.php';
-		include_once 'includes/HintController.php';
-		include_once 'includes/HintBuilder.php';
-		include_once 'includes/admin/ActivatePlugin.php';
+		include_once 'includes/common/Compatibility.php';
+		include_once 'includes/common/Utils.php';
+		include_once 'includes/common/Sanitize.php';
+		include_once 'includes/common/HintController.php';
+		include_once 'includes/common/HintBuilder.php';
 	}
 
-	private function create_constants() {
+	public function create_constants() {
 		global $wpdb;
 		$table          = $wpdb->prefix . 'pprh_table';
 		$postmeta_table = $wpdb->prefix . 'postmeta';
@@ -98,9 +111,8 @@ class Pre_Party_Browser_Hints {
 
 	public function load_plugin_main() {
 		self::$preconnect_enabled = ('true' === \get_option('pprh_preconnect_autoload') || PPRH_RUNNING_UNIT_TESTS);
-		$is_admin = \is_admin();
 
-		if ( $is_admin ) {
+		if ( \is_admin() ) {
 			$this->plugin_page = Utils::get_plugin_page( \wp_doing_ajax(), '' );
 			\add_action( 'wp_loaded', array( $this, 'load_main_admin' ) );
 		} else {
@@ -119,7 +131,6 @@ class Pre_Party_Browser_Hints {
 	}
 
 	public function load_main_admin() {
-//		\load_plugin_textdomain( 'pre-party-browser-hints', false, '/pre-party-browser-hints/languages' );
 		self::load_plugin_files( true );
 		$load_admin = new LoadAdmin();
 		$load_admin->init( $this->plugin_page );
@@ -137,27 +148,18 @@ class Pre_Party_Browser_Hints {
 			include_once 'includes/admin/LoadAdmin.php';
 //			include_once 'includes/admin/Updater.php';
 			include_once 'includes/admin/Dashboard.php';
-			include_once 'includes/admin/views/Settings.php';
-			include_once 'includes/admin/views/SettingsSave.php';
 			include_once 'includes/admin/views/SettingsView.php';
+			include_once 'includes/admin/views/SettingsSave.php';
 			include_once 'includes/admin/views/FAQ.php';
 			include_once 'includes/admin/NewHint.php';
 			include_once 'includes/admin/DisplayHints.php';
 			include_once 'includes/admin/AjaxOps.php';
 			include_once 'includes/admin/views/InsertHints.php';
+			include_once 'includes/admin/ActivatePlugin.php';
 		} else {
 			include_once 'includes/client/LoadClient.php';
 			include_once 'includes/client/SendHints.php';
 		}
-	}
-
-
-	public function activate_plugin() {
-		$this->load_common_files();
-		$this->create_constants();
-		$activate_plugin = new ActivatePlugin();
-		$activate_plugin->activate_plugin();
-		return $activate_plugin->plugin_activated;
 	}
 
 //	public function plugin_updater( $transient ) {

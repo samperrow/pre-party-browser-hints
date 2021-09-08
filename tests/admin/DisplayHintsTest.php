@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+
 use PHPUnit\Framework\TestCase;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -7,6 +8,21 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 final class DisplayHintsTest extends TestCase {
+
+	public static $display_hints;
+
+	/**
+	 * @before Class
+	 */
+	public function init() {
+		$this->setOutputCallback(function() {});
+	}
+
+	public function test_begin() {
+		$this->setOutputCallback(function() {});
+		$GLOBALS['hook_suffix'] = 'toplevel_page_pprh-plugin-settings';
+		self::$display_hints = new \PPRH\DisplayHints( false, 0 );
+	}
 
 	public function test_on_plugin_page_and_global_hint() {
 		$args = array(
@@ -44,6 +60,21 @@ final class DisplayHintsTest extends TestCase {
 			$actual_3 = $wp_list_table->on_plugin_page_and_global_hint( array('post_id' => ''), 0 );
 			self::assertFalse( $actual_3 );
 		}
+	}
+
+
+	public function test_ajax_response() {
+		// not doing ajax.
+		$display_hints_1 = new \PPRH\DisplayHints( false, 0 );
+		$db_result_1 = \PPRH\DAO::create_db_result( true, 0, 0, null );
+		$actual_1 = $display_hints_1->ajax_response( $db_result_1 );
+		self::assertCount( 7, $actual_1 );
+
+		// doing ajax.
+		$display_hints_2 = new \PPRH\DisplayHints( true, 0 );
+		$db_result_2 = \PPRH\DAO::create_db_result( true, 0, 0, null );
+		$actual_2 = $display_hints_2->ajax_response( $db_result_2 );
+		self::assertCount( 7, $actual_2 );
 	}
 
 }

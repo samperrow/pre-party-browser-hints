@@ -2,6 +2,8 @@
 
 namespace PPRH;
 
+use PPRH\Utils\Utils;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -30,7 +32,7 @@ class Updater {
 	public function init( $transient ) {
 		$plugin_update = $this->get_plugin_update( $transient );
 
-		if ( \PPRH\Utils::isArrayAndNotEmpty( $plugin_update ) ) {
+		if ( Utils::isArrayAndNotEmpty( $plugin_update ) ) {
 			$new_transient = $this->update_transient( $transient, $plugin_update );
 
 			if ( is_object( $new_transient ) ) {
@@ -46,7 +48,7 @@ class Updater {
 		if ( false === $this->pprh_transient ) {
 			$plugin_update = $this->fetch_plugin_update();
 
-			if ( is_object( $transient ) && isset( $transient->response ) && \PPRH\Utils::isArrayAndNotEmpty( $plugin_update ) ) {
+			if ( is_object( $transient ) && isset( $transient->response ) && Utils::isArrayAndNotEmpty( $plugin_update ) ) {
 				\set_site_transient( $this->transient_name, $plugin_update, HOUR_IN_SECONDS * 6 );
 				return $plugin_update;
 			}
@@ -68,10 +70,10 @@ class Updater {
 		try {
 			$response = \wp_remote_get( $this->api_endpoint, $args );
 		} catch ( \Exception $exception ) {
-			\PPRH\Utils::log_error( $exception );
+			Utils::log_error( $exception );
 		}
 
-		if ( \PPRH\Utils::isArrayAndNotEmpty( $response ) ) {
+		if ( Utils::isArrayAndNotEmpty( $response ) ) {
 			return Utils::get_api_response_body( $response, $error_msg );
 		}
 

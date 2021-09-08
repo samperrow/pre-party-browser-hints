@@ -2,6 +2,8 @@
 
 namespace PPRH;
 
+use PPRH\Utils\Utils;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -19,9 +21,9 @@ class Dashboard {
 	}
 
 	public function show_plugin_dashboard( int $plugin_page ) {
-		$settings = new Settings();
-		$faq      = new FAQ();
-		$settings->save_user_options();
+		$faq           = new FAQ();
+		$settings_save = new SettingsSave();
+		$settings_save->save_user_options();
 
 		echo '<div id="pprh-poststuff" class="wrap"><h1>';
 		esc_html_e( 'Pre* Party Resource Hints', 'pre-party-browser-hints' );
@@ -31,13 +33,14 @@ class Dashboard {
 		$insert_hints = new InsertHints( $plugin_page );
 		$this->show_admin_tabs();
 		$insert_hints->markup();
-		$settings->markup( true );
+		$settings_save->markup( true );
 		\do_action( 'pprh_load_view_classes' );
 		$faq->markup();
 
 		$this->show_footer();
 		echo '</div>';
 		unset( $insert_hints, $settings, $faq );
+        return true;
 	}
 
 
@@ -63,7 +66,8 @@ class Dashboard {
 			return false;
 		}
 
-        $msg = 'Version ' . PPRH_VERSION_NEW . ' Upgrade Notes: 1) Changed minimunm role capability required to use this plugin from "update_plugins" to "activate_plugins" to address a plugin compatibliity error.';
+        $new_version = PPRH_VERSION_NEW;
+        $msg = "Version $new_version Upgrade Notes: 1) Changed minimum role capability required to use this plugin from 'update_plugins' to 'activate_plugins' to address a plugin compatibliity error. 2) Improved JSON parsing. 3) See README for me information.";
         Utils::show_notice( $msg, true );
 		$activate_plugin = new ActivatePlugin();
 		$activate_plugin->upgrade_plugin();

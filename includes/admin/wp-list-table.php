@@ -156,8 +156,8 @@ class WP_List_Table {
 			)
 		);
 
-		$this->screen = convert_to_screen( $args['screen'] );
-		$this->on_pprh_post_page = $args['plugin_page'];
+		$this->screen = \convert_to_screen( $args['screen'] );
+		$this->on_pprh_post_page = $args['plugin_page'] ?? 1;
 
 		\add_filter( "manage_{$this->screen->id}_columns", array( $this, 'get_columns' ), 0 );
 
@@ -298,7 +298,7 @@ class WP_List_Table {
 		}
 
 		// Redirect if page number is invalid and headers are not already sent.
-		if ( $args['total_pages'] > 0 && ! headers_sent() && ! wp_doing_ajax() && $this->get_pagenum() > $args['total_pages'] ) {
+		if ( $args['total_pages'] > 0 && ! headers_sent() && ! $this->_args['doing_ajax'] && $this->get_pagenum() > $args['total_pages'] ) {
 			wp_redirect( add_query_arg( 'paged', $args['total_pages'] ) );
 			exit;
 		}
@@ -508,7 +508,7 @@ class WP_List_Table {
 		return false;
 	}
 
-	/** 
+	/**
 	 * Generate row actions div
 	 *
 	 * @since 3.1.0
@@ -801,7 +801,7 @@ class WP_List_Table {
 		$current              = $this->get_pagenum();
 		$removable_query_args = wp_removable_query_args();
 
-        $current_url = ( wp_doing_ajax() ) ? esc_url_raw( Utils::get_referer() ) : menu_page_url( PPRH_MENU_SLUG, false );
+        $current_url = ( $this->_args['doing_ajax'] ) ? esc_url_raw( \PPRH\Utils\Utils::get_referer() ) : menu_page_url( PPRH_MENU_SLUG, false );
 		$current_url = remove_query_arg( $removable_query_args, $current_url );
 
 		$page_links = array();
@@ -892,7 +892,7 @@ class WP_List_Table {
 
 		if ( $total_pages ) {
 			$page_class = $total_pages < 1 ? ' one-page' : '';
-		} 
+		}
 		else {
 			$page_class = '';
 		}
@@ -1164,7 +1164,7 @@ class WP_List_Table {
 //			return;
 //		}
 
-		wp_nonce_field( 'ajax-custom-list-nonce', '_ajax_custom_list_nonce' );
+//		\wp_nonce_field( 'ajax-custom-list-nonce', '_ajax_custom_list_nonce' );
 		$singular = $this->_args['singular'];
 		$this->display_tablenav( 'top' );
 		$this->screen->render_screen_reader_content( 'heading_list' );

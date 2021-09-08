@@ -2,6 +2,9 @@
 
 namespace PPRH;
 
+use PPRH\Utils\Utils;
+use PPRH\Utils\Sanitize;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -100,22 +103,22 @@ class SendHints {
 		$attrs = '';
 
 		if ( ! empty( $hint['as_attr'] ) ) {
-			$attr   = Utils::clean_hint_attr( $hint['as_attr'] );
+			$attr   = Sanitize::clean_hint_attr( $hint['as_attr'] );
 			$attrs .= $this->add_attr( 'as', $attr );
 		}
 
 		if ( ! empty( $hint['type_attr'] ) ) {
-			$attr   = Utils::clean_hint_attr( $hint['type_attr'] );
+			$attr   = Sanitize::clean_hint_attr( $hint['type_attr'] );
 			$attrs .= $this->add_attr( 'type', $attr );
 		}
 
 		if ( ! empty( $hint['media'] ) ) {
-			$attr   = Utils::clean_url( $hint['media'] );
+			$attr   = Sanitize::clean_url( $hint['media'] );
 			$attrs .= $this->add_attr( 'media', $attr );
 		}
 
 		if ( ! empty( $hint['crossorigin'] ) ) {
-			$attr   = Utils::clean_hint_attr( $hint['crossorigin'] );
+			$attr   = Sanitize::clean_hint_attr( $hint['crossorigin'] );
 			$attrs .= $this->add_attr( 'crossorigin', $attr );
 		}
 

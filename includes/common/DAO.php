@@ -2,6 +2,8 @@
 
 namespace PPRH;
 
+use PPRH\Utils\Utils;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -18,6 +20,7 @@ class DAO {
 
 	public static function create_db_result( bool $success, int $op_code, int $success_code, array $new_hint = null ) {
 		$msg = self::get_msg( $success, $op_code, $success_code );
+		$msg .= ' If you have an active caching system, it is recommended that you clear your cache if you are having difficulty viewing these changes.';
 
 		return (object) array(
 			'new_hint'  => $new_hint ?? null,
@@ -349,7 +352,7 @@ class DAO {
 		$success = ( is_bool( $wpdb->result ) ) ? $wpdb->result : false;
 
 		if ( ! $success ) {
-			\PPRH\Utils::log_error( $wpdb->last_error );
+			Utils::log_error( $wpdb->last_error );
 			return false;
 		}
 
