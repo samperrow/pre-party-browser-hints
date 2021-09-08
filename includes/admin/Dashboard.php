@@ -30,13 +30,12 @@ class Dashboard {
 		echo '</h1>';
 		\do_action( 'pprh_notice' );
 		$this->plugin_upgrade_notice( PPRH_VERSION_NEW, PPRH_VERSION );
-		$insert_hints = new InsertHints( $plugin_page );
 		$this->show_admin_tabs();
+		$insert_hints = new InsertHints( $plugin_page );
 		$insert_hints->markup();
 		$settings_save->markup( true );
-		\do_action( 'pprh_load_view_classes' );
+		\do_action( 'pprh_load_license_view' );
 		$faq->markup();
-
 		$this->show_footer();
 		echo '</div>';
 		unset( $insert_hints, $settings, $faq );
