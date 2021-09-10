@@ -83,7 +83,7 @@ class LoadAdmin {
 
 	// Register and call the CSS and JS we need only on the needed page.
 	public function register_admin_files( string $hook ) {
-		if ( str_contains( PPRH_ADMIN_SCREEN, $hook )  ) {
+//		if ( str_contains( PPRH_ADMIN_SCREEN, $hook ) ) {
 
 			$ajax_data = array(
 				'nonce'     => wp_create_nonce( 'pprh_table_nonce' ),
@@ -97,7 +97,7 @@ class LoadAdmin {
 			\wp_enqueue_style( 'pprh_styles_css' );
 			\wp_enqueue_script( 'pprh_admin_js' );
 			\wp_enqueue_script( 'post' );			// needed for metaboxes
-		}
+//		}
 	}
 
 	public function add_settings_meta_boxes() {

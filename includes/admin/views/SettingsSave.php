@@ -15,7 +15,6 @@ class SettingsSave extends SettingsView {
 		if ( isset( $_POST['pprh_save_options'] ) || isset( $_POST['pprh_preconnect_set'] ) ) {
 			\check_admin_referer( 'pprh_save_admin_options', 'pprh_admin_options_nonce' );
 			$this->save_options( $_POST );
-			\do_action( 'pprh_sc_save_settings' );
 		}
 	}
 

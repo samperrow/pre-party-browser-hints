@@ -2,7 +2,7 @@
 
 namespace PPRH\Utils;
 
-use PPRH\Utils\Sanitize;
+//use PPRH\Utils\Sanitize;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;

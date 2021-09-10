@@ -18,7 +18,48 @@ class DAO {
 		return self::$table;
 	}
 
-	public static function create_db_result( bool $success, int $op_code, int $success_code, array $new_hint = null ) {
+	public static function create_db_result2( bool $success, int $op_code, string $hint_type, array $new_hint = null ):\stdClass {
+		$msg = self::get_msg2( $success, $op_code, $hint_type );
+		$msg .= ' If you have an active caching system, it is recommended that you clear your cache if you are having difficulty viewing these changes.';
+
+		return (object) array(
+			'new_hint'  => $new_hint ?? null,
+			'db_result' => array(
+				'msg'    => $msg,
+				'status' => $success,
+			)
+		);
+	}
+
+	private static function get_msg2( bool $success, int $op_code, string $hint_type ):string {
+		$actions = array(
+			0 => array( 'created', 'create' ),
+			1 => array( 'updated', 'update' ),
+			2 => array( 'deleted', 'delete' ),
+			3 => array( 'enabled', 'enable' ),
+			4 => array( 'disabled', 'disable' )
+		);
+
+		if ( $success ) {
+			$action = $actions[$op_code][0];
+			$msg = "$hint_type resource hints were $action successfully for this post.";
+		} else {
+			$action = $actions[$op_code][1];
+			$msg = "Failed to $action resource hints. Please refresh your browser and try again, or contact support to report an error.";
+		}
+
+
+
+		$msg .= ' If you have an active caching system, it is recommended that you clear your cache if you are having difficulty viewing these changes.';
+		return $msg;
+	}
+
+
+
+
+
+
+	public static function create_db_result( bool $success, int $op_code, int $success_code, array $new_hint = null ):\stdClass {
 		$msg = self::get_msg( $success, $op_code, $success_code );
 		$msg .= ' If you have an active caching system, it is recommended that you clear your cache if you are having difficulty viewing these changes.';
 
