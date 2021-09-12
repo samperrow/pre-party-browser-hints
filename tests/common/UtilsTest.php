@@ -30,6 +30,15 @@ final class UtilsTest extends TestCase {
 		self::assertTrue( $actual_6 );
 	}
 
+	public function test_isObjectAndNotEmpty() {
+		$actual_1 = Utils::isObjectAndNotEmpty( (object) array() );
+		self::assertFalse( $actual_1 );
+
+		$obj_2 = (object) array( 'metadata' => (object) array() );
+		$actual_2 = Utils::isObjectAndNotEmpty( $obj_2->metadata );
+		self::assertFalse( $actual_2 );
+	}
+
 	public function test_does_option_match() {
 		$selected = 'selected="selected"';
 		$option_name = 'pprh_test_option';

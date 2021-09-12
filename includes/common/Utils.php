@@ -44,6 +44,10 @@ class Utils {
 		return ( is_array( $arr ) && ! empty( $arr ) );
 	}
 
+	public static function isObjectAndNotEmpty( $obj ):bool {
+		return ( isset( $obj ) && ( $obj != new \stdClass() ) );
+	}
+
 	public static function get_current_datetime( string $added_time = '' ):string {
 		$offset          = new \DateTimeZone( 'America/Denver' );
 		$datetime        = new \DateTime( 'now', $offset );
