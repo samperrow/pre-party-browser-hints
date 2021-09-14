@@ -332,6 +332,11 @@ final class UtilsTest extends TestCase {
 		$actual_2 = Utils::get_api_response_body( $test_2, 'test' );
 		self::assertCount( 21, $actual_2 );
 
+		$json_3 = '{"headers":{},"body":"{\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"Quota exceeded for quota metric \'Queries\' and limit \'Queries per minute\' of service \'pagespeedonline.googleapis.com\' for consumer \'project_number:583797351490\'.\",\n    \"errors\": [\n      {\n        \"message\": \"Quota exceeded for quota metric \'Queries\' and limit \'Queries per minute\' of service \'pagespeedonline.googleapis.com\' for consumer \'project_number:583797351490\'.\",\n        \"domain\": \"global\",\n        \"reason\": \"rateLimitExceeded\"\n      }\n    ],\n    \"status\": \"RESOURCE_EXHAUSTED\"\n  }\n}\n","response":{"code":429,"message":"Too Many Requests"},"cookies":[],"filename":null,"http_response":{"data":null,"headers":null,"status":null}}';
+		$test_3 = Utils::json_to_array( $json_3 );
+		$actual_3 = Utils::get_api_response_body( $test_3, 'test' );
+		self::assertCount( 4, $actual_3['error'] );
+
 	}
 
 //	public function test_log_error() {

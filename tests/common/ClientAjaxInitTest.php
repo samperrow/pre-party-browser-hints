@@ -34,7 +34,7 @@ class ClientAjaxInitTest extends TestCase {
 
 		\update_option( 'pprh_preconnect_allow_unauth', 'false' );
 		$response_1 = \wp_remote_post( $js_object['admin_url'], $args );
-		$response_body_1  = \PPRH\Utils\Utils::get_api_response_body( $response_1, 'error' );
+		$response_body_1 = \PPRH\Utils\Utils::get_api_response_body( $response_1, 'error' );
 		self::assertEmpty( $response_body_1 );
 
 

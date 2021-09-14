@@ -2,6 +2,8 @@
 
 namespace PPRH;
 
+use \PPRH\Utils\Utils;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }

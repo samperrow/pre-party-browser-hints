@@ -20,6 +20,10 @@ class Utils {
 		return PPRH_RUNNING_UNIT_TESTS || \update_option( $option, $value, $autoload );
 	}
 
+	public static function update_post_meta( int $post_id, string $metakey, $metadata ):bool {
+		return PPRH_RUNNING_UNIT_TESTS || \update_post_meta( $post_id, $metakey, $metadata );
+	}
+
 	public static function json_to_array( string $json ) {
 		$result = json_decode( $json, true );
 
@@ -204,19 +208,17 @@ class Utils {
 	}
 
 
-	public static function get_api_response_body( array $response, string $error_msg ):array {
+	public static function get_api_response_body( $response, string $error_msg ):array {
 		$response_body = array();
 
-		if (\is_wp_error($response)) {
-			self::log_error($response);
-		} elseif (isset($response['response']) && 200 === \wp_remote_retrieve_response_code($response)) {
-			$body = \wp_remote_retrieve_body($response);
-			$response_body = self::json_to_array($body);
+		if ( \is_wp_error( $response ) || ( isset( $response['body'] ) && empty( $response['body'] ) ) ) {
+			self::log_error( $error_msg );
+			return $response_body;
 		}
 
-		if (!self::isArrayAndNotEmpty($response_body)) {
-			self::log_error($error_msg);
-			$response_body = array();
+		if ( isset( $response['body'] ) ) {
+			$body          = \wp_remote_retrieve_body( $response );
+			$response_body = self::json_to_array( $body );
 		}
 
 		return $response_body;
