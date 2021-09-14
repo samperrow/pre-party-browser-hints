@@ -128,13 +128,11 @@ final class UtilsTest extends TestCase {
 
 
 
-//	public function test_get_hints_free() {
-//		$actual_1 = DAO::get_admin_hints();
-//		self::assertIsArray( $actual_1 );
-//
-//		$actual_2 = DAO::get_client_hints( array() );
-//		self::assertIsArray( $actual_2 );
-//	}
+	public function test_get_current_date() {
+		$expected_1 = date( 'Y-m-d H:i:s', strtotime( '-6 hours' ) );
+		$actual_1 = Utils::get_current_datetime( '-6 hours' );
+		self::assertSame( $expected_1, $actual_1 );
+	}
 
 	public function test_get_browser_name() {
 		$user_agent_1 = '';

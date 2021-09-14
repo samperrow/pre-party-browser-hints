@@ -2,11 +2,14 @@
 declare(strict_types=1);
 use PHPUnit\Framework\TestCase;
 
-class SettingsSaveTest extends TestCase{
+class SettingsSaveTest extends TestCase {
 
 	public static $settings_save;
 
-	public function test_start() {
+	/**
+	 * @before Class
+	 */
+	public function init() {
 		self::$settings_save = new \PPRH\SettingsSave();
 	}
 

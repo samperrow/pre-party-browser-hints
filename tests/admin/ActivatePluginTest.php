@@ -7,7 +7,10 @@ class ActivatePluginTest extends TestCase {
 
 	public static $activate_plugin;
 
-	public function test_start() {
+	/**
+	 * @before Class
+	 */
+	public function init() {
 		self::$activate_plugin = new \PPRH\ActivatePlugin();
 	}
 

@@ -12,7 +12,10 @@ class HintBuilderTest extends TestCase {
 
 	public static $hint_builder;
 
-	public function test_start() {
+	/**
+	 * @before Class
+	 */
+	public function init() {
 		self::$hint_builder = new \PPRH\HintBuilder();
 	}
 

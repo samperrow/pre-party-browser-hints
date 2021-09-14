@@ -6,7 +6,10 @@ class ClientAjaxInitTest extends TestCase {
 
 	public static $client_ajax_init;
 
-	public function test_start() {
+	/**
+	 * @before Class
+	 */
+	public function init() {
 		self::$client_ajax_init = new \PPRH\ClientAjaxInit();
 	}
 

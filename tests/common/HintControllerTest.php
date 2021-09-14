@@ -12,7 +12,10 @@ class HintControllerTest extends TestCase {
 
 	public static $hint_ctrl;
 
-	public function test_start() {
+	/**
+	 * @before Class
+	 */
+	public function init() {
 		self::$hint_ctrl = new \PPRH\HintController();
 	}
 

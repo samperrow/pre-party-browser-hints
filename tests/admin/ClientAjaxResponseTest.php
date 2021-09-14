@@ -13,7 +13,10 @@ class ClientAjaxResponseTest extends TestCase {
 	public static $hint_type;
 	public static $client_ajax_response;
 
-	public function test_start() {
+	/**
+	 * @before Class
+	 */
+	public function init() {
 		self::$hint_type = 'preconnect';
 		self::$client_ajax_response = new \PPRH\ClientAjaxResponse();
 	}

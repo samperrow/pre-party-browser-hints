@@ -7,7 +7,10 @@ class SendHintsTest extends TestCase {
 
 	public static $send_hints;
 
-	public function test_start() {
+	/**
+	 * @before Class
+	 */
+	public function init() {
 		self::$send_hints = new \PPRH\SendHints();
 	}
 

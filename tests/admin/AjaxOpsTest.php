@@ -12,7 +12,10 @@ final class AjaxOpsTest extends TestCase {
 
 	public static $ajax_ops;
 
-	public function test_start() {
+	/**
+	 * @before Class
+	 */
+	public function init() {
 		self::$ajax_ops = new \PPRH\AjaxOps( 2 );
 	}
 

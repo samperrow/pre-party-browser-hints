@@ -7,13 +7,10 @@ class SettingsViewTest extends TestCase {
 	public static $settings_view;
 
 	/**
-	 * @before
+	 * @before Class
 	 */
 	public function init() {
 		$this->setOutputCallback(function() {});
-	}
-
-	public function test_start() {
 		self::$settings_view = new \PPRH\SettingsView();
 	}
 

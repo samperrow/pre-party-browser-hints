@@ -49,15 +49,15 @@ class Utils {
 	}
 
 	public static function isObjectAndNotEmpty( $obj ):bool {
-		return ( isset( $obj ) && ( $obj != new \stdClass() ) );
+		return ( isset( $obj ) && ( ! is_object( $obj ) ) );
 	}
 
 	public static function get_current_datetime( string $added_time = '' ):string {
-		$offset          = new \DateTimeZone( 'America/Denver' );
-		$datetime        = new \DateTime( 'now', $offset );
-		$timezone_offset = (string) ( $datetime->getOffset() / 3600 ) . ' hours';
-		$offset          = ( empty( $added_time ) ? $timezone_offset : $added_time );
-		return date( 'Y-m-d H:i:s', strtotime( $offset ) );
+//		$offset          = new \DateTimeZone( 'America/Denver' );
+//		$datetime        = new \DateTime( 'now', $offset );
+//		$timezone_offset = (string) ( $datetime->getOffset() / 3600 ) . ' hours';
+//		$offset          = ( empty( $added_time ) ? $timezone_offset : $added_time );
+		return date( 'Y-m-d H:i:s', strtotime( $added_time ) );
 	}
 
 	public static function array_into_csv( $hint_ids ) {
