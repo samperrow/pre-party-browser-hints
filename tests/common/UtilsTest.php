@@ -39,6 +39,12 @@ final class UtilsTest extends TestCase {
 		self::assertFalse( $actual_2 );
 	}
 
+	public function test_get_current_datetime() {
+		$today = date( 'Y-m-d H:i:s', strtotime( '-6 hours' ) );
+		$actual_1 = Utils::get_current_datetime();
+		self::assertSame( $today, $actual_1 );
+	}
+
 	public function test_does_option_match() {
 		$selected = 'selected="selected"';
 		$option_name = 'pprh_test_option';

@@ -52,11 +52,7 @@ class Utils {
 		return ( isset( $obj ) && ( ! is_object( $obj ) ) );
 	}
 
-	public static function get_current_datetime( string $added_time = '' ):string {
-//		$offset          = new \DateTimeZone( 'America/Denver' );
-//		$datetime        = new \DateTime( 'now', $offset );
-//		$timezone_offset = (string) ( $datetime->getOffset() / 3600 ) . ' hours';
-//		$offset          = ( empty( $added_time ) ? $timezone_offset : $added_time );
+	public static function get_current_datetime( string $added_time = '-6 hours' ):string {
 		return date( 'Y-m-d H:i:s', strtotime( $added_time ) );
 	}
 
