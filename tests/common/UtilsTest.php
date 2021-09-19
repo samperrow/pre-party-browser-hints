@@ -343,9 +343,21 @@ final class UtilsTest extends TestCase {
 
 	}
 
-//	public function test_log_error() {
-//		$actual_1 = Utils::log_error( 'tester' );
-//		self::assertTrue( $actual_1 );
-//	}
+	public function test_get_file_type() {
+		$actual_1 = Utils::get_file_type( 'https://asdf.com/adsf/sdflkasjfd/script.js?ver=23626262' );
+		self::assertSame( '.js', $actual_1 );
+
+		$actual_2 = Utils::get_file_type( 'https://asdf.com/adsf/sdflkasjfd/image.jpg' );
+		self::assertSame( '.jpg', $actual_2 );
+
+		$actual_3 = Utils::get_file_type( 'https://fonts.gstatic.com/s/raleway/v14/1Ptrg8zYS_SKggPNwK4vWqZPANqczVs.woff2' );
+		self::assertSame( '.woff2', $actual_3 );
+
+		$actual_4 = Utils::get_file_type( 'https://sphacks.local/wp-content/uploads/2021/04/cropped-cropped-fish-32x32.png' );
+		self::assertSame( '.png', $actual_4 );
+
+		$actual_5 = Utils::get_file_type( 'https://fonts.googleapis.com/css?family=Lato:300,300i,700,700i,900,400%7CPacifico:400&subset=latin,latin-ext&display=auto' );
+		self::assertSame( '', $actual_5 );
+	}
 
 }

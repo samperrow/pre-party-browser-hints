@@ -29,7 +29,7 @@ class HintBuilder {
 			return array();
 		}
 
-		$file_type    = $this->get_file_type( $url );
+		$file_type    = Utils::get_file_type( $url );
 		$as_attr      = $raw_hint['as_attr'] ?? '';
 		$media_attr   = $raw_hint['media'] ?? '';
 		$auto_created = $raw_hint['auto_created'] ?? 0;
@@ -45,7 +45,7 @@ class HintBuilder {
 		return apply_filters( 'pprh_append_hint', $new_hint, $raw_hint );
 	}
 
-	public function get_hint_type( string $hint_type ) {
+	private function get_hint_type( string $hint_type ) {
 		$hint_type = Sanitize::clean_hint_type( $hint_type );
 		$valid_hints = array( 'dns-prefetch', 'prefetch', 'prerender', 'preconnect', 'preload' );
 
@@ -56,7 +56,7 @@ class HintBuilder {
 		return $hint_type;
 	}
 
-	public function get_url( string $url, string $hint_type ):string {
+	private function get_url( string $url, string $hint_type ):string {
 		$url = Sanitize::clean_url( $url );
 
 		if ( preg_match( '/(dns-prefetch|preconnect)/', $hint_type ) ) {
@@ -82,17 +82,9 @@ class HintBuilder {
 		return $domain;
 	}
 
-	public function get_file_type( string $url ):string {
-		$basename = pathinfo( $url )['basename'];
 
-		if ( str_contains( $basename, '?' ) ) {
-			$basename = explode( '?', $basename )[0];
-		}
 
-		return strrchr( $basename, '.' );
-	}
-
-	public function set_crossorigin( array $hint, string $file_type ) {
+	private function set_crossorigin( array $hint, string $file_type ) {
 		$match = ( 0 < preg_match( '/(.woff|.woff2|.ttf|.eot)/', $file_type ) );
 		$match_2 = ( 0 < preg_match( '/fonts.(googleapis|gstatic).com/i', $hint['url'] ) );
 
@@ -103,11 +95,11 @@ class HintBuilder {
 		return '';
 	}
 
-	public function set_as_attr( string $as_attr, string $file_type ) {
+	private function set_as_attr( string $as_attr, string $file_type ) {
 		return ( ! empty( $as_attr ) ) ? Sanitize::clean_hint_attr( $as_attr ) : $this->get_file_type_mime( $this->file_mime_types, $file_type, 'as' );
 	}
 
-	public function set_mime_type_attr( array $hint, string $file_type ) {
+	private function set_mime_type_attr( array $hint, string $file_type ) {
 		if ( isset( $hint['type_attr'] ) && ! empty( $hint['type_attr'] ) ) {
 			$mime_type = Sanitize::clean_hint_attr( $hint['type_attr'] );
 		} else {
@@ -126,7 +118,7 @@ class HintBuilder {
 		return '';
 	}
 
-	public function set_file_mime_types():array {
+	private function set_file_mime_types():array {
 		$types = array(
 			array( 'fileType' => '.epub',   'as' => '',         'mimeType' => 'application/epub+zip' ),
 			array( 'fileType' => '.json',   'as' => '',         'mimeType' => 'application/json' ),

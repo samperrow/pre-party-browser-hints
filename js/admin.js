@@ -308,7 +308,7 @@
 
 		setTimeout(function() {
 			adminNoticeElem.classList.remove('active');
-		}, 10000);
+		}, 15000);
 	}
 
 	// xhr object

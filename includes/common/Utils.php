@@ -244,5 +244,15 @@ class Utils {
 		return $hint;
 	}
 
+	public static function get_file_type( string $url ):string {
+		$basename = pathinfo( $url )['basename'];
+
+		if ( str_contains( $basename, '?' ) ) {
+			$basename = explode( '?', $basename )[0];
+		}
+
+		return strrchr( $basename, '.' );
+	}
+
 }
 
