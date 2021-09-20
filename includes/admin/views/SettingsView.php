@@ -94,7 +94,7 @@ class SettingsView {
 	}
 
 	public function load_reset_settings() {
-		$result       = \apply_filters( 'pprh_display_preconnect_markup', array() );
+		$result       = \apply_filters( 'pprh_load_pro_metabox', 'preconnect' );
 		$allow_unauth = Utils::does_option_match( 'pprh_preconnect_allow_unauth', 'true', 'checked' );
 
 		if ( empty( $result ) ) { ?>
