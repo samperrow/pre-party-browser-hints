@@ -90,24 +90,23 @@ class Dashboard {
 		?>
 
 		<div class="text-center">
-			<a style="margin: 20px 0;" href="#TB_inline?width=500&amp;height=300&amp;inlineId=pprhEmail" class="thickbox button button-primary">
+			<a style="margin: 20px 0;" href="#TB_inline?width=500&amp;height=300&amp;inlineId=pprhEmail" title="Request a New Feature or Report a Bug" class="thickbox button button-primary">
 				<span style="margin: 3px 5px 0 0;" class="dashicons dashicons-email"></span>
 				Contact Support
 			</a>
 
 			<div style="display: none; text-align: center;" id="pprhEmail">
-				<h2 style="font-size: 23px; text-align: center;"><?php esc_html_e( 'Request a New Feature or Report a Bug', 'pre-party-browser-hints' ); ?></h2>
-
 				<form method="post" style="width: 350px; margin: 0 auto; text-align: center">
 					<label for="pprhEmailText">
 						<?php \wp_nonce_field( 'pprh_email_nonce_action', 'pprh_email_nonce_nonce' ); ?>
 					</label>
-					<textarea name="pprh_text" id="pprhEmailText" style="height: 100px;" class="widefat" placeholder="<?php esc_attr_e( 'Help make this plugin better!' ); ?>"></textarea>
-					<label for="pprhEmailAddress"></label><input name="pprh_email" id="pprhEmailAddress" style="padding: 5px;" class="input widefat" placeholder="<?php esc_attr_e( 'Email address:' ); ?>"/>
+					<textarea name="pprh_text" id="pprhEmailText" style="height: 100px; margin: 20px 0 20px" class="widefat" placeholder="<?php esc_attr_e( 'Help make this plugin better!' ); ?>"></textarea>
+					<label for="pprhEmailAddress">
+                        <input name="pprh_email" id="pprhEmailAddress" style="padding: 5px; margin: 0 0 15px;" class="input widefat" placeholder="<?php esc_attr_e( 'Email address:' ); ?>"/>
+                    </label>
 					<br/>
 					<input name="pprh_send_email" id="pprhSubmit" type="submit" class="button button-primary" value="<?php esc_attr_e( 'Submit', 'pre-party-browser-hints' ); ?>" />
 				</form>
-
 			</div>
 		<?php
 			$this->verify_support_email();
