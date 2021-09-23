@@ -13,15 +13,14 @@ class Updater {
 	private $api_endpoint;
 	private $plugin_file;
 	private $transient_name;
-	private $plugin_version;
-
-	public $pprh_transient;
+	private $current_plugin_version;
+	private $pprh_transient;
 
 	public function __construct() {
 		$this->api_endpoint   = 'https://sphacks.io/wp-content/pprh/updater-main.json';
 		$this->plugin_file    = 'pre-party-browser-hints/pre-party-browser-hints.php';
 		$this->transient_name = 'pprh_updater';
-		$this->plugin_version = PPRH_VERSION_NEW;
+		$this->current_plugin_version = PPRH_VERSION_NEW;
 		$this->pprh_transient = \get_site_transient( $this->transient_name );
 
 		if ( isset( $_GET['force-check'] ) && '1' === $_GET['force-check'] ) {
@@ -30,31 +29,26 @@ class Updater {
 	}
 
 	public function init( $transient ) {
-		$plugin_update = $this->get_plugin_update( $transient );
+		$new_transient = $this->get_new_transient( $transient, $this->pprh_transient, $this->current_plugin_version );
 
-		if ( Utils::isArrayAndNotEmpty( $plugin_update ) ) {
-			$new_transient = $this->update_transient( $transient, $plugin_update );
-
-			if ( is_object( $new_transient ) ) {
-				return $new_transient;
-			}
+		if ( is_object( $new_transient ) ) {
+			return $new_transient;
 		}
 	}
 
-
-	public function get_plugin_update( $transient ) {
+	public function get_new_transient( $transient, $plugin_update, string $current_plugin_version ) {
 
 		// transient expired, so make a call to retrieve the external JSON content, then update transient.
-		if ( false === $this->pprh_transient ) {
+		if ( false === $plugin_update ) {
 			$plugin_update = $this->fetch_plugin_update();
-
-			if ( is_object( $transient ) && isset( $transient->response ) && Utils::isArrayAndNotEmpty( $plugin_update ) ) {
-				\set_site_transient( $this->transient_name, $plugin_update, HOUR_IN_SECONDS * 6 );
-				return $plugin_update;
-			}
-		} else {
-			return $this->pprh_transient;
 		}
+
+		if ( is_object( $transient ) && isset( $transient->response ) && Utils::isArrayAndNotEmpty( $plugin_update ) ) {
+			\set_transient( $this->transient_name, $plugin_update, HOUR_IN_SECONDS * 6 );
+			return $this->update_transient( $transient, $plugin_update, $current_plugin_version );
+		}
+
+		return false;
 	}
 
 
@@ -68,7 +62,7 @@ class Updater {
 		$response  = array();
 
 		try {
-			$response = \wp_remote_get( $this->api_endpoint, $args );
+			$response = \wp_safe_remote_get( $this->api_endpoint, $args );
 		} catch ( \Exception $exception ) {
 			Utils::log_error( $exception );
 		}
@@ -80,20 +74,22 @@ class Updater {
 		return false;
 	}
 
-	public function update_transient( object $transient, array $update ) {
-		$update_obj = (object) $update;
+	public function update_transient( \stdClass $transient, array $plugin_update, string $current_plugin_version ) {
+		$plugin_update_obj = (object) $plugin_update;
 
 		$plugin_slug                                   = plugin_basename( $this->plugin_file );
-		$transient->response[ $plugin_slug ]           = $update_obj;
-		$transient->response[ $plugin_slug ]->sections = $update_obj->sections;
-		$transient->response[ $plugin_slug ]->icons    = $update_obj->icons;
-		$transient->response[ $plugin_slug ]->banners  = $update_obj->banners;
-		$new_version = $transient->response[ $plugin_slug ]->new_version;
+		$transient->response[ $plugin_slug ]           = $plugin_update_obj;
+		$transient->response[ $plugin_slug ]->sections = $plugin_update_obj->sections;
+		$transient->response[ $plugin_slug ]->icons    = $plugin_update_obj->icons;
+		$transient->response[ $plugin_slug ]->banners  = $plugin_update_obj->banners;
+		$received_version = $transient->response[ $plugin_slug ]->new_version;
 
-		if ( $new_version !== $this->plugin_version ) {
-			$transient->response[ $plugin_slug ] = $update_obj;
-			$transient->checked[ $plugin_slug ]  = $new_version;
+		if ( $received_version !== $current_plugin_version ) {
+			$transient->response[ $plugin_slug ] = $plugin_update_obj;
+			$transient->checked[ $plugin_slug ] = $received_version;
 			return $transient;
 		}
+
+		return false;
 	}
 }

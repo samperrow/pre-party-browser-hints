@@ -68,7 +68,7 @@ class Pre_Party_Browser_Hints {
 			$client_ajax_init = new ClientAjaxInit();
 		}
 
-		\add_filter( 'pre_set_site_transient_update_plugins', array( $this, 'plugin_updater' ), 10, 1 );
+//		\add_filter( 'pre_set_site_transient_update_plugins', array( $this, 'plugin_updater' ), 10, 1 );
 	}
 
 	private function load_common_files() {
