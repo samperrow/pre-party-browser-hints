@@ -10,20 +10,15 @@
 	let bulkActionElems = document.querySelectorAll('input.pprhBulkAction');
 	let newHintTable = document.getElementById('pprh-enter-data');
 
-
 	$(document).ready(function() {
 		toggleEmailSubmit();
 		toggleDivs();
-		// checkoutModals();
 		resetButtons();
 		addSubmitHintsListener();
 		addEventListeners();
 		addHintTypeListener(null);
 		applyBulkActionListeners();
 	});
-
-
-
 
 	function toggleEmailSubmit() {
 		if (/pprh-plugin-settings/.test(currentURL)) {
@@ -76,24 +71,6 @@
 	}
 
 
-
-	function checkoutModals() {
-		let checkoutModalElems = document.getElementsByClassName('pprhOpenCheckoutModal');
-		if (isObjectAndNotNull(checkoutModalElems)) {
-			for (const checkoutModalElem of checkoutModalElems) {
-				checkoutModalElem.addEventListener('click', openCheckoutModal);
-			}
-		}
-
-		function openCheckoutModal() {
-			let windowWidth = window.innerWidth;
-			// let windowHeight = window.innerHeight;
-			// let leftSpace = (windowWidth - 700) / 2;
-			// // window.open( 'https://sphacks.io/checkout', '_blank', '', false );
-			window.open( 'https://sphacks.io/checkout', '_blank', 'height=850,scrollbars=yes,width=700', false );
-		}
-	}
-
 	function resetButtons() {
 		if ( ! isObjectAndNotNull(resetButtonElems)) {
 			return;
@@ -112,7 +89,6 @@
 	}
 
 
-
 	function addSubmitHintsListener() {
 		if (! isObjectAndNotNull(submitHintsBtn)) {
 			return;
@@ -126,7 +102,8 @@
 
 	function prepareHint(tableId, operation) {
 		let table = $('#' + tableId);
-		let rawHint = getHintValuesFromTable(table);
+		let tableElems = getRowElemsFromTable(table);
+		let rawHint = getHintValuesFromTable(tableElems);
 
 		if (isObjectAndNotNull(rawHint)) {
 			let isHintValid = verifyHint(rawHint);
@@ -134,7 +111,7 @@
 			if (isHintValid) {
 				rawHint.op_code = operation;
 				rawHint.hint_ids = (operation === 1) ? tableId.split('pprh-edit-')[1] : [];
-				return createAjaxReq(rawHint, 'pprh_update_hints', pprh_data.nonce);
+				return createAjaxRequest(rawHint, 'pprh_update_hints', pprh_data.nonce);
 			}
 		}
 
@@ -151,18 +128,17 @@
 		}
 	}
 
-	function getHintValuesFromTable(table) {
-		let elems = getRowElemsFromTable(table);
-		let rawHintType = elems.hint_type;
-		let hintTypeVal = rawHintType.find('input:checked').val();
+	function getHintValuesFromTable(tableElems) {
+		let rawHintType = tableElems.hint_type;
+		let hintType = rawHintType.find('input:checked').val();
 
 		let hint = {
-			url:         elems.url.val(),
-			hint_type:   hintTypeVal,
-			media:       elems.media.val(),
-			as_attr:     elems.as_attr.val(),
-			type_attr:   elems.type_attr.val(),
-			crossorigin: elems.crossorigin.is(':checked'),
+			url:         encodeURIComponent(tableElems.url.val()),
+			hint_type:   hintType,
+			media:       tableElems.media.val(),
+			as_attr:     tableElems.as_attr.val(),
+			type_attr:   tableElems.type_attr.val(),
+			crossorigin: tableElems.crossorigin.is(':checked'),
 		}
 
 		if (typeof pprhProAdminJS !== "undefined") {
@@ -245,7 +221,7 @@
 
 				if (confirm('Are you sure you want to delete this hint?')) {
 					let hintID = e.target.id.split('pprh-delete-hint-')[1];
-					return createAjaxReq({
+					return createAjaxRequest({
 						hint_ids: [hintID],
 						op_code: 2,
 					});
@@ -271,18 +247,6 @@
 				});
 			});
 		}
-	}
-
-	function clearHintTable() {
-		let tbody = newHintTable.getElementsByTagName('tbody')[0];
-
-		tbody.querySelectorAll('select, input').forEach(function (elem) {
-			if ( (/radio|checkbox/.test(elem.type)) ) {
-				elem.checked = "";
-			} else if ((/text|select/.test(elem.type))) {
-				elem.value = "";
-			}
-		});
 	}
 
 	function updateAdminNotice(msg, status) {
@@ -312,7 +276,7 @@
 	}
 
 	// xhr object
-	function createAjaxReq(dataObj, callback, nonce) {
+	function createAjaxRequest(dataObj, callback, nonce) {
 		let xhr = new XMLHttpRequest();
 		let url = pprh_data.admin_url + 'admin-ajax.php';
 		xhr.open('POST', url, true);
@@ -384,6 +348,18 @@
 			}
 		}
 
+		function clearHintTable() {
+			let tbody = newHintTable.getElementsByTagName('tbody')[0];
+
+			tbody.querySelectorAll('select, input').forEach(function (elem) {
+				if ( (/radio|checkbox/.test(elem.type)) ) {
+					elem.checked = "";
+				} else if ((/text|select/.test(elem.type))) {
+					elem.value = "";
+				}
+			});
+		}
+
 		function getUrlValue() {
 			let val = '';
 
@@ -404,6 +380,7 @@
 			console.error(error);
 		}
 	}
+
 
 	function applyBulkActionListeners() {
 		if ( ! isObjectAndNotNull(bulkActionElems)) {
@@ -429,7 +406,7 @@
 			});
 
 			if (idArr.length > 0) {
-				return createAjaxReq({
+				return createAjaxRequest({
 					op_code: opCode,
 					hint_ids: idArr,
 				});
@@ -439,21 +416,39 @@
 		}
 	}
 
-
 	function isObjectAndNotNull(obj) {
 		return (typeof obj === "object" && obj !== null);
 	}
 
+	// checkoutModals();
+	// function checkoutModals() {
+	// 	let checkoutModalElems = document.getElementsByClassName('pprhOpenCheckoutModal');
+	// 	if (isObjectAndNotNull(checkoutModalElems)) {
+	// 		for (const checkoutModalElem of checkoutModalElems) {
+	// 			checkoutModalElem.addEventListener('click', openCheckoutModal);
+	// 		}
+	// 	}
+	//
+	// 	function openCheckoutModal() {
+	// 		let windowWidth = window.innerWidth;
+	// 		// let windowHeight = window.innerHeight;
+	// 		// let leftSpace = (windowWidth - 700) / 2;
+	// 		// // window.open( 'https://sphacks.io/checkout', '_blank', '', false );
+	// 		window.open( 'https://sphacks.io/checkout', '_blank', 'height=850,scrollbars=yes,width=700', false );
+	// 	}
+	// }
+
 
 	return {
-		CreateAjaxReq: createAjaxReq,
+		CreateAjaxRequest: createAjaxRequest,
 		UpdateAdminNotice: updateAdminNotice,
-		IsObjectAndNotNull: isObjectAndNotNull
+		IsObjectAndNotNull: isObjectAndNotNull,
+		GetHintValuesFromTable: getHintValuesFromTable
 	}
 
 }));
 
-// for testing
+// for unit testing
 if (typeof module === "object") {
 	module.exports = this.pprhAdminJS;
 }

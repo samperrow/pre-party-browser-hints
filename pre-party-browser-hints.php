@@ -4,7 +4,7 @@ declare(strict_types=1);
  * Plugin Name:       Pre* Party Resource Hints
  * Plugin URI:        https://wordpress.org/plugins/pre-party-browser-hints/
  * Description:       Take advantage of the browser resource hints DNS-Prefetch, Prerender, Preconnect, Prefetch, and Preload to improve page load time.
- * Version:           1.7.81
+ * Version:           1.7.82
  * Requires at least: 4.4
  * Requires PHP:      7.0.0
  * Author:            Sam Perrow
@@ -14,7 +14,7 @@ declare(strict_types=1);
  * Text Domain:       pre-party-browser-hints
  * Domain Path:       /languages
  *
- * last edited September 7, 2021
+ * last edited September 28, 2021
  *
  * Copyright 2016  Sam Perrow  (email : info@sphacks.io)
  *
@@ -101,7 +101,7 @@ class Pre_Party_Browser_Hints {
 		}
 
 		if ( ! defined( 'PPRH_VERSION_NEW' ) ) {
-			define( 'PPRH_VERSION_NEW', '1.7.81' );
+			define( 'PPRH_VERSION_NEW', '1.7.82' );
 		}
 
 		if ( ! defined( 'PPRH_VERSION' ) ) {
