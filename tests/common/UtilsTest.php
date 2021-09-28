@@ -307,10 +307,23 @@ final class UtilsTest extends TestCase {
 		$actual_16 = Utils::json_to_array( $json );
 		self::assertCount( 3, $actual_16['features'] );
 
-//		$json = 'action=pprh_update_hints&pprh_data={"hint_ids":["163"],"op_code":2}&nonce=ee2c94cf7b';
 		$json = '{"hint_ids":["163"],"op_code":2}';
 		$actual_17 = Utils::json_to_array( $json );
 		self::assertCount( 2, $actual_17 );
+
+		$json = '{"url":"https://fonts.googleapis.com/css?family=Source+Sans+Pro%3A300%2C400%2C500%2C600%2C700%7CLato%3A300%2C400%2C500%2C700%2C900%7CRaleway%3A300%2C400%2C500%2C700%2C900%7CRaleway&subset=latin%2Clatin-ext","hint_type":"preload"}';
+		$actual_18 = Utils::json_to_array( $json );
+		self::assertCount( 2, $actual_18 );
+
+		$arr = array(
+			'action' => 'pprh_update_hints',
+			'pprh_data' => '{\"url\":\"asdfasdf\",\"hint_type\":\"dns-prefetch\",\"media\":\"\",\"as_attr\":\"\",\"type_attr\":\"\",\"crossorigin\":false,\"op_code\":0,\"hint_ids\":[]}',
+			'nonce' => '84c82e3167'
+		);
+		$json = json_encode( $arr );
+		$actual_19 = Utils::json_to_array( $json );
+		$actual_20 = Utils::json_to_array( $actual_19['pprh_data'] );
+		self::assertCount( 8, $actual_20 );
 	}
 
 	public function test_get_api_response_body() {

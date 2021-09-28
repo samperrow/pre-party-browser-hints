@@ -10,6 +10,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class Utils {
 
+	public static function get_json_option_value( string $option, string $option_prop ) {
+		$option_array = \get_option( $option );
+		return $option_array[$option_prop] ?? '';
+	}
+
 	public static function show_notice( string $msg, bool $success ) {
 		$alert = ( $success ) ? 'success' : 'error';
 		$class = ( empty( $msg ) ? '' : 'active' );

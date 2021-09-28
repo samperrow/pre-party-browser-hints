@@ -45,6 +45,13 @@ final class AjaxOpsTest extends TestCase {
 		$actual_5 = self::$ajax_ops->update_hints( $test_data_5 );
 		$expected_5 = \PPRH\DAO::create_db_result( true, $test_data_5['op_code'], 0, array() );
 		self::assertEquals( $expected_5, $actual_5['result'] );
+
+		$url_6 = 'https://fonts.googleapis.com/css?family=Source+Sans+Pro%3A300%2C400%2C500%2C600%2C700%7CLato%3A300%2C400%2C500%2C700%2C900%7CRaleway%3A300%2C400%2C500%2C700%2C900%7CRaleway&subset=latin%2Clatin-ext';
+		$test_data_6 = Utils::create_raw_hint( $url_6, 'preload' );
+		$test_data_6['op_code'] = 1;
+		$actual_6 = self::$ajax_ops->update_hints( $test_data_6 );
+		$expected_6 = \PPRH\DAO::create_db_result( true, $test_data_6['op_code'], 0, $actual_6['result']->new_hint );
+		self::assertEquals( $expected_6, $actual_6['result'] );
 	}
 
 
