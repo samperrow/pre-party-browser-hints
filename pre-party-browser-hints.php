@@ -14,7 +14,7 @@ declare(strict_types=1);
  * Text Domain:       pre-party-browser-hints
  * Domain Path:       /languages
  *
- * last edited September 7, 2021
+ * last edited September 28, 2021
  *
  * Copyright 2016  Sam Perrow  (email : info@sphacks.io)
  *
