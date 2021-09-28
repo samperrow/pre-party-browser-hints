@@ -9,6 +9,7 @@
 	let resetButtonElems = document.querySelectorAll('input.pprh-reset');
 	let bulkActionElems = document.querySelectorAll('input.pprhBulkAction');
 	let newHintTable = document.getElementById('pprh-enter-data');
+	let pprhPostTable = $('table.pprh-post-table').first();
 
 	$(document).ready(function() {
 		toggleEmailSubmit();
@@ -326,8 +327,7 @@
 
 		// update the hint table via ajax.
 		function updateTable(response) {
-			let table = $('table.pprh-post-table').first();
-			let tbody = table.find('tbody');
+			let tbody = pprhPostTable.find('tbody');
 
 			tbody.html('');
 
@@ -350,6 +350,7 @@
 
 		function clearHintTable() {
 			let tbody = newHintTable.getElementsByTagName('tbody')[0];
+			pprhPostTable.find('thead > tr > td > input:checkbox, tfoot > tr > td > input:checkbox').prop('checked', false);
 
 			tbody.querySelectorAll('select, input').forEach(function (elem) {
 				if ( (/radio|checkbox/.test(elem.type)) ) {
@@ -397,7 +398,7 @@
 			let idArr = [];
 			let op = $(e.currentTarget).prev().val();
 			let opCode = (/2|3|4/.test(op)) ? Number(op) : 5;
-			let checkboxes = $('table.pprh-post-table tbody th.check-column input:checkbox');
+			let checkboxes = pprhPostTable.find('tbody th.check-column input:checkbox');
 
 			$.each(checkboxes, function () {
 				if ($(this).is(':checked')) {
@@ -406,10 +407,7 @@
 			});
 
 			if (idArr.length > 0) {
-				return createAjaxRequest({
-					op_code: opCode,
-					hint_ids: idArr,
-				});
+				createAjaxRequest({ op_code: opCode, hint_ids: idArr });
 			} else {
 				window.alert('Please select a row(s) for bulk updating.');
 			}
