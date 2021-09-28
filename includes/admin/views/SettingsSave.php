@@ -2,16 +2,20 @@
 
 namespace PPRH;
 
+use PPRH\Utils\Utils;
+use PPRH\Utils\Sanitize;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class SettingsSave extends Settings {
+class SettingsSave extends SettingsView {
 
-	public function save_settings() {
-		if ( isset( $_POST ) && \PPRH\Utils::isArrayAndNotEmpty( $_POST ) ) {
+	public function save_user_options() {
+		if ( isset( $_POST['pprh_save_options'] ) || isset( $_POST['pprh_preconnect_set'] ) ) {
 			\check_admin_referer( 'pprh_save_admin_options', 'pprh_admin_options_nonce' );
 			$this->save_options( $_POST );
+			\do_action( 'pprh_sc_save_settings' );
 		}
 	}
 
@@ -36,7 +40,7 @@ class SettingsSave extends Settings {
 		$results[] = Utils::update_checkbox_option( $post, 'pprh_disable_wp_hints' );
 		$results[] = Utils::update_checkbox_option( $post, 'pprh_debug_enabled' );
 
-		$html_head = Utils::strip_non_alphanums( $post[ 'pprh_html_head' ] ?? 'false' );
+		$html_head = Sanitize::strip_non_alphanums( $post[ 'pprh_html_head' ] ?? 'false' );
 		Utils::update_option( 'pprh_html_head', $html_head );
 		$results[] = $html_head;
 
@@ -59,8 +63,8 @@ class SettingsSave extends Settings {
 	}
 
 	public function auto_preconnect_notice() {
-		$msg = 'Your automatically generated preconnect hints have been removed. Please reload a front-end page to generate new preconnect hints.';
-		\PPRH\Utils::show_notice( $msg, true );
+		$msg = esc_html( 'Your automatically generated preconnect hints have been removed. Please reload a front-end page to generate new preconnect hints.', 'pre-party-browser-hints' );
+		Utils::show_notice( $msg, true );
 	}
 
 	public function save_prefetch_settings( array $post ) {
@@ -70,7 +74,7 @@ class SettingsSave extends Settings {
 		$results[] = Utils::update_checkbox_option( $post, 'pprh_prefetch_disableForLoggedInUsers' );
 
 		if ( isset( $post['pprh_prefetch_delay'] ) ) {
-			$prefetch_delay = Utils::strip_non_numbers( $post['pprh_prefetch_delay'] );
+			$prefetch_delay = Sanitize::strip_non_numbers( $post['pprh_prefetch_delay'] );
 			Utils::update_option( 'pprh_prefetch_delay', $prefetch_delay );
 			$results[] = $prefetch_delay;
 		}
@@ -82,24 +86,29 @@ class SettingsSave extends Settings {
 		}
 
 		if ( isset( $post['pprh_prefetch_maxRPS'] ) ) {
-			$max_rps = Utils::strip_non_numbers( $post['pprh_prefetch_maxRPS'] );
+			$max_rps = Sanitize::strip_non_numbers( $post['pprh_prefetch_maxRPS'] );
 			Utils::update_option( 'pprh_prefetch_maxRPS', $max_rps );
 			$results[] = $max_rps;
 		}
 
 		if ( isset( $post['pprh_prefetch_hoverDelay'] ) ) {
-			$hover_delay = Utils::strip_non_numbers( $post['pprh_prefetch_hoverDelay'] );
+			$hover_delay = Sanitize::strip_non_numbers( $post['pprh_prefetch_hoverDelay'] );
 			Utils::update_option( 'pprh_prefetch_hoverDelay', $hover_delay );
 			$results[] = $hover_delay;
 		}
 
 		if ( isset( $post['pprh_prefetch_max_prefetches'] ) ) {
-			$max_prefetches = Utils::strip_non_numbers( $post['pprh_prefetch_max_prefetches'] );
+			$max_prefetches = Sanitize::strip_non_numbers( $post['pprh_prefetch_max_prefetches'] );
 			Utils::update_option( 'pprh_prefetch_max_prefetches', $max_prefetches );
 			$results[] = $max_prefetches;
 		}
 
 		return $results;
+	}
+
+	public function turn_textarea_to_array( $text ) {
+		$clean_text = preg_replace( '/[\'<>^\"\\\]/', '', $text );
+		return explode( "\r\n", $clean_text );
 	}
 
 }

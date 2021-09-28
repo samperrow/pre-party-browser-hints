@@ -11,6 +11,12 @@ final class PrePartyBrowserHintsTest extends TestCase {
 //		self::$pprh = new \PPRH\Pre_Party_Browser_Hints();
 //	}
 
+	public function test_pprh_activate_plugin() {
+
+		$actual = \PPRH\pprh_activate_plugin();
+		self::assertTrue( $actual );
+	}
+
 	public function test_create_constants() {
 		global $wpdb;
 		$table = $wpdb->prefix . 'pprh_table';
@@ -30,7 +36,7 @@ final class PrePartyBrowserHintsTest extends TestCase {
 	}
 
 	public function test_load_common_files() {
-		$utils = class_exists(\PPRH\Utils::class);
+		$utils = class_exists(\PPRH\Utils\Utils::class);
 		self::assertTrue(  $utils );
 
 		$dao = class_exists( \PPRH\DAO::class );
@@ -42,8 +48,8 @@ final class PrePartyBrowserHintsTest extends TestCase {
 		$hint_builder = class_exists( \PPRH\HintBuilder::class );
 		self::assertTrue( $hint_builder );
 
-		$activate_plugin = class_exists( \PPRH\ActivatePlugin::class );
-		self::assertTrue( $activate_plugin );
+//		$activate_plugin = class_exists( \PPRH\ActivatePlugin::class );
+//		self::assertTrue( $activate_plugin );
 	}
 
 	public function test_load_dashboard() {

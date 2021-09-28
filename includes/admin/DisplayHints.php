@@ -2,6 +2,8 @@
 
 namespace PPRH;
 
+use PPRH\Utils\Sanitize;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -21,11 +23,12 @@ class DisplayHints extends WP_List_Table {
 
 	public function __construct( bool $doing_ajax, int $plugin_page ) {
 		parent::__construct( array(
-			'ajax'         => true,
-			'plural'       => 'urls',
-			'screen'       => 'toplevel_page_' . PPRH_MENU_SLUG,
-			'singular'     => 'url',
-			'plugin_page' => $plugin_page
+			'ajax'        => true,
+			'plural'      => 'urls',
+			'screen'      => 'toplevel_page_' . PPRH_MENU_SLUG,
+			'singular'    => 'url',
+			'plugin_page' => $plugin_page,
+            'doing_ajax'  => $doing_ajax
 		) );
 
 		if ( ! $doing_ajax ) {
@@ -47,7 +50,7 @@ class DisplayHints extends WP_List_Table {
 	}
 
 	private function set_item( $item ) {
-		return ( empty( $item ) ) ? '-' : Utils::clean_hint_attr( $item );
+		return ( empty( $item ) ) ? '-' : Sanitize::clean_hint_attr( $item );
 	}
 
 	public function get_columns() {
@@ -134,7 +137,7 @@ class DisplayHints extends WP_List_Table {
 
 	protected function inline_edit_row( array $hint ) {
 	    $hint_id = $hint['id'] ?? '';
-		$hint_id_clean = Utils::strip_non_numbers( $hint_id, true );
+		$hint_id_clean = Sanitize::strip_non_numbers( $hint_id, true );
 		?>
 		<tr class="pprh-row edit <?php echo $hint_id_clean; ?>">
 			<td colspan="9">

@@ -5,6 +5,16 @@
     let host = document.location.origin;
     let altHostName = getAltHostName(host);
 
+    if (typeof pprh_data === "undefined") {
+        pprh_data = {
+            admin_url: host + '/wp-admin/admin-ajax.php',
+            nonce: '',
+            hints: [],
+            start_time: new Date().getTime() / 1000,
+            timeout: 7000
+        }
+    }
+
     function getAltHostName(hostname) {
         let idx = hostname.indexOf("//");
         let strippedWWW = hostname.replace(/www\./, "");
@@ -51,8 +61,8 @@
             let domain = getDomain(cleanUrl);
 
             if (isValidHintDomain(domain, domains)) {
-                let hint = {url: cleanUrl, hint_type: 'preconnect'};
-                domains.push(cleanUrl);
+                let hint = {url: domain, hint_type: 'preconnect'};
+                domains.push(domain);
                 newHintArr.push(hint);
             }
         });

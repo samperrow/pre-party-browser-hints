@@ -2,12 +2,33 @@
 
 namespace PPRH;
 
+use PPRH\Utils\Utils;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class SettingsView extends Settings {
+class SettingsView {
 
+	public function markup( $on_pprh_admin ) {
+		?>
+        <div class="pprh-content settings">
+            <form method="post" action="">
+				<?php
+				\wp_nonce_field( 'pprh_save_admin_options', 'pprh_admin_options_nonce' );
+
+				if ( $on_pprh_admin ) {
+					\wp_nonce_field( 'closedpostboxes', 'closedpostboxesnonce', false );
+					\do_meta_boxes( PPRH_ADMIN_SCREEN, 'normal', null );
+				}
+				?>
+                <div class="text-center">
+                    <input type="submit" name="pprh_save_options" class="button button-primary" value="<?php esc_attr_e( 'Save Changes', 'pre-party-browser-hints' ); ?>" />
+                </div>
+            </form>
+        </div>
+		<?php
+	}
 
 	public function general_markup() {
 		$selected = 'selected="selected"';
@@ -52,7 +73,7 @@ class SettingsView extends Settings {
 	}
 
 	public function preconnect_markup() {
-		$autoload = \PPRH\Utils::does_option_match( 'pprh_preconnect_autoload', 'true', 'checked' );
+		$autoload = Utils::does_option_match( 'pprh_preconnect_autoload', 'true', 'checked' );
 		?>
 		<table class="form-table">
 			<tbody>
@@ -74,7 +95,7 @@ class SettingsView extends Settings {
 
 	public function load_reset_settings() {
 		$result       = \apply_filters( 'pprh_display_preconnect_markup', array() );
-		$allow_unauth = \PPRH\Utils::does_option_match( 'pprh_preconnect_allow_unauth', 'true', 'checked' );
+		$allow_unauth = Utils::does_option_match( 'pprh_preconnect_allow_unauth', 'true', 'checked' );
 
 		if ( empty( $result ) ) { ?>
             <tr>
@@ -102,10 +123,10 @@ class SettingsView extends Settings {
 
 
 	public function prefetch_markup() {
-		$prefetch_enabled                 = \PPRH\Utils::does_option_match( 'pprh_prefetch_enabled', 'true', 'checked' );
-		$prefetch_disableForLoggedInUsers = \PPRH\Utils::does_option_match( 'pprh_prefetch_disableForLoggedInUsers', 'true', 'checked' );
+		$prefetch_enabled                 = Utils::does_option_match( 'pprh_prefetch_enabled', 'true', 'checked' );
+		$prefetch_disableForLoggedInUsers = Utils::does_option_match( 'pprh_prefetch_disableForLoggedInUsers', 'true', 'checked' );
 		$prefetch_initialization_delay    = Utils::esc_get_option( 'pprh_prefetch_delay' );
-		$ignore_keywords                  = implode( ', ', \get_option( 'pprh_prefetch_ignoreKeywords', '' ) );
+		$ignore_keywords                  = implode( ', ', \get_option( 'pprh_prefetch_ignoreKeywords', array() ) );
 		$prefetch_max_prefetches          = Utils::esc_get_option( 'pprh_prefetch_max_prefetches' );
 		?>
         <table class="form-table"><tbody>
@@ -182,8 +203,29 @@ class SettingsView extends Settings {
 
         </tbody></table>
 		<?php
+        return true;
 	}
 
+	private function get_each_keyword( $keywords ) {
+		if ( is_null( $keywords ) ) {
+			return '';
+		}
 
+		$keywords = explode( ', ', $keywords );
+		$str   = '';
+		$count = count( $keywords );
+		$idx   = 0;
+
+		foreach ( $keywords as $keyword ) {
+			$idx++;
+			$str .= $keyword;
+
+			if ( $idx < $count ) {
+				$str .= "\n";
+			}
+		}
+
+		return $str;
+	}
 
 }
