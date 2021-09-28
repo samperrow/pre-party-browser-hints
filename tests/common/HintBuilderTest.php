@@ -111,6 +111,10 @@ class HintBuilderTest extends TestCase {
 
 		$actual_7 = self::$hint_builder->get_url( '//', 'dns-prefetch' );
 		self::assertSame( '', $actual_7 );
+
+		$url_8 = 'https://fonts.googleapis.com/css?family=Source+Sans+Pro%3A300%2C400%2C500%2C600%2C700%7CLato%3A300%2C400%2C500%2C700%2C900%7CRaleway%3A300%2C400%2C500%2C700%2C900%7CRaleway&subset=latin%2Clatin-ext';
+		$actual_8 = self::$hint_builder->get_url( $url_8, 'preload' );
+		self::assertSame( $url_8, $actual_8 );
 	}
 
 	public function test_parse_for_domain_name() {
