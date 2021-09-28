@@ -34,7 +34,8 @@ class Dashboard {
 		$this->show_admin_tabs();
 		$insert_hints->markup();
 		$settings_save->markup( true );
-		\do_action( 'pprh_load_view_classes' );
+		\do_action( 'pprh_load_license_view' );
+
 		$faq->markup();
 
 		$this->show_footer();
