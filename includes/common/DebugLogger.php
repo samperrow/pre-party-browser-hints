@@ -11,7 +11,7 @@ class DebugLogger {
 	public function log_error( $message ) {
 		$exception_msg = $this->get_msg_from_exception( $message );
 		$input       = $exception_msg;
-		$input      .= \PPRH\Utils\Utils::get_debug_info() . "\n\n";
+		$input      .= \PPRH\Utils\Utils::get_debug_info() . "\n\n\n";
 
 		$transient = \get_transient( 'pprh_debug_logger' );
 		$transient .= ( false === $transient ) ? '' : $input;

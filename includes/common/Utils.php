@@ -171,7 +171,7 @@ class Utils {
 		} elseif ( str_contains( $user_agent, 'Netscape' ) ) {
 			$browser = 'Netscape';
 		} else {
-			$browser = '';
+			$browser = 'unknown browser.';
 		}
 
 		return $browser;
@@ -208,21 +208,24 @@ class Utils {
 		return true;
 	}
 
+	public static function remote_get( string $remote_url, array $args, string $error_msg ):array {
+		$response = \wp_safe_remote_get( $remote_url, $args );
 
-	public static function get_api_response_body( $response, string $error_msg ):array {
-		$response_body = array();
-
-		if ( \is_wp_error( $response ) || ( isset( $response['body'] ) && empty( $response['body'] ) ) ) {
-			self::log_error( $error_msg );
-			return $response_body;
+		if ( \is_wp_error( $response ) && method_exists( $response, 'get_error_message' ) ) {
+			self::log_error( $response->get_error_message() );
 		}
 
 		if ( isset( $response['body'] ) ) {
-			$body          = \wp_remote_retrieve_body( $response );
-			$response_body = self::json_to_array( $body );
+
+			if ( empty( $response['body'] ) ) {
+				self::log_error( $error_msg );
+			} else {
+				$json_body = \wp_remote_retrieve_body( $response );
+				return self::json_to_array( $json_body );
+			}
 		}
 
-		return $response_body;
+		return array();
 	}
 
 	public static function create_raw_hint( $url, $hint_type, $auto_created = 0, $as_attr = '', $type_attr = '', $crossorigin = '', $media = '', $post_id = null, $op_code = null ):array {

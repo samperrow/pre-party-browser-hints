@@ -83,6 +83,7 @@ class Pre_Party_Browser_Hints {
 		global $wpdb;
 		$table          = $wpdb->prefix . 'pprh_table';
 		$postmeta_table = $wpdb->prefix . 'postmeta';
+		$post_table     = $wpdb->prefix . 'posts';
 		$site_url       = \get_option( 'siteurl' );
 		$in_dev_testing = str_contains( $site_url, 'sphacks.local' );
 		$unit_testing   = defined( 'PPRH_UNIT_TESTING' ) && PPRH_UNIT_TESTING;
@@ -90,6 +91,7 @@ class Pre_Party_Browser_Hints {
 		if ( ! defined( 'PPRH_DB_TABLE' ) ) {
 			define( 'PPRH_DB_TABLE', $table );
 			define( 'PPRH_POSTMETA_TABLE', $postmeta_table );
+			define( 'PPRH_POST_TABLE', $post_table );
 			define( 'PPRH_ABS_DIR', WP_PLUGIN_DIR . '/pre-party-browser-hints/' );
 			define( 'PPRH_REL_DIR', plugins_url() . '/pre-party-browser-hints/' );
 			define( 'PPRH_MENU_SLUG', 'pprh-plugin-settings' );

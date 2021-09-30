@@ -43,7 +43,7 @@ class Updater {
 			$plugin_update = $this->fetch_plugin_update();
 		}
 
-		if ( is_object( $transient ) && isset( $transient->response ) && Utils::isArrayAndNotEmpty( $plugin_update ) ) {
+		if ( is_object( $transient ) && isset( $transient->response ) && ! empty( $plugin_update ) ) {
 			\set_transient( $this->transient_name, $plugin_update, HOUR_IN_SECONDS * 6 );
 			return $this->update_transient( $transient, $plugin_update, $current_plugin_version );
 		}
@@ -55,23 +55,10 @@ class Updater {
 	public function fetch_plugin_update() {
 		$args = array(
 			'timeout'   => 20,
-			'sslverify' => ( str_contains( $this->api_endpoint, 'https://sphacks.io' ) )
+			'sslverify' => ( str_contains( $this->api_endpoint, 'https://sphacks.io' ) && ! PPRH_RUNNING_UNIT_TESTS )
 		);
 
-		$error_msg = 'Error updating plugin.';
-		$response  = array();
-
-		try {
-			$response = \wp_safe_remote_get( $this->api_endpoint, $args );
-		} catch ( \Exception $exception ) {
-			Utils::log_error( $exception );
-		}
-
-		if ( Utils::isArrayAndNotEmpty( $response ) ) {
-			return Utils::get_api_response_body( $response, $error_msg );
-		}
-
-		return false;
+		return Utils::remote_get( $this->api_endpoint, $args, 'Error updating plugin.' );
 	}
 
 	public function update_transient( \stdClass $transient, array $plugin_update, string $current_plugin_version ) {

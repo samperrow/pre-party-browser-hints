@@ -27,26 +27,25 @@ class ClientAjaxInitTest extends TestCase {
 
 		$args = array(
 			'body' => array(
+				'nonce'     => $js_object['nonce'],
 				'action'    => 'pprh_preconnect_callback',
-				'pprh_data' => json_encode( $pprh_data ),
-				'nonce'     => $js_object['nonce']
+				'pprh_data' => json_encode( $pprh_data )
 			),
 			'timeout'   => 20,
 			'sslverify' => false,
 		);
 
 		\update_option( 'pprh_preconnect_allow_unauth', 'false' );
-		$response_1 = \wp_remote_post( $js_object['admin_url'], $args );
-		$response_body_1 = \PPRH\Utils\Utils::get_api_response_body( $response_1, 'error' );
-		self::assertEmpty( $response_body_1 );
+		$response_1 = \wp_safe_remote_post( $js_object['admin_url'], $args );
+		self::assertEmpty( $response_1['body'] );
 
 
 		\update_option( 'pprh_preconnect_autoload', 'true' );
 		\update_option( 'pprh_preconnect_allow_unauth', 'true' );
 		$pprh_data['hints'][0]['url'] = 'https://fonts.gstatic.comTest2';
 		$args['body']['pprh_data'] = json_encode( $pprh_data );
-		$response_2 = \wp_remote_post( $js_object['admin_url'], $args );
-		$response_body_2  = \PPRH\Utils\Utils::get_api_response_body( $response_2, 'error' );
+		$response_2 = \wp_safe_remote_post( $js_object['admin_url'], $args );
+		$response_body_2 = \PPRH\Utils\Utils::json_to_array( $response_2['body'], 'error' );
 		self::assertGreaterThan( 8, $response_body_2[0]['new_hint'] );
 		self::assertTrue( $response_body_2[0]['db_result']['status'] );
 		self::assertCount( count( $pprh_data['hints'] ), $response_body_2 );

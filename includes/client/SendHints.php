@@ -20,7 +20,7 @@ class SendHints {
 	}
 
 	public function init_ctrl( array $client_data ) {
-		$enabled_hints       = DAO::get_pprh_hints( false, $client_data );
+		$enabled_hints       = DAO::get_client_hints( $client_data );
 		$enabled_hints       = $this->remove_invalid_hints( $enabled_hints, $client_data );
 		$headers_sent        = \headers_sent();
 		$send_in_http_header = $this->add_action_ctrl( $this->send_hints_in_html, $headers_sent );
