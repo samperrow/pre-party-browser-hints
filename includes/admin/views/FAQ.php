@@ -37,7 +37,7 @@ class FAQ {
 				<p>-Resource hints can be added manually on the main plugin page, or hints can be created automatically with the "Auto Preconnect", "Auto Prefetch", and "Auto Prerender" features, respecitvely.</p>
 
 				<p>How can I update existing hints?</p>
-				<p>-Hover over a hint you would like to update, and an "Edit" link will appear. Click that, make the desired changes, and click "Update".</p>
+				<p>-Hover over a hint you would like to update, and an "Edit" link will appear. Click that, make the desired changes, click "Update", make your changes, then click "Update".</p>
 
 				<p>What are the crossorigin, "as", "type", and "media" attributes used for?</p>
 				<ol>

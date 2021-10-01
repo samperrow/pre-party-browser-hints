@@ -81,7 +81,9 @@ class SettingsView {
                 <tr>
                     <th><?php esc_html_e( 'Enable Auto Preconnect?', 'pre-party-browser-hints' ); ?></th>
                     <td>
-                        <input type="checkbox" name="pprh_preconnect_autoload" value="true" <?php echo $autoload; ?>/>
+                        <label for="pprh_preconnect_autoload">
+                            <input type="checkbox" name="pprh_preconnect_autoload" value="true" <?php echo $autoload; ?>/>
+                        </label>
                         <p><?php esc_html_e( 'This feature allows preconnect hints to be automatically created. JavaScript, CSS, and images loaded from external domains will preconnect automatically.', 'pre-party-browser-hints' ); ?></p>
                     </td>
                 </tr>
@@ -97,7 +99,7 @@ class SettingsView {
 		$result       = \apply_filters( 'pprh_load_pro_metabox', 'preconnect' );
 		$allow_unauth = Utils::does_option_match( 'pprh_preconnect_allow_unauth', 'true', 'checked' );
 
-		if ( empty( $result ) ) { ?>
+		if ( is_string( $result ) ) { ?>
             <tr>
 				<th><?php esc_html_e( 'Allow unauthenticated users to automatically set preconnect hints via Ajax?', 'pre-party-browser-hints' ); ?></th>
 				<td>

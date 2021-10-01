@@ -158,7 +158,7 @@ class LoadAdmin {
 			?>
             <div style="text-align: center; max-width: 800px; margin: 0 auto;">
                 <h3><?php \esc_html_e( 'This feature is only available after upgrading to the Pro version.', 'pre-party-browser-hints' ); ?></h3>
-                <p><?php \esc_html_e( 'Auto Preload will automatically create the proper preload hints automatically, for each post on your website.', 'pre-party-browser-hints' ); ?></p>
+                <p><?php \esc_html_e( 'The Auto Preload feature will automatically create the proper preload hints for your entire site automatically, for each post on your website.', 'pre-party-browser-hints' ); ?></p>
                 <input type="button" class="pprhOpenCheckoutModal button button-primary" value="Purchase License"/>
             </div>
 			<?php
@@ -173,9 +173,9 @@ class LoadAdmin {
 			?>
 			<div style="text-align: center; max-width: 800px; margin: 0 auto;">
 				<h3><?php \esc_html_e( 'This feature is only available after upgrading to the Pro version.', 'pre-party-browser-hints' ); ?></h3>
-				<p><?php \esc_html_e( 'Auto Prerender will automatically create the proper prerender hints automatically, for each post on your website.
+				<p><?php \esc_html_e( 'The Auto Prerender feature will automatically create the proper prerender hints, for each post on your website.
 		This feature works by implementing custom analytics to determine which page a visitor is most likely to navigate towards after from a given page, and a prerender hint is created pointing to that destination.
-		This prerender hint allows a visitor to download an entire webpage in the background, allowing the page to load instantly.
+		The prerender hint allows a visitor to download an entire webpage in the background, allowing the page to load instantly.
 		For example, if most visitors navigate to your /shop page from your home page, a prerender hint will be created for the /shop URL, and that page will be downloaded while the visitor is on the home page. ', 'pre-party-browser-hints' ); ?></p>
 				<input type="button" class="pprhOpenCheckoutModal button button-primary" value="Purchase License"/>
 			</div>
