@@ -16,6 +16,10 @@ div#pprh-poststuff {
     div.pprh-content {
         display: none;
 
+        p.bold {
+            font-weight: bold;
+        }
+
         > div.postbox {
             padding: 0 10px;
         }
