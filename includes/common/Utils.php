@@ -215,7 +215,7 @@ class Utils {
 			self::log_error( $response->get_error_message() );
 		}
 
-		if ( isset( $response['body'] ) ) {
+		elseif ( isset( $response['body'] ) ) {
 
 			if ( empty( $response['body'] ) ) {
 				self::log_error( $error_msg );
