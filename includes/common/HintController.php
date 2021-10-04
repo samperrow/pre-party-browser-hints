@@ -18,7 +18,7 @@ class HintController extends DAO {
 		$op_code = (int) $raw_data['op_code'];
 
 		if ( 0 <= $op_code && $op_code < 5 ) {
-			$hint_ids = ( ! empty( $raw_data['hint_ids'] ) ) ? Utils::array_into_csv( $raw_data['hint_ids'] ) : '';
+			$hint_ids = ( ! empty( $raw_data['hint_ids'] ) ) ? Utils::array_to_csv( $raw_data['hint_ids'] ) : '';
 			return $this->db_controller( $op_code, $raw_data, $hint_ids );
 		}
 

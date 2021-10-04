@@ -33,7 +33,7 @@ class Dashboard {
 		$insert_hints = new InsertHints( $plugin_page );
 		$this->show_admin_tabs();
 		$insert_hints->markup();
-		$settings_save->markup( true );
+		SettingsView::markup( true );
 		\do_action( 'pprh_load_license_view' );
 
 		$faq->markup();

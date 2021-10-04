@@ -45,47 +45,6 @@ final class UtilsTest extends TestCase {
 		self::assertSame( $today, $actual_1 );
 	}
 
-	public function test_does_option_match() {
-		$selected = 'selected="selected"';
-		$option_name = 'pprh_test_option';
-		\add_option( $option_name, 'true' );
-
-		$actual_1 = Utils::does_option_match($option_name, 'true', $selected );
-		self::assertEquals( $selected, $actual_1 );
-
-		\update_option( $option_name, 'false' );
-		$test_2 = Utils::does_option_match( $option_name, 'true', $selected );
-		self::assertEquals( '', $test_2 );
-
-		\delete_option( $option_name );
-	}
-
-	public function test_update_checkbox_option() {
-		$actual_1 = Utils::update_checkbox_option( array( ), 'wacka' );
-		self::assertEquals( 'false', $actual_1 );
-
-		$actual_2 = Utils::update_checkbox_option( array( 'test_option' => 'true' ), 'test_option' );
-		self::assertEquals( 'true', $actual_2 );
-
-		$actual_3 = Utils::update_checkbox_option( array(), 'test_option2' );
-		self::assertEquals( 'false', $actual_3 );
-	}
-
-
-	public function test_esc_get_option() {
-		$test_option_name1 = 'pprh_test_option1';
-		\add_option( $test_option_name1, 'https://<test.com>/asdfasdf', '', 'true' );
-		$actual1 = Utils::esc_get_option( $test_option_name1 );
-		self::assertEquals( 'https://&lt;test.com&gt;/asdfasdf', $actual1 );
-		\delete_option( $test_option_name1 );
-
-		$test_option_name2 = 'pprh_test_option2';
-		\add_option( $test_option_name2, 'https://test.com/asdfasdf', '', 'true' );
-		$actual2 = Utils::esc_get_option( $test_option_name2 );
-		self::assertEquals( 'https://test.com/asdfasdf', $actual2 );
-		\delete_option( $test_option_name2 );
-	}
-
 	public function test_get_server_prop() {
 		$_SERVER['HTTP_REFERER'] = 'https://sphacks.local/wp-admin/edit.php?post_type=page';
 		$actual_1 = Utils::get_server_prop( 'HTTP_REFERER' );
@@ -343,21 +302,6 @@ final class UtilsTest extends TestCase {
 		self::assertCount( 6, $actual_21 );
 	}
 
-	public function test_get_file_type() {
-		$actual_1 = Utils::get_file_type( 'https://asdf.com/adsf/sdflkasjfd/script.js?ver=23626262' );
-		self::assertSame( '.js', $actual_1 );
 
-		$actual_2 = Utils::get_file_type( 'https://asdf.com/adsf/sdflkasjfd/image.jpg' );
-		self::assertSame( '.jpg', $actual_2 );
-
-		$actual_3 = Utils::get_file_type( 'https://fonts.gstatic.com/s/raleway/v14/1Ptrg8zYS_SKggPNwK4vWqZPANqczVs.woff2' );
-		self::assertSame( '.woff2', $actual_3 );
-
-		$actual_4 = Utils::get_file_type( 'https://sphacks.local/wp-content/uploads/2021/04/cropped-cropped-fish-32x32.png' );
-		self::assertSame( '.png', $actual_4 );
-
-		$actual_5 = Utils::get_file_type( 'https://fonts.googleapis.com/css?family=Lato:300,300i,700,700i,900,400%7CPacifico:400&subset=latin,latin-ext&display=auto' );
-		self::assertSame( '', $actual_5 );
-	}
 
 }

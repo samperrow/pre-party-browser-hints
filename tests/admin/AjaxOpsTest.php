@@ -22,13 +22,13 @@ final class AjaxOpsTest extends TestCase {
 	// also need to verify update, delete, enable, disable, bulk operations work properly.
 
 	public function test_update_hints() {
-		$test_data_1 = Utils::create_raw_hint( 'https://testAjaxOps1.com', 'dns-prefetch' );
+		$test_data_1 = \PPRH\HintBuilder::create_raw_hint( 'https://testAjaxOps1.com', 'dns-prefetch' );
 		$test_data_1['op_code'] = 0;
 		$actual_1 = self::$ajax_ops->update_hints( $test_data_1 );
 		$expected_1 = \PPRH\DAO::create_db_result( true, $test_data_1['op_code'], 0, $actual_1['result']->new_hint );
 		self::assertEquals( $expected_1, $actual_1['result'] );
 
-		$test_data_2 = Utils::create_raw_hint( 'https://testAjaxOps2.com', 'dns-prefetch' );
+		$test_data_2 = \PPRH\HintBuilder::create_raw_hint( 'https://testAjaxOps2.com', 'dns-prefetch' );
 		$test_data_2['op_code'] = 1;
 		$actual_2 = self::$ajax_ops->update_hints( $test_data_2 );
 		$expected_2 = \PPRH\DAO::create_db_result( true, $test_data_2['op_code'], 0, $actual_2['result']->new_hint );
@@ -50,7 +50,7 @@ final class AjaxOpsTest extends TestCase {
 		self::assertEquals( $expected_5, $actual_5['result'] );
 
 		$url_6 = 'https://fonts.googleapis.com/css?family=Source+Sans+Pro%3A300%2C400%2C500%2C600%2C700%7CLato%3A300%2C400%2C500%2C700%2C900%7CRaleway%3A300%2C400%2C500%2C700%2C900%7CRaleway&subset=latin%2Clatin-ext';
-		$test_data_6 = Utils::create_raw_hint( $url_6, 'preload' );
+		$test_data_6 = \PPRH\HintBuilder::create_raw_hint( $url_6, 'preload' );
 		$test_data_6['op_code'] = 1;
 		$actual_6 = self::$ajax_ops->update_hints( $test_data_6 );
 		$expected_6 = \PPRH\DAO::create_db_result( true, $test_data_6['op_code'], 0, $actual_6['result']->new_hint );

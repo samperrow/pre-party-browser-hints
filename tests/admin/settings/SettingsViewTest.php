@@ -4,7 +4,7 @@ use PHPUnit\Framework\TestCase;
 
 class SettingsViewTest extends TestCase {
 
-	public static $settings_view;
+	public static \PPRH\SettingsView $settings_view;
 
 	/**
 	 * @before Class
@@ -18,5 +18,6 @@ class SettingsViewTest extends TestCase {
 		$actual_1 = self::$settings_view->prefetch_markup();
 		self::assertTrue( $actual_1 );
 	}
+
 
 }

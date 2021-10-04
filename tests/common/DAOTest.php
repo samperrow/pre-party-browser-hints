@@ -129,14 +129,14 @@ final class DAOTest extends TestCase {
 	public function test_insert_hint() {
 		$hint_builder = new \PPRH\HintBuilder();
 
-		$hint_1 = \PPRH\Utils\Utils::create_raw_hint( 'https://www.asdf.com/foozball', 'preconnect', '', '', '', '', '','2145' );
+		$hint_1 = PPRH\HintBuilder::create_raw_hint( 'https://www.asdf.com/foozball', 'preconnect', '', '', '', '', '','2145' );
 		$new_hint_1 = $hint_builder->create_pprh_hint($hint_1);
 		$actual_1 = self::$dao->insert_hint( $new_hint_1 );
 		self::assertTrue( $actual_1['success'] );
 	}
 
 	public function test_update_hint() {
-		$new_hint = \PPRH\Utils\Utils::create_raw_hint( 'https://www.asdf2.com/foozball/blah.css', 'dns-prefetch', 'font', 'font/woff2', '');
+		$new_hint = \PPRH\HintBuilder::create_raw_hint( 'https://www.asdf2.com/foozball/blah.css', 'dns-prefetch', 'font', 'font/woff2', '');
 		$actual_1 = self::$dao->update_hint( $new_hint, 10 );
 		self::assertTrue( $actual_1['success'] );
 	}

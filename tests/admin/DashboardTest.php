@@ -15,7 +15,6 @@ class DashboardTest extends TestCase {
 	}
 
 	public function test_check_to_upgrade() {
-
 		$actual_1 = self::$dashboard->plugin_upgrade_notice( '1.7.7', '1.7.6.3' );
 		self::assertTrue( $actual_1 );
 
@@ -34,7 +33,6 @@ class DashboardTest extends TestCase {
 
 		$actual_2 = self::$dashboard->show_plugin_dashboard( 0 );
 		self::assertTrue( $actual_2 );
-
 
 		unset( $_SERVER['REQUEST_URI'] );
 	}

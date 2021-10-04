@@ -67,8 +67,6 @@ class Pre_Party_Browser_Hints {
 			include_once 'includes/client/ClientAjaxInit.php';
 			$client_ajax_init = new ClientAjaxInit();
 		}
-
-//		\add_filter( 'pre_set_site_transient_update_plugins', array( $this, 'plugin_updater' ), 10, 1 );
 	}
 
 	private function load_common_files() {
@@ -148,10 +146,10 @@ class Pre_Party_Browser_Hints {
 	private static function load_plugin_files( bool $is_admin ) {
 		if ( $is_admin ) {
 			include_once 'includes/admin/LoadAdmin.php';
-			include_once 'includes/admin/Updater.php';
 			include_once 'includes/admin/Dashboard.php';
-			include_once 'includes/admin/views/SettingsView.php';
-			include_once 'includes/admin/views/SettingsSave.php';
+			include_once 'includes/admin/settings/SettingsUtils.php';
+			include_once 'includes/admin/settings/SettingsView.php';
+			include_once 'includes/admin/settings/SettingsSave.php';
 			include_once 'includes/admin/views/FAQ.php';
 			include_once 'includes/admin/NewHint.php';
 			include_once 'includes/admin/DisplayHints.php';
@@ -162,16 +160,6 @@ class Pre_Party_Browser_Hints {
 			include_once 'includes/client/LoadClient.php';
 			include_once 'includes/client/SendHints.php';
 		}
-	}
-
-	public function plugin_updater( $transient ) {
-		if ( empty( $transient->checked ) ) {
-			return $transient;
-		}
-
-		include_once 'includes/admin/Updater.php';
-		$updater = new Updater();
-		return $updater->init( $transient );
 	}
 
 }

@@ -29,7 +29,7 @@ class HintBuilder {
 			return array();
 		}
 
-		$file_type    = Utils::get_file_type( $url );
+		$file_type    = self::get_file_type( $url );
 		$as_attr      = $raw_hint['as_attr'] ?? '';
 		$media_attr   = $raw_hint['media'] ?? '';
 		$auto_created = $raw_hint['auto_created'] ?? 0;
@@ -39,7 +39,7 @@ class HintBuilder {
 		$crossorigin  = $this->set_crossorigin( $raw_hint, $file_type );
 		$media        = Sanitize::strip_bad_chars( $media_attr );
 
-		$new_hint = Utils::create_raw_hint( $url, $hint_type, $auto_created, $as_attr, $type_attr, $crossorigin, $media );
+		$new_hint = self::create_raw_hint( $url, $hint_type, $auto_created, $as_attr, $type_attr, $crossorigin, $media );
 		$new_hint['current_user'] = \wp_get_current_user()->display_name ?? '';
 
 		return apply_filters( 'pprh_append_hint', $new_hint, $raw_hint );
@@ -158,6 +158,46 @@ class HintBuilder {
     	);
 
 		return $types;
+	}
+
+
+
+
+	/**
+	 * Hint utils
+	 */
+	public static function create_raw_hint( $url, $hint_type, $auto_created = 0, $as_attr = '', $type_attr = '', $crossorigin = '', $media = '', $post_id = null, $op_code = null ):array {
+		$hint = array(
+			'url'          => $url,
+			'hint_type'    => $hint_type,
+			'auto_created' => $auto_created,
+			'as_attr'      => $as_attr,
+			'type_attr'    => $type_attr,
+			'crossorigin'  => $crossorigin,
+			'media'        => $media
+		);
+
+		$hint['current_user'] = \wp_get_current_user()->display_name ?? '';
+
+		if ( isset( $post_id ) ) {
+			$hint['post_id'] = $post_id;
+		}
+
+		if ( isset( $op_code ) ) {
+			$hint['op_code'] = $op_code;
+		}
+
+		return $hint;
+	}
+
+	public static function get_file_type( string $url ):string {
+		$basename = pathinfo( $url )['basename'];
+
+		if ( str_contains( $basename, '?' ) ) {
+			$basename = explode( '?', $basename )[0];
+		}
+
+		return strrchr( $basename, '.' );
 	}
 
 }
