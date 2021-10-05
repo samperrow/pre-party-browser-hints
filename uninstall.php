@@ -24,7 +24,5 @@ function pprh_uninstall_plugin() {
 	\delete_option( 'pprh_preconnect_autoload' );
 	\delete_option( 'pprh_preconnect_set' );
 
-	\delete_option( 'pprh_debug_enabled' );
-
 	\delete_option( 'pprh_version' );
 }

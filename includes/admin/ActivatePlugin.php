@@ -46,7 +46,6 @@ class ActivatePlugin {
 		// general settings
 		\add_option( 'pprh_disable_wp_hints', 'true', '', 'yes' );
 		\add_option( 'pprh_html_head', 'true', '', 'yes' );
-		\add_option( 'pprh_debug_enabled', 'false' );
 
 		// prefetch
 		\add_option( 'pprh_prefetch_disableForLoggedInUsers', 'true', '', 'yes' );

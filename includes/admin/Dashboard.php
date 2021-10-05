@@ -2,7 +2,7 @@
 
 namespace PPRH;
 
-use PPRH\Utils\Utils;
+use PPRH\Utils;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -17,7 +17,7 @@ class Dashboard {
 	}
 
 	public function default_admin_notice() {
-		Utils::show_notice( '', true );
+		Utils\Utils::show_notice( '', true );
 	}
 
 	public function show_plugin_dashboard( int $plugin_page ) {
@@ -69,12 +69,12 @@ class Dashboard {
 
         $new_version = PPRH_VERSION_NEW;
         $msg = "Version $new_version Upgrade Notes: 1) Fixed URL encoding issue.";
-        Utils::show_notice( $msg, true );
+        Utils\Utils::show_notice( $msg, true );
 		$activate_plugin = new ActivatePlugin();
 		$activate_plugin->upgrade_plugin();
 
 		if ( $activate_plugin->plugin_activated ) {
-			Utils::update_option( 'pprh_version', $new_version );
+			Utils\Utils::update_option( 'pprh_version', $new_version );
 		}
 
 		return true;
@@ -126,9 +126,9 @@ class Dashboard {
 
 	public function send_support_email( string $email_address, string $text ) {
 		$msg  = "From: $email_address";
-		$msg .= Utils::get_debug_info();
+		$msg .= Utils\Debug::get_debug_info();
 		$msg .= "\nMessage: $text";
-		Utils::send_email( 'sam.perrow399@gmail.com', 'Pre Party User Message', $msg );
+		\wp_mail( PPRH_EMAIL, 'Pre Party User Message', $msg );
 	}
 
 }

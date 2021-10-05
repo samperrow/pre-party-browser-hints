@@ -71,8 +71,9 @@ class Pre_Party_Browser_Hints {
 
 	private function load_common_files() {
 		include_once 'includes/common/Compatibility.php';
-		include_once 'includes/common/Utils.php';
-		include_once 'includes/common/Sanitize.php';
+		include_once 'includes/utils/Utils.php';
+		include_once 'includes/utils/Sanitize.php';
+		include_once 'includes/utils/Debug.php';
 		include_once 'includes/common/HintController.php';
 		include_once 'includes/common/HintBuilder.php';
 	}

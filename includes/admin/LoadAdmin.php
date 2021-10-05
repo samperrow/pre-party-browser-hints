@@ -2,7 +2,7 @@
 
 namespace PPRH;
 
-use \PPRH\Utils\Utils;
+//use \PPRH\Utils\Utils;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -22,7 +22,6 @@ class LoadAdmin {
 			\add_filter( 'set-screen-option', array( $this, 'pprh_set_screen_option' ), 10, 3 );
 			$this->load_common_content();
 			\apply_filters( 'pprh_load_pro_admin', $this->plugin_page );
-			$this->check_debug_email();
 		}
 	}
 
@@ -52,21 +51,6 @@ class LoadAdmin {
 
 		$dashboard = new Dashboard();
 		$dashboard->show_plugin_dashboard( $this->plugin_page );
-	}
-
-	public function check_debug_email() {
-		$transient_name        = 'pprh_debug_logger';
-		$transient_expire_time = (int) \get_option( "_transient_timeout_$transient_name" );
-		$time_now              = time();
-
-		if ( $time_now >= $transient_expire_time ) {
-			$error = \get_option( "_transient_$transient_name" );
-
-			if ( ! empty( $error ) ) {
-				Utils::send_email( PPRH_EMAIL, 'Error', $transient_name );
-				\delete_transient( $transient_name );
-			}
-		}
 	}
 
 	public function screen_option() {

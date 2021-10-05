@@ -118,10 +118,6 @@ class DAO {
 			$results = $wpdb->get_results( $wpdb->prepare( $sql, $url, $hint_type ), ARRAY_A );
 		}
 
-		if ( ! $wpdb->result ) {
-			Utils::log_error( $wpdb->last_error );
-		}
-
 		return $results;
 	}
 
@@ -185,10 +181,6 @@ class DAO {
 			$results = $wpdb->get_results( $query['sql'], ARRAY_A );
 		}
 
-		if ( ! $wpdb->result ) {
-			Utils::log_error( $wpdb->last_error );
-		}
-
 		return $results;
 	}
 
@@ -207,10 +199,6 @@ class DAO {
 				$ms_table_name = $wpdb->base_prefix . $ms_blog_id->blog_id . '_pprh_table';
 				$ms_table_names[] = $ms_table_name;
 			}
-		}
-
-		if ( ! $wpdb->result ) {
-			Utils::log_error( $wpdb->last_error );
 		}
 
 		return $ms_table_names;
@@ -239,10 +227,6 @@ class DAO {
         ) $charset;";
 
 		dbDelta( $sql, true );
-
-		if ( ! $wpdb->result ) {
-			Utils::log_error( $wpdb->last_error );
-		}
 	}
 
 	public static function delete_auto_created_hints( string $hint_type, string $post_id ):bool {
@@ -266,7 +250,6 @@ class DAO {
 		$success = ( is_bool( $wpdb->result ) ) ? $wpdb->result : false;
 
 		if ( ! $success ) {
-			Utils::log_error( $wpdb->last_error );
 			return false;
 		}
 
@@ -336,10 +319,6 @@ class DAO {
 	// utils
 	public function handle_wpdb_result( $wpdb_result, $wpdb_last_error, array $new_hint = array() ):array {
 		$success = ( is_bool( $wpdb_result ) ) ? $wpdb_result : false;
-
-		if ( ! $success && ! empty( $wpdb_last_error ) ) {
-			Utils::log_error( $wpdb_last_error );
-		}
 
 		return array(
 			'success' => $success,
