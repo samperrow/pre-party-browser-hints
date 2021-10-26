@@ -26,7 +26,7 @@ class HintBuilderTest extends TestCase {
 		$expected_2 = \PPRH\HintBuilder::create_raw_hint( 'https://espn.com/asdf/script.js', 'preload', 0, 'script', 'text/javascript', '', '' );
 		self::assertSame( $expected_2, $actual_2 );
 
-		$url_1 = 'https://sphacks.local/wp-content/themes/sphacks/images/icons/newspaper.woff?19';
+		$url_1 = 'https://sptrix.local/wp-content/themes/sptrix/images/icons/newspaper.woff?19';
 
 		$test1 = \PPRH\HintBuilder::create_raw_hint( 'https://www.espn.com', 'dns-prefetch' );
 		$expected_1 = self::$hint_builder->create_pprh_hint($test1);
@@ -114,7 +114,7 @@ class HintBuilderTest extends TestCase {
 		$actual_3 = self::$hint_builder::get_file_type( 'https://fonts.gstatic.com/s/raleway/v14/1Ptrg8zYS_SKggPNwK4vWqZPANqczVs.woff2' );
 		self::assertSame( '.woff2', $actual_3 );
 
-		$actual_4 = self::$hint_builder::get_file_type( 'https://sphacks.local/wp-content/uploads/2021/04/cropped-cropped-fish-32x32.png' );
+		$actual_4 = self::$hint_builder::get_file_type( 'https://sptrix.local/wp-content/uploads/2021/04/cropped-cropped-fish-32x32.png' );
 		self::assertSame( '.png', $actual_4 );
 
 		$actual_5 = self::$hint_builder::get_file_type( 'https://fonts.googleapis.com/css?family=Lato:300,300i,700,700i,900,400%7CPacifico:400&subset=latin,latin-ext&display=auto' );

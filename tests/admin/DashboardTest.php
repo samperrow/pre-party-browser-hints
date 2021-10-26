@@ -26,7 +26,7 @@ class DashboardTest extends TestCase {
 	}
 
 	public function test_show_plugin_dashboard() {
-		$_SERVER['REQUEST_URI'] = 'https://sphacks.local/wp-admin/admin.php?page=pprh-plugin-settings';
+		$_SERVER['REQUEST_URI'] = 'https://sptrix.local/wp-admin/admin.php?page=pprh-plugin-settings';
 
 		$actual_1 = \has_action( 'pprh_notice' );
 		self::assertTrue( $actual_1 );

@@ -16,7 +16,7 @@ declare(strict_types=1);
  *
  * last edited September 28, 2021
  *
- * Copyright 2016  Sam Perrow  (email : info@sphacks.io)
+ * Copyright 2016  Sam Perrow  (email : info@sptrix.com)
  *
  */
 
@@ -84,7 +84,7 @@ class Pre_Party_Browser_Hints {
 		$postmeta_table = $wpdb->prefix . 'postmeta';
 		$post_table     = $wpdb->prefix . 'posts';
 		$site_url       = \get_option( 'siteurl' );
-		$in_dev_testing = str_contains( $site_url, 'sphacks.local' );
+		$in_dev_testing = str_contains( $site_url, 'sptrix.local' );
 		$unit_testing   = defined( 'PPRH_UNIT_TESTING' ) && PPRH_UNIT_TESTING;
 
 		if ( ! defined( 'PPRH_DB_TABLE' ) ) {
@@ -98,7 +98,7 @@ class Pre_Party_Browser_Hints {
 			define( 'PPRH_SITE_URL', $site_url );
 			define( 'PPRH_IN_DEV', $in_dev_testing );
 			define( 'PPRH_RUNNING_UNIT_TESTS', $unit_testing );
-			define( 'PPRH_EMAIL', 'info@sphacks.io' );
+			define( 'PPRH_EMAIL', 'info@sptrix.com' );
 		}
 
 		if ( ! defined( 'PPRH_VERSION_NEW' ) ) {

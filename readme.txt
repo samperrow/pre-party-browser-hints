@@ -336,4 +336,4 @@ Nov 3, 2016:
 
 1. [Support Forum](https://wordpress.org/support/plugin/pre-party-browser-hints)
 
-2. Send me an email at info@sphacks.io
+2. Send me an email at info@sptrix.com

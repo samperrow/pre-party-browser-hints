@@ -431,8 +431,8 @@
 	// 		let windowWidth = window.innerWidth;
 	// 		// let windowHeight = window.innerHeight;
 	// 		// let leftSpace = (windowWidth - 700) / 2;
-	// 		// // window.open( 'https://sphacks.io/checkout', '_blank', '', false );
-	// 		window.open( 'https://sphacks.io/checkout', '_blank', 'height=850,scrollbars=yes,width=700', false );
+	// 		// // window.open( 'https://sptrix.com/checkout', '_blank', '', false );
+	// 		window.open( 'https://sptrix.com/checkout', '_blank', 'height=850,scrollbars=yes,width=700', false );
 	// 	}
 	// }
 
