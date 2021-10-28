@@ -34,14 +34,21 @@ class HintController extends DAO {
 	private function db_controller( int $op_code, array $raw_data, $hint_ids = null ):\stdClass {
 		if ( $op_code < 2 ) {
 			$result = $this->insert_or_update_hint( $op_code, $raw_data, $hint_ids );
-		} elseif ( $op_code === 2 ) {
+
+			if ( \PPRH\Utils\Utils::isSetAndNotEmpty( $result, 'new_hint' ) ) {
+				return self::create_db_result( true, $op_code, 0, $result['new_hint'] );
+			}
+
+			return self::create_db_result( false, $op_code, 0 );
+		}
+
+		if ( $op_code === 2 ) {
 			$result = $this->delete_hint( $hint_ids );
 		} else {
 			$result = $this->bulk_update( $hint_ids, $op_code );
 		}
 
-		$new_hint = $result['new_hint'] ?? array();
-		return self::create_db_result( $result['success'], $op_code, 0, $new_hint );
+		return self::create_db_result( $result['success'], $op_code, 0 );
 	}
 
 	private function insert_or_update_hint( int $op_code, array $raw_data, $hint_ids = null ):array {

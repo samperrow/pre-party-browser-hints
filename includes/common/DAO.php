@@ -259,12 +259,12 @@ class DAO {
 	/**
 	 * UTIL methods below
 	 */
-	public static function create_db_result( bool $success, int $op_code, int $success_code, array $new_hint = null ):\stdClass {
+	public static function create_db_result( bool $success, int $op_code, int $success_code, array $new_hint = array() ):\stdClass {
 		$msg = self::get_msg( $success, $op_code, $success_code );
 		$msg .= ' If you have an active caching system, it is recommended that you clear your cache if you are having difficulty viewing these changes.';
 
 		return (object) array(
-			'new_hint'  => $new_hint ?? null,
+			'new_hint'  => $new_hint,
 			'db_result' => array(
 				'msg'    => $msg,
 				'status' => $success,

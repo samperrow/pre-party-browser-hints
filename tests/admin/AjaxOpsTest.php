@@ -76,6 +76,13 @@ final class AjaxOpsTest extends TestCase {
 		$expected_2 = \PPRH\DAO::create_db_result(true, 5, 0, array() );
 		self::assertGreaterThan( 2, $actual_2['result']->new_hint );
 		self::assertEquals( $expected_2->db_result, $actual_2['result']->db_result );
+
+		// Sitemap page.
+		$test_data_3 = array( 'action' => 'reset_post_prerender', 'post_id' => '2128' );
+		$actual_3 = self::$ajax_ops->update_hints( $test_data_3 );
+		$expected_3 = \PPRH\DAO::create_db_result(true, 7, 0, array() );
+		self::assertGreaterThan( 2, $actual_3['result']->new_hint );
+		self::assertEquals( $expected_3->db_result, $actual_3['result']->db_result );
 	}
 
 }

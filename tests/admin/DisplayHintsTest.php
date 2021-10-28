@@ -66,13 +66,13 @@ final class DisplayHintsTest extends TestCase {
 	public function test_ajax_response() {
 		// not doing ajax.
 		$display_hints_1 = new \PPRH\DisplayHints( false, 0 );
-		$db_result_1 = \PPRH\DAO::create_db_result( true, 0, 0, null );
+		$db_result_1 = \PPRH\DAO::create_db_result( true, 0, 0 );
 		$actual_1 = $display_hints_1->ajax_response( $db_result_1 );
 		self::assertCount( 7, $actual_1 );
 
 		// doing ajax.
 		$display_hints_2 = new \PPRH\DisplayHints( true, 0 );
-		$db_result_2 = \PPRH\DAO::create_db_result( true, 0, 0, null );
+		$db_result_2 = \PPRH\DAO::create_db_result( true, 0, 0 );
 		$actual_2 = $display_hints_2->ajax_response( $db_result_2 );
 		self::assertCount( 7, $actual_2 );
 	}

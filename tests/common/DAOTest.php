@@ -17,28 +17,28 @@ final class DAOTest extends TestCase {
 	}
 
 	public function test_create_db_result() {
-		$actual_1 = \PPRH\DAO::create_db_result( true, 0, 0, null );
+		$actual_1 = \PPRH\DAO::create_db_result( true, 0, 0 );
 		self::assertTrue( $actual_1->db_result['status'] );
 
-		$actual_2 = \PPRH\DAO::create_db_result(false, 0, 0, null );
+		$actual_2 = \PPRH\DAO::create_db_result(false, 0, 0 );
 		self::assertFalse( $actual_2->db_result['status'] );
 
-		$actual_3 = \PPRH\DAO::create_db_result(true, 1, 0, null );
+		$actual_3 = \PPRH\DAO::create_db_result(true, 1, 0 );
 		self::assertTrue( $actual_3->db_result['status'] );
 
-		$actual_4 = \PPRH\DAO::create_db_result(true, 4, 0, null );
+		$actual_4 = \PPRH\DAO::create_db_result(true, 4, 0 );
 		self::assertTrue( $actual_4->db_result['status'] );
 
-		$actual_6 = \PPRH\DAO::create_db_result(false, 5, 1, null );
+		$actual_6 = \PPRH\DAO::create_db_result(false, 5, 1 );
 		self::assertFalse( $actual_6->db_result['status'] );
 
-		$actual_9 = \PPRH\DAO::create_db_result(true, 7, 0, null );
+		$actual_9 = \PPRH\DAO::create_db_result(true, 7, 0 );
 		self::assertTrue( $actual_9->db_result['status'] );
 
-		$actual_10 = \PPRH\DAO::create_db_result(true, 7, 1, null );
+		$actual_10 = \PPRH\DAO::create_db_result(true, 7, 1 );
 		self::assertTrue( $actual_10->db_result['status'] );
 
-		$actual_11 = \PPRH\DAO::create_db_result(false, 7, 2, null );
+		$actual_11 = \PPRH\DAO::create_db_result(false, 7, 2 );
 		self::assertFalse( $actual_11->db_result['status'] );
 	}
 
