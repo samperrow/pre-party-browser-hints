@@ -40,6 +40,10 @@ class Utils {
 		return json_decode( $json, true );
 	}
 
+	public static function update_post_meta( int $post_id, string $metakey, $metadata ):bool {
+		return PPRH_RUNNING_UNIT_TESTS || \update_post_meta( $post_id, $metakey, $metadata );
+	}
+
 	public static function update_option( string $option, $value, $autoload = 'yes' ):bool {
 		return PPRH_RUNNING_UNIT_TESTS || \update_option( $option, $value, $autoload );
 	}
@@ -54,6 +58,10 @@ class Utils {
 
 	public static function isArrayAndNotEmpty( $arr ):bool {
 		return ( is_array( $arr ) && ! empty( $arr ) );
+	}
+
+	public static function isSetAndNotEmpty( $item, $prop ):bool {
+		return ( isset( $item[$prop] ) && ! empty( $item[$prop] ) );
 	}
 
 	public static function isObjectAndNotEmpty( $obj ):bool {

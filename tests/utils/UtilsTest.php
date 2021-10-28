@@ -30,6 +30,18 @@ final class UtilsTest extends TestCase {
 		self::assertTrue( $actual_6 );
 	}
 
+	public function test_isSetAndNotEmpty() {
+		$arr = array( 'test' => '', 'asdf' => 'true' );
+		$actual_1 = Utils::isSetAndNotEmpty( $arr, 'thing' );
+		self::assertFalse( $actual_1 );
+
+		$actual_2 = Utils::isSetAndNotEmpty( $arr, 'test' );
+		self::assertFalse( $actual_2 );
+
+		$actual_3 = Utils::isSetAndNotEmpty( $arr, 'asdf' );
+		self::assertTrue( $actual_3 );
+	}
+
 	public function test_isObjectAndNotEmpty() {
 		$actual_1 = Utils::isObjectAndNotEmpty( (object) array() );
 		self::assertFalse( $actual_1 );

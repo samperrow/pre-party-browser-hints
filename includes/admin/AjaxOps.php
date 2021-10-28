@@ -25,21 +25,13 @@ class AjaxOps {
 			\check_ajax_referer( 'pprh_table_nonce', 'nonce' );
 
 			$pprh_data          = Utils::json_to_array( $_POST['pprh_data'] );
-			$ajax_response      = $this->priv_update_hints( $pprh_data );
+			$ajax_response      = $this->update_hints( $pprh_data );
 			$is_proper_response = $this->is_proper_response( $ajax_response );
 
 			$response = ( $is_proper_response ) ? $ajax_response : array( 'error' => "Error parsing request: $pprh_data. Please contact support to resolve this issue." );
 			$json = json_encode( $response );
 			\wp_die( $json );
 		}
-	}
-
-	private function priv_update_hints( $pprh_data ):array {
-		if ( Utils::isArrayAndNotEmpty( $pprh_data ) ) {
-			return $this->update_hints( $pprh_data );
-		}
-
-		return array();
 	}
 
 	public function update_hints( array $pprh_data ):array {
