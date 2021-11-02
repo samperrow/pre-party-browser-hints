@@ -184,6 +184,16 @@ class DAO {
 		return $results;
 	}
 
+	public function get_all_db_tables( bool $is_multisite ) {
+		$db_tables = array();
+
+		if ( $is_multisite ) {
+			$db_tables = $this->get_multisite_tables();
+		}
+
+		$db_tables[] = PPRH_DB_TABLE;
+		return $db_tables;
+	}
 
 	public function get_multisite_tables() {
 		global $wpdb;
