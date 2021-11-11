@@ -163,4 +163,12 @@ class Pre_Party_Browser_Hints {
 		}
 	}
 
+	public function check_plugin_update() {
+		include_once 'includes/admin/PluginUpdater.php';
+		$update_path = 'https://sptrix.com/wp-content/pprh/updater-main.json';
+		$plugin_file = 'pre-party-browser-hints/pre-party-browser-hints.php';
+		$plugin_slug = 'pre-party-browser-hints';
+		$plugin_updater = new PluginUpdater( PPRH_VERSION, $update_path, $plugin_file, $plugin_slug );
+	}
+
 }
