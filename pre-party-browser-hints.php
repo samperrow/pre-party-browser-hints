@@ -14,7 +14,7 @@ declare(strict_types=1);
  * Text Domain:       pre-party-browser-hints
  * Domain Path:       /languages
  *
- * Last edited November 1, 2021
+ * Last edited November 16, 2021
  *
  * Copyright 2016  Sam Perrow  (email : info@sptrix.com)
  *
@@ -142,7 +142,6 @@ class Pre_Party_Browser_Hints {
 		$load_client = new LoadClient();
 		$load_client->init( self::$preconnect_enabled );
 	}
-
 
 	private static function load_plugin_files( bool $is_admin ) {
 		if ( $is_admin ) {
