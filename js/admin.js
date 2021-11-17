@@ -418,23 +418,18 @@
 		return (typeof obj === "object" && obj !== null);
 	}
 
-	// checkoutModals();
-	// function checkoutModals() {
-	// 	let checkoutModalElems = document.getElementsByClassName('pprhOpenCheckoutModal');
-	// 	if (isObjectAndNotNull(checkoutModalElems)) {
-	// 		for (const checkoutModalElem of checkoutModalElems) {
-	// 			checkoutModalElem.addEventListener('click', openCheckoutModal);
-	// 		}
-	// 	}
-	//
-	// 	function openCheckoutModal() {
-	// 		let windowWidth = window.innerWidth;
-	// 		// let windowHeight = window.innerHeight;
-	// 		// let leftSpace = (windowWidth - 700) / 2;
-	// 		// // window.open( 'https://sptrix.com/checkout', '_blank', '', false );
-	// 		window.open( 'https://sptrix.com/checkout', '_blank', 'height=850,scrollbars=yes,width=700', false );
-	// 	}
-	// }
+	checkoutModals();
+	function checkoutModals() {
+		let checkoutModalElems = document.getElementsByClassName('pprhOpenCheckoutModal');
+
+		if (isObjectAndNotNull(checkoutModalElems)) {
+			for (const checkoutModalElem of checkoutModalElems) {
+				checkoutModalElem.addEventListener('click', function() {
+					window.open( 'https://sptrix.com/checkout', '_blank', 'height=850,scrollbars=yes,width=700', false );
+				});
+			}
+		}
+	}
 
 
 	return {

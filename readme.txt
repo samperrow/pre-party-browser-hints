@@ -4,7 +4,7 @@ Donate link: https://www.paypal.me/samperrow
 Tags: W3C, DNS prefetch, prerender, preconnect, prefetch, preload, web perf, performance, speed, resource hints
 Requires at least: 4.4
 Tested up to: 5.8.3
-Stable tag: 1.8.0
+Stable tag: 1.8.1
 Requires PHP: 7.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -75,10 +75,11 @@ To activate the preloaded resource, you must call that file in HTML as you would
 
 == Changelog ==
 1. Most recent update: November 16, 2021.
-2. Version 1.8.0
+2. Version 1.8.1
 
 Nov 16, 2021:
-1) releasing the version that allows for the additional upgrade to Pre* Party Pro.
+1) Adding compatibility for Pre* Party Pro. When activated, the Pro version allows for resource hints to be added to specific posts, automatically generated prerender, preconnect, and preload hints for each post.
+2) Improved plugin architecture also.
 
 Sept 7, 2021:
 1) Changed minimum role capability required to use this plugin from "update_plugins" to "manage_options" to address a plugin compatibliity error ("Disable All WordPress Updates").

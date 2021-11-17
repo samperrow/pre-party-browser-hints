@@ -141,7 +141,7 @@ class LoadAdmin {
 		if ( is_string( $load_metabox ) ) {
 			?>
             <div style="text-align: center; max-width: 800px; margin: 0 auto;">
-                <h3><?php \esc_html_e( 'This feature is only available after upgrading to the Pro version.', 'pre-party-browser-hints' ); ?></h3>
+                <h3><?php \esc_html_e( 'Upgrade to Pre Party* Pro for just $9 to enjoy these features!', 'pre-party-browser-hints' ); ?></h3>
                 <p><?php \esc_html_e( 'The Auto Preload feature will automatically create the proper preload hints for your entire site automatically, for each post on your website.', 'pre-party-browser-hints' ); ?></p>
                 <input type="button" class="pprhOpenCheckoutModal button button-primary" value="Purchase License"/>
             </div>
@@ -156,7 +156,7 @@ class LoadAdmin {
 		if ( is_string( $load_metabox ) ) {
 			?>
 			<div style="text-align: center; max-width: 800px; margin: 0 auto;">
-				<h3><?php \esc_html_e( 'This feature is only available after upgrading to the Pro version.', 'pre-party-browser-hints' ); ?></h3>
+				<h3><?php \esc_html_e( 'Upgrade to Pre Party* Pro for just $9 to enjoy these features!', 'pre-party-browser-hints' ); ?></h3>
 				<p><?php \esc_html_e( 'The Auto Prerender feature will automatically create the proper prerender hints, for each post on your website.
 		This feature works by implementing custom analytics to determine which page a visitor is most likely to navigate towards after from a given page, and a prerender hint is created pointing to that destination.
 		The prerender hint allows a visitor to download an entire webpage in the background, allowing the page to load instantly.
