@@ -10,14 +10,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class DAO {
 
-	private static $table = PPRH_DB_TABLE;
-
-//	public function __construct() {}
-
 	public function insert_hint( array $new_hint ) {
 		global $wpdb;
+		$table = PPRH_DB_TABLE;
+
 		$args = array(
-			'types'   => array( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' ),
+			'types'   => array( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d' ),
 			'columns' => array(
 				'url'          => $new_hint['url'],
 				'hint_type'    => $new_hint['hint_type'],
@@ -25,8 +23,8 @@ class DAO {
 				'as_attr'      => $new_hint['as_attr'] ?? '',
 				'type_attr'    => $new_hint['type_attr'] ?? '',
 				'crossorigin'  => $new_hint['crossorigin'] ?? '',
-				'created_by'   => $new_hint['current_user'] ?? '',
 				'media'        => $new_hint['media'] ?? '',
+				'created_by'   => $new_hint['current_user'] ?? '',
 				'auto_created' => $new_hint['auto_created'] ?? 0
 			)
 		);
@@ -37,7 +35,7 @@ class DAO {
 			return $this->handle_wpdb_result( true, '', $new_hint );
 		}
 
-		$wpdb->insert( PPRH_DB_TABLE, $args['columns'], $args['types'] );
+		$wpdb->insert( $table, $args['columns'], $args['types'] );
 
 		if ( isset( $wpdb->insert_id ) && $wpdb->insert_id > 0 ) {
 			$new_hint['id'] = $wpdb->insert_id;
@@ -52,13 +50,14 @@ class DAO {
 		$hint_id      = (int) $hint_ids;
 		$current_user = \wp_get_current_user()->display_name;
 		$hint_arg = array(
-			'url'         => $new_hint['url'],
-			'hint_type'   => $new_hint['hint_type'],
-			'as_attr'     => $new_hint['as_attr'],
-			'type_attr'   => $new_hint['type_attr'],
-			'crossorigin' => $new_hint['crossorigin'],
-			'media'       => $new_hint['media'],
-			'created_by'  => $current_user
+			'url'          => $new_hint['url'],
+			'hint_type'    => $new_hint['hint_type'],
+			'as_attr'      => $new_hint['as_attr'],
+			'type_attr'    => $new_hint['type_attr'],
+			'crossorigin'  => $new_hint['crossorigin'],
+			'media'        => $new_hint['media'],
+			'created_by'   => $current_user,
+			'auto_created' => 0
 		);
 		$where    = array( 'id' => $hint_id );
 		$type_arg = array( '%s', '%s', '%s', '%s', '%s' );

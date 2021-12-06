@@ -11,7 +11,7 @@ class Debug {
 
 	public static function get_debug_info():string {
 		$browser = self::get_browser();
-		$text    = "DEBUG INFO: \n";
+		$text    = "\n\nDEBUG INFO: \n";
 		$data = array(
 			'Datetime'     => Utils::get_current_datetime(),
 			'PHP Version'  => PHP_VERSION,
@@ -22,7 +22,7 @@ class Debug {
 		);
 
 		foreach ( $data as $item => $val ) {
-			$text .= "$item: $val; ";
+			$text .= "$item: $val; \n";
 		}
 
 		return $text;
