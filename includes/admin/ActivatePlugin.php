@@ -94,11 +94,10 @@ class ActivatePlugin {
 
 	// Multisite install/delete db table.
 	private function setup_tables() {
-		$dao         = new DAO();
-		$pprh_tables = $dao->get_all_db_tables( \is_multisite() );
+		$pprh_tables = \PPRH\DAO::get_all_db_tables( \is_multisite() );
 
 		foreach ( $pprh_tables as $pprh_table ) {
-			$dao->create_table( $pprh_table );
+			\PPRH\DAO::create_table( $pprh_table );
 		}
 	}
 

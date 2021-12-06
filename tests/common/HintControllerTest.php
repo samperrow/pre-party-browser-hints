@@ -24,7 +24,7 @@ class HintControllerTest extends TestCase {
 		$raw_data_1 = \PPRH\HintBuilder::create_raw_hint( 'test.com', 'dns-prefetch', '', '', '', 'crossorigin', '' );
 		$raw_data_1['op_code'] = 1;
 		$actual_1 = self::$hint_ctrl->hint_ctrl_init( $raw_data_1 );
-		$expected_1 = \PPRH\DAO::create_db_result( true, $raw_data_1['op_code'], 0, $actual_1->new_hint );
+		$expected_1 = \PPRH\DAO::create_db_result( '', true, $raw_data_1['op_code'], $actual_1->new_hint );
 		self::assertEquals($expected_1, $actual_1);
 
 		// update_hint
@@ -32,25 +32,25 @@ class HintControllerTest extends TestCase {
 		$raw_data_2['op_code'] = 1;
 		$raw_data_2['hint_ids'] = '100';
 		$actual_2 = self::$hint_ctrl->hint_ctrl_init( $raw_data_2 );
-		$expected_2 = \PPRH\DAO::create_db_result( true, $raw_data_2['op_code'], 0, $actual_2->new_hint );
+		$expected_2 = \PPRH\DAO::create_db_result(  '', true, $raw_data_2['op_code'], $actual_2->new_hint );
 		self::assertEquals($expected_2, $actual_2);
 
 		// delete_hint
 		$raw_data_3 = array('url' => 'test3.com', 'hint_type' => 'preconnect', 'op_code' => 2, 'hint_ids' => '100' );
 		$actual_3 = self::$hint_ctrl->hint_ctrl_init( $raw_data_3 );
-		$expected_3 = \PPRH\DAO::create_db_result( true, $raw_data_3['op_code'], 0, array() );
+		$expected_3 = \PPRH\DAO::create_db_result( '', true, $raw_data_3['op_code'], array() );
 		self::assertEquals($expected_3, $actual_3);
 
 		// bulk_update - enabled status
 		$raw_data_4 = array('url' => 'test4.com', 'hint_type' => 'preconnect', 'op_code' => 3, 'hint_ids' => '105' );
 		$actual_4 = self::$hint_ctrl->hint_ctrl_init( $raw_data_4 );
-		$expected_4 = \PPRH\DAO::create_db_result( true, $raw_data_4['op_code'], 0, array() );
+		$expected_4 = \PPRH\DAO::create_db_result(  '', true, $raw_data_4['op_code'], array() );
 		self::assertEquals($expected_4, $actual_4);
 
 		// bulk_update - disabled status
 		$raw_data_5 = array('url' => 'test5.com', 'hint_type' => 'preconnect', 'op_code' => 4, 'hint_ids' => '110' );
 		$actual_5 = self::$hint_ctrl->hint_ctrl_init( $raw_data_5 );
-		$expected_5 = \PPRH\DAO::create_db_result( true, $raw_data_5['op_code'], 0, array() );
+		$expected_5 = \PPRH\DAO::create_db_result( '', true, $raw_data_5['op_code'], array() );
 		self::assertEquals($expected_5, $actual_5);
 
 		// dup hint exists..

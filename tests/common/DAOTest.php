@@ -16,30 +16,36 @@ final class DAOTest extends TestCase {
 		self::$hint_ctrl = new \PPRH\HintController();
 	}
 
+//	public function test_create_db_result() {
+//		$actual_1 = \PPRH\DAO::create_db_result( true, 0, 0 );
+//		self::assertTrue( $actual_1->db_result['status'] );
+//
+//		$actual_2 = \PPRH\DAO::create_db_result(false, 0, 0 );
+//		self::assertFalse( $actual_2->db_result['status'] );
+//
+//		$actual_3 = \PPRH\DAO::create_db_result(true, 1, 0 );
+//		self::assertTrue( $actual_3->db_result['status'] );
+//
+//		$actual_4 = \PPRH\DAO::create_db_result(true, 4, 0 );
+//		self::assertTrue( $actual_4->db_result['status'] );
+//
+//		$actual_6 = \PPRH\DAO::create_db_result(false, 5, 1 );
+//		self::assertFalse( $actual_6->db_result['status'] );
+//
+//		$actual_9 = \PPRH\DAO::create_db_result(true, 7, 0 );
+//		self::assertTrue( $actual_9->db_result['status'] );
+//
+//		$actual_10 = \PPRH\DAO::create_db_result(true, 7, 1 );
+//		self::assertTrue( $actual_10->db_result['status'] );
+//
+//		$actual_11 = \PPRH\DAO::create_db_result(false, 7, 2 );
+//		self::assertFalse( $actual_11->db_result['status'] );
+//	}
+
 	public function test_create_db_result() {
-		$actual_1 = \PPRH\DAO::create_db_result( true, 0, 0 );
-		self::assertTrue( $actual_1->db_result['status'] );
+		$actual_1 = \PPRH\DAO::create_db_result( '',true, 0,  array() );
+		self::assertTrue($actual_1->db_result['status']);
 
-		$actual_2 = \PPRH\DAO::create_db_result(false, 0, 0 );
-		self::assertFalse( $actual_2->db_result['status'] );
-
-		$actual_3 = \PPRH\DAO::create_db_result(true, 1, 0 );
-		self::assertTrue( $actual_3->db_result['status'] );
-
-		$actual_4 = \PPRH\DAO::create_db_result(true, 4, 0 );
-		self::assertTrue( $actual_4->db_result['status'] );
-
-		$actual_6 = \PPRH\DAO::create_db_result(false, 5, 1 );
-		self::assertFalse( $actual_6->db_result['status'] );
-
-		$actual_9 = \PPRH\DAO::create_db_result(true, 7, 0 );
-		self::assertTrue( $actual_9->db_result['status'] );
-
-		$actual_10 = \PPRH\DAO::create_db_result(true, 7, 1 );
-		self::assertTrue( $actual_10->db_result['status'] );
-
-		$actual_11 = \PPRH\DAO::create_db_result(false, 7, 2 );
-		self::assertFalse( $actual_11->db_result['status'] );
 	}
 
 
@@ -127,31 +133,35 @@ final class DAOTest extends TestCase {
 	}
 
 	public function test_insert_hint() {
+		$dao = new \PPRH\DAO();
 		$hint_builder = new \PPRH\HintBuilder();
 
 		$hint_1 = PPRH\HintBuilder::create_raw_hint( 'https://www.asdf.com/foozball', 'preconnect', '', '', '', '', '','2145' );
 		$new_hint_1 = $hint_builder->create_pprh_hint($hint_1);
 		$actual_1 = self::$dao->insert_hint( $new_hint_1 );
-		self::assertTrue( $actual_1['success'] );
+		self::assertTrue( $actual_1->db_result['status'] );
+		$dao->delete_hint( (string) $actual_1->new_hint['id'] );
+
+
 	}
 
 	public function test_update_hint() {
 		$new_hint = \PPRH\HintBuilder::create_raw_hint( 'https://www.asdf2.com/foozball/blah.css', 'dns-prefetch', 'font', 'font/woff2', '');
 		$actual_1 = self::$dao->update_hint( $new_hint, 10 );
-		self::assertTrue( $actual_1['success'] );
+		self::assertTrue( $actual_1->db_result['status'] );
 	}
 
 	public function test_delete_hint() {
 		$actual_1 = self::$dao->delete_hint( '10' );
-		self::assertTrue( $actual_1['success'] );
+		self::assertTrue( $actual_1->db_result['status'] );
 	}
 
 	public function test_bulk_update() {
 		$actual_1 = self::$dao->bulk_update( '10', 3 );
-		self::assertTrue($actual_1['success']);
+		self::assertTrue( $actual_1->db_result['status'] );
 
 		$actual_2 = self::$dao->bulk_update( '11', 4 );
-		self::assertTrue($actual_2['success']);
+		self::assertTrue( $actual_2->db_result['status'] );
 	}
 
 

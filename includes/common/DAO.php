@@ -2,15 +2,13 @@
 
 namespace PPRH;
 
-use PPRH\Utils\Utils;
-
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
 class DAO {
 
-	public function insert_hint( array $new_hint ) {
+	public function insert_hint( array $new_hint ):\stdClass {
 		global $wpdb;
 		$table = PPRH_DB_TABLE;
 
@@ -31,21 +29,17 @@ class DAO {
 
 		$args = \apply_filters( 'pprh_dao_insert_hint_schema', $args, $new_hint );
 
-		if ( PPRH_RUNNING_UNIT_TESTS ) {
-			return $this->handle_wpdb_result( true, '', $new_hint );
+		try {
+			$wpdb->insert( $table, $args['columns'], $args['types'] );
+			$new_hint['id'] = ( isset( $wpdb->insert_id ) && $wpdb->insert_id > 0 ) ? $wpdb->insert_id : 0;
+			return self::create_db_result( $wpdb->last_error, $wpdb->result, 0, $new_hint );
+		} catch ( \Exception $e ) {
+			return self::create_db_result( $e->getMessage(), false, 0, $new_hint );
 		}
-
-		$wpdb->insert( $table, $args['columns'], $args['types'] );
-
-		if ( isset( $wpdb->insert_id ) && $wpdb->insert_id > 0 ) {
-			$new_hint['id'] = $wpdb->insert_id;
-		}
-
-		return $this->handle_wpdb_result( $wpdb->result, $wpdb->last_error, $new_hint );
 	}
 
 
-	public function update_hint( $new_hint, $hint_ids ) {
+	public function update_hint( $new_hint, $hint_ids ):\stdClass {
 		global $wpdb;
 		$hint_id      = (int) $hint_ids;
 		$current_user = \wp_get_current_user()->display_name;
@@ -62,17 +56,13 @@ class DAO {
 		$where    = array( 'id' => $hint_id );
 		$type_arg = array( '%s', '%s', '%s', '%s', '%s' );
 
-		if ( PPRH_RUNNING_UNIT_TESTS ) {
-			return $this->handle_wpdb_result( true, '', $new_hint );
+		try {
+			$wpdb->update( PPRH_DB_TABLE, $hint_arg, $where, $type_arg, array( '%d' ) );
+			$new_hint['id'] = ( isset( $wpdb->insert_id ) && $wpdb->insert_id > 0 ) ? $wpdb->insert_id : 0;
+			return self::create_db_result( $wpdb->last_error, $wpdb->result, 0, $new_hint );
+		} catch ( \Exception $e ) {
+			return self::create_db_result( $e->getMessage(), false, 0, $new_hint );
 		}
-
-		$wpdb->update( PPRH_DB_TABLE, $hint_arg, $where, $type_arg, array( '%d' ) );
-
-		if ( isset( $wpdb->result ) && $wpdb->insert_id > 0 ) {
-			$new_hint['id'] = $hint_id;
-		}
-
-		return $this->handle_wpdb_result( $wpdb->result, $wpdb->last_error, $new_hint );
 	}
 
 	public function delete_hint( string $hint_ids ) {
@@ -82,10 +72,10 @@ class DAO {
 
 		if ( $valid_hint_id ) {
 			$wpdb->query( "DELETE FROM $pprh_table WHERE id IN ($hint_ids)" );
-			return $this->handle_wpdb_result( $wpdb->result, $wpdb->last_error );
+			return self::create_db_result( $wpdb->last_error, $wpdb->result, 2, array() );
 		}
 
-		return $this->handle_wpdb_result( false, '' );
+		return self::create_db_result( 'Invalid hint ID.', false, 2, array() );
 	}
 
 	public function bulk_update( $hint_ids, $op_code ) {
@@ -93,15 +83,11 @@ class DAO {
 		$pprh_table = PPRH_DB_TABLE;
 		$action = ( 3 === $op_code ) ? 'enabled' : 'disabled';
 
-		if ( PPRH_RUNNING_UNIT_TESTS ) {
-			return $this->handle_wpdb_result( true, '' );
-		}
-
 		$wpdb->query( $wpdb->prepare(
 			"UPDATE $pprh_table SET status = %s WHERE id IN ($hint_ids)", $action )
 		);
 
-		return $this->handle_wpdb_result( $wpdb->result, $wpdb->last_error );
+		return self::create_db_result( $wpdb->last_error, $wpdb->result, $op_code, array() );
 	}
 
 
@@ -183,18 +169,18 @@ class DAO {
 		return $results;
 	}
 
-	public function get_all_db_tables( bool $is_multisite ) {
+	public static function get_all_db_tables( bool $is_multisite ) {
 		$db_tables = array();
 
 		if ( $is_multisite ) {
-			$db_tables = $this->get_multisite_tables();
+			$db_tables = self::get_multisite_tables();
 		}
 
 		$db_tables[] = PPRH_DB_TABLE;
 		return $db_tables;
 	}
 
-	public function get_multisite_tables() {
+	private static function get_multisite_tables() {
 		global $wpdb;
 		$blog_table     = $wpdb->base_prefix . 'blogs';
 		$ms_table_names = array();
@@ -213,7 +199,7 @@ class DAO {
 		return $ms_table_names;
 	}
 
-	public function create_table( $table_name ) {
+	public static function create_table( $table_name ) {
 		global $wpdb;
 		$charset = $wpdb->get_charset_collate();
 
@@ -268,9 +254,10 @@ class DAO {
 	/**
 	 * UTIL methods below
 	 */
-	public static function create_db_result( bool $success, int $op_code, int $success_code, array $new_hint = array() ):\stdClass {
-		$msg = self::get_msg( $success, $op_code, $success_code );
-		$msg .= ' If you have an active caching system, it is recommended that you clear your cache if you are having difficulty viewing these changes.';
+	public static function create_db_result( string $wpdb_last_error, bool $wpdb_result, int $op_code, array $new_hint = array() ):\stdClass {
+		$success = ( empty( $wpdb_last_error ) && $wpdb_result );
+		$msg = self::get_msg( $success, $op_code, 0 );
+		$msg .= ( $success ) ? ' Plear your cache if you are having difficulty viewing these changes.' : " Error: $wpdb_last_error";
 
 		return (object) array(
 			'new_hint'  => $new_hint,
@@ -326,13 +313,31 @@ class DAO {
 	}
 
 	// utils
-	public function handle_wpdb_result( $wpdb_result, $wpdb_last_error, array $new_hint = array() ):array {
-		$success = ( is_bool( $wpdb_result ) ) ? $wpdb_result : false;
+	//	public static function create_db_result( bool $success, int $op_code, int $success_code, array $new_hint = array() ):\stdClass {
+//		$msg = self::get_msg( $success, $op_code, $success_code );
+//		$msg .= ' If you have an active caching system, it is recommended that you clear your cache if you are having difficulty viewing these changes.';
+//
+//		return (object) array(
+//			'new_hint'  => $new_hint,
+//			'db_result' => array(
+//				'msg'    => $msg,
+//				'status' => $success,
+//			)
+//		);
+//	}
 
-		return array(
-			'success' => $success,
-			'new_hint' => $new_hint
-		);
-	}
+//	public function handle_wpdb_result( $wpdb_result, $wpdb_last_error, array $new_hint = array() ):array {
+//		if ( empty( $wpdb_last_error ) && $wpdb_result )  {
+//			$success = true;
+//		} else {
+//			$success = false;
+//		}
+
+//		$success = ( is_bool( $wpdb_result ) ) ? $wpdb_result : false;
+//		return array(
+//			'success'  => $success,
+//			'new_hint' => $new_hint
+//		);
+//	}
 
 }
