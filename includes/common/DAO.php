@@ -59,7 +59,7 @@ class DAO {
 		try {
 			$wpdb->update( PPRH_DB_TABLE, $hint_arg, $where, $type_arg, array( '%d' ) );
 			$new_hint['id'] = ( isset( $wpdb->insert_id ) && $wpdb->insert_id > 0 ) ? $wpdb->insert_id : 0;
-			return self::create_db_result( $wpdb->last_error, $wpdb->result, 0, $new_hint );
+			return self::create_db_result( $wpdb->last_error, $wpdb->result, 1, $new_hint );
 		} catch ( \Exception $e ) {
 			return self::create_db_result( $e->getMessage(), false, 0, $new_hint );
 		}
@@ -271,15 +271,15 @@ class DAO {
 	private static function get_msg( bool $success, int $op_code, int $success_code ):string {
 		$dup_hints_alert    = 'A duplicate hint exists!';
 
-		$preconnect_success = 'Preconnect resource hints were created successfully.';
-		$preconnect_fail    = 'Failed to reset preconnect hint data. Please refresh the page and try again.';
-
-		$preload_success    = 'Preload resource hints were created successfully.';
-		$preload_fail       = 'Failed to reset preload hint data. Please refresh the page and try again.';
-
-		$prerender_single_success   = 'Prerender hint successfully created.';
-		$prerender_multiple_success = 'Prerender hints have been successfully set for all posts with sufficiently available data.';
-		$prerender_no_data          = 'There is not enough analytics data for this page to generate accurate prerender hints yet. Please try again soon.';
+//		$preconnect_success = 'Preconnect resource hints were created successfully.';
+//		$preconnect_fail    = 'Failed to reset preconnect hint data. Please refresh the page and try again.';
+//
+//		$preload_success    = 'Preload resource hints were created successfully.';
+//		$preload_fail       = 'Failed to reset preload hint data. Please refresh the page and try again.';
+//
+//		$prerender_single_success   = 'Prerender hint successfully created.';
+//		$prerender_multiple_success = 'Prerender hints have been successfully set for all posts with sufficiently available data.';
+//		$prerender_no_data          = 'There is not enough analytics data for this page to generate accurate prerender hints yet. Please try again soon.';
 
 		$actions = array(
 			0 => array( 'create', 'created' ),
@@ -287,9 +287,9 @@ class DAO {
 			2 => array( 'delete', 'deleted' ),
 			3 => array( 'enable', 'enabled' ),
 			4 => array( 'disable', 'disabled' ),
-			5 => array( 0 => $preconnect_success, 1 => $preconnect_fail ),
-			6 => array( 0 => $preload_success, 1 => $preload_fail ),
-			7 => array( 0 => $prerender_single_success, 1 => $prerender_multiple_success, 2 => $prerender_no_data )
+//			5 => array( 0 => $preconnect_success, 1 => $preconnect_fail ),
+//			6 => array( 0 => $preload_success, 1 => $preload_fail ),
+//			7 => array( 0 => $prerender_single_success, 1 => $prerender_multiple_success, 2 => $prerender_no_data )
 		);
 
 		if ( 400 === $success_code ) {

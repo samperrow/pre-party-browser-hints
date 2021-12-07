@@ -68,7 +68,7 @@ class LoadAdmin {
 	}
 
 	// Register and call the CSS and JS we need only on the needed page.
-	public function register_admin_files( string $hook ) {
+	public function register_admin_files( $hook ) {
 //		if ( str_contains( PPRH_ADMIN_SCREEN, $hook ) ) {
 
 			$ajax_data = array(

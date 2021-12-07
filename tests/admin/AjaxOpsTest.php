@@ -69,21 +69,21 @@ final class AjaxOpsTest extends TestCase {
 		// Author page.
 		$test_data_1 = array( 'action' => 'reset_post_preload', 'post_id' => '10' );
 		$actual_1 = self::$ajax_ops->update_hints( $test_data_1 );
-		$expected_1 = \PPRH\DAO::create_db_result(true, 6, 0, array() );
+		$expected_1 = \PPRH\DAO::create_db_result('', false, 0, array() );
 		self::assertGreaterThan( 2, $actual_1['result']->new_hint );
 		self::assertEquals( $expected_1->db_result, $actual_1['result']->db_result );
 
 		// Sitemap page.
 		$test_data_2 = array( 'action' => 'reset_post_preconnect', 'post_id' => '2128' );
 		$actual_2 = self::$ajax_ops->update_hints( $test_data_2 );
-		$expected_2 = \PPRH\DAO::create_db_result(true, 5, 0, array() );
+		$expected_2 = \PPRH\DAO::create_db_result('', true, 0, array() );
 		self::assertGreaterThan( 2, $actual_2['result']->new_hint );
 		self::assertEquals( $expected_2->db_result, $actual_2['result']->db_result );
 
 		// Sitemap page.
 		$test_data_3 = array( 'action' => 'reset_post_prerender', 'post_id' => '2128' );
 		$actual_3 = self::$ajax_ops->update_hints( $test_data_3 );
-		$expected_3 = \PPRH\DAO::create_db_result(true, 7, 0, array() );
+		$expected_3 = \PPRH\DAO::create_db_result('', true,0, array() );
 		self::assertGreaterThan( 2, $actual_3['result']->new_hint );
 		self::assertEquals( $expected_3->db_result, $actual_3['result']->db_result );
 	}
