@@ -240,7 +240,7 @@ class DAO {
             PRIMARY KEY  (id)
         ) $charset;";
 
-		dbDelta( $sql, true );
+		\dbDelta( $sql, true );
 	}
 
 	public static function delete_auto_created_hints( string $hint_type, string $post_id ):bool {
@@ -290,25 +290,12 @@ class DAO {
 	private static function get_msg( bool $success, int $op_code, int $success_code ):string {
 		$dup_hints_alert    = 'A duplicate hint exists!';
 
-//		$preconnect_success = 'Preconnect resource hints were created successfully.';
-//		$preconnect_fail    = 'Failed to reset preconnect hint data. Please refresh the page and try again.';
-//
-//		$preload_success    = 'Preload resource hints were created successfully.';
-//		$preload_fail       = 'Failed to reset preload hint data. Please refresh the page and try again.';
-//
-//		$prerender_single_success   = 'Prerender hint successfully created.';
-//		$prerender_multiple_success = 'Prerender hints have been successfully set for all posts with sufficiently available data.';
-//		$prerender_no_data          = 'There is not enough analytics data for this page to generate accurate prerender hints yet. Please try again soon.';
-
 		$actions = array(
 			0 => array( 'create', 'created' ),
 			1 => array( 'update', 'updated' ),
 			2 => array( 'delete', 'deleted' ),
 			3 => array( 'enable', 'enabled' ),
-			4 => array( 'disable', 'disabled' ),
-//			5 => array( 0 => $preconnect_success, 1 => $preconnect_fail ),
-//			6 => array( 0 => $preload_success, 1 => $preload_fail ),
-//			7 => array( 0 => $prerender_single_success, 1 => $prerender_multiple_success, 2 => $prerender_no_data )
+			4 => array( 'disable', 'disabled' )
 		);
 
 		if ( 400 === $success_code ) {
@@ -330,33 +317,5 @@ class DAO {
 
 		return $msg;
 	}
-
-	// utils
-	//	public static function create_db_result( bool $success, int $op_code, int $success_code, array $new_hint = array() ):\stdClass {
-//		$msg = self::get_msg( $success, $op_code, $success_code );
-//		$msg .= ' If you have an active caching system, it is recommended that you clear your cache if you are having difficulty viewing these changes.';
-//
-//		return (object) array(
-//			'new_hint'  => $new_hint,
-//			'db_result' => array(
-//				'msg'    => $msg,
-//				'status' => $success,
-//			)
-//		);
-//	}
-
-//	public function handle_wpdb_result( $wpdb_result, $wpdb_last_error, array $new_hint = array() ):array {
-//		if ( empty( $wpdb_last_error ) && $wpdb_result )  {
-//			$success = true;
-//		} else {
-//			$success = false;
-//		}
-
-//		$success = ( is_bool( $wpdb_result ) ) ? $wpdb_result : false;
-//		return array(
-//			'success'  => $success,
-//			'new_hint' => $new_hint
-//		);
-//	}
 
 }

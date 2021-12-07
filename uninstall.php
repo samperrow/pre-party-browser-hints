@@ -11,10 +11,7 @@ if ( function_exists( 'pprh_uninstall_plugin' ) ) {
 function pprh_uninstall_plugin() {
 	global $wpdb;
 	$pprh_table = $wpdb->prefix . 'pprh_table';
-
-	$wpdb->query(
-		$wpdb->prepare("DROP TABLE %s", $pprh_table )
-	);
+	$wpdb->query("DROP TABLE $pprh_table" );
 
 	$option_names = array(
 		'pprh_disable_wp_hints',
