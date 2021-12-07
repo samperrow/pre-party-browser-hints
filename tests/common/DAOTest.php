@@ -133,14 +133,12 @@ final class DAOTest extends TestCase {
 	}
 
 	public function test_insert_hint() {
-		$dao = new \PPRH\DAO();
 		$hint_builder = new \PPRH\HintBuilder();
 
 		$hint_1 = PPRH\HintBuilder::create_raw_hint( 'https://www.asdf.com/foozball', 'preconnect', '', '', '', '', '','2145' );
 		$new_hint_1 = $hint_builder->create_pprh_hint($hint_1);
 		$actual_1 = self::$dao->insert_hint( $new_hint_1 );
 		self::assertTrue( $actual_1->db_result['status'] );
-		$dao->delete_hint( (string) $actual_1->new_hint['id'] );
 
 
 	}
@@ -165,7 +163,15 @@ final class DAOTest extends TestCase {
 	}
 
 
+	public function test_get_all_db_tables() {
+		$actual_1 = self::$dao->get_all_db_tables( true );
+		$expected_1 = array( PPRH_DB_TABLE );
+		self::assertSame( $expected_1, $actual_1 );
 
+		$actual_2 = self::$dao->get_all_db_tables( false );
+		$expected_2 = array( PPRH_DB_TABLE );
+		self::assertSame( $expected_2, $actual_2 );
+	}
 
 
 //

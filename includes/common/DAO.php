@@ -29,6 +29,10 @@ class DAO {
 
 		$args = \apply_filters( 'pprh_dao_insert_hint_schema', $args, $new_hint );
 
+		if ( PPRH_RUNNING_UNIT_TESTS ) {
+			return self::create_db_result( '', true, 0, $new_hint );
+		}
+
 		try {
 			$wpdb->insert( $table, $args['columns'], $args['types'] );
 			$new_hint['id'] = ( isset( $wpdb->insert_id ) && $wpdb->insert_id > 0 ) ? $wpdb->insert_id : 0;
@@ -180,10 +184,15 @@ class DAO {
 		return $db_tables;
 	}
 
-	private static function get_multisite_tables() {
+	private static function get_multisite_tables():array {
 		global $wpdb;
 		$blog_table     = $wpdb->base_prefix . 'blogs';
 		$ms_table_names = array();
+		$multisite_table_exists = self::check_for_multisite_table( $blog_table );
+
+		if ( ! $multisite_table_exists ) {
+			return array();
+		}
 
 		$ms_blog_ids = $wpdb->get_results(
 			$wpdb->prepare( "SELECT blog_id FROM $blog_table WHERE blog_id != %d", 1 )
@@ -197,6 +206,16 @@ class DAO {
 		}
 
 		return $ms_table_names;
+	}
+
+	private static function check_for_multisite_table( string $blog_table ):bool {
+		global $wpdb;
+
+		$blog_tables = $wpdb->get_results(
+			$wpdb->prepare( "SHOW TABLES LIKE %s", $blog_table )
+		);
+
+		return count( $blog_tables ) > 0;
 	}
 
 	public static function create_table( $table_name ) {

@@ -68,7 +68,7 @@ class Dashboard {
 		}
 
         $new_version = PPRH_VERSION_NEW;
-        $msg = "Version $new_version Upgrade Notes: 1) Adding compatibility for Pre* Party Pro. When activated, the Pro version allows for resource hints to be added to specific posts, automatically generated prerender, preconnect, and preload hints for each post. Improved plugin architecture also.";
+        $msg = "Version $new_version Upgrade Notes: 1) Fixing two bugs relating to compatibility with other plugins. Also, the database table will be deleted when uninstalling plugin.";
         Utils\Utils::show_notice( $msg, true );
 		$activate_plugin = new ActivatePlugin();
 		$activate_plugin->upgrade_plugin();

@@ -28,7 +28,7 @@ final class AjaxOpsTest extends TestCase {
 		$actual_1 = self::$ajax_ops->update_hints($test_data_1);
 		$expected_1 = \PPRH\DAO::create_db_result( '', true, $test_data_1['op_code'], $actual_1['result']->new_hint );
 		self::assertEquals($expected_1, $actual_1['result']);
-		$dao->delete_hint( (string) $actual_1['result']->new_hint['id'] );
+//		$dao->delete_hint( (string) $actual_1['result']->new_hint['id'] );
 
 		$test_data_2 = \PPRH\HintBuilder::create_raw_hint('https://testAjaxOps2.com', 'dns-prefetch');
 		$test_data_2['op_code'] = 1;
@@ -69,7 +69,7 @@ final class AjaxOpsTest extends TestCase {
 		// Author page.
 		$test_data_1 = array( 'action' => 'reset_post_preload', 'post_id' => '10' );
 		$actual_1 = self::$ajax_ops->update_hints( $test_data_1 );
-		$expected_1 = \PPRH\DAO::create_db_result('', false, 0, array() );
+		$expected_1 = \PPRH\DAO::create_db_result('', true, 0, array() );
 		self::assertGreaterThan( 2, $actual_1['result']->new_hint );
 		self::assertEquals( $expected_1->db_result, $actual_1['result']->db_result );
 

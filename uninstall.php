@@ -9,20 +9,30 @@ if ( function_exists( 'pprh_uninstall_plugin' ) ) {
 }
 
 function pprh_uninstall_plugin() {
-	\delete_option( 'pprh_disable_wp_hints' );
-	\delete_option( 'pprh_html_head' );
+	global $wpdb;
+	$pprh_table = $wpdb->prefix . 'pprh_table';
 
-	\delete_option( 'pprh_prefetch_enabled' );
-	\delete_option( 'pprh_prefetch_delay' );
-	\delete_option( 'pprh_prefetch_ignoreKeywords' );
-	\delete_option( 'pprh_prefetch_maxRPS' );
-	\delete_option( 'pprh_prefetch_hoverDelay' );
-	\delete_option( 'pprh_prefetch_max_prefetches' );
-	\delete_option( 'pprh_prefetch_disableForLoggedInUsers' );
+	$wpdb->query(
+		$wpdb->prepare("DROP TABLE %s", $pprh_table )
+	);
 
-	\delete_option( 'pprh_preconnect_allow_unauth' );
-	\delete_option( 'pprh_preconnect_autoload' );
-	\delete_option( 'pprh_preconnect_set' );
+	$option_names = array(
+		'pprh_disable_wp_hints',
+		'pprh_html_head',
+		'pprh_prefetch_enabled',
+		'pprh_prefetch_delay',
+		'pprh_prefetch_ignoreKeywords',
+		'pprh_prefetch_maxRPS',
+		'pprh_prefetch_hoverDelay',
+		'pprh_prefetch_max_prefetches',
+		'pprh_prefetch_disableForLoggedInUsers',
+		'pprh_preconnect_allow_unauth',
+		'pprh_preconnect_autoload',
+		'pprh_preconnect_set',
+		'pprh_version'
+	);
 
-	\delete_option( 'pprh_version' );
+	foreach ($option_names as $option_name ) {
+		\delete_option( $option_name );
+	}
 }
