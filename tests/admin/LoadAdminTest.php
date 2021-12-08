@@ -17,6 +17,10 @@ final class LoadAdminTest extends TestCase {
 
 		$expected_scripts = array( 'thickbox', 'pprh_admin_js', 'post' );
 		self::assertEquals( $expected_scripts, $actual_scripts);
+
+
+		$load_admin->register_admin_files( null );
+
 	}
 
 }

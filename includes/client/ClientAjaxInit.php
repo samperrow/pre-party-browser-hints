@@ -75,7 +75,6 @@ class ClientAjaxInit {
 
 	private function pprh_callback_fn() {
 		if ( isset( $_POST['pprh_data'] ) && $this->doing_ajax ) {
-			define( 'PPRH_DOING_AJAX', true );
 			\check_ajax_referer( 'pprh_ajax_nonce', 'nonce' );
 			$client_ajax_response = new ClientAjaxResponse();
 			$results = $client_ajax_response->protected_post_domain_names();

@@ -30,51 +30,37 @@ final class UtilsTest extends TestCase {
 		self::assertTrue( $actual_6 );
 	}
 
-	public function test_does_option_match() {
-		$selected = 'selected="selected"';
-		$option_name = 'pprh_test_option';
-		\add_option( $option_name, 'true' );
+	public function test_isSetAndNotEmpty() {
+		$arr = array( 'test' => '', 'asdf' => 'true' );
+		$actual_1 = Utils::isSetAndNotEmpty( $arr, 'thing' );
+		self::assertFalse( $actual_1 );
 
-		$actual_1 = Utils::does_option_match($option_name, 'true', $selected );
-		self::assertEquals( $selected, $actual_1 );
+		$actual_2 = Utils::isSetAndNotEmpty( $arr, 'test' );
+		self::assertFalse( $actual_2 );
 
-		\update_option( $option_name, 'false' );
-		$test_2 = Utils::does_option_match( $option_name, 'true', $selected );
-		self::assertEquals( '', $test_2 );
-
-		\delete_option( $option_name );
+		$actual_3 = Utils::isSetAndNotEmpty( $arr, 'asdf' );
+		self::assertTrue( $actual_3 );
 	}
 
-	public function test_update_checkbox_option() {
-		$actual_1 = Utils::update_checkbox_option( array( ), 'wacka' );
-		self::assertEquals( 'false', $actual_1 );
+	public function test_isObjectAndNotEmpty() {
+		$actual_1 = Utils::isObjectAndNotEmpty( (object) array() );
+		self::assertFalse( $actual_1 );
 
-		$actual_2 = Utils::update_checkbox_option( array( 'test_option' => 'true' ), 'test_option' );
-		self::assertEquals( 'true', $actual_2 );
-
-		$actual_3 = Utils::update_checkbox_option( array(), 'test_option2' );
-		self::assertEquals( 'false', $actual_3 );
+		$obj_2 = (object) array( 'metadata' => (object) array() );
+		$actual_2 = Utils::isObjectAndNotEmpty( $obj_2->metadata );
+		self::assertFalse( $actual_2 );
 	}
 
-
-	public function test_esc_get_option() {
-		$test_option_name1 = 'pprh_test_option1';
-		\add_option( $test_option_name1, 'https://<test.com>/asdfasdf', '', 'true' );
-		$actual1 = Utils::esc_get_option( $test_option_name1 );
-		self::assertEquals( 'https://&lt;test.com&gt;/asdfasdf', $actual1 );
-		\delete_option( $test_option_name1 );
-
-		$test_option_name2 = 'pprh_test_option2';
-		\add_option( $test_option_name2, 'https://test.com/asdfasdf', '', 'true' );
-		$actual2 = Utils::esc_get_option( $test_option_name2 );
-		self::assertEquals( 'https://test.com/asdfasdf', $actual2 );
-		\delete_option( $test_option_name2 );
+	public function test_get_current_datetime() {
+		$today = date( 'Y-m-d H:i:s', strtotime( '-6 hours' ) );
+		$actual_1 = Utils::get_current_datetime();
+		self::assertSame( $today, $actual_1 );
 	}
 
 	public function test_get_server_prop() {
-		$_SERVER['HTTP_REFERER'] = 'https://sphacks.local/wp-admin/edit.php?post_type=page';
+		$_SERVER['HTTP_REFERER'] = 'https://sptrix.local/wp-admin/edit.php?post_type=page';
 		$actual_1 = Utils::get_server_prop( 'HTTP_REFERER' );
-		self::assertEquals( 'https://sphacks.local/wp-admin/edit.php?post_type=page', $actual_1 );
+		self::assertEquals( 'https://sptrix.local/wp-admin/edit.php?post_type=page', $actual_1 );
 		unset( $_SERVER['HTTP_REFERER'] );
 
 		$_SERVER['REQUEST_URI'] = '/wp-admin/admin.php?page=pprh-plugin-settings';
@@ -89,28 +75,28 @@ final class UtilsTest extends TestCase {
 	}
 
 	public function test_get_plugin_page_ctrl() {
-		$actual_1 = Utils::get_plugin_page_ctrl( false, 'https://sphacks.local/wp-admin/plugins.php?plugin_status=all&paged=1&s', '/wp-admin/admin.php?page=pprh-plugin-settings' );
+		$actual_1 = Utils::get_plugin_page_ctrl( false, 'https://sptrix.local/wp-admin/plugins.php?plugin_status=all&paged=1&s', '/wp-admin/admin.php?page=pprh-plugin-settings' );
 		self::assertSame( 1, $actual_1 );
 
-//		$actual_2 = Utils::get_plugin_page_ctrl( false, 'https://sphacks.local/wp-admin/edit.php?post_type=page', 'post.php' );
+//		$actual_2 = Utils::get_plugin_page_ctrl( false, 'https://sptrix.local/wp-admin/edit.php?post_type=page', 'post.php' );
 //		self::assertTrue( $actual_2 );
 
-		$actual_3 = Utils::get_plugin_page_ctrl( true, 'https://sphacks.local/wp-admin/admin.php?page=pprh-plugin-settings', 'admin-ajax.php' );
+		$actual_3 = Utils::get_plugin_page_ctrl( true, 'https://sptrix.local/wp-admin/admin.php?page=pprh-plugin-settings', 'admin-ajax.php' );
 		self::assertSame( 1, $actual_3 );
 
-//		$actual_4 = Utils::get_plugin_page_ctrl(true, 'https://sphacks.local/wp-admin/post.php?post=2128&action=edit', 'admin-ajax.php' );
+//		$actual_4 = Utils::get_plugin_page_ctrl(true, 'https://sptrix.local/wp-admin/post.php?post=2128&action=edit', 'admin-ajax.php' );
 //		self::assertTrue( $actual_4 );
 
-		$actual_5 = Utils::get_plugin_page_ctrl(false, 'https://sphacks.local/wp-admin/admin.php?page=pprh-plugin-settings', '/wp-admin/upload.php' );
+		$actual_5 = Utils::get_plugin_page_ctrl(false, 'https://sptrix.local/wp-admin/admin.php?page=pprh-plugin-settings', '/wp-admin/upload.php' );
 		self::assertSame( 0, $actual_5 );
 
-		$actual_6 = Utils::get_plugin_page_ctrl(false, 'https://sphacks.local/wp-admin/admin.php?page=pprh-plugin-settings', '/wp-admin/themes.php' );
+		$actual_6 = Utils::get_plugin_page_ctrl(false, 'https://sptrix.local/wp-admin/admin.php?page=pprh-plugin-settings', '/wp-admin/themes.php' );
 		self::assertSame( 0, $actual_6 );
 
-		$actual_7 = Utils::get_plugin_page_ctrl(false, 'https://sphacks.local/wp-admin/themes.php', '/wp-admin/options-general.php' );
+		$actual_7 = Utils::get_plugin_page_ctrl(false, 'https://sptrix.local/wp-admin/themes.php', '/wp-admin/options-general.php' );
 		self::assertSame( 0, $actual_7 );
 
-		$actual_8 = Utils::get_plugin_page_ctrl( false, 'https://sphacks.local/', '' );
+		$actual_8 = Utils::get_plugin_page_ctrl( false, 'https://sptrix.local/', '' );
 		self::assertSame( 0, $actual_8 );
 
 		$actual_9 = Utils::get_plugin_page_ctrl( true, 'asdfasys4ygdadf<>######%', '?' );
@@ -119,42 +105,16 @@ final class UtilsTest extends TestCase {
 
 
 
-//	public function test_get_hints_free() {
-//		$actual_1 = DAO::get_admin_hints();
-//		self::assertIsArray( $actual_1 );
-//
-//		$actual_2 = DAO::get_client_hints( array() );
-//		self::assertIsArray( $actual_2 );
-//	}
-
-	public function test_get_browser_name() {
-		$user_agent_1 = '';
-		$actual_1 = Utils::get_browser_name( $user_agent_1 );
-		self::assertSame( '', $actual_1 );
-
-		$user_agent_2 = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:89.0) Gecko/20100101 Firefox/89.0';
-		$actual_2 = Utils::get_browser_name( $user_agent_2 );
-		self::assertEquals( 'Firefox', $actual_2 );
-
-		$user_agent_3 = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.1 Safari/605.1.15';
-		$actual_3 = Utils::get_browser_name( $user_agent_3 );
-		self::assertEquals( 'Safari', $actual_3 );
-
-		$user_agent_4 = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_16_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.121 Safari/537.36';
-		$actual_4 = Utils::get_browser_name( $user_agent_4 );
-		self::assertEquals( 'Chrome', $actual_4 );
-
-		$user_agent_5 = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.106 Safari/537.36 Edg/91.0.864.53';
-		$actual_5 = Utils::get_browser_name( $user_agent_5 );
-		self::assertEquals( 'Edge', $actual_5 );
-
-		$user_agent_6 = 'Mozilla/5.0 (Macintosh;IntelMacOSX10_16_0)AppleWebKit/537.36(KHTML,likeGecko)Chrome/85.0.4183.121Safari/537.36OPR/71.0.3770.228';
-		$actual_6 = Utils::get_browser_name( $user_agent_6 );
-		self::assertEquals( 'Opera', $actual_6 );
+	public function test_get_current_date() {
+		$expected_1 = date( 'Y-m-d H:i:s', strtotime( '-6 hours' ) );
+		$actual_1 = Utils::get_current_datetime( '-6 hours' );
+		self::assertSame( $expected_1, $actual_1 );
 	}
 
+
+
 	public function test_json_to_array() {
-		$json_1 = '{"license":{"id":"32","license_key":"6100767bb59850.76443566","status":"activated","name":"sam p","email":"asdf@gmail.com","txn_id":"","manual_reset_count":"0","date_created":"2021-07-27 15:07:46","date_renewed":"0000-00-00 00:00:00","date_expiry":"2022-07-27 00:00:00","registered_domain":"asdf.com","datetime_last_checked":"2021-07-27 15:07:46","max_sites":"5","active_site_count":3,"domain_list":"a:1:{i:0;s:13:\"sphacks.local\";}"},"response_code":{"msg":"Your license key has been activated!","code":130,"success":true}}';
+		$json_1 = '{"license":{"id":"32","license_key":"6100767bb59850.76443566","status":"activated","name":"sam p","email":"asdf@gmail.com","txn_id":"","manual_reset_count":"0","date_created":"2021-07-27 15:07:46","date_renewed":"0000-00-00 00:00:00","date_expiry":"2022-07-27 00:00:00","registered_domain":"asdf.com","datetime_last_checked":"2021-07-27 15:07:46","max_sites":"5","active_site_count":3,"domain_list":"a:1:{i:0;s:13:\"sptrix.local\";}"},"response_code":{"msg":"Your license key has been activated!","code":130,"success":true}}';
 		$actual_1 = Utils::json_to_array( $json_1 );
 		self::assertCount( 2, $actual_1 );
 		self::assertCount( 15, $actual_1['license'] );
@@ -324,23 +284,12 @@ final class UtilsTest extends TestCase {
 		$actual_19 = Utils::json_to_array( $json );
 		$actual_20 = Utils::json_to_array( $actual_19['pprh_data'] );
 		self::assertCount( 8, $actual_20 );
+
+		$json = '{"headers":{},"body":"{\n  \"name\": \"Pre* Party Resource Hints Pro\",\n  \"slug\": \"pprh-pro\",\n  \"homepage\": \"https:\/\/sptrix.com\",\n  \"download_url\": \"https:\/\/sptrix.com\/wp-content\/pprh\/pprh-pro.zip\",\n  \"package\": \"https:\/\/sptrix.com\/wp-content\/pprh\/pro\/pprh-pro.zip\",\n\n  \"new_version\": \"2.0.2\",\n  \"requires\": \"4.4\",\n  \"tested\": \"5.8.3\",\n  \"last_updated\": \"2021-08-02\",\n  \"upgrade_notice\": \"Enjoy post specific hints, inline table updates, and more.\",\n  \"requires_php\": \"7.0.0\",\n  \"author\": \"Sam Perrow\",\n  \"author_homepage\": \"https:\/\/sptrix.com\",\n  \"compatibility\": \"Excellent\",\n\n  \"icons\": {\n    \"1x\": \"https:\/\/sptrix.com\/wp-content\/pprh\/images\/icon-128x128.png\",\n    \"2x\": \"https:\/\/sptrix.com\/wp-content\/pprh\/images\/icon-64x64.png\"\n  },\n\n  \"banners\": {\n    \"low\": \"https:\/\/sptrix.com\/wp-content\/pprh\/images\/banner-772x250.jpg\"\n  },\n\n  \"sections\": {\n    \"installation\": \"After purchasing a license, you will receive a zip file of the pro version. Upload this file to the plugins directory, then deactivate the free plugin version. Activate the Pro version, then you can delete the free version.\",\n    \"changelog\": \"test changelog\",\n    \"custom_section\": \"custom section\"\n  },\n\n\n  \"rating\": 100,\n  \"num_ratings\": 20,\n  \"downloaded\": 73000,\n  \"active_installs\": 6000\n}","response":{"code":200,"message":"OK"},"cookies":[],"filename":null,"http_response":{"data":null,"headers":null,"status":null}}';
+		$actual_21 = Utils::json_to_array( $json );
+		self::assertCount( 6, $actual_21 );
 	}
 
-	public function test_get_api_response_body() {
 
-		$actual_1 = Utils::get_api_response_body( array(), 'error from testing get_api_response_body()' );
-		self::assertEmpty( $actual_1 );
-
-		$json_2 = '{"headers":{},"body":"{\n  \"name\": \"Pre* Party Resource Hints Pro\",\n  \"slug\": \"pprh-pro\",\n  \"homepage\": \"https:\/\/sphacks.io\",\n  \"download_url\": \"https:\/\/sphacks.io\/wp-content\/pprh\/pprh-pro.zip\",\n  \"package\": \"https:\/\/sphacks.io\/wp-content\/pprh\/pro\/pprh-pro.zip\",\n\n  \"new_version\": \"2.0.2\",\n  \"requires\": \"4.4\",\n  \"tested\": \"5.8.3\",\n  \"last_updated\": \"2021-08-02\",\n  \"upgrade_notice\": \"Enjoy post specific hints, inline table updates, and more.\",\n  \"requires_php\": \"7.0.0\",\n  \"author\": \"Sam Perrow\",\n  \"author_homepage\": \"https:\/\/sphacks.io\",\n  \"compatibility\": \"Excellent\",\n\n  \"icons\": {\n    \"1x\": \"https:\/\/sphacks.io\/wp-content\/pprh\/images\/icon-128x128.png\",\n    \"2x\": \"https:\/\/sphacks.io\/wp-content\/pprh\/images\/icon-64x64.png\"\n  },\n\n  \"banners\": {\n    \"low\": \"https:\/\/sphacks.io\/wp-content\/pprh\/images\/banner-772x250.jpg\"\n  },\n\n  \"sections\": {\n    \"installation\": \"After purchasing a license, you will receive a zip file of the pro version. Upload this file to the plugins directory, then deactivate the free plugin version. Activate the Pro version, then you can delete the free version.\",\n    \"changelog\": \"test changelog\",\n    \"custom_section\": \"custom section\"\n  },\n\n\n  \"rating\": 100,\n  \"num_ratings\": 20,\n  \"downloaded\": 73000,\n  \"active_installs\": 6000\n}","response":{"code":200,"message":"OK"},"cookies":[],"filename":null,"http_response":{"data":null,"headers":null,"status":null}}';
-		$test_2 = Utils::json_to_array( $json_2 );
-		$actual_2 = Utils::get_api_response_body( $test_2, 'test' );
-		self::assertCount( 21, $actual_2 );
-
-	}
-
-//	public function test_log_error() {
-//		$actual_1 = Utils::log_error( 'tester' );
-//		self::assertTrue( $actual_1 );
-//	}
 
 }

@@ -15,7 +15,7 @@ class InsertHints {
 	}
 
 	public function markup() {
-		echo '<div class="pprh-content insert-hints">';
+		echo '<div id="insert-hints" class="pprh-content insert-hints">';
 		$display_hints = new DisplayHints( false, $this->plugin_page );
 		$new_hint      = new NewHint( array() );
 		$new_hint->create_new_hint_table();

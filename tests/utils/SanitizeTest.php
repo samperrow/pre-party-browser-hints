@@ -13,7 +13,10 @@ class SanitizeTest extends TestCase {
 
 	public static $sanitize;
 
-	public function test_start() {
+	/**
+	 * @before Class
+	 */
+	public function init() {
 		self::$sanitize = new Sanitize();
 	}
 

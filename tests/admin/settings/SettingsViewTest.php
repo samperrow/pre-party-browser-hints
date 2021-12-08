@@ -4,16 +4,13 @@ use PHPUnit\Framework\TestCase;
 
 class SettingsViewTest extends TestCase {
 
-	public static $settings_view;
+	public static \PPRH\SettingsView $settings_view;
 
 	/**
-	 * @before
+	 * @before Class
 	 */
 	public function init() {
 		$this->setOutputCallback(function() {});
-	}
-
-	public function test_start() {
 		self::$settings_view = new \PPRH\SettingsView();
 	}
 
@@ -21,5 +18,6 @@ class SettingsViewTest extends TestCase {
 		$actual_1 = self::$settings_view->prefetch_markup();
 		self::assertTrue( $actual_1 );
 	}
+
 
 }

@@ -2,7 +2,7 @@
 
 namespace PPRH;
 
-use PPRH\Utils\Utils;
+use PPRH\Utils;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -17,7 +17,7 @@ class Dashboard {
 	}
 
 	public function default_admin_notice() {
-		Utils::show_notice( '', true );
+		Utils\Utils::show_notice( '', true );
 	}
 
 	public function show_plugin_dashboard( int $plugin_page ) {
@@ -33,8 +33,9 @@ class Dashboard {
 		$insert_hints = new InsertHints( $plugin_page );
 		$this->show_admin_tabs();
 		$insert_hints->markup();
-		$settings_save->markup( true );
-		\do_action( 'pprh_load_view_classes' );
+		SettingsView::markup( true );
+		\do_action( 'pprh_load_license_view' );
+
 		$faq->markup();
 
 		$this->show_footer();
@@ -67,13 +68,13 @@ class Dashboard {
 		}
 
         $new_version = PPRH_VERSION_NEW;
-        $msg = "Version $new_version Upgrade Notes: 1) Fixed URL encoding issue.";
-        Utils::show_notice( $msg, true );
+        $msg = "Version $new_version Upgrade Notes: 1) Fixing two bugs relating to compatibility with other plugins. Also, the database table will be deleted when uninstalling plugin.";
+        Utils\Utils::show_notice( $msg, true );
 		$activate_plugin = new ActivatePlugin();
 		$activate_plugin->upgrade_plugin();
 
 		if ( $activate_plugin->plugin_activated ) {
-			Utils::update_option( 'pprh_version', $new_version );
+			Utils\Utils::update_option( 'pprh_version', $new_version );
 		}
 
 		return true;
@@ -125,9 +126,9 @@ class Dashboard {
 
 	public function send_support_email( string $email_address, string $text ) {
 		$msg  = "From: $email_address";
-		$msg .= Utils::get_debug_info();
+		$msg .= Utils\Debug::get_debug_info();
 		$msg .= "\nMessage: $text";
-		Utils::send_email( 'sam.perrow399@gmail.com', 'Pre Party User Message', $msg );
+		\wp_mail( PPRH_EMAIL, 'Pre Party User Message', $msg );
 	}
 
 }

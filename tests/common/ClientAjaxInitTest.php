@@ -6,55 +6,57 @@ class ClientAjaxInitTest extends TestCase {
 
 	public static $client_ajax_init;
 
-	public function test_start() {
+	/**
+	 * @before Class
+	 */
+	public function init() {
 		self::$client_ajax_init = new \PPRH\ClientAjaxInit();
 	}
 
-	public function test_entire_preconnects_feature() {
-		$orig_preconnect_autoload = \get_option( 'pprh_preconnect_autoload' );
-		$orig_preconnect_allow_unauth = \get_option( 'pprh_preconnect_allow_unauth' );
-
-		$js_object = self::$client_ajax_init->create_js_object( time() );
-		$pprh_data = array(
-			'hints' => array(
-				array( 'url' => 'https://fonts.gstatic.comTest', 'hint_type' => 'preconnect', 'media' => '', 'as_attr' => '', 'type_attr' => '', 'crossorigin' => 'crossorigin' )
-			),
-			'nonce' => $js_object['nonce'],
-		);
-
-		$args = array(
-			'body' => array(
-				'action'    => 'pprh_preconnect_callback',
-				'pprh_data' => json_encode( $pprh_data ),
-				'nonce'     => $js_object['nonce']
-			),
-			'timeout'   => 20,
-			'sslverify' => false,
-		);
-
-		\update_option( 'pprh_preconnect_allow_unauth', 'false' );
-		$response_1 = \wp_remote_post( $js_object['admin_url'], $args );
-		$response_body_1  = \PPRH\Utils\Utils::get_api_response_body( $response_1, 'error' );
-		self::assertEmpty( $response_body_1 );
-
-
-		\update_option( 'pprh_preconnect_autoload', 'true' );
-		\update_option( 'pprh_preconnect_allow_unauth', 'true' );
-		$pprh_data['hints'][0]['url'] = 'https://fonts.gstatic.comTest2';
-		$args['body']['pprh_data'] = json_encode( $pprh_data );
-		$response_2 = \wp_remote_post( $js_object['admin_url'], $args );
-		$response_body_2  = \PPRH\Utils\Utils::get_api_response_body( $response_2, 'error' );
-		self::assertGreaterThan( 8, $response_body_2[0]['new_hint'] );
-		self::assertTrue( $response_body_2[0]['db_result']['status'] );
-		self::assertCount( count( $pprh_data['hints'] ), $response_body_2 );
-		$hint_id = (string) $response_body_2[0]['new_hint']['id'];
-
-		$dao = new \PPRH\DAO();
-		$dao->delete_hint( $hint_id );
-
-		\update_option( 'pprh_preconnect_allow_unauth', $orig_preconnect_allow_unauth );
-		\update_option( 'pprh_preconnect_autoload', $orig_preconnect_autoload );
-	}
+//	public function test_entire_preconnects_feature() {
+//		$orig_preconnect_autoload = \get_option( 'pprh_preconnect_autoload' );
+//		$orig_preconnect_allow_unauth = \get_option( 'pprh_preconnect_allow_unauth' );
+//
+//		$js_object = self::$client_ajax_init->create_js_object( time() );
+//		$pprh_data = array(
+//			'hints' => array(
+//				array( 'url' => 'https://fonts.gstatic.comTest', 'hint_type' => 'preconnect', 'media' => '', 'as_attr' => '', 'type_attr' => '', 'crossorigin' => 'crossorigin' )
+//			),
+//			'nonce' => $js_object['nonce'],
+//		);
+//
+//		$args = array(
+//			'body' => array(
+//				'nonce'     => $js_object['nonce'],
+//				'action'    => 'pprh_preconnect_callback',
+//				'pprh_data' => json_encode( $pprh_data )
+//			),
+//			'timeout'   => 20,
+//			'sslverify' => false,
+//		);
+//
+//		\update_option( 'pprh_preconnect_allow_unauth', 'false' );
+//		$response_1 = \wp_safe_remote_post( $js_object['admin_url'], $args );
+//		self::assertEmpty( $response_1['body'] );
+//
+//
+//		\update_option( 'pprh_preconnect_autoload', 'true' );
+//		\update_option( 'pprh_preconnect_allow_unauth', 'true' );
+//		$pprh_data['hints'][0]['url'] = 'https://fonts.gstatic.comTest2';
+//		$args['body']['pprh_data'] = json_encode( $pprh_data );
+//		$response_2 = \wp_safe_remote_post( $js_object['admin_url'], $args );
+//		$response_body_2 = \PPRH\Utils\Utils::json_to_array( $response_2['body'], 'error' );
+//		self::assertGreaterThan( 8, $response_body_2[0]['new_hint'] );
+//		self::assertTrue( $response_body_2[0]['db_result']['status'] );
+//		self::assertCount( count( $pprh_data['hints'] ), $response_body_2 );
+//		$hint_id = (string) $response_body_2[0]['new_hint']['id'];
+//
+//		$dao = new \PPRH\DAO();
+//		$dao->delete_hint( $hint_id );
+//
+//		\update_option( 'pprh_preconnect_allow_unauth', $orig_preconnect_allow_unauth );
+//		\update_option( 'pprh_preconnect_autoload', $orig_preconnect_autoload );
+//	}
 
 
 	public function test_constructor() {

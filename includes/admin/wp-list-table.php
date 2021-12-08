@@ -1160,11 +1160,6 @@ class WP_List_Table {
 	 * @since 3.1.0
 	 */
 	public function display() {
-//		if ( PPRH_UNIT_TESTING ) {
-//			return;
-//		}
-
-//		\wp_nonce_field( 'ajax-custom-list-nonce', '_ajax_custom_list_nonce' );
 		$singular = $this->_args['singular'];
 		$this->display_tablenav( 'top' );
 		$this->screen->render_screen_reader_content( 'heading_list' );
@@ -1331,7 +1326,7 @@ class WP_List_Table {
 				echo '<th scope="row" class="check-column">';
 
 				if ($global_hint_alert) {
-					$this->global_hint_alert();
+                    $this->global_hint_alert();
 				} else {
 					echo $this->column_cb( $item );
 				}

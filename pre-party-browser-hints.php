@@ -4,7 +4,7 @@ declare(strict_types=1);
  * Plugin Name:       Pre* Party Resource Hints
  * Plugin URI:        https://wordpress.org/plugins/pre-party-browser-hints/
  * Description:       Take advantage of the browser resource hints DNS-Prefetch, Prerender, Preconnect, Prefetch, and Preload to improve page load time.
- * Version:           1.7.82
+ * Version:           1.8.11
  * Requires at least: 4.4
  * Requires PHP:      7.0.0
  * Author:            Sam Perrow
@@ -14,9 +14,9 @@ declare(strict_types=1);
  * Text Domain:       pre-party-browser-hints
  * Domain Path:       /languages
  *
- * last edited September 28, 2021
+ * Last edited November 16, 2021
  *
- * Copyright 2016  Sam Perrow  (email : info@sphacks.io)
+ * Copyright 2016  Sam Perrow  (email : info@sptrix.com)
  *
  */
 
@@ -67,14 +67,13 @@ class Pre_Party_Browser_Hints {
 			include_once 'includes/client/ClientAjaxInit.php';
 			$client_ajax_init = new ClientAjaxInit();
 		}
-
-//		\add_filter( 'pre_set_site_transient_update_plugins', array( $this, 'plugin_updater' ), 10, 1 );
 	}
 
 	private function load_common_files() {
 		include_once 'includes/common/Compatibility.php';
-		include_once 'includes/common/Utils.php';
-		include_once 'includes/common/Sanitize.php';
+		include_once 'includes/utils/Utils.php';
+		include_once 'includes/utils/Sanitize.php';
+		include_once 'includes/utils/Debug.php';
 		include_once 'includes/common/HintController.php';
 		include_once 'includes/common/HintBuilder.php';
 	}
@@ -83,13 +82,15 @@ class Pre_Party_Browser_Hints {
 		global $wpdb;
 		$table          = $wpdb->prefix . 'pprh_table';
 		$postmeta_table = $wpdb->prefix . 'postmeta';
+		$post_table     = $wpdb->prefix . 'posts';
 		$site_url       = \get_option( 'siteurl' );
-		$in_dev_testing = str_contains( $site_url, 'sphacks.local' );
+		$in_dev_testing = str_contains( $site_url, 'sptrix.local' );
 		$unit_testing   = defined( 'PPRH_UNIT_TESTING' ) && PPRH_UNIT_TESTING;
 
 		if ( ! defined( 'PPRH_DB_TABLE' ) ) {
 			define( 'PPRH_DB_TABLE', $table );
 			define( 'PPRH_POSTMETA_TABLE', $postmeta_table );
+			define( 'PPRH_POST_TABLE', $post_table );
 			define( 'PPRH_ABS_DIR', WP_PLUGIN_DIR . '/pre-party-browser-hints/' );
 			define( 'PPRH_REL_DIR', plugins_url() . '/pre-party-browser-hints/' );
 			define( 'PPRH_MENU_SLUG', 'pprh-plugin-settings' );
@@ -97,11 +98,11 @@ class Pre_Party_Browser_Hints {
 			define( 'PPRH_SITE_URL', $site_url );
 			define( 'PPRH_IN_DEV', $in_dev_testing );
 			define( 'PPRH_RUNNING_UNIT_TESTS', $unit_testing );
-			define( 'PPRH_EMAIL', 'info@sphacks.io' );
+			define( 'PPRH_EMAIL', 'info@sptrix.com' );
 		}
 
 		if ( ! defined( 'PPRH_VERSION_NEW' ) ) {
-			define( 'PPRH_VERSION_NEW', '1.7.82' );
+			define( 'PPRH_VERSION_NEW', '1.8.11' );
 		}
 
 		if ( ! defined( 'PPRH_VERSION' ) ) {
@@ -142,14 +143,13 @@ class Pre_Party_Browser_Hints {
 		$load_client->init( self::$preconnect_enabled );
 	}
 
-
 	private static function load_plugin_files( bool $is_admin ) {
 		if ( $is_admin ) {
 			include_once 'includes/admin/LoadAdmin.php';
-//			include_once 'includes/admin/Updater.php';
 			include_once 'includes/admin/Dashboard.php';
-			include_once 'includes/admin/views/SettingsView.php';
-			include_once 'includes/admin/views/SettingsSave.php';
+			include_once 'includes/admin/settings/SettingsUtils.php';
+			include_once 'includes/admin/settings/SettingsView.php';
+			include_once 'includes/admin/settings/SettingsSave.php';
 			include_once 'includes/admin/views/FAQ.php';
 			include_once 'includes/admin/NewHint.php';
 			include_once 'includes/admin/DisplayHints.php';
@@ -161,15 +161,5 @@ class Pre_Party_Browser_Hints {
 			include_once 'includes/client/SendHints.php';
 		}
 	}
-
-//	public function plugin_updater( $transient ) {
-//		if ( empty( $transient->checked ) ) {
-//			return $transient;
-//		}
-//
-//		include_once 'includes/admin/Updater.php';
-//		$updater = new Updater();
-//		return $updater->init( $transient );
-//	}
 
 }

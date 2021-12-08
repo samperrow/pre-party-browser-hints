@@ -11,10 +11,12 @@ final class LoadClientTest extends TestCase {
 
 	public static $load_client;
 
-	public function test_start() {
+	/**
+	 * @before Class
+	 */
+	public function init() {
 		self::$load_client = new \PPRH\LoadClient();
 	}
-
 
 	public function test_verify_to_load_fp() {
 		self::$load_client = new \PPRH\LoadClient();

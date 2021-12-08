@@ -19,8 +19,8 @@ class FAQ {
 		?>
 		<div class="pprh-content faq">
 			<?php
-//				$this->show_faq();
-//				$this->upgrade_to_pro();
+				$this->show_faq();
+				$this->upgrade_to_pro();
 				$this->show_hint_info();
 			?>
 		</div>
@@ -33,50 +33,66 @@ class FAQ {
 			<div>
 				<h3>Frequently Asked Questions</h3>
 
-				<p>How do I add new resource hints?</p>
-				<p>-Resource hints can be added manually on the main plugin page, or hints can be created automatically with the "Auto Preconnect", "Auto Prefetch", and "Auto Prerender" features, respecitvely.</p>
+				<p class="bold">How do I add new resource hints?</p>
+				<p>-Resource hints can be added manually on the main plugin page, or hints can be created automatically with the "Auto Preconnect", "Auto Prefetch", and "Auto Prerender" features, respectively.</p>
 
-				<p>How can I update existing hints?</p>
-				<p>-Hover over a hint you would like to update, and an "Edit" link will appear. Click that, make the desired changes, and click "Update".</p>
+				<p class="bold">How can I update existing hints?</p>
+				<p>-Hover over a hint you would like to update, and an "Edit" link will appear. Click that, make the desired changes, click "Update", make your changes, then click "Update".</p>
 
-				<p>What are the crossorigin, "as", "type", and "media" attributes used for?</p>
+				<p class="bold">What are the crossorigin, "as", "type", and "media" attributes used for?</p>
 				<ol>
 					<li>The crossorigin attribute is used for some preload and preconnect hints, and is used to notify the browser that the specified resource originates from an external domain, so that the "SSL handshake" should be done.</li>
-					<li>The "as" attribute specifies </li>
+					<li>The "as" attribute specifies what type of resource it is (font, image, script, etc.)</li>
 					<li>The "type" attribute specifies which MIME type a given resource is. For example, a CSS stylesheet has a MIME type of "text/css", and an HTML document is "text/html".</li>
 					<li>The "media" attribute is only used for preload hints, and gives the user the ability to only load certain hints on specific devices or screen widths. For example, setting a "media" attribute to "max-width: 600px;" tells the browse to only load a resource on screens
 					less than 600 pixels wide.</li>
 				</ol>
 
 
-				<p>What does the "Auto Preconnect" feature do, and how does it work?</p>
-				<p>-This feature will automatically generate the proper preconnect hints.
+				<p class="bold">What does the "Auto Preconnect" feature do, and how does it work?</p>
+				<p>-This feature will automatically generate preconnect hints.
 				This works by using JavaScript code to retrieve all resources downloaded from external domains, and sending that back to the server via an ajax call.
-				These hints will be stored until they are reset by the user. To reset theUpon installation, and after the "Reset" button is clicked (in the Auto Preconnect box in the Settings tab)</p>
+				These hints will be stored until they are reset by the user. To reset previously created preconnect hints, or upon installation, and after the "Reset" button is clicked (in the Auto Preconnect box in the Settings tab)</p>
 
-				<p>What does the "Auto Prefetch" feature do, and how does it work?</p>
+				<p class="bold">What does the "Auto Prefetch" feature do, and how does it work?</p>
 				<p>-This feature allows for prefetch hints to be automatically created on the front end, based on navigation (a.k.a "anchor") links available to the user.
-				This enables a page a visitor is likely to click on to load much faster.
-				These prefetch hints are temporary, and are NOT created in the database.</p>
+				This enables a page a visitor is likely to click on to load much faster. These prefetch hints are only generated on the front end, and are NOT created in the database.</p>
 
-				<p>My resource hints are not appearing on the front end, what is the problem?</p>
+				<p class="bold">My resource hints are not appearing on the front end, what is the problem?</p>
 				<p>-The resource hints are probably not appearing on the front end because the front end is delivering cached content. I recommend clearing the cache on any plugins, web server, or on the browser directly to resolve this problem.</p>
 
-				<p>What are the benefits of upgrading to the Pro version?</p>
+				<p class="bold">What are the benefits of upgrading to the Pro version?</p>
 				<ul>
 					<li>Ability to add resource hints individually to specific pages/posts</li>
 					<li>The "Auto Preconnect" feature will automatically generate the proper hints for each page/post.</li>
 					<li>The Auto Prerender feature will generate one prerender hint (which download an entire web page in the background) for each page/post. </li>
 				</ul>
 
-				<p>What does the "Auto Prerender" feature do, and how does it work?</p>
+                <p class="bold">-Pre* Party Pro FAQ Below-</p>
+
+				<p class="bold">The Pro version uses Google's PageSpeed Insights API to determine which preconnect and preload hints to create.
+				Since each post's API request takes about 10 seconds to complete, it is obviously impractical to make an API request for each post.
+				Instead, a representative sampling of posts are requested. These representative posts consist of one post of each page template, the home page, and each unique post.
+				The data collected is then applied to each post, and then the preconnect and preload hints can be created automatically and nearly instantly.</p>
+
+				<p class="bold">What does the "Auto Prerender" feature do, and how does it work?</p>
 				<p>-This allows prerender hints to be automatically created, which are unique to each post/page on your website. These hints are created by using analytics data from your visitors (only the "HTTP Referer" server value is used).
 				For example, if 70% of your visitors who initially land on your home page, navigate to the "/products" link immediately afterwards, a prerender hint for the "/products" link will be created, which is only used on the home page.
 				Prerender hints are by far the most powerful resource hint available, because an entire web page can be loaded by a visitor, allowing that page to be delivered immediately to the visitor.
 				See this link for an example <a href="https://ipullrank.com/how-i-sped-up-my-site-68-percent-with-one-line-of-code">https://ipullrank.com/how-i-sped-up-my-site-68-percent-with-one-line-of-code</a>
 				</p>
 
-				add info about how to do "resets" etc..
+				<p class="bold">How can I add resource hints to a specific page or post?</p>
+				<p>Navigate to the page you would like to edit, and you will find a meta box, and you can use this to manually create resource hints.
+				On this post modal form, you also have the option of resetting that post's preconnect, preload, and prerender hints.
+				If your home page is set to display recent posts, you will find the options to reset the home page hints on the "Settings" tab.
+				(Resetting the preconnect or preload hints will initiate an API request to collect fresh data).</p>
+
+				<p class="bold">There are too many resource hints with the same hint type and URL, which only differ by their post ID. What can be done to resolve this?</p>
+				<p>Lower the number value next to "Percent of duplicate post hints" on the Settings tab. This will cause post hints created in the future to be more likely to become "global" hints, which will replace their respective post hints.</p>
+
+                <p class="bold">What is a "global" hint?</p>
+                <p>These are hints which are used on all pages and posts. You may modify those hints only on the Pre* Party admin page.</p>
 
 			</div>
 		</div>

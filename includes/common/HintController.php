@@ -18,7 +18,7 @@ class HintController extends DAO {
 		$op_code = (int) $raw_data['op_code'];
 
 		if ( 0 <= $op_code && $op_code < 5 ) {
-			$hint_ids = ( ! empty( $raw_data['hint_ids'] ) ) ? Utils::array_into_csv( $raw_data['hint_ids'] ) : '';
+			$hint_ids = ( ! empty( $raw_data['hint_ids'] ) ) ? Utils::array_to_csv( $raw_data['hint_ids'] ) : '';
 			return $this->db_controller( $op_code, $raw_data, $hint_ids );
 		}
 
@@ -40,20 +40,16 @@ class HintController extends DAO {
 			$result = $this->bulk_update( $hint_ids, $op_code );
 		}
 
-		$new_hint = $result['new_hint'] ?? array();
-		return self::create_db_result( $result['success'], $op_code, 0, $new_hint );
+		return $result;
 	}
 
-	private function insert_or_update_hint( int $op_code, array $raw_data, $hint_ids = null ):array {
+	private function insert_or_update_hint( int $op_code, array $raw_data, $hint_ids = null ):\stdClass {
 		$pprh_hint = $this->new_hint_ctrl( $raw_data, $op_code );
-		$result = array( 'success' => false );
 
 		if ( ! empty( $pprh_hint ) ) {
-			if ( 0 === $op_code ) {
-				$result = $this->insert_hint( $pprh_hint );
-			} else {
-				$result = $this->update_hint( $pprh_hint, $hint_ids );
-			}
+			$result = ( 0 === $op_code ) ? $this->insert_hint( $pprh_hint ) : $this->update_hint( $pprh_hint, $hint_ids );
+		} else {
+			$result = self::create_db_result( 'Failed to update hint.', false, $op_code, array() );
 		}
 
 		return $result;

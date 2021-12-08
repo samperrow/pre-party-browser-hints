@@ -2,6 +2,8 @@
 
 namespace PPRH;
 
+//use \PPRH\Utils\Utils;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -20,7 +22,6 @@ class LoadAdmin {
 			\add_filter( 'set-screen-option', array( $this, 'pprh_set_screen_option' ), 10, 3 );
 			$this->load_common_content();
 			\apply_filters( 'pprh_load_pro_admin', $this->plugin_page );
-			$this->check_debug_email();
 		}
 	}
 
@@ -52,21 +53,6 @@ class LoadAdmin {
 		$dashboard->show_plugin_dashboard( $this->plugin_page );
 	}
 
-	public function check_debug_email() {
-		$transient_name        = 'pprh_debug_logger';
-		$transient_expire_time = (int) \get_option( "_transient_timeout_$transient_name" );
-		$time_now              = time();
-
-		if ( $time_now >= $transient_expire_time ) {
-			$error = \get_option( "_transient_$transient_name" );
-
-			if ( ! empty( $error ) ) {
-				Utils::send_email( PPRH_EMAIL, 'Error', $transient_name );
-				\delete_transient( $transient_name );
-			}
-		}
-	}
-
 	public function screen_option() {
 		$args = array(
 			'label'   => 'Resource hints per page: ',
@@ -82,8 +68,8 @@ class LoadAdmin {
 	}
 
 	// Register and call the CSS and JS we need only on the needed page.
-	public function register_admin_files( string $hook ) {
-		if ( str_contains( PPRH_ADMIN_SCREEN, $hook )  ) {
+	public function register_admin_files( $hook ) {
+//		if ( str_contains( PPRH_ADMIN_SCREEN, $hook ) ) {
 
 			$ajax_data = array(
 				'nonce'     => wp_create_nonce( 'pprh_table_nonce' ),
@@ -97,7 +83,7 @@ class LoadAdmin {
 			\wp_enqueue_style( 'pprh_styles_css' );
 			\wp_enqueue_script( 'pprh_admin_js' );
 			\wp_enqueue_script( 'post' );			// needed for metaboxes
-		}
+//		}
 	}
 
 	public function add_settings_meta_boxes() {
@@ -130,23 +116,23 @@ class LoadAdmin {
 			'low'
 		);
 
-//		\add_meta_box(
-//			'pprh_preload_metabox',
-//			'Auto Preload Settings',
-//			array( $this, 'create_preload_metabox' ),
-//			PPRH_ADMIN_SCREEN,
-//			'normal',
-//			'low'
-//		);
+		\add_meta_box(
+			'pprh_preload_metabox',
+			'Auto Preload Settings',
+			array( $this, 'create_preload_metabox' ),
+			PPRH_ADMIN_SCREEN,
+			'normal',
+			'low'
+		);
 
-//		\add_meta_box(
-//			'pprh_prerender_metabox',
-//			'Auto Prerender Settings',
-//			array( $this, 'create_prerender_metabox' ),
-//			PPRH_ADMIN_SCREEN,
-//			'normal',
-//			'low'
-//		);
+		\add_meta_box(
+			'pprh_prerender_metabox',
+			'Auto Prerender Settings',
+			array( $this, 'create_prerender_metabox' ),
+			PPRH_ADMIN_SCREEN,
+			'normal',
+			'low'
+		);
 	}
 
 	public function create_preload_metabox() {
@@ -155,8 +141,8 @@ class LoadAdmin {
 		if ( is_string( $load_metabox ) ) {
 			?>
             <div style="text-align: center; max-width: 800px; margin: 0 auto;">
-                <h3><?php \esc_html_e( 'This feature is only available after upgrading to the Pro version.', 'pre-party-browser-hints' ); ?></h3>
-                <p><?php \esc_html_e( 'Auto Preload will automatically create the proper preload hints automatically, for each post on your website.', 'pre-party-browser-hints' ); ?></p>
+                <h3><?php \esc_html_e( 'Upgrade to Pre Party* Pro for just $9 to enjoy these features!', 'pre-party-browser-hints' ); ?></h3>
+                <p><?php \esc_html_e( 'The Auto Preload feature will automatically create the proper preload hints for your entire site automatically, for each post on your website.', 'pre-party-browser-hints' ); ?></p>
                 <input type="button" class="pprhOpenCheckoutModal button button-primary" value="Purchase License"/>
             </div>
 			<?php
@@ -170,10 +156,10 @@ class LoadAdmin {
 		if ( is_string( $load_metabox ) ) {
 			?>
 			<div style="text-align: center; max-width: 800px; margin: 0 auto;">
-				<h3><?php \esc_html_e( 'This feature is only available after upgrading to the Pro version.', 'pre-party-browser-hints' ); ?></h3>
-				<p><?php \esc_html_e( 'Auto Prerender will automatically create the proper prerender hints automatically, for each post on your website.
+				<h3><?php \esc_html_e( 'Upgrade to Pre Party* Pro for just $9 to enjoy these features!', 'pre-party-browser-hints' ); ?></h3>
+				<p><?php \esc_html_e( 'The Auto Prerender feature will automatically create the proper prerender hints, for each post on your website.
 		This feature works by implementing custom analytics to determine which page a visitor is most likely to navigate towards after from a given page, and a prerender hint is created pointing to that destination.
-		This prerender hint allows a visitor to download an entire webpage in the background, allowing the page to load instantly.
+		The prerender hint allows a visitor to download an entire webpage in the background, allowing the page to load instantly.
 		For example, if most visitors navigate to your /shop page from your home page, a prerender hint will be created for the /shop URL, and that page will be downloaded while the visitor is on the home page. ', 'pre-party-browser-hints' ); ?></p>
 				<input type="button" class="pprhOpenCheckoutModal button button-primary" value="Purchase License"/>
 			</div>
