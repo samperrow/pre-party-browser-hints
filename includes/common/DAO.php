@@ -226,7 +226,7 @@ class DAO {
 			include_once ABSPATH . 'wp-admin/includes/upgrade.php';
 		}
 
-		$sql = "CREATE TABLE $table_name (
+		$sql = "CREATE TABLE {$table_name} (
             id INT(9) NOT NULL AUTO_INCREMENT,
             url VARCHAR(255) DEFAULT '' NOT NULL,
             hint_type ENUM('dns-prefetch', 'prefetch', 'prerender', 'preconnect', 'preload') NOT NULL,
@@ -240,7 +240,7 @@ class DAO {
             PRIMARY KEY  (id)
         ) $charset;";
 
-		\dbDelta( $sql, true );
+		\dbDelta( array( $sql ), true );
 	}
 
 	public static function delete_auto_created_hints( string $hint_type, string $post_id ):bool {
