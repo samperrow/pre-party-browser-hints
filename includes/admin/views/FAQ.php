@@ -20,7 +20,6 @@ class FAQ {
 		<div class="pprh-content faq">
 			<?php
 				$this->show_faq();
-				$this->upgrade_to_pro();
 				$this->show_hint_info();
 			?>
 		</div>
@@ -61,71 +60,45 @@ class FAQ {
 				<p class="bold">My resource hints are not appearing on the front end, what is the problem?</p>
 				<p>-The resource hints are probably not appearing on the front end because the front end is delivering cached content. I recommend clearing the cache on any plugins, web server, or on the browser directly to resolve this problem.</p>
 
-				<p class="bold">What are the benefits of upgrading to the Pro version?</p>
-				<ul>
-					<li>Ability to add resource hints individually to specific pages/posts</li>
-					<li>The "Auto Preconnect" feature will automatically generate the proper hints for each page/post.</li>
-					<li>The Auto Prerender feature will generate one prerender hint (which download an entire web page in the background) for each page/post. </li>
-				</ul>
-
-                <p class="bold">-Pre* Party Pro FAQ Below-</p>
-
-				<p class="bold">The Pro version uses Google's PageSpeed Insights API to determine which preconnect and preload hints to create.
-				Since each post's API request takes about 10 seconds to complete, it is obviously impractical to make an API request for each post.
-				Instead, a representative sampling of posts are requested. These representative posts consist of one post of each page template, the home page, and each unique post.
-				The data collected is then applied to each post, and then the preconnect and preload hints can be created automatically and nearly instantly.</p>
-
-				<p class="bold">What does the "Auto Prerender" feature do, and how does it work?</p>
-				<p>-This allows prerender hints to be automatically created, which are unique to each post/page on your website. These hints are created by using analytics data from your visitors (only the "HTTP Referer" server value is used).
-				For example, if 70% of your visitors who initially land on your home page, navigate to the "/products" link immediately afterwards, a prerender hint for the "/products" link will be created, which is only used on the home page.
-				Prerender hints are by far the most powerful resource hint available, because an entire web page can be loaded by a visitor, allowing that page to be delivered immediately to the visitor.
-				See this link for an example <a href="https://ipullrank.com/how-i-sped-up-my-site-68-percent-with-one-line-of-code">https://ipullrank.com/how-i-sped-up-my-site-68-percent-with-one-line-of-code</a>
-				</p>
-
-				<p class="bold">How can I add resource hints to a specific page or post?</p>
-				<p>Navigate to the page you would like to edit, and you will find a meta box, and you can use this to manually create resource hints.
-				On this post modal form, you also have the option of resetting that post's preconnect, preload, and prerender hints.
-				If your home page is set to display recent posts, you will find the options to reset the home page hints on the "Settings" tab.
-				(Resetting the preconnect or preload hints will initiate an API request to collect fresh data).</p>
-
-				<p class="bold">There are too many resource hints with the same hint type and URL, which only differ by their post ID. What can be done to resolve this?</p>
-				<p>Lower the number value next to "Percent of duplicate post hints" on the Settings tab. This will cause post hints created in the future to be more likely to become "global" hints, which will replace their respective post hints.</p>
-
-                <p class="bold">What is a "global" hint?</p>
-                <p>These are hints which are used on all pages and posts. You may modify those hints only on the Pre* Party admin page.</p>
-
+                <?php
+                    if ( defined( 'PPRH_PRO_ABS_DIR' ) ) {
+                        $this->show_pro_faq();
+                    }
+                ?>
 			</div>
 		</div>
 		<?php
 	}
 
-	public function upgrade_to_pro() {
-		?>
-		<div class="postbox">
-			<div>
-				<h3>Upgrade to Pre* Party Pro!</h3>
-				<p>I have been hard at work for over a year creating a dramatically improved version of this plugin. It has taken much longer than I anticipated, however the benefits of the upgraded version are extraordinary, and there is nothing comparable on the market. </p>
-				<p>The main benefits are below:</p>
+    public function show_pro_faq() {
+        ?>
+        <p class="bold">-Pre* Party Pro FAQ Below-</p>
 
-				<ol>
-					<li>Ability to create unique resource hints on a post-specific basis.</li>
-					<li><b>Automatic creation of prerender hints.</b> Integration with Google Analytics data, which allows for each page or posts' most commonly visited second page to be determined. From this information, a prerender hint will be automatically generated for that second page, which
-						is only used on the previous page. For example, if 70% of your visitors visit the "/shop" page after they land on your home page, a prerender hint to "/shop" will be created and used only on your home page. The same will be done with every other page on your site!<br/>
-						-Using prerender resource hints in this manner allows for a page to be loaded <i>instantly</i> when the user navigates towards that page.<br/>
-						-For further elaboration, please read this article: <a href="https://ipullrank.com/how-i-sped-up-my-site-68-percent-with-one-line-of-code/">https://ipullrank.com/how-i-sped-up-my-site-68-percent-with-one-line-of-code/</a>
-					</li>
+        <p class="bold">The Pro version uses Google's PageSpeed Insights API to determine which preconnect and preload hints to create.
+        Since each post's API request takes about 10 seconds to complete, it is obviously impractical to make an API request for each post.
+        Instead, a representative sampling of posts are requested. These representative posts consist of one post of each page template, the home page, and each unique post.
+        The data collected is then applied to each post, and then the preconnect and preload hints can be created automatically and nearly instantly.</p>
 
-					<li>There is a modal box on every page/post admin page which allows for simple and easy resource hint creation to specific pages/posts.</li>
-					<li>Automatic creation of preconnect hints are unique to every page and post on your site. The "auto-preconnect" hints are created in the same manner, except that if one page has resources loaded from external domains which other pages do not, that page will have unique
-						preconnect hints created and used ONLY on that specific page.</li>
-				</ol>
+        <p class="bold">What does the "Auto Prerender" feature do, and how does it work?</p>
+        <p>-This allows prerender hints to be automatically created, which are unique to each post/page on your website. These hints are created by using analytics data from your visitors (only the "HTTP Referer" server value is used).
+        For example, if 70% of your visitors who initially land on your home page, navigate to the "/products" link immediately afterwards, a prerender hint for the "/products" link will be created, which is only used on the home page.
+        Prerender hints are by far the most powerful resource hint available, because an entire web page can be loaded by a visitor, allowing that page to be delivered immediately to the visitor.
+        See this link for an example <a href="https://ipullrank.com/how-i-sped-up-my-site-68-percent-with-one-line-of-code">https://ipullrank.com/how-i-sped-up-my-site-68-percent-with-one-line-of-code</a>
+        </p>
 
-				<p>** youtube video here of difference **</p>
-			</div>
-		</div>
-		<?php
-	}
+        <p class="bold">How can I add resource hints to a specific page or post?</p>
+        <p>Navigate to the page you would like to edit, and you will find a meta box, and you can use this to manually create resource hints.
+        On this post modal form, you also have the option of resetting that post's preconnect, preload, and prerender hints.
+        If your home page is set to display recent posts, you will find the options to reset the home page hints on the "Settings" tab.
+        (Resetting the preconnect or preload hints will initiate an API request to collect fresh data).</p>
 
+        <p class="bold">There are too many resource hints with the same hint type and URL, which only differ by their post ID. What can be done to resolve this?</p>
+        <p>Lower the number value next to "Percent of duplicate post hints" on the Settings tab. This will cause post hints created in the future to be more likely to become "global" hints, which will replace their respective post hints.</p>
+
+        <p class="bold">What is a "global" hint?</p>
+        <p>These are hints which are used on all pages and posts. You may modify those hints only on the Pre* Party admin page.</p>
+        <?php
+    }
 
 	public function show_hint_info() {
 		?>
