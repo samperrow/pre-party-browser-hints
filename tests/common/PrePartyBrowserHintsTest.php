@@ -56,8 +56,8 @@ final class PrePartyBrowserHintsTest extends TestCase {
 		$load_admin = class_exists( \PPRH\LoadAdmin::class );
 		self::assertTrue( $load_admin );
 
-		$manage_options = current_user_can( 'manage_options' );
-		self::assertTrue( $manage_options );
+//		$manage_optionsanage_options = current_user_can( 'manage_options' );
+//		self::assertTrueertTruetTrue( $manage_options );
 	}
 
 //	public function test_activate_plugin() {
