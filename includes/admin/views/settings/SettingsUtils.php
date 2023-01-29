@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace PPRH;
+namespace PPRH\settings;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;

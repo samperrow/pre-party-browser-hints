@@ -2,6 +2,8 @@
 
 namespace PPRH;
 
+use PPRH\settings\SettingsSave;
+use PPRH\settings\SettingsView;
 use PPRH\Utils;
 
 if ( ! defined( 'ABSPATH' ) ) {

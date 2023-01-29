@@ -23,6 +23,7 @@ declare(strict_types=1);
 namespace PPRH;
 
 use PPRH\Utils\Utils;
+use PPRH\LoadClientPro;
 
 // prevent direct file access.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -52,6 +53,12 @@ class Pre_Party_Browser_Hints {
 
 	protected $client_data;
 
+	private $prerender_enabled;
+	private $show_posts_on_front;
+
+	public static $client_post_id;
+	public static $request_uri;
+
 	public function __construct() {
 		$this->load_common_files();
 	}
@@ -76,6 +83,13 @@ class Pre_Party_Browser_Hints {
 		include_once 'includes/utils/Debug.php';
 		include_once 'includes/common/HintController.php';
 		include_once 'includes/common/HintBuilder.php';
+
+		include_once 'includes/UtilsPro.php';
+		include_once 'includes/dao/DAOProFilters.php';
+		include_once 'includes/dao/DAOPro.php';
+		include_once 'includes/HintCtrlPro.php';
+//		include_once 'includes/license/LicenseUtils.php';
+		include_once 'includes/DebugLogger.php';
 	}
 
 	public function create_constants() {
@@ -99,6 +113,11 @@ class Pre_Party_Browser_Hints {
 			define( 'PPRH_IN_DEV', $in_dev_testing );
 			define( 'PPRH_RUNNING_UNIT_TESTS', $unit_testing );
 			define( 'PPRH_EMAIL', 'info@sptrix.com' );
+
+			define( 'PPRH_PRO_VERSION', '1.0.4' );
+			define( 'PPRH_PRO_REL_DIR', plugins_url() . '/pprh-pro/' );
+			define( 'PPRH_PRO_ABS_DIR', WP_PLUGIN_DIR . '/pprh-pro/' );
+			define( 'PPRH_PRO_LIC_OPTION', 'pprh_pro_license_option' );
 		}
 
 		if ( ! defined( 'PPRH_VERSION_NEW' ) ) {
@@ -135,6 +154,21 @@ class Pre_Party_Browser_Hints {
 		self::load_plugin_files( true );
 		$load_admin = new LoadAdmin();
 		$load_admin->init( $this->plugin_page );
+
+
+//		$this->load_admin_files();
+//		$license_validation = new LicenseValidation();
+//		$license_validation->license_listener();
+//		$license_verified = $license_validation->verify_license();
+
+//		if ( $license_verified && $this->prerender_enabled ) {
+			include_once 'includes/prerender/Prerender.php';
+//		}
+
+		$this->show_posts_on_front = ( 'posts' === \get_option( 'show_on_front', 'true' ) );
+
+		$load_admin = new LoadAdminPro( true );
+		$load_admin->load( $this->plugin_page );
 	}
 
 	public static function load_main_client() {
@@ -147,19 +181,84 @@ class Pre_Party_Browser_Hints {
 		if ( $is_admin ) {
 			include_once 'includes/admin/LoadAdmin.php';
 			include_once 'includes/admin/Dashboard.php';
-			include_once 'includes/admin/settings/SettingsUtils.php';
-			include_once 'includes/admin/settings/SettingsView.php';
-			include_once 'includes/admin/settings/SettingsSave.php';
+			include_once 'includes/admin/views/settings/SettingsUtils.php';
+			include_once 'includes/admin/views/settings/SettingsSave.php';
+			include_once 'includes/admin/views/settings/SettingsView.php';
 			include_once 'includes/admin/views/FAQ.php';
 			include_once 'includes/admin/NewHint.php';
 			include_once 'includes/admin/DisplayHints.php';
 			include_once 'includes/admin/AjaxOps.php';
 			include_once 'includes/admin/views/InsertHints.php';
 			include_once 'includes/admin/ActivatePlugin.php';
+
+//			include_once 'includes/license/LicenseAPI.php';
+//			include_once 'includes/license/LicenseView.php';
+//			include_once 'includes/license/LicenseValidation.php';
+			include_once 'includes/LoadAdminPro.php';
+			include_once 'includes/NewHintChild.php';
+			include_once 'includes/DisplayHintsPro.php';
+//			include_once 'includes/admin/views/settings/SettingsSavePro.php';
+			include_once 'includes/Posts.php';
+
 		} else {
 			include_once 'includes/client/LoadClient.php';
 			include_once 'includes/client/SendHints.php';
 		}
+
+		// main plugin page
+//		if ( 1 === $plugin_page ) {
+//			include_once 'includes/settings/SettingsView.php';
+//		}
+	}
+
+
+	public function load_pro_client( bool $preconnect_autoload ):array {
+		include_once 'includes/client/LoadClientPro.php';
+		new LoadClientPro( self::$client_post_id );
+
+		$client_post = array();
+		$this->prerender_init( $this->prerender_enabled );
+
+		if ( $preconnect_autoload ) {
+			$client_post = array(
+				'post_id'     => self::$client_post_id,
+				'request_uri' => self::$request_uri,
+			);
+		}
+
+		return $client_post;
+	}
+
+	public function prerender_init( bool $prerender_enabled ) {
+		if ( $prerender_enabled ) {
+			include_once 'includes/prerender/PrerenderAnalytics.php';
+			$int_post_id = (int) self::$client_post_id;
+			$prerender_analytics = new PrerenderAnalytics();
+			$prerender_analytics->config( $int_post_id );
+			return true;
+		}
+
+		return false;
+	}
+
+	public function get_client_post_id( string $request_uri ) {
+		$page_on_front = \get_option( 'page_on_front' );
+		return UtilsPro::get_client_post_id( $page_on_front, $request_uri );
+	}
+
+	public function activate_plugin() {
+		include_once 'includes/ActivatePluginPro.php';
+		$this->load_common_files();
+		$activate_plugin = new ActivatePluginPro();
+		$activate_plugin->activate_plugin_init();
+	}
+
+	public function check_plugin_update() {
+		include_once 'includes/PluginUpdater.php';
+		$update_path = 'https://sptrix.com/wp-content/pprh/updater-pro.json';
+		$plugin_file = 'pprh-pro/pprh-pro.php';
+		$plugin_slug = 'pprh-pro';
+		$plugin_updater = new PluginUpdater( PPRH_PRO_VERSION, $update_path, $plugin_file, $plugin_slug );
 	}
 
 }

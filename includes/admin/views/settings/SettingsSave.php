@@ -1,9 +1,10 @@
 <?php
 
-namespace PPRH;
+namespace PPRH\settings;
 
-use PPRH\Utils\Utils;
+use PPRH\DAO;
 use PPRH\Utils\Sanitize;
+use PPRH\Utils\Utils;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;

@@ -64,7 +64,7 @@ final class AjaxOpsTest extends TestCase {
 			return;
 		}
 
-		$posts = new \PPRH_PRO\Posts( true, true );
+		$posts = new \PPRH\Posts( true, true );
 
 		// Author page.
 		$test_data_1 = array( 'action' => 'reset_post_preload', 'post_id' => '10' );

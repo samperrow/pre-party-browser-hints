@@ -1,17 +1,18 @@
 <?php
 declare(strict_types=1);
+
 use PHPUnit\Framework\TestCase;
 
 class SettingsViewTest extends TestCase {
 
-	public static \PPRH\SettingsView $settings_view;
+	public static \PPRH\settings\SettingsView $settings_view;
 
 	/**
 	 * @before Class
 	 */
 	public function init() {
 		$this->setOutputCallback(function() {});
-		self::$settings_view = new \PPRH\SettingsView();
+		self::$settings_view = new \PPRH\settings\SettingsView();
 	}
 
 	public function test_prefetch_markup() {
