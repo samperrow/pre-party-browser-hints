@@ -24,7 +24,7 @@ class DAO {
 				'media'        => $new_hint['media'] ?? '',
 				'created_by'   => $new_hint['current_user'] ?? '',
 				'auto_created' => $new_hint['auto_created'] ?? 0,
-				'post_id'      => $new_hint['post_id']
+				'post_id'      => $new_hint['post_id'] ?? 'global'
 			)
 		);
 

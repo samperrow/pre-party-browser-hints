@@ -161,8 +161,13 @@ class HintBuilder {
 	}
 
 	private function get_post_id() {
-		if ( isset( $_GET['post'] ) ) {
+		if (isset( $_GET['post'] )) {
+//			return '2128';
 			return Sanitize::strip_non_alphanums( $_GET['post'] );
+		}
+
+		if (isset( $_GET['page']) && $_GET['page'] === 'pprh-plugin-settings') {
+			return 'global';
 		}
 
 		return null;
