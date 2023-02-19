@@ -60,10 +60,6 @@ final class AjaxOpsTest extends TestCase {
 	}
 
 	public function test_update_hints_pro() {
-		if ( ! defined( 'PPRH_PRO_ABS_DIR' ) ) {
-			return;
-		}
-
 		$posts = new \PPRH\Posts( true, true );
 
 		// Author page.

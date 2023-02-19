@@ -12,7 +12,9 @@ class SettingsViewTest extends TestCase {
 	 */
 	public function init() {
 		$this->setOutputCallback(function() {});
-		self::$settings_view = new \PPRH\settings\SettingsView();
+
+		$show_posts_on_front = ( 'posts' === \get_option( 'show_on_front', '' ) );
+		self::$settings_view = new \PPRH\settings\SettingsView( $show_posts_on_front );
 	}
 
 	public function test_prefetch_markup() {

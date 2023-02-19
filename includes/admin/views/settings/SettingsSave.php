@@ -5,6 +5,8 @@ namespace PPRH\settings;
 use PPRH\DAO;
 use PPRH\Utils\Sanitize;
 use PPRH\Utils\Utils;
+//use PPRH_PRO\DAO\DAOPro;
+use PPRH\Prerender;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -103,6 +105,27 @@ class SettingsSave extends SettingsUtils {
 		}
 
 		return $results;
+	}
+
+	public function reset_autoset_hints( string $hint_type, string $post_id, int $op_code ):array {
+		$new_hints = array();
+
+		if ( 'preconnect' === $hint_type || 'preload' === $hint_type ) {
+			$update = \PPRH\DAO::update_post_auto_hint( $hint_type, $post_id );
+
+			\add_action( 'pprh_notice', function() {
+				Utils::show_notice( "Successfully reset hints", true );
+			} );
+		}
+
+		elseif ( 'prerender' === $hint_type ) {
+			$show_posts_on_front = ( 'posts' === \get_option( 'show_on_front', '' ) );
+			$prerender = new Prerender( $show_posts_on_front );
+			$new_hints = $prerender->prerender_config( $post_id );
+		}
+
+		return array();
+//		return array( 'new_hints' => $new_hints, 'op_code' => $op_code );
 	}
 
 

@@ -60,11 +60,7 @@ class FAQ {
 				<p class="bold">My resource hints are not appearing on the front end, what is the problem?</p>
 				<p>-The resource hints are probably not appearing on the front end because the front end is delivering cached content. I recommend clearing the cache on any plugins, web server, or on the browser directly to resolve this problem.</p>
 
-                <?php
-//                    if ( defined( 'PPRH_PRO_ABS_DIR' ) ) {
-                        $this->show_pro_faq();
-//                    }
-                ?>
+                <?php $this->show_pro_faq(); ?>
 			</div>
 		</div>
 		<?php

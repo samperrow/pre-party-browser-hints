@@ -16,7 +16,7 @@ class Posts {
 	public function __construct( bool $show_posts_on_front ) {
 		$this->show_posts_on_front = $show_posts_on_front;
 		\add_action( 'load-post.php', array( $this, 'create_post_meta_box' ) );
-		\add_filter( 'pprh_apply_ajaxops_action', array( $this, 'post_reset_action' ), 10, 2 );
+//		\add_filter( 'pprh_apply_ajaxops_action', array( $this, 'post_reset_action' ), 10, 2 );
 	}
 
 	public function create_post_meta_box() {
@@ -61,7 +61,7 @@ class Posts {
 		}
 
 		if ( isset( $hint_type, $op_code ) ) {
-            $settings_save = new \PPRH\SettingsSave( $this->show_posts_on_front );
+            $settings_save = new SettingsSave( $this->show_posts_on_front );
 			$new_hint_data = $settings_save->reset_autoset_hints( $hint_type, $post_id, $op_code );
 			return \PPRH\DAO::create_db_result( '', $op_code, 0, array() );
 		}

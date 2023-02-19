@@ -8,7 +8,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class ActivatePluginPro {
 
-	public $license_option_values;
 	public $default_option_values;
 
 	public function __construct() {
@@ -17,8 +16,6 @@ class ActivatePluginPro {
 			$table = $wpdb->prefix . 'pprh_table';
 			define( 'PPRH_DB_TABLE', $table );
 		}
-
-		$this->license_option_values = array( 'license_key'  => '', 'status' => '', 'created' => '', 'email' => '', 'name' => '', 'date_expiry'  => '', 'date_renewed' => '', 'date_created' => '' );
 
 		// default options
 		$default_modal_post_types = $this->get_default_modal_post_types();
@@ -37,10 +34,10 @@ class ActivatePluginPro {
 
 	public function activate_plugin_init() {
 		$is_multisite         = \is_multisite();
-		$license_options      = \get_option( PPRH_PRO_LIC_OPTION, array() );
+//		$license_options      = \get_option( PPRH_PRO_LIC_OPTION, array() );
 		$saved_default_option = \get_option( 'pprh_pro_options', array() );
 
-		$this->create_options( $license_options, $saved_default_option );
+		$this->create_options( $saved_default_option );
 		$this->update_table_schema( $is_multisite );
 
 		// set the prerender transient if it is not there.
@@ -54,23 +51,23 @@ class ActivatePluginPro {
 
 	public function update_table_schema( bool $is_multisite ):array {
 		$results   = array();
-		$db_tables = DAO\DAOPro::get_all_db_tables( $is_multisite );
+		$db_tables = DAO::get_all_db_tables( $is_multisite );
 
 		foreach( $db_tables as $db_table ) {
-			$results[] = DAO\DAOPro::update_table_schema( $db_table );
+			$results[] = DAO::update_table_schema( $db_table );
 		}
 
 		return $results;
 	}
 
-	public function create_options( array $license_options, array $saved_default_option ):array {
+	public function create_options( array $saved_default_option ):array {
 		$results = array();
 		\add_option( 'pprh_pro_debug_enabled', 'true', '', 'yes' );
 
-		if ( empty( $license_options ) ) {
-			\add_option( PPRH_PRO_LIC_OPTION, $this->license_option_values, '', 'yes' );
-			$results[] = $this->license_option_values;
-		}
+//		if ( empty( $license_options ) ) {
+//			\add_option( PPRH_PRO_LIC_OPTION, $this->license_option_values, '', 'yes' );
+//			$results[] = $this->license_option_values;
+//		}
 
 		if ( empty( $saved_default_option ) ) {
 			\add_option( 'pprh_pro_options', $this->default_option_values, '', 'yes' );

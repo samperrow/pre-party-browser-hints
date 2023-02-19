@@ -68,7 +68,7 @@ final class DAOTest extends TestCase {
 
 		$actual_1 = self::$dao->get_admin_hints_query();
 		$expected_1 = array(
-			'sql'  => "SELECT * FROM $table ORDER BY url ASC",
+			'sql'  => "SELECT * FROM wp_pprh_table ORDER BY post_id DESC, hint_type ASC, url ASC",
 			'args' => array()
 		);
 		self::assertEquals( $expected_1, $actual_1 );
@@ -96,7 +96,7 @@ final class DAOTest extends TestCase {
 		$_REQUEST['order'] = '';
 		$actual_4 = self::$dao->get_admin_hints_query();
 		$expected_4 = array(
-			'sql'  => "SELECT * FROM $table ORDER BY url ASC",
+			'sql'  => "SELECT * FROM wp_pprh_table ORDER BY post_id DESC, hint_type ASC, url ASC",
 			'args' => array()
 		);
 		self::assertEquals( $expected_4, $actual_4 );
@@ -106,7 +106,7 @@ final class DAOTest extends TestCase {
 		$_REQUEST['order'] = 'asdf';
 		$actual_5 = self::$dao->get_admin_hints_query();
 		$expected_5 = array(
-			'sql'  => "SELECT * FROM $table ORDER BY url ASC",
+			'sql'  => "SELECT * FROM wp_pprh_table ORDER BY post_id DESC, hint_type ASC, url ASC",
 			'args' => array()
 		);
 		self::assertEquals( $expected_5, $actual_5 );

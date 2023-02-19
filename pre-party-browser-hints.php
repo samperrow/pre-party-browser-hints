@@ -83,12 +83,8 @@ class Pre_Party_Browser_Hints {
 		include_once 'includes/utils/Debug.php';
 		include_once 'includes/common/HintController.php';
 		include_once 'includes/common/HintBuilder.php';
-
 		include_once 'includes/UtilsPro.php';
-		include_once 'includes/dao/DAOProFilters.php';
-		include_once 'includes/dao/DAOPro.php';
 		include_once 'includes/HintCtrlPro.php';
-//		include_once 'includes/license/LicenseUtils.php';
 		include_once 'includes/DebugLogger.php';
 	}
 
@@ -114,10 +110,7 @@ class Pre_Party_Browser_Hints {
 			define( 'PPRH_RUNNING_UNIT_TESTS', $unit_testing );
 			define( 'PPRH_EMAIL', 'info@sptrix.com' );
 
-			define( 'PPRH_PRO_VERSION', '1.0.4' );
 			define( 'PPRH_PRO_REL_DIR', plugins_url() . '/pprh-pro/' );
-			define( 'PPRH_PRO_ABS_DIR', WP_PLUGIN_DIR . '/pprh-pro/' );
-			define( 'PPRH_PRO_LIC_OPTION', 'pprh_pro_license_option' );
 		}
 
 		if ( ! defined( 'PPRH_VERSION_NEW' ) ) {
@@ -253,12 +246,12 @@ class Pre_Party_Browser_Hints {
 		$activate_plugin->activate_plugin_init();
 	}
 
-	public function check_plugin_update() {
-		include_once 'includes/PluginUpdater.php';
-		$update_path = 'https://sptrix.com/wp-content/pprh/updater-pro.json';
-		$plugin_file = 'pprh-pro/pprh-pro.php';
-		$plugin_slug = 'pprh-pro';
-		$plugin_updater = new PluginUpdater( PPRH_PRO_VERSION, $update_path, $plugin_file, $plugin_slug );
-	}
+//	public function check_plugin_update() {
+//		include_once 'includes/PluginUpdater.php';
+//		$update_path = 'https://sptrix.com/wp-content/pprh/updater-pro.json';
+//		$plugin_file = 'pprh-pro/pprh-pro.php';
+//		$plugin_slug = 'pprh-pro';
+//		$plugin_updater = new PluginUpdater( PPRH_PRO_VERSION, $update_path, $plugin_file, $plugin_slug );
+//	}
 
 }

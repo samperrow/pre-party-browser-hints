@@ -47,14 +47,15 @@ class AjaxOps {
 
 	private function handle_action( array $data ):\stdClass {
 		if ( isset( $data['post_id'], $data['action'] ) ) {
-			$db_result = \apply_filters( 'pprh_apply_ajaxops_action', $data['post_id'], $data['action'] );
+//			$db_result = \apply_filters( 'pprh_apply_ajaxops_action', $data['post_id'], $data['action'] );
+			$db_result = $this->post_reset_action( $data['post_id'], $data['action'] );
 		} else {
 			$hint_ctrl  = new HintController();
 			$db_result = $hint_ctrl->hint_ctrl_init( $data );
 		}
 
 		if ( ! is_object( $db_result ) ) {
-			$db_result = DAO::create_db_result( false,0, 0, null );
+			$db_result = DAO::create_db_result( false,0, 0, array() );
 		}
 
 		return $db_result;
@@ -63,6 +64,30 @@ class AjaxOps {
 	public function is_proper_response( array $ajax_response ):bool {
 		$values_set = ( isset( $ajax_response['rows'], $ajax_response['pagination'], $ajax_response['column_headers'], $ajax_response['total_pages'], $ajax_response['result'] ) );
 		return ( $values_set && is_object( $ajax_response['result'] ) );
+	}
+
+
+
+	public function post_reset_action( $post_id, $action ):\stdClass {
+		if ( str_contains( $action, 'preconnect' ) ) {
+			$hint_type = 'preconnect';
+			$op_code = 5;
+		} elseif ( str_contains( $action, 'preload' ) ) {
+			$hint_type = 'preload';
+			$op_code = 6;
+		} elseif ( str_contains( $action, 'prerender' ) ) {
+			$hint_type = 'prerender';
+			$op_code = 7;
+		}
+
+		if ( isset( $hint_type, $op_code ) ) {
+			$settings_save = new \PPRH\settings\SettingsSave( false );
+			$new_hint_data = $settings_save->reset_autoset_hints( $hint_type, $post_id, $op_code );
+			return \PPRH\DAO::create_db_result( '', $op_code, 0, array() );
+		}
+
+		$msg = "error resetting this post's $hint_type value. Please either clear your cache and try again, or report the issue to support.";
+		return \PPRH\DAO::create_db_result( $msg, 0, 0, array() );
 	}
 
 }

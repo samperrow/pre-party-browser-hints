@@ -71,8 +71,6 @@ class HintController extends DAO {
 	}
 
 	/**
-	 *
-	 * @param int   $op_code
 	 * @param array $candidate_hint
 	 * @param array $duplicate_hints
 	 * @return array

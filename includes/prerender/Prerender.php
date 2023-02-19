@@ -151,7 +151,7 @@ class Prerender {
 		$meta_values = array();
 
 		if ( 'global' === $post_id ) {
-			$postmeta_arr = DAOPro::get_all_postmeta_values( $meta_key );
+			$postmeta_arr = DAO::get_all_postmeta_values( $meta_key );
 
 			foreach( $postmeta_arr as $postmeta ) {
 				if ( isset( $postmeta->post_id, $postmeta->meta_value ) ) {

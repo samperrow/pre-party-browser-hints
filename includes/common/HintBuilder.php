@@ -38,11 +38,13 @@ class HintBuilder {
 		$type_attr    = $this->set_mime_type_attr( $raw_hint, $file_type );
 		$crossorigin  = $this->set_crossorigin( $raw_hint, $file_type );
 		$media        = Sanitize::strip_bad_chars( $media_attr );
+		$post_id      = $this->get_post_id();
 
-		$new_hint = self::create_raw_hint( $url, $hint_type, $auto_created, $as_attr, $type_attr, $crossorigin, $media );
+		$new_hint = self::create_raw_hint( $url, $hint_type, $auto_created, $as_attr, $type_attr, $crossorigin, $media, $post_id );
 		$new_hint['current_user'] = \wp_get_current_user()->display_name ?? '';
 
-		return apply_filters( 'pprh_append_hint', $new_hint, $raw_hint );
+		return $new_hint;
+//		return apply_filters( 'pprh_append_hint', $new_hint, $raw_hint );
 	}
 
 	private function get_hint_type( string $hint_type ) {
@@ -81,8 +83,6 @@ class HintBuilder {
 		$domain .= $parsed_url['host'];
 		return $domain;
 	}
-
-
 
 	private function set_crossorigin( array $hint, string $file_type ) {
 		$match = ( 0 < preg_match( '/(.woff|.woff2|.ttf|.eot)/', $file_type ) );
@@ -160,7 +160,13 @@ class HintBuilder {
 		return $types;
 	}
 
+	private function get_post_id() {
+		if ( isset( $_GET['post'] ) ) {
+			return Sanitize::strip_non_alphanums( $_GET['post'] );
+		}
 
+		return null;
+	}
 
 
 	/**
@@ -174,12 +180,11 @@ class HintBuilder {
 			'as_attr'      => $as_attr,
 			'type_attr'    => $type_attr,
 			'crossorigin'  => $crossorigin,
-			'media'        => $media
+			'media'        => $media,
+			'current_user' => \wp_get_current_user()->display_name ?? ''
 		);
 
-		$hint['current_user'] = \wp_get_current_user()->display_name ?? '';
-
-		if ( isset( $post_id ) ) {
+		if ( $post_id !== null ) {
 			$hint['post_id'] = $post_id;
 		}
 

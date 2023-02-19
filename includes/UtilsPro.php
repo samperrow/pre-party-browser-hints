@@ -46,7 +46,7 @@ class UtilsPro {
 		$client_post_id = '0';
 
 		if ( $request_uri !== $home_url && $request_uri !== $site_url ) {
-			$client_post_id = \PPRH\DAO\DAOPro::get_post_id_from_url( $request_uri );
+			$client_post_id = \PPRH\DAO::get_post_id_from_url( $request_uri );
 
 			if ( $client_post_id === $page_on_front ) {
 				$client_post_id = '0';
