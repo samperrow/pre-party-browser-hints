@@ -97,19 +97,44 @@ class DAO {
 	}
 
 
-	public function get_duplicate_hints( string $url, string $hint_type, int $op_code, string $hint_ids ):array {
+	public function get_duplicate_hints( array $candidate_hint, int $op_code, string $hint_ids ):array {
 		global $wpdb;
 		$pprh_table = PPRH_DB_TABLE;
-		$sql = "SELECT * FROM $pprh_table WHERE url = %s AND hint_type = %s";
+		$url = $candidate_hint['url'];
+		$hint_type = $candidate_hint['hint_type'];
+		$post_id = $candidate_hint['post_id'];
+		$sql = $this->get_duplicate_hints_sql( $post_id, $op_code, $hint_ids );
 
-		if ( 1 === $op_code && ! empty( $hint_ids ) ) {			// hint is being updated, so ignore the existing one.
-			$sql .= " AND id != %d";
+		if ( 1 === $op_code && ! empty( $hint_ids ) ) {
 			$results = $wpdb->get_results( $wpdb->prepare( $sql, $url, $hint_type, $hint_ids ), ARRAY_A );
-		} else {
+		}
+
+		// a new post hint shouldn't have a duplcate global hint or one with the same url, hint_type, and post_id
+		elseif( 'global' !== $post_id ) {
+			$results = $wpdb->get_results( $wpdb->prepare( $sql, $url, $hint_type, 'global', $post_id ), ARRAY_A );
+		}
+
+		else {
 			$results = $wpdb->get_results( $wpdb->prepare( $sql, $url, $hint_type ), ARRAY_A );
 		}
 
 		return $results;
+	}
+
+	public function get_duplicate_hints_sql( string $post_id, int $op_code, string $hint_ids ) {
+		$pprh_table = PPRH_DB_TABLE;
+		$sql = "SELECT * FROM $pprh_table WHERE url = %s AND hint_type = %s";
+
+		if ( 'global' !== $post_id ) {
+			$sql .= " AND post_id != %s OR post_id != %s";
+		}
+
+		// hint is being updated, so ignore the existing one.
+		if ( 1 === $op_code && ! empty( $hint_ids ) ) {
+			$sql .= " AND id != %d";
+		}
+
+		return $sql;
 	}
 
 	public static function get_admin_hints() {

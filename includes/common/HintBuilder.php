@@ -38,13 +38,15 @@ class HintBuilder {
 		$type_attr    = $this->set_mime_type_attr( $raw_hint, $file_type );
 		$crossorigin  = $this->set_crossorigin( $raw_hint, $file_type );
 		$media        = Sanitize::strip_bad_chars( $media_attr );
-		$post_id      = $this->get_post_id();
+
+		$request_data = $_REQUEST['pprh_data'] ?? '';
+		$doing_ajax   = \wp_doing_ajax();
+		$post_id      = $this->get_post_id( $doing_ajax );
 
 		$new_hint = self::create_raw_hint( $url, $hint_type, $auto_created, $as_attr, $type_attr, $crossorigin, $media, $post_id );
 		$new_hint['current_user'] = \wp_get_current_user()->display_name ?? '';
 
 		return $new_hint;
-//		return apply_filters( 'pprh_append_hint', $new_hint, $raw_hint );
 	}
 
 	private function get_hint_type( string $hint_type ) {
@@ -160,24 +162,21 @@ class HintBuilder {
 		return $types;
 	}
 
-	private function get_post_id() {
-		if (isset( $_GET['post'] )) {
-//			return '2128';
-			return Sanitize::strip_non_alphanums( $_GET['post'] );
+	public function get_post_id( bool $doing_ajax ) {
+		if ( $doing_ajax ) {
+			$request_data = $_REQUEST['pprh_data'] ?? '';
+			$post_data = Utils::json_to_array( $request_data );
+			return Sanitize::strip_non_alphanums( $post_data['post_id'] );
 		}
 
-		if (isset( $_GET['page']) && $_GET['page'] === 'pprh-plugin-settings') {
-			return 'global';
-		}
-
-		return null;
+		return 'global';
 	}
 
 
 	/**
 	 * Hint utils
 	 */
-	public static function create_raw_hint( $url, $hint_type, $auto_created = 0, $as_attr = '', $type_attr = '', $crossorigin = '', $media = '', $post_id = null, $op_code = null ):array {
+	public static function create_raw_hint( $url, $hint_type, $auto_created = 0, $as_attr = '', $type_attr = '', $crossorigin = '', $media = '', $post_id = 'global', $op_code = null ):array {
 		$hint = array(
 			'url'          => $url,
 			'hint_type'    => $hint_type,

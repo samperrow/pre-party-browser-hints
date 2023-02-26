@@ -63,26 +63,84 @@ class HintController extends DAO {
 
 		if ( ! empty( $candidate_hint ) ) {
 			$hint_ids        = ( ! empty( $raw_hint['hint_ids'] ) ? $raw_hint['hint_ids'] : '' );
-			$duplicate_hints = $this->get_duplicate_hints( $candidate_hint['url'], $candidate_hint['hint_type'], $op_code, $hint_ids );
+			$duplicate_hints = $this->get_duplicate_hints( $candidate_hint, $op_code, $hint_ids );
 			$pprh_hint       = $this->handle_duplicate_hints( $candidate_hint, $duplicate_hints );
 		}
 
 		return $pprh_hint;
 	}
 
-	/**
-	 * @param array $candidate_hint
-	 * @param array $duplicate_hints
-	 * @return array
-	 */
 	public function handle_duplicate_hints( array $candidate_hint, array $duplicate_hints ):array {
-		if ( isset( $candidate_hint['post_id'] ) ) {
-			$candidate_hint = \apply_filters( 'pprh_resolve_duplicate_hints', $candidate_hint, $duplicate_hints );
-		} elseif ( ! empty( $duplicate_hints ) ) {
-			return array();
+		$candidate_hint = $this->resolve_duplicate_hints( $candidate_hint, $duplicate_hints );
+
+
+		if ( empty( $duplicate_hints ) ) {
+			return $candidate_hint;
+		}
+
+		return array();
+	}
+
+	public function resolve_duplicate_hints( array $candidate_hint, array $duplicate_hints ) {
+//		if ( empty( $duplicate_hints ) ) {
+//			return $candidate_hint;
+//		}
+
+//		$candidate_hint_post_id = $candidate_hint['post_id'];
+//		$is_duplicate_hint_present = $this->is_duplicate_hint_present( $duplicate_hints, $candidate_hint_post_id );
+
+//		if ( $is_duplicate_hint_present ) {
+//			return array();
+//		}
+
+//		$remove_dups = $this->resolve_duplicate_hints_ctrl( $candidate_hint, $duplicate_hints );
+
+		if ( 'prerender' !== $candidate_hint['hint_type'] ) {
+			$this->delete_duplicate_hints( $duplicate_hints );
+			$candidate_hint['post_id'] = 'global';
 		}
 
 		return $candidate_hint;
+	}
+
+//	public function is_duplicate_hint_present( array $dup_hints, string $candidate_post_id ):bool {
+//
+//		foreach ( $dup_hints as $dup_hint ) {
+//			$dup_hint_post_id = $dup_hint['post_id'] ?? '';
+//			$existing_dup_global_hint = ( 'global' === $dup_hint_post_id );
+//			$existing_dup_post_hint = ( $dup_hint_post_id === $candidate_post_id );
+//
+//			if ( $existing_dup_global_hint || $existing_dup_post_hint ) {
+//				return true;
+//			}
+//		}
+//
+//		return false;
+//	}
+
+	private function delete_duplicate_hints( array $duplicate_hints ) {
+		$hint_id_arr = $this->get_hint_ids( $duplicate_hints );
+		$hint_ids    = Utils::array_to_csv( $hint_id_arr );
+
+		$data = array(
+			'op_code'  => 2,
+			'hint_ids' => $hint_ids
+		);
+
+		$result = $this->hint_ctrl_init( $data );
+		return ( 'success' === $result->db_result['status'] );
+	}
+
+	public function get_hint_ids( array $hints ): array {
+		$hint_ids = array();
+
+		foreach ( $hints as $hint ) {
+			if ( ! empty( $hint['id'] ) ) {
+				$hint_ids[] = $hint['id'];
+			}
+		}
+
+		return $hint_ids;
 	}
 
 }

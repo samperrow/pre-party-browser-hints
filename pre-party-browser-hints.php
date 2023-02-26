@@ -60,7 +60,15 @@ class Pre_Party_Browser_Hints {
 	public static $request_uri;
 
 	public function __construct() {
-		$this->load_common_files();
+		include_once 'includes/common/Compatibility.php';
+		include_once 'includes/utils/Utils.php';
+		include_once 'includes/utils/Sanitize.php';
+		include_once 'includes/utils/Debug.php';
+		include_once 'includes/common/HintController.php';
+		include_once 'includes/common/HintBuilder.php';
+		include_once 'includes/UtilsPro.php';
+		include_once 'includes/HintCtrlPro.php';
+		include_once 'includes/DebugLogger.php';
 	}
 
 	public function init() {
@@ -74,18 +82,6 @@ class Pre_Party_Browser_Hints {
 			include_once 'includes/client/ClientAjaxInit.php';
 			$client_ajax_init = new ClientAjaxInit();
 		}
-	}
-
-	private function load_common_files() {
-		include_once 'includes/common/Compatibility.php';
-		include_once 'includes/utils/Utils.php';
-		include_once 'includes/utils/Sanitize.php';
-		include_once 'includes/utils/Debug.php';
-		include_once 'includes/common/HintController.php';
-		include_once 'includes/common/HintBuilder.php';
-		include_once 'includes/UtilsPro.php';
-		include_once 'includes/HintCtrlPro.php';
-		include_once 'includes/DebugLogger.php';
 	}
 
 	public function create_constants() {

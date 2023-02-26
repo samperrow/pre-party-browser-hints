@@ -12,11 +12,14 @@ class HintControllerTest extends TestCase {
 
 	public static $hint_ctrl;
 
+	public $hint_builder;
+
 	/**
 	 * @before Class
 	 */
 	public function init() {
 		self::$hint_ctrl = new \PPRH\HintController();
+		$this->hint_builder = new \PPRH\HintBuilder();
 	}
 
 	public function test_hint_ctrl_init() {
@@ -64,10 +67,10 @@ class HintControllerTest extends TestCase {
 		$dummy_hint = \PPRH\HintBuilder::create_raw_hint( 'https://free-hint.com', 'dns-prefetch', '', '', '', '' );
 
 		$actual_1 = self::$hint_ctrl->new_hint_ctrl( $dummy_hint, 0 );
-		self::assertCount( 8, $actual_1 );
+		self::assertCount( 9, $actual_1 );
 
 		$actual_2 = self::$hint_ctrl->new_hint_ctrl( $dummy_hint, 1 );
-		self::assertCount( 8, $actual_2 );
+		self::assertCount( 9, $actual_2 );
 
 		$raw_data_4 = \PPRH\HintBuilder::create_raw_hint( '', '' );
 		$actual_4 = self::$hint_ctrl->new_hint_ctrl( $raw_data_4, 0 );
@@ -86,10 +89,43 @@ class HintControllerTest extends TestCase {
 		$actual_2 = self::$hint_ctrl->handle_duplicate_hints( $candidate_hint_2, $dup_hints_2 );
 		self::assertNotEmpty( $actual_2 );
 
-		$hint_3 = \PPRH\HintBuilder::create_raw_hint( 'https://asdf.com', 'preconnect', '', '', 'crossorigin', 'screen' );
-		$dup_hints_3 = array( $hint_3 );
-		$actual_3 = self::$hint_ctrl->handle_duplicate_hints( $hint_3, $dup_hints_3 );
+		$candidate_hint_3 = \PPRH\HintBuilder::create_raw_hint( 'https://asdf.com', 'preconnect', '', '', 'crossorigin', 'screen' );
+		$dup_hints_3 = array( $candidate_hint_3 );
+		$actual_3 = self::$hint_ctrl->handle_duplicate_hints( $candidate_hint_3, $dup_hints_3 );
 		self::assertEmpty( $actual_3 );
+
+		$candidate_hint_4 = \PPRH\HintBuilder::create_raw_hint( 'https://asdf.com', 'preconnect', '', '', 'crossorigin', 'screen', '', '10' );
+		$dup_hints_4 = array( $candidate_hint_4 );
+		$actual_4 = self::$hint_ctrl->handle_duplicate_hints( $candidate_hint_4, $dup_hints_4 );
+		self::assertEmpty( $actual_4 );
+
+		$candidate_hint_5 = \PPRH\HintBuilder::create_raw_hint( 'https://asdf.com', 'preconnect', '', '', 'crossorigin', 'screen', '', '2128' );
+		$dup_hints_5 = array(
+			\PPRH\HintBuilder::create_raw_hint( 'https://asdf.com', 'preconnect', '', '', 'crossorigin', 'screen', '', '10' ),
+			\PPRH\HintBuilder::create_raw_hint( 'https://asdf.com', 'preconnect', '', '', 'crossorigin', 'screen', '', '11' ),
+			\PPRH\HintBuilder::create_raw_hint( 'https://asdf.com', 'preconnect', '', '', 'crossorigin', 'screen', '', 'global' )
+		);
+		$actual_5 = self::$hint_ctrl->handle_duplicate_hints( $candidate_hint_5, $dup_hints_5 );
+		self::assertEmpty( $actual_5 );
+	}
+
+	public function test_get_post_id() {
+		unset($_REQUEST['pprh_data']);
+
+		$_GET['page'] = 'pprh-plugin-settings';
+		$actual_1 = $this->hint_builder->get_post_id( false );
+		self::assertEquals( 'global', $actual_1);
+		unset($_GET['page']);
+
+		$_REQUEST['pprh_data'] = "{\"url\":\"asdf.com\",\"hint_type\":\"dns-prefetch\",\"media\":\"\",\"as_attr\":\"\",\"type_attr\":\"\",\"crossorigin\":false,\"post_id\":\"2128\",\"op_code\":0,\"hint_ids\":[]}";
+		$actual_2 = $this->hint_builder->get_post_id( true );
+		self::assertEquals( '2128', $actual_2);
+
+		$_REQUEST['pprh_data'] = "{\"url\":\"asdf2.com\",\"hint_type\":\"dns-prefetch\",\"media\":\"\",\"as_attr\":\"\",\"type_attr\":\"\",\"crossorigin\":false,\"post_id\":\"10\",\"op_code\":0,\"hint_ids\":[]}";
+		$actual_3 = $this->hint_builder->get_post_id( true );
+		self::assertEquals( '10', $actual_3);
+		unset($_REQUEST['pprh_data']);
+
 	}
 
 

@@ -50,13 +50,36 @@ final class DAOTest extends TestCase {
 
 
 	public function test_get_duplicate_hints() {
-		$url_1 = 'https://asdfasdfadsf.com';
-		$hint_type_1 = 'preconnect';
-		$actual_1 = self::$dao->get_duplicate_hints( $url_1, $hint_type_1, 1, '100' );
+		$candidate_hint_1 = PPRH\HintBuilder::create_raw_hint( 'https://asdf.com', 'preconnect', '', '', '', '', '','2145' );
+		$actual_1 = self::$dao->get_duplicate_hints( $candidate_hint_1, 1, '100' );
 		self::assertEmpty( $actual_1 );
 
-		$actual_2 = self::$dao->get_duplicate_hints( $url_1, $hint_type_1, 0, '' );
+		$actual_2 = self::$dao->get_duplicate_hints( $candidate_hint_1, 0, '' );
 		self::assertEmpty( $actual_2 );
+	}
+
+	public function test_get_duplicate_hints_sql() {
+		$db_table = PPRH_DB_TABLE;
+
+		// updating an existing global hint
+		$actual_sql_1 = self::$dao->get_duplicate_hints_sql( 'global', 1, '100' );
+		$expected_sql_1 = "SELECT * FROM $db_table WHERE url = %s AND hint_type = %s AND id != %d";
+		self::assertSame($expected_sql_1, $actual_sql_1);
+
+		// new global hint
+		$actual_sql_2 = self::$dao->get_duplicate_hints_sql( 'global', 0, '100' );
+		$expected_sql_2 = "SELECT * FROM $db_table WHERE url = %s AND hint_type = %s";
+		self::assertSame($expected_sql_2, $actual_sql_2);
+
+		// new post hint
+		$actual_sql_3 = self::$dao->get_duplicate_hints_sql( '10', 0, '100' );
+		$expected_sql_3 = "SELECT * FROM $db_table WHERE url = %s AND hint_type = %s AND post_id != %s OR post_id != %s";
+		self::assertSame($expected_sql_3, $actual_sql_3);
+
+		// updating an existing post hint
+		$actual_sql_4 = self::$dao->get_duplicate_hints_sql( '10', 1, '100' );
+		$expected_sql_4 = "SELECT * FROM $db_table WHERE url = %s AND hint_type = %s AND post_id != %s OR post_id != %s AND id != %d";
+		self::assertSame($expected_sql_4, $actual_sql_4);
 	}
 
 	public function test_get_admin_hints_query() {

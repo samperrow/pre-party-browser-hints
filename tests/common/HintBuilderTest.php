@@ -21,7 +21,7 @@ class HintBuilderTest extends TestCase {
 		$actual_1 = self::$hint_builder->create_pprh_hint( $hint_1 );
 		self::assertEmpty( $actual_1 );
 
-		$hint_2 = \PPRH\HintBuilder::create_raw_hint( 'https://espn.com/asdf/script.js', 'preload', 0, '', '', '', '' );
+		$hint_2 = \PPRH\HintBuilder::create_raw_hint( 'https://espn.com/asdf/script.js', 'preload', 0, '', '', '', '', );
 		$actual_2 = self::$hint_builder->create_pprh_hint( $hint_2 );
 		$expected_2 = \PPRH\HintBuilder::create_raw_hint( 'https://espn.com/asdf/script.js', 'preload', 0, 'script', 'text/javascript', '', '' );
 		self::assertSame( $expected_2, $actual_2 );
