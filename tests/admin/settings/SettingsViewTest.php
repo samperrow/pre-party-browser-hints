@@ -5,7 +5,7 @@ use PHPUnit\Framework\TestCase;
 
 class SettingsViewTest extends TestCase {
 
-	public static \PPRH\settings\SettingsView $settings_view;
+	public static \PPRH\Settings\SettingsView $settings_view;
 
 	/**
 	 * @before Class
@@ -14,7 +14,7 @@ class SettingsViewTest extends TestCase {
 		$this->setOutputCallback(function() {});
 
 		$show_posts_on_front = ( 'posts' === \get_option( 'show_on_front', '' ) );
-		self::$settings_view = new \PPRH\settings\SettingsView( $show_posts_on_front );
+		self::$settings_view = new \PPRH\Settings\SettingsView( $show_posts_on_front );
 	}
 
 	public function test_prefetch_markup() {

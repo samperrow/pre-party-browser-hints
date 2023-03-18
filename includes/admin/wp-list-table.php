@@ -157,7 +157,7 @@ class WP_List_Table {
 		);
 
 		$this->screen = \convert_to_screen( $args['screen'] );
-		$this->on_pprh_post_page = $args['plugin_page'] ?? 1;
+		$this->on_pprh_post_page = $args['on_plugin_page'] ?? 1;
 
 		\add_filter( "manage_{$this->screen->id}_columns", array( $this, 'get_columns' ), 0 );
 

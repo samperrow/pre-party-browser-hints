@@ -16,7 +16,9 @@ class NewHint {
     private $mime_type_attr;
     private $media;
 
-    public function __construct( array $hint = array() ) {
+    private $on_plugin_page;
+
+    public function __construct( bool $on_plugin_page, array $hint = array() ) {
         $this->hint_url       = $hint['url'] ?? '';
 		$this->hint_type      = $hint['hint_type'] ?? '';
 		$this->hint_id        = $hint['id'] ?? '';
@@ -24,6 +26,7 @@ class NewHint {
 		$this->as_attr        = $hint['as_attr'] ?? '';
 		$this->media          = $hint['media'] ?? '';
 		$this->mime_type_attr = $hint['type_attr'] ?? '';
+        $this->on_plugin_page = $on_plugin_page;
 	}
 
 	public function create_new_hint_table() {
@@ -41,8 +44,36 @@ class NewHint {
 				<tbody>
                     <?php
                         $this->insert_hint_table();
-					    \apply_filters( 'pprh_newhint_get_content', 1 );
-                    ?>
+//                        $this->newhint_get_content( 1 );
+
+                        if ( $this->on_plugin_page ) { ?>
+                            <tr class="text-center">
+                                <td colspan="5">
+                                    <span class="pprh-help-tip-hint">
+                                        <span><?php esc_html_e( 'If checked, this resource hint will only be used on the home page, which is set to display recent posts.', 'pprh' ); ?></span>
+                                    </span>
+                                    <span><?php esc_html_e( 'Use this resource hint only on the home page?' ); ?></span>
+                                    <label for="UseOnHomePostsOnly"><input class="pprh_home pprhHomePostHints" name="UseOnHomePostsOnly" type="checkbox" value="HomePostHints"/></label>
+                                </td>
+                            </tr>
+                        <?php } else { ?>
+                            <tr>
+                                <td colspan="5">
+                                    <div style="display: flex; flex-direction: row; justify-content: space-around;">
+
+                                        <div>
+                                            <label for="reset_post_prerender">
+                                                <input name="reset_post_prerender" id="resetPostPrerender" type="button" class="button button-secondary text-center" value="<?php esc_html_e( 'Reset Post Prerender', 'pprh' ); ?>">
+                                            </label>
+                                            <span class="pprh-help-tip-hint">
+                                                <span><?php esc_html_e( 'This will reset this post\'s automatically configured prerender hint and replace it using the latest analytics data.', 'pprh' ); ?></span>
+                                            </span>
+                                        </div>
+
+                                    </div>
+                                </td>
+                            </tr>
+                        <?php } ?>
                 </tbody>
 
                 <tfoot>
@@ -228,6 +259,41 @@ class NewHint {
 			</td>
 		</tr>
 		<?php
+	}
+
+
+	public function newhint_get_content( int $on_plugin_page ) {
+		if ( 1 === $on_plugin_page ) { ?>
+            <tr class="text-center">
+                <td colspan="5">
+                    <span class="pprh-help-tip-hint">
+                        <span><?php esc_html_e( 'If checked, this resource hint will only be used on the home page, which is set to display recent posts.', 'pprh' ); ?></span>
+                    </span>
+                    <span><?php esc_html_e( 'Use this resource hint only on the home page?' ); ?></span>
+                    <label for="UseOnHomePostsOnly"><input class="pprh_home pprhHomePostHints" name="UseOnHomePostsOnly" type="checkbox" value="HomePostHints"/></label>
+                </td>
+            </tr>
+		<?php } elseif ( 2 === $on_plugin_page ) { ?>
+            <tr>
+                <td colspan="5">
+                    <div style="display: flex; flex-direction: row; justify-content: space-around;">
+
+                        <div>
+                            <label for="reset_post_prerender">
+                                <input name="reset_post_prerender" id="resetPostPrerender" type="button" class="button button-secondary text-center" value="<?php esc_html_e( 'Reset Post Prerender', 'pprh' ); ?>">
+                            </label>
+                            <span class="pprh-help-tip-hint">
+                                <span><?php esc_html_e( 'This will reset this post\'s automatically configured prerender hint and replace it using the latest analytics data.', 'pprh' ); ?></span>
+                            </span>
+                        </div>
+
+                    </div>
+                </td>
+            </tr>
+
+			<?php
+			return $on_plugin_page;
+		}
 	}
 
 }

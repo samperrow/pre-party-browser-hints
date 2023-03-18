@@ -2,8 +2,8 @@
 
 namespace PPRH;
 
-use PPRH\settings\SettingsSave;
-use PPRH\settings\SettingsView;
+use PPRH\Settings\SettingsSave;
+use PPRH\Settings\SettingsView;
 use PPRH\Utils;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -22,27 +22,20 @@ class Dashboard {
 		Utils\Utils::show_notice( '', true );
 	}
 
-	public function show_plugin_dashboard( int $plugin_page ) {
+	public function show_plugin_dashboard( bool $on_plugin_page ) {
 		$faq           = new FAQ();
 		$settings_save = new SettingsSave();
 		$settings_save->save_user_options();
 
-		echo '<div id="pprh-poststuff" class="wrap"><h1>';
-		esc_html_e( 'Pre* Party Resource Hints', 'pre-party-browser-hints' );
-		echo '</h1>';
-		\do_action( 'pprh_notice' );
-		$this->plugin_upgrade_notice( PPRH_VERSION_NEW, PPRH_VERSION );
-		$insert_hints = new InsertHints( $plugin_page );
+        $this->display_hints( $on_plugin_page );
+
 		$this->show_admin_tabs();
-		$insert_hints->markup();
+
 		SettingsView::markup( true );
-		\do_action( 'pprh_load_license_view' );
-
 		$faq->markup();
-
 		$this->show_footer();
 		echo '</div>';
-		unset( $insert_hints, $settings, $faq );
+		unset( $settings, $faq );
         return true;
 	}
 
@@ -55,14 +48,21 @@ class Dashboard {
 			'faq'          => 'FAQ',
 		);
 
-		$tabs = \apply_filters( 'pprh_load_tabs', $tabs );
-
 		echo '<div class="nav-tab-wrapper" style="margin-bottom: 10px;">';
 		foreach ( $tabs as $tab => $name ) {
 			echo "<a class='nav-tab $tab' href='?page=$menu_slug'>" . $name . '</a>';
 		}
 		echo '</div>';
 	}
+
+    public function display_hints( bool $on_plugin_page ) {
+		echo '<div id="insert-hints" class="pprh-content insert-hints">';
+		$display_hints = new DisplayHints( false, $on_plugin_page );
+		$new_hint      = new NewHint( $on_plugin_page, array() );
+		$new_hint->create_new_hint_table();
+		echo '</div>';
+		unset( $display_hints );
+    }
 
 	public function plugin_upgrade_notice( string $new_version, string $old_version ) {
 		if ( $new_version === $old_version ) {

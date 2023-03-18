@@ -20,7 +20,7 @@ class Posts {
 	}
 
 	public function create_post_meta_box() {
-        $opt = get_option( 'pprh_pro_options' );
+        $opt = get_option( 'pprh_options' );
 		$modal_types = $opt['post_modal_types'] ?? array( 'post', 'page' );
 		$id          = 'pprh-poststuff';
 		$title       = 'Pre* Party Resource Hints';
@@ -41,10 +41,11 @@ class Posts {
 		echo '<div id="pprh-wrapper"><h3>';
 		echo \esc_html( $title ) . '</h3>';
 		Utils::show_notice( '', true );
-		$insert_hints = new \PPRH\InsertHints( 2 );
-		$insert_hints->markup();
-		echo '</div>';
-		unset( $insert_hints );
+
+		$dashboard = new Dashboard();
+		$dashboard->display_hints( false );
+
+		unset( $dashboard );
 	}
 
 	// this method is only called from the post-edit pages.

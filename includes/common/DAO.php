@@ -100,42 +100,45 @@ class DAO {
 	public function get_duplicate_hints( array $candidate_hint, int $op_code, string $hint_ids ):array {
 		global $wpdb;
 		$pprh_table = PPRH_DB_TABLE;
+		$sql = "SELECT * FROM $pprh_table WHERE url = %s AND hint_type = %s";
+
 		$url = $candidate_hint['url'];
 		$hint_type = $candidate_hint['hint_type'];
 		$post_id = $candidate_hint['post_id'];
-		$sql = $this->get_duplicate_hints_sql( $post_id, $op_code, $hint_ids );
+//		$sql = $this->get_duplicate_hints_sql( $post_id, $op_code, $hint_ids );
 
-		if ( 1 === $op_code && ! empty( $hint_ids ) ) {
-			$results = $wpdb->get_results( $wpdb->prepare( $sql, $url, $hint_type, $hint_ids ), ARRAY_A );
+		if ( 'global' === $post_id ) {
+			$results = $wpdb->get_results( $wpdb->prepare( $sql, $url, $hint_type ), ARRAY_A );
+
 		}
 
-		// a new post hint shouldn't have a duplcate global hint or one with the same url, hint_type, and post_id
-		elseif( 'global' !== $post_id ) {
+		elseif ( 'global' !== $post_id ) {
+			$sql .= " AND post_id != %s OR post_id != %s";
 			$results = $wpdb->get_results( $wpdb->prepare( $sql, $url, $hint_type, 'global', $post_id ), ARRAY_A );
 		}
 
-		else {
-			$results = $wpdb->get_results( $wpdb->prepare( $sql, $url, $hint_type ), ARRAY_A );
+		// hint is being updated, so ignore the existing one.
+		elseif ( 1 === $op_code && ! empty( $hint_ids ) ) {
+			$sql .= " AND id != %d";
+			$results = $wpdb->get_results( $wpdb->prepare( $sql, $url, $hint_type, $post_id, $post_id, $hint_ids ), ARRAY_A );
 		}
+
+//		if ( 1 === $op_code && ! empty( $hint_ids ) ) {
+//			$results = $wpdb->get_results( $wpdb->prepare( $sql, $url, $hint_type, $post_id, $post_id, $hint_ids ), ARRAY_A );
+//		}
+
+		// a new post hint shouldn't have a duplcate global hint or one with the same url, hint_type, and post_id
+//		elseif( 'global' !== $post_id ) {
+//			$results = $wpdb->get_results( $wpdb->prepare( $sql, $url, $hint_type, 'global', $post_id ), ARRAY_A );
+//		}
+
+//		else {
+//			$results = $wpdb->get_results( $wpdb->prepare( $sql, $url, $hint_type ), ARRAY_A );
+//		}
 
 		return $results;
 	}
 
-	public function get_duplicate_hints_sql( string $post_id, int $op_code, string $hint_ids ) {
-		$pprh_table = PPRH_DB_TABLE;
-		$sql = "SELECT * FROM $pprh_table WHERE url = %s AND hint_type = %s";
-
-		if ( 'global' !== $post_id ) {
-			$sql .= " AND post_id != %s OR post_id != %s";
-		}
-
-		// hint is being updated, so ignore the existing one.
-		if ( 1 === $op_code && ! empty( $hint_ids ) ) {
-			$sql .= " AND id != %d";
-		}
-
-		return $sql;
-	}
 
 	public static function get_admin_hints() {
 		$query = self::get_admin_hints_query();
@@ -263,14 +266,15 @@ class DAO {
 		$sql = "CREATE TABLE {$table_name} (
             id INT(9) NOT NULL AUTO_INCREMENT,
             url VARCHAR(255) DEFAULT '' NOT NULL,
-            hint_type ENUM('dns-prefetch', 'prefetch', 'prerender', 'preconnect', 'preload') NOT NULL,
+            hint_type ENUM( 'dns-prefetch', 'prefetch', 'prerender', 'preconnect', 'preload' ) NOT NULL,
             status VARCHAR(55) DEFAULT 'enabled' NOT NULL,
             as_attr VARCHAR(55) DEFAULT '',
             type_attr VARCHAR(55) DEFAULT '',
             crossorigin VARCHAR(55) DEFAULT '',
             media VARCHAR(255) DEFAULT '',
             created_by VARCHAR(55) DEFAULT '' NOT NULL,
-			auto_created INT(2) DEFAULT 0 NOT NULL,
+            post_id VARCHAR(55) DEFAULT 'global' NOT NULL,	
+			auto_created INT(2) DEFAULT 0,
             PRIMARY KEY  (id)
         ) $charset;";
 
@@ -393,32 +397,6 @@ class DAO {
 		);
 
 		return $meta_values;
-	}
-
-	public static function update_table_schema( string $db_table ):array {
-		global $wpdb;
-		$charset = $wpdb->get_charset_collate();
-
-		if ( ! function_exists( 'dbDelta' ) ) {
-			include_once ABSPATH . 'wp-admin/includes/upgrade.php';
-		}
-
-		$sql = "CREATE TABLE $db_table (
-            id INT(9) NOT NULL AUTO_INCREMENT,
-            url VARCHAR(255) DEFAULT '' NOT NULL,
-            hint_type ENUM( 'dns-prefetch', 'prefetch', 'prerender', 'preconnect', 'preload' ) NOT NULL,
-            status VARCHAR(55) DEFAULT 'enabled' NOT NULL,
-            as_attr VARCHAR(55) DEFAULT '',
-            type_attr VARCHAR(55) DEFAULT '',
-            crossorigin VARCHAR(55) DEFAULT '',
-			media VARCHAR(255) DEFAULT '',
-            created_by VARCHAR(55) DEFAULT '' NOT NULL,
-            post_id VARCHAR(55) DEFAULT 'global' NOT NULL,	
-            auto_created INT(2) DEFAULT 0,
-            PRIMARY KEY  (id)
-        ) $charset;";
-
-		return dbDelta( $sql, true );
 	}
 
 	public static function update_post_auto_hint( string $hint_type, string $post_id ) {

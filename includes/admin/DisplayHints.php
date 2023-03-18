@@ -21,15 +21,19 @@ class DisplayHints extends WP_List_Table {
 	public $table;
 	public $items;
 
-	public function __construct( bool $doing_ajax, int $plugin_page ) {
+    private $on_plugin_page;
+
+	public function __construct( bool $doing_ajax, bool $on_plugin_page ) {
 		parent::__construct( array(
 			'ajax'        => true,
 			'plural'      => 'urls',
 			'screen'      => 'toplevel_page_' . PPRH_MENU_SLUG,
 			'singular'    => 'url',
-			'plugin_page' => $plugin_page,
+			'on_plugin_page' => $on_plugin_page,
             'doing_ajax'  => $doing_ajax
 		) );
+
+        $this->on_plugin_page = $on_plugin_page;
 
 		if ( ! $doing_ajax ) {
 			$this->prepare_items();
@@ -39,7 +43,19 @@ class DisplayHints extends WP_List_Table {
 
 	public function column_default( $item, $column_name ) {
 		if ( 'post_id' === $column_name ) {
-			return \apply_filters( 'pprh_dh_get_post_link', $item );
+
+			$post_id = $item['post_id'] ?? '';
+
+			if ( 'global' === $post_id ) {
+				$link = 'global';
+			} elseif ( '0' === $post_id ) {
+				$link = 'Home';
+			} else {
+				$post_title = \get_the_title( $post_id );
+				$link       = ( ! empty( $post_title ) ? sprintf( '<a href="%spost.php?post=%s&action=edit">%s</a>', $this->admin_url, $post_id, $post_title ) : '-' );
+			}
+
+			return $link;
 		}
 
 		if ( '' === $item[ $column_name ] ) {
@@ -54,7 +70,7 @@ class DisplayHints extends WP_List_Table {
 	}
 
 	public function get_columns() {
-		$columns = array(
+		return array(
 			'cb'          => '<input type="checkbox" />',
 			'url'         => __( 'URL', 'pre-party-browser-hints' ),
 			'hint_type'   => __( 'Hint Type', 'pre-party-browser-hints' ),
@@ -64,20 +80,18 @@ class DisplayHints extends WP_List_Table {
 			'media'       => __( 'Media', 'pre-party-browser-hints' ),
 			'status'      => __( 'Status', 'pre-party-browser-hints' ),
 			'created_by'  => __( 'Created By', 'pre-party-browser-hints' ),
+            'post_id'     => __( 'Post Name', 'pre-party-browser-hints' )
 		);
-
-		return \apply_filters( 'pprh_dh_get_columns', $columns );
 	}
 
 	public function get_sortable_columns() {
-		$arr = array(
+		return array(
 			'url'        => array( 'url', true ),
 			'hint_type'  => array( 'hint_type', false ),
 			'status'     => array( 'status', false ),
-			'created_by' => array( 'created_by', false )
+			'created_by' => array( 'created_by', false ),
+            'post_id'    => array( 'post_id', false )
 		);
-
-		return \apply_filters( 'pprh_dh_get_sortortable_columns', $arr );
 	}
 
 	public function get_bulk_actions():array {
@@ -150,7 +164,7 @@ class DisplayHints extends WP_List_Table {
 
                     <tbody>
                         <?php
-                            $new_hint = new NewHint( $hint );
+                            $new_hint = new NewHint( $this->on_plugin_page, $hint );
                             $new_hint->insert_hint_table();
                         ?>
                     </tbody>

@@ -15,7 +15,7 @@ class DebugLogger {
 
 	public function __construct() {
 		$this->transient_name = 'pprh_pro_debug_log';
-		$this->debug_enabled = \get_option( 'pprh_pro_debug_enabled', 'false' );
+		$this->debug_enabled = \get_option( 'pprh_debug_enabled', 'false' );
 	}
 
 	public static function logger( bool $error, $message ) {

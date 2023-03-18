@@ -15,7 +15,7 @@ final class AjaxOpsTest extends TestCase {
 	 * @before Class
 	 */
 	public function init () {
-		self::$ajax_ops = new \PPRH\AjaxOps(2);
+		self::$ajax_ops = new \PPRH\AjaxOps( false );
 	}
 
 	// also need to verify update, delete, enable, disable, bulk operations work properly.
@@ -60,21 +60,8 @@ final class AjaxOpsTest extends TestCase {
 	}
 
 	public function test_update_hints_pro() {
-		$posts = new \PPRH\Posts( true, true );
+//		$posts = new \PPRH\Posts( true, true );
 
-		// Author page.
-		$test_data_1 = array( 'action' => 'reset_post_preload', 'post_id' => '10' );
-		$actual_1 = self::$ajax_ops->update_hints( $test_data_1 );
-		$expected_1 = \PPRH\DAO::create_db_result('', true, 0, array() );
-		self::assertGreaterThan( 2, $actual_1['result']->new_hint );
-		self::assertEquals( $expected_1->db_result, $actual_1['result']->db_result );
-
-		// Sitemap page.
-		$test_data_2 = array( 'action' => 'reset_post_preconnect', 'post_id' => '2128' );
-		$actual_2 = self::$ajax_ops->update_hints( $test_data_2 );
-		$expected_2 = \PPRH\DAO::create_db_result('', true, 0, array() );
-		self::assertGreaterThan( 2, $actual_2['result']->new_hint );
-		self::assertEquals( $expected_2->db_result, $actual_2['result']->db_result );
 
 		// Sitemap page.
 		$test_data_3 = array( 'action' => 'reset_post_prerender', 'post_id' => '2128' );

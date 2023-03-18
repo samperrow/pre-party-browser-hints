@@ -13,12 +13,12 @@ class PrerenderAnalytics {
 	private $meta_key;
 
 	public function __construct() {
-		$this->meta_key = 'pprh_pro_prerender_data';
+		$this->meta_key = 'pprh_prerender_data';
 	}
 
 	public function config( $client_post_id ) {
 		$user_logged_in               = \is_user_logged_in();
-		$option_enabled_for_logged_in = ( 'true' === \PPRH\Utils\Utils::get_json_option_value( 'pprh_pro_options', 'prerender_enable_for_logged_in_users' ) );
+		$option_enabled_for_logged_in = ( 'true' === \PPRH\Utils\Utils::get_json_option_value( 'pprh_options', 'prerender_enable_for_logged_in_users' ) );
 		$browser                      = \PPRH\Utils\Debug::get_browser();
 		$this->config_ctrl( $client_post_id, $user_logged_in, $option_enabled_for_logged_in, $browser );
 	}

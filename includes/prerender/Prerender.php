@@ -19,8 +19,8 @@ class Prerender {
 	public $prerender_auto_reset_days;
 
 	public function __construct( bool $show_posts_on_front ) {
-		$this->meta_key                  = 'pprh_pro_prerender_data';
-		$this->prerender_auto_reset_days = \PPRH\Utils\Utils::get_json_option_value( 'pprh_pro_options', 'prerender_auto_reset_days' );
+		$this->meta_key                  = 'pprh_prerender_data';
+		$this->prerender_auto_reset_days = \PPRH\Utils\Utils::get_json_option_value( 'pprh_options', 'prerender_auto_reset_days' );
 		$transient                       = \get_transient( 'pprh_pro_prerender_reset' );
 		$this->show_posts_on_front       = $show_posts_on_front;
 		$this->check_transient( $transient );

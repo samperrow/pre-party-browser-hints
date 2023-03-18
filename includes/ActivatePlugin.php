@@ -6,7 +6,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class ActivatePluginPro {
+class ActivatePlugin {
 
 	public $default_option_values;
 
@@ -27,50 +27,33 @@ class ActivatePluginPro {
 			'prerender_enabled'                    => 'true',
 			'prerender_auto_reset_days'            => '30',
 			'prerender_enable_for_logged_in_users' => 'false',
-			'pprh_pro_preconnect_set'              => array( '' ),
-			'pprh_pro_preload_set'              => array( '' )
+//			'pprh_preconnect_set'              => array( '' ),
+//			'pprh_preload_set'              => array( '' )
 		);
 	}
 
 	public function activate_plugin_init() {
 		$is_multisite         = \is_multisite();
-//		$license_options      = \get_option( PPRH_PRO_LIC_OPTION, array() );
-		$saved_default_option = \get_option( 'pprh_pro_options', array() );
+		$saved_default_option = \get_option( 'pprh_options', array() );
 
 		$this->create_options( $saved_default_option );
-		$this->update_table_schema( $is_multisite );
+//		$this->update_table_schema( $is_multisite );
 
 		// set the prerender transient if it is not there.
-		if ( false === \get_transient( 'pprh_pro_prerender_reset' ) ) {
-			$prerender_auto_reset_days = \PPRH\Utils\Utils::get_json_option_value( 'pprh_pro_options', 'prerender_auto_reset_days' );
-			\set_transient( 'pprh_pro_prerender_reset', 'true', ( $prerender_auto_reset_days * DAY_IN_SECONDS ) );
+		if ( false === \get_transient( 'pprh_prerender_reset' ) ) {
+			$prerender_auto_reset_days = \PPRH\Utils\Utils::get_json_option_value( 'pprh_options', 'prerender_auto_reset_days' );
+			\set_transient( 'pprh_prerender_reset', 'true', ( $prerender_auto_reset_days * DAY_IN_SECONDS ) );
 		}
 
 		return true;
 	}
 
-	public function update_table_schema( bool $is_multisite ):array {
-		$results   = array();
-		$db_tables = DAO::get_all_db_tables( $is_multisite );
-
-		foreach( $db_tables as $db_table ) {
-			$results[] = DAO::update_table_schema( $db_table );
-		}
-
-		return $results;
-	}
-
 	public function create_options( array $saved_default_option ):array {
 		$results = array();
-		\add_option( 'pprh_pro_debug_enabled', 'true', '', 'yes' );
-
-//		if ( empty( $license_options ) ) {
-//			\add_option( PPRH_PRO_LIC_OPTION, $this->license_option_values, '', 'yes' );
-//			$results[] = $this->license_option_values;
-//		}
+		\add_option( 'pprh_debug_enabled', 'true', '', 'yes' );
 
 		if ( empty( $saved_default_option ) ) {
-			\add_option( 'pprh_pro_options', $this->default_option_values, '', 'yes' );
+			\add_option( 'pprh_options', $this->default_option_values, '', 'yes' );
 			$results[] = $this->default_option_values;
 		}
 
@@ -78,7 +61,7 @@ class ActivatePluginPro {
 		elseif ( ! UtilsPro::count_equals( $this->default_option_values, $saved_default_option ) ) {
 			foreach( $this->default_option_values as $default_option => $value ) {
 				if ( ! isset( $saved_default_option[$default_option] ) ) {
-					\PPRH\Utils\Utils::update_json_option( 'pprh_pro_options', $default_option, $value );
+					\PPRH\Utils\Utils::update_json_option( 'pprh_options', $default_option, $value );
 					$results[] = $default_option;
 				}
 			}

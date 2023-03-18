@@ -1,6 +1,6 @@
 <?php
 
-namespace PPRH\settings;
+namespace PPRH\Settings;
 
 use PPRH\Utils\Sanitize;
 
@@ -17,11 +17,8 @@ class SettingsView extends SettingsSave {
 	public function __construct( bool $show_posts_on_front ) {
 //        parent::__construct( $show_posts_on_front );
         $this->show_posts_on_front = $show_posts_on_front;
-		$this->pro_options = \get_option( 'pprh_pro_options', array() );
-
-//		\add_action( 'pprh_sc_general_settings', array( $this, 'general_settings_markup' ), 10, 0 );
-//		\add_filter( 'pprh_load_pro_metabox', array( $this, 'load_pro_metabox' ), 10, 1 );
-	}
+		$this->pro_options = \get_option( 'pprh_options', array() );
+    }
 
 	public static function markup( $on_pprh_admin ) {
 		?>
@@ -43,37 +40,38 @@ class SettingsView extends SettingsSave {
 		<?php
 	}
 
-
-
-//	public function load_pro_metabox( string $hint_type ):bool {
-//        if ( preg_match( '/prerender|preload|preconnect/', $hint_type ) > 0 ) {
-//            $cb = "{$hint_type}_settings_markup";
-//			return $this->$cb();
-//		}
-//
-//		return false;
-//	}
-
-	public function preconnect_settings_markup():bool {
-	    if ( $this->show_posts_on_front ) { ?>
-            <tr>
-                <th scope="row"><?php \_e( 'Reset Home Preconnect Links?', 'pprh-pro' ); ?></th>
-                <td>
-                    <input type="submit" name="reset_home_preconnect" class="button-primary pprh-reset" data-text="reset auto preconnect hints used only on the home page?" value="Reset">
-                    <p><?php \_e( 'This will reset automatically created preconnect hints on the home page. (This option only applies when the home page is set to display recent posts.)', 'pprh-pro' ); ?></p>
-                </td>
-            </tr>
-        <?php } ?>
+	public function create_preload_metabox() {
+		$enabled = ( 'true' === $this->pro_options['preload_enabled'] ) ? 'checked' : '';
+		?>
+        <table class="form-table"><tbody>
 
             <tr>
-                <th scope="row"><?php \_e( 'Reset Global Preconnect Links?', 'pprh-pro' ); ?></th>
-                <td>
-                    <input type="submit" name="reset_global_preconnect" class="button-primary pprh-reset" data-text="reset auto preconnects globally?" value="Reset">
-                    <?php \_e( '<p>This will reset all of the automatically generated global preconnect hints, which are used on all posts and pages.</p>', 'pprh-pro' ); ?>
+                <th scope="row"><?php \_e( 'Enable Auto Preload?', 'pprh-pro' ); ?><td>
+                    <label for="preload_enabled"><input type="checkbox" name="preload_enabled" value="true" <?php echo $enabled; ?>/></label>
+                    <p><?php \_e( 'This feature allows preload hints to be automatically created. Critical resources will be preloaded automatically.', 'pprh-pro' ); ?></p>
                 </td>
             </tr>
-        <?php
-        return true;
+
+			<?php if ( $this->show_posts_on_front ) { ?>
+                <tr>
+                    <th scope="row"><?php \_e( 'Reset Home Preload Links?', 'pprh-pro' ); ?></th>
+                    <td>
+                        <input type="submit" name="reset_home_preload" class="button-primary pprh-reset" data-text="reset auto preload hints used only on the home page?" value="Reset">
+                        <p><?php \_e( 'This will reset automatically created preload hints on the home page. (This option only applies when the home page is set to display recent posts.)', 'pprh-pro' ); ?></p>
+                    </td>
+                </tr>
+			<?php } ?>
+
+            <tr>
+                <th scope="row"><?php \_e( 'Reset Global Preload Links?', 'pprh-pro' ); ?></th>
+                <td>
+                    <input type="submit" name="reset_global_preload" class="button-primary pprh-reset" data-text="reset auto preload globally?" value="Reset">
+                    <p><?php \_e( 'This will reset all of the automatically generated global preload hints, which are used on all posts and pages.', 'pprh-pro' ); ?></p>
+                </td>
+            </tr>
+            </tbody></table>
+		<?php
+		return true;
 	}
 
 	public function prerender_settings_markup() {
@@ -119,15 +117,15 @@ class SettingsView extends SettingsSave {
                 </td>
             </tr>
 
-            <?php if ( $this->show_posts_on_front ) { ?>
-            <tr>
-                <th scope="row"><?php \_e( 'Reset all prerender hints on home page?', 'pprh-pro' ); ?></th>
-                <td>
-                    <input type="submit" name="reset_home_prerender" class="button-primary pprh-reset" data-text="manually reset home prerender hints?" value="Reset"/>
-                    <p><?php \_e( 'This will reset prerender hints on the home page, if sufficient data is available (see FAQ).', 'pprh-pro' ); ?></p>
-                </td>
-            </tr>
-            <?php } ?>
+			<?php if ( $this->show_posts_on_front ) { ?>
+                <tr>
+                    <th scope="row"><?php \_e( 'Reset all prerender hints on home page?', 'pprh-pro' ); ?></th>
+                    <td>
+                        <input type="submit" name="reset_home_prerender" class="button-primary pprh-reset" data-text="manually reset home prerender hints?" value="Reset"/>
+                        <p><?php \_e( 'This will reset prerender hints on the home page, if sufficient data is available (see FAQ).', 'pprh-pro' ); ?></p>
+                    </td>
+                </tr>
+			<?php } ?>
 
             <tr>
                 <th scope="row"><?php \_e( 'Reset all prerender hints on all pages/posts?', 'pprh-pro' ); ?></th>
@@ -137,17 +135,14 @@ class SettingsView extends SettingsSave {
                 </td>
             </tr>
 
-        </tbody></table>
+            </tbody></table>
 		<?php
-        return true;
+		return true;
 	}
-
-
-
 
 	private function get_post_types() {
 		global $wp_post_types;
-		$post_modal_types_option = \PPRH\Utils\Utils::get_json_option_value( 'pprh_pro_options', 'post_modal_types' );
+		$post_modal_types_option = \PPRH\Utils\Utils::get_json_option_value( 'pprh_options', 'post_modal_types' );
 		$post_modal_types = Sanitize::clean_string_array( $post_modal_types_option );
 
 		if ( ! is_array( $post_modal_types ) || empty( $post_modal_types ) ) {
@@ -178,7 +173,7 @@ class SettingsView extends SettingsSave {
 		$clear_dup_nonglobals = ( 'true' === $this->pro_options['clear_dup_nonglobals'] ) ? 'checked' : '';
 		$dup_hint_percent     = Sanitize::strip_non_numbers( $this->pro_options['duplicate_hint_removal_percent'] ?? '65' );
 		$post_types           = $this->get_post_types();
-		$debug_enabled        = ( 'true' === \get_option( 'pprh_pro_debug_enabled' ) ? 'checked' : '' );
+		$debug_enabled        = ( 'true' === \get_option( 'pprh_debug_enabled' ) ? 'checked' : '' );
 		?>
         <table class="form-table">
             <tbody>
@@ -394,40 +389,35 @@ class SettingsView extends SettingsSave {
 	}
 
 
+	private function get_each_keyword( $keywords ) {
+		if ( is_null( $keywords ) ) {
+			return '';
+		}
 
-    // not in use
-	public function preload_settings_markup() {
-		$enabled = ( 'true' === $this->pro_options['preload_enabled'] ) ? 'checked' : '';
-		?>
-        <table class="form-table"><tbody>
+		$keywords = explode( ', ', $keywords );
+		$str   = '';
+		$count = count( $keywords );
+		$idx   = 0;
 
-            <tr>
-                <th scope="row"><?php \_e( 'Enable Auto Preload?', 'pprh-pro' ); ?><td>
-                    <label for="preload_enabled"><input type="checkbox" name="preload_enabled" value="true" <?php echo $enabled; ?>/></label>
-                    <p><?php \_e( 'This feature allows preload hints to be automatically created. Critical resources will be preloaded automatically.', 'pprh-pro' ); ?></p>
-                </td>
-            </tr>
+		foreach ( $keywords as $keyword ) {
+			$idx++;
+			$str .= $keyword;
 
-			<?php if ( $this->show_posts_on_front ) { ?>
-                <tr>
-                    <th scope="row"><?php \_e( 'Reset Home Preload Links?', 'pprh-pro' ); ?></th>
-                    <td>
-                        <input type="submit" name="reset_home_preload" class="button-primary pprh-reset" data-text="reset auto preload hints used only on the home page?" value="Reset">
-                        <p><?php \_e( 'This will reset automatically created preload hints on the home page. (This option only applies when the home page is set to display recent posts.)', 'pprh-pro' ); ?></p>
-                    </td>
-                </tr>
-			<?php } ?>
+			if ( $idx < $count ) {
+				$str .= "\n";
+			}
+		}
 
-            <tr>
-                <th scope="row"><?php \_e( 'Reset Global Preload Links?', 'pprh-pro' ); ?></th>
-                <td>
-                    <input type="submit" name="reset_global_preload" class="button-primary pprh-reset" data-text="reset auto preload globally?" value="Reset">
-                    <p><?php \_e( 'This will reset all of the automatically generated global preload hints, which are used on all posts and pages.', 'pprh-pro' ); ?></p>
-                </td>
-            </tr>
-            </tbody></table>
-		<?php
-		return true;
+		return $str;
+	}
+
+	private function esc_get_option( string $option ) {
+		return \esc_html( \get_option( $option ) );
+	}
+
+	private function does_option_match( string $option, string $match, string $output ) {
+		$option_value = $this->esc_get_option( $option );
+		return ( ( $option_value === $match ) ? $output : '' );
 	}
 
 }

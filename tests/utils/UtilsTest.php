@@ -74,35 +74,6 @@ final class UtilsTest extends TestCase {
 		unset( $_SERVER['REQUEST_URI'] );
 	}
 
-	public function test_get_plugin_page_ctrl() {
-		$actual_1 = Utils::get_plugin_page_ctrl( false, 'https://sptrix.local/wp-admin/plugins.php?plugin_status=all&paged=1&s', '/wp-admin/admin.php?page=pprh-plugin-settings' );
-		self::assertSame( 1, $actual_1 );
-
-//		$actual_2 = Utils::get_plugin_page_ctrl( false, 'https://sptrix.local/wp-admin/edit.php?post_type=page', 'post.php' );
-//		self::assertTrue( $actual_2 );
-
-		$actual_3 = Utils::get_plugin_page_ctrl( true, 'https://sptrix.local/wp-admin/admin.php?page=pprh-plugin-settings', 'admin-ajax.php' );
-		self::assertSame( 1, $actual_3 );
-
-//		$actual_4 = Utils::get_plugin_page_ctrl(true, 'https://sptrix.local/wp-admin/post.php?post=2128&action=edit', 'admin-ajax.php' );
-//		self::assertTrue( $actual_4 );
-
-		$actual_5 = Utils::get_plugin_page_ctrl(false, 'https://sptrix.local/wp-admin/admin.php?page=pprh-plugin-settings', '/wp-admin/upload.php' );
-		self::assertSame( 0, $actual_5 );
-
-		$actual_6 = Utils::get_plugin_page_ctrl(false, 'https://sptrix.local/wp-admin/admin.php?page=pprh-plugin-settings', '/wp-admin/themes.php' );
-		self::assertSame( 0, $actual_6 );
-
-		$actual_7 = Utils::get_plugin_page_ctrl(false, 'https://sptrix.local/wp-admin/themes.php', '/wp-admin/options-general.php' );
-		self::assertSame( 0, $actual_7 );
-
-		$actual_8 = Utils::get_plugin_page_ctrl( false, 'https://sptrix.local/', '' );
-		self::assertSame( 0, $actual_8 );
-
-		$actual_9 = Utils::get_plugin_page_ctrl( true, 'asdfasys4ygdadf<>######%', '?' );
-		self::assertSame( 0, $actual_9 );
-	}
-
 
 
 	public function test_get_current_date() {

@@ -10,10 +10,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class AjaxOps {
 
-	private $plugin_page;
+	private $on_plugin_page;
 
-	public function __construct( int $plugin_page ) {
-		$this->plugin_page = $plugin_page;
+	public function __construct( bool $on_plugin_page ) {
+		$this->on_plugin_page = $on_plugin_page;
 	}
 
 	public function set_actions() {
@@ -38,7 +38,7 @@ class AjaxOps {
 		$db_result = $this->handle_action( $pprh_data );
 
 		if ( is_object( $db_result ) ) {
-			$display_hints = new DisplayHints( true, $this->plugin_page );
+			$display_hints = new DisplayHints( true, $this->on_plugin_page );
 			return $display_hints->ajax_response( $db_result );
 		}
 
@@ -81,7 +81,7 @@ class AjaxOps {
 		}
 
 		if ( isset( $hint_type, $op_code ) ) {
-			$settings_save = new \PPRH\settings\SettingsSave( false );
+			$settings_save = new \PPRH\Settings\SettingsSave( false );
 			$new_hint_data = $settings_save->reset_autoset_hints( $hint_type, $post_id, $op_code );
 			return \PPRH\DAO::create_db_result( '', $op_code, 0, array() );
 		}

@@ -31,7 +31,7 @@ class HintControllerTest extends TestCase {
 		self::assertEquals($expected_1, $actual_1);
 
 		// update_hint
-		$raw_data_2 = \PPRH\HintBuilder::create_raw_hint( 'test2.com', 'dns-prefetch', '', '', '', 'crossorigin', '' );
+		$raw_data_2 = \PPRH\HintBuilder::create_raw_hint( 'test2.com', 'dns-prefetch', '', '', '', 'crossorigin', '', '2000' );
 		$raw_data_2['op_code'] = 1;
 		$raw_data_2['hint_ids'] = '100';
 		$actual_2 = self::$hint_ctrl->hint_ctrl_init( $raw_data_2 );
