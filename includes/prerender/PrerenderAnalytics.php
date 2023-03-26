@@ -37,7 +37,7 @@ class PrerenderAnalytics {
 	}
 
 	public function analytics_init( int $post_id ) {
-		$nav_to_post_url    = UtilsPro::get_request_uri();
+		$nav_to_post_url    = \PPRH\Utils\Utils::get_request_uri();
 		$postmeta           = \get_post_meta( $post_id, $this->meta_key, true );
 		$referer_args       = $this->get_referer_args( $post_id, $nav_to_post_url );
 		$referer_args_valid = $this->are_referer_args_valid( $referer_args );
@@ -56,7 +56,7 @@ class PrerenderAnalytics {
 			return false;
 		}
 
-		$post_metadata_obj = UtilsPro::create_post_metadata_obj( $post_id, $new_post_meta );
+		$post_metadata_obj = \PPRH\Utils\Utils::create_post_metadata_obj( $post_id, $new_post_meta );
 		$updated           = $this->update_post_info( $post_metadata_obj, $this->meta_key );
 		return ( is_bool( $updated ) ) ? $updated : false;
 	}
@@ -95,7 +95,7 @@ class PrerenderAnalytics {
 		$referer_data  = array( $args->referer => $referer_count );
 		$new_metadata  = $this->create_prerender_metadata_obj( $referer_data, $args->nav_to_post_url );
 
-		return UtilsPro::create_post_metadata_obj( $postmeta->post_id, $new_metadata );
+		return \PPRH\Utils\Utils::create_post_metadata_obj( $postmeta->post_id, $new_metadata );
 	}
 
 	public function create_prerender_metadata_obj( array $referer_data, string $nav_to_post_url ):\stdClass {

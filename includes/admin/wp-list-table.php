@@ -149,10 +149,10 @@ class WP_List_Table {
 		$args = \wp_parse_args(
 			$args,
 			array(
-				'plural'        => '',
-				'singular'      => '',
-				'ajax'          => true,
-				'screen'        => null,
+				'plural'   => '',
+				'singular' => '',
+				'ajax'     => true,
+				'screen'   => null,
 			)
 		);
 

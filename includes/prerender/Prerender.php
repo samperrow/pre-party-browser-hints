@@ -41,7 +41,7 @@ class Prerender {
 		$db_results = array();
 
 		if ( '' === $admin_post_id ) {
-			$admin_post_id = UtilsPro::get_admin_post_id();
+			$admin_post_id = \PPRH\Utils\Utils::get_admin_post_id();
 		}
 
 		\PPRH\DAO::delete_auto_created_hints( 'prerender', $admin_post_id );
@@ -158,7 +158,7 @@ class Prerender {
 					$meta_value = unserialize( $postmeta->meta_value, array( false ) );
 
 					if ( isset( $meta_value->metadata ) ) {
-						$post_metadata_obj = UtilsPro::create_post_metadata_obj( $postmeta->post_id, $meta_value->metadata );
+						$post_metadata_obj = \PPRH\Utils\Utils::create_post_metadata_obj( $postmeta->post_id, $meta_value->metadata );
 						$meta_values[] = $post_metadata_obj;
 					}
 				}
@@ -172,7 +172,7 @@ class Prerender {
 		else {
 			$post_info = $this->get_post_metadata( $post_id, $meta_key );
 			if ( isset( $post_info->metadata ) ) {
-				$meta_values[] = UtilsPro::create_post_metadata_obj( $post_id, $post_info->metadata );
+				$meta_values[] = \PPRH\Utils\Utils::create_post_metadata_obj( $post_id, $post_info->metadata );
 			}
 		}
 

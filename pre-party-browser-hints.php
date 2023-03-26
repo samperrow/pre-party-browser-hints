@@ -4,7 +4,7 @@ declare(strict_types=1);
  * Plugin Name:       Pre* Party Resource Hints
  * Plugin URI:        https://wordpress.org/plugins/pre-party-browser-hints/
  * Description:       Take advantage of the browser resource hints DNS-Prefetch, Prerender, Preconnect, Prefetch, and Preload to improve page load time.
- * Version:           1.8.14
+ * Version:           1.9.0
  * Requires at least: 4.4
  * Requires PHP:      7.0.0
  * Author:            Sam Perrow
@@ -14,7 +14,7 @@ declare(strict_types=1);
  * Text Domain:       pre-party-browser-hints
  * Domain Path:       /languages
  *
- * Last edited Jan 15, 2023
+ * Last edited March 26, 2023
  *
  * Copyright 2023  Sam Perrow  (email : info@sptrix.com)
  *
@@ -23,7 +23,6 @@ declare(strict_types=1);
 namespace PPRH;
 
 use PPRH\Utils\Utils;
-use PPRH\LoadClientPro;
 
 // prevent direct file access.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -60,13 +59,11 @@ class Pre_Party_Browser_Hints {
 	public static $request_uri;
 
 	public function __construct() {
-		include_once 'includes/common/Compatibility.php';
 		include_once 'includes/utils/Utils.php';
 		include_once 'includes/utils/Sanitize.php';
 		include_once 'includes/utils/Debug.php';
 		include_once 'includes/common/HintController.php';
 		include_once 'includes/common/HintBuilder.php';
-		include_once 'includes/UtilsPro.php';
 		include_once 'includes/DebugLogger.php';
 	}
 
@@ -109,7 +106,7 @@ class Pre_Party_Browser_Hints {
 		}
 
 		if ( ! defined( 'PPRH_VERSION_NEW' ) ) {
-			define( 'PPRH_VERSION_NEW', '1.8.11' );
+			define( 'PPRH_VERSION_NEW', '1.9.0' );
 		}
 
 		if ( ! defined( 'PPRH_VERSION' ) ) {
@@ -189,14 +186,12 @@ class Pre_Party_Browser_Hints {
 		if ( $is_admin ) {
 			include_once 'includes/admin/LoadAdmin.php';
 			include_once 'includes/admin/Dashboard.php';
-//			include_once 'includes/admin/views/settings/SettingsUtils.php';
 			include_once 'includes/admin/views/settings/SettingsSave.php';
 			include_once 'includes/admin/views/settings/SettingsView.php';
 			include_once 'includes/admin/views/FAQ.php';
 			include_once 'includes/admin/NewHint.php';
 			include_once 'includes/admin/DisplayHints.php';
 			include_once 'includes/admin/AjaxOps.php';
-			include_once 'includes/admin/views/InsertHints.php';
 			include_once 'includes/admin/ActivatePlugin.php';
 			include_once 'includes/Posts.php';
 		} else {
@@ -236,10 +231,6 @@ class Pre_Party_Browser_Hints {
 		return false;
 	}
 
-	public function get_client_post_id( string $request_uri ) {
-		$page_on_front = \get_option( 'page_on_front' );
-		return UtilsPro::get_client_post_id( $page_on_front, $request_uri );
-	}
 
 	public function activate_plugin() {
 		include_once 'includes/ActivatePlugin.php';

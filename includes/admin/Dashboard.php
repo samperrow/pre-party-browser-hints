@@ -13,23 +13,29 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Dashboard {
 
 	public function __construct() {
-		if ( ! \has_action(  'pprh_notice' ) ) {
-			\add_filter( 'pprh_notice', array( $this, 'default_admin_notice' ), 10, 0 );
-		}
-	}
-
-	public function default_admin_notice() {
+//		if ( ! \has_action(  'pprh_notice' ) ) {
+//			\add_filter( 'pprh_notice', array( $this, 'default_admin_notice' ), 10, 0 );
+//		}
 		Utils\Utils::show_notice( '', true );
+
 	}
 
-	public function show_plugin_dashboard( bool $on_plugin_page ) {
+//	public function default_admin_notice() {
+//		Utils\Utils::show_notice( '', true );
+//	}
+
+	public function show_plugin_dashboard( int $plugin_page ) {
+		echo '<div id="pprh-poststuff" class="wrap"><h1>';
+		esc_html_e( 'Pre* Party Resource Hints', 'pre-party-browser-hints' );
+		echo '</h1>';
+
 		$faq           = new FAQ();
 		$settings_save = new SettingsSave();
 		$settings_save->save_user_options();
 
-        $this->display_hints( $on_plugin_page );
-
 		$this->show_admin_tabs();
+
+        $this->display_hints( $plugin_page );
 
 		SettingsView::markup( true );
 		$faq->markup();
@@ -38,7 +44,6 @@ class Dashboard {
 		unset( $settings, $faq );
         return true;
 	}
-
 
 	public function show_admin_tabs() {
 		$menu_slug = PPRH_MENU_SLUG;
@@ -55,10 +60,10 @@ class Dashboard {
 		echo '</div>';
 	}
 
-    public function display_hints( bool $on_plugin_page ) {
+    public function display_hints( int $plugin_page ) {
 		echo '<div id="insert-hints" class="pprh-content insert-hints">';
-		$display_hints = new DisplayHints( false, $on_plugin_page );
-		$new_hint      = new NewHint( $on_plugin_page, array() );
+		$display_hints = new DisplayHints( false, $plugin_page );
+		$new_hint      = new NewHint( $plugin_page, array() );
 		$new_hint->create_new_hint_table();
 		echo '</div>';
 		unset( $display_hints );

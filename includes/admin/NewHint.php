@@ -53,7 +53,7 @@ class NewHint {
                                         <span><?php esc_html_e( 'If checked, this resource hint will only be used on the home page, which is set to display recent posts.', 'pprh' ); ?></span>
                                     </span>
                                     <span><?php esc_html_e( 'Use this resource hint only on the home page?' ); ?></span>
-                                    <label for="UseOnHomePostsOnly"><input class="pprh_home pprhHomePostHints" name="UseOnHomePostsOnly" type="checkbox" value="HomePostHints"/></label>
+                                    <input class="pprh_home pprhHomePostHints" name="UseOnHomePostsOnly" type="checkbox" value="HomePostHints"/>
                                 </td>
                             </tr>
                         <?php } else { ?>
@@ -131,9 +131,7 @@ class NewHint {
 						<span><?php esc_html_e( 'Insert domain names from external URL\'s to perform DNS resolution early.', 'pre-party-browser-hints' ); ?></span>
 					</span>
 					<span><?php esc_html_e( 'DNS-Prefetch', 'pre-party-browser-hints' ); ?></span>
-					<label for="<?php echo $name; ?>">
-						<input name="<?php echo $name; ?>" class="hint_type dns-prefetch" type="radio" value="dns-prefetch" <?php $this->is_checked( 'dns-prefetch', $this->hint_type ); ?>/>
-					</label>
+                    <input name="<?php echo $name; ?>" class="hint_type dns-prefetch" type="radio" value="dns-prefetch" <?php $this->is_checked( 'dns-prefetch', $this->hint_type ); ?>/>
 				</div>
 			</td>
 
@@ -143,9 +141,7 @@ class NewHint {
 						<span><?php esc_html_e( 'Insert the full URL of a resource that is likely to be needed on a page later.', 'pre-party-browser-hints' ); ?></span>
 					</span>
 					<span><?php esc_html_e( 'Prefetch', 'pre-party-browser-hints' ); ?></span>
-					<label for="<?php echo $name; ?>">
-						<input name="<?php echo $name; ?>" class="hint_type prefetch" type="radio" value="prefetch" <?php $this->is_checked( 'prefetch', $this->hint_type ); ?>/>
-					</label>
+                    <input name="<?php echo $name; ?>" class="hint_type prefetch" type="radio" value="prefetch" <?php $this->is_checked( 'prefetch', $this->hint_type ); ?>/>
 				</div>
 			</td>
 
@@ -155,9 +151,7 @@ class NewHint {
 						<span><?php esc_html_e( 'Insert the full URL of a page/post your visitors are likely to navigate towards.', 'pre-party-browser-hints' ); ?></span>
 					</span>
 					<span><?php esc_html_e( 'Prerender', 'pre-party-browser-hints' ); ?></span>
-					<label for="<?php echo $name; ?>">
-						<input name="<?php echo $name; ?>" class="hint_type prerender" type="radio" value="prerender" <?php $this->is_checked( 'prerender', $this->hint_type ); ?>/>
-					</label>
+                    <input name="<?php echo $name; ?>" class="hint_type prerender" type="radio" value="prerender" <?php $this->is_checked( 'prerender', $this->hint_type ); ?>/>
 				</div>
 			</td>
 
@@ -167,9 +161,7 @@ class NewHint {
 						<span><?php esc_html_e( 'Insert domain names from external URL\'s to perform DNS resolution, initial connection, and SSL negotiation ahead of time.', 'pre-party-browser-hints' ); ?></span>
 					</span>
 					<span><?php esc_html_e( 'Preconnect', 'pre-party-browser-hints' ); ?></span>
-					<label for="<?php echo $name; ?>">
-						<input name="<?php echo $name ?>" class="hint_type preconnect" type="radio" value="preconnect" <?php $this->is_checked( 'preconnect', $this->hint_type ); ?>/>
-					</label>
+                    <input name="<?php echo $name ?>" class="hint_type preconnect" type="radio" value="preconnect" <?php $this->is_checked( 'preconnect', $this->hint_type ); ?>/>
 				</div>
 			</td>
 
@@ -179,9 +171,7 @@ class NewHint {
 						<span><?php esc_html_e( 'Insert the full URL of a resource that is needed on a current page.', 'pre-party-browser-hints' ); ?></span>
 					</span>
 					<span><?php esc_html_e( 'Preload', 'pre-party-browser-hints' ); ?></span>
-					<label for="<?php echo $name; ?>">
-						<input name="<?php echo $name; ?>" class="hint_type preload" type="radio" value="preload" <?php $this->is_checked( 'preload', $this->hint_type ); ?>/>
-					</label>
+                    <input name="<?php echo $name; ?>" class="hint_type preload" type="radio" value="preload" <?php $this->is_checked( 'preload', $this->hint_type ); ?>/>
 				</div>
 			</td>
 
@@ -216,10 +206,8 @@ class NewHint {
                 <span class="pprh-help-tip-hint">
                     <span><?php _e( 'Crossorigin applies to preconnect and preload hints only. For various reasons, font files (and others) need to be loaded with the crossorigin attribute.<a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Preloading_content#Cross-origin_fetches">Source: Mozilla</a>', 'pre-party-browser-hints' ); ?></span>
                 </span>
-                <label for="crossorigin">
-                    <span><?php esc_html_e( 'Crossorigin?', 'pre-party-browser-hints' ); ?></span>
-                    <input class="widefat pprh_crossorigin" value="crossorigin" type="checkbox" name="crossorigin" <?php $this->is_checked( $this->xorigin, 'crossorigin' ); ?>/>
-                </label>
+                <span><?php esc_html_e( 'Crossorigin?', 'pre-party-browser-hints' ); ?></span>
+                <input class="widefat pprh_crossorigin" value="crossorigin" type="checkbox" name="crossorigin" <?php $this->is_checked( $this->xorigin, 'crossorigin' ); ?>/>
             </td>
 
             <td colspan="2" style="text-align: right; padding-right: 40px;">
@@ -227,21 +215,17 @@ class NewHint {
                     <span><?php _e( "Setting this attribute allows the browser to more accurately: <br/> 1) prioritize resource loading <br/>2) store in browser cache <br/>3) apply the correct headers. <a href='https://developer.mozilla.org/en-US/docs/Web/HTML/Preloading_content#The_basics'>Source: Mozilla</a>", 'pre-party-browser-hints' ); ?></span>
                 </span>
                 <span><?php esc_html_e( 'as:', 'pre-party-browser-hints' ); ?></span>
-                <label for="as_attr">
-                    <select class="pprh_as_attr" name="as_attr">
-                        <?php $this->get_as_attrs( $this->as_attr, 'as' ); ?>
-                    </select>
-                </label>
+                <select class="pprh_as_attr" name="as_attr">
+                    <?php $this->get_as_attrs( $this->as_attr, 'as' ); ?>
+                </select>
             </td>
 
             <td colspan="2">
                 <span class="pprh-help-tip-hint"><span><?php _e( '&lt;link&gt; elements can accept a type attribute, which contains the MIME type of the resource the element points to. This is especially useful when preloading resources — the browser will use the type attribute value to work out if it supports that resource, and will only download it if so, ignoring it if not. <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Preloading_content#Including_a_MIME_type">Source: Mozilla</a>. (This attribute will attempt to be added automatically.)', 'pre-party-browser-hints' ); ?></span></span>
                 <span><?php esc_html_e( 'Mime Type:', 'pre-party-browser-hints' ); ?></span>
-                <label for="type_attr">
-                    <select class="pprh_type_attr" name="type_attr">
-                        <?php $this->get_as_attrs( $this->mime_type_attr, 'type' ); ?>
-                    </select>
-                </label>
+                <select class="pprh_type_attr" name="type_attr">
+                    <?php $this->get_as_attrs( $this->mime_type_attr, 'type' ); ?>
+                </select>
             </td>
 
 		</tr>
@@ -255,25 +239,25 @@ class NewHint {
 				<span><?php esc_html_e( 'Media Attribute', 'pre-party-browser-hints' ); ?></span>
 			</td>
 			<td colspan="4">
-                <label for="media"><input placeholder="" class="widefat pprh_media" type="text" name="media" value="<?php echo $this->media; ?>"/></label>
+                <input placeholder="" class="widefat pprh_media" type="text" name="media" value="<?php echo $this->media; ?>"/>
 			</td>
 		</tr>
 		<?php
 	}
 
 
-	public function newhint_get_content( int $on_plugin_page ) {
-		if ( 1 === $on_plugin_page ) { ?>
+	public function newhint_get_content( int $plugin_page ) {
+		if ( 1 === $plugin_page ) { ?>
             <tr class="text-center">
                 <td colspan="5">
                     <span class="pprh-help-tip-hint">
                         <span><?php esc_html_e( 'If checked, this resource hint will only be used on the home page, which is set to display recent posts.', 'pprh' ); ?></span>
                     </span>
                     <span><?php esc_html_e( 'Use this resource hint only on the home page?' ); ?></span>
-                    <label for="UseOnHomePostsOnly"><input class="pprh_home pprhHomePostHints" name="UseOnHomePostsOnly" type="checkbox" value="HomePostHints"/></label>
+                    <input class="pprh_home pprhHomePostHints" name="UseOnHomePostsOnly" type="checkbox" value="HomePostHints"/>
                 </td>
             </tr>
-		<?php } elseif ( 2 === $on_plugin_page ) { ?>
+		<?php } elseif ( 2 === $plugin_page ) { ?>
             <tr>
                 <td colspan="5">
                     <div style="display: flex; flex-direction: row; justify-content: space-around;">
@@ -292,7 +276,7 @@ class NewHint {
             </tr>
 
 			<?php
-			return $on_plugin_page;
+			return $plugin_page;
 		}
 	}
 

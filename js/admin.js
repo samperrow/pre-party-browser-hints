@@ -129,6 +129,20 @@
 		}
 	}
 
+	function getPostId() {
+		let matchArray = currentURL.match(/post\.php\?post=(\d*)/);
+		let homeCheckedElem = $('input.pprhHomePostHints');
+		let postId = 'global';
+
+		if ( Array.isArray(matchArray) && (Number(matchArray[1]) > 0) ) {
+			postId = matchArray[1];
+		} else if ( homeCheckedElem.is(':checked') ) {
+			postId = '0';
+		}
+
+		return postId;
+	}
+
 	function getHintValuesFromTable(tableElems) {
 		let rawHintType = tableElems.hint_type;
 		let hintType = rawHintType.find('input:checked').val();
@@ -140,11 +154,12 @@
 			as_attr:     tableElems.as_attr.val(),
 			type_attr:   tableElems.type_attr.val(),
 			crossorigin: tableElems.crossorigin.is(':checked'),
+			post_id:     getPostId()
 		}
 
-		if (typeof pprhProAdminJS !== "undefined") {
-			hint.post_id = pprhProAdminJS.GetPostId();
-		}
+		// if (typeof pprhProAdminJS !== "undefined") {
+		// 	hint.
+		// }
 
 		return hint;
 	}

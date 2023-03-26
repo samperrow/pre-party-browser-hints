@@ -58,7 +58,7 @@ class ActivatePlugin {
 		}
 
 		// if the original option has any values missing for some reason, add them back with the default value.
-		elseif ( ! UtilsPro::count_equals( $this->default_option_values, $saved_default_option ) ) {
+		elseif ( ! $this->count_equals( $this->default_option_values, $saved_default_option ) ) {
 			foreach( $this->default_option_values as $default_option => $value ) {
 				if ( ! isset( $saved_default_option[$default_option] ) ) {
 					\PPRH\Utils\Utils::update_json_option( 'pprh_options', $default_option, $value );
@@ -81,6 +81,10 @@ class ActivatePlugin {
 		}
 
 		return ( empty( $results ) ? $results : array( 'post', 'page' ) );
+	}
+
+	public function count_equals( array $arr_1, array $arr_2 ):bool {
+		return count( $arr_1 ) === count( $arr_2 );
 	}
 
 }

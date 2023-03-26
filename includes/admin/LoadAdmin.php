@@ -24,7 +24,7 @@ class LoadAdmin {
 		$this->pro_options = \get_option( 'pprh_options', array() );
 
 		if ( $this->plugin_page > 0 ) {
-			\add_action( 'admin_init', array( $this, 'add_settings_meta_boxes' ) );
+//			\add_action( 'admin_init', array( $this, 'add_settings_meta_boxes' ) );
 			\add_action( 'admin_enqueue_scripts', array( $this, 'register_admin_files' ) );
 			\add_filter( 'set-screen-option', array( $this, 'pprh_set_screen_option' ), 10, 3 );
 			$this->load_common_content();

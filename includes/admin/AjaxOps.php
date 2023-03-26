@@ -66,8 +66,6 @@ class AjaxOps {
 		return ( $values_set && is_object( $ajax_response['result'] ) );
 	}
 
-
-
 	public function post_reset_action( $post_id, $action ):\stdClass {
 		if ( str_contains( $action, 'preconnect' ) ) {
 			$hint_type = 'preconnect';

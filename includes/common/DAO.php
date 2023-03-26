@@ -107,19 +107,18 @@ class DAO {
 		$post_id = $candidate_hint['post_id'];
 //		$sql = $this->get_duplicate_hints_sql( $post_id, $op_code, $hint_ids );
 
+
+
 		if ( 'global' === $post_id ) {
 			$results = $wpdb->get_results( $wpdb->prepare( $sql, $url, $hint_type ), ARRAY_A );
-
-		}
-
-		elseif ( 'global' !== $post_id ) {
-			$sql .= " AND post_id != %s OR post_id != %s";
+		} else {
+			$sql .= " AND post_id != %s AND post_id != %s";
 			$results = $wpdb->get_results( $wpdb->prepare( $sql, $url, $hint_type, 'global', $post_id ), ARRAY_A );
 		}
 
 		// hint is being updated, so ignore the existing one.
-		elseif ( 1 === $op_code && ! empty( $hint_ids ) ) {
-			$sql .= " AND id != %d";
+		if ( 1 === $op_code && ! empty( $hint_ids ) ) {
+			$sql .= " AND id != %s";
 			$results = $wpdb->get_results( $wpdb->prepare( $sql, $url, $hint_type, $post_id, $post_id, $hint_ids ), ARRAY_A );
 		}
 
@@ -441,7 +440,7 @@ class DAO {
 //	}
 
 	private static function append_admin_sql( array $query, string $order_by, string $order ):array {
-		$admin_post_id = \PPRH\UtilsPro::get_admin_post_id();
+		$admin_post_id = \PPRH\Utils\Utils::get_admin_post_id();
 
 		if ( 'global' === $admin_post_id ) {
 			$query['args'] = array();
