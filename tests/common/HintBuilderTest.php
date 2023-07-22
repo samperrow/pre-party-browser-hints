@@ -85,7 +85,7 @@ class HintBuilderTest extends TestCase {
 
 		$test_11 = \PPRH\HintBuilder::create_raw_hint( 'https://www.espn.com/asdf.svg', 'dns-prefetch' );
 		$actual_11 = self::$hint_builder->create_pprh_hint($test_11);
-		$expected_11 = \PPRH\HintBuilder::create_raw_hint( 'https://www.espn.com/asdf.svg', 'dns-prefetch', 0, 'svg+xml', 'image/svg+xml', '', '' );
+		$expected_11 = \PPRH\HintBuilder::create_raw_hint( 'https://www.espn.com', 'dns-prefetch', 0, '', '', '', '' );
 		self::assertEquals($expected_11, $actual_11);
 	}
 
