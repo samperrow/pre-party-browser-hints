@@ -82,6 +82,11 @@ class HintBuilderTest extends TestCase {
 		$expected_10 = \PPRH\HintBuilder::create_raw_hint( $url_10, 'preload', 1, '', '', 'crossorigin' );
 		$actual_10 = self::$hint_builder->create_pprh_hint( $expected_10 );
 		self::assertSame( $expected_10, $actual_10 );
+
+		$test_11 = \PPRH\HintBuilder::create_raw_hint( 'https://www.espn.com/asdf.svg', 'dns-prefetch' );
+		$actual_11 = self::$hint_builder->create_pprh_hint($test_11);
+		$expected_11 = \PPRH\HintBuilder::create_raw_hint( 'https://www.espn.com', 'dns-prefetch', 0, '', '', '', '' );
+		self::assertEquals($expected_11, $actual_11);
 	}
 
 	public function test_parse_for_domain_name() {
