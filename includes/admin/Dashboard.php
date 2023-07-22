@@ -2,8 +2,6 @@
 
 namespace PPRH;
 
-use PPRH\settings\SettingsSave;
-use PPRH\settings\SettingsView;
 use PPRH\Utils;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -32,20 +30,21 @@ class Dashboard {
 		echo '</h1>';
 		\do_action( 'pprh_notice' );
 		$this->plugin_upgrade_notice( PPRH_VERSION_NEW, PPRH_VERSION );
-		$insert_hints = new InsertHints( $plugin_page );
 		$this->show_admin_tabs();
-		$insert_hints->markup();
+
+		echo '<div id="insert-hints" class="pprh-content insert-hints">';
+		$display_hints = new DisplayHints( false, $plugin_page );
+		$new_hint      = new NewHint( array() );
+		$new_hint->create_new_hint_table();
+		echo '</div>';
+
 		SettingsView::markup( true );
-		\do_action( 'pprh_load_license_view' );
-
 		$faq->markup();
-
 		$this->show_footer();
 		echo '</div>';
-		unset( $insert_hints, $settings, $faq );
+		unset( $insert_hints, $settings, $faq, $display_hints );
         return true;
 	}
-
 
 	public function show_admin_tabs() {
 		$menu_slug = PPRH_MENU_SLUG;

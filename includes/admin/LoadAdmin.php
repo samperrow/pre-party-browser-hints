@@ -4,8 +4,6 @@ namespace PPRH;
 
 //use \PPRH\Utils\Utils;
 
-use PPRH\settings\SettingsView;
-
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -89,7 +87,7 @@ class LoadAdmin {
 	}
 
 	public function add_settings_meta_boxes() {
-		$settings_view = new SettingsView( true );
+		$settings_view = new SettingsView();
 
 		\add_meta_box(
 			'pprh_general_metabox',
@@ -118,34 +116,34 @@ class LoadAdmin {
 			'low'
 		);
 
-//		if ( defined( 'PPRH_PRO_ABS_DIR' ) ) {
-//			\add_meta_box(
-//				'pprh_preload_metabox',
-//				'Auto Preload Settings',
-//				array( $this, 'create_preload_metabox' ),
-//				PPRH_ADMIN_SCREEN,
-//				'normal',
-//				'low'
-//			);
+		if ( defined( 'PPRH_PRO_ABS_DIR' ) ) {
+			\add_meta_box(
+				'pprh_preload_metabox',
+				'Auto Preload Settings',
+				array( $this, 'create_preload_metabox' ),
+				PPRH_ADMIN_SCREEN,
+				'normal',
+				'low'
+			);
 
-//			\add_meta_box(
-//				'pprh_prerender_metabox',
-//				'Auto Prerender Settings',
-//				array( $this, 'create_prerender_metabox' ),
-//				PPRH_ADMIN_SCREEN,
-//				'normal',
-//				'low'
-//			);
-//		}
+			\add_meta_box(
+				'pprh_prerender_metabox',
+				'Auto Prerender Settings',
+				array( $this, 'create_prerender_metabox' ),
+				PPRH_ADMIN_SCREEN,
+				'normal',
+				'low'
+			);
+		}
 	}
 
-//	public function create_preload_metabox() {
-//		\apply_filters( 'pprh_load_pro_metabox', 'preload' );
-//	}
-//
-//
-//	public function create_prerender_metabox() {
-//		\apply_filters( 'pprh_load_pro_metabox', 'prerender' );
-//	}
+	public function create_preload_metabox() {
+		\apply_filters( 'pprh_load_pro_metabox', 'preload' );
+	}
+
+
+	public function create_prerender_metabox() {
+		\apply_filters( 'pprh_load_pro_metabox', 'prerender' );
+	}
 
 }
