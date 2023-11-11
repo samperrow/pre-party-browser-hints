@@ -26,7 +26,8 @@ function pprh_uninstall_plugin() {
 		'pprh_preconnect_allow_unauth',
 		'pprh_preconnect_autoload',
 		'pprh_preconnect_set',
-		'pprh_version'
+		'pprh_version',
+		'pprh_debug_enabled'
 	);
 
 	foreach ($option_names as $option_name ) {

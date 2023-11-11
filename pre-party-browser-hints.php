@@ -101,9 +101,9 @@ class Pre_Party_Browser_Hints {
 			define( 'PPRH_EMAIL', 'info@sptrix.com' );
 		}
 
-		if ( ! defined( 'PPRH_VERSION_NEW' ) ) {
-			define( 'PPRH_VERSION_NEW', '1.8.11' );
-		}
+//		if ( ! defined( 'PPRH_VERSION_NEW' ) ) {
+//			define( 'PPRH_VERSION_NEW', '1.8.17' );
+//		}
 
 		if ( ! defined( 'PPRH_VERSION' ) ) {
 			define( 'PPRH_VERSION', \get_option( 'pprh_version', '' ) );

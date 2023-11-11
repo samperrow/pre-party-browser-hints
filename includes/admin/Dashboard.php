@@ -29,7 +29,7 @@ class Dashboard {
 		esc_html_e( 'Pre* Party Resource Hints', 'pre-party-browser-hints' );
 		echo '</h1>';
 		\do_action( 'pprh_notice' );
-		$this->plugin_upgrade_notice( PPRH_VERSION_NEW, PPRH_VERSION );
+//		$this->plugin_upgrade_notice( PPRH_VERSION_NEW, PPRH_VERSION );
 		$this->show_admin_tabs();
 
 		echo '<div id="insert-hints" class="pprh-content insert-hints">';
@@ -63,23 +63,23 @@ class Dashboard {
 		echo '</div>';
 	}
 
-	public function plugin_upgrade_notice( string $new_version, string $old_version ) {
-		if ( $new_version === $old_version ) {
-			return false;
-		}
+//	public function plugin_upgrade_notice( string $new_version, string $old_version ) {
+//		if ( $new_version === $old_version ) {
+//			return false;
+//		}
+//
+//        $new_version = PPRH_VERSION_NEW;
+//        $msg = "Version $new_version Upgrade Notes: 1) Fixing two bugs relating to compatibility with other plugins. Also, the database table will be deleted when uninstalling plugin.";
+//        Utils\Utils::show_notice( $msg, true );
+//		$activate_plugin = new ActivatePlugin();
+//		$activate_plugin->upgrade_plugin();
 
-        $new_version = PPRH_VERSION_NEW;
-        $msg = "Version $new_version Upgrade Notes: 1) Fixing two bugs relating to compatibility with other plugins. Also, the database table will be deleted when uninstalling plugin.";
-        Utils\Utils::show_notice( $msg, true );
-		$activate_plugin = new ActivatePlugin();
-		$activate_plugin->upgrade_plugin();
+//		if ( $activate_plugin->plugin_activated ) {
+//			Utils\Utils::update_option( 'pprh_version', $new_version );
+//		}
 
-		if ( $activate_plugin->plugin_activated ) {
-			Utils\Utils::update_option( 'pprh_version', $new_version );
-		}
-
-		return true;
-	}
+//		return true;
+//	}
 
 
 	public function show_footer() {
