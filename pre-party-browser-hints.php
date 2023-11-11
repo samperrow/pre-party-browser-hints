@@ -40,7 +40,6 @@ function pprh_activate_plugin() {
 	$pprh_load->create_constants();
 	$activate_plugin = new ActivatePlugin();
 	$activate_plugin->activate_plugin();
-	return $activate_plugin->plugin_activated;
 }
 \register_activation_hook( __FILE__, '\PPRH\pprh_activate_plugin' );
 \add_action( 'wpmu_new_blog', '\PPRH\pprh_activate_plugin' );

@@ -11,11 +11,11 @@ final class PrePartyBrowserHintsTest extends TestCase {
 //		self::$pprh = new \PPRH\Pre_Party_Browser_Hints();
 //	}
 
-	public function test_pprh_activate_plugin() {
-
-		$actual = \PPRH\pprh_activate_plugin();
-		self::assertTrue( $actual );
-	}
+//	public function test_pprh_activate_plugin() {
+//
+//		$actual = \PPRH\pprh_activate_plugin();
+//		self::assertTrue( $actual );
+//	}
 
 	public function test_create_constants() {
 		global $wpdb;

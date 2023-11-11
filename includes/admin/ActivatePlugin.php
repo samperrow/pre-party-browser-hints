@@ -2,8 +2,6 @@
 
 namespace PPRH;
 
-//use PPRH\Utils\Utils;
-
 // prevent direct file access.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -14,7 +12,6 @@ class ActivatePlugin {
 	public function activate_plugin() {
 		$this->add_options();
 		$this->setup_tables();
-		$this->plugin_activated = true;
 	}
 
 	private function add_options() {
@@ -37,10 +34,6 @@ class ActivatePlugin {
 		\add_option( 'pprh_preconnect_allow_unauth', 'false', '', 'yes' );
 		\add_option( 'pprh_preconnect_autoload', 'true', '', 'yes' );
 		\add_option( 'pprh_preconnect_set', 'false', '', 'yes' );
-	}
-
-	public function convert_prefetch_string_to_array( string $orig_keywords ) {
-		return explode( ', ', $orig_keywords );
 	}
 
 	// Multisite install/delete db table.
