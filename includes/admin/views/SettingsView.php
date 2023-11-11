@@ -6,7 +6,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class SettingsView extends SettingsUtils {
+class SettingsView extends SettingsSave {
 
 	public static function markup( $on_pprh_admin ) {
 		?>
@@ -115,7 +115,6 @@ class SettingsView extends SettingsUtils {
 		return false;
 	}
 
-
 	public function prefetch_markup() {
 		$prefetch_enabled                 = $this->does_option_match( 'pprh_prefetch_enabled', 'true', 'checked' );
 		$prefetch_disableForLoggedInUsers = $this->does_option_match( 'pprh_prefetch_disableForLoggedInUsers', 'true', 'checked' );
@@ -198,6 +197,28 @@ class SettingsView extends SettingsUtils {
         </tbody></table>
 		<?php
         return true;
+	}
+
+	private function get_each_keyword( $keywords ) {
+		if ( is_null( $keywords ) ) {
+			return '';
+		}
+
+		$keywords = explode( ', ', $keywords );
+		$str   = '';
+		$count = count( $keywords );
+		$idx   = 0;
+
+		foreach ( $keywords as $keyword ) {
+			$idx++;
+			$str .= $keyword;
+
+			if ( $idx < $count ) {
+				$str .= "\n";
+			}
+		}
+
+		return $str;
 	}
 
 }
