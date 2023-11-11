@@ -2,14 +2,14 @@
 
 namespace PPRH;
 
-use PPRH\Utils\Utils;
 use PPRH\Utils\Sanitize;
+use PPRH\Utils\Utils;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class SettingsSave extends SettingsUtils {
+class SettingsSave {
 
 	public function save_user_options() {
 		if ( isset( $_POST['pprh_save_options'] ) || isset( $_POST['pprh_preconnect_set'] ) ) {
@@ -104,5 +104,24 @@ class SettingsSave extends SettingsUtils {
 		return $results;
 	}
 
+	public function does_option_match( string $option, string $match, string $output ) {
+		$option_value = $this->esc_get_option( $option );
+		return ( ( $option_value === $match ) ? $output : '' );
+	}
+
+	public function update_checkbox_option( array $post, string $option_name ):string {
+		$update_val = $post[ $option_name ] ?? 'false';
+		\PPRH\Utils\Utils::update_option( $option_name, $update_val );
+		return $update_val;
+	}
+
+	public function turn_textarea_to_array( $text ) {
+		$clean_text = preg_replace( '/[\'<>^\"\\\]/', '', $text );
+		return explode( "\r\n", $clean_text );
+	}
+
+	protected function esc_get_option( string $option ) {
+		return \esc_html( \get_option( $option ) );
+	}
 
 }

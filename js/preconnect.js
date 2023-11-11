@@ -11,7 +11,7 @@
             nonce: '',
             hints: [],
             start_time: new Date().getTime() / 1000,
-            timeout: 7000
+            timeout: 10000
         }
     }
 

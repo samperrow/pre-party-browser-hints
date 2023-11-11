@@ -4,7 +4,7 @@ declare(strict_types=1);
  * Plugin Name:       Pre* Party Resource Hints
  * Plugin URI:        https://wordpress.org/plugins/pre-party-browser-hints/
  * Description:       Take advantage of the browser resource hints DNS-Prefetch, Prerender, Preconnect, Prefetch, and Preload to improve page load time.
- * Version:           1.8.15
+ * Version:           1.8.17
  * Requires at least: 4.4
  * Requires PHP:      7.0.0
  * Author:            Sam Perrow
@@ -14,7 +14,7 @@ declare(strict_types=1);
  * Text Domain:       pre-party-browser-hints
  * Domain Path:       /languages
  *
- * Last edited July 22, 2023
+ * Last edited October 7, 2023
  *
  * Copyright 2023  Sam Perrow  (email : info@sptrix.com)
  *
@@ -40,7 +40,6 @@ function pprh_activate_plugin() {
 	$pprh_load->create_constants();
 	$activate_plugin = new ActivatePlugin();
 	$activate_plugin->activate_plugin();
-	return $activate_plugin->plugin_activated;
 }
 \register_activation_hook( __FILE__, '\PPRH\pprh_activate_plugin' );
 \add_action( 'wpmu_new_blog', '\PPRH\pprh_activate_plugin' );
@@ -101,9 +100,9 @@ class Pre_Party_Browser_Hints {
 			define( 'PPRH_EMAIL', 'info@sptrix.com' );
 		}
 
-		if ( ! defined( 'PPRH_VERSION_NEW' ) ) {
-			define( 'PPRH_VERSION_NEW', '1.8.11' );
-		}
+//		if ( ! defined( 'PPRH_VERSION_NEW' ) ) {
+//			define( 'PPRH_VERSION_NEW', '1.8.17' );
+//		}
 
 		if ( ! defined( 'PPRH_VERSION' ) ) {
 			define( 'PPRH_VERSION', \get_option( 'pprh_version', '' ) );
@@ -147,9 +146,8 @@ class Pre_Party_Browser_Hints {
 		if ( $is_admin ) {
 			include_once 'includes/admin/LoadAdmin.php';
 			include_once 'includes/admin/Dashboard.php';
-			include_once 'includes/admin/settings/SettingsUtils.php';
-			include_once 'includes/admin/settings/SettingsView.php';
-			include_once 'includes/admin/settings/SettingsSave.php';
+			include_once 'includes/admin/views/SettingsSave.php';
+			include_once 'includes/admin/views/SettingsView.php';
 			include_once 'includes/admin/views/FAQ.php';
 			include_once 'includes/admin/NewHint.php';
 			include_once 'includes/admin/DisplayHints.php';

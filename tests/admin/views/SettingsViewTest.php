@@ -1,22 +1,26 @@
 <?php
 declare(strict_types=1);
+
+namespace admin\views;
+
 use PHPUnit\Framework\TestCase;
 
-class SettingsViewTest extends TestCase {
+class SettingsViewTest extends TestCase{
 
 	public static \PPRH\SettingsView $settings_view;
 
 	/**
 	 * @before Class
 	 */
-	public function init() {
-		$this->setOutputCallback(function() {});
+	public function init () {
+		$this->setOutputCallback(function () {
+		});
 		self::$settings_view = new \PPRH\SettingsView();
 	}
 
-	public function test_prefetch_markup() {
+	public function test_prefetch_markup () {
 		$actual_1 = self::$settings_view->prefetch_markup();
-		self::assertTrue( $actual_1 );
+		self::assertTrue($actual_1);
 	}
 
 
