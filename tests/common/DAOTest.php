@@ -60,10 +60,6 @@ final class DAOTest extends TestCase {
 	}
 
 	public function test_get_admin_hints_query() {
-		if ( PPRH_PRO_PLUGIN_ACTIVE ) {
-			return;
-		}
-
 		$table = PPRH_DB_TABLE;
 
 		$actual_1 = self::$dao->get_admin_hints_query();
@@ -121,6 +117,21 @@ final class DAOTest extends TestCase {
 		);
 		self::assertEquals( $expected_6, $actual_6 );
 		unset( $_REQUEST['orderby'], $_REQUEST['order'] );
+
+		$_REQUEST['orderby'] = 'hint_type AND (SELECT * FROM (SELECT(SLEEP(5)))fXIw)';
+		$_REQUEST['order'] = '';
+		$actual_6 = self::$dao->get_admin_hints_query();
+		$expected_6 = array(
+			'sql'  => "SELECT * FROM $table ORDER BY hint_type ASC",
+			'args' => array()
+		);
+		self::assertEquals( $expected_6, $actual_6 );
+		unset( $_REQUEST['orderby'], $_REQUEST['order'] );
+
+
+
+
+
 	}
 
 	public function test_get_client_hints_query() {

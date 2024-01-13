@@ -48,18 +48,8 @@ final class DisplayHintsTest extends TestCase {
 		$actual_4 = $wp_list_table->on_plugin_page_and_global_hint( array('url' => 'https://espn.com'), 2 );
 		self::assertFalse( $actual_4 );
 
-		if ( PPRH_PRO_PLUGIN_ACTIVE ) {
-			$test_5 = array('post_id' => 'global');
-
-			$actual_5 = $wp_list_table->on_plugin_page_and_global_hint( $test_5, 2 );
-			self::assertTrue( $actual_5 );
-
-			$actual_6 = $wp_list_table->on_plugin_page_and_global_hint( $test_5, 1 );
-			self::assertFalse( $actual_6 );
-		} else {
-			$actual_3 = $wp_list_table->on_plugin_page_and_global_hint( array('post_id' => ''), 0 );
-			self::assertFalse( $actual_3 );
-		}
+		$actual_3 = $wp_list_table->on_plugin_page_and_global_hint( array('post_id' => ''), 0 );
+		self::assertFalse( $actual_3 );
 	}
 
 
