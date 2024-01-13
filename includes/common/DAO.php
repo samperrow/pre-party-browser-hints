@@ -124,7 +124,12 @@ class DAO {
 		);
 
 		$req_order_by = strtolower( \esc_sql( $_REQUEST['orderby'] ?? '' ) );
-		$req_order    = strtoupper( \esc_sql( $_REQUEST['order'] ?? '' ) );
+
+		if (0 < preg_match('/\s/', $req_order_by) ) {
+			$req_order_by = explode(' ', $req_order_by)[0];
+		}
+
+		$req_order = strtoupper( \esc_sql( $_REQUEST['order'] ?? '' ) );
 		$order_by     = ( 0 < preg_match( '/url|hint_type|status|created_by|post_id/i', $req_order_by ) ) ? $req_order_by : '';
 		$order        = ( 0 < preg_match( '/ASC|DESC/', $req_order ) ) ? $req_order : '';
 
