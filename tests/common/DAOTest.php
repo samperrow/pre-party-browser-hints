@@ -118,7 +118,7 @@ final class DAOTest extends TestCase {
 		self::assertEquals( $expected_6, $actual_6 );
 		unset( $_REQUEST['orderby'], $_REQUEST['order'] );
 
-		$_REQUEST['orderby'] = 'hint_type AND (SELECT * FROM (SELECT(SLEEP(5)))fXIw)';
+		$_REQUEST['orderby'] = 'hint_type AND (SELECT * FROM (SELECT(SLEEP(5))))';
 		$_REQUEST['order'] = '';
 		$actual_6 = self::$dao->get_admin_hints_query();
 		$expected_6 = array(
@@ -128,10 +128,15 @@ final class DAOTest extends TestCase {
 		self::assertEquals( $expected_6, $actual_6 );
 		unset( $_REQUEST['orderby'], $_REQUEST['order'] );
 
-
-
-
-
+		$_REQUEST['orderby'] = 'url%20AND%20(SELECT%209390%20FROM%20(SELECT(SLEEP(5)))fXIw)';
+		$_REQUEST['order'] = 'ASC';
+		$actual_7 = self::$dao->get_admin_hints_query();
+		$expected_7 = array(
+			'sql'  => "SELECT * FROM $table ORDER BY url",
+			'args' => array()
+		);
+		self::assertEquals( $expected_7, $actual_7 );
+		unset( $_REQUEST['orderby'], $_REQUEST['order'] );
 	}
 
 	public function test_get_client_hints_query() {

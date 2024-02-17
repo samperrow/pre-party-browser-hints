@@ -133,19 +133,21 @@ class DAO {
 		$order_by     = ( 0 < preg_match( '/url|hint_type|status|created_by|post_id/i', $req_order_by ) ) ? $req_order_by : '';
 		$order        = ( 0 < preg_match( '/ASC|DESC/', $req_order ) ) ? $req_order : '';
 
-		$new_query = \apply_filters( 'pprh_append_admin_sql', $query, $order_by, $order );
-
-		if ( $new_query === $query ) {
-			if ( '' === $order_by ) {
-				$order_by = 'url';
-			}
-			if ( '' === $order ) {
-				$order = 'ASC';
-			}
-			$new_query['sql'] .= " ORDER BY $order_by $order";
+		if ( '' === $order_by ) {
+			$order_by = 'url';
+		}
+		if ( '' === $order ) {
+			$order = 'ASC';
 		}
 
-		return $new_query;
+		$order_by_sql = sanitize_sql_orderby( "{$order_by} {$order}" );
+
+		if ( $order_by_sql === false ) {
+			$order_by_sql = 'url';
+		}
+
+		$query['sql'] .= " ORDER BY $order_by_sql";
+		return $query;
 	}
 
 
@@ -281,7 +283,7 @@ class DAO {
 	public static function create_db_result( string $wpdb_last_error, bool $wpdb_result, int $op_code, array $new_hint = array() ):\stdClass {
 		$success = ( empty( $wpdb_last_error ) && $wpdb_result );
 		$msg = self::get_msg( $success, $op_code, 0 );
-		$msg .= ( $success ) ? ' Plear your cache if you are having difficulty viewing these changes.' : " Error: $wpdb_last_error";
+		$msg .= ( $success ) ? ' Please your cache if you are having difficulty viewing these changes.' : " Error: $wpdb_last_error";
 
 		return (object) array(
 			'new_hint'  => $new_hint,
